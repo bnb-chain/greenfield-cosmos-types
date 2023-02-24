@@ -1,0 +1,42 @@
+{
+  "name": "@bnb-chain/greenfield-cosmos-types",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "exports": {
+    "./*": "./dist/*"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "tag": "latest",
+    "access": "public"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "semantic-release": "^19.0.3",
+    "typescript": "^4.7.4",
+    "@types/long": "^4.0.1",
+    "@types/node": "^15.6.2",
+    "@osmonauts/telescope": "^0.81.5"
+  },
+  "dependencies": {
+    "long": "^4.0.0",
+    "protobufjs": "~6.11.2"
+  }
+}
