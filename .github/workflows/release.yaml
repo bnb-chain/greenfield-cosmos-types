@@ -18,7 +18,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm i
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - run: pnpm install
       - run: npm run build
       - run: npx semantic-release
         env:
