@@ -1,110 +1,9 @@
 /* eslint-disable */
-import { SourceType, sourceTypeFromJSON, sourceTypeToJSON } from "./common";
+import { SourceType, ReadQuota, ObjectStatus, RedundancyType, sourceTypeFromJSON, readQuotaFromJSON, sourceTypeToJSON, readQuotaToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
+import { OutFlowInUSD } from "../payment/base";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.storage";
-export enum ReadQuota {
-  READ_QUOTA_FREE = 0,
-  UNRECOGNIZED = -1,
-}
-export function readQuotaFromJSON(object: any): ReadQuota {
-  switch (object) {
-    case 0:
-    case "READ_QUOTA_FREE":
-      return ReadQuota.READ_QUOTA_FREE;
-
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return ReadQuota.UNRECOGNIZED;
-  }
-}
-export function readQuotaToJSON(object: ReadQuota): string {
-  switch (object) {
-    case ReadQuota.READ_QUOTA_FREE:
-      return "READ_QUOTA_FREE";
-
-    case ReadQuota.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-export enum RedundancyType {
-  REDUNDANCY_REPLICA_TYPE = 0,
-  REDUNDANCY_EC_TYPE = 1,
-  REDUNDANCY_INLINE_TYPE = 2,
-  UNRECOGNIZED = -1,
-}
-export function redundancyTypeFromJSON(object: any): RedundancyType {
-  switch (object) {
-    case 0:
-    case "REDUNDANCY_REPLICA_TYPE":
-      return RedundancyType.REDUNDANCY_REPLICA_TYPE;
-
-    case 1:
-    case "REDUNDANCY_EC_TYPE":
-      return RedundancyType.REDUNDANCY_EC_TYPE;
-
-    case 2:
-    case "REDUNDANCY_INLINE_TYPE":
-      return RedundancyType.REDUNDANCY_INLINE_TYPE;
-
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return RedundancyType.UNRECOGNIZED;
-  }
-}
-export function redundancyTypeToJSON(object: RedundancyType): string {
-  switch (object) {
-    case RedundancyType.REDUNDANCY_REPLICA_TYPE:
-      return "REDUNDANCY_REPLICA_TYPE";
-
-    case RedundancyType.REDUNDANCY_EC_TYPE:
-      return "REDUNDANCY_EC_TYPE";
-
-    case RedundancyType.REDUNDANCY_INLINE_TYPE:
-      return "REDUNDANCY_INLINE_TYPE";
-
-    case RedundancyType.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
-export enum ObjectStatus {
-  OBJECT_STATUS_INIT = 0,
-  OBJECT_STATUS_IN_SERVICE = 1,
-  UNRECOGNIZED = -1,
-}
-export function objectStatusFromJSON(object: any): ObjectStatus {
-  switch (object) {
-    case 0:
-    case "OBJECT_STATUS_INIT":
-      return ObjectStatus.OBJECT_STATUS_INIT;
-
-    case 1:
-    case "OBJECT_STATUS_IN_SERVICE":
-      return ObjectStatus.OBJECT_STATUS_IN_SERVICE;
-
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return ObjectStatus.UNRECOGNIZED;
-  }
-}
-export function objectStatusToJSON(object: ObjectStatus): string {
-  switch (object) {
-    case ObjectStatus.OBJECT_STATUS_INIT:
-      return "OBJECT_STATUS_INIT";
-
-    case ObjectStatus.OBJECT_STATUS_IN_SERVICE:
-      return "OBJECT_STATUS_IN_SERVICE";
-
-    case ObjectStatus.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
 export interface BucketInfo {
   /** owner is the account address of bucket creator, it is also the bucket owner. */
   owner: string;
@@ -117,6 +16,9 @@ export interface BucketInfo {
   /** id is the unique identification for bucket. */
 
   id: string;
+  /** source_type define the source of the bucket */
+
+  sourceType: SourceType;
   /** create_at define the block number when the bucket created. */
 
   createAt: Long;
@@ -132,6 +34,12 @@ export interface BucketInfo {
   /** read_quota defines the traffic quota for read */
 
   readQuota: ReadQuota;
+  /** payment_price_time TODO(Owen): refine the comments */
+
+  paymentPriceTime: Long;
+  /** payment_out_flows */
+
+  paymentOutFlows: OutFlowInUSD[];
 }
 export interface ObjectInfo {
   owner: string;
@@ -171,6 +79,9 @@ export interface ObjectInfo {
   /** secondary_sp_addresses define the addresses of secondary_sps */
 
   secondarySpAddresses: string[];
+  /** lockedBalance */
+
+  lockedBalance: string;
 }
 export interface GroupInfo {
   /** owner is the owner of the group. It can not changed once it created. */
@@ -178,6 +89,9 @@ export interface GroupInfo {
   /** group_name is the name of group which is unique under an account. */
 
   groupName: string;
+  /** source_type */
+
+  sourceType: SourceType;
   /** id is the unique identifier of group */
 
   id: string;
@@ -194,10 +108,13 @@ function createBaseBucketInfo(): BucketInfo {
     bucketName: "",
     isPublic: false,
     id: "",
+    sourceType: 0,
     createAt: Long.ZERO,
     paymentAddress: "",
     primarySpAddress: "",
-    readQuota: 0
+    readQuota: 0,
+    paymentPriceTime: Long.ZERO,
+    paymentOutFlows: []
   };
 }
 
@@ -219,20 +136,32 @@ export const BucketInfo = {
       writer.uint32(34).string(message.id);
     }
 
+    if (message.sourceType !== 0) {
+      writer.uint32(40).int32(message.sourceType);
+    }
+
     if (!message.createAt.isZero()) {
-      writer.uint32(40).int64(message.createAt);
+      writer.uint32(48).int64(message.createAt);
     }
 
     if (message.paymentAddress !== "") {
-      writer.uint32(50).string(message.paymentAddress);
+      writer.uint32(58).string(message.paymentAddress);
     }
 
     if (message.primarySpAddress !== "") {
-      writer.uint32(58).string(message.primarySpAddress);
+      writer.uint32(66).string(message.primarySpAddress);
     }
 
     if (message.readQuota !== 0) {
-      writer.uint32(64).int32(message.readQuota);
+      writer.uint32(72).int32(message.readQuota);
+    }
+
+    if (!message.paymentPriceTime.isZero()) {
+      writer.uint32(80).int64(message.paymentPriceTime);
+    }
+
+    for (const v of message.paymentOutFlows) {
+      OutFlowInUSD.encode(v!, writer.uint32(90).fork()).ldelim();
     }
 
     return writer;
@@ -264,19 +193,31 @@ export const BucketInfo = {
           break;
 
         case 5:
-          message.createAt = (reader.int64() as Long);
+          message.sourceType = (reader.int32() as any);
           break;
 
         case 6:
-          message.paymentAddress = reader.string();
+          message.createAt = (reader.int64() as Long);
           break;
 
         case 7:
-          message.primarySpAddress = reader.string();
+          message.paymentAddress = reader.string();
           break;
 
         case 8:
+          message.primarySpAddress = reader.string();
+          break;
+
+        case 9:
           message.readQuota = (reader.int32() as any);
+          break;
+
+        case 10:
+          message.paymentPriceTime = (reader.int64() as Long);
+          break;
+
+        case 11:
+          message.paymentOutFlows.push(OutFlowInUSD.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -294,10 +235,13 @@ export const BucketInfo = {
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       isPublic: isSet(object.isPublic) ? Boolean(object.isPublic) : false,
       id: isSet(object.id) ? String(object.id) : "",
+      sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
       createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
-      readQuota: isSet(object.readQuota) ? readQuotaFromJSON(object.readQuota) : 0
+      readQuota: isSet(object.readQuota) ? readQuotaFromJSON(object.readQuota) : 0,
+      paymentPriceTime: isSet(object.paymentPriceTime) ? Long.fromValue(object.paymentPriceTime) : Long.ZERO,
+      paymentOutFlows: Array.isArray(object?.paymentOutFlows) ? object.paymentOutFlows.map((e: any) => OutFlowInUSD.fromJSON(e)) : []
     };
   },
 
@@ -307,10 +251,19 @@ export const BucketInfo = {
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.isPublic !== undefined && (obj.isPublic = message.isPublic);
     message.id !== undefined && (obj.id = message.id);
+    message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
     message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
     message.readQuota !== undefined && (obj.readQuota = readQuotaToJSON(message.readQuota));
+    message.paymentPriceTime !== undefined && (obj.paymentPriceTime = (message.paymentPriceTime || Long.ZERO).toString());
+
+    if (message.paymentOutFlows) {
+      obj.paymentOutFlows = message.paymentOutFlows.map(e => e ? OutFlowInUSD.toJSON(e) : undefined);
+    } else {
+      obj.paymentOutFlows = [];
+    }
+
     return obj;
   },
 
@@ -320,10 +273,13 @@ export const BucketInfo = {
     message.bucketName = object.bucketName ?? "";
     message.isPublic = object.isPublic ?? false;
     message.id = object.id ?? "";
+    message.sourceType = object.sourceType ?? 0;
     message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
     message.paymentAddress = object.paymentAddress ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
     message.readQuota = object.readQuota ?? 0;
+    message.paymentPriceTime = object.paymentPriceTime !== undefined && object.paymentPriceTime !== null ? Long.fromValue(object.paymentPriceTime) : Long.ZERO;
+    message.paymentOutFlows = object.paymentOutFlows?.map(e => OutFlowInUSD.fromPartial(e)) || [];
     return message;
   }
 
@@ -343,7 +299,8 @@ function createBaseObjectInfo(): ObjectInfo {
     redundancyType: 0,
     sourceType: 0,
     checksums: [],
-    secondarySpAddresses: []
+    secondarySpAddresses: [],
+    lockedBalance: ""
   };
 }
 
@@ -399,6 +356,10 @@ export const ObjectInfo = {
 
     for (const v of message.secondarySpAddresses) {
       writer.uint32(106).string(v!);
+    }
+
+    if (message.lockedBalance !== "") {
+      writer.uint32(114).string(message.lockedBalance);
     }
 
     return writer;
@@ -465,6 +426,10 @@ export const ObjectInfo = {
           message.secondarySpAddresses.push(reader.string());
           break;
 
+        case 14:
+          message.lockedBalance = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -488,7 +453,8 @@ export const ObjectInfo = {
       redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : 0,
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
       checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => bytesFromBase64(e)) : [],
-      secondarySpAddresses: Array.isArray(object?.secondarySpAddresses) ? object.secondarySpAddresses.map((e: any) => String(e)) : []
+      secondarySpAddresses: Array.isArray(object?.secondarySpAddresses) ? object.secondarySpAddresses.map((e: any) => String(e)) : [],
+      lockedBalance: isSet(object.lockedBalance) ? String(object.lockedBalance) : ""
     };
   },
 
@@ -518,6 +484,7 @@ export const ObjectInfo = {
       obj.secondarySpAddresses = [];
     }
 
+    message.lockedBalance !== undefined && (obj.lockedBalance = message.lockedBalance);
     return obj;
   },
 
@@ -536,6 +503,7 @@ export const ObjectInfo = {
     message.sourceType = object.sourceType ?? 0;
     message.checksums = object.checksums?.map(e => e) || [];
     message.secondarySpAddresses = object.secondarySpAddresses?.map(e => e) || [];
+    message.lockedBalance = object.lockedBalance ?? "";
     return message;
   }
 
@@ -545,6 +513,7 @@ function createBaseGroupInfo(): GroupInfo {
   return {
     owner: "",
     groupName: "",
+    sourceType: 0,
     id: ""
   };
 }
@@ -559,8 +528,12 @@ export const GroupInfo = {
       writer.uint32(18).string(message.groupName);
     }
 
+    if (message.sourceType !== 0) {
+      writer.uint32(24).int32(message.sourceType);
+    }
+
     if (message.id !== "") {
-      writer.uint32(26).string(message.id);
+      writer.uint32(34).string(message.id);
     }
 
     return writer;
@@ -584,6 +557,10 @@ export const GroupInfo = {
           break;
 
         case 3:
+          message.sourceType = (reader.int32() as any);
+          break;
+
+        case 4:
           message.id = reader.string();
           break;
 
@@ -600,6 +577,7 @@ export const GroupInfo = {
     return {
       owner: isSet(object.owner) ? String(object.owner) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
+      sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
       id: isSet(object.id) ? String(object.id) : ""
     };
   },
@@ -608,6 +586,7 @@ export const GroupInfo = {
     const obj: any = {};
     message.owner !== undefined && (obj.owner = message.owner);
     message.groupName !== undefined && (obj.groupName = message.groupName);
+    message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
     message.id !== undefined && (obj.id = message.id);
     return obj;
   },
@@ -616,6 +595,7 @@ export const GroupInfo = {
     const message = createBaseGroupInfo();
     message.owner = object.owner ?? "";
     message.groupName = object.groupName ?? "";
+    message.sourceType = object.sourceType ?? 0;
     message.id = object.id ?? "";
     return message;
   }

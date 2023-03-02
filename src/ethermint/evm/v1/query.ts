@@ -1840,7 +1840,7 @@ export interface Query {
   Params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** EthCall implements the `eth_call` rpc api */
 
-  // EthCall(request: EthCallRequest): Promise<MsgEthereumTxResponse>;
+  EthCall(request: EthCallRequest): Promise<MsgEthereumTxResponse>;
   /** EstimateGas implements the `eth_estimateGas` rpc api */
 
   EstimateGas(request: EthCallRequest): Promise<EstimateGasResponse>;
@@ -1869,7 +1869,7 @@ export class QueryClientImpl implements Query {
     this.Storage = this.Storage.bind(this);
     this.Code = this.Code.bind(this);
     this.Params = this.Params.bind(this);
-    // this.EthCall = this.EthCall.bind(this);
+    this.EthCall = this.EthCall.bind(this);
     this.EstimateGas = this.EstimateGas.bind(this);
     this.TraceTx = this.TraceTx.bind(this);
     this.TraceBlock = this.TraceBlock.bind(this);
@@ -1918,11 +1918,11 @@ export class QueryClientImpl implements Query {
     return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
 
-  // EthCall(request: EthCallRequest): Promise<MsgEthereumTxResponse> {
-  //   const data = EthCallRequest.encode(request).finish();
-  //   const promise = this.rpc.request("ethermint.evm.v1.Query", "EthCall", data);
-  //   return promise.then(data => MsgEthereumTxResponse.decode(new _m0.Reader(data)));
-  // }
+  EthCall(request: EthCallRequest): Promise<MsgEthereumTxResponse> {
+    const data = EthCallRequest.encode(request).finish();
+    const promise = this.rpc.request("ethermint.evm.v1.Query", "EthCall", data);
+    return promise.then(data => MsgEthereumTxResponse.decode(new _m0.Reader(data)));
+  }
 
   EstimateGas(request: EthCallRequest): Promise<EstimateGasResponse> {
     const data = EthCallRequest.encode(request).finish();

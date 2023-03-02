@@ -1,6 +1,7 @@
 /* eslint-disable */
+import { Approval, ReadQuota, readQuotaFromJSON, readQuotaToJSON } from "./common";
 import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact, Long, Rpc } from "../../helpers";
+import { isSet, DeepPartial, Exact, Long, bytesFromBase64, base64FromBytes, Rpc } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.storage";
 export interface MsgCreateBucket {
   /** creator is the account address of bucket creator, it is also the bucket owner. */
@@ -20,9 +21,12 @@ export interface MsgCreateBucket {
   /** primary_sp_address is the address of primary sp. */
 
   primarySpAddress: string;
-  /** primary_sp_approval_signature is the signature of the primary SP which indicates that primary sp confirm the user's request. */
+  /** primary_sp_approval is the approval info of the primary SP which indicates that primary sp confirm the user's request. */
 
-  primarySpApprovalSignature: Uint8Array;
+  primarySpApproval?: Approval;
+  /** read_quota */
+
+  readQuota: ReadQuota;
 }
 export interface MsgCreateBucketResponse {}
 export interface MsgDeleteBucket {
@@ -54,12 +58,9 @@ export interface MsgCreateObject {
   /** content_type is a standard MIME type describing the format of the object. */
 
   contentType: string;
-  /**
-   * primary_sp_approval_signature is the signature of the primary SP with its signature
-   * which indicates that primary sp confirm the user's creation request.
-   */
+  /** primary_sp_approval is the approval info of the primary SP which indicates that primary sp confirm the user's request. */
 
-  primarySpApprovalSignature: Uint8Array;
+  primarySpApproval?: Approval;
   /** expect_checksums is a list of hashes which was generate by redundancy algorithm. */
 
   expectChecksums: Uint8Array[];
@@ -114,9 +115,9 @@ export interface MsgCopyObject {
   /** dst_object_name is the name of the object which is copied to */
 
   dstObjectName: string;
-  /** dst_primary_sp_approval_signature is a approval signature of primary sp */
+  /** primary_sp_approval is the approval info of the primary SP which indicates that primary sp confirm the user's request. */
 
-  dstPrimarySpApprovalSignature: Uint8Array;
+  dstPrimarySpApproval?: Approval;
 }
 export interface MsgCopyObjectResponse {}
 export interface MsgDeleteObject {
@@ -174,6 +175,31 @@ export interface MsgLeaveGroup {
   groupName: string;
 }
 export interface MsgLeaveGroupResponse {}
+export interface MsgUpdateBucketInfo {
+  /** operator is the account address of the operator */
+  operator: string;
+  /** bucket_name is the name of bucket which you'll update */
+
+  bucketName: string;
+  /** read_quota is the traffic quota that you read from primary sp */
+
+  readQuota: ReadQuota;
+  /** payment_address is the account address of the payment account */
+
+  paymentAddress: string;
+}
+export interface MsgUpdateBucketInfoResponse {}
+export interface MsgCancelCreateObject {
+  /** operator is the account address of the operator */
+  operator: string;
+  /** bucket_name is the name of the bucket */
+
+  bucketName: string;
+  /** object_name is the name of the object */
+
+  objectName: string;
+}
+export interface MsgCancelCreateObjectResponse {}
 
 function createBaseMsgCreateBucket(): MsgCreateBucket {
   return {
@@ -182,7 +208,8 @@ function createBaseMsgCreateBucket(): MsgCreateBucket {
     isPublic: false,
     paymentAddress: "",
     primarySpAddress: "",
-    primarySpApprovalSignature: new Uint8Array()
+    primarySpApproval: undefined,
+    readQuota: 0
   };
 }
 
@@ -208,8 +235,12 @@ export const MsgCreateBucket = {
       writer.uint32(50).string(message.primarySpAddress);
     }
 
-    if (message.primarySpApprovalSignature.length !== 0) {
-      writer.uint32(58).bytes(message.primarySpApprovalSignature);
+    if (message.primarySpApproval !== undefined) {
+      Approval.encode(message.primarySpApproval, writer.uint32(58).fork()).ldelim();
+    }
+
+    if (message.readQuota !== 0) {
+      writer.uint32(64).int32(message.readQuota);
     }
 
     return writer;
@@ -245,7 +276,11 @@ export const MsgCreateBucket = {
           break;
 
         case 7:
-          message.primarySpApprovalSignature = reader.bytes();
+          message.primarySpApproval = Approval.decode(reader, reader.uint32());
+          break;
+
+        case 8:
+          message.readQuota = (reader.int32() as any);
           break;
 
         default:
@@ -264,7 +299,8 @@ export const MsgCreateBucket = {
       isPublic: isSet(object.isPublic) ? Boolean(object.isPublic) : false,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
-      primarySpApprovalSignature: isSet(object.primarySpApprovalSignature) ? bytesFromBase64(object.primarySpApprovalSignature) : new Uint8Array()
+      primarySpApproval: isSet(object.primarySpApproval) ? Approval.fromJSON(object.primarySpApproval) : undefined,
+      readQuota: isSet(object.readQuota) ? readQuotaFromJSON(object.readQuota) : 0
     };
   },
 
@@ -275,7 +311,8 @@ export const MsgCreateBucket = {
     message.isPublic !== undefined && (obj.isPublic = message.isPublic);
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
-    message.primarySpApprovalSignature !== undefined && (obj.primarySpApprovalSignature = base64FromBytes(message.primarySpApprovalSignature !== undefined ? message.primarySpApprovalSignature : new Uint8Array()));
+    message.primarySpApproval !== undefined && (obj.primarySpApproval = message.primarySpApproval ? Approval.toJSON(message.primarySpApproval) : undefined);
+    message.readQuota !== undefined && (obj.readQuota = readQuotaToJSON(message.readQuota));
     return obj;
   },
 
@@ -286,7 +323,8 @@ export const MsgCreateBucket = {
     message.isPublic = object.isPublic ?? false;
     message.paymentAddress = object.paymentAddress ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
-    message.primarySpApprovalSignature = object.primarySpApprovalSignature ?? new Uint8Array();
+    message.primarySpApproval = object.primarySpApproval !== undefined && object.primarySpApproval !== null ? Approval.fromPartial(object.primarySpApproval) : undefined;
+    message.readQuota = object.readQuota ?? 0;
     return message;
   }
 
@@ -455,7 +493,7 @@ function createBaseMsgCreateObject(): MsgCreateObject {
     payloadSize: Long.UZERO,
     isPublic: false,
     contentType: "",
-    primarySpApprovalSignature: new Uint8Array(),
+    primarySpApproval: undefined,
     expectChecksums: [],
     expectSecondarySpAddresses: []
   };
@@ -487,8 +525,8 @@ export const MsgCreateObject = {
       writer.uint32(50).string(message.contentType);
     }
 
-    if (message.primarySpApprovalSignature.length !== 0) {
-      writer.uint32(58).bytes(message.primarySpApprovalSignature);
+    if (message.primarySpApproval !== undefined) {
+      Approval.encode(message.primarySpApproval, writer.uint32(58).fork()).ldelim();
     }
 
     for (const v of message.expectChecksums) {
@@ -536,7 +574,7 @@ export const MsgCreateObject = {
           break;
 
         case 7:
-          message.primarySpApprovalSignature = reader.bytes();
+          message.primarySpApproval = Approval.decode(reader, reader.uint32());
           break;
 
         case 8:
@@ -564,7 +602,7 @@ export const MsgCreateObject = {
       payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO,
       isPublic: isSet(object.isPublic) ? Boolean(object.isPublic) : false,
       contentType: isSet(object.contentType) ? String(object.contentType) : "",
-      primarySpApprovalSignature: isSet(object.primarySpApprovalSignature) ? bytesFromBase64(object.primarySpApprovalSignature) : new Uint8Array(),
+      primarySpApproval: isSet(object.primarySpApproval) ? Approval.fromJSON(object.primarySpApproval) : undefined,
       expectChecksums: Array.isArray(object?.expectChecksums) ? object.expectChecksums.map((e: any) => bytesFromBase64(e)) : [],
       expectSecondarySpAddresses: Array.isArray(object?.expectSecondarySpAddresses) ? object.expectSecondarySpAddresses.map((e: any) => String(e)) : []
     };
@@ -578,7 +616,7 @@ export const MsgCreateObject = {
     message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
     message.isPublic !== undefined && (obj.isPublic = message.isPublic);
     message.contentType !== undefined && (obj.contentType = message.contentType);
-    message.primarySpApprovalSignature !== undefined && (obj.primarySpApprovalSignature = base64FromBytes(message.primarySpApprovalSignature !== undefined ? message.primarySpApprovalSignature : new Uint8Array()));
+    message.primarySpApproval !== undefined && (obj.primarySpApproval = message.primarySpApproval ? Approval.toJSON(message.primarySpApproval) : undefined);
 
     if (message.expectChecksums) {
       obj.expectChecksums = message.expectChecksums.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
@@ -603,7 +641,7 @@ export const MsgCreateObject = {
     message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
     message.isPublic = object.isPublic ?? false;
     message.contentType = object.contentType ?? "";
-    message.primarySpApprovalSignature = object.primarySpApprovalSignature ?? new Uint8Array();
+    message.primarySpApproval = object.primarySpApproval !== undefined && object.primarySpApproval !== null ? Approval.fromPartial(object.primarySpApproval) : undefined;
     message.expectChecksums = object.expectChecksums?.map(e => e) || [];
     message.expectSecondarySpAddresses = object.expectSecondarySpAddresses?.map(e => e) || [];
     return message;
@@ -944,7 +982,7 @@ function createBaseMsgCopyObject(): MsgCopyObject {
     dstBucketName: "",
     srcObjectName: "",
     dstObjectName: "",
-    dstPrimarySpApprovalSignature: new Uint8Array()
+    dstPrimarySpApproval: undefined
   };
 }
 
@@ -970,8 +1008,8 @@ export const MsgCopyObject = {
       writer.uint32(42).string(message.dstObjectName);
     }
 
-    if (message.dstPrimarySpApprovalSignature.length !== 0) {
-      writer.uint32(50).bytes(message.dstPrimarySpApprovalSignature);
+    if (message.dstPrimarySpApproval !== undefined) {
+      Approval.encode(message.dstPrimarySpApproval, writer.uint32(50).fork()).ldelim();
     }
 
     return writer;
@@ -1007,7 +1045,7 @@ export const MsgCopyObject = {
           break;
 
         case 6:
-          message.dstPrimarySpApprovalSignature = reader.bytes();
+          message.dstPrimarySpApproval = Approval.decode(reader, reader.uint32());
           break;
 
         default:
@@ -1026,7 +1064,7 @@ export const MsgCopyObject = {
       dstBucketName: isSet(object.dstBucketName) ? String(object.dstBucketName) : "",
       srcObjectName: isSet(object.srcObjectName) ? String(object.srcObjectName) : "",
       dstObjectName: isSet(object.dstObjectName) ? String(object.dstObjectName) : "",
-      dstPrimarySpApprovalSignature: isSet(object.dstPrimarySpApprovalSignature) ? bytesFromBase64(object.dstPrimarySpApprovalSignature) : new Uint8Array()
+      dstPrimarySpApproval: isSet(object.dstPrimarySpApproval) ? Approval.fromJSON(object.dstPrimarySpApproval) : undefined
     };
   },
 
@@ -1037,7 +1075,7 @@ export const MsgCopyObject = {
     message.dstBucketName !== undefined && (obj.dstBucketName = message.dstBucketName);
     message.srcObjectName !== undefined && (obj.srcObjectName = message.srcObjectName);
     message.dstObjectName !== undefined && (obj.dstObjectName = message.dstObjectName);
-    message.dstPrimarySpApprovalSignature !== undefined && (obj.dstPrimarySpApprovalSignature = base64FromBytes(message.dstPrimarySpApprovalSignature !== undefined ? message.dstPrimarySpApprovalSignature : new Uint8Array()));
+    message.dstPrimarySpApproval !== undefined && (obj.dstPrimarySpApproval = message.dstPrimarySpApproval ? Approval.toJSON(message.dstPrimarySpApproval) : undefined);
     return obj;
   },
 
@@ -1048,7 +1086,7 @@ export const MsgCopyObject = {
     message.dstBucketName = object.dstBucketName ?? "";
     message.srcObjectName = object.srcObjectName ?? "";
     message.dstObjectName = object.dstObjectName ?? "";
-    message.dstPrimarySpApprovalSignature = object.dstPrimarySpApprovalSignature ?? new Uint8Array();
+    message.dstPrimarySpApproval = object.dstPrimarySpApproval !== undefined && object.dstPrimarySpApproval !== null ? Approval.fromPartial(object.dstPrimarySpApproval) : undefined;
     return message;
   }
 
@@ -1733,6 +1771,266 @@ export const MsgLeaveGroupResponse = {
   }
 
 };
+
+function createBaseMsgUpdateBucketInfo(): MsgUpdateBucketInfo {
+  return {
+    operator: "",
+    bucketName: "",
+    readQuota: 0,
+    paymentAddress: ""
+  };
+}
+
+export const MsgUpdateBucketInfo = {
+  encode(message: MsgUpdateBucketInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    if (message.readQuota !== 0) {
+      writer.uint32(24).int32(message.readQuota);
+    }
+
+    if (message.paymentAddress !== "") {
+      writer.uint32(34).string(message.paymentAddress);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateBucketInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateBucketInfo();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        case 3:
+          message.readQuota = (reader.int32() as any);
+          break;
+
+        case 4:
+          message.paymentAddress = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateBucketInfo {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      readQuota: isSet(object.readQuota) ? readQuotaFromJSON(object.readQuota) : 0,
+      paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : ""
+    };
+  },
+
+  toJSON(message: MsgUpdateBucketInfo): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.readQuota !== undefined && (obj.readQuota = readQuotaToJSON(message.readQuota));
+    message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateBucketInfo>, I>>(object: I): MsgUpdateBucketInfo {
+    const message = createBaseMsgUpdateBucketInfo();
+    message.operator = object.operator ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.readQuota = object.readQuota ?? 0;
+    message.paymentAddress = object.paymentAddress ?? "";
+    return message;
+  }
+
+};
+
+function createBaseMsgUpdateBucketInfoResponse(): MsgUpdateBucketInfoResponse {
+  return {};
+}
+
+export const MsgUpdateBucketInfoResponse = {
+  encode(_: MsgUpdateBucketInfoResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateBucketInfoResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateBucketInfoResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateBucketInfoResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateBucketInfoResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateBucketInfoResponse>, I>>(_: I): MsgUpdateBucketInfoResponse {
+    const message = createBaseMsgUpdateBucketInfoResponse();
+    return message;
+  }
+
+};
+
+function createBaseMsgCancelCreateObject(): MsgCancelCreateObject {
+  return {
+    operator: "",
+    bucketName: "",
+    objectName: ""
+  };
+}
+
+export const MsgCancelCreateObject = {
+  encode(message: MsgCancelCreateObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    if (message.objectName !== "") {
+      writer.uint32(26).string(message.objectName);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelCreateObject {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCancelCreateObject();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        case 3:
+          message.objectName = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgCancelCreateObject {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      objectName: isSet(object.objectName) ? String(object.objectName) : ""
+    };
+  },
+
+  toJSON(message: MsgCancelCreateObject): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.objectName !== undefined && (obj.objectName = message.objectName);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCancelCreateObject>, I>>(object: I): MsgCancelCreateObject {
+    const message = createBaseMsgCancelCreateObject();
+    message.operator = object.operator ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.objectName = object.objectName ?? "";
+    return message;
+  }
+
+};
+
+function createBaseMsgCancelCreateObjectResponse(): MsgCancelCreateObjectResponse {
+  return {};
+}
+
+export const MsgCancelCreateObjectResponse = {
+  encode(_: MsgCancelCreateObjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelCreateObjectResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCancelCreateObjectResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgCancelCreateObjectResponse {
+    return {};
+  },
+
+  toJSON(_: MsgCancelCreateObjectResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCancelCreateObjectResponse>, I>>(_: I): MsgCancelCreateObjectResponse {
+    const message = createBaseMsgCancelCreateObjectResponse();
+    return message;
+  }
+
+};
 /** Msg defines the Msg service. */
 
 export interface Msg {
@@ -1747,6 +2045,10 @@ export interface Msg {
   UpdateGroupMember(request: MsgUpdateGroupMember): Promise<MsgUpdateGroupMemberResponse>;
   LeaveGroup(request: MsgLeaveGroup): Promise<MsgLeaveGroupResponse>;
   CopyObject(request: MsgCopyObject): Promise<MsgCopyObjectResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+
+  UpdateBucketInfo(request: MsgUpdateBucketInfo): Promise<MsgUpdateBucketInfoResponse>;
+  CancelCreateObject(request: MsgCancelCreateObject): Promise<MsgCancelCreateObjectResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -1764,6 +2066,8 @@ export class MsgClientImpl implements Msg {
     this.UpdateGroupMember = this.UpdateGroupMember.bind(this);
     this.LeaveGroup = this.LeaveGroup.bind(this);
     this.CopyObject = this.CopyObject.bind(this);
+    this.UpdateBucketInfo = this.UpdateBucketInfo.bind(this);
+    this.CancelCreateObject = this.CancelCreateObject.bind(this);
   }
 
   CreateBucket(request: MsgCreateBucket): Promise<MsgCreateBucketResponse> {
@@ -1830,6 +2134,18 @@ export class MsgClientImpl implements Msg {
     const data = MsgCopyObject.encode(request).finish();
     const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "CopyObject", data);
     return promise.then(data => MsgCopyObjectResponse.decode(new _m0.Reader(data)));
+  }
+
+  UpdateBucketInfo(request: MsgUpdateBucketInfo): Promise<MsgUpdateBucketInfoResponse> {
+    const data = MsgUpdateBucketInfo.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "UpdateBucketInfo", data);
+    return promise.then(data => MsgUpdateBucketInfoResponse.decode(new _m0.Reader(data)));
+  }
+
+  CancelCreateObject(request: MsgCancelCreateObject): Promise<MsgCancelCreateObjectResponse> {
+    const data = MsgCancelCreateObject.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "CancelCreateObject", data);
+    return promise.then(data => MsgCancelCreateObjectResponse.decode(new _m0.Reader(data)));
   }
 
 }
