@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.1.0...v0.2.0) (2023-03-02)
+
+
+### Features
+
+* Add SP Message ([d287793](https://github.com/bnb-chain/gnfd-cosmos-types/commit/d28779330cc3826355b1cbf22eb3cbeaf4a9e17f))
+
 # [0.1.0](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.0.1...v0.1.0) (2023-02-24)
 
 
