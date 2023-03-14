@@ -1,3 +1,10 @@
+# [0.3.0-alpha.2](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.3.0-alpha.1...v0.3.0-alpha.2) (2023-03-14)
+
+
+### Features
+
+* Use ES6 ([2e344b5](https://github.com/bnb-chain/gnfd-cosmos-types/commit/2e344b50d78d015e8d7485cdb1fa64d86b9092b3))
+
 # [0.3.0-alpha.1](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.2.0...v0.3.0-alpha.1) (2023-03-14)
 
 
