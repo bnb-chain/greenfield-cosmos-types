@@ -1,3 +1,10 @@
+# [0.3.0-alpha.1](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.2.0...v0.3.0-alpha.1) (2023-03-14)
+
+
+### Features
+
+* sp types ([7e93bdf](https://github.com/bnb-chain/gnfd-cosmos-types/commit/7e93bdffead845905cfc93ec89668eb5571da7a8))
+
 # [0.2.0](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.1.0...v0.2.0) (2023-03-02)
 
 
