@@ -5,10 +5,7 @@ export const protobufPackage = "bnbchain.greenfield.sp";
 /** Params defines the parameters for the module. */
 
 export interface Params {
-  /** max_storage_providers is the maximum number of validators. */
-  maxStorageProviders: number;
   /** deposit_denom defines the staking coin denomination. */
-
   depositDenom: string;
   /** min_deposit_amount defines the minimum deposit amount for storage providers. */
 
@@ -17,7 +14,6 @@ export interface Params {
 
 function createBaseParams(): Params {
   return {
-    maxStorageProviders: 0,
     depositDenom: "",
     minDeposit: ""
   };
@@ -25,16 +21,12 @@ function createBaseParams(): Params {
 
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.maxStorageProviders !== 0) {
-      writer.uint32(8).uint32(message.maxStorageProviders);
-    }
-
     if (message.depositDenom !== "") {
-      writer.uint32(18).string(message.depositDenom);
+      writer.uint32(10).string(message.depositDenom);
     }
 
     if (message.minDeposit !== "") {
-      writer.uint32(26).string(message.minDeposit);
+      writer.uint32(18).string(message.minDeposit);
     }
 
     return writer;
@@ -50,14 +42,10 @@ export const Params = {
 
       switch (tag >>> 3) {
         case 1:
-          message.maxStorageProviders = reader.uint32();
-          break;
-
-        case 2:
           message.depositDenom = reader.string();
           break;
 
-        case 3:
+        case 2:
           message.minDeposit = reader.string();
           break;
 
@@ -72,7 +60,6 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
-      maxStorageProviders: isSet(object.maxStorageProviders) ? Number(object.maxStorageProviders) : 0,
       depositDenom: isSet(object.depositDenom) ? String(object.depositDenom) : "",
       minDeposit: isSet(object.minDeposit) ? String(object.minDeposit) : ""
     };
@@ -80,7 +67,6 @@ export const Params = {
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.maxStorageProviders !== undefined && (obj.maxStorageProviders = Math.round(message.maxStorageProviders));
     message.depositDenom !== undefined && (obj.depositDenom = message.depositDenom);
     message.minDeposit !== undefined && (obj.minDeposit = message.minDeposit);
     return obj;
@@ -88,7 +74,6 @@ export const Params = {
 
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.maxStorageProviders = object.maxStorageProviders ?? 0;
     message.depositDenom = object.depositDenom ?? "";
     message.minDeposit = object.minDeposit ?? "";
     return message;

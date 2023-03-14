@@ -36,57 +36,9 @@ export function sourceTypeToJSON(object: SourceType): string {
       return "UNRECOGNIZED";
   }
 }
-/**
- * TODO: Need to confirm the read quota enum which determined by payment module
- * TODO: Make this field be configured through governance
- */
-
-export enum ReadQuota {
-  READ_QUOTA_FREE = 0,
-  READ_QUOTA_1G = 1,
-  READ_QUOTA_10G = 2,
-  UNRECOGNIZED = -1,
-}
-export function readQuotaFromJSON(object: any): ReadQuota {
-  switch (object) {
-    case 0:
-    case "READ_QUOTA_FREE":
-      return ReadQuota.READ_QUOTA_FREE;
-
-    case 1:
-    case "READ_QUOTA_1G":
-      return ReadQuota.READ_QUOTA_1G;
-
-    case 2:
-    case "READ_QUOTA_10G":
-      return ReadQuota.READ_QUOTA_10G;
-
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return ReadQuota.UNRECOGNIZED;
-  }
-}
-export function readQuotaToJSON(object: ReadQuota): string {
-  switch (object) {
-    case ReadQuota.READ_QUOTA_FREE:
-      return "READ_QUOTA_FREE";
-
-    case ReadQuota.READ_QUOTA_1G:
-      return "READ_QUOTA_1G";
-
-    case ReadQuota.READ_QUOTA_10G:
-      return "READ_QUOTA_10G";
-
-    case ReadQuota.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
-}
 export enum RedundancyType {
   REDUNDANCY_REPLICA_TYPE = 0,
   REDUNDANCY_EC_TYPE = 1,
-  REDUNDANCY_INLINE_TYPE = 2,
   UNRECOGNIZED = -1,
 }
 export function redundancyTypeFromJSON(object: any): RedundancyType {
@@ -98,10 +50,6 @@ export function redundancyTypeFromJSON(object: any): RedundancyType {
     case 1:
     case "REDUNDANCY_EC_TYPE":
       return RedundancyType.REDUNDANCY_EC_TYPE;
-
-    case 2:
-    case "REDUNDANCY_INLINE_TYPE":
-      return RedundancyType.REDUNDANCY_INLINE_TYPE;
 
     case -1:
     case "UNRECOGNIZED":
@@ -117,28 +65,25 @@ export function redundancyTypeToJSON(object: RedundancyType): string {
     case RedundancyType.REDUNDANCY_EC_TYPE:
       return "REDUNDANCY_EC_TYPE";
 
-    case RedundancyType.REDUNDANCY_INLINE_TYPE:
-      return "REDUNDANCY_INLINE_TYPE";
-
     case RedundancyType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
 }
 export enum ObjectStatus {
-  OBJECT_STATUS_INIT = 0,
-  OBJECT_STATUS_IN_SERVICE = 1,
+  OBJECT_STATUS_CREATED = 0,
+  OBJECT_STATUS_SEALED = 1,
   UNRECOGNIZED = -1,
 }
 export function objectStatusFromJSON(object: any): ObjectStatus {
   switch (object) {
     case 0:
-    case "OBJECT_STATUS_INIT":
-      return ObjectStatus.OBJECT_STATUS_INIT;
+    case "OBJECT_STATUS_CREATED":
+      return ObjectStatus.OBJECT_STATUS_CREATED;
 
     case 1:
-    case "OBJECT_STATUS_IN_SERVICE":
-      return ObjectStatus.OBJECT_STATUS_IN_SERVICE;
+    case "OBJECT_STATUS_SEALED":
+      return ObjectStatus.OBJECT_STATUS_SEALED;
 
     case -1:
     case "UNRECOGNIZED":
@@ -148,11 +93,11 @@ export function objectStatusFromJSON(object: any): ObjectStatus {
 }
 export function objectStatusToJSON(object: ObjectStatus): string {
   switch (object) {
-    case ObjectStatus.OBJECT_STATUS_INIT:
-      return "OBJECT_STATUS_INIT";
+    case ObjectStatus.OBJECT_STATUS_CREATED:
+      return "OBJECT_STATUS_CREATED";
 
-    case ObjectStatus.OBJECT_STATUS_IN_SERVICE:
-      return "OBJECT_STATUS_IN_SERVICE";
+    case ObjectStatus.OBJECT_STATUS_SEALED:
+      return "OBJECT_STATUS_SEALED";
 
     case ObjectStatus.UNRECOGNIZED:
     default:

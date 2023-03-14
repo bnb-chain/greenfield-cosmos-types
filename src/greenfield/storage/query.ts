@@ -1,7 +1,9 @@
 /* eslint-disable */
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
+import { ActionType, Effect, actionTypeFromJSON, actionTypeToJSON, effectFromJSON, effectToJSON } from "../permission/common";
 import { Params } from "./params";
-import { BucketInfo, ObjectInfo } from "./types";
+import { BucketInfo, ObjectInfo, BucketMetaData, ObjectMetaData, GroupMetaData } from "./types";
+import { Policy } from "../permission/types";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.storage";
@@ -19,12 +21,18 @@ export interface QueryParamsResponse {
 export interface QueryHeadBucketRequest {
   bucketName: string;
 }
+export interface QueryHeadBucketByIdRequest {
+  bucketId: string;
+}
 export interface QueryHeadBucketResponse {
   bucketInfo?: BucketInfo;
 }
 export interface QueryHeadObjectRequest {
   bucketName: string;
   objectName: string;
+}
+export interface QueryHeadObjectByIdRequest {
+  objectId: string;
 }
 export interface QueryHeadObjectResponse {
   objectInfo?: ObjectInfo;
@@ -40,9 +48,40 @@ export interface QueryListObjectsRequest {
   pagination?: PageRequest;
   bucketName: string;
 }
+export interface QueryListObjectsByBucketIdRequest {
+  pagination?: PageRequest;
+  bucketId: string;
+}
 export interface QueryListObjectsResponse {
   objectInfos: ObjectInfo[];
   pagination?: PageResponse;
+}
+export interface QueryNFTRequest {
+  tokenId: string;
+}
+export interface QueryBucketNFTResponse {
+  metaData?: BucketMetaData;
+}
+export interface QueryObjectNFTResponse {
+  metaData?: ObjectMetaData;
+}
+export interface QueryGroupNFTResponse {
+  metaData?: GroupMetaData;
+}
+export interface QueryGetPolicyRequest {
+  policyId: string;
+}
+export interface QueryGetPolicyResponse {
+  policy?: Policy;
+}
+export interface QueryVerifyPermissionRequest {
+  operator: string;
+  bucketName: string;
+  objectName: string;
+  actionType: ActionType;
+}
+export interface QueryVerifyPermissionResponse {
+  effect: Effect;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -202,6 +241,63 @@ export const QueryHeadBucketRequest = {
 
 };
 
+function createBaseQueryHeadBucketByIdRequest(): QueryHeadBucketByIdRequest {
+  return {
+    bucketId: ""
+  };
+}
+
+export const QueryHeadBucketByIdRequest = {
+  encode(message: QueryHeadBucketByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.bucketId !== "") {
+      writer.uint32(10).string(message.bucketId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadBucketByIdRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryHeadBucketByIdRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketId = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryHeadBucketByIdRequest {
+    return {
+      bucketId: isSet(object.bucketId) ? String(object.bucketId) : ""
+    };
+  },
+
+  toJSON(message: QueryHeadBucketByIdRequest): unknown {
+    const obj: any = {};
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryHeadBucketByIdRequest>, I>>(object: I): QueryHeadBucketByIdRequest {
+    const message = createBaseQueryHeadBucketByIdRequest();
+    message.bucketId = object.bucketId ?? "";
+    return message;
+  }
+
+};
+
 function createBaseQueryHeadBucketResponse(): QueryHeadBucketResponse {
   return {
     bucketInfo: undefined
@@ -323,6 +419,63 @@ export const QueryHeadObjectRequest = {
     const message = createBaseQueryHeadObjectRequest();
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
+    return message;
+  }
+
+};
+
+function createBaseQueryHeadObjectByIdRequest(): QueryHeadObjectByIdRequest {
+  return {
+    objectId: ""
+  };
+}
+
+export const QueryHeadObjectByIdRequest = {
+  encode(message: QueryHeadObjectByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.objectId !== "") {
+      writer.uint32(10).string(message.objectId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadObjectByIdRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryHeadObjectByIdRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.objectId = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryHeadObjectByIdRequest {
+    return {
+      objectId: isSet(object.objectId) ? String(object.objectId) : ""
+    };
+  },
+
+  toJSON(message: QueryHeadObjectByIdRequest): unknown {
+    const obj: any = {};
+    message.objectId !== undefined && (obj.objectId = message.objectId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryHeadObjectByIdRequest>, I>>(object: I): QueryHeadObjectByIdRequest {
+    const message = createBaseQueryHeadObjectByIdRequest();
+    message.objectId = object.objectId ?? "";
     return message;
   }
 
@@ -586,6 +739,75 @@ export const QueryListObjectsRequest = {
 
 };
 
+function createBaseQueryListObjectsByBucketIdRequest(): QueryListObjectsByBucketIdRequest {
+  return {
+    pagination: undefined,
+    bucketId: ""
+  };
+}
+
+export const QueryListObjectsByBucketIdRequest = {
+  encode(message: QueryListObjectsByBucketIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+
+    if (message.bucketId !== "") {
+      writer.uint32(18).string(message.bucketId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListObjectsByBucketIdRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryListObjectsByBucketIdRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+
+        case 2:
+          message.bucketId = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryListObjectsByBucketIdRequest {
+    return {
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
+      bucketId: isSet(object.bucketId) ? String(object.bucketId) : ""
+    };
+  },
+
+  toJSON(message: QueryListObjectsByBucketIdRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryListObjectsByBucketIdRequest>, I>>(object: I): QueryListObjectsByBucketIdRequest {
+    const message = createBaseQueryListObjectsByBucketIdRequest();
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
+    message.bucketId = object.bucketId ?? "";
+    return message;
+  }
+
+};
+
 function createBaseQueryListObjectsResponse(): QueryListObjectsResponse {
   return {
     objectInfos: [],
@@ -660,6 +882,498 @@ export const QueryListObjectsResponse = {
   }
 
 };
+
+function createBaseQueryNFTRequest(): QueryNFTRequest {
+  return {
+    tokenId: ""
+  };
+}
+
+export const QueryNFTRequest = {
+  encode(message: QueryNFTRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.tokenId !== "") {
+      writer.uint32(10).string(message.tokenId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryNFTRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryNFTRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.tokenId = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryNFTRequest {
+    return {
+      tokenId: isSet(object.tokenId) ? String(object.tokenId) : ""
+    };
+  },
+
+  toJSON(message: QueryNFTRequest): unknown {
+    const obj: any = {};
+    message.tokenId !== undefined && (obj.tokenId = message.tokenId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryNFTRequest>, I>>(object: I): QueryNFTRequest {
+    const message = createBaseQueryNFTRequest();
+    message.tokenId = object.tokenId ?? "";
+    return message;
+  }
+
+};
+
+function createBaseQueryBucketNFTResponse(): QueryBucketNFTResponse {
+  return {
+    metaData: undefined
+  };
+}
+
+export const QueryBucketNFTResponse = {
+  encode(message: QueryBucketNFTResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.metaData !== undefined) {
+      BucketMetaData.encode(message.metaData, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryBucketNFTResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryBucketNFTResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.metaData = BucketMetaData.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryBucketNFTResponse {
+    return {
+      metaData: isSet(object.metaData) ? BucketMetaData.fromJSON(object.metaData) : undefined
+    };
+  },
+
+  toJSON(message: QueryBucketNFTResponse): unknown {
+    const obj: any = {};
+    message.metaData !== undefined && (obj.metaData = message.metaData ? BucketMetaData.toJSON(message.metaData) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryBucketNFTResponse>, I>>(object: I): QueryBucketNFTResponse {
+    const message = createBaseQueryBucketNFTResponse();
+    message.metaData = object.metaData !== undefined && object.metaData !== null ? BucketMetaData.fromPartial(object.metaData) : undefined;
+    return message;
+  }
+
+};
+
+function createBaseQueryObjectNFTResponse(): QueryObjectNFTResponse {
+  return {
+    metaData: undefined
+  };
+}
+
+export const QueryObjectNFTResponse = {
+  encode(message: QueryObjectNFTResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.metaData !== undefined) {
+      ObjectMetaData.encode(message.metaData, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryObjectNFTResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryObjectNFTResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.metaData = ObjectMetaData.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryObjectNFTResponse {
+    return {
+      metaData: isSet(object.metaData) ? ObjectMetaData.fromJSON(object.metaData) : undefined
+    };
+  },
+
+  toJSON(message: QueryObjectNFTResponse): unknown {
+    const obj: any = {};
+    message.metaData !== undefined && (obj.metaData = message.metaData ? ObjectMetaData.toJSON(message.metaData) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryObjectNFTResponse>, I>>(object: I): QueryObjectNFTResponse {
+    const message = createBaseQueryObjectNFTResponse();
+    message.metaData = object.metaData !== undefined && object.metaData !== null ? ObjectMetaData.fromPartial(object.metaData) : undefined;
+    return message;
+  }
+
+};
+
+function createBaseQueryGroupNFTResponse(): QueryGroupNFTResponse {
+  return {
+    metaData: undefined
+  };
+}
+
+export const QueryGroupNFTResponse = {
+  encode(message: QueryGroupNFTResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.metaData !== undefined) {
+      GroupMetaData.encode(message.metaData, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupNFTResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGroupNFTResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.metaData = GroupMetaData.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryGroupNFTResponse {
+    return {
+      metaData: isSet(object.metaData) ? GroupMetaData.fromJSON(object.metaData) : undefined
+    };
+  },
+
+  toJSON(message: QueryGroupNFTResponse): unknown {
+    const obj: any = {};
+    message.metaData !== undefined && (obj.metaData = message.metaData ? GroupMetaData.toJSON(message.metaData) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGroupNFTResponse>, I>>(object: I): QueryGroupNFTResponse {
+    const message = createBaseQueryGroupNFTResponse();
+    message.metaData = object.metaData !== undefined && object.metaData !== null ? GroupMetaData.fromPartial(object.metaData) : undefined;
+    return message;
+  }
+
+};
+
+function createBaseQueryGetPolicyRequest(): QueryGetPolicyRequest {
+  return {
+    policyId: ""
+  };
+}
+
+export const QueryGetPolicyRequest = {
+  encode(message: QueryGetPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.policyId !== "") {
+      writer.uint32(10).string(message.policyId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPolicyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetPolicyRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.policyId = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetPolicyRequest {
+    return {
+      policyId: isSet(object.policyId) ? String(object.policyId) : ""
+    };
+  },
+
+  toJSON(message: QueryGetPolicyRequest): unknown {
+    const obj: any = {};
+    message.policyId !== undefined && (obj.policyId = message.policyId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetPolicyRequest>, I>>(object: I): QueryGetPolicyRequest {
+    const message = createBaseQueryGetPolicyRequest();
+    message.policyId = object.policyId ?? "";
+    return message;
+  }
+
+};
+
+function createBaseQueryGetPolicyResponse(): QueryGetPolicyResponse {
+  return {
+    policy: undefined
+  };
+}
+
+export const QueryGetPolicyResponse = {
+  encode(message: QueryGetPolicyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.policy !== undefined) {
+      Policy.encode(message.policy, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPolicyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetPolicyResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.policy = Policy.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetPolicyResponse {
+    return {
+      policy: isSet(object.policy) ? Policy.fromJSON(object.policy) : undefined
+    };
+  },
+
+  toJSON(message: QueryGetPolicyResponse): unknown {
+    const obj: any = {};
+    message.policy !== undefined && (obj.policy = message.policy ? Policy.toJSON(message.policy) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetPolicyResponse>, I>>(object: I): QueryGetPolicyResponse {
+    const message = createBaseQueryGetPolicyResponse();
+    message.policy = object.policy !== undefined && object.policy !== null ? Policy.fromPartial(object.policy) : undefined;
+    return message;
+  }
+
+};
+
+function createBaseQueryVerifyPermissionRequest(): QueryVerifyPermissionRequest {
+  return {
+    operator: "",
+    bucketName: "",
+    objectName: "",
+    actionType: 0
+  };
+}
+
+export const QueryVerifyPermissionRequest = {
+  encode(message: QueryVerifyPermissionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    if (message.objectName !== "") {
+      writer.uint32(26).string(message.objectName);
+    }
+
+    if (message.actionType !== 0) {
+      writer.uint32(32).int32(message.actionType);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryVerifyPermissionRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryVerifyPermissionRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        case 3:
+          message.objectName = reader.string();
+          break;
+
+        case 4:
+          message.actionType = (reader.int32() as any);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryVerifyPermissionRequest {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      objectName: isSet(object.objectName) ? String(object.objectName) : "",
+      actionType: isSet(object.actionType) ? actionTypeFromJSON(object.actionType) : 0
+    };
+  },
+
+  toJSON(message: QueryVerifyPermissionRequest): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.objectName !== undefined && (obj.objectName = message.objectName);
+    message.actionType !== undefined && (obj.actionType = actionTypeToJSON(message.actionType));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryVerifyPermissionRequest>, I>>(object: I): QueryVerifyPermissionRequest {
+    const message = createBaseQueryVerifyPermissionRequest();
+    message.operator = object.operator ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.objectName = object.objectName ?? "";
+    message.actionType = object.actionType ?? 0;
+    return message;
+  }
+
+};
+
+function createBaseQueryVerifyPermissionResponse(): QueryVerifyPermissionResponse {
+  return {
+    effect: 0
+  };
+}
+
+export const QueryVerifyPermissionResponse = {
+  encode(message: QueryVerifyPermissionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.effect !== 0) {
+      writer.uint32(8).int32(message.effect);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryVerifyPermissionResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryVerifyPermissionResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.effect = (reader.int32() as any);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryVerifyPermissionResponse {
+    return {
+      effect: isSet(object.effect) ? effectFromJSON(object.effect) : 0
+    };
+  },
+
+  toJSON(message: QueryVerifyPermissionResponse): unknown {
+    const obj: any = {};
+    message.effect !== undefined && (obj.effect = effectToJSON(message.effect));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryVerifyPermissionResponse>, I>>(object: I): QueryVerifyPermissionResponse {
+    const message = createBaseQueryVerifyPermissionResponse();
+    message.effect = object.effect ?? 0;
+    return message;
+  }
+
+};
 /** Query defines the gRPC querier service. */
 
 export interface Query {
@@ -668,15 +1382,39 @@ export interface Query {
   /** Queries a bucket with specify name. */
 
   HeadBucket(request: QueryHeadBucketRequest): Promise<QueryHeadBucketResponse>;
+  /** Queries a bucket by id */
+
+  HeadBucketById(request: QueryHeadBucketByIdRequest): Promise<QueryHeadBucketResponse>;
+  /** Queries a bucket with EIP712 standard metadata info */
+
+  HeadBucketNFT(request: QueryNFTRequest): Promise<QueryBucketNFTResponse>;
   /** Queries a object with specify name. */
 
   HeadObject(request: QueryHeadObjectRequest): Promise<QueryHeadObjectResponse>;
+  /** Queries a object by id */
+
+  HeadObjectById(request: QueryHeadObjectByIdRequest): Promise<QueryHeadObjectResponse>;
+  /** Queries a object with EIP712 standard metadata info */
+
+  HeadObjectNFT(request: QueryNFTRequest): Promise<QueryObjectNFTResponse>;
   /** Queries a list of bucket items. */
 
   ListBuckets(request?: QueryListBucketsRequest): Promise<QueryListBucketsResponse>;
   /** Queries a list of object items under the bucket. */
 
   ListObjects(request: QueryListObjectsRequest): Promise<QueryListObjectsResponse>;
+  /** Queries a list of object items under the bucket. */
+
+  ListObjectsByBucketId(request: QueryListObjectsByBucketIdRequest): Promise<QueryListObjectsResponse>;
+  /** Queries a group with EIP712 standard metadata info */
+
+  HeadGroupNFT(request: QueryNFTRequest): Promise<QueryGroupNFTResponse>;
+  /** Queries policy by policyID */
+
+  GetPolicy(request: QueryGetPolicyRequest): Promise<QueryGetPolicyResponse>;
+  /** Queries a list of VerifyPermission items. */
+
+  VerifyPermission(request: QueryVerifyPermissionRequest): Promise<QueryVerifyPermissionResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -685,9 +1423,17 @@ export class QueryClientImpl implements Query {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
     this.HeadBucket = this.HeadBucket.bind(this);
+    this.HeadBucketById = this.HeadBucketById.bind(this);
+    this.HeadBucketNFT = this.HeadBucketNFT.bind(this);
     this.HeadObject = this.HeadObject.bind(this);
+    this.HeadObjectById = this.HeadObjectById.bind(this);
+    this.HeadObjectNFT = this.HeadObjectNFT.bind(this);
     this.ListBuckets = this.ListBuckets.bind(this);
     this.ListObjects = this.ListObjects.bind(this);
+    this.ListObjectsByBucketId = this.ListObjectsByBucketId.bind(this);
+    this.HeadGroupNFT = this.HeadGroupNFT.bind(this);
+    this.GetPolicy = this.GetPolicy.bind(this);
+    this.VerifyPermission = this.VerifyPermission.bind(this);
   }
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
@@ -702,10 +1448,34 @@ export class QueryClientImpl implements Query {
     return promise.then(data => QueryHeadBucketResponse.decode(new _m0.Reader(data)));
   }
 
+  HeadBucketById(request: QueryHeadBucketByIdRequest): Promise<QueryHeadBucketResponse> {
+    const data = QueryHeadBucketByIdRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadBucketById", data);
+    return promise.then(data => QueryHeadBucketResponse.decode(new _m0.Reader(data)));
+  }
+
+  HeadBucketNFT(request: QueryNFTRequest): Promise<QueryBucketNFTResponse> {
+    const data = QueryNFTRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadBucketNFT", data);
+    return promise.then(data => QueryBucketNFTResponse.decode(new _m0.Reader(data)));
+  }
+
   HeadObject(request: QueryHeadObjectRequest): Promise<QueryHeadObjectResponse> {
     const data = QueryHeadObjectRequest.encode(request).finish();
     const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadObject", data);
     return promise.then(data => QueryHeadObjectResponse.decode(new _m0.Reader(data)));
+  }
+
+  HeadObjectById(request: QueryHeadObjectByIdRequest): Promise<QueryHeadObjectResponse> {
+    const data = QueryHeadObjectByIdRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadObjectById", data);
+    return promise.then(data => QueryHeadObjectResponse.decode(new _m0.Reader(data)));
+  }
+
+  HeadObjectNFT(request: QueryNFTRequest): Promise<QueryObjectNFTResponse> {
+    const data = QueryNFTRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadObjectNFT", data);
+    return promise.then(data => QueryObjectNFTResponse.decode(new _m0.Reader(data)));
   }
 
   ListBuckets(request: QueryListBucketsRequest = {
@@ -720,6 +1490,30 @@ export class QueryClientImpl implements Query {
     const data = QueryListObjectsRequest.encode(request).finish();
     const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "ListObjects", data);
     return promise.then(data => QueryListObjectsResponse.decode(new _m0.Reader(data)));
+  }
+
+  ListObjectsByBucketId(request: QueryListObjectsByBucketIdRequest): Promise<QueryListObjectsResponse> {
+    const data = QueryListObjectsByBucketIdRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "ListObjectsByBucketId", data);
+    return promise.then(data => QueryListObjectsResponse.decode(new _m0.Reader(data)));
+  }
+
+  HeadGroupNFT(request: QueryNFTRequest): Promise<QueryGroupNFTResponse> {
+    const data = QueryNFTRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadGroupNFT", data);
+    return promise.then(data => QueryGroupNFTResponse.decode(new _m0.Reader(data)));
+  }
+
+  GetPolicy(request: QueryGetPolicyRequest): Promise<QueryGetPolicyResponse> {
+    const data = QueryGetPolicyRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "GetPolicy", data);
+    return promise.then(data => QueryGetPolicyResponse.decode(new _m0.Reader(data)));
+  }
+
+  VerifyPermission(request: QueryVerifyPermissionRequest): Promise<QueryVerifyPermissionResponse> {
+    const data = QueryVerifyPermissionRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "VerifyPermission", data);
+    return promise.then(data => QueryVerifyPermissionResponse.decode(new _m0.Reader(data)));
   }
 
 }

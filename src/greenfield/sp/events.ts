@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { isSet, DeepPartial, Exact } from "../../helpers";
+import { isSet, DeepPartial, Exact, Long } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.sp";
 /** EventCreateStorageProvider is emitted when there is a storage provider created */
 
@@ -43,6 +43,29 @@ export interface EventDeposit {
   /** total_deposit is the total token coins this storage provider deposited */
 
   totalDeposit: string;
+}
+export interface EventSpStoragePriceUpdate {
+  /** sp address */
+  spAddress: string;
+  /** update time, in unix timestamp */
+
+  updateTime: Long;
+  /** read price, in bnb wei per charge byte */
+
+  readPrice: string;
+  /** free read quota, in byte */
+
+  freeReadQuota: Long;
+  /** store price, in bnb wei per charge byte */
+
+  storePrice: string;
+}
+export interface EventSecondarySpStorePriceUpdate {
+  /** update time, in unix timestamp */
+  updateTime: Long;
+  /** store price, in bnb wei per charge byte */
+
+  storePrice: string;
 }
 
 function createBaseEventCreateStorageProvider(): EventCreateStorageProvider {
@@ -307,6 +330,180 @@ export const EventDeposit = {
     message.spAddress = object.spAddress ?? "";
     message.deposit = object.deposit ?? "";
     message.totalDeposit = object.totalDeposit ?? "";
+    return message;
+  }
+
+};
+
+function createBaseEventSpStoragePriceUpdate(): EventSpStoragePriceUpdate {
+  return {
+    spAddress: "",
+    updateTime: Long.ZERO,
+    readPrice: "",
+    freeReadQuota: Long.UZERO,
+    storePrice: ""
+  };
+}
+
+export const EventSpStoragePriceUpdate = {
+  encode(message: EventSpStoragePriceUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.spAddress !== "") {
+      writer.uint32(10).string(message.spAddress);
+    }
+
+    if (!message.updateTime.isZero()) {
+      writer.uint32(16).int64(message.updateTime);
+    }
+
+    if (message.readPrice !== "") {
+      writer.uint32(26).string(message.readPrice);
+    }
+
+    if (!message.freeReadQuota.isZero()) {
+      writer.uint32(32).uint64(message.freeReadQuota);
+    }
+
+    if (message.storePrice !== "") {
+      writer.uint32(42).string(message.storePrice);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventSpStoragePriceUpdate {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventSpStoragePriceUpdate();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.spAddress = reader.string();
+          break;
+
+        case 2:
+          message.updateTime = (reader.int64() as Long);
+          break;
+
+        case 3:
+          message.readPrice = reader.string();
+          break;
+
+        case 4:
+          message.freeReadQuota = (reader.uint64() as Long);
+          break;
+
+        case 5:
+          message.storePrice = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventSpStoragePriceUpdate {
+    return {
+      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      updateTime: isSet(object.updateTime) ? Long.fromValue(object.updateTime) : Long.ZERO,
+      readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
+      freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
+      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+    };
+  },
+
+  toJSON(message: EventSpStoragePriceUpdate): unknown {
+    const obj: any = {};
+    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.updateTime !== undefined && (obj.updateTime = (message.updateTime || Long.ZERO).toString());
+    message.readPrice !== undefined && (obj.readPrice = message.readPrice);
+    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
+    message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventSpStoragePriceUpdate>, I>>(object: I): EventSpStoragePriceUpdate {
+    const message = createBaseEventSpStoragePriceUpdate();
+    message.spAddress = object.spAddress ?? "";
+    message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Long.fromValue(object.updateTime) : Long.ZERO;
+    message.readPrice = object.readPrice ?? "";
+    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
+    message.storePrice = object.storePrice ?? "";
+    return message;
+  }
+
+};
+
+function createBaseEventSecondarySpStorePriceUpdate(): EventSecondarySpStorePriceUpdate {
+  return {
+    updateTime: Long.ZERO,
+    storePrice: ""
+  };
+}
+
+export const EventSecondarySpStorePriceUpdate = {
+  encode(message: EventSecondarySpStorePriceUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.updateTime.isZero()) {
+      writer.uint32(8).int64(message.updateTime);
+    }
+
+    if (message.storePrice !== "") {
+      writer.uint32(18).string(message.storePrice);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventSecondarySpStorePriceUpdate {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventSecondarySpStorePriceUpdate();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.updateTime = (reader.int64() as Long);
+          break;
+
+        case 2:
+          message.storePrice = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventSecondarySpStorePriceUpdate {
+    return {
+      updateTime: isSet(object.updateTime) ? Long.fromValue(object.updateTime) : Long.ZERO,
+      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+    };
+  },
+
+  toJSON(message: EventSecondarySpStorePriceUpdate): unknown {
+    const obj: any = {};
+    message.updateTime !== undefined && (obj.updateTime = (message.updateTime || Long.ZERO).toString());
+    message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventSecondarySpStorePriceUpdate>, I>>(object: I): EventSecondarySpStorePriceUpdate {
+    const message = createBaseEventSecondarySpStorePriceUpdate();
+    message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Long.fromValue(object.updateTime) : Long.ZERO;
+    message.storePrice = object.storePrice ?? "";
     return message;
   }
 

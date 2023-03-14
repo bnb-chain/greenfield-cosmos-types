@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { OutFlowInUSD } from "./base";
+import { StreamAccountStatus, OutFlow, streamAccountStatusFromJSON, streamAccountStatusToJSON } from "./base";
 import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.payment";
@@ -31,13 +31,13 @@ export interface StreamRecord {
   lockBalance: string;
   /** the status of the stream account */
 
-  status: number;
+  status: StreamAccountStatus;
   /** the unix timestamp when the stream account will be settled */
 
   settleTimestamp: Long;
   /** the accumulated outflow rates of the stream account */
 
-  outFlowsInUSD: OutFlowInUSD[];
+  outFlows: OutFlow[];
 }
 
 function createBaseStreamRecord(): StreamRecord {
@@ -50,7 +50,7 @@ function createBaseStreamRecord(): StreamRecord {
     lockBalance: "",
     status: 0,
     settleTimestamp: Long.ZERO,
-    outFlowsInUSD: []
+    outFlows: []
   };
 }
 
@@ -88,8 +88,8 @@ export const StreamRecord = {
       writer.uint32(64).int64(message.settleTimestamp);
     }
 
-    for (const v of message.outFlowsInUSD) {
-      OutFlowInUSD.encode(v!, writer.uint32(74).fork()).ldelim();
+    for (const v of message.outFlows) {
+      OutFlow.encode(v!, writer.uint32(74).fork()).ldelim();
     }
 
     return writer;
@@ -129,7 +129,7 @@ export const StreamRecord = {
           break;
 
         case 7:
-          message.status = reader.int32();
+          message.status = (reader.int32() as any);
           break;
 
         case 8:
@@ -137,7 +137,7 @@ export const StreamRecord = {
           break;
 
         case 9:
-          message.outFlowsInUSD.push(OutFlowInUSD.decode(reader, reader.uint32()));
+          message.outFlows.push(OutFlow.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -157,9 +157,9 @@ export const StreamRecord = {
       staticBalance: isSet(object.staticBalance) ? String(object.staticBalance) : "",
       bufferBalance: isSet(object.bufferBalance) ? String(object.bufferBalance) : "",
       lockBalance: isSet(object.lockBalance) ? String(object.lockBalance) : "",
-      status: isSet(object.status) ? Number(object.status) : 0,
+      status: isSet(object.status) ? streamAccountStatusFromJSON(object.status) : 0,
       settleTimestamp: isSet(object.settleTimestamp) ? Long.fromValue(object.settleTimestamp) : Long.ZERO,
-      outFlowsInUSD: Array.isArray(object?.outFlowsInUSD) ? object.outFlowsInUSD.map((e: any) => OutFlowInUSD.fromJSON(e)) : []
+      outFlows: Array.isArray(object?.outFlows) ? object.outFlows.map((e: any) => OutFlow.fromJSON(e)) : []
     };
   },
 
@@ -171,13 +171,13 @@ export const StreamRecord = {
     message.staticBalance !== undefined && (obj.staticBalance = message.staticBalance);
     message.bufferBalance !== undefined && (obj.bufferBalance = message.bufferBalance);
     message.lockBalance !== undefined && (obj.lockBalance = message.lockBalance);
-    message.status !== undefined && (obj.status = Math.round(message.status));
+    message.status !== undefined && (obj.status = streamAccountStatusToJSON(message.status));
     message.settleTimestamp !== undefined && (obj.settleTimestamp = (message.settleTimestamp || Long.ZERO).toString());
 
-    if (message.outFlowsInUSD) {
-      obj.outFlowsInUSD = message.outFlowsInUSD.map(e => e ? OutFlowInUSD.toJSON(e) : undefined);
+    if (message.outFlows) {
+      obj.outFlows = message.outFlows.map(e => e ? OutFlow.toJSON(e) : undefined);
     } else {
-      obj.outFlowsInUSD = [];
+      obj.outFlows = [];
     }
 
     return obj;
@@ -193,7 +193,7 @@ export const StreamRecord = {
     message.lockBalance = object.lockBalance ?? "";
     message.status = object.status ?? 0;
     message.settleTimestamp = object.settleTimestamp !== undefined && object.settleTimestamp !== null ? Long.fromValue(object.settleTimestamp) : Long.ZERO;
-    message.outFlowsInUSD = object.outFlowsInUSD?.map(e => OutFlowInUSD.fromPartial(e)) || [];
+    message.outFlows = object.outFlows?.map(e => OutFlow.fromPartial(e)) || [];
     return message;
   }
 

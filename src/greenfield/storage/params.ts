@@ -16,6 +16,9 @@ export interface Params {
   /** max_payload_size is the maximum size of the payload, default: 2G */
 
   maxPayloadSize: Long;
+  /** min_charge_size is the minimum charge size of the payload, objects smaller than this size will be charged as this size */
+
+  minChargeSize: Long;
 }
 
 function createBaseParams(): Params {
@@ -23,7 +26,8 @@ function createBaseParams(): Params {
     maxSegmentSize: Long.UZERO,
     redundantDataChunkNum: 0,
     redundantParityChunkNum: 0,
-    maxPayloadSize: Long.UZERO
+    maxPayloadSize: Long.UZERO,
+    minChargeSize: Long.UZERO
   };
 }
 
@@ -43,6 +47,10 @@ export const Params = {
 
     if (!message.maxPayloadSize.isZero()) {
       writer.uint32(32).uint64(message.maxPayloadSize);
+    }
+
+    if (!message.minChargeSize.isZero()) {
+      writer.uint32(40).uint64(message.minChargeSize);
     }
 
     return writer;
@@ -73,6 +81,10 @@ export const Params = {
           message.maxPayloadSize = (reader.uint64() as Long);
           break;
 
+        case 5:
+          message.minChargeSize = (reader.uint64() as Long);
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -87,7 +99,8 @@ export const Params = {
       maxSegmentSize: isSet(object.maxSegmentSize) ? Long.fromValue(object.maxSegmentSize) : Long.UZERO,
       redundantDataChunkNum: isSet(object.redundantDataChunkNum) ? Number(object.redundantDataChunkNum) : 0,
       redundantParityChunkNum: isSet(object.redundantParityChunkNum) ? Number(object.redundantParityChunkNum) : 0,
-      maxPayloadSize: isSet(object.maxPayloadSize) ? Long.fromValue(object.maxPayloadSize) : Long.UZERO
+      maxPayloadSize: isSet(object.maxPayloadSize) ? Long.fromValue(object.maxPayloadSize) : Long.UZERO,
+      minChargeSize: isSet(object.minChargeSize) ? Long.fromValue(object.minChargeSize) : Long.UZERO
     };
   },
 
@@ -97,6 +110,7 @@ export const Params = {
     message.redundantDataChunkNum !== undefined && (obj.redundantDataChunkNum = Math.round(message.redundantDataChunkNum));
     message.redundantParityChunkNum !== undefined && (obj.redundantParityChunkNum = Math.round(message.redundantParityChunkNum));
     message.maxPayloadSize !== undefined && (obj.maxPayloadSize = (message.maxPayloadSize || Long.UZERO).toString());
+    message.minChargeSize !== undefined && (obj.minChargeSize = (message.minChargeSize || Long.UZERO).toString());
     return obj;
   },
 
@@ -106,6 +120,7 @@ export const Params = {
     message.redundantDataChunkNum = object.redundantDataChunkNum ?? 0;
     message.redundantParityChunkNum = object.redundantParityChunkNum ?? 0;
     message.maxPayloadSize = object.maxPayloadSize !== undefined && object.maxPayloadSize !== null ? Long.fromValue(object.maxPayloadSize) : Long.UZERO;
+    message.minChargeSize = object.minChargeSize !== undefined && object.minChargeSize !== null ? Long.fromValue(object.minChargeSize) : Long.UZERO;
     return message;
   }
 
