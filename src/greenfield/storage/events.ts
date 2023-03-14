@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { SourceType, ReadQuota, ObjectStatus, RedundancyType, sourceTypeFromJSON, readQuotaFromJSON, sourceTypeToJSON, readQuotaToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
+import { SourceType, ObjectStatus, RedundancyType, sourceTypeFromJSON, sourceTypeToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.storage";
@@ -25,7 +25,7 @@ export interface EventCreateBucket {
   sourceType: SourceType;
   /** read_quota defines the traffic quota for read */
 
-  readQuota: ReadQuota;
+  readQuota: Long;
   /** payment_address is the address of the payment account */
 
   paymentAddress: string;
@@ -64,10 +64,10 @@ export interface EventUpdateBucketInfo {
   id: string;
   /** read_quota_before define the read quota before updated */
 
-  readQuotaBefore: ReadQuota;
+  readQuotaBefore: Long;
   /** read_quota_after define the read quota after updated */
 
-  readQuotaAfter: ReadQuota;
+  readQuotaAfter: Long;
   /** payment_address_before define the payment address before updated */
 
   paymentAddressBefore: string;
@@ -89,9 +89,12 @@ export interface EventCreateObject {
   /** object_name define the name of object */
 
   objectName: string;
-  /** id define an u256 id for object */
+  /** bucket_id define an u256 id for object */
 
-  id: string;
+  bucketId: string;
+  /** object_id define an u256 id for object */
+
+  objectId: string;
   /** primary_sp_address define the account address of primary sp */
 
   primarySpAddress: string;
@@ -294,7 +297,7 @@ function createBaseEventCreateBucket(): EventCreateBucket {
     createAt: Long.ZERO,
     id: "",
     sourceType: 0,
-    readQuota: 0,
+    readQuota: Long.UZERO,
     paymentAddress: "",
     primarySpAddress: ""
   };
@@ -326,8 +329,8 @@ export const EventCreateBucket = {
       writer.uint32(48).int32(message.sourceType);
     }
 
-    if (message.readQuota !== 0) {
-      writer.uint32(56).int32(message.readQuota);
+    if (!message.readQuota.isZero()) {
+      writer.uint32(56).uint64(message.readQuota);
     }
 
     if (message.paymentAddress !== "") {
@@ -375,7 +378,7 @@ export const EventCreateBucket = {
           break;
 
         case 7:
-          message.readQuota = (reader.int32() as any);
+          message.readQuota = (reader.uint64() as Long);
           break;
 
         case 8:
@@ -403,7 +406,7 @@ export const EventCreateBucket = {
       createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
       id: isSet(object.id) ? String(object.id) : "",
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
-      readQuota: isSet(object.readQuota) ? readQuotaFromJSON(object.readQuota) : 0,
+      readQuota: isSet(object.readQuota) ? Long.fromValue(object.readQuota) : Long.UZERO,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : ""
     };
@@ -417,7 +420,7 @@ export const EventCreateBucket = {
     message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
     message.id !== undefined && (obj.id = message.id);
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
-    message.readQuota !== undefined && (obj.readQuota = readQuotaToJSON(message.readQuota));
+    message.readQuota !== undefined && (obj.readQuota = (message.readQuota || Long.UZERO).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
     return obj;
@@ -431,7 +434,7 @@ export const EventCreateBucket = {
     message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
     message.id = object.id ?? "";
     message.sourceType = object.sourceType ?? 0;
-    message.readQuota = object.readQuota ?? 0;
+    message.readQuota = object.readQuota !== undefined && object.readQuota !== null ? Long.fromValue(object.readQuota) : Long.UZERO;
     message.paymentAddress = object.paymentAddress ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
     return message;
@@ -549,8 +552,8 @@ function createBaseEventUpdateBucketInfo(): EventUpdateBucketInfo {
     operatorAddress: "",
     bucketName: "",
     id: "",
-    readQuotaBefore: 0,
-    readQuotaAfter: 0,
+    readQuotaBefore: Long.UZERO,
+    readQuotaAfter: Long.UZERO,
     paymentAddressBefore: "",
     paymentAddressAfter: ""
   };
@@ -570,12 +573,12 @@ export const EventUpdateBucketInfo = {
       writer.uint32(26).string(message.id);
     }
 
-    if (message.readQuotaBefore !== 0) {
-      writer.uint32(32).int32(message.readQuotaBefore);
+    if (!message.readQuotaBefore.isZero()) {
+      writer.uint32(32).uint64(message.readQuotaBefore);
     }
 
-    if (message.readQuotaAfter !== 0) {
-      writer.uint32(40).int32(message.readQuotaAfter);
+    if (!message.readQuotaAfter.isZero()) {
+      writer.uint32(40).uint64(message.readQuotaAfter);
     }
 
     if (message.paymentAddressBefore !== "") {
@@ -611,11 +614,11 @@ export const EventUpdateBucketInfo = {
           break;
 
         case 4:
-          message.readQuotaBefore = (reader.int32() as any);
+          message.readQuotaBefore = (reader.uint64() as Long);
           break;
 
         case 5:
-          message.readQuotaAfter = (reader.int32() as any);
+          message.readQuotaAfter = (reader.uint64() as Long);
           break;
 
         case 6:
@@ -640,8 +643,8 @@ export const EventUpdateBucketInfo = {
       operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       id: isSet(object.id) ? String(object.id) : "",
-      readQuotaBefore: isSet(object.readQuotaBefore) ? readQuotaFromJSON(object.readQuotaBefore) : 0,
-      readQuotaAfter: isSet(object.readQuotaAfter) ? readQuotaFromJSON(object.readQuotaAfter) : 0,
+      readQuotaBefore: isSet(object.readQuotaBefore) ? Long.fromValue(object.readQuotaBefore) : Long.UZERO,
+      readQuotaAfter: isSet(object.readQuotaAfter) ? Long.fromValue(object.readQuotaAfter) : Long.UZERO,
       paymentAddressBefore: isSet(object.paymentAddressBefore) ? String(object.paymentAddressBefore) : "",
       paymentAddressAfter: isSet(object.paymentAddressAfter) ? String(object.paymentAddressAfter) : ""
     };
@@ -652,8 +655,8 @@ export const EventUpdateBucketInfo = {
     message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.id !== undefined && (obj.id = message.id);
-    message.readQuotaBefore !== undefined && (obj.readQuotaBefore = readQuotaToJSON(message.readQuotaBefore));
-    message.readQuotaAfter !== undefined && (obj.readQuotaAfter = readQuotaToJSON(message.readQuotaAfter));
+    message.readQuotaBefore !== undefined && (obj.readQuotaBefore = (message.readQuotaBefore || Long.UZERO).toString());
+    message.readQuotaAfter !== undefined && (obj.readQuotaAfter = (message.readQuotaAfter || Long.UZERO).toString());
     message.paymentAddressBefore !== undefined && (obj.paymentAddressBefore = message.paymentAddressBefore);
     message.paymentAddressAfter !== undefined && (obj.paymentAddressAfter = message.paymentAddressAfter);
     return obj;
@@ -664,8 +667,8 @@ export const EventUpdateBucketInfo = {
     message.operatorAddress = object.operatorAddress ?? "";
     message.bucketName = object.bucketName ?? "";
     message.id = object.id ?? "";
-    message.readQuotaBefore = object.readQuotaBefore ?? 0;
-    message.readQuotaAfter = object.readQuotaAfter ?? 0;
+    message.readQuotaBefore = object.readQuotaBefore !== undefined && object.readQuotaBefore !== null ? Long.fromValue(object.readQuotaBefore) : Long.UZERO;
+    message.readQuotaAfter = object.readQuotaAfter !== undefined && object.readQuotaAfter !== null ? Long.fromValue(object.readQuotaAfter) : Long.UZERO;
     message.paymentAddressBefore = object.paymentAddressBefore ?? "";
     message.paymentAddressAfter = object.paymentAddressAfter ?? "";
     return message;
@@ -679,7 +682,8 @@ function createBaseEventCreateObject(): EventCreateObject {
     ownerAddress: "",
     bucketName: "",
     objectName: "",
-    id: "",
+    bucketId: "",
+    objectId: "",
     primarySpAddress: "",
     payloadSize: Long.UZERO,
     isPublic: false,
@@ -710,44 +714,48 @@ export const EventCreateObject = {
       writer.uint32(34).string(message.objectName);
     }
 
-    if (message.id !== "") {
-      writer.uint32(50).string(message.id);
+    if (message.bucketId !== "") {
+      writer.uint32(50).string(message.bucketId);
+    }
+
+    if (message.objectId !== "") {
+      writer.uint32(58).string(message.objectId);
     }
 
     if (message.primarySpAddress !== "") {
-      writer.uint32(58).string(message.primarySpAddress);
+      writer.uint32(66).string(message.primarySpAddress);
     }
 
     if (!message.payloadSize.isZero()) {
-      writer.uint32(64).uint64(message.payloadSize);
+      writer.uint32(72).uint64(message.payloadSize);
     }
 
     if (message.isPublic === true) {
-      writer.uint32(72).bool(message.isPublic);
+      writer.uint32(80).bool(message.isPublic);
     }
 
     if (message.contentType !== "") {
-      writer.uint32(82).string(message.contentType);
+      writer.uint32(90).string(message.contentType);
     }
 
     if (!message.createAt.isZero()) {
-      writer.uint32(88).int64(message.createAt);
+      writer.uint32(96).int64(message.createAt);
     }
 
     if (message.status !== 0) {
-      writer.uint32(96).int32(message.status);
+      writer.uint32(104).int32(message.status);
     }
 
     if (message.redundancyType !== 0) {
-      writer.uint32(104).int32(message.redundancyType);
+      writer.uint32(112).int32(message.redundancyType);
     }
 
     if (message.sourceType !== 0) {
-      writer.uint32(112).int32(message.sourceType);
+      writer.uint32(120).int32(message.sourceType);
     }
 
     for (const v of message.checksums) {
-      writer.uint32(122).bytes(v!);
+      writer.uint32(130).bytes(v!);
     }
 
     return writer;
@@ -779,42 +787,46 @@ export const EventCreateObject = {
           break;
 
         case 6:
-          message.id = reader.string();
+          message.bucketId = reader.string();
           break;
 
         case 7:
-          message.primarySpAddress = reader.string();
+          message.objectId = reader.string();
           break;
 
         case 8:
-          message.payloadSize = (reader.uint64() as Long);
+          message.primarySpAddress = reader.string();
           break;
 
         case 9:
-          message.isPublic = reader.bool();
+          message.payloadSize = (reader.uint64() as Long);
           break;
 
         case 10:
-          message.contentType = reader.string();
+          message.isPublic = reader.bool();
           break;
 
         case 11:
-          message.createAt = (reader.int64() as Long);
+          message.contentType = reader.string();
           break;
 
         case 12:
-          message.status = (reader.int32() as any);
+          message.createAt = (reader.int64() as Long);
           break;
 
         case 13:
-          message.redundancyType = (reader.int32() as any);
+          message.status = (reader.int32() as any);
           break;
 
         case 14:
-          message.sourceType = (reader.int32() as any);
+          message.redundancyType = (reader.int32() as any);
           break;
 
         case 15:
+          message.sourceType = (reader.int32() as any);
+          break;
+
+        case 16:
           message.checksums.push(reader.bytes());
           break;
 
@@ -833,7 +845,8 @@ export const EventCreateObject = {
       ownerAddress: isSet(object.ownerAddress) ? String(object.ownerAddress) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
-      id: isSet(object.id) ? String(object.id) : "",
+      bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
+      objectId: isSet(object.objectId) ? String(object.objectId) : "",
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
       payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO,
       isPublic: isSet(object.isPublic) ? Boolean(object.isPublic) : false,
@@ -852,7 +865,8 @@ export const EventCreateObject = {
     message.ownerAddress !== undefined && (obj.ownerAddress = message.ownerAddress);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
-    message.id !== undefined && (obj.id = message.id);
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    message.objectId !== undefined && (obj.objectId = message.objectId);
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
     message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
     message.isPublic !== undefined && (obj.isPublic = message.isPublic);
@@ -877,7 +891,8 @@ export const EventCreateObject = {
     message.ownerAddress = object.ownerAddress ?? "";
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
-    message.id = object.id ?? "";
+    message.bucketId = object.bucketId ?? "";
+    message.objectId = object.objectId ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
     message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
     message.isPublic = object.isPublic ?? false;

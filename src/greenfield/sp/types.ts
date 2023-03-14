@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Coin } from "../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
-import { isSet, DeepPartial, Exact } from "../../helpers";
+import { isSet, DeepPartial, Exact, Long } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.sp";
 /** Status is the status of a storage provider. */
 
@@ -80,33 +80,63 @@ export interface Description {
  */
 
 export interface StorageProvider {
-  /** operator_address defines the address of the sp's operator; It also is the unqiue index key of sp. */
+  /** operator_address defines the account address of the storage provider's operator; It also is the unique index key of sp. */
   operatorAddress: string;
-  /** fund_address is the account address of the storage provider for deposit, remuneration. */
+  /** funding_address defines one of the storage provider's accounts which is used to deposit and reward. */
 
   fundingAddress: string;
-  /** seal_address is the account address of the storage provider for sealObject */
+  /** seal_address defines one of the storage provider's accounts which is used to SealObject */
 
   sealAddress: string;
-  /** approval_address is the account address of the storage provider for ack CreateBuclet/Object. */
+  /** approval_address defines one of the storage provider's accounts which is used to approve use's createBucket/createObject request */
 
   approvalAddress: string;
-  /** total_deposit define the deposit token */
+  /** total_deposit defines the number of tokens deposited by this storage provider for staking. */
 
   totalDeposit: string;
-  /** status is the status of sp, which can be (in_service/read_only_service/graceful_exiting/out_of_service) */
+  /** status defines the current service status of this storage provider */
 
   status: Status;
-  /** endpoint is the service address of the storage provider */
+  /** endpoint define the storage provider's network service address */
 
   endpoint: string;
-  /** description defines the description terms for the validator. */
+  /** description defines the description terms for the storage provider. */
 
   description?: Description;
 }
 export interface RewardInfo {
   address: string;
   amount?: Coin;
+}
+/** storage price of a specific sp */
+
+export interface SpStoragePrice {
+  /** sp address */
+  spAddress: string;
+  /** update time, in unix timestamp */
+
+  updateTime: Long;
+  /** read price, in bnb wei per charge byte */
+
+  readPrice: string;
+  /** free read quota, in byte */
+
+  freeReadQuota: Long;
+  /** store price, in bnb wei per charge byte */
+
+  storePrice: string;
+}
+/**
+ * global secondary sp store price
+ * this is the price for all secondary sps
+ */
+
+export interface SecondarySpStorePrice {
+  /** update time, in unix timestamp */
+  updateTime: Long;
+  /** store price, in bnb wei per charge byte */
+
+  storePrice: string;
 }
 
 function createBaseDescription(): Description {
@@ -419,6 +449,180 @@ export const RewardInfo = {
     const message = createBaseRewardInfo();
     message.address = object.address ?? "";
     message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
+    return message;
+  }
+
+};
+
+function createBaseSpStoragePrice(): SpStoragePrice {
+  return {
+    spAddress: "",
+    updateTime: Long.ZERO,
+    readPrice: "",
+    freeReadQuota: Long.UZERO,
+    storePrice: ""
+  };
+}
+
+export const SpStoragePrice = {
+  encode(message: SpStoragePrice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.spAddress !== "") {
+      writer.uint32(10).string(message.spAddress);
+    }
+
+    if (!message.updateTime.isZero()) {
+      writer.uint32(16).int64(message.updateTime);
+    }
+
+    if (message.readPrice !== "") {
+      writer.uint32(26).string(message.readPrice);
+    }
+
+    if (!message.freeReadQuota.isZero()) {
+      writer.uint32(32).uint64(message.freeReadQuota);
+    }
+
+    if (message.storePrice !== "") {
+      writer.uint32(42).string(message.storePrice);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SpStoragePrice {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSpStoragePrice();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.spAddress = reader.string();
+          break;
+
+        case 2:
+          message.updateTime = (reader.int64() as Long);
+          break;
+
+        case 3:
+          message.readPrice = reader.string();
+          break;
+
+        case 4:
+          message.freeReadQuota = (reader.uint64() as Long);
+          break;
+
+        case 5:
+          message.storePrice = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): SpStoragePrice {
+    return {
+      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      updateTime: isSet(object.updateTime) ? Long.fromValue(object.updateTime) : Long.ZERO,
+      readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
+      freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
+      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+    };
+  },
+
+  toJSON(message: SpStoragePrice): unknown {
+    const obj: any = {};
+    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.updateTime !== undefined && (obj.updateTime = (message.updateTime || Long.ZERO).toString());
+    message.readPrice !== undefined && (obj.readPrice = message.readPrice);
+    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
+    message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SpStoragePrice>, I>>(object: I): SpStoragePrice {
+    const message = createBaseSpStoragePrice();
+    message.spAddress = object.spAddress ?? "";
+    message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Long.fromValue(object.updateTime) : Long.ZERO;
+    message.readPrice = object.readPrice ?? "";
+    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
+    message.storePrice = object.storePrice ?? "";
+    return message;
+  }
+
+};
+
+function createBaseSecondarySpStorePrice(): SecondarySpStorePrice {
+  return {
+    updateTime: Long.ZERO,
+    storePrice: ""
+  };
+}
+
+export const SecondarySpStorePrice = {
+  encode(message: SecondarySpStorePrice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.updateTime.isZero()) {
+      writer.uint32(8).int64(message.updateTime);
+    }
+
+    if (message.storePrice !== "") {
+      writer.uint32(18).string(message.storePrice);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SecondarySpStorePrice {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSecondarySpStorePrice();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.updateTime = (reader.int64() as Long);
+          break;
+
+        case 2:
+          message.storePrice = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): SecondarySpStorePrice {
+    return {
+      updateTime: isSet(object.updateTime) ? Long.fromValue(object.updateTime) : Long.ZERO,
+      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+    };
+  },
+
+  toJSON(message: SecondarySpStorePrice): unknown {
+    const obj: any = {};
+    message.updateTime !== undefined && (obj.updateTime = (message.updateTime || Long.ZERO).toString());
+    message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SecondarySpStorePrice>, I>>(object: I): SecondarySpStorePrice {
+    const message = createBaseSecondarySpStorePrice();
+    message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Long.fromValue(object.updateTime) : Long.ZERO;
+    message.storePrice = object.storePrice ?? "";
     return message;
   }
 

@@ -31,6 +31,9 @@ export interface EventCrossChain {
   /** Relayer fee for the ACK or FAIL_ACK package of this cross chain package */
 
   ackRelayerFee: string;
+  /** Callback gas price the ACK or FAIL_ACK package */
+
+  callbackGasPrice: string;
 }
 
 function createBaseEventCrossChain(): EventCrossChain {
@@ -43,7 +46,8 @@ function createBaseEventCrossChain(): EventCrossChain {
     timestamp: Long.UZERO,
     packageLoad: "",
     relayerFee: "",
-    ackRelayerFee: ""
+    ackRelayerFee: "",
+    callbackGasPrice: ""
   };
 }
 
@@ -83,6 +87,10 @@ export const EventCrossChain = {
 
     if (message.ackRelayerFee !== "") {
       writer.uint32(74).string(message.ackRelayerFee);
+    }
+
+    if (message.callbackGasPrice !== "") {
+      writer.uint32(82).string(message.callbackGasPrice);
     }
 
     return writer;
@@ -133,6 +141,10 @@ export const EventCrossChain = {
           message.ackRelayerFee = reader.string();
           break;
 
+        case 10:
+          message.callbackGasPrice = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -152,7 +164,8 @@ export const EventCrossChain = {
       timestamp: isSet(object.timestamp) ? Long.fromValue(object.timestamp) : Long.UZERO,
       packageLoad: isSet(object.packageLoad) ? String(object.packageLoad) : "",
       relayerFee: isSet(object.relayerFee) ? String(object.relayerFee) : "",
-      ackRelayerFee: isSet(object.ackRelayerFee) ? String(object.ackRelayerFee) : ""
+      ackRelayerFee: isSet(object.ackRelayerFee) ? String(object.ackRelayerFee) : "",
+      callbackGasPrice: isSet(object.callbackGasPrice) ? String(object.callbackGasPrice) : ""
     };
   },
 
@@ -167,6 +180,7 @@ export const EventCrossChain = {
     message.packageLoad !== undefined && (obj.packageLoad = message.packageLoad);
     message.relayerFee !== undefined && (obj.relayerFee = message.relayerFee);
     message.ackRelayerFee !== undefined && (obj.ackRelayerFee = message.ackRelayerFee);
+    message.callbackGasPrice !== undefined && (obj.callbackGasPrice = message.callbackGasPrice);
     return obj;
   },
 
@@ -181,6 +195,7 @@ export const EventCrossChain = {
     message.packageLoad = object.packageLoad ?? "";
     message.relayerFee = object.relayerFee ?? "";
     message.ackRelayerFee = object.ackRelayerFee ?? "";
+    message.callbackGasPrice = object.callbackGasPrice ?? "";
     return message;
   }
 

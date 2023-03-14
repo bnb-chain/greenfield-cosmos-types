@@ -1,6 +1,5 @@
 /* eslint-disable */
-import { SourceType, ReadQuota, ObjectStatus, RedundancyType, sourceTypeFromJSON, readQuotaFromJSON, sourceTypeToJSON, readQuotaToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
-import { OutFlowInUSD } from "../payment/base";
+import { SourceType, ObjectStatus, RedundancyType, sourceTypeFromJSON, sourceTypeToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.storage";
@@ -10,13 +9,13 @@ export interface BucketInfo {
   /** bucket_name is a globally unique name of bucket */
 
   bucketName: string;
-  /** is_public define the highest permissions for bucket. When the bucket is public, everyone can get the object in it. */
+  /** is_public define the highest permissions for bucket. When the bucket is public, everyone can get storage objects in it. */
 
   isPublic: boolean;
   /** id is the unique identification for bucket. */
 
   id: string;
-  /** source_type define the source of the bucket */
+  /** source_type defines which chain the user should send the bucket management transactions to */
 
   sourceType: SourceType;
   /** create_at define the block number when the bucket created. */
@@ -31,15 +30,33 @@ export interface BucketInfo {
    */
 
   primarySpAddress: string;
-  /** read_quota defines the traffic quota for read */
+  /** read_quota defines the traffic quota for read in bytes per month */
 
-  readQuota: ReadQuota;
-  /** payment_price_time TODO(Owen): refine the comments */
+  readQuota: Long;
+  /** billing info of the bucket */
 
-  paymentPriceTime: Long;
-  /** payment_out_flows */
+  billingInfo?: BillingInfo;
+}
+/** BillingInfo is the billing information of the bucket */
 
-  paymentOutFlows: OutFlowInUSD[];
+export interface BillingInfo {
+  /** the time of the payment price, used to calculate the charge rate of the bucket */
+  priceTime: Long;
+  /** the total size of the objects in the bucket, used to calculate the charge rate of the bucket */
+
+  totalChargeSize: Long;
+  /** secondary sp objects size statistics */
+
+  secondarySpObjectsSize: SecondarySpObjectsSize[];
+}
+/** secondary sp objects size statistics */
+
+export interface SecondarySpObjectsSize {
+  /** address is the address of the secondary sp */
+  spAddress: string;
+  /** size is the total size of the objects in the secondary sp */
+
+  totalChargeSize: Long;
 }
 export interface ObjectInfo {
   owner: string;
@@ -79,9 +96,6 @@ export interface ObjectInfo {
   /** secondary_sp_addresses define the addresses of secondary_sps */
 
   secondarySpAddresses: string[];
-  /** lockedBalance */
-
-  lockedBalance: string;
 }
 export interface GroupInfo {
   /** owner is the owner of the group. It can not changed once it created. */
@@ -96,10 +110,57 @@ export interface GroupInfo {
 
   id: string;
 }
-export interface GroupMemberInfo {
-  member: string;
-  id: string;
-  expireTime: Long;
+export interface Trait {
+  traitType: string;
+  value: string;
+}
+export interface BucketMetaData {
+  /** description */
+  description: string;
+  /** externalUrl a link to external site to view NFT */
+
+  externalUrl: string;
+  /** name of bucket NFT */
+
+  bucketName: string;
+  /** image is the link to image */
+
+  image: string;
+  /** attributes */
+
+  attributes: Trait[];
+}
+export interface ObjectMetaData {
+  /** description */
+  description: string;
+  /** externalUrl a link to external site to view NFT */
+
+  externalUrl: string;
+  /** name of object NFT */
+
+  objectName: string;
+  /** image is the link to image */
+
+  image: string;
+  /** attributes */
+
+  attributes: Trait[];
+}
+export interface GroupMetaData {
+  /** description */
+  description: string;
+  /** externalUrl a link to external site to view NFT */
+
+  externalUrl: string;
+  /** name of group NFT */
+
+  groupName: string;
+  /** image is the link to image */
+
+  image: string;
+  /** attributes */
+
+  attributes: Trait[];
 }
 
 function createBaseBucketInfo(): BucketInfo {
@@ -112,9 +173,8 @@ function createBaseBucketInfo(): BucketInfo {
     createAt: Long.ZERO,
     paymentAddress: "",
     primarySpAddress: "",
-    readQuota: 0,
-    paymentPriceTime: Long.ZERO,
-    paymentOutFlows: []
+    readQuota: Long.UZERO,
+    billingInfo: undefined
   };
 }
 
@@ -152,16 +212,12 @@ export const BucketInfo = {
       writer.uint32(66).string(message.primarySpAddress);
     }
 
-    if (message.readQuota !== 0) {
-      writer.uint32(72).int32(message.readQuota);
+    if (!message.readQuota.isZero()) {
+      writer.uint32(72).uint64(message.readQuota);
     }
 
-    if (!message.paymentPriceTime.isZero()) {
-      writer.uint32(80).int64(message.paymentPriceTime);
-    }
-
-    for (const v of message.paymentOutFlows) {
-      OutFlowInUSD.encode(v!, writer.uint32(90).fork()).ldelim();
+    if (message.billingInfo !== undefined) {
+      BillingInfo.encode(message.billingInfo, writer.uint32(82).fork()).ldelim();
     }
 
     return writer;
@@ -209,15 +265,11 @@ export const BucketInfo = {
           break;
 
         case 9:
-          message.readQuota = (reader.int32() as any);
+          message.readQuota = (reader.uint64() as Long);
           break;
 
         case 10:
-          message.paymentPriceTime = (reader.int64() as Long);
-          break;
-
-        case 11:
-          message.paymentOutFlows.push(OutFlowInUSD.decode(reader, reader.uint32()));
+          message.billingInfo = BillingInfo.decode(reader, reader.uint32());
           break;
 
         default:
@@ -239,9 +291,8 @@ export const BucketInfo = {
       createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
-      readQuota: isSet(object.readQuota) ? readQuotaFromJSON(object.readQuota) : 0,
-      paymentPriceTime: isSet(object.paymentPriceTime) ? Long.fromValue(object.paymentPriceTime) : Long.ZERO,
-      paymentOutFlows: Array.isArray(object?.paymentOutFlows) ? object.paymentOutFlows.map((e: any) => OutFlowInUSD.fromJSON(e)) : []
+      readQuota: isSet(object.readQuota) ? Long.fromValue(object.readQuota) : Long.UZERO,
+      billingInfo: isSet(object.billingInfo) ? BillingInfo.fromJSON(object.billingInfo) : undefined
     };
   },
 
@@ -255,15 +306,8 @@ export const BucketInfo = {
     message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
-    message.readQuota !== undefined && (obj.readQuota = readQuotaToJSON(message.readQuota));
-    message.paymentPriceTime !== undefined && (obj.paymentPriceTime = (message.paymentPriceTime || Long.ZERO).toString());
-
-    if (message.paymentOutFlows) {
-      obj.paymentOutFlows = message.paymentOutFlows.map(e => e ? OutFlowInUSD.toJSON(e) : undefined);
-    } else {
-      obj.paymentOutFlows = [];
-    }
-
+    message.readQuota !== undefined && (obj.readQuota = (message.readQuota || Long.UZERO).toString());
+    message.billingInfo !== undefined && (obj.billingInfo = message.billingInfo ? BillingInfo.toJSON(message.billingInfo) : undefined);
     return obj;
   },
 
@@ -277,9 +321,164 @@ export const BucketInfo = {
     message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
     message.paymentAddress = object.paymentAddress ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
-    message.readQuota = object.readQuota ?? 0;
-    message.paymentPriceTime = object.paymentPriceTime !== undefined && object.paymentPriceTime !== null ? Long.fromValue(object.paymentPriceTime) : Long.ZERO;
-    message.paymentOutFlows = object.paymentOutFlows?.map(e => OutFlowInUSD.fromPartial(e)) || [];
+    message.readQuota = object.readQuota !== undefined && object.readQuota !== null ? Long.fromValue(object.readQuota) : Long.UZERO;
+    message.billingInfo = object.billingInfo !== undefined && object.billingInfo !== null ? BillingInfo.fromPartial(object.billingInfo) : undefined;
+    return message;
+  }
+
+};
+
+function createBaseBillingInfo(): BillingInfo {
+  return {
+    priceTime: Long.ZERO,
+    totalChargeSize: Long.UZERO,
+    secondarySpObjectsSize: []
+  };
+}
+
+export const BillingInfo = {
+  encode(message: BillingInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.priceTime.isZero()) {
+      writer.uint32(8).int64(message.priceTime);
+    }
+
+    if (!message.totalChargeSize.isZero()) {
+      writer.uint32(16).uint64(message.totalChargeSize);
+    }
+
+    for (const v of message.secondarySpObjectsSize) {
+      SecondarySpObjectsSize.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): BillingInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBillingInfo();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.priceTime = (reader.int64() as Long);
+          break;
+
+        case 2:
+          message.totalChargeSize = (reader.uint64() as Long);
+          break;
+
+        case 3:
+          message.secondarySpObjectsSize.push(SecondarySpObjectsSize.decode(reader, reader.uint32()));
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): BillingInfo {
+    return {
+      priceTime: isSet(object.priceTime) ? Long.fromValue(object.priceTime) : Long.ZERO,
+      totalChargeSize: isSet(object.totalChargeSize) ? Long.fromValue(object.totalChargeSize) : Long.UZERO,
+      secondarySpObjectsSize: Array.isArray(object?.secondarySpObjectsSize) ? object.secondarySpObjectsSize.map((e: any) => SecondarySpObjectsSize.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: BillingInfo): unknown {
+    const obj: any = {};
+    message.priceTime !== undefined && (obj.priceTime = (message.priceTime || Long.ZERO).toString());
+    message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || Long.UZERO).toString());
+
+    if (message.secondarySpObjectsSize) {
+      obj.secondarySpObjectsSize = message.secondarySpObjectsSize.map(e => e ? SecondarySpObjectsSize.toJSON(e) : undefined);
+    } else {
+      obj.secondarySpObjectsSize = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<BillingInfo>, I>>(object: I): BillingInfo {
+    const message = createBaseBillingInfo();
+    message.priceTime = object.priceTime !== undefined && object.priceTime !== null ? Long.fromValue(object.priceTime) : Long.ZERO;
+    message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? Long.fromValue(object.totalChargeSize) : Long.UZERO;
+    message.secondarySpObjectsSize = object.secondarySpObjectsSize?.map(e => SecondarySpObjectsSize.fromPartial(e)) || [];
+    return message;
+  }
+
+};
+
+function createBaseSecondarySpObjectsSize(): SecondarySpObjectsSize {
+  return {
+    spAddress: "",
+    totalChargeSize: Long.UZERO
+  };
+}
+
+export const SecondarySpObjectsSize = {
+  encode(message: SecondarySpObjectsSize, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.spAddress !== "") {
+      writer.uint32(10).string(message.spAddress);
+    }
+
+    if (!message.totalChargeSize.isZero()) {
+      writer.uint32(16).uint64(message.totalChargeSize);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SecondarySpObjectsSize {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSecondarySpObjectsSize();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.spAddress = reader.string();
+          break;
+
+        case 2:
+          message.totalChargeSize = (reader.uint64() as Long);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): SecondarySpObjectsSize {
+    return {
+      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      totalChargeSize: isSet(object.totalChargeSize) ? Long.fromValue(object.totalChargeSize) : Long.UZERO
+    };
+  },
+
+  toJSON(message: SecondarySpObjectsSize): unknown {
+    const obj: any = {};
+    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || Long.UZERO).toString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SecondarySpObjectsSize>, I>>(object: I): SecondarySpObjectsSize {
+    const message = createBaseSecondarySpObjectsSize();
+    message.spAddress = object.spAddress ?? "";
+    message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? Long.fromValue(object.totalChargeSize) : Long.UZERO;
     return message;
   }
 
@@ -299,8 +498,7 @@ function createBaseObjectInfo(): ObjectInfo {
     redundancyType: 0,
     sourceType: 0,
     checksums: [],
-    secondarySpAddresses: [],
-    lockedBalance: ""
+    secondarySpAddresses: []
   };
 }
 
@@ -356,10 +554,6 @@ export const ObjectInfo = {
 
     for (const v of message.secondarySpAddresses) {
       writer.uint32(106).string(v!);
-    }
-
-    if (message.lockedBalance !== "") {
-      writer.uint32(114).string(message.lockedBalance);
     }
 
     return writer;
@@ -426,10 +620,6 @@ export const ObjectInfo = {
           message.secondarySpAddresses.push(reader.string());
           break;
 
-        case 14:
-          message.lockedBalance = reader.string();
-          break;
-
         default:
           reader.skipType(tag & 7);
           break;
@@ -453,8 +643,7 @@ export const ObjectInfo = {
       redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : 0,
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
       checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => bytesFromBase64(e)) : [],
-      secondarySpAddresses: Array.isArray(object?.secondarySpAddresses) ? object.secondarySpAddresses.map((e: any) => String(e)) : [],
-      lockedBalance: isSet(object.lockedBalance) ? String(object.lockedBalance) : ""
+      secondarySpAddresses: Array.isArray(object?.secondarySpAddresses) ? object.secondarySpAddresses.map((e: any) => String(e)) : []
     };
   },
 
@@ -484,7 +673,6 @@ export const ObjectInfo = {
       obj.secondarySpAddresses = [];
     }
 
-    message.lockedBalance !== undefined && (obj.lockedBalance = message.lockedBalance);
     return obj;
   },
 
@@ -503,7 +691,6 @@ export const ObjectInfo = {
     message.sourceType = object.sourceType ?? 0;
     message.checksums = object.checksums?.map(e => e) || [];
     message.secondarySpAddresses = object.secondarySpAddresses?.map(e => e) || [];
-    message.lockedBalance = object.lockedBalance ?? "";
     return message;
   }
 
@@ -602,50 +789,41 @@ export const GroupInfo = {
 
 };
 
-function createBaseGroupMemberInfo(): GroupMemberInfo {
+function createBaseTrait(): Trait {
   return {
-    member: "",
-    id: "",
-    expireTime: Long.UZERO
+    traitType: "",
+    value: ""
   };
 }
 
-export const GroupMemberInfo = {
-  encode(message: GroupMemberInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.member !== "") {
-      writer.uint32(10).string(message.member);
+export const Trait = {
+  encode(message: Trait, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.traitType !== "") {
+      writer.uint32(10).string(message.traitType);
     }
 
-    if (message.id !== "") {
-      writer.uint32(18).string(message.id);
-    }
-
-    if (!message.expireTime.isZero()) {
-      writer.uint32(24).uint64(message.expireTime);
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
     }
 
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): GroupMemberInfo {
+  decode(input: _m0.Reader | Uint8Array, length?: number): Trait {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGroupMemberInfo();
+    const message = createBaseTrait();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
 
       switch (tag >>> 3) {
         case 1:
-          message.member = reader.string();
+          message.traitType = reader.string();
           break;
 
         case 2:
-          message.id = reader.string();
-          break;
-
-        case 3:
-          message.expireTime = (reader.uint64() as Long);
+          message.value = reader.string();
           break;
 
         default:
@@ -657,27 +835,357 @@ export const GroupMemberInfo = {
     return message;
   },
 
-  fromJSON(object: any): GroupMemberInfo {
+  fromJSON(object: any): Trait {
     return {
-      member: isSet(object.member) ? String(object.member) : "",
-      id: isSet(object.id) ? String(object.id) : "",
-      expireTime: isSet(object.expireTime) ? Long.fromValue(object.expireTime) : Long.UZERO
+      traitType: isSet(object.traitType) ? String(object.traitType) : "",
+      value: isSet(object.value) ? String(object.value) : ""
     };
   },
 
-  toJSON(message: GroupMemberInfo): unknown {
+  toJSON(message: Trait): unknown {
     const obj: any = {};
-    message.member !== undefined && (obj.member = message.member);
-    message.id !== undefined && (obj.id = message.id);
-    message.expireTime !== undefined && (obj.expireTime = (message.expireTime || Long.UZERO).toString());
+    message.traitType !== undefined && (obj.traitType = message.traitType);
+    message.value !== undefined && (obj.value = message.value);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<GroupMemberInfo>, I>>(object: I): GroupMemberInfo {
-    const message = createBaseGroupMemberInfo();
-    message.member = object.member ?? "";
-    message.id = object.id ?? "";
-    message.expireTime = object.expireTime !== undefined && object.expireTime !== null ? Long.fromValue(object.expireTime) : Long.UZERO;
+  fromPartial<I extends Exact<DeepPartial<Trait>, I>>(object: I): Trait {
+    const message = createBaseTrait();
+    message.traitType = object.traitType ?? "";
+    message.value = object.value ?? "";
+    return message;
+  }
+
+};
+
+function createBaseBucketMetaData(): BucketMetaData {
+  return {
+    description: "",
+    externalUrl: "",
+    bucketName: "",
+    image: "",
+    attributes: []
+  };
+}
+
+export const BucketMetaData = {
+  encode(message: BucketMetaData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.description !== "") {
+      writer.uint32(10).string(message.description);
+    }
+
+    if (message.externalUrl !== "") {
+      writer.uint32(18).string(message.externalUrl);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(26).string(message.bucketName);
+    }
+
+    if (message.image !== "") {
+      writer.uint32(34).string(message.image);
+    }
+
+    for (const v of message.attributes) {
+      Trait.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): BucketMetaData {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBucketMetaData();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.description = reader.string();
+          break;
+
+        case 2:
+          message.externalUrl = reader.string();
+          break;
+
+        case 3:
+          message.bucketName = reader.string();
+          break;
+
+        case 4:
+          message.image = reader.string();
+          break;
+
+        case 5:
+          message.attributes.push(Trait.decode(reader, reader.uint32()));
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): BucketMetaData {
+    return {
+      description: isSet(object.description) ? String(object.description) : "",
+      externalUrl: isSet(object.externalUrl) ? String(object.externalUrl) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      image: isSet(object.image) ? String(object.image) : "",
+      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Trait.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: BucketMetaData): unknown {
+    const obj: any = {};
+    message.description !== undefined && (obj.description = message.description);
+    message.externalUrl !== undefined && (obj.externalUrl = message.externalUrl);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.image !== undefined && (obj.image = message.image);
+
+    if (message.attributes) {
+      obj.attributes = message.attributes.map(e => e ? Trait.toJSON(e) : undefined);
+    } else {
+      obj.attributes = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<BucketMetaData>, I>>(object: I): BucketMetaData {
+    const message = createBaseBucketMetaData();
+    message.description = object.description ?? "";
+    message.externalUrl = object.externalUrl ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.image = object.image ?? "";
+    message.attributes = object.attributes?.map(e => Trait.fromPartial(e)) || [];
+    return message;
+  }
+
+};
+
+function createBaseObjectMetaData(): ObjectMetaData {
+  return {
+    description: "",
+    externalUrl: "",
+    objectName: "",
+    image: "",
+    attributes: []
+  };
+}
+
+export const ObjectMetaData = {
+  encode(message: ObjectMetaData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.description !== "") {
+      writer.uint32(10).string(message.description);
+    }
+
+    if (message.externalUrl !== "") {
+      writer.uint32(18).string(message.externalUrl);
+    }
+
+    if (message.objectName !== "") {
+      writer.uint32(26).string(message.objectName);
+    }
+
+    if (message.image !== "") {
+      writer.uint32(34).string(message.image);
+    }
+
+    for (const v of message.attributes) {
+      Trait.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ObjectMetaData {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseObjectMetaData();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.description = reader.string();
+          break;
+
+        case 2:
+          message.externalUrl = reader.string();
+          break;
+
+        case 3:
+          message.objectName = reader.string();
+          break;
+
+        case 4:
+          message.image = reader.string();
+          break;
+
+        case 5:
+          message.attributes.push(Trait.decode(reader, reader.uint32()));
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): ObjectMetaData {
+    return {
+      description: isSet(object.description) ? String(object.description) : "",
+      externalUrl: isSet(object.externalUrl) ? String(object.externalUrl) : "",
+      objectName: isSet(object.objectName) ? String(object.objectName) : "",
+      image: isSet(object.image) ? String(object.image) : "",
+      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Trait.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: ObjectMetaData): unknown {
+    const obj: any = {};
+    message.description !== undefined && (obj.description = message.description);
+    message.externalUrl !== undefined && (obj.externalUrl = message.externalUrl);
+    message.objectName !== undefined && (obj.objectName = message.objectName);
+    message.image !== undefined && (obj.image = message.image);
+
+    if (message.attributes) {
+      obj.attributes = message.attributes.map(e => e ? Trait.toJSON(e) : undefined);
+    } else {
+      obj.attributes = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ObjectMetaData>, I>>(object: I): ObjectMetaData {
+    const message = createBaseObjectMetaData();
+    message.description = object.description ?? "";
+    message.externalUrl = object.externalUrl ?? "";
+    message.objectName = object.objectName ?? "";
+    message.image = object.image ?? "";
+    message.attributes = object.attributes?.map(e => Trait.fromPartial(e)) || [];
+    return message;
+  }
+
+};
+
+function createBaseGroupMetaData(): GroupMetaData {
+  return {
+    description: "",
+    externalUrl: "",
+    groupName: "",
+    image: "",
+    attributes: []
+  };
+}
+
+export const GroupMetaData = {
+  encode(message: GroupMetaData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.description !== "") {
+      writer.uint32(10).string(message.description);
+    }
+
+    if (message.externalUrl !== "") {
+      writer.uint32(18).string(message.externalUrl);
+    }
+
+    if (message.groupName !== "") {
+      writer.uint32(26).string(message.groupName);
+    }
+
+    if (message.image !== "") {
+      writer.uint32(34).string(message.image);
+    }
+
+    for (const v of message.attributes) {
+      Trait.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GroupMetaData {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGroupMetaData();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.description = reader.string();
+          break;
+
+        case 2:
+          message.externalUrl = reader.string();
+          break;
+
+        case 3:
+          message.groupName = reader.string();
+          break;
+
+        case 4:
+          message.image = reader.string();
+          break;
+
+        case 5:
+          message.attributes.push(Trait.decode(reader, reader.uint32()));
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): GroupMetaData {
+    return {
+      description: isSet(object.description) ? String(object.description) : "",
+      externalUrl: isSet(object.externalUrl) ? String(object.externalUrl) : "",
+      groupName: isSet(object.groupName) ? String(object.groupName) : "",
+      image: isSet(object.image) ? String(object.image) : "",
+      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Trait.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: GroupMetaData): unknown {
+    const obj: any = {};
+    message.description !== undefined && (obj.description = message.description);
+    message.externalUrl !== undefined && (obj.externalUrl = message.externalUrl);
+    message.groupName !== undefined && (obj.groupName = message.groupName);
+    message.image !== undefined && (obj.image = message.image);
+
+    if (message.attributes) {
+      obj.attributes = message.attributes.map(e => e ? Trait.toJSON(e) : undefined);
+    } else {
+      obj.attributes = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GroupMetaData>, I>>(object: I): GroupMetaData {
+    const message = createBaseGroupMetaData();
+    message.description = object.description ?? "";
+    message.externalUrl = object.externalUrl ?? "";
+    message.groupName = object.groupName ?? "";
+    message.image = object.image ?? "";
+    message.attributes = object.attributes?.map(e => Trait.fromPartial(e)) || [];
     return message;
   }
 
