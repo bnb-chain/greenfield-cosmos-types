@@ -1,3 +1,10 @@
+# [0.3.0-alpha.6](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.3.0-alpha.5...v0.3.0-alpha.6) (2023-03-16)
+
+
+### Features
+
+* Case Camel ([ddfa8b1](https://github.com/bnb-chain/gnfd-cosmos-types/commit/ddfa8b1e7a37a34e8404f9d962e753ddae6834cd))
+
 # [0.3.0-alpha.5](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.3.0-alpha.4...v0.3.0-alpha.5) (2023-03-16)
 
 
