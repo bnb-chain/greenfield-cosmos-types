@@ -16,7 +16,7 @@ export interface Tx {
    * specifically signers, signer modes and fee
    */
 
-  authInfo?: AuthInfo;
+  auth_info?: AuthInfo;
   /**
    * signatures is a list of signatures that matches the length and order of
    * AuthInfo's signer_infos to allow connecting signature meta information like
@@ -38,13 +38,13 @@ export interface TxRaw {
    * body_bytes is a protobuf serialization of a TxBody that matches the
    * representation in SignDoc.
    */
-  bodyBytes: Uint8Array;
+  body_bytes: Uint8Array;
   /**
    * auth_info_bytes is a protobuf serialization of an AuthInfo that matches the
    * representation in SignDoc.
    */
 
-  authInfoBytes: Uint8Array;
+  auth_info_bytes: Uint8Array;
   /**
    * signatures is a list of signatures that matches the length and order of
    * AuthInfo's signer_infos to allow connecting signature meta information like
@@ -60,23 +60,23 @@ export interface SignDoc {
    * body_bytes is protobuf serialization of a TxBody that matches the
    * representation in TxRaw.
    */
-  bodyBytes: Uint8Array;
+  body_bytes: Uint8Array;
   /**
    * auth_info_bytes is a protobuf serialization of an AuthInfo that matches the
    * representation in TxRaw.
    */
 
-  authInfoBytes: Uint8Array;
+  auth_info_bytes: Uint8Array;
   /**
    * chain_id is the unique identifier of the chain this transaction targets.
    * It prevents signed transactions from being used on another chain by an
    * attacker
    */
 
-  chainId: string;
+  chain_id: string;
   /** account_number is the account number of the account in state */
 
-  accountNumber: Long;
+  account_number: Long;
 }
 /**
  * SignDocDirectAux is the type used for generating sign bytes for
@@ -90,20 +90,20 @@ export interface SignDocDirectAux {
    * body_bytes is protobuf serialization of a TxBody that matches the
    * representation in TxRaw.
    */
-  bodyBytes: Uint8Array;
+  body_bytes: Uint8Array;
   /** public_key is the public key of the signing account. */
 
-  publicKey?: Any;
+  public_key?: Any;
   /**
    * chain_id is the identifier of the chain this transaction targets.
    * It prevents signed transactions from being used on another chain by an
    * attacker.
    */
 
-  chainId: string;
+  chain_id: string;
   /** account_number is the account number of the account in state. */
 
-  accountNumber: Long;
+  account_number: Long;
   /** sequence is the sequence number of the signing account. */
 
   sequence: Long;
@@ -129,10 +129,10 @@ export interface SignDocEip712 {
    * It prevents signed transactions from being used on another chain by an
    * attacker.
    */
-  chainId: Long;
+  chain_id: Long;
   /** account_number is the account number of the account in state. */
 
-  accountNumber: Long;
+  account_number: Long;
   /** sequence is the sequence number of the signing account. */
 
   sequence: Long;
@@ -149,7 +149,7 @@ export interface SignDocEip712 {
   msg?: Any;
   /** timeout_height is the transaction's timeout height (if set). */
 
-  timeoutHeight: Long;
+  timeout_height: Long;
   /**
    * memo is any arbitrary note/comment to be added to the transaction.
    * WARNING: in clients, any publicly exposed text should not be called memo,
@@ -193,21 +193,21 @@ export interface TxBody {
    * be processed by the chain
    */
 
-  timeoutHeight: Long;
+  timeout_height: Long;
   /**
    * extension_options are arbitrary options that can be added by chains
    * when the default options are not sufficient. If any of these are present
    * and can't be handled, the transaction will be rejected
    */
 
-  extensionOptions: Any[];
+  extension_options: Any[];
   /**
    * extension_options are arbitrary options that can be added by chains
    * when the default options are not sufficient. If any of these are present
    * and can't be handled, they will be ignored
    */
 
-  nonCriticalExtensionOptions: Any[];
+  non_critical_extension_options: Any[];
 }
 /**
  * AuthInfo describes the fee and signer modes that are used to sign a
@@ -221,7 +221,7 @@ export interface AuthInfo {
    * messages. The first element is the primary signer and the one which pays
    * the fee.
    */
-  signerInfos: SignerInfo[];
+  signer_infos: SignerInfo[];
   /**
    * Fee is the fee and gas limit for the transaction. The first signer is the
    * primary signer and the one which pays the fee. The fee can be calculated
@@ -252,13 +252,13 @@ export interface SignerInfo {
    * that already exist in state. If unset, the verifier can use the required \
    * signer address for this position and lookup the public key.
    */
-  publicKey?: Any;
+  public_key?: Any;
   /**
    * mode_info describes the signing mode of the signer and is a nested
    * structure to support nested multisig pubkey's
    */
 
-  modeInfo?: ModeInfo;
+  mode_info?: ModeInfo;
   /**
    * sequence is the sequence of the account, which describes the
    * number of committed transactions signed by a given address. It is used to
@@ -296,7 +296,7 @@ export interface ModeInfo_Multi {
    * which could include nested multisig public keys
    */
 
-  modeInfos: ModeInfo[];
+  mode_infos: ModeInfo[];
 }
 /**
  * Fee includes the amount of coins paid in fees and the maximum
@@ -312,7 +312,7 @@ export interface Fee {
    * before an out of gas error occurs
    */
 
-  gasLimit: Long;
+  gas_limit: Long;
   /**
    * if unset, the first signer is responsible for paying the fees. If set, the specified account must pay the fees.
    * the payer must be a tx signer (and thus have signed this field in AuthInfo).
@@ -363,7 +363,7 @@ export interface AuxSignerData {
    * LEGACY_AMINO_JSON.
    */
 
-  signDoc?: SignDocDirectAux;
+  sign_doc?: SignDocDirectAux;
   /** mode is the signing mode of the single signer. */
 
   mode: SignMode;
@@ -375,7 +375,7 @@ export interface AuxSignerData {
 function createBaseTx(): Tx {
   return {
     body: undefined,
-    authInfo: undefined,
+    auth_info: undefined,
     signatures: []
   };
 }
@@ -386,8 +386,8 @@ export const Tx = {
       TxBody.encode(message.body, writer.uint32(10).fork()).ldelim();
     }
 
-    if (message.authInfo !== undefined) {
-      AuthInfo.encode(message.authInfo, writer.uint32(18).fork()).ldelim();
+    if (message.auth_info !== undefined) {
+      AuthInfo.encode(message.auth_info, writer.uint32(18).fork()).ldelim();
     }
 
     for (const v of message.signatures) {
@@ -411,7 +411,7 @@ export const Tx = {
           break;
 
         case 2:
-          message.authInfo = AuthInfo.decode(reader, reader.uint32());
+          message.auth_info = AuthInfo.decode(reader, reader.uint32());
           break;
 
         case 3:
@@ -430,7 +430,7 @@ export const Tx = {
   fromJSON(object: any): Tx {
     return {
       body: isSet(object.body) ? TxBody.fromJSON(object.body) : undefined,
-      authInfo: isSet(object.authInfo) ? AuthInfo.fromJSON(object.authInfo) : undefined,
+      auth_info: isSet(object.auth_info) ? AuthInfo.fromJSON(object.auth_info) : undefined,
       signatures: Array.isArray(object?.signatures) ? object.signatures.map((e: any) => bytesFromBase64(e)) : []
     };
   },
@@ -438,7 +438,7 @@ export const Tx = {
   toJSON(message: Tx): unknown {
     const obj: any = {};
     message.body !== undefined && (obj.body = message.body ? TxBody.toJSON(message.body) : undefined);
-    message.authInfo !== undefined && (obj.authInfo = message.authInfo ? AuthInfo.toJSON(message.authInfo) : undefined);
+    message.auth_info !== undefined && (obj.auth_info = message.auth_info ? AuthInfo.toJSON(message.auth_info) : undefined);
 
     if (message.signatures) {
       obj.signatures = message.signatures.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
@@ -452,7 +452,7 @@ export const Tx = {
   fromPartial<I extends Exact<DeepPartial<Tx>, I>>(object: I): Tx {
     const message = createBaseTx();
     message.body = object.body !== undefined && object.body !== null ? TxBody.fromPartial(object.body) : undefined;
-    message.authInfo = object.authInfo !== undefined && object.authInfo !== null ? AuthInfo.fromPartial(object.authInfo) : undefined;
+    message.auth_info = object.auth_info !== undefined && object.auth_info !== null ? AuthInfo.fromPartial(object.auth_info) : undefined;
     message.signatures = object.signatures?.map(e => e) || [];
     return message;
   }
@@ -461,20 +461,20 @@ export const Tx = {
 
 function createBaseTxRaw(): TxRaw {
   return {
-    bodyBytes: new Uint8Array(),
-    authInfoBytes: new Uint8Array(),
+    body_bytes: new Uint8Array(),
+    auth_info_bytes: new Uint8Array(),
     signatures: []
   };
 }
 
 export const TxRaw = {
   encode(message: TxRaw, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.bodyBytes.length !== 0) {
-      writer.uint32(10).bytes(message.bodyBytes);
+    if (message.body_bytes.length !== 0) {
+      writer.uint32(10).bytes(message.body_bytes);
     }
 
-    if (message.authInfoBytes.length !== 0) {
-      writer.uint32(18).bytes(message.authInfoBytes);
+    if (message.auth_info_bytes.length !== 0) {
+      writer.uint32(18).bytes(message.auth_info_bytes);
     }
 
     for (const v of message.signatures) {
@@ -494,11 +494,11 @@ export const TxRaw = {
 
       switch (tag >>> 3) {
         case 1:
-          message.bodyBytes = reader.bytes();
+          message.body_bytes = reader.bytes();
           break;
 
         case 2:
-          message.authInfoBytes = reader.bytes();
+          message.auth_info_bytes = reader.bytes();
           break;
 
         case 3:
@@ -516,16 +516,16 @@ export const TxRaw = {
 
   fromJSON(object: any): TxRaw {
     return {
-      bodyBytes: isSet(object.bodyBytes) ? bytesFromBase64(object.bodyBytes) : new Uint8Array(),
-      authInfoBytes: isSet(object.authInfoBytes) ? bytesFromBase64(object.authInfoBytes) : new Uint8Array(),
+      body_bytes: isSet(object.body_bytes) ? bytesFromBase64(object.body_bytes) : new Uint8Array(),
+      auth_info_bytes: isSet(object.auth_info_bytes) ? bytesFromBase64(object.auth_info_bytes) : new Uint8Array(),
       signatures: Array.isArray(object?.signatures) ? object.signatures.map((e: any) => bytesFromBase64(e)) : []
     };
   },
 
   toJSON(message: TxRaw): unknown {
     const obj: any = {};
-    message.bodyBytes !== undefined && (obj.bodyBytes = base64FromBytes(message.bodyBytes !== undefined ? message.bodyBytes : new Uint8Array()));
-    message.authInfoBytes !== undefined && (obj.authInfoBytes = base64FromBytes(message.authInfoBytes !== undefined ? message.authInfoBytes : new Uint8Array()));
+    message.body_bytes !== undefined && (obj.body_bytes = base64FromBytes(message.body_bytes !== undefined ? message.body_bytes : new Uint8Array()));
+    message.auth_info_bytes !== undefined && (obj.auth_info_bytes = base64FromBytes(message.auth_info_bytes !== undefined ? message.auth_info_bytes : new Uint8Array()));
 
     if (message.signatures) {
       obj.signatures = message.signatures.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
@@ -538,8 +538,8 @@ export const TxRaw = {
 
   fromPartial<I extends Exact<DeepPartial<TxRaw>, I>>(object: I): TxRaw {
     const message = createBaseTxRaw();
-    message.bodyBytes = object.bodyBytes ?? new Uint8Array();
-    message.authInfoBytes = object.authInfoBytes ?? new Uint8Array();
+    message.body_bytes = object.body_bytes ?? new Uint8Array();
+    message.auth_info_bytes = object.auth_info_bytes ?? new Uint8Array();
     message.signatures = object.signatures?.map(e => e) || [];
     return message;
   }
@@ -548,29 +548,29 @@ export const TxRaw = {
 
 function createBaseSignDoc(): SignDoc {
   return {
-    bodyBytes: new Uint8Array(),
-    authInfoBytes: new Uint8Array(),
-    chainId: "",
-    accountNumber: Long.UZERO
+    body_bytes: new Uint8Array(),
+    auth_info_bytes: new Uint8Array(),
+    chain_id: "",
+    account_number: Long.UZERO
   };
 }
 
 export const SignDoc = {
   encode(message: SignDoc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.bodyBytes.length !== 0) {
-      writer.uint32(10).bytes(message.bodyBytes);
+    if (message.body_bytes.length !== 0) {
+      writer.uint32(10).bytes(message.body_bytes);
     }
 
-    if (message.authInfoBytes.length !== 0) {
-      writer.uint32(18).bytes(message.authInfoBytes);
+    if (message.auth_info_bytes.length !== 0) {
+      writer.uint32(18).bytes(message.auth_info_bytes);
     }
 
-    if (message.chainId !== "") {
-      writer.uint32(26).string(message.chainId);
+    if (message.chain_id !== "") {
+      writer.uint32(26).string(message.chain_id);
     }
 
-    if (!message.accountNumber.isZero()) {
-      writer.uint32(32).uint64(message.accountNumber);
+    if (!message.account_number.isZero()) {
+      writer.uint32(32).uint64(message.account_number);
     }
 
     return writer;
@@ -586,19 +586,19 @@ export const SignDoc = {
 
       switch (tag >>> 3) {
         case 1:
-          message.bodyBytes = reader.bytes();
+          message.body_bytes = reader.bytes();
           break;
 
         case 2:
-          message.authInfoBytes = reader.bytes();
+          message.auth_info_bytes = reader.bytes();
           break;
 
         case 3:
-          message.chainId = reader.string();
+          message.chain_id = reader.string();
           break;
 
         case 4:
-          message.accountNumber = (reader.uint64() as Long);
+          message.account_number = (reader.uint64() as Long);
           break;
 
         default:
@@ -612,28 +612,28 @@ export const SignDoc = {
 
   fromJSON(object: any): SignDoc {
     return {
-      bodyBytes: isSet(object.bodyBytes) ? bytesFromBase64(object.bodyBytes) : new Uint8Array(),
-      authInfoBytes: isSet(object.authInfoBytes) ? bytesFromBase64(object.authInfoBytes) : new Uint8Array(),
-      chainId: isSet(object.chainId) ? String(object.chainId) : "",
-      accountNumber: isSet(object.accountNumber) ? Long.fromValue(object.accountNumber) : Long.UZERO
+      body_bytes: isSet(object.body_bytes) ? bytesFromBase64(object.body_bytes) : new Uint8Array(),
+      auth_info_bytes: isSet(object.auth_info_bytes) ? bytesFromBase64(object.auth_info_bytes) : new Uint8Array(),
+      chain_id: isSet(object.chain_id) ? String(object.chain_id) : "",
+      account_number: isSet(object.account_number) ? Long.fromValue(object.account_number) : Long.UZERO
     };
   },
 
   toJSON(message: SignDoc): unknown {
     const obj: any = {};
-    message.bodyBytes !== undefined && (obj.bodyBytes = base64FromBytes(message.bodyBytes !== undefined ? message.bodyBytes : new Uint8Array()));
-    message.authInfoBytes !== undefined && (obj.authInfoBytes = base64FromBytes(message.authInfoBytes !== undefined ? message.authInfoBytes : new Uint8Array()));
-    message.chainId !== undefined && (obj.chainId = message.chainId);
-    message.accountNumber !== undefined && (obj.accountNumber = (message.accountNumber || Long.UZERO).toString());
+    message.body_bytes !== undefined && (obj.body_bytes = base64FromBytes(message.body_bytes !== undefined ? message.body_bytes : new Uint8Array()));
+    message.auth_info_bytes !== undefined && (obj.auth_info_bytes = base64FromBytes(message.auth_info_bytes !== undefined ? message.auth_info_bytes : new Uint8Array()));
+    message.chain_id !== undefined && (obj.chain_id = message.chain_id);
+    message.account_number !== undefined && (obj.account_number = (message.account_number || Long.UZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<SignDoc>, I>>(object: I): SignDoc {
     const message = createBaseSignDoc();
-    message.bodyBytes = object.bodyBytes ?? new Uint8Array();
-    message.authInfoBytes = object.authInfoBytes ?? new Uint8Array();
-    message.chainId = object.chainId ?? "";
-    message.accountNumber = object.accountNumber !== undefined && object.accountNumber !== null ? Long.fromValue(object.accountNumber) : Long.UZERO;
+    message.body_bytes = object.body_bytes ?? new Uint8Array();
+    message.auth_info_bytes = object.auth_info_bytes ?? new Uint8Array();
+    message.chain_id = object.chain_id ?? "";
+    message.account_number = object.account_number !== undefined && object.account_number !== null ? Long.fromValue(object.account_number) : Long.UZERO;
     return message;
   }
 
@@ -641,10 +641,10 @@ export const SignDoc = {
 
 function createBaseSignDocDirectAux(): SignDocDirectAux {
   return {
-    bodyBytes: new Uint8Array(),
-    publicKey: undefined,
-    chainId: "",
-    accountNumber: Long.UZERO,
+    body_bytes: new Uint8Array(),
+    public_key: undefined,
+    chain_id: "",
+    account_number: Long.UZERO,
     sequence: Long.UZERO,
     tip: undefined
   };
@@ -652,20 +652,20 @@ function createBaseSignDocDirectAux(): SignDocDirectAux {
 
 export const SignDocDirectAux = {
   encode(message: SignDocDirectAux, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.bodyBytes.length !== 0) {
-      writer.uint32(10).bytes(message.bodyBytes);
+    if (message.body_bytes.length !== 0) {
+      writer.uint32(10).bytes(message.body_bytes);
     }
 
-    if (message.publicKey !== undefined) {
-      Any.encode(message.publicKey, writer.uint32(18).fork()).ldelim();
+    if (message.public_key !== undefined) {
+      Any.encode(message.public_key, writer.uint32(18).fork()).ldelim();
     }
 
-    if (message.chainId !== "") {
-      writer.uint32(26).string(message.chainId);
+    if (message.chain_id !== "") {
+      writer.uint32(26).string(message.chain_id);
     }
 
-    if (!message.accountNumber.isZero()) {
-      writer.uint32(32).uint64(message.accountNumber);
+    if (!message.account_number.isZero()) {
+      writer.uint32(32).uint64(message.account_number);
     }
 
     if (!message.sequence.isZero()) {
@@ -689,19 +689,19 @@ export const SignDocDirectAux = {
 
       switch (tag >>> 3) {
         case 1:
-          message.bodyBytes = reader.bytes();
+          message.body_bytes = reader.bytes();
           break;
 
         case 2:
-          message.publicKey = Any.decode(reader, reader.uint32());
+          message.public_key = Any.decode(reader, reader.uint32());
           break;
 
         case 3:
-          message.chainId = reader.string();
+          message.chain_id = reader.string();
           break;
 
         case 4:
-          message.accountNumber = (reader.uint64() as Long);
+          message.account_number = (reader.uint64() as Long);
           break;
 
         case 5:
@@ -723,10 +723,10 @@ export const SignDocDirectAux = {
 
   fromJSON(object: any): SignDocDirectAux {
     return {
-      bodyBytes: isSet(object.bodyBytes) ? bytesFromBase64(object.bodyBytes) : new Uint8Array(),
-      publicKey: isSet(object.publicKey) ? Any.fromJSON(object.publicKey) : undefined,
-      chainId: isSet(object.chainId) ? String(object.chainId) : "",
-      accountNumber: isSet(object.accountNumber) ? Long.fromValue(object.accountNumber) : Long.UZERO,
+      body_bytes: isSet(object.body_bytes) ? bytesFromBase64(object.body_bytes) : new Uint8Array(),
+      public_key: isSet(object.public_key) ? Any.fromJSON(object.public_key) : undefined,
+      chain_id: isSet(object.chain_id) ? String(object.chain_id) : "",
+      account_number: isSet(object.account_number) ? Long.fromValue(object.account_number) : Long.UZERO,
       sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO,
       tip: isSet(object.tip) ? Tip.fromJSON(object.tip) : undefined
     };
@@ -734,10 +734,10 @@ export const SignDocDirectAux = {
 
   toJSON(message: SignDocDirectAux): unknown {
     const obj: any = {};
-    message.bodyBytes !== undefined && (obj.bodyBytes = base64FromBytes(message.bodyBytes !== undefined ? message.bodyBytes : new Uint8Array()));
-    message.publicKey !== undefined && (obj.publicKey = message.publicKey ? Any.toJSON(message.publicKey) : undefined);
-    message.chainId !== undefined && (obj.chainId = message.chainId);
-    message.accountNumber !== undefined && (obj.accountNumber = (message.accountNumber || Long.UZERO).toString());
+    message.body_bytes !== undefined && (obj.body_bytes = base64FromBytes(message.body_bytes !== undefined ? message.body_bytes : new Uint8Array()));
+    message.public_key !== undefined && (obj.public_key = message.public_key ? Any.toJSON(message.public_key) : undefined);
+    message.chain_id !== undefined && (obj.chain_id = message.chain_id);
+    message.account_number !== undefined && (obj.account_number = (message.account_number || Long.UZERO).toString());
     message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
     message.tip !== undefined && (obj.tip = message.tip ? Tip.toJSON(message.tip) : undefined);
     return obj;
@@ -745,10 +745,10 @@ export const SignDocDirectAux = {
 
   fromPartial<I extends Exact<DeepPartial<SignDocDirectAux>, I>>(object: I): SignDocDirectAux {
     const message = createBaseSignDocDirectAux();
-    message.bodyBytes = object.bodyBytes ?? new Uint8Array();
-    message.publicKey = object.publicKey !== undefined && object.publicKey !== null ? Any.fromPartial(object.publicKey) : undefined;
-    message.chainId = object.chainId ?? "";
-    message.accountNumber = object.accountNumber !== undefined && object.accountNumber !== null ? Long.fromValue(object.accountNumber) : Long.UZERO;
+    message.body_bytes = object.body_bytes ?? new Uint8Array();
+    message.public_key = object.public_key !== undefined && object.public_key !== null ? Any.fromPartial(object.public_key) : undefined;
+    message.chain_id = object.chain_id ?? "";
+    message.account_number = object.account_number !== undefined && object.account_number !== null ? Long.fromValue(object.account_number) : Long.UZERO;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     message.tip = object.tip !== undefined && object.tip !== null ? Tip.fromPartial(object.tip) : undefined;
     return message;
@@ -758,12 +758,12 @@ export const SignDocDirectAux = {
 
 function createBaseSignDocEip712(): SignDocEip712 {
   return {
-    chainId: Long.UZERO,
-    accountNumber: Long.UZERO,
+    chain_id: Long.UZERO,
+    account_number: Long.UZERO,
     sequence: Long.UZERO,
     fee: undefined,
     msg: undefined,
-    timeoutHeight: Long.UZERO,
+    timeout_height: Long.UZERO,
     memo: "",
     tip: undefined
   };
@@ -771,12 +771,12 @@ function createBaseSignDocEip712(): SignDocEip712 {
 
 export const SignDocEip712 = {
   encode(message: SignDocEip712, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.chainId.isZero()) {
-      writer.uint32(8).uint64(message.chainId);
+    if (!message.chain_id.isZero()) {
+      writer.uint32(8).uint64(message.chain_id);
     }
 
-    if (!message.accountNumber.isZero()) {
-      writer.uint32(16).uint64(message.accountNumber);
+    if (!message.account_number.isZero()) {
+      writer.uint32(16).uint64(message.account_number);
     }
 
     if (!message.sequence.isZero()) {
@@ -791,8 +791,8 @@ export const SignDocEip712 = {
       Any.encode(message.msg, writer.uint32(42).fork()).ldelim();
     }
 
-    if (!message.timeoutHeight.isZero()) {
-      writer.uint32(48).uint64(message.timeoutHeight);
+    if (!message.timeout_height.isZero()) {
+      writer.uint32(48).uint64(message.timeout_height);
     }
 
     if (message.memo !== "") {
@@ -816,11 +816,11 @@ export const SignDocEip712 = {
 
       switch (tag >>> 3) {
         case 1:
-          message.chainId = (reader.uint64() as Long);
+          message.chain_id = (reader.uint64() as Long);
           break;
 
         case 2:
-          message.accountNumber = (reader.uint64() as Long);
+          message.account_number = (reader.uint64() as Long);
           break;
 
         case 3:
@@ -836,7 +836,7 @@ export const SignDocEip712 = {
           break;
 
         case 6:
-          message.timeoutHeight = (reader.uint64() as Long);
+          message.timeout_height = (reader.uint64() as Long);
           break;
 
         case 7:
@@ -858,12 +858,12 @@ export const SignDocEip712 = {
 
   fromJSON(object: any): SignDocEip712 {
     return {
-      chainId: isSet(object.chainId) ? Long.fromValue(object.chainId) : Long.UZERO,
-      accountNumber: isSet(object.accountNumber) ? Long.fromValue(object.accountNumber) : Long.UZERO,
+      chain_id: isSet(object.chain_id) ? Long.fromValue(object.chain_id) : Long.UZERO,
+      account_number: isSet(object.account_number) ? Long.fromValue(object.account_number) : Long.UZERO,
       sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO,
       fee: isSet(object.fee) ? Fee.fromJSON(object.fee) : undefined,
       msg: isSet(object.msg) ? Any.fromJSON(object.msg) : undefined,
-      timeoutHeight: isSet(object.timeoutHeight) ? Long.fromValue(object.timeoutHeight) : Long.UZERO,
+      timeout_height: isSet(object.timeout_height) ? Long.fromValue(object.timeout_height) : Long.UZERO,
       memo: isSet(object.memo) ? String(object.memo) : "",
       tip: isSet(object.tip) ? Tip.fromJSON(object.tip) : undefined
     };
@@ -871,12 +871,12 @@ export const SignDocEip712 = {
 
   toJSON(message: SignDocEip712): unknown {
     const obj: any = {};
-    message.chainId !== undefined && (obj.chainId = (message.chainId || Long.UZERO).toString());
-    message.accountNumber !== undefined && (obj.accountNumber = (message.accountNumber || Long.UZERO).toString());
+    message.chain_id !== undefined && (obj.chain_id = (message.chain_id || Long.UZERO).toString());
+    message.account_number !== undefined && (obj.account_number = (message.account_number || Long.UZERO).toString());
     message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
     message.fee !== undefined && (obj.fee = message.fee ? Fee.toJSON(message.fee) : undefined);
     message.msg !== undefined && (obj.msg = message.msg ? Any.toJSON(message.msg) : undefined);
-    message.timeoutHeight !== undefined && (obj.timeoutHeight = (message.timeoutHeight || Long.UZERO).toString());
+    message.timeout_height !== undefined && (obj.timeout_height = (message.timeout_height || Long.UZERO).toString());
     message.memo !== undefined && (obj.memo = message.memo);
     message.tip !== undefined && (obj.tip = message.tip ? Tip.toJSON(message.tip) : undefined);
     return obj;
@@ -884,12 +884,12 @@ export const SignDocEip712 = {
 
   fromPartial<I extends Exact<DeepPartial<SignDocEip712>, I>>(object: I): SignDocEip712 {
     const message = createBaseSignDocEip712();
-    message.chainId = object.chainId !== undefined && object.chainId !== null ? Long.fromValue(object.chainId) : Long.UZERO;
-    message.accountNumber = object.accountNumber !== undefined && object.accountNumber !== null ? Long.fromValue(object.accountNumber) : Long.UZERO;
+    message.chain_id = object.chain_id !== undefined && object.chain_id !== null ? Long.fromValue(object.chain_id) : Long.UZERO;
+    message.account_number = object.account_number !== undefined && object.account_number !== null ? Long.fromValue(object.account_number) : Long.UZERO;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     message.fee = object.fee !== undefined && object.fee !== null ? Fee.fromPartial(object.fee) : undefined;
     message.msg = object.msg !== undefined && object.msg !== null ? Any.fromPartial(object.msg) : undefined;
-    message.timeoutHeight = object.timeoutHeight !== undefined && object.timeoutHeight !== null ? Long.fromValue(object.timeoutHeight) : Long.UZERO;
+    message.timeout_height = object.timeout_height !== undefined && object.timeout_height !== null ? Long.fromValue(object.timeout_height) : Long.UZERO;
     message.memo = object.memo ?? "";
     message.tip = object.tip !== undefined && object.tip !== null ? Tip.fromPartial(object.tip) : undefined;
     return message;
@@ -901,9 +901,9 @@ function createBaseTxBody(): TxBody {
   return {
     messages: [],
     memo: "",
-    timeoutHeight: Long.UZERO,
-    extensionOptions: [],
-    nonCriticalExtensionOptions: []
+    timeout_height: Long.UZERO,
+    extension_options: [],
+    non_critical_extension_options: []
   };
 }
 
@@ -917,15 +917,15 @@ export const TxBody = {
       writer.uint32(18).string(message.memo);
     }
 
-    if (!message.timeoutHeight.isZero()) {
-      writer.uint32(24).uint64(message.timeoutHeight);
+    if (!message.timeout_height.isZero()) {
+      writer.uint32(24).uint64(message.timeout_height);
     }
 
-    for (const v of message.extensionOptions) {
+    for (const v of message.extension_options) {
       Any.encode(v!, writer.uint32(8186).fork()).ldelim();
     }
 
-    for (const v of message.nonCriticalExtensionOptions) {
+    for (const v of message.non_critical_extension_options) {
       Any.encode(v!, writer.uint32(16378).fork()).ldelim();
     }
 
@@ -950,15 +950,15 @@ export const TxBody = {
           break;
 
         case 3:
-          message.timeoutHeight = (reader.uint64() as Long);
+          message.timeout_height = (reader.uint64() as Long);
           break;
 
         case 1023:
-          message.extensionOptions.push(Any.decode(reader, reader.uint32()));
+          message.extension_options.push(Any.decode(reader, reader.uint32()));
           break;
 
         case 2047:
-          message.nonCriticalExtensionOptions.push(Any.decode(reader, reader.uint32()));
+          message.non_critical_extension_options.push(Any.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -974,9 +974,9 @@ export const TxBody = {
     return {
       messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Any.fromJSON(e)) : [],
       memo: isSet(object.memo) ? String(object.memo) : "",
-      timeoutHeight: isSet(object.timeoutHeight) ? Long.fromValue(object.timeoutHeight) : Long.UZERO,
-      extensionOptions: Array.isArray(object?.extensionOptions) ? object.extensionOptions.map((e: any) => Any.fromJSON(e)) : [],
-      nonCriticalExtensionOptions: Array.isArray(object?.nonCriticalExtensionOptions) ? object.nonCriticalExtensionOptions.map((e: any) => Any.fromJSON(e)) : []
+      timeout_height: isSet(object.timeout_height) ? Long.fromValue(object.timeout_height) : Long.UZERO,
+      extension_options: Array.isArray(object?.extension_options) ? object.extension_options.map((e: any) => Any.fromJSON(e)) : [],
+      non_critical_extension_options: Array.isArray(object?.non_critical_extension_options) ? object.non_critical_extension_options.map((e: any) => Any.fromJSON(e)) : []
     };
   },
 
@@ -990,18 +990,18 @@ export const TxBody = {
     }
 
     message.memo !== undefined && (obj.memo = message.memo);
-    message.timeoutHeight !== undefined && (obj.timeoutHeight = (message.timeoutHeight || Long.UZERO).toString());
+    message.timeout_height !== undefined && (obj.timeout_height = (message.timeout_height || Long.UZERO).toString());
 
-    if (message.extensionOptions) {
-      obj.extensionOptions = message.extensionOptions.map(e => e ? Any.toJSON(e) : undefined);
+    if (message.extension_options) {
+      obj.extension_options = message.extension_options.map(e => e ? Any.toJSON(e) : undefined);
     } else {
-      obj.extensionOptions = [];
+      obj.extension_options = [];
     }
 
-    if (message.nonCriticalExtensionOptions) {
-      obj.nonCriticalExtensionOptions = message.nonCriticalExtensionOptions.map(e => e ? Any.toJSON(e) : undefined);
+    if (message.non_critical_extension_options) {
+      obj.non_critical_extension_options = message.non_critical_extension_options.map(e => e ? Any.toJSON(e) : undefined);
     } else {
-      obj.nonCriticalExtensionOptions = [];
+      obj.non_critical_extension_options = [];
     }
 
     return obj;
@@ -1011,9 +1011,9 @@ export const TxBody = {
     const message = createBaseTxBody();
     message.messages = object.messages?.map(e => Any.fromPartial(e)) || [];
     message.memo = object.memo ?? "";
-    message.timeoutHeight = object.timeoutHeight !== undefined && object.timeoutHeight !== null ? Long.fromValue(object.timeoutHeight) : Long.UZERO;
-    message.extensionOptions = object.extensionOptions?.map(e => Any.fromPartial(e)) || [];
-    message.nonCriticalExtensionOptions = object.nonCriticalExtensionOptions?.map(e => Any.fromPartial(e)) || [];
+    message.timeout_height = object.timeout_height !== undefined && object.timeout_height !== null ? Long.fromValue(object.timeout_height) : Long.UZERO;
+    message.extension_options = object.extension_options?.map(e => Any.fromPartial(e)) || [];
+    message.non_critical_extension_options = object.non_critical_extension_options?.map(e => Any.fromPartial(e)) || [];
     return message;
   }
 
@@ -1021,7 +1021,7 @@ export const TxBody = {
 
 function createBaseAuthInfo(): AuthInfo {
   return {
-    signerInfos: [],
+    signer_infos: [],
     fee: undefined,
     tip: undefined
   };
@@ -1029,7 +1029,7 @@ function createBaseAuthInfo(): AuthInfo {
 
 export const AuthInfo = {
   encode(message: AuthInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.signerInfos) {
+    for (const v of message.signer_infos) {
       SignerInfo.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
@@ -1054,7 +1054,7 @@ export const AuthInfo = {
 
       switch (tag >>> 3) {
         case 1:
-          message.signerInfos.push(SignerInfo.decode(reader, reader.uint32()));
+          message.signer_infos.push(SignerInfo.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -1076,7 +1076,7 @@ export const AuthInfo = {
 
   fromJSON(object: any): AuthInfo {
     return {
-      signerInfos: Array.isArray(object?.signerInfos) ? object.signerInfos.map((e: any) => SignerInfo.fromJSON(e)) : [],
+      signer_infos: Array.isArray(object?.signer_infos) ? object.signer_infos.map((e: any) => SignerInfo.fromJSON(e)) : [],
       fee: isSet(object.fee) ? Fee.fromJSON(object.fee) : undefined,
       tip: isSet(object.tip) ? Tip.fromJSON(object.tip) : undefined
     };
@@ -1085,10 +1085,10 @@ export const AuthInfo = {
   toJSON(message: AuthInfo): unknown {
     const obj: any = {};
 
-    if (message.signerInfos) {
-      obj.signerInfos = message.signerInfos.map(e => e ? SignerInfo.toJSON(e) : undefined);
+    if (message.signer_infos) {
+      obj.signer_infos = message.signer_infos.map(e => e ? SignerInfo.toJSON(e) : undefined);
     } else {
-      obj.signerInfos = [];
+      obj.signer_infos = [];
     }
 
     message.fee !== undefined && (obj.fee = message.fee ? Fee.toJSON(message.fee) : undefined);
@@ -1098,7 +1098,7 @@ export const AuthInfo = {
 
   fromPartial<I extends Exact<DeepPartial<AuthInfo>, I>>(object: I): AuthInfo {
     const message = createBaseAuthInfo();
-    message.signerInfos = object.signerInfos?.map(e => SignerInfo.fromPartial(e)) || [];
+    message.signer_infos = object.signer_infos?.map(e => SignerInfo.fromPartial(e)) || [];
     message.fee = object.fee !== undefined && object.fee !== null ? Fee.fromPartial(object.fee) : undefined;
     message.tip = object.tip !== undefined && object.tip !== null ? Tip.fromPartial(object.tip) : undefined;
     return message;
@@ -1108,20 +1108,20 @@ export const AuthInfo = {
 
 function createBaseSignerInfo(): SignerInfo {
   return {
-    publicKey: undefined,
-    modeInfo: undefined,
+    public_key: undefined,
+    mode_info: undefined,
     sequence: Long.UZERO
   };
 }
 
 export const SignerInfo = {
   encode(message: SignerInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.publicKey !== undefined) {
-      Any.encode(message.publicKey, writer.uint32(10).fork()).ldelim();
+    if (message.public_key !== undefined) {
+      Any.encode(message.public_key, writer.uint32(10).fork()).ldelim();
     }
 
-    if (message.modeInfo !== undefined) {
-      ModeInfo.encode(message.modeInfo, writer.uint32(18).fork()).ldelim();
+    if (message.mode_info !== undefined) {
+      ModeInfo.encode(message.mode_info, writer.uint32(18).fork()).ldelim();
     }
 
     if (!message.sequence.isZero()) {
@@ -1141,11 +1141,11 @@ export const SignerInfo = {
 
       switch (tag >>> 3) {
         case 1:
-          message.publicKey = Any.decode(reader, reader.uint32());
+          message.public_key = Any.decode(reader, reader.uint32());
           break;
 
         case 2:
-          message.modeInfo = ModeInfo.decode(reader, reader.uint32());
+          message.mode_info = ModeInfo.decode(reader, reader.uint32());
           break;
 
         case 3:
@@ -1163,24 +1163,24 @@ export const SignerInfo = {
 
   fromJSON(object: any): SignerInfo {
     return {
-      publicKey: isSet(object.publicKey) ? Any.fromJSON(object.publicKey) : undefined,
-      modeInfo: isSet(object.modeInfo) ? ModeInfo.fromJSON(object.modeInfo) : undefined,
+      public_key: isSet(object.public_key) ? Any.fromJSON(object.public_key) : undefined,
+      mode_info: isSet(object.mode_info) ? ModeInfo.fromJSON(object.mode_info) : undefined,
       sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO
     };
   },
 
   toJSON(message: SignerInfo): unknown {
     const obj: any = {};
-    message.publicKey !== undefined && (obj.publicKey = message.publicKey ? Any.toJSON(message.publicKey) : undefined);
-    message.modeInfo !== undefined && (obj.modeInfo = message.modeInfo ? ModeInfo.toJSON(message.modeInfo) : undefined);
+    message.public_key !== undefined && (obj.public_key = message.public_key ? Any.toJSON(message.public_key) : undefined);
+    message.mode_info !== undefined && (obj.mode_info = message.mode_info ? ModeInfo.toJSON(message.mode_info) : undefined);
     message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<SignerInfo>, I>>(object: I): SignerInfo {
     const message = createBaseSignerInfo();
-    message.publicKey = object.publicKey !== undefined && object.publicKey !== null ? Any.fromPartial(object.publicKey) : undefined;
-    message.modeInfo = object.modeInfo !== undefined && object.modeInfo !== null ? ModeInfo.fromPartial(object.modeInfo) : undefined;
+    message.public_key = object.public_key !== undefined && object.public_key !== null ? Any.fromPartial(object.public_key) : undefined;
+    message.mode_info = object.mode_info !== undefined && object.mode_info !== null ? ModeInfo.fromPartial(object.mode_info) : undefined;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
   }
@@ -1316,7 +1316,7 @@ export const ModeInfo_Single = {
 function createBaseModeInfo_Multi(): ModeInfo_Multi {
   return {
     bitarray: undefined,
-    modeInfos: []
+    mode_infos: []
   };
 }
 
@@ -1326,7 +1326,7 @@ export const ModeInfo_Multi = {
       CompactBitArray.encode(message.bitarray, writer.uint32(10).fork()).ldelim();
     }
 
-    for (const v of message.modeInfos) {
+    for (const v of message.mode_infos) {
       ModeInfo.encode(v!, writer.uint32(18).fork()).ldelim();
     }
 
@@ -1347,7 +1347,7 @@ export const ModeInfo_Multi = {
           break;
 
         case 2:
-          message.modeInfos.push(ModeInfo.decode(reader, reader.uint32()));
+          message.mode_infos.push(ModeInfo.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -1362,7 +1362,7 @@ export const ModeInfo_Multi = {
   fromJSON(object: any): ModeInfo_Multi {
     return {
       bitarray: isSet(object.bitarray) ? CompactBitArray.fromJSON(object.bitarray) : undefined,
-      modeInfos: Array.isArray(object?.modeInfos) ? object.modeInfos.map((e: any) => ModeInfo.fromJSON(e)) : []
+      mode_infos: Array.isArray(object?.mode_infos) ? object.mode_infos.map((e: any) => ModeInfo.fromJSON(e)) : []
     };
   },
 
@@ -1370,10 +1370,10 @@ export const ModeInfo_Multi = {
     const obj: any = {};
     message.bitarray !== undefined && (obj.bitarray = message.bitarray ? CompactBitArray.toJSON(message.bitarray) : undefined);
 
-    if (message.modeInfos) {
-      obj.modeInfos = message.modeInfos.map(e => e ? ModeInfo.toJSON(e) : undefined);
+    if (message.mode_infos) {
+      obj.mode_infos = message.mode_infos.map(e => e ? ModeInfo.toJSON(e) : undefined);
     } else {
-      obj.modeInfos = [];
+      obj.mode_infos = [];
     }
 
     return obj;
@@ -1382,7 +1382,7 @@ export const ModeInfo_Multi = {
   fromPartial<I extends Exact<DeepPartial<ModeInfo_Multi>, I>>(object: I): ModeInfo_Multi {
     const message = createBaseModeInfo_Multi();
     message.bitarray = object.bitarray !== undefined && object.bitarray !== null ? CompactBitArray.fromPartial(object.bitarray) : undefined;
-    message.modeInfos = object.modeInfos?.map(e => ModeInfo.fromPartial(e)) || [];
+    message.mode_infos = object.mode_infos?.map(e => ModeInfo.fromPartial(e)) || [];
     return message;
   }
 
@@ -1391,7 +1391,7 @@ export const ModeInfo_Multi = {
 function createBaseFee(): Fee {
   return {
     amount: [],
-    gasLimit: Long.UZERO,
+    gas_limit: Long.UZERO,
     payer: "",
     granter: ""
   };
@@ -1403,8 +1403,8 @@ export const Fee = {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
-    if (!message.gasLimit.isZero()) {
-      writer.uint32(16).uint64(message.gasLimit);
+    if (!message.gas_limit.isZero()) {
+      writer.uint32(16).uint64(message.gas_limit);
     }
 
     if (message.payer !== "") {
@@ -1432,7 +1432,7 @@ export const Fee = {
           break;
 
         case 2:
-          message.gasLimit = (reader.uint64() as Long);
+          message.gas_limit = (reader.uint64() as Long);
           break;
 
         case 3:
@@ -1455,7 +1455,7 @@ export const Fee = {
   fromJSON(object: any): Fee {
     return {
       amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromJSON(e)) : [],
-      gasLimit: isSet(object.gasLimit) ? Long.fromValue(object.gasLimit) : Long.UZERO,
+      gas_limit: isSet(object.gas_limit) ? Long.fromValue(object.gas_limit) : Long.UZERO,
       payer: isSet(object.payer) ? String(object.payer) : "",
       granter: isSet(object.granter) ? String(object.granter) : ""
     };
@@ -1470,7 +1470,7 @@ export const Fee = {
       obj.amount = [];
     }
 
-    message.gasLimit !== undefined && (obj.gasLimit = (message.gasLimit || Long.UZERO).toString());
+    message.gas_limit !== undefined && (obj.gas_limit = (message.gas_limit || Long.UZERO).toString());
     message.payer !== undefined && (obj.payer = message.payer);
     message.granter !== undefined && (obj.granter = message.granter);
     return obj;
@@ -1479,7 +1479,7 @@ export const Fee = {
   fromPartial<I extends Exact<DeepPartial<Fee>, I>>(object: I): Fee {
     const message = createBaseFee();
     message.amount = object.amount?.map(e => Coin.fromPartial(e)) || [];
-    message.gasLimit = object.gasLimit !== undefined && object.gasLimit !== null ? Long.fromValue(object.gasLimit) : Long.UZERO;
+    message.gas_limit = object.gas_limit !== undefined && object.gas_limit !== null ? Long.fromValue(object.gas_limit) : Long.UZERO;
     message.payer = object.payer ?? "";
     message.granter = object.granter ?? "";
     return message;
@@ -1565,7 +1565,7 @@ export const Tip = {
 function createBaseAuxSignerData(): AuxSignerData {
   return {
     address: "",
-    signDoc: undefined,
+    sign_doc: undefined,
     mode: 0,
     sig: new Uint8Array()
   };
@@ -1577,8 +1577,8 @@ export const AuxSignerData = {
       writer.uint32(10).string(message.address);
     }
 
-    if (message.signDoc !== undefined) {
-      SignDocDirectAux.encode(message.signDoc, writer.uint32(18).fork()).ldelim();
+    if (message.sign_doc !== undefined) {
+      SignDocDirectAux.encode(message.sign_doc, writer.uint32(18).fork()).ldelim();
     }
 
     if (message.mode !== 0) {
@@ -1606,7 +1606,7 @@ export const AuxSignerData = {
           break;
 
         case 2:
-          message.signDoc = SignDocDirectAux.decode(reader, reader.uint32());
+          message.sign_doc = SignDocDirectAux.decode(reader, reader.uint32());
           break;
 
         case 3:
@@ -1629,7 +1629,7 @@ export const AuxSignerData = {
   fromJSON(object: any): AuxSignerData {
     return {
       address: isSet(object.address) ? String(object.address) : "",
-      signDoc: isSet(object.signDoc) ? SignDocDirectAux.fromJSON(object.signDoc) : undefined,
+      sign_doc: isSet(object.sign_doc) ? SignDocDirectAux.fromJSON(object.sign_doc) : undefined,
       mode: isSet(object.mode) ? signModeFromJSON(object.mode) : 0,
       sig: isSet(object.sig) ? bytesFromBase64(object.sig) : new Uint8Array()
     };
@@ -1638,7 +1638,7 @@ export const AuxSignerData = {
   toJSON(message: AuxSignerData): unknown {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
-    message.signDoc !== undefined && (obj.signDoc = message.signDoc ? SignDocDirectAux.toJSON(message.signDoc) : undefined);
+    message.sign_doc !== undefined && (obj.sign_doc = message.sign_doc ? SignDocDirectAux.toJSON(message.sign_doc) : undefined);
     message.mode !== undefined && (obj.mode = signModeToJSON(message.mode));
     message.sig !== undefined && (obj.sig = base64FromBytes(message.sig !== undefined ? message.sig : new Uint8Array()));
     return obj;
@@ -1647,7 +1647,7 @@ export const AuxSignerData = {
   fromPartial<I extends Exact<DeepPartial<AuxSignerData>, I>>(object: I): AuxSignerData {
     const message = createBaseAuxSignerData();
     message.address = object.address ?? "";
-    message.signDoc = object.signDoc !== undefined && object.signDoc !== null ? SignDocDirectAux.fromPartial(object.signDoc) : undefined;
+    message.sign_doc = object.sign_doc !== undefined && object.sign_doc !== null ? SignDocDirectAux.fromPartial(object.sign_doc) : undefined;
     message.mode = object.mode ?? 0;
     message.sig = object.sig ?? new Uint8Array();
     return message;

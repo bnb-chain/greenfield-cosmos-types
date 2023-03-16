@@ -68,7 +68,7 @@ export interface Description {
   website: string;
   /** security_contact defines an optional email for security contact. */
 
-  securityContact: string;
+  security_contact: string;
   /** details define other optional details. */
 
   details: string;
@@ -81,19 +81,19 @@ export interface Description {
 
 export interface StorageProvider {
   /** operator_address defines the account address of the storage provider's operator; It also is the unique index key of sp. */
-  operatorAddress: string;
+  operator_address: string;
   /** funding_address defines one of the storage provider's accounts which is used to deposit and reward. */
 
-  fundingAddress: string;
+  funding_address: string;
   /** seal_address defines one of the storage provider's accounts which is used to SealObject */
 
-  sealAddress: string;
+  seal_address: string;
   /** approval_address defines one of the storage provider's accounts which is used to approve use's createBucket/createObject request */
 
-  approvalAddress: string;
+  approval_address: string;
   /** total_deposit defines the number of tokens deposited by this storage provider for staking. */
 
-  totalDeposit: string;
+  total_deposit: string;
   /** status defines the current service status of this storage provider */
 
   status: Status;
@@ -112,19 +112,19 @@ export interface RewardInfo {
 
 export interface SpStoragePrice {
   /** sp address */
-  spAddress: string;
+  sp_address: string;
   /** update time, in unix timestamp */
 
-  updateTime: Long;
+  update_time: Long;
   /** read price, in bnb wei per charge byte */
 
-  readPrice: string;
+  read_price: string;
   /** free read quota, in byte */
 
-  freeReadQuota: Long;
+  free_read_quota: Long;
   /** store price, in bnb wei per charge byte */
 
-  storePrice: string;
+  store_price: string;
 }
 /**
  * global secondary sp store price
@@ -133,10 +133,10 @@ export interface SpStoragePrice {
 
 export interface SecondarySpStorePrice {
   /** update time, in unix timestamp */
-  updateTime: Long;
+  update_time: Long;
   /** store price, in bnb wei per charge byte */
 
-  storePrice: string;
+  store_price: string;
 }
 
 function createBaseDescription(): Description {
@@ -144,7 +144,7 @@ function createBaseDescription(): Description {
     moniker: "",
     identity: "",
     website: "",
-    securityContact: "",
+    security_contact: "",
     details: ""
   };
 }
@@ -163,8 +163,8 @@ export const Description = {
       writer.uint32(26).string(message.website);
     }
 
-    if (message.securityContact !== "") {
-      writer.uint32(34).string(message.securityContact);
+    if (message.security_contact !== "") {
+      writer.uint32(34).string(message.security_contact);
     }
 
     if (message.details !== "") {
@@ -196,7 +196,7 @@ export const Description = {
           break;
 
         case 4:
-          message.securityContact = reader.string();
+          message.security_contact = reader.string();
           break;
 
         case 5:
@@ -217,7 +217,7 @@ export const Description = {
       moniker: isSet(object.moniker) ? String(object.moniker) : "",
       identity: isSet(object.identity) ? String(object.identity) : "",
       website: isSet(object.website) ? String(object.website) : "",
-      securityContact: isSet(object.securityContact) ? String(object.securityContact) : "",
+      security_contact: isSet(object.security_contact) ? String(object.security_contact) : "",
       details: isSet(object.details) ? String(object.details) : ""
     };
   },
@@ -227,7 +227,7 @@ export const Description = {
     message.moniker !== undefined && (obj.moniker = message.moniker);
     message.identity !== undefined && (obj.identity = message.identity);
     message.website !== undefined && (obj.website = message.website);
-    message.securityContact !== undefined && (obj.securityContact = message.securityContact);
+    message.security_contact !== undefined && (obj.security_contact = message.security_contact);
     message.details !== undefined && (obj.details = message.details);
     return obj;
   },
@@ -237,7 +237,7 @@ export const Description = {
     message.moniker = object.moniker ?? "";
     message.identity = object.identity ?? "";
     message.website = object.website ?? "";
-    message.securityContact = object.securityContact ?? "";
+    message.security_contact = object.security_contact ?? "";
     message.details = object.details ?? "";
     return message;
   }
@@ -246,11 +246,11 @@ export const Description = {
 
 function createBaseStorageProvider(): StorageProvider {
   return {
-    operatorAddress: "",
-    fundingAddress: "",
-    sealAddress: "",
-    approvalAddress: "",
-    totalDeposit: "",
+    operator_address: "",
+    funding_address: "",
+    seal_address: "",
+    approval_address: "",
+    total_deposit: "",
     status: 0,
     endpoint: "",
     description: undefined
@@ -259,24 +259,24 @@ function createBaseStorageProvider(): StorageProvider {
 
 export const StorageProvider = {
   encode(message: StorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.operatorAddress !== "") {
-      writer.uint32(10).string(message.operatorAddress);
+    if (message.operator_address !== "") {
+      writer.uint32(10).string(message.operator_address);
     }
 
-    if (message.fundingAddress !== "") {
-      writer.uint32(18).string(message.fundingAddress);
+    if (message.funding_address !== "") {
+      writer.uint32(18).string(message.funding_address);
     }
 
-    if (message.sealAddress !== "") {
-      writer.uint32(26).string(message.sealAddress);
+    if (message.seal_address !== "") {
+      writer.uint32(26).string(message.seal_address);
     }
 
-    if (message.approvalAddress !== "") {
-      writer.uint32(34).string(message.approvalAddress);
+    if (message.approval_address !== "") {
+      writer.uint32(34).string(message.approval_address);
     }
 
-    if (message.totalDeposit !== "") {
-      writer.uint32(42).string(message.totalDeposit);
+    if (message.total_deposit !== "") {
+      writer.uint32(42).string(message.total_deposit);
     }
 
     if (message.status !== 0) {
@@ -304,23 +304,23 @@ export const StorageProvider = {
 
       switch (tag >>> 3) {
         case 1:
-          message.operatorAddress = reader.string();
+          message.operator_address = reader.string();
           break;
 
         case 2:
-          message.fundingAddress = reader.string();
+          message.funding_address = reader.string();
           break;
 
         case 3:
-          message.sealAddress = reader.string();
+          message.seal_address = reader.string();
           break;
 
         case 4:
-          message.approvalAddress = reader.string();
+          message.approval_address = reader.string();
           break;
 
         case 5:
-          message.totalDeposit = reader.string();
+          message.total_deposit = reader.string();
           break;
 
         case 6:
@@ -346,11 +346,11 @@ export const StorageProvider = {
 
   fromJSON(object: any): StorageProvider {
     return {
-      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
-      fundingAddress: isSet(object.fundingAddress) ? String(object.fundingAddress) : "",
-      sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
-      approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
-      totalDeposit: isSet(object.totalDeposit) ? String(object.totalDeposit) : "",
+      operator_address: isSet(object.operator_address) ? String(object.operator_address) : "",
+      funding_address: isSet(object.funding_address) ? String(object.funding_address) : "",
+      seal_address: isSet(object.seal_address) ? String(object.seal_address) : "",
+      approval_address: isSet(object.approval_address) ? String(object.approval_address) : "",
+      total_deposit: isSet(object.total_deposit) ? String(object.total_deposit) : "",
       status: isSet(object.status) ? statusFromJSON(object.status) : 0,
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
       description: isSet(object.description) ? Description.fromJSON(object.description) : undefined
@@ -359,11 +359,11 @@ export const StorageProvider = {
 
   toJSON(message: StorageProvider): unknown {
     const obj: any = {};
-    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
-    message.fundingAddress !== undefined && (obj.fundingAddress = message.fundingAddress);
-    message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
-    message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
-    message.totalDeposit !== undefined && (obj.totalDeposit = message.totalDeposit);
+    message.operator_address !== undefined && (obj.operator_address = message.operator_address);
+    message.funding_address !== undefined && (obj.funding_address = message.funding_address);
+    message.seal_address !== undefined && (obj.seal_address = message.seal_address);
+    message.approval_address !== undefined && (obj.approval_address = message.approval_address);
+    message.total_deposit !== undefined && (obj.total_deposit = message.total_deposit);
     message.status !== undefined && (obj.status = statusToJSON(message.status));
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
     message.description !== undefined && (obj.description = message.description ? Description.toJSON(message.description) : undefined);
@@ -372,11 +372,11 @@ export const StorageProvider = {
 
   fromPartial<I extends Exact<DeepPartial<StorageProvider>, I>>(object: I): StorageProvider {
     const message = createBaseStorageProvider();
-    message.operatorAddress = object.operatorAddress ?? "";
-    message.fundingAddress = object.fundingAddress ?? "";
-    message.sealAddress = object.sealAddress ?? "";
-    message.approvalAddress = object.approvalAddress ?? "";
-    message.totalDeposit = object.totalDeposit ?? "";
+    message.operator_address = object.operator_address ?? "";
+    message.funding_address = object.funding_address ?? "";
+    message.seal_address = object.seal_address ?? "";
+    message.approval_address = object.approval_address ?? "";
+    message.total_deposit = object.total_deposit ?? "";
     message.status = object.status ?? 0;
     message.endpoint = object.endpoint ?? "";
     message.description = object.description !== undefined && object.description !== null ? Description.fromPartial(object.description) : undefined;
@@ -456,34 +456,34 @@ export const RewardInfo = {
 
 function createBaseSpStoragePrice(): SpStoragePrice {
   return {
-    spAddress: "",
-    updateTime: Long.ZERO,
-    readPrice: "",
-    freeReadQuota: Long.UZERO,
-    storePrice: ""
+    sp_address: "",
+    update_time: Long.ZERO,
+    read_price: "",
+    free_read_quota: Long.UZERO,
+    store_price: ""
   };
 }
 
 export const SpStoragePrice = {
   encode(message: SpStoragePrice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spAddress !== "") {
-      writer.uint32(10).string(message.spAddress);
+    if (message.sp_address !== "") {
+      writer.uint32(10).string(message.sp_address);
     }
 
-    if (!message.updateTime.isZero()) {
-      writer.uint32(16).int64(message.updateTime);
+    if (!message.update_time.isZero()) {
+      writer.uint32(16).int64(message.update_time);
     }
 
-    if (message.readPrice !== "") {
-      writer.uint32(26).string(message.readPrice);
+    if (message.read_price !== "") {
+      writer.uint32(26).string(message.read_price);
     }
 
-    if (!message.freeReadQuota.isZero()) {
-      writer.uint32(32).uint64(message.freeReadQuota);
+    if (!message.free_read_quota.isZero()) {
+      writer.uint32(32).uint64(message.free_read_quota);
     }
 
-    if (message.storePrice !== "") {
-      writer.uint32(42).string(message.storePrice);
+    if (message.store_price !== "") {
+      writer.uint32(42).string(message.store_price);
     }
 
     return writer;
@@ -499,23 +499,23 @@ export const SpStoragePrice = {
 
       switch (tag >>> 3) {
         case 1:
-          message.spAddress = reader.string();
+          message.sp_address = reader.string();
           break;
 
         case 2:
-          message.updateTime = (reader.int64() as Long);
+          message.update_time = (reader.int64() as Long);
           break;
 
         case 3:
-          message.readPrice = reader.string();
+          message.read_price = reader.string();
           break;
 
         case 4:
-          message.freeReadQuota = (reader.uint64() as Long);
+          message.free_read_quota = (reader.uint64() as Long);
           break;
 
         case 5:
-          message.storePrice = reader.string();
+          message.store_price = reader.string();
           break;
 
         default:
@@ -529,31 +529,31 @@ export const SpStoragePrice = {
 
   fromJSON(object: any): SpStoragePrice {
     return {
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
-      updateTime: isSet(object.updateTime) ? Long.fromValue(object.updateTime) : Long.ZERO,
-      readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
-      freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
-      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+      sp_address: isSet(object.sp_address) ? String(object.sp_address) : "",
+      update_time: isSet(object.update_time) ? Long.fromValue(object.update_time) : Long.ZERO,
+      read_price: isSet(object.read_price) ? String(object.read_price) : "",
+      free_read_quota: isSet(object.free_read_quota) ? Long.fromValue(object.free_read_quota) : Long.UZERO,
+      store_price: isSet(object.store_price) ? String(object.store_price) : ""
     };
   },
 
   toJSON(message: SpStoragePrice): unknown {
     const obj: any = {};
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
-    message.updateTime !== undefined && (obj.updateTime = (message.updateTime || Long.ZERO).toString());
-    message.readPrice !== undefined && (obj.readPrice = message.readPrice);
-    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
-    message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    message.sp_address !== undefined && (obj.sp_address = message.sp_address);
+    message.update_time !== undefined && (obj.update_time = (message.update_time || Long.ZERO).toString());
+    message.read_price !== undefined && (obj.read_price = message.read_price);
+    message.free_read_quota !== undefined && (obj.free_read_quota = (message.free_read_quota || Long.UZERO).toString());
+    message.store_price !== undefined && (obj.store_price = message.store_price);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<SpStoragePrice>, I>>(object: I): SpStoragePrice {
     const message = createBaseSpStoragePrice();
-    message.spAddress = object.spAddress ?? "";
-    message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Long.fromValue(object.updateTime) : Long.ZERO;
-    message.readPrice = object.readPrice ?? "";
-    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
-    message.storePrice = object.storePrice ?? "";
+    message.sp_address = object.sp_address ?? "";
+    message.update_time = object.update_time !== undefined && object.update_time !== null ? Long.fromValue(object.update_time) : Long.ZERO;
+    message.read_price = object.read_price ?? "";
+    message.free_read_quota = object.free_read_quota !== undefined && object.free_read_quota !== null ? Long.fromValue(object.free_read_quota) : Long.UZERO;
+    message.store_price = object.store_price ?? "";
     return message;
   }
 
@@ -561,19 +561,19 @@ export const SpStoragePrice = {
 
 function createBaseSecondarySpStorePrice(): SecondarySpStorePrice {
   return {
-    updateTime: Long.ZERO,
-    storePrice: ""
+    update_time: Long.ZERO,
+    store_price: ""
   };
 }
 
 export const SecondarySpStorePrice = {
   encode(message: SecondarySpStorePrice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.updateTime.isZero()) {
-      writer.uint32(8).int64(message.updateTime);
+    if (!message.update_time.isZero()) {
+      writer.uint32(8).int64(message.update_time);
     }
 
-    if (message.storePrice !== "") {
-      writer.uint32(18).string(message.storePrice);
+    if (message.store_price !== "") {
+      writer.uint32(18).string(message.store_price);
     }
 
     return writer;
@@ -589,11 +589,11 @@ export const SecondarySpStorePrice = {
 
       switch (tag >>> 3) {
         case 1:
-          message.updateTime = (reader.int64() as Long);
+          message.update_time = (reader.int64() as Long);
           break;
 
         case 2:
-          message.storePrice = reader.string();
+          message.store_price = reader.string();
           break;
 
         default:
@@ -607,22 +607,22 @@ export const SecondarySpStorePrice = {
 
   fromJSON(object: any): SecondarySpStorePrice {
     return {
-      updateTime: isSet(object.updateTime) ? Long.fromValue(object.updateTime) : Long.ZERO,
-      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+      update_time: isSet(object.update_time) ? Long.fromValue(object.update_time) : Long.ZERO,
+      store_price: isSet(object.store_price) ? String(object.store_price) : ""
     };
   },
 
   toJSON(message: SecondarySpStorePrice): unknown {
     const obj: any = {};
-    message.updateTime !== undefined && (obj.updateTime = (message.updateTime || Long.ZERO).toString());
-    message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    message.update_time !== undefined && (obj.update_time = (message.update_time || Long.ZERO).toString());
+    message.store_price !== undefined && (obj.store_price = message.store_price);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<SecondarySpStorePrice>, I>>(object: I): SecondarySpStorePrice {
     const message = createBaseSecondarySpStorePrice();
-    message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Long.fromValue(object.updateTime) : Long.ZERO;
-    message.storePrice = object.storePrice ?? "";
+    message.update_time = object.update_time !== undefined && object.update_time !== null ? Long.fromValue(object.update_time) : Long.ZERO;
+    message.store_price = object.store_price ?? "";
     return message;
   }
 

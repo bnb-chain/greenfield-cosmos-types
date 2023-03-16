@@ -8,19 +8,19 @@ export interface MsgSubmit {
   challenger: string;
   /** The storage provider to be challenged. */
 
-  spOperatorAddress: string;
+  sp_operator_address: string;
   /** The bucket of the object info to be challenged. */
 
-  bucketName: string;
+  bucket_name: string;
   /** The name of the object info to be challenged. */
 
-  objectName: string;
+  object_name: string;
   /** The index of segment/piece to challenge, start from zero. */
 
-  segmentIndex: number;
+  segment_index: number;
   /** Randomly pick a segment/piece to challenge or not. */
 
-  randomIndex: boolean;
+  random_index: boolean;
 }
 export interface MsgSubmitResponse {}
 export interface MsgAttest {
@@ -28,36 +28,36 @@ export interface MsgAttest {
   submitter: string;
   /** The id of the challenge. */
 
-  challengeId: Long;
+  challenge_id: Long;
   /** The id of the object info. */
 
-  objectId: string;
+  object_id: string;
   /** The storage provider to be challenged. */
 
-  spOperatorAddress: string;
+  sp_operator_address: string;
   /** Vote result of the attestation. */
 
-  voteResult: VoteResult;
+  vote_result: VoteResult;
   /** The challenger who submits the challenge, which can be empty. */
 
-  challengerAddress: string;
+  challenger_address: string;
   /** The validators participated in the attestation. */
 
-  voteValidatorSet: Long[];
+  vote_validator_set: Long[];
   /** The aggregated BLS signature from the validators. */
 
-  voteAggSignature: Uint8Array;
+  vote_agg_signature: Uint8Array;
 }
 export interface MsgAttestResponse {}
 
 function createBaseMsgSubmit(): MsgSubmit {
   return {
     challenger: "",
-    spOperatorAddress: "",
-    bucketName: "",
-    objectName: "",
-    segmentIndex: 0,
-    randomIndex: false
+    sp_operator_address: "",
+    bucket_name: "",
+    object_name: "",
+    segment_index: 0,
+    random_index: false
   };
 }
 
@@ -67,24 +67,24 @@ export const MsgSubmit = {
       writer.uint32(10).string(message.challenger);
     }
 
-    if (message.spOperatorAddress !== "") {
-      writer.uint32(18).string(message.spOperatorAddress);
+    if (message.sp_operator_address !== "") {
+      writer.uint32(18).string(message.sp_operator_address);
     }
 
-    if (message.bucketName !== "") {
-      writer.uint32(26).string(message.bucketName);
+    if (message.bucket_name !== "") {
+      writer.uint32(26).string(message.bucket_name);
     }
 
-    if (message.objectName !== "") {
-      writer.uint32(34).string(message.objectName);
+    if (message.object_name !== "") {
+      writer.uint32(34).string(message.object_name);
     }
 
-    if (message.segmentIndex !== 0) {
-      writer.uint32(40).uint32(message.segmentIndex);
+    if (message.segment_index !== 0) {
+      writer.uint32(40).uint32(message.segment_index);
     }
 
-    if (message.randomIndex === true) {
-      writer.uint32(48).bool(message.randomIndex);
+    if (message.random_index === true) {
+      writer.uint32(48).bool(message.random_index);
     }
 
     return writer;
@@ -104,23 +104,23 @@ export const MsgSubmit = {
           break;
 
         case 2:
-          message.spOperatorAddress = reader.string();
+          message.sp_operator_address = reader.string();
           break;
 
         case 3:
-          message.bucketName = reader.string();
+          message.bucket_name = reader.string();
           break;
 
         case 4:
-          message.objectName = reader.string();
+          message.object_name = reader.string();
           break;
 
         case 5:
-          message.segmentIndex = reader.uint32();
+          message.segment_index = reader.uint32();
           break;
 
         case 6:
-          message.randomIndex = reader.bool();
+          message.random_index = reader.bool();
           break;
 
         default:
@@ -135,33 +135,33 @@ export const MsgSubmit = {
   fromJSON(object: any): MsgSubmit {
     return {
       challenger: isSet(object.challenger) ? String(object.challenger) : "",
-      spOperatorAddress: isSet(object.spOperatorAddress) ? String(object.spOperatorAddress) : "",
-      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
-      objectName: isSet(object.objectName) ? String(object.objectName) : "",
-      segmentIndex: isSet(object.segmentIndex) ? Number(object.segmentIndex) : 0,
-      randomIndex: isSet(object.randomIndex) ? Boolean(object.randomIndex) : false
+      sp_operator_address: isSet(object.sp_operator_address) ? String(object.sp_operator_address) : "",
+      bucket_name: isSet(object.bucket_name) ? String(object.bucket_name) : "",
+      object_name: isSet(object.object_name) ? String(object.object_name) : "",
+      segment_index: isSet(object.segment_index) ? Number(object.segment_index) : 0,
+      random_index: isSet(object.random_index) ? Boolean(object.random_index) : false
     };
   },
 
   toJSON(message: MsgSubmit): unknown {
     const obj: any = {};
     message.challenger !== undefined && (obj.challenger = message.challenger);
-    message.spOperatorAddress !== undefined && (obj.spOperatorAddress = message.spOperatorAddress);
-    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
-    message.objectName !== undefined && (obj.objectName = message.objectName);
-    message.segmentIndex !== undefined && (obj.segmentIndex = Math.round(message.segmentIndex));
-    message.randomIndex !== undefined && (obj.randomIndex = message.randomIndex);
+    message.sp_operator_address !== undefined && (obj.sp_operator_address = message.sp_operator_address);
+    message.bucket_name !== undefined && (obj.bucket_name = message.bucket_name);
+    message.object_name !== undefined && (obj.object_name = message.object_name);
+    message.segment_index !== undefined && (obj.segment_index = Math.round(message.segment_index));
+    message.random_index !== undefined && (obj.random_index = message.random_index);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgSubmit>, I>>(object: I): MsgSubmit {
     const message = createBaseMsgSubmit();
     message.challenger = object.challenger ?? "";
-    message.spOperatorAddress = object.spOperatorAddress ?? "";
-    message.bucketName = object.bucketName ?? "";
-    message.objectName = object.objectName ?? "";
-    message.segmentIndex = object.segmentIndex ?? 0;
-    message.randomIndex = object.randomIndex ?? false;
+    message.sp_operator_address = object.sp_operator_address ?? "";
+    message.bucket_name = object.bucket_name ?? "";
+    message.object_name = object.object_name ?? "";
+    message.segment_index = object.segment_index ?? 0;
+    message.random_index = object.random_index ?? false;
     return message;
   }
 
@@ -213,13 +213,13 @@ export const MsgSubmitResponse = {
 function createBaseMsgAttest(): MsgAttest {
   return {
     submitter: "",
-    challengeId: Long.UZERO,
-    objectId: "",
-    spOperatorAddress: "",
-    voteResult: 0,
-    challengerAddress: "",
-    voteValidatorSet: [],
-    voteAggSignature: new Uint8Array()
+    challenge_id: Long.UZERO,
+    object_id: "",
+    sp_operator_address: "",
+    vote_result: 0,
+    challenger_address: "",
+    vote_validator_set: [],
+    vote_agg_signature: new Uint8Array()
   };
 }
 
@@ -229,36 +229,36 @@ export const MsgAttest = {
       writer.uint32(10).string(message.submitter);
     }
 
-    if (!message.challengeId.isZero()) {
-      writer.uint32(16).uint64(message.challengeId);
+    if (!message.challenge_id.isZero()) {
+      writer.uint32(16).uint64(message.challenge_id);
     }
 
-    if (message.objectId !== "") {
-      writer.uint32(26).string(message.objectId);
+    if (message.object_id !== "") {
+      writer.uint32(26).string(message.object_id);
     }
 
-    if (message.spOperatorAddress !== "") {
-      writer.uint32(34).string(message.spOperatorAddress);
+    if (message.sp_operator_address !== "") {
+      writer.uint32(34).string(message.sp_operator_address);
     }
 
-    if (message.voteResult !== 0) {
-      writer.uint32(40).int32(message.voteResult);
+    if (message.vote_result !== 0) {
+      writer.uint32(40).int32(message.vote_result);
     }
 
-    if (message.challengerAddress !== "") {
-      writer.uint32(50).string(message.challengerAddress);
+    if (message.challenger_address !== "") {
+      writer.uint32(50).string(message.challenger_address);
     }
 
     writer.uint32(58).fork();
 
-    for (const v of message.voteValidatorSet) {
+    for (const v of message.vote_validator_set) {
       writer.fixed64(v);
     }
 
     writer.ldelim();
 
-    if (message.voteAggSignature.length !== 0) {
-      writer.uint32(66).bytes(message.voteAggSignature);
+    if (message.vote_agg_signature.length !== 0) {
+      writer.uint32(66).bytes(message.vote_agg_signature);
     }
 
     return writer;
@@ -278,23 +278,23 @@ export const MsgAttest = {
           break;
 
         case 2:
-          message.challengeId = (reader.uint64() as Long);
+          message.challenge_id = (reader.uint64() as Long);
           break;
 
         case 3:
-          message.objectId = reader.string();
+          message.object_id = reader.string();
           break;
 
         case 4:
-          message.spOperatorAddress = reader.string();
+          message.sp_operator_address = reader.string();
           break;
 
         case 5:
-          message.voteResult = (reader.int32() as any);
+          message.vote_result = (reader.int32() as any);
           break;
 
         case 6:
-          message.challengerAddress = reader.string();
+          message.challenger_address = reader.string();
           break;
 
         case 7:
@@ -302,16 +302,16 @@ export const MsgAttest = {
             const end2 = reader.uint32() + reader.pos;
 
             while (reader.pos < end2) {
-              message.voteValidatorSet.push((reader.fixed64() as Long));
+              message.vote_validator_set.push((reader.fixed64() as Long));
             }
           } else {
-            message.voteValidatorSet.push((reader.fixed64() as Long));
+            message.vote_validator_set.push((reader.fixed64() as Long));
           }
 
           break;
 
         case 8:
-          message.voteAggSignature = reader.bytes();
+          message.vote_agg_signature = reader.bytes();
           break;
 
         default:
@@ -326,45 +326,45 @@ export const MsgAttest = {
   fromJSON(object: any): MsgAttest {
     return {
       submitter: isSet(object.submitter) ? String(object.submitter) : "",
-      challengeId: isSet(object.challengeId) ? Long.fromValue(object.challengeId) : Long.UZERO,
-      objectId: isSet(object.objectId) ? String(object.objectId) : "",
-      spOperatorAddress: isSet(object.spOperatorAddress) ? String(object.spOperatorAddress) : "",
-      voteResult: isSet(object.voteResult) ? voteResultFromJSON(object.voteResult) : 0,
-      challengerAddress: isSet(object.challengerAddress) ? String(object.challengerAddress) : "",
-      voteValidatorSet: Array.isArray(object?.voteValidatorSet) ? object.voteValidatorSet.map((e: any) => Long.fromValue(e)) : [],
-      voteAggSignature: isSet(object.voteAggSignature) ? bytesFromBase64(object.voteAggSignature) : new Uint8Array()
+      challenge_id: isSet(object.challenge_id) ? Long.fromValue(object.challenge_id) : Long.UZERO,
+      object_id: isSet(object.object_id) ? String(object.object_id) : "",
+      sp_operator_address: isSet(object.sp_operator_address) ? String(object.sp_operator_address) : "",
+      vote_result: isSet(object.vote_result) ? voteResultFromJSON(object.vote_result) : 0,
+      challenger_address: isSet(object.challenger_address) ? String(object.challenger_address) : "",
+      vote_validator_set: Array.isArray(object?.vote_validator_set) ? object.vote_validator_set.map((e: any) => Long.fromValue(e)) : [],
+      vote_agg_signature: isSet(object.vote_agg_signature) ? bytesFromBase64(object.vote_agg_signature) : new Uint8Array()
     };
   },
 
   toJSON(message: MsgAttest): unknown {
     const obj: any = {};
     message.submitter !== undefined && (obj.submitter = message.submitter);
-    message.challengeId !== undefined && (obj.challengeId = (message.challengeId || Long.UZERO).toString());
-    message.objectId !== undefined && (obj.objectId = message.objectId);
-    message.spOperatorAddress !== undefined && (obj.spOperatorAddress = message.spOperatorAddress);
-    message.voteResult !== undefined && (obj.voteResult = voteResultToJSON(message.voteResult));
-    message.challengerAddress !== undefined && (obj.challengerAddress = message.challengerAddress);
+    message.challenge_id !== undefined && (obj.challenge_id = (message.challenge_id || Long.UZERO).toString());
+    message.object_id !== undefined && (obj.object_id = message.object_id);
+    message.sp_operator_address !== undefined && (obj.sp_operator_address = message.sp_operator_address);
+    message.vote_result !== undefined && (obj.vote_result = voteResultToJSON(message.vote_result));
+    message.challenger_address !== undefined && (obj.challenger_address = message.challenger_address);
 
-    if (message.voteValidatorSet) {
-      obj.voteValidatorSet = message.voteValidatorSet.map(e => (e || Long.ZERO).toString());
+    if (message.vote_validator_set) {
+      obj.vote_validator_set = message.vote_validator_set.map(e => (e || Long.ZERO).toString());
     } else {
-      obj.voteValidatorSet = [];
+      obj.vote_validator_set = [];
     }
 
-    message.voteAggSignature !== undefined && (obj.voteAggSignature = base64FromBytes(message.voteAggSignature !== undefined ? message.voteAggSignature : new Uint8Array()));
+    message.vote_agg_signature !== undefined && (obj.vote_agg_signature = base64FromBytes(message.vote_agg_signature !== undefined ? message.vote_agg_signature : new Uint8Array()));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgAttest>, I>>(object: I): MsgAttest {
     const message = createBaseMsgAttest();
     message.submitter = object.submitter ?? "";
-    message.challengeId = object.challengeId !== undefined && object.challengeId !== null ? Long.fromValue(object.challengeId) : Long.UZERO;
-    message.objectId = object.objectId ?? "";
-    message.spOperatorAddress = object.spOperatorAddress ?? "";
-    message.voteResult = object.voteResult ?? 0;
-    message.challengerAddress = object.challengerAddress ?? "";
-    message.voteValidatorSet = object.voteValidatorSet?.map(e => Long.fromValue(e)) || [];
-    message.voteAggSignature = object.voteAggSignature ?? new Uint8Array();
+    message.challenge_id = object.challenge_id !== undefined && object.challenge_id !== null ? Long.fromValue(object.challenge_id) : Long.UZERO;
+    message.object_id = object.object_id ?? "";
+    message.sp_operator_address = object.sp_operator_address ?? "";
+    message.vote_result = object.vote_result ?? 0;
+    message.challenger_address = object.challenger_address ?? "";
+    message.vote_validator_set = object.vote_validator_set?.map(e => Long.fromValue(e)) || [];
+    message.vote_agg_signature = object.vote_agg_signature ?? new Uint8Array();
     return message;
   }
 

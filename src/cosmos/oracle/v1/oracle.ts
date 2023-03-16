@@ -6,39 +6,39 @@ export const protobufPackage = "cosmos.oracle.v1";
 
 export interface Params {
   /** Timeout for the in turn relayer */
-  relayerTimeout: Long;
+  relayer_timeout: Long;
   /**
    * in s
    * Reward share for the relayer sends the claim message,
    * the other relayers signed the bls message will share the reward evenly.
    */
 
-  relayerBackoffTime: Long;
+  relayer_backoff_time: Long;
   /** in percentage */
 
-  relayerRewardShare: number;
+  relayer_reward_share: number;
 }
 
 function createBaseParams(): Params {
   return {
-    relayerTimeout: Long.UZERO,
-    relayerBackoffTime: Long.UZERO,
-    relayerRewardShare: 0
+    relayer_timeout: Long.UZERO,
+    relayer_backoff_time: Long.UZERO,
+    relayer_reward_share: 0
   };
 }
 
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.relayerTimeout.isZero()) {
-      writer.uint32(8).uint64(message.relayerTimeout);
+    if (!message.relayer_timeout.isZero()) {
+      writer.uint32(8).uint64(message.relayer_timeout);
     }
 
-    if (!message.relayerBackoffTime.isZero()) {
-      writer.uint32(16).uint64(message.relayerBackoffTime);
+    if (!message.relayer_backoff_time.isZero()) {
+      writer.uint32(16).uint64(message.relayer_backoff_time);
     }
 
-    if (message.relayerRewardShare !== 0) {
-      writer.uint32(24).uint32(message.relayerRewardShare);
+    if (message.relayer_reward_share !== 0) {
+      writer.uint32(24).uint32(message.relayer_reward_share);
     }
 
     return writer;
@@ -54,15 +54,15 @@ export const Params = {
 
       switch (tag >>> 3) {
         case 1:
-          message.relayerTimeout = (reader.uint64() as Long);
+          message.relayer_timeout = (reader.uint64() as Long);
           break;
 
         case 2:
-          message.relayerBackoffTime = (reader.uint64() as Long);
+          message.relayer_backoff_time = (reader.uint64() as Long);
           break;
 
         case 3:
-          message.relayerRewardShare = reader.uint32();
+          message.relayer_reward_share = reader.uint32();
           break;
 
         default:
@@ -76,25 +76,25 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
-      relayerTimeout: isSet(object.relayerTimeout) ? Long.fromValue(object.relayerTimeout) : Long.UZERO,
-      relayerBackoffTime: isSet(object.relayerBackoffTime) ? Long.fromValue(object.relayerBackoffTime) : Long.UZERO,
-      relayerRewardShare: isSet(object.relayerRewardShare) ? Number(object.relayerRewardShare) : 0
+      relayer_timeout: isSet(object.relayer_timeout) ? Long.fromValue(object.relayer_timeout) : Long.UZERO,
+      relayer_backoff_time: isSet(object.relayer_backoff_time) ? Long.fromValue(object.relayer_backoff_time) : Long.UZERO,
+      relayer_reward_share: isSet(object.relayer_reward_share) ? Number(object.relayer_reward_share) : 0
     };
   },
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.relayerTimeout !== undefined && (obj.relayerTimeout = (message.relayerTimeout || Long.UZERO).toString());
-    message.relayerBackoffTime !== undefined && (obj.relayerBackoffTime = (message.relayerBackoffTime || Long.UZERO).toString());
-    message.relayerRewardShare !== undefined && (obj.relayerRewardShare = Math.round(message.relayerRewardShare));
+    message.relayer_timeout !== undefined && (obj.relayer_timeout = (message.relayer_timeout || Long.UZERO).toString());
+    message.relayer_backoff_time !== undefined && (obj.relayer_backoff_time = (message.relayer_backoff_time || Long.UZERO).toString());
+    message.relayer_reward_share !== undefined && (obj.relayer_reward_share = Math.round(message.relayer_reward_share));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.relayerTimeout = object.relayerTimeout !== undefined && object.relayerTimeout !== null ? Long.fromValue(object.relayerTimeout) : Long.UZERO;
-    message.relayerBackoffTime = object.relayerBackoffTime !== undefined && object.relayerBackoffTime !== null ? Long.fromValue(object.relayerBackoffTime) : Long.UZERO;
-    message.relayerRewardShare = object.relayerRewardShare ?? 0;
+    message.relayer_timeout = object.relayer_timeout !== undefined && object.relayer_timeout !== null ? Long.fromValue(object.relayer_timeout) : Long.UZERO;
+    message.relayer_backoff_time = object.relayer_backoff_time !== undefined && object.relayer_backoff_time !== null ? Long.fromValue(object.relayer_backoff_time) : Long.UZERO;
+    message.relayer_reward_share = object.relayer_reward_share ?? 0;
     return message;
   }
 

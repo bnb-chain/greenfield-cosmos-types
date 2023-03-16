@@ -10,15 +10,15 @@ export interface GenesisState {
   params?: Params;
   /** this used by starport scaffolding # genesis/proto/state */
 
-  storageProviders: StorageProvider[];
-  spStoragePriceList: SpStoragePrice[];
+  storage_providers: StorageProvider[];
+  sp_storage_price_list: SpStoragePrice[];
 }
 
 function createBaseGenesisState(): GenesisState {
   return {
     params: undefined,
-    storageProviders: [],
-    spStoragePriceList: []
+    storage_providers: [],
+    sp_storage_price_list: []
   };
 }
 
@@ -28,11 +28,11 @@ export const GenesisState = {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
 
-    for (const v of message.storageProviders) {
+    for (const v of message.storage_providers) {
       StorageProvider.encode(v!, writer.uint32(18).fork()).ldelim();
     }
 
-    for (const v of message.spStoragePriceList) {
+    for (const v of message.sp_storage_price_list) {
       SpStoragePrice.encode(v!, writer.uint32(26).fork()).ldelim();
     }
 
@@ -53,11 +53,11 @@ export const GenesisState = {
           break;
 
         case 2:
-          message.storageProviders.push(StorageProvider.decode(reader, reader.uint32()));
+          message.storage_providers.push(StorageProvider.decode(reader, reader.uint32()));
           break;
 
         case 3:
-          message.spStoragePriceList.push(SpStoragePrice.decode(reader, reader.uint32()));
+          message.sp_storage_price_list.push(SpStoragePrice.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -72,8 +72,8 @@ export const GenesisState = {
   fromJSON(object: any): GenesisState {
     return {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
-      storageProviders: Array.isArray(object?.storageProviders) ? object.storageProviders.map((e: any) => StorageProvider.fromJSON(e)) : [],
-      spStoragePriceList: Array.isArray(object?.spStoragePriceList) ? object.spStoragePriceList.map((e: any) => SpStoragePrice.fromJSON(e)) : []
+      storage_providers: Array.isArray(object?.storage_providers) ? object.storage_providers.map((e: any) => StorageProvider.fromJSON(e)) : [],
+      sp_storage_price_list: Array.isArray(object?.sp_storage_price_list) ? object.sp_storage_price_list.map((e: any) => SpStoragePrice.fromJSON(e)) : []
     };
   },
 
@@ -81,16 +81,16 @@ export const GenesisState = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
 
-    if (message.storageProviders) {
-      obj.storageProviders = message.storageProviders.map(e => e ? StorageProvider.toJSON(e) : undefined);
+    if (message.storage_providers) {
+      obj.storage_providers = message.storage_providers.map(e => e ? StorageProvider.toJSON(e) : undefined);
     } else {
-      obj.storageProviders = [];
+      obj.storage_providers = [];
     }
 
-    if (message.spStoragePriceList) {
-      obj.spStoragePriceList = message.spStoragePriceList.map(e => e ? SpStoragePrice.toJSON(e) : undefined);
+    if (message.sp_storage_price_list) {
+      obj.sp_storage_price_list = message.sp_storage_price_list.map(e => e ? SpStoragePrice.toJSON(e) : undefined);
     } else {
-      obj.spStoragePriceList = [];
+      obj.sp_storage_price_list = [];
     }
 
     return obj;
@@ -99,8 +99,8 @@ export const GenesisState = {
   fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
-    message.storageProviders = object.storageProviders?.map(e => StorageProvider.fromPartial(e)) || [];
-    message.spStoragePriceList = object.spStoragePriceList?.map(e => SpStoragePrice.fromPartial(e)) || [];
+    message.storage_providers = object.storage_providers?.map(e => StorageProvider.fromPartial(e)) || [];
+    message.sp_storage_price_list = object.sp_storage_price_list?.map(e => SpStoragePrice.fromPartial(e)) || [];
     return message;
   }
 

@@ -14,27 +14,27 @@ export interface DepositAuthorization {
    * max_deposit specifies the maximum amount of tokens can be deposit to a storage provider. If it is
    * empty, there is no spend limit and any amount of coins can be deposit.
    */
-  maxDeposit?: Coin;
+  max_deposit?: Coin;
   /** sp_address is the operator address of storage provider. */
 
-  spAddress: string;
+  sp_address: string;
 }
 
 function createBaseDepositAuthorization(): DepositAuthorization {
   return {
-    maxDeposit: undefined,
-    spAddress: ""
+    max_deposit: undefined,
+    sp_address: ""
   };
 }
 
 export const DepositAuthorization = {
   encode(message: DepositAuthorization, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.maxDeposit !== undefined) {
-      Coin.encode(message.maxDeposit, writer.uint32(10).fork()).ldelim();
+    if (message.max_deposit !== undefined) {
+      Coin.encode(message.max_deposit, writer.uint32(10).fork()).ldelim();
     }
 
-    if (message.spAddress !== "") {
-      writer.uint32(18).string(message.spAddress);
+    if (message.sp_address !== "") {
+      writer.uint32(18).string(message.sp_address);
     }
 
     return writer;
@@ -50,11 +50,11 @@ export const DepositAuthorization = {
 
       switch (tag >>> 3) {
         case 1:
-          message.maxDeposit = Coin.decode(reader, reader.uint32());
+          message.max_deposit = Coin.decode(reader, reader.uint32());
           break;
 
         case 2:
-          message.spAddress = reader.string();
+          message.sp_address = reader.string();
           break;
 
         default:
@@ -68,22 +68,22 @@ export const DepositAuthorization = {
 
   fromJSON(object: any): DepositAuthorization {
     return {
-      maxDeposit: isSet(object.maxDeposit) ? Coin.fromJSON(object.maxDeposit) : undefined,
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : ""
+      max_deposit: isSet(object.max_deposit) ? Coin.fromJSON(object.max_deposit) : undefined,
+      sp_address: isSet(object.sp_address) ? String(object.sp_address) : ""
     };
   },
 
   toJSON(message: DepositAuthorization): unknown {
     const obj: any = {};
-    message.maxDeposit !== undefined && (obj.maxDeposit = message.maxDeposit ? Coin.toJSON(message.maxDeposit) : undefined);
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.max_deposit !== undefined && (obj.max_deposit = message.max_deposit ? Coin.toJSON(message.max_deposit) : undefined);
+    message.sp_address !== undefined && (obj.sp_address = message.sp_address);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<DepositAuthorization>, I>>(object: I): DepositAuthorization {
     const message = createBaseDepositAuthorization();
-    message.maxDeposit = object.maxDeposit !== undefined && object.maxDeposit !== null ? Coin.fromPartial(object.maxDeposit) : undefined;
-    message.spAddress = object.spAddress ?? "";
+    message.max_deposit = object.max_deposit !== undefined && object.max_deposit !== null ? Coin.fromPartial(object.max_deposit) : undefined;
+    message.sp_address = object.sp_address ?? "";
     return message;
   }
 

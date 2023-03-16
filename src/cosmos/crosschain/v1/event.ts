@@ -6,91 +6,91 @@ export const protobufPackage = "cosmos.crosschain.v1";
 
 export interface EventCrossChain {
   /** Source chain id of the cross chain package */
-  srcChainId: number;
+  src_chain_id: number;
   /** Destination chain id of the cross chainpackage */
 
-  destChainId: number;
+  dest_chain_id: number;
   /** Channel id of the cross chain package */
 
-  channelId: number;
+  channel_id: number;
   /** Sequence of the cross chain package */
 
   sequence: Long;
   /** Package type of the cross chain package, like SYN, ACK and FAIL_ACK */
 
-  packageType: number;
+  package_type: number;
   /** Timestamp of the cross chain package */
 
   timestamp: Long;
   /** Payload of the cross chain package */
 
-  packageLoad: string;
+  package_load: string;
   /** Relayer fee for the cross chain package */
 
-  relayerFee: string;
+  relayer_fee: string;
   /** Relayer fee for the ACK or FAIL_ACK package of this cross chain package */
 
-  ackRelayerFee: string;
+  ack_relayer_fee: string;
   /** Callback gas price the ACK or FAIL_ACK package */
 
-  callbackGasPrice: string;
+  callback_gas_price: string;
 }
 
 function createBaseEventCrossChain(): EventCrossChain {
   return {
-    srcChainId: 0,
-    destChainId: 0,
-    channelId: 0,
+    src_chain_id: 0,
+    dest_chain_id: 0,
+    channel_id: 0,
     sequence: Long.UZERO,
-    packageType: 0,
+    package_type: 0,
     timestamp: Long.UZERO,
-    packageLoad: "",
-    relayerFee: "",
-    ackRelayerFee: "",
-    callbackGasPrice: ""
+    package_load: "",
+    relayer_fee: "",
+    ack_relayer_fee: "",
+    callback_gas_price: ""
   };
 }
 
 export const EventCrossChain = {
   encode(message: EventCrossChain, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.srcChainId !== 0) {
-      writer.uint32(8).uint32(message.srcChainId);
+    if (message.src_chain_id !== 0) {
+      writer.uint32(8).uint32(message.src_chain_id);
     }
 
-    if (message.destChainId !== 0) {
-      writer.uint32(16).uint32(message.destChainId);
+    if (message.dest_chain_id !== 0) {
+      writer.uint32(16).uint32(message.dest_chain_id);
     }
 
-    if (message.channelId !== 0) {
-      writer.uint32(24).uint32(message.channelId);
+    if (message.channel_id !== 0) {
+      writer.uint32(24).uint32(message.channel_id);
     }
 
     if (!message.sequence.isZero()) {
       writer.uint32(32).uint64(message.sequence);
     }
 
-    if (message.packageType !== 0) {
-      writer.uint32(40).uint32(message.packageType);
+    if (message.package_type !== 0) {
+      writer.uint32(40).uint32(message.package_type);
     }
 
     if (!message.timestamp.isZero()) {
       writer.uint32(48).uint64(message.timestamp);
     }
 
-    if (message.packageLoad !== "") {
-      writer.uint32(58).string(message.packageLoad);
+    if (message.package_load !== "") {
+      writer.uint32(58).string(message.package_load);
     }
 
-    if (message.relayerFee !== "") {
-      writer.uint32(66).string(message.relayerFee);
+    if (message.relayer_fee !== "") {
+      writer.uint32(66).string(message.relayer_fee);
     }
 
-    if (message.ackRelayerFee !== "") {
-      writer.uint32(74).string(message.ackRelayerFee);
+    if (message.ack_relayer_fee !== "") {
+      writer.uint32(74).string(message.ack_relayer_fee);
     }
 
-    if (message.callbackGasPrice !== "") {
-      writer.uint32(82).string(message.callbackGasPrice);
+    if (message.callback_gas_price !== "") {
+      writer.uint32(82).string(message.callback_gas_price);
     }
 
     return writer;
@@ -106,15 +106,15 @@ export const EventCrossChain = {
 
       switch (tag >>> 3) {
         case 1:
-          message.srcChainId = reader.uint32();
+          message.src_chain_id = reader.uint32();
           break;
 
         case 2:
-          message.destChainId = reader.uint32();
+          message.dest_chain_id = reader.uint32();
           break;
 
         case 3:
-          message.channelId = reader.uint32();
+          message.channel_id = reader.uint32();
           break;
 
         case 4:
@@ -122,7 +122,7 @@ export const EventCrossChain = {
           break;
 
         case 5:
-          message.packageType = reader.uint32();
+          message.package_type = reader.uint32();
           break;
 
         case 6:
@@ -130,19 +130,19 @@ export const EventCrossChain = {
           break;
 
         case 7:
-          message.packageLoad = reader.string();
+          message.package_load = reader.string();
           break;
 
         case 8:
-          message.relayerFee = reader.string();
+          message.relayer_fee = reader.string();
           break;
 
         case 9:
-          message.ackRelayerFee = reader.string();
+          message.ack_relayer_fee = reader.string();
           break;
 
         case 10:
-          message.callbackGasPrice = reader.string();
+          message.callback_gas_price = reader.string();
           break;
 
         default:
@@ -156,46 +156,46 @@ export const EventCrossChain = {
 
   fromJSON(object: any): EventCrossChain {
     return {
-      srcChainId: isSet(object.srcChainId) ? Number(object.srcChainId) : 0,
-      destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0,
-      channelId: isSet(object.channelId) ? Number(object.channelId) : 0,
+      src_chain_id: isSet(object.src_chain_id) ? Number(object.src_chain_id) : 0,
+      dest_chain_id: isSet(object.dest_chain_id) ? Number(object.dest_chain_id) : 0,
+      channel_id: isSet(object.channel_id) ? Number(object.channel_id) : 0,
       sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO,
-      packageType: isSet(object.packageType) ? Number(object.packageType) : 0,
+      package_type: isSet(object.package_type) ? Number(object.package_type) : 0,
       timestamp: isSet(object.timestamp) ? Long.fromValue(object.timestamp) : Long.UZERO,
-      packageLoad: isSet(object.packageLoad) ? String(object.packageLoad) : "",
-      relayerFee: isSet(object.relayerFee) ? String(object.relayerFee) : "",
-      ackRelayerFee: isSet(object.ackRelayerFee) ? String(object.ackRelayerFee) : "",
-      callbackGasPrice: isSet(object.callbackGasPrice) ? String(object.callbackGasPrice) : ""
+      package_load: isSet(object.package_load) ? String(object.package_load) : "",
+      relayer_fee: isSet(object.relayer_fee) ? String(object.relayer_fee) : "",
+      ack_relayer_fee: isSet(object.ack_relayer_fee) ? String(object.ack_relayer_fee) : "",
+      callback_gas_price: isSet(object.callback_gas_price) ? String(object.callback_gas_price) : ""
     };
   },
 
   toJSON(message: EventCrossChain): unknown {
     const obj: any = {};
-    message.srcChainId !== undefined && (obj.srcChainId = Math.round(message.srcChainId));
-    message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
-    message.channelId !== undefined && (obj.channelId = Math.round(message.channelId));
+    message.src_chain_id !== undefined && (obj.src_chain_id = Math.round(message.src_chain_id));
+    message.dest_chain_id !== undefined && (obj.dest_chain_id = Math.round(message.dest_chain_id));
+    message.channel_id !== undefined && (obj.channel_id = Math.round(message.channel_id));
     message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
-    message.packageType !== undefined && (obj.packageType = Math.round(message.packageType));
+    message.package_type !== undefined && (obj.package_type = Math.round(message.package_type));
     message.timestamp !== undefined && (obj.timestamp = (message.timestamp || Long.UZERO).toString());
-    message.packageLoad !== undefined && (obj.packageLoad = message.packageLoad);
-    message.relayerFee !== undefined && (obj.relayerFee = message.relayerFee);
-    message.ackRelayerFee !== undefined && (obj.ackRelayerFee = message.ackRelayerFee);
-    message.callbackGasPrice !== undefined && (obj.callbackGasPrice = message.callbackGasPrice);
+    message.package_load !== undefined && (obj.package_load = message.package_load);
+    message.relayer_fee !== undefined && (obj.relayer_fee = message.relayer_fee);
+    message.ack_relayer_fee !== undefined && (obj.ack_relayer_fee = message.ack_relayer_fee);
+    message.callback_gas_price !== undefined && (obj.callback_gas_price = message.callback_gas_price);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<EventCrossChain>, I>>(object: I): EventCrossChain {
     const message = createBaseEventCrossChain();
-    message.srcChainId = object.srcChainId ?? 0;
-    message.destChainId = object.destChainId ?? 0;
-    message.channelId = object.channelId ?? 0;
+    message.src_chain_id = object.src_chain_id ?? 0;
+    message.dest_chain_id = object.dest_chain_id ?? 0;
+    message.channel_id = object.channel_id ?? 0;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
-    message.packageType = object.packageType ?? 0;
+    message.package_type = object.package_type ?? 0;
     message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.UZERO;
-    message.packageLoad = object.packageLoad ?? "";
-    message.relayerFee = object.relayerFee ?? "";
-    message.ackRelayerFee = object.ackRelayerFee ?? "";
-    message.callbackGasPrice = object.callbackGasPrice ?? "";
+    message.package_load = object.package_load ?? "";
+    message.relayer_fee = object.relayer_fee ?? "";
+    message.ack_relayer_fee = object.ack_relayer_fee ?? "";
+    message.callback_gas_price = object.callback_gas_price ?? "";
     return message;
   }
 

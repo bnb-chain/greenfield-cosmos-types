@@ -6,103 +6,103 @@ export const protobufPackage = "bnbchain.greenfield.sp";
 
 export interface EventCreateStorageProvider {
   /** sp_address is the operator address of the storage provider */
-  spAddress: string;
+  sp_address: string;
   /** funding_address is the funding account address of the storage provider */
 
-  fundingAddress: string;
+  funding_address: string;
   /** seal_address is the account address for SealObject Tx */
 
-  sealAddress: string;
+  seal_address: string;
   /** approval_address is the account address for approve create bucket/object signature */
 
-  approvalAddress: string;
+  approval_address: string;
   /** endpoint is the domain name address used by SP to provide storage services */
 
   endpoint: string;
   /** total_deposit is the token coin that the storage provider deposit to the storage module */
 
-  totalDeposit: string;
+  total_deposit: string;
 }
 /** EventEditStorageProvider is emitted when SP's metadata is edited. */
 
 export interface EventEditStorageProvider {
   /** old_endpoint is the service endpoint of the storage provider before edit */
-  oldEndpoint: string;
+  old_endpoint: string;
   /** new_endpoint is the service endpoint of the storage provider after edit */
 
-  newEndpoint: string;
+  new_endpoint: string;
 }
 /** EventDeposit is emitted when sp deposit tokens. */
 
 export interface EventDeposit {
   /** sp_address is the account address of storage provider */
-  spAddress: string;
+  sp_address: string;
   /** deposit is the token coin deposited this message */
 
   deposit: string;
   /** total_deposit is the total token coins this storage provider deposited */
 
-  totalDeposit: string;
+  total_deposit: string;
 }
 export interface EventSpStoragePriceUpdate {
   /** sp address */
-  spAddress: string;
+  sp_address: string;
   /** update time, in unix timestamp */
 
-  updateTime: Long;
+  update_time: Long;
   /** read price, in bnb wei per charge byte */
 
-  readPrice: string;
+  read_price: string;
   /** free read quota, in byte */
 
-  freeReadQuota: Long;
+  free_read_quota: Long;
   /** store price, in bnb wei per charge byte */
 
-  storePrice: string;
+  store_price: string;
 }
 export interface EventSecondarySpStorePriceUpdate {
   /** update time, in unix timestamp */
-  updateTime: Long;
+  update_time: Long;
   /** store price, in bnb wei per charge byte */
 
-  storePrice: string;
+  store_price: string;
 }
 
 function createBaseEventCreateStorageProvider(): EventCreateStorageProvider {
   return {
-    spAddress: "",
-    fundingAddress: "",
-    sealAddress: "",
-    approvalAddress: "",
+    sp_address: "",
+    funding_address: "",
+    seal_address: "",
+    approval_address: "",
     endpoint: "",
-    totalDeposit: ""
+    total_deposit: ""
   };
 }
 
 export const EventCreateStorageProvider = {
   encode(message: EventCreateStorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spAddress !== "") {
-      writer.uint32(10).string(message.spAddress);
+    if (message.sp_address !== "") {
+      writer.uint32(10).string(message.sp_address);
     }
 
-    if (message.fundingAddress !== "") {
-      writer.uint32(18).string(message.fundingAddress);
+    if (message.funding_address !== "") {
+      writer.uint32(18).string(message.funding_address);
     }
 
-    if (message.sealAddress !== "") {
-      writer.uint32(26).string(message.sealAddress);
+    if (message.seal_address !== "") {
+      writer.uint32(26).string(message.seal_address);
     }
 
-    if (message.approvalAddress !== "") {
-      writer.uint32(34).string(message.approvalAddress);
+    if (message.approval_address !== "") {
+      writer.uint32(34).string(message.approval_address);
     }
 
     if (message.endpoint !== "") {
       writer.uint32(42).string(message.endpoint);
     }
 
-    if (message.totalDeposit !== "") {
-      writer.uint32(50).string(message.totalDeposit);
+    if (message.total_deposit !== "") {
+      writer.uint32(50).string(message.total_deposit);
     }
 
     return writer;
@@ -118,19 +118,19 @@ export const EventCreateStorageProvider = {
 
       switch (tag >>> 3) {
         case 1:
-          message.spAddress = reader.string();
+          message.sp_address = reader.string();
           break;
 
         case 2:
-          message.fundingAddress = reader.string();
+          message.funding_address = reader.string();
           break;
 
         case 3:
-          message.sealAddress = reader.string();
+          message.seal_address = reader.string();
           break;
 
         case 4:
-          message.approvalAddress = reader.string();
+          message.approval_address = reader.string();
           break;
 
         case 5:
@@ -138,7 +138,7 @@ export const EventCreateStorageProvider = {
           break;
 
         case 6:
-          message.totalDeposit = reader.string();
+          message.total_deposit = reader.string();
           break;
 
         default:
@@ -152,34 +152,34 @@ export const EventCreateStorageProvider = {
 
   fromJSON(object: any): EventCreateStorageProvider {
     return {
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
-      fundingAddress: isSet(object.fundingAddress) ? String(object.fundingAddress) : "",
-      sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
-      approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
+      sp_address: isSet(object.sp_address) ? String(object.sp_address) : "",
+      funding_address: isSet(object.funding_address) ? String(object.funding_address) : "",
+      seal_address: isSet(object.seal_address) ? String(object.seal_address) : "",
+      approval_address: isSet(object.approval_address) ? String(object.approval_address) : "",
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
-      totalDeposit: isSet(object.totalDeposit) ? String(object.totalDeposit) : ""
+      total_deposit: isSet(object.total_deposit) ? String(object.total_deposit) : ""
     };
   },
 
   toJSON(message: EventCreateStorageProvider): unknown {
     const obj: any = {};
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
-    message.fundingAddress !== undefined && (obj.fundingAddress = message.fundingAddress);
-    message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
-    message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
+    message.sp_address !== undefined && (obj.sp_address = message.sp_address);
+    message.funding_address !== undefined && (obj.funding_address = message.funding_address);
+    message.seal_address !== undefined && (obj.seal_address = message.seal_address);
+    message.approval_address !== undefined && (obj.approval_address = message.approval_address);
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
-    message.totalDeposit !== undefined && (obj.totalDeposit = message.totalDeposit);
+    message.total_deposit !== undefined && (obj.total_deposit = message.total_deposit);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<EventCreateStorageProvider>, I>>(object: I): EventCreateStorageProvider {
     const message = createBaseEventCreateStorageProvider();
-    message.spAddress = object.spAddress ?? "";
-    message.fundingAddress = object.fundingAddress ?? "";
-    message.sealAddress = object.sealAddress ?? "";
-    message.approvalAddress = object.approvalAddress ?? "";
+    message.sp_address = object.sp_address ?? "";
+    message.funding_address = object.funding_address ?? "";
+    message.seal_address = object.seal_address ?? "";
+    message.approval_address = object.approval_address ?? "";
     message.endpoint = object.endpoint ?? "";
-    message.totalDeposit = object.totalDeposit ?? "";
+    message.total_deposit = object.total_deposit ?? "";
     return message;
   }
 
@@ -187,19 +187,19 @@ export const EventCreateStorageProvider = {
 
 function createBaseEventEditStorageProvider(): EventEditStorageProvider {
   return {
-    oldEndpoint: "",
-    newEndpoint: ""
+    old_endpoint: "",
+    new_endpoint: ""
   };
 }
 
 export const EventEditStorageProvider = {
   encode(message: EventEditStorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.oldEndpoint !== "") {
-      writer.uint32(10).string(message.oldEndpoint);
+    if (message.old_endpoint !== "") {
+      writer.uint32(10).string(message.old_endpoint);
     }
 
-    if (message.newEndpoint !== "") {
-      writer.uint32(18).string(message.newEndpoint);
+    if (message.new_endpoint !== "") {
+      writer.uint32(18).string(message.new_endpoint);
     }
 
     return writer;
@@ -215,11 +215,11 @@ export const EventEditStorageProvider = {
 
       switch (tag >>> 3) {
         case 1:
-          message.oldEndpoint = reader.string();
+          message.old_endpoint = reader.string();
           break;
 
         case 2:
-          message.newEndpoint = reader.string();
+          message.new_endpoint = reader.string();
           break;
 
         default:
@@ -233,22 +233,22 @@ export const EventEditStorageProvider = {
 
   fromJSON(object: any): EventEditStorageProvider {
     return {
-      oldEndpoint: isSet(object.oldEndpoint) ? String(object.oldEndpoint) : "",
-      newEndpoint: isSet(object.newEndpoint) ? String(object.newEndpoint) : ""
+      old_endpoint: isSet(object.old_endpoint) ? String(object.old_endpoint) : "",
+      new_endpoint: isSet(object.new_endpoint) ? String(object.new_endpoint) : ""
     };
   },
 
   toJSON(message: EventEditStorageProvider): unknown {
     const obj: any = {};
-    message.oldEndpoint !== undefined && (obj.oldEndpoint = message.oldEndpoint);
-    message.newEndpoint !== undefined && (obj.newEndpoint = message.newEndpoint);
+    message.old_endpoint !== undefined && (obj.old_endpoint = message.old_endpoint);
+    message.new_endpoint !== undefined && (obj.new_endpoint = message.new_endpoint);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<EventEditStorageProvider>, I>>(object: I): EventEditStorageProvider {
     const message = createBaseEventEditStorageProvider();
-    message.oldEndpoint = object.oldEndpoint ?? "";
-    message.newEndpoint = object.newEndpoint ?? "";
+    message.old_endpoint = object.old_endpoint ?? "";
+    message.new_endpoint = object.new_endpoint ?? "";
     return message;
   }
 
@@ -256,24 +256,24 @@ export const EventEditStorageProvider = {
 
 function createBaseEventDeposit(): EventDeposit {
   return {
-    spAddress: "",
+    sp_address: "",
     deposit: "",
-    totalDeposit: ""
+    total_deposit: ""
   };
 }
 
 export const EventDeposit = {
   encode(message: EventDeposit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spAddress !== "") {
-      writer.uint32(10).string(message.spAddress);
+    if (message.sp_address !== "") {
+      writer.uint32(10).string(message.sp_address);
     }
 
     if (message.deposit !== "") {
       writer.uint32(18).string(message.deposit);
     }
 
-    if (message.totalDeposit !== "") {
-      writer.uint32(26).string(message.totalDeposit);
+    if (message.total_deposit !== "") {
+      writer.uint32(26).string(message.total_deposit);
     }
 
     return writer;
@@ -289,7 +289,7 @@ export const EventDeposit = {
 
       switch (tag >>> 3) {
         case 1:
-          message.spAddress = reader.string();
+          message.sp_address = reader.string();
           break;
 
         case 2:
@@ -297,7 +297,7 @@ export const EventDeposit = {
           break;
 
         case 3:
-          message.totalDeposit = reader.string();
+          message.total_deposit = reader.string();
           break;
 
         default:
@@ -311,25 +311,25 @@ export const EventDeposit = {
 
   fromJSON(object: any): EventDeposit {
     return {
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      sp_address: isSet(object.sp_address) ? String(object.sp_address) : "",
       deposit: isSet(object.deposit) ? String(object.deposit) : "",
-      totalDeposit: isSet(object.totalDeposit) ? String(object.totalDeposit) : ""
+      total_deposit: isSet(object.total_deposit) ? String(object.total_deposit) : ""
     };
   },
 
   toJSON(message: EventDeposit): unknown {
     const obj: any = {};
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.sp_address !== undefined && (obj.sp_address = message.sp_address);
     message.deposit !== undefined && (obj.deposit = message.deposit);
-    message.totalDeposit !== undefined && (obj.totalDeposit = message.totalDeposit);
+    message.total_deposit !== undefined && (obj.total_deposit = message.total_deposit);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<EventDeposit>, I>>(object: I): EventDeposit {
     const message = createBaseEventDeposit();
-    message.spAddress = object.spAddress ?? "";
+    message.sp_address = object.sp_address ?? "";
     message.deposit = object.deposit ?? "";
-    message.totalDeposit = object.totalDeposit ?? "";
+    message.total_deposit = object.total_deposit ?? "";
     return message;
   }
 
@@ -337,34 +337,34 @@ export const EventDeposit = {
 
 function createBaseEventSpStoragePriceUpdate(): EventSpStoragePriceUpdate {
   return {
-    spAddress: "",
-    updateTime: Long.ZERO,
-    readPrice: "",
-    freeReadQuota: Long.UZERO,
-    storePrice: ""
+    sp_address: "",
+    update_time: Long.ZERO,
+    read_price: "",
+    free_read_quota: Long.UZERO,
+    store_price: ""
   };
 }
 
 export const EventSpStoragePriceUpdate = {
   encode(message: EventSpStoragePriceUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spAddress !== "") {
-      writer.uint32(10).string(message.spAddress);
+    if (message.sp_address !== "") {
+      writer.uint32(10).string(message.sp_address);
     }
 
-    if (!message.updateTime.isZero()) {
-      writer.uint32(16).int64(message.updateTime);
+    if (!message.update_time.isZero()) {
+      writer.uint32(16).int64(message.update_time);
     }
 
-    if (message.readPrice !== "") {
-      writer.uint32(26).string(message.readPrice);
+    if (message.read_price !== "") {
+      writer.uint32(26).string(message.read_price);
     }
 
-    if (!message.freeReadQuota.isZero()) {
-      writer.uint32(32).uint64(message.freeReadQuota);
+    if (!message.free_read_quota.isZero()) {
+      writer.uint32(32).uint64(message.free_read_quota);
     }
 
-    if (message.storePrice !== "") {
-      writer.uint32(42).string(message.storePrice);
+    if (message.store_price !== "") {
+      writer.uint32(42).string(message.store_price);
     }
 
     return writer;
@@ -380,23 +380,23 @@ export const EventSpStoragePriceUpdate = {
 
       switch (tag >>> 3) {
         case 1:
-          message.spAddress = reader.string();
+          message.sp_address = reader.string();
           break;
 
         case 2:
-          message.updateTime = (reader.int64() as Long);
+          message.update_time = (reader.int64() as Long);
           break;
 
         case 3:
-          message.readPrice = reader.string();
+          message.read_price = reader.string();
           break;
 
         case 4:
-          message.freeReadQuota = (reader.uint64() as Long);
+          message.free_read_quota = (reader.uint64() as Long);
           break;
 
         case 5:
-          message.storePrice = reader.string();
+          message.store_price = reader.string();
           break;
 
         default:
@@ -410,31 +410,31 @@ export const EventSpStoragePriceUpdate = {
 
   fromJSON(object: any): EventSpStoragePriceUpdate {
     return {
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
-      updateTime: isSet(object.updateTime) ? Long.fromValue(object.updateTime) : Long.ZERO,
-      readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
-      freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
-      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+      sp_address: isSet(object.sp_address) ? String(object.sp_address) : "",
+      update_time: isSet(object.update_time) ? Long.fromValue(object.update_time) : Long.ZERO,
+      read_price: isSet(object.read_price) ? String(object.read_price) : "",
+      free_read_quota: isSet(object.free_read_quota) ? Long.fromValue(object.free_read_quota) : Long.UZERO,
+      store_price: isSet(object.store_price) ? String(object.store_price) : ""
     };
   },
 
   toJSON(message: EventSpStoragePriceUpdate): unknown {
     const obj: any = {};
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
-    message.updateTime !== undefined && (obj.updateTime = (message.updateTime || Long.ZERO).toString());
-    message.readPrice !== undefined && (obj.readPrice = message.readPrice);
-    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
-    message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    message.sp_address !== undefined && (obj.sp_address = message.sp_address);
+    message.update_time !== undefined && (obj.update_time = (message.update_time || Long.ZERO).toString());
+    message.read_price !== undefined && (obj.read_price = message.read_price);
+    message.free_read_quota !== undefined && (obj.free_read_quota = (message.free_read_quota || Long.UZERO).toString());
+    message.store_price !== undefined && (obj.store_price = message.store_price);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<EventSpStoragePriceUpdate>, I>>(object: I): EventSpStoragePriceUpdate {
     const message = createBaseEventSpStoragePriceUpdate();
-    message.spAddress = object.spAddress ?? "";
-    message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Long.fromValue(object.updateTime) : Long.ZERO;
-    message.readPrice = object.readPrice ?? "";
-    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
-    message.storePrice = object.storePrice ?? "";
+    message.sp_address = object.sp_address ?? "";
+    message.update_time = object.update_time !== undefined && object.update_time !== null ? Long.fromValue(object.update_time) : Long.ZERO;
+    message.read_price = object.read_price ?? "";
+    message.free_read_quota = object.free_read_quota !== undefined && object.free_read_quota !== null ? Long.fromValue(object.free_read_quota) : Long.UZERO;
+    message.store_price = object.store_price ?? "";
     return message;
   }
 
@@ -442,19 +442,19 @@ export const EventSpStoragePriceUpdate = {
 
 function createBaseEventSecondarySpStorePriceUpdate(): EventSecondarySpStorePriceUpdate {
   return {
-    updateTime: Long.ZERO,
-    storePrice: ""
+    update_time: Long.ZERO,
+    store_price: ""
   };
 }
 
 export const EventSecondarySpStorePriceUpdate = {
   encode(message: EventSecondarySpStorePriceUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.updateTime.isZero()) {
-      writer.uint32(8).int64(message.updateTime);
+    if (!message.update_time.isZero()) {
+      writer.uint32(8).int64(message.update_time);
     }
 
-    if (message.storePrice !== "") {
-      writer.uint32(18).string(message.storePrice);
+    if (message.store_price !== "") {
+      writer.uint32(18).string(message.store_price);
     }
 
     return writer;
@@ -470,11 +470,11 @@ export const EventSecondarySpStorePriceUpdate = {
 
       switch (tag >>> 3) {
         case 1:
-          message.updateTime = (reader.int64() as Long);
+          message.update_time = (reader.int64() as Long);
           break;
 
         case 2:
-          message.storePrice = reader.string();
+          message.store_price = reader.string();
           break;
 
         default:
@@ -488,22 +488,22 @@ export const EventSecondarySpStorePriceUpdate = {
 
   fromJSON(object: any): EventSecondarySpStorePriceUpdate {
     return {
-      updateTime: isSet(object.updateTime) ? Long.fromValue(object.updateTime) : Long.ZERO,
-      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+      update_time: isSet(object.update_time) ? Long.fromValue(object.update_time) : Long.ZERO,
+      store_price: isSet(object.store_price) ? String(object.store_price) : ""
     };
   },
 
   toJSON(message: EventSecondarySpStorePriceUpdate): unknown {
     const obj: any = {};
-    message.updateTime !== undefined && (obj.updateTime = (message.updateTime || Long.ZERO).toString());
-    message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    message.update_time !== undefined && (obj.update_time = (message.update_time || Long.ZERO).toString());
+    message.store_price !== undefined && (obj.store_price = message.store_price);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<EventSecondarySpStorePriceUpdate>, I>>(object: I): EventSecondarySpStorePriceUpdate {
     const message = createBaseEventSecondarySpStorePriceUpdate();
-    message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Long.fromValue(object.updateTime) : Long.ZERO;
-    message.storePrice = object.storePrice ?? "";
+    message.update_time = object.update_time !== undefined && object.update_time !== null ? Long.fromValue(object.update_time) : Long.ZERO;
+    message.store_price = object.store_price ?? "";
     return message;
   }
 

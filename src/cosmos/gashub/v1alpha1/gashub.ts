@@ -5,58 +5,58 @@ export const protobufPackage = "cosmos.gashub.v1alpha1";
 /** Params defines the parameters for the gashub module. */
 
 export interface Params {
-  maxTxSize: Long;
-  minGasPerByte: Long;
-  msgGasParamsSet: MsgGasParams[];
+  max_tx_size: Long;
+  min_gas_per_byte: Long;
+  msg_gas_params_set: MsgGasParams[];
 }
 /** MsgGasParams defines gas for a msg type */
 
 export interface MsgGasParams {
-  msgTypeUrl: string;
+  msg_type_url: string;
   /** fixed_type specifies fixed type gas params. */
 
-  fixedType?: MsgGasParams_FixedGasParams;
+  fixed_type?: MsgGasParams_FixedGasParams;
   /** grant_type specifies dynamic type gas params for msg/grant. */
 
-  grantType?: MsgGasParams_DynamicGasParams;
+  grant_type?: MsgGasParams_DynamicGasParams;
   /** grant_type specifies dynamic type gas params for msg/multiSend. */
 
-  multiSendType?: MsgGasParams_DynamicGasParams;
+  multi_send_type?: MsgGasParams_DynamicGasParams;
   /** grant_type specifies dynamic type gas params for msg/grantAllowance. */
 
-  grantAllowanceType?: MsgGasParams_DynamicGasParams;
+  grant_allowance_type?: MsgGasParams_DynamicGasParams;
 }
 /** FixedGasParams defines the parameters for fixed gas type. */
 
 export interface MsgGasParams_FixedGasParams {
-  fixedGas: Long;
+  fixed_gas: Long;
 }
 /** DynamicGasParams defines the parameters for dynamic gas type. */
 
 export interface MsgGasParams_DynamicGasParams {
-  fixedGas: Long;
-  gasPerItem: Long;
+  fixed_gas: Long;
+  gas_per_item: Long;
 }
 
 function createBaseParams(): Params {
   return {
-    maxTxSize: Long.UZERO,
-    minGasPerByte: Long.UZERO,
-    msgGasParamsSet: []
+    max_tx_size: Long.UZERO,
+    min_gas_per_byte: Long.UZERO,
+    msg_gas_params_set: []
   };
 }
 
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.maxTxSize.isZero()) {
-      writer.uint32(8).uint64(message.maxTxSize);
+    if (!message.max_tx_size.isZero()) {
+      writer.uint32(8).uint64(message.max_tx_size);
     }
 
-    if (!message.minGasPerByte.isZero()) {
-      writer.uint32(16).uint64(message.minGasPerByte);
+    if (!message.min_gas_per_byte.isZero()) {
+      writer.uint32(16).uint64(message.min_gas_per_byte);
     }
 
-    for (const v of message.msgGasParamsSet) {
+    for (const v of message.msg_gas_params_set) {
       MsgGasParams.encode(v!, writer.uint32(26).fork()).ldelim();
     }
 
@@ -73,15 +73,15 @@ export const Params = {
 
       switch (tag >>> 3) {
         case 1:
-          message.maxTxSize = (reader.uint64() as Long);
+          message.max_tx_size = (reader.uint64() as Long);
           break;
 
         case 2:
-          message.minGasPerByte = (reader.uint64() as Long);
+          message.min_gas_per_byte = (reader.uint64() as Long);
           break;
 
         case 3:
-          message.msgGasParamsSet.push(MsgGasParams.decode(reader, reader.uint32()));
+          message.msg_gas_params_set.push(MsgGasParams.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -95,21 +95,21 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
-      maxTxSize: isSet(object.maxTxSize) ? Long.fromValue(object.maxTxSize) : Long.UZERO,
-      minGasPerByte: isSet(object.minGasPerByte) ? Long.fromValue(object.minGasPerByte) : Long.UZERO,
-      msgGasParamsSet: Array.isArray(object?.msgGasParamsSet) ? object.msgGasParamsSet.map((e: any) => MsgGasParams.fromJSON(e)) : []
+      max_tx_size: isSet(object.max_tx_size) ? Long.fromValue(object.max_tx_size) : Long.UZERO,
+      min_gas_per_byte: isSet(object.min_gas_per_byte) ? Long.fromValue(object.min_gas_per_byte) : Long.UZERO,
+      msg_gas_params_set: Array.isArray(object?.msg_gas_params_set) ? object.msg_gas_params_set.map((e: any) => MsgGasParams.fromJSON(e)) : []
     };
   },
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.maxTxSize !== undefined && (obj.maxTxSize = (message.maxTxSize || Long.UZERO).toString());
-    message.minGasPerByte !== undefined && (obj.minGasPerByte = (message.minGasPerByte || Long.UZERO).toString());
+    message.max_tx_size !== undefined && (obj.max_tx_size = (message.max_tx_size || Long.UZERO).toString());
+    message.min_gas_per_byte !== undefined && (obj.min_gas_per_byte = (message.min_gas_per_byte || Long.UZERO).toString());
 
-    if (message.msgGasParamsSet) {
-      obj.msgGasParamsSet = message.msgGasParamsSet.map(e => e ? MsgGasParams.toJSON(e) : undefined);
+    if (message.msg_gas_params_set) {
+      obj.msg_gas_params_set = message.msg_gas_params_set.map(e => e ? MsgGasParams.toJSON(e) : undefined);
     } else {
-      obj.msgGasParamsSet = [];
+      obj.msg_gas_params_set = [];
     }
 
     return obj;
@@ -117,9 +117,9 @@ export const Params = {
 
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.maxTxSize = object.maxTxSize !== undefined && object.maxTxSize !== null ? Long.fromValue(object.maxTxSize) : Long.UZERO;
-    message.minGasPerByte = object.minGasPerByte !== undefined && object.minGasPerByte !== null ? Long.fromValue(object.minGasPerByte) : Long.UZERO;
-    message.msgGasParamsSet = object.msgGasParamsSet?.map(e => MsgGasParams.fromPartial(e)) || [];
+    message.max_tx_size = object.max_tx_size !== undefined && object.max_tx_size !== null ? Long.fromValue(object.max_tx_size) : Long.UZERO;
+    message.min_gas_per_byte = object.min_gas_per_byte !== undefined && object.min_gas_per_byte !== null ? Long.fromValue(object.min_gas_per_byte) : Long.UZERO;
+    message.msg_gas_params_set = object.msg_gas_params_set?.map(e => MsgGasParams.fromPartial(e)) || [];
     return message;
   }
 
@@ -127,34 +127,34 @@ export const Params = {
 
 function createBaseMsgGasParams(): MsgGasParams {
   return {
-    msgTypeUrl: "",
-    fixedType: undefined,
-    grantType: undefined,
-    multiSendType: undefined,
-    grantAllowanceType: undefined
+    msg_type_url: "",
+    fixed_type: undefined,
+    grant_type: undefined,
+    multi_send_type: undefined,
+    grant_allowance_type: undefined
   };
 }
 
 export const MsgGasParams = {
   encode(message: MsgGasParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.msgTypeUrl !== "") {
-      writer.uint32(10).string(message.msgTypeUrl);
+    if (message.msg_type_url !== "") {
+      writer.uint32(10).string(message.msg_type_url);
     }
 
-    if (message.fixedType !== undefined) {
-      MsgGasParams_FixedGasParams.encode(message.fixedType, writer.uint32(18).fork()).ldelim();
+    if (message.fixed_type !== undefined) {
+      MsgGasParams_FixedGasParams.encode(message.fixed_type, writer.uint32(18).fork()).ldelim();
     }
 
-    if (message.grantType !== undefined) {
-      MsgGasParams_DynamicGasParams.encode(message.grantType, writer.uint32(26).fork()).ldelim();
+    if (message.grant_type !== undefined) {
+      MsgGasParams_DynamicGasParams.encode(message.grant_type, writer.uint32(26).fork()).ldelim();
     }
 
-    if (message.multiSendType !== undefined) {
-      MsgGasParams_DynamicGasParams.encode(message.multiSendType, writer.uint32(34).fork()).ldelim();
+    if (message.multi_send_type !== undefined) {
+      MsgGasParams_DynamicGasParams.encode(message.multi_send_type, writer.uint32(34).fork()).ldelim();
     }
 
-    if (message.grantAllowanceType !== undefined) {
-      MsgGasParams_DynamicGasParams.encode(message.grantAllowanceType, writer.uint32(42).fork()).ldelim();
+    if (message.grant_allowance_type !== undefined) {
+      MsgGasParams_DynamicGasParams.encode(message.grant_allowance_type, writer.uint32(42).fork()).ldelim();
     }
 
     return writer;
@@ -170,23 +170,23 @@ export const MsgGasParams = {
 
       switch (tag >>> 3) {
         case 1:
-          message.msgTypeUrl = reader.string();
+          message.msg_type_url = reader.string();
           break;
 
         case 2:
-          message.fixedType = MsgGasParams_FixedGasParams.decode(reader, reader.uint32());
+          message.fixed_type = MsgGasParams_FixedGasParams.decode(reader, reader.uint32());
           break;
 
         case 3:
-          message.grantType = MsgGasParams_DynamicGasParams.decode(reader, reader.uint32());
+          message.grant_type = MsgGasParams_DynamicGasParams.decode(reader, reader.uint32());
           break;
 
         case 4:
-          message.multiSendType = MsgGasParams_DynamicGasParams.decode(reader, reader.uint32());
+          message.multi_send_type = MsgGasParams_DynamicGasParams.decode(reader, reader.uint32());
           break;
 
         case 5:
-          message.grantAllowanceType = MsgGasParams_DynamicGasParams.decode(reader, reader.uint32());
+          message.grant_allowance_type = MsgGasParams_DynamicGasParams.decode(reader, reader.uint32());
           break;
 
         default:
@@ -200,31 +200,31 @@ export const MsgGasParams = {
 
   fromJSON(object: any): MsgGasParams {
     return {
-      msgTypeUrl: isSet(object.msgTypeUrl) ? String(object.msgTypeUrl) : "",
-      fixedType: isSet(object.fixedType) ? MsgGasParams_FixedGasParams.fromJSON(object.fixedType) : undefined,
-      grantType: isSet(object.grantType) ? MsgGasParams_DynamicGasParams.fromJSON(object.grantType) : undefined,
-      multiSendType: isSet(object.multiSendType) ? MsgGasParams_DynamicGasParams.fromJSON(object.multiSendType) : undefined,
-      grantAllowanceType: isSet(object.grantAllowanceType) ? MsgGasParams_DynamicGasParams.fromJSON(object.grantAllowanceType) : undefined
+      msg_type_url: isSet(object.msg_type_url) ? String(object.msg_type_url) : "",
+      fixed_type: isSet(object.fixed_type) ? MsgGasParams_FixedGasParams.fromJSON(object.fixed_type) : undefined,
+      grant_type: isSet(object.grant_type) ? MsgGasParams_DynamicGasParams.fromJSON(object.grant_type) : undefined,
+      multi_send_type: isSet(object.multi_send_type) ? MsgGasParams_DynamicGasParams.fromJSON(object.multi_send_type) : undefined,
+      grant_allowance_type: isSet(object.grant_allowance_type) ? MsgGasParams_DynamicGasParams.fromJSON(object.grant_allowance_type) : undefined
     };
   },
 
   toJSON(message: MsgGasParams): unknown {
     const obj: any = {};
-    message.msgTypeUrl !== undefined && (obj.msgTypeUrl = message.msgTypeUrl);
-    message.fixedType !== undefined && (obj.fixedType = message.fixedType ? MsgGasParams_FixedGasParams.toJSON(message.fixedType) : undefined);
-    message.grantType !== undefined && (obj.grantType = message.grantType ? MsgGasParams_DynamicGasParams.toJSON(message.grantType) : undefined);
-    message.multiSendType !== undefined && (obj.multiSendType = message.multiSendType ? MsgGasParams_DynamicGasParams.toJSON(message.multiSendType) : undefined);
-    message.grantAllowanceType !== undefined && (obj.grantAllowanceType = message.grantAllowanceType ? MsgGasParams_DynamicGasParams.toJSON(message.grantAllowanceType) : undefined);
+    message.msg_type_url !== undefined && (obj.msg_type_url = message.msg_type_url);
+    message.fixed_type !== undefined && (obj.fixed_type = message.fixed_type ? MsgGasParams_FixedGasParams.toJSON(message.fixed_type) : undefined);
+    message.grant_type !== undefined && (obj.grant_type = message.grant_type ? MsgGasParams_DynamicGasParams.toJSON(message.grant_type) : undefined);
+    message.multi_send_type !== undefined && (obj.multi_send_type = message.multi_send_type ? MsgGasParams_DynamicGasParams.toJSON(message.multi_send_type) : undefined);
+    message.grant_allowance_type !== undefined && (obj.grant_allowance_type = message.grant_allowance_type ? MsgGasParams_DynamicGasParams.toJSON(message.grant_allowance_type) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgGasParams>, I>>(object: I): MsgGasParams {
     const message = createBaseMsgGasParams();
-    message.msgTypeUrl = object.msgTypeUrl ?? "";
-    message.fixedType = object.fixedType !== undefined && object.fixedType !== null ? MsgGasParams_FixedGasParams.fromPartial(object.fixedType) : undefined;
-    message.grantType = object.grantType !== undefined && object.grantType !== null ? MsgGasParams_DynamicGasParams.fromPartial(object.grantType) : undefined;
-    message.multiSendType = object.multiSendType !== undefined && object.multiSendType !== null ? MsgGasParams_DynamicGasParams.fromPartial(object.multiSendType) : undefined;
-    message.grantAllowanceType = object.grantAllowanceType !== undefined && object.grantAllowanceType !== null ? MsgGasParams_DynamicGasParams.fromPartial(object.grantAllowanceType) : undefined;
+    message.msg_type_url = object.msg_type_url ?? "";
+    message.fixed_type = object.fixed_type !== undefined && object.fixed_type !== null ? MsgGasParams_FixedGasParams.fromPartial(object.fixed_type) : undefined;
+    message.grant_type = object.grant_type !== undefined && object.grant_type !== null ? MsgGasParams_DynamicGasParams.fromPartial(object.grant_type) : undefined;
+    message.multi_send_type = object.multi_send_type !== undefined && object.multi_send_type !== null ? MsgGasParams_DynamicGasParams.fromPartial(object.multi_send_type) : undefined;
+    message.grant_allowance_type = object.grant_allowance_type !== undefined && object.grant_allowance_type !== null ? MsgGasParams_DynamicGasParams.fromPartial(object.grant_allowance_type) : undefined;
     return message;
   }
 
@@ -232,14 +232,14 @@ export const MsgGasParams = {
 
 function createBaseMsgGasParams_FixedGasParams(): MsgGasParams_FixedGasParams {
   return {
-    fixedGas: Long.UZERO
+    fixed_gas: Long.UZERO
   };
 }
 
 export const MsgGasParams_FixedGasParams = {
   encode(message: MsgGasParams_FixedGasParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.fixedGas.isZero()) {
-      writer.uint32(8).uint64(message.fixedGas);
+    if (!message.fixed_gas.isZero()) {
+      writer.uint32(8).uint64(message.fixed_gas);
     }
 
     return writer;
@@ -255,7 +255,7 @@ export const MsgGasParams_FixedGasParams = {
 
       switch (tag >>> 3) {
         case 1:
-          message.fixedGas = (reader.uint64() as Long);
+          message.fixed_gas = (reader.uint64() as Long);
           break;
 
         default:
@@ -269,19 +269,19 @@ export const MsgGasParams_FixedGasParams = {
 
   fromJSON(object: any): MsgGasParams_FixedGasParams {
     return {
-      fixedGas: isSet(object.fixedGas) ? Long.fromValue(object.fixedGas) : Long.UZERO
+      fixed_gas: isSet(object.fixed_gas) ? Long.fromValue(object.fixed_gas) : Long.UZERO
     };
   },
 
   toJSON(message: MsgGasParams_FixedGasParams): unknown {
     const obj: any = {};
-    message.fixedGas !== undefined && (obj.fixedGas = (message.fixedGas || Long.UZERO).toString());
+    message.fixed_gas !== undefined && (obj.fixed_gas = (message.fixed_gas || Long.UZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgGasParams_FixedGasParams>, I>>(object: I): MsgGasParams_FixedGasParams {
     const message = createBaseMsgGasParams_FixedGasParams();
-    message.fixedGas = object.fixedGas !== undefined && object.fixedGas !== null ? Long.fromValue(object.fixedGas) : Long.UZERO;
+    message.fixed_gas = object.fixed_gas !== undefined && object.fixed_gas !== null ? Long.fromValue(object.fixed_gas) : Long.UZERO;
     return message;
   }
 
@@ -289,19 +289,19 @@ export const MsgGasParams_FixedGasParams = {
 
 function createBaseMsgGasParams_DynamicGasParams(): MsgGasParams_DynamicGasParams {
   return {
-    fixedGas: Long.UZERO,
-    gasPerItem: Long.UZERO
+    fixed_gas: Long.UZERO,
+    gas_per_item: Long.UZERO
   };
 }
 
 export const MsgGasParams_DynamicGasParams = {
   encode(message: MsgGasParams_DynamicGasParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.fixedGas.isZero()) {
-      writer.uint32(8).uint64(message.fixedGas);
+    if (!message.fixed_gas.isZero()) {
+      writer.uint32(8).uint64(message.fixed_gas);
     }
 
-    if (!message.gasPerItem.isZero()) {
-      writer.uint32(16).uint64(message.gasPerItem);
+    if (!message.gas_per_item.isZero()) {
+      writer.uint32(16).uint64(message.gas_per_item);
     }
 
     return writer;
@@ -317,11 +317,11 @@ export const MsgGasParams_DynamicGasParams = {
 
       switch (tag >>> 3) {
         case 1:
-          message.fixedGas = (reader.uint64() as Long);
+          message.fixed_gas = (reader.uint64() as Long);
           break;
 
         case 2:
-          message.gasPerItem = (reader.uint64() as Long);
+          message.gas_per_item = (reader.uint64() as Long);
           break;
 
         default:
@@ -335,22 +335,22 @@ export const MsgGasParams_DynamicGasParams = {
 
   fromJSON(object: any): MsgGasParams_DynamicGasParams {
     return {
-      fixedGas: isSet(object.fixedGas) ? Long.fromValue(object.fixedGas) : Long.UZERO,
-      gasPerItem: isSet(object.gasPerItem) ? Long.fromValue(object.gasPerItem) : Long.UZERO
+      fixed_gas: isSet(object.fixed_gas) ? Long.fromValue(object.fixed_gas) : Long.UZERO,
+      gas_per_item: isSet(object.gas_per_item) ? Long.fromValue(object.gas_per_item) : Long.UZERO
     };
   },
 
   toJSON(message: MsgGasParams_DynamicGasParams): unknown {
     const obj: any = {};
-    message.fixedGas !== undefined && (obj.fixedGas = (message.fixedGas || Long.UZERO).toString());
-    message.gasPerItem !== undefined && (obj.gasPerItem = (message.gasPerItem || Long.UZERO).toString());
+    message.fixed_gas !== undefined && (obj.fixed_gas = (message.fixed_gas || Long.UZERO).toString());
+    message.gas_per_item !== undefined && (obj.gas_per_item = (message.gas_per_item || Long.UZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgGasParams_DynamicGasParams>, I>>(object: I): MsgGasParams_DynamicGasParams {
     const message = createBaseMsgGasParams_DynamicGasParams();
-    message.fixedGas = object.fixedGas !== undefined && object.fixedGas !== null ? Long.fromValue(object.fixedGas) : Long.UZERO;
-    message.gasPerItem = object.gasPerItem !== undefined && object.gasPerItem !== null ? Long.fromValue(object.gasPerItem) : Long.UZERO;
+    message.fixed_gas = object.fixed_gas !== undefined && object.fixed_gas !== null ? Long.fromValue(object.fixed_gas) : Long.UZERO;
+    message.gas_per_item = object.gas_per_item !== undefined && object.gas_per_item !== null ? Long.fromValue(object.gas_per_item) : Long.UZERO;
     return message;
   }
 

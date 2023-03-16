@@ -6,27 +6,27 @@ export const protobufPackage = "bnbchain.greenfield.sp";
 
 export interface Params {
   /** deposit_denom defines the staking coin denomination. */
-  depositDenom: string;
+  deposit_denom: string;
   /** min_deposit_amount defines the minimum deposit amount for storage providers. */
 
-  minDeposit: string;
+  min_deposit: string;
 }
 
 function createBaseParams(): Params {
   return {
-    depositDenom: "",
-    minDeposit: ""
+    deposit_denom: "",
+    min_deposit: ""
   };
 }
 
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.depositDenom !== "") {
-      writer.uint32(10).string(message.depositDenom);
+    if (message.deposit_denom !== "") {
+      writer.uint32(10).string(message.deposit_denom);
     }
 
-    if (message.minDeposit !== "") {
-      writer.uint32(18).string(message.minDeposit);
+    if (message.min_deposit !== "") {
+      writer.uint32(18).string(message.min_deposit);
     }
 
     return writer;
@@ -42,11 +42,11 @@ export const Params = {
 
       switch (tag >>> 3) {
         case 1:
-          message.depositDenom = reader.string();
+          message.deposit_denom = reader.string();
           break;
 
         case 2:
-          message.minDeposit = reader.string();
+          message.min_deposit = reader.string();
           break;
 
         default:
@@ -60,22 +60,22 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
-      depositDenom: isSet(object.depositDenom) ? String(object.depositDenom) : "",
-      minDeposit: isSet(object.minDeposit) ? String(object.minDeposit) : ""
+      deposit_denom: isSet(object.deposit_denom) ? String(object.deposit_denom) : "",
+      min_deposit: isSet(object.min_deposit) ? String(object.min_deposit) : ""
     };
   },
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.depositDenom !== undefined && (obj.depositDenom = message.depositDenom);
-    message.minDeposit !== undefined && (obj.minDeposit = message.minDeposit);
+    message.deposit_denom !== undefined && (obj.deposit_denom = message.deposit_denom);
+    message.min_deposit !== undefined && (obj.min_deposit = message.min_deposit);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.depositDenom = object.depositDenom ?? "";
-    message.minDeposit = object.minDeposit ?? "";
+    message.deposit_denom = object.deposit_denom ?? "";
+    message.min_deposit = object.min_deposit ?? "";
     return message;
   }
 
