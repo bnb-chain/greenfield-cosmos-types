@@ -7,27 +7,27 @@ export const protobufPackage = "bnbchain.greenfield.permission";
 export interface Policy {
   id: string;
   principal?: Principal;
-  resource_type: ResourceType;
-  resource_id: string;
+  resourceType: ResourceType;
+  resourceId: string;
   statements: Statement[];
-  member_statement?: Statement;
+  memberStatement?: Statement;
 }
 export interface PolicyGroup {
   items: PolicyGroup_Item[];
 }
 export interface PolicyGroup_Item {
-  policy_id: string;
-  group_id: string;
+  policyId: string;
+  groupId: string;
 }
 
 function createBasePolicy(): Policy {
   return {
     id: "",
     principal: undefined,
-    resource_type: 0,
-    resource_id: "",
+    resourceType: 0,
+    resourceId: "",
     statements: [],
-    member_statement: undefined
+    memberStatement: undefined
   };
 }
 
@@ -41,20 +41,20 @@ export const Policy = {
       Principal.encode(message.principal, writer.uint32(18).fork()).ldelim();
     }
 
-    if (message.resource_type !== 0) {
-      writer.uint32(24).int32(message.resource_type);
+    if (message.resourceType !== 0) {
+      writer.uint32(24).int32(message.resourceType);
     }
 
-    if (message.resource_id !== "") {
-      writer.uint32(34).string(message.resource_id);
+    if (message.resourceId !== "") {
+      writer.uint32(34).string(message.resourceId);
     }
 
     for (const v of message.statements) {
       Statement.encode(v!, writer.uint32(42).fork()).ldelim();
     }
 
-    if (message.member_statement !== undefined) {
-      Statement.encode(message.member_statement, writer.uint32(50).fork()).ldelim();
+    if (message.memberStatement !== undefined) {
+      Statement.encode(message.memberStatement, writer.uint32(50).fork()).ldelim();
     }
 
     return writer;
@@ -78,11 +78,11 @@ export const Policy = {
           break;
 
         case 3:
-          message.resource_type = (reader.int32() as any);
+          message.resourceType = (reader.int32() as any);
           break;
 
         case 4:
-          message.resource_id = reader.string();
+          message.resourceId = reader.string();
           break;
 
         case 5:
@@ -90,7 +90,7 @@ export const Policy = {
           break;
 
         case 6:
-          message.member_statement = Statement.decode(reader, reader.uint32());
+          message.memberStatement = Statement.decode(reader, reader.uint32());
           break;
 
         default:
@@ -106,10 +106,10 @@ export const Policy = {
     return {
       id: isSet(object.id) ? String(object.id) : "",
       principal: isSet(object.principal) ? Principal.fromJSON(object.principal) : undefined,
-      resource_type: isSet(object.resource_type) ? resourceTypeFromJSON(object.resource_type) : 0,
-      resource_id: isSet(object.resource_id) ? String(object.resource_id) : "",
+      resourceType: isSet(object.resourceType) ? resourceTypeFromJSON(object.resourceType) : 0,
+      resourceId: isSet(object.resourceId) ? String(object.resourceId) : "",
       statements: Array.isArray(object?.statements) ? object.statements.map((e: any) => Statement.fromJSON(e)) : [],
-      member_statement: isSet(object.member_statement) ? Statement.fromJSON(object.member_statement) : undefined
+      memberStatement: isSet(object.memberStatement) ? Statement.fromJSON(object.memberStatement) : undefined
     };
   },
 
@@ -117,8 +117,8 @@ export const Policy = {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     message.principal !== undefined && (obj.principal = message.principal ? Principal.toJSON(message.principal) : undefined);
-    message.resource_type !== undefined && (obj.resource_type = resourceTypeToJSON(message.resource_type));
-    message.resource_id !== undefined && (obj.resource_id = message.resource_id);
+    message.resourceType !== undefined && (obj.resourceType = resourceTypeToJSON(message.resourceType));
+    message.resourceId !== undefined && (obj.resourceId = message.resourceId);
 
     if (message.statements) {
       obj.statements = message.statements.map(e => e ? Statement.toJSON(e) : undefined);
@@ -126,7 +126,7 @@ export const Policy = {
       obj.statements = [];
     }
 
-    message.member_statement !== undefined && (obj.member_statement = message.member_statement ? Statement.toJSON(message.member_statement) : undefined);
+    message.memberStatement !== undefined && (obj.memberStatement = message.memberStatement ? Statement.toJSON(message.memberStatement) : undefined);
     return obj;
   },
 
@@ -134,10 +134,10 @@ export const Policy = {
     const message = createBasePolicy();
     message.id = object.id ?? "";
     message.principal = object.principal !== undefined && object.principal !== null ? Principal.fromPartial(object.principal) : undefined;
-    message.resource_type = object.resource_type ?? 0;
-    message.resource_id = object.resource_id ?? "";
+    message.resourceType = object.resourceType ?? 0;
+    message.resourceId = object.resourceId ?? "";
     message.statements = object.statements?.map(e => Statement.fromPartial(e)) || [];
-    message.member_statement = object.member_statement !== undefined && object.member_statement !== null ? Statement.fromPartial(object.member_statement) : undefined;
+    message.memberStatement = object.memberStatement !== undefined && object.memberStatement !== null ? Statement.fromPartial(object.memberStatement) : undefined;
     return message;
   }
 
@@ -208,19 +208,19 @@ export const PolicyGroup = {
 
 function createBasePolicyGroup_Item(): PolicyGroup_Item {
   return {
-    policy_id: "",
-    group_id: ""
+    policyId: "",
+    groupId: ""
   };
 }
 
 export const PolicyGroup_Item = {
   encode(message: PolicyGroup_Item, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.policy_id !== "") {
-      writer.uint32(10).string(message.policy_id);
+    if (message.policyId !== "") {
+      writer.uint32(10).string(message.policyId);
     }
 
-    if (message.group_id !== "") {
-      writer.uint32(18).string(message.group_id);
+    if (message.groupId !== "") {
+      writer.uint32(18).string(message.groupId);
     }
 
     return writer;
@@ -236,11 +236,11 @@ export const PolicyGroup_Item = {
 
       switch (tag >>> 3) {
         case 1:
-          message.policy_id = reader.string();
+          message.policyId = reader.string();
           break;
 
         case 2:
-          message.group_id = reader.string();
+          message.groupId = reader.string();
           break;
 
         default:
@@ -254,22 +254,22 @@ export const PolicyGroup_Item = {
 
   fromJSON(object: any): PolicyGroup_Item {
     return {
-      policy_id: isSet(object.policy_id) ? String(object.policy_id) : "",
-      group_id: isSet(object.group_id) ? String(object.group_id) : ""
+      policyId: isSet(object.policyId) ? String(object.policyId) : "",
+      groupId: isSet(object.groupId) ? String(object.groupId) : ""
     };
   },
 
   toJSON(message: PolicyGroup_Item): unknown {
     const obj: any = {};
-    message.policy_id !== undefined && (obj.policy_id = message.policy_id);
-    message.group_id !== undefined && (obj.group_id = message.group_id);
+    message.policyId !== undefined && (obj.policyId = message.policyId);
+    message.groupId !== undefined && (obj.groupId = message.groupId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<PolicyGroup_Item>, I>>(object: I): PolicyGroup_Item {
     const message = createBasePolicyGroup_Item();
-    message.policy_id = object.policy_id ?? "";
-    message.group_id = object.group_id ?? "";
+    message.policyId = object.policyId ?? "";
+    message.groupId = object.groupId ?? "";
     return message;
   }
 

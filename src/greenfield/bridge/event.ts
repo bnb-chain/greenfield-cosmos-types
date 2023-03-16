@@ -16,7 +16,7 @@ export interface EventCrossTransferOut {
   amount?: Coin;
   /** Relayer fee of the cross chain transfer tx */
 
-  relayer_fee?: Coin;
+  relayerFee?: Coin;
   /** Sequence of the corresponding cross chain package */
 
   sequence: Long;
@@ -25,13 +25,13 @@ export interface EventCrossTransferOut {
 
 export interface EventCrossTransferOutRefund {
   /** Refund address of the failed cross chain transfer tx */
-  refund_address: string;
+  refundAddress: string;
   /** Amount of the failed cross chain transfer tx */
 
   amount?: Coin;
   /** Refund reason of the failed cross chain transfer tx */
 
-  refund_reason: number;
+  refundReason: number;
   /** Sequence of the corresponding cross chain package */
 
   sequence: Long;
@@ -43,10 +43,10 @@ export interface EventCrossTransferIn {
   amount?: Coin;
   /** Receiver of the cross chain transfer tx */
 
-  receiver_address: string;
+  receiverAddress: string;
   /** Refund of the cross chain transfer tx in BSC */
 
-  refund_address: string;
+  refundAddress: string;
   /** Sequence of the corresponding cross chain package */
 
   sequence: Long;
@@ -57,7 +57,7 @@ function createBaseEventCrossTransferOut(): EventCrossTransferOut {
     from: "",
     to: "",
     amount: undefined,
-    relayer_fee: undefined,
+    relayerFee: undefined,
     sequence: Long.UZERO
   };
 }
@@ -76,8 +76,8 @@ export const EventCrossTransferOut = {
       Coin.encode(message.amount, writer.uint32(26).fork()).ldelim();
     }
 
-    if (message.relayer_fee !== undefined) {
-      Coin.encode(message.relayer_fee, writer.uint32(34).fork()).ldelim();
+    if (message.relayerFee !== undefined) {
+      Coin.encode(message.relayerFee, writer.uint32(34).fork()).ldelim();
     }
 
     if (!message.sequence.isZero()) {
@@ -109,7 +109,7 @@ export const EventCrossTransferOut = {
           break;
 
         case 4:
-          message.relayer_fee = Coin.decode(reader, reader.uint32());
+          message.relayerFee = Coin.decode(reader, reader.uint32());
           break;
 
         case 5:
@@ -130,7 +130,7 @@ export const EventCrossTransferOut = {
       from: isSet(object.from) ? String(object.from) : "",
       to: isSet(object.to) ? String(object.to) : "",
       amount: isSet(object.amount) ? Coin.fromJSON(object.amount) : undefined,
-      relayer_fee: isSet(object.relayer_fee) ? Coin.fromJSON(object.relayer_fee) : undefined,
+      relayerFee: isSet(object.relayerFee) ? Coin.fromJSON(object.relayerFee) : undefined,
       sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO
     };
   },
@@ -140,7 +140,7 @@ export const EventCrossTransferOut = {
     message.from !== undefined && (obj.from = message.from);
     message.to !== undefined && (obj.to = message.to);
     message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
-    message.relayer_fee !== undefined && (obj.relayer_fee = message.relayer_fee ? Coin.toJSON(message.relayer_fee) : undefined);
+    message.relayerFee !== undefined && (obj.relayerFee = message.relayerFee ? Coin.toJSON(message.relayerFee) : undefined);
     message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
     return obj;
   },
@@ -150,7 +150,7 @@ export const EventCrossTransferOut = {
     message.from = object.from ?? "";
     message.to = object.to ?? "";
     message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
-    message.relayer_fee = object.relayer_fee !== undefined && object.relayer_fee !== null ? Coin.fromPartial(object.relayer_fee) : undefined;
+    message.relayerFee = object.relayerFee !== undefined && object.relayerFee !== null ? Coin.fromPartial(object.relayerFee) : undefined;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
   }
@@ -159,25 +159,25 @@ export const EventCrossTransferOut = {
 
 function createBaseEventCrossTransferOutRefund(): EventCrossTransferOutRefund {
   return {
-    refund_address: "",
+    refundAddress: "",
     amount: undefined,
-    refund_reason: 0,
+    refundReason: 0,
     sequence: Long.UZERO
   };
 }
 
 export const EventCrossTransferOutRefund = {
   encode(message: EventCrossTransferOutRefund, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.refund_address !== "") {
-      writer.uint32(10).string(message.refund_address);
+    if (message.refundAddress !== "") {
+      writer.uint32(10).string(message.refundAddress);
     }
 
     if (message.amount !== undefined) {
       Coin.encode(message.amount, writer.uint32(18).fork()).ldelim();
     }
 
-    if (message.refund_reason !== 0) {
-      writer.uint32(24).uint32(message.refund_reason);
+    if (message.refundReason !== 0) {
+      writer.uint32(24).uint32(message.refundReason);
     }
 
     if (!message.sequence.isZero()) {
@@ -197,7 +197,7 @@ export const EventCrossTransferOutRefund = {
 
       switch (tag >>> 3) {
         case 1:
-          message.refund_address = reader.string();
+          message.refundAddress = reader.string();
           break;
 
         case 2:
@@ -205,7 +205,7 @@ export const EventCrossTransferOutRefund = {
           break;
 
         case 3:
-          message.refund_reason = reader.uint32();
+          message.refundReason = reader.uint32();
           break;
 
         case 4:
@@ -223,27 +223,27 @@ export const EventCrossTransferOutRefund = {
 
   fromJSON(object: any): EventCrossTransferOutRefund {
     return {
-      refund_address: isSet(object.refund_address) ? String(object.refund_address) : "",
+      refundAddress: isSet(object.refundAddress) ? String(object.refundAddress) : "",
       amount: isSet(object.amount) ? Coin.fromJSON(object.amount) : undefined,
-      refund_reason: isSet(object.refund_reason) ? Number(object.refund_reason) : 0,
+      refundReason: isSet(object.refundReason) ? Number(object.refundReason) : 0,
       sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO
     };
   },
 
   toJSON(message: EventCrossTransferOutRefund): unknown {
     const obj: any = {};
-    message.refund_address !== undefined && (obj.refund_address = message.refund_address);
+    message.refundAddress !== undefined && (obj.refundAddress = message.refundAddress);
     message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
-    message.refund_reason !== undefined && (obj.refund_reason = Math.round(message.refund_reason));
+    message.refundReason !== undefined && (obj.refundReason = Math.round(message.refundReason));
     message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<EventCrossTransferOutRefund>, I>>(object: I): EventCrossTransferOutRefund {
     const message = createBaseEventCrossTransferOutRefund();
-    message.refund_address = object.refund_address ?? "";
+    message.refundAddress = object.refundAddress ?? "";
     message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
-    message.refund_reason = object.refund_reason ?? 0;
+    message.refundReason = object.refundReason ?? 0;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
   }
@@ -253,8 +253,8 @@ export const EventCrossTransferOutRefund = {
 function createBaseEventCrossTransferIn(): EventCrossTransferIn {
   return {
     amount: undefined,
-    receiver_address: "",
-    refund_address: "",
+    receiverAddress: "",
+    refundAddress: "",
     sequence: Long.UZERO
   };
 }
@@ -265,12 +265,12 @@ export const EventCrossTransferIn = {
       Coin.encode(message.amount, writer.uint32(10).fork()).ldelim();
     }
 
-    if (message.receiver_address !== "") {
-      writer.uint32(18).string(message.receiver_address);
+    if (message.receiverAddress !== "") {
+      writer.uint32(18).string(message.receiverAddress);
     }
 
-    if (message.refund_address !== "") {
-      writer.uint32(26).string(message.refund_address);
+    if (message.refundAddress !== "") {
+      writer.uint32(26).string(message.refundAddress);
     }
 
     if (!message.sequence.isZero()) {
@@ -294,11 +294,11 @@ export const EventCrossTransferIn = {
           break;
 
         case 2:
-          message.receiver_address = reader.string();
+          message.receiverAddress = reader.string();
           break;
 
         case 3:
-          message.refund_address = reader.string();
+          message.refundAddress = reader.string();
           break;
 
         case 4:
@@ -317,8 +317,8 @@ export const EventCrossTransferIn = {
   fromJSON(object: any): EventCrossTransferIn {
     return {
       amount: isSet(object.amount) ? Coin.fromJSON(object.amount) : undefined,
-      receiver_address: isSet(object.receiver_address) ? String(object.receiver_address) : "",
-      refund_address: isSet(object.refund_address) ? String(object.refund_address) : "",
+      receiverAddress: isSet(object.receiverAddress) ? String(object.receiverAddress) : "",
+      refundAddress: isSet(object.refundAddress) ? String(object.refundAddress) : "",
       sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO
     };
   },
@@ -326,8 +326,8 @@ export const EventCrossTransferIn = {
   toJSON(message: EventCrossTransferIn): unknown {
     const obj: any = {};
     message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
-    message.receiver_address !== undefined && (obj.receiver_address = message.receiver_address);
-    message.refund_address !== undefined && (obj.refund_address = message.refund_address);
+    message.receiverAddress !== undefined && (obj.receiverAddress = message.receiverAddress);
+    message.refundAddress !== undefined && (obj.refundAddress = message.refundAddress);
     message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
     return obj;
   },
@@ -335,8 +335,8 @@ export const EventCrossTransferIn = {
   fromPartial<I extends Exact<DeepPartial<EventCrossTransferIn>, I>>(object: I): EventCrossTransferIn {
     const message = createBaseEventCrossTransferIn();
     message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
-    message.receiver_address = object.receiver_address ?? "";
-    message.refund_address = object.refund_address ?? "";
+    message.receiverAddress = object.receiverAddress ?? "";
+    message.refundAddress = object.refundAddress ?? "";
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
   }

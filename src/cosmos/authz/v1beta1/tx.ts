@@ -46,7 +46,7 @@ export interface MsgGrantResponse {}
 export interface MsgRevoke {
   granter: string;
   grantee: string;
-  msg_type_url: string;
+  msgTypeUrl: string;
 }
 /** MsgRevokeResponse defines the Msg/MsgRevokeResponse response type. */
 
@@ -318,7 +318,7 @@ function createBaseMsgRevoke(): MsgRevoke {
   return {
     granter: "",
     grantee: "",
-    msg_type_url: ""
+    msgTypeUrl: ""
   };
 }
 
@@ -332,8 +332,8 @@ export const MsgRevoke = {
       writer.uint32(18).string(message.grantee);
     }
 
-    if (message.msg_type_url !== "") {
-      writer.uint32(26).string(message.msg_type_url);
+    if (message.msgTypeUrl !== "") {
+      writer.uint32(26).string(message.msgTypeUrl);
     }
 
     return writer;
@@ -357,7 +357,7 @@ export const MsgRevoke = {
           break;
 
         case 3:
-          message.msg_type_url = reader.string();
+          message.msgTypeUrl = reader.string();
           break;
 
         default:
@@ -373,7 +373,7 @@ export const MsgRevoke = {
     return {
       granter: isSet(object.granter) ? String(object.granter) : "",
       grantee: isSet(object.grantee) ? String(object.grantee) : "",
-      msg_type_url: isSet(object.msg_type_url) ? String(object.msg_type_url) : ""
+      msgTypeUrl: isSet(object.msgTypeUrl) ? String(object.msgTypeUrl) : ""
     };
   },
 
@@ -381,7 +381,7 @@ export const MsgRevoke = {
     const obj: any = {};
     message.granter !== undefined && (obj.granter = message.granter);
     message.grantee !== undefined && (obj.grantee = message.grantee);
-    message.msg_type_url !== undefined && (obj.msg_type_url = message.msg_type_url);
+    message.msgTypeUrl !== undefined && (obj.msgTypeUrl = message.msgTypeUrl);
     return obj;
   },
 
@@ -389,7 +389,7 @@ export const MsgRevoke = {
     const message = createBaseMsgRevoke();
     message.granter = object.granter ?? "";
     message.grantee = object.grantee ?? "";
-    message.msg_type_url = object.msg_type_url ?? "";
+    message.msgTypeUrl = object.msgTypeUrl ?? "";
     return message;
   }
 

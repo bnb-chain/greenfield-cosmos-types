@@ -10,19 +10,19 @@ export interface GenesisState {
    * constant_fee is the fee used to verify the invariant in the crisis
    * module.
    */
-  constant_fee?: Coin;
+  constantFee?: Coin;
 }
 
 function createBaseGenesisState(): GenesisState {
   return {
-    constant_fee: undefined
+    constantFee: undefined
   };
 }
 
 export const GenesisState = {
   encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.constant_fee !== undefined) {
-      Coin.encode(message.constant_fee, writer.uint32(26).fork()).ldelim();
+    if (message.constantFee !== undefined) {
+      Coin.encode(message.constantFee, writer.uint32(26).fork()).ldelim();
     }
 
     return writer;
@@ -38,7 +38,7 @@ export const GenesisState = {
 
       switch (tag >>> 3) {
         case 3:
-          message.constant_fee = Coin.decode(reader, reader.uint32());
+          message.constantFee = Coin.decode(reader, reader.uint32());
           break;
 
         default:
@@ -52,19 +52,19 @@ export const GenesisState = {
 
   fromJSON(object: any): GenesisState {
     return {
-      constant_fee: isSet(object.constant_fee) ? Coin.fromJSON(object.constant_fee) : undefined
+      constantFee: isSet(object.constantFee) ? Coin.fromJSON(object.constantFee) : undefined
     };
   },
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
-    message.constant_fee !== undefined && (obj.constant_fee = message.constant_fee ? Coin.toJSON(message.constant_fee) : undefined);
+    message.constantFee !== undefined && (obj.constantFee = message.constantFee ? Coin.toJSON(message.constantFee) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
-    message.constant_fee = object.constant_fee !== undefined && object.constant_fee !== null ? Coin.fromPartial(object.constant_fee) : undefined;
+    message.constantFee = object.constantFee !== undefined && object.constantFee !== null ? Coin.fromPartial(object.constantFee) : undefined;
     return message;
   }
 

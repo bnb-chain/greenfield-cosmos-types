@@ -103,7 +103,7 @@ export function storageTypeToJSON(object: StorageType): string {
 /** ModuleSchemaDescriptor describe's a module's ORM schema. */
 
 export interface ModuleSchemaDescriptor {
-  schema_file: ModuleSchemaDescriptor_FileEntry[];
+  schemaFile: ModuleSchemaDescriptor_FileEntry[];
   /**
    * prefix is an optional prefix that precedes all keys in this module's
    * store.
@@ -125,26 +125,26 @@ export interface ModuleSchemaDescriptor_FileEntry {
    * module has referenced using cosmos.app.v1.ModuleDescriptor.use_package.
    */
 
-  proto_file_name: string;
+  protoFileName: string;
   /**
    * storage_type optionally indicates the type of storage this file's
    * tables should used. If it is left unspecified, the default KV-storage
    * of the app will be used.
    */
 
-  storage_type: StorageType;
+  storageType: StorageType;
 }
 
 function createBaseModuleSchemaDescriptor(): ModuleSchemaDescriptor {
   return {
-    schema_file: [],
+    schemaFile: [],
     prefix: new Uint8Array()
   };
 }
 
 export const ModuleSchemaDescriptor = {
   encode(message: ModuleSchemaDescriptor, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.schema_file) {
+    for (const v of message.schemaFile) {
       ModuleSchemaDescriptor_FileEntry.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
@@ -165,7 +165,7 @@ export const ModuleSchemaDescriptor = {
 
       switch (tag >>> 3) {
         case 1:
-          message.schema_file.push(ModuleSchemaDescriptor_FileEntry.decode(reader, reader.uint32()));
+          message.schemaFile.push(ModuleSchemaDescriptor_FileEntry.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -183,7 +183,7 @@ export const ModuleSchemaDescriptor = {
 
   fromJSON(object: any): ModuleSchemaDescriptor {
     return {
-      schema_file: Array.isArray(object?.schema_file) ? object.schema_file.map((e: any) => ModuleSchemaDescriptor_FileEntry.fromJSON(e)) : [],
+      schemaFile: Array.isArray(object?.schemaFile) ? object.schemaFile.map((e: any) => ModuleSchemaDescriptor_FileEntry.fromJSON(e)) : [],
       prefix: isSet(object.prefix) ? bytesFromBase64(object.prefix) : new Uint8Array()
     };
   },
@@ -191,10 +191,10 @@ export const ModuleSchemaDescriptor = {
   toJSON(message: ModuleSchemaDescriptor): unknown {
     const obj: any = {};
 
-    if (message.schema_file) {
-      obj.schema_file = message.schema_file.map(e => e ? ModuleSchemaDescriptor_FileEntry.toJSON(e) : undefined);
+    if (message.schemaFile) {
+      obj.schemaFile = message.schemaFile.map(e => e ? ModuleSchemaDescriptor_FileEntry.toJSON(e) : undefined);
     } else {
-      obj.schema_file = [];
+      obj.schemaFile = [];
     }
 
     message.prefix !== undefined && (obj.prefix = base64FromBytes(message.prefix !== undefined ? message.prefix : new Uint8Array()));
@@ -203,7 +203,7 @@ export const ModuleSchemaDescriptor = {
 
   fromPartial<I extends Exact<DeepPartial<ModuleSchemaDescriptor>, I>>(object: I): ModuleSchemaDescriptor {
     const message = createBaseModuleSchemaDescriptor();
-    message.schema_file = object.schema_file?.map(e => ModuleSchemaDescriptor_FileEntry.fromPartial(e)) || [];
+    message.schemaFile = object.schemaFile?.map(e => ModuleSchemaDescriptor_FileEntry.fromPartial(e)) || [];
     message.prefix = object.prefix ?? new Uint8Array();
     return message;
   }
@@ -213,8 +213,8 @@ export const ModuleSchemaDescriptor = {
 function createBaseModuleSchemaDescriptor_FileEntry(): ModuleSchemaDescriptor_FileEntry {
   return {
     id: 0,
-    proto_file_name: "",
-    storage_type: 0
+    protoFileName: "",
+    storageType: 0
   };
 }
 
@@ -224,12 +224,12 @@ export const ModuleSchemaDescriptor_FileEntry = {
       writer.uint32(8).uint32(message.id);
     }
 
-    if (message.proto_file_name !== "") {
-      writer.uint32(18).string(message.proto_file_name);
+    if (message.protoFileName !== "") {
+      writer.uint32(18).string(message.protoFileName);
     }
 
-    if (message.storage_type !== 0) {
-      writer.uint32(24).int32(message.storage_type);
+    if (message.storageType !== 0) {
+      writer.uint32(24).int32(message.storageType);
     }
 
     return writer;
@@ -249,11 +249,11 @@ export const ModuleSchemaDescriptor_FileEntry = {
           break;
 
         case 2:
-          message.proto_file_name = reader.string();
+          message.protoFileName = reader.string();
           break;
 
         case 3:
-          message.storage_type = (reader.int32() as any);
+          message.storageType = (reader.int32() as any);
           break;
 
         default:
@@ -268,24 +268,24 @@ export const ModuleSchemaDescriptor_FileEntry = {
   fromJSON(object: any): ModuleSchemaDescriptor_FileEntry {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
-      proto_file_name: isSet(object.proto_file_name) ? String(object.proto_file_name) : "",
-      storage_type: isSet(object.storage_type) ? storageTypeFromJSON(object.storage_type) : 0
+      protoFileName: isSet(object.protoFileName) ? String(object.protoFileName) : "",
+      storageType: isSet(object.storageType) ? storageTypeFromJSON(object.storageType) : 0
     };
   },
 
   toJSON(message: ModuleSchemaDescriptor_FileEntry): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
-    message.proto_file_name !== undefined && (obj.proto_file_name = message.proto_file_name);
-    message.storage_type !== undefined && (obj.storage_type = storageTypeToJSON(message.storage_type));
+    message.protoFileName !== undefined && (obj.protoFileName = message.protoFileName);
+    message.storageType !== undefined && (obj.storageType = storageTypeToJSON(message.storageType));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<ModuleSchemaDescriptor_FileEntry>, I>>(object: I): ModuleSchemaDescriptor_FileEntry {
     const message = createBaseModuleSchemaDescriptor_FileEntry();
     message.id = object.id ?? 0;
-    message.proto_file_name = object.proto_file_name ?? "";
-    message.storage_type = object.storage_type ?? 0;
+    message.protoFileName = object.protoFileName ?? "";
+    message.storageType = object.storageType ?? 0;
     return message;
   }
 

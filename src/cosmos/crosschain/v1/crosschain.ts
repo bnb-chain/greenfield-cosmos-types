@@ -5,19 +5,19 @@ export const protobufPackage = "cosmos.crosschain.v1";
 /** Params holds parameters for the cross chain module. */
 
 export interface Params {
-  init_module_balance: string;
+  initModuleBalance: string;
 }
 
 function createBaseParams(): Params {
   return {
-    init_module_balance: ""
+    initModuleBalance: ""
   };
 }
 
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.init_module_balance !== "") {
-      writer.uint32(10).string(message.init_module_balance);
+    if (message.initModuleBalance !== "") {
+      writer.uint32(10).string(message.initModuleBalance);
     }
 
     return writer;
@@ -33,7 +33,7 @@ export const Params = {
 
       switch (tag >>> 3) {
         case 1:
-          message.init_module_balance = reader.string();
+          message.initModuleBalance = reader.string();
           break;
 
         default:
@@ -47,19 +47,19 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
-      init_module_balance: isSet(object.init_module_balance) ? String(object.init_module_balance) : ""
+      initModuleBalance: isSet(object.initModuleBalance) ? String(object.initModuleBalance) : ""
     };
   },
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.init_module_balance !== undefined && (obj.init_module_balance = message.init_module_balance);
+    message.initModuleBalance !== undefined && (obj.initModuleBalance = message.initModuleBalance);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.init_module_balance = object.init_module_balance ?? "";
+    message.initModuleBalance = object.initModuleBalance ?? "";
     return message;
   }
 

@@ -11,7 +11,7 @@ export interface QueryGrantsRequest {
   grantee: string;
   /** Optional, msg_type_url, when set, will query only grants matching given msg type. */
 
-  msg_type_url: string;
+  msgTypeUrl: string;
   /** pagination defines an pagination for the request. */
 
   pagination?: PageRequest;
@@ -64,7 +64,7 @@ function createBaseQueryGrantsRequest(): QueryGrantsRequest {
   return {
     granter: "",
     grantee: "",
-    msg_type_url: "",
+    msgTypeUrl: "",
     pagination: undefined
   };
 }
@@ -79,8 +79,8 @@ export const QueryGrantsRequest = {
       writer.uint32(18).string(message.grantee);
     }
 
-    if (message.msg_type_url !== "") {
-      writer.uint32(26).string(message.msg_type_url);
+    if (message.msgTypeUrl !== "") {
+      writer.uint32(26).string(message.msgTypeUrl);
     }
 
     if (message.pagination !== undefined) {
@@ -108,7 +108,7 @@ export const QueryGrantsRequest = {
           break;
 
         case 3:
-          message.msg_type_url = reader.string();
+          message.msgTypeUrl = reader.string();
           break;
 
         case 4:
@@ -128,7 +128,7 @@ export const QueryGrantsRequest = {
     return {
       granter: isSet(object.granter) ? String(object.granter) : "",
       grantee: isSet(object.grantee) ? String(object.grantee) : "",
-      msg_type_url: isSet(object.msg_type_url) ? String(object.msg_type_url) : "",
+      msgTypeUrl: isSet(object.msgTypeUrl) ? String(object.msgTypeUrl) : "",
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
@@ -137,7 +137,7 @@ export const QueryGrantsRequest = {
     const obj: any = {};
     message.granter !== undefined && (obj.granter = message.granter);
     message.grantee !== undefined && (obj.grantee = message.grantee);
-    message.msg_type_url !== undefined && (obj.msg_type_url = message.msg_type_url);
+    message.msgTypeUrl !== undefined && (obj.msgTypeUrl = message.msgTypeUrl);
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
@@ -146,7 +146,7 @@ export const QueryGrantsRequest = {
     const message = createBaseQueryGrantsRequest();
     message.granter = object.granter ?? "";
     message.grantee = object.grantee ?? "";
-    message.msg_type_url = object.msg_type_url ?? "";
+    message.msgTypeUrl = object.msgTypeUrl ?? "";
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
   }
