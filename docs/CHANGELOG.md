@@ -1,3 +1,10 @@
+# [0.3.0-alpha.5](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.3.0-alpha.4...v0.3.0-alpha.5) (2023-03-16)
+
+
+### Features
+
+* Update Struct ([1d12f22](https://github.com/bnb-chain/gnfd-cosmos-types/commit/1d12f22648a9eeeab0a3c3d4cd8faf034686b268))
+
 # [0.3.0-alpha.4](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.3.0-alpha.3...v0.3.0-alpha.4) (2023-03-16)
 
 
