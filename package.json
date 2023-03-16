@@ -3,23 +3,23 @@
   "version": "0.3.0-alpha.2",
   "description": "",
   "scripts": {
+    "clean": "rimraf confio cosmos cosmos_proto gogoproto google greenfield tendermint index.* helpers.*",
+    "prepare-publishing": "cp -r dist/* .",
     "build": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "exports": {
-    "./*": "./dist/*"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/*"
-      ]
-    }
-  },
   "files": [
-    "dist"
+    "confio/",
+    "cosmos/",
+    "cosmos_proto/",
+    "gogoproto/",
+    "google/",
+    "greenfield/",
+    "tendermint/",
+    "/index.*",
+    "/helpers.*"
   ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
@@ -27,13 +27,14 @@
     "access": "public"
   },
   "devDependencies": {
+    "@osmonauts/telescope": "^0.81.5",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
-    "semantic-release": "^19.0.3",
-    "typescript": "^4.7.4",
     "@types/long": "^4.0.1",
     "@types/node": "^15.6.2",
-    "@osmonauts/telescope": "^0.81.5"
+    "rimraf": "^4.4.0",
+    "semantic-release": "^19.0.3",
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "long": "^4.0.0",
