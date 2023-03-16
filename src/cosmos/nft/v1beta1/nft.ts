@@ -22,7 +22,7 @@ export interface Class {
   uri: string;
   /** uri_hash is a hash of the document pointed by uri. Optional */
 
-  uri_hash: string;
+  uriHash: string;
   /** data is the app specific metadata of the NFT class. Optional */
 
   data?: Any;
@@ -31,7 +31,7 @@ export interface Class {
 
 export interface NFT {
   /** class_id associated with the NFT, similar to the contract address of ERC721 */
-  class_id: string;
+  classId: string;
   /** id is a unique identifier of the NFT */
 
   id: string;
@@ -40,7 +40,7 @@ export interface NFT {
   uri: string;
   /** uri_hash is a hash of the document pointed by uri */
 
-  uri_hash: string;
+  uriHash: string;
   /** data is an app specific data of the NFT. Optional */
 
   data?: Any;
@@ -53,7 +53,7 @@ function createBaseClass(): Class {
     symbol: "",
     description: "",
     uri: "",
-    uri_hash: "",
+    uriHash: "",
     data: undefined
   };
 }
@@ -80,8 +80,8 @@ export const Class = {
       writer.uint32(42).string(message.uri);
     }
 
-    if (message.uri_hash !== "") {
-      writer.uint32(50).string(message.uri_hash);
+    if (message.uriHash !== "") {
+      writer.uint32(50).string(message.uriHash);
     }
 
     if (message.data !== undefined) {
@@ -121,7 +121,7 @@ export const Class = {
           break;
 
         case 6:
-          message.uri_hash = reader.string();
+          message.uriHash = reader.string();
           break;
 
         case 7:
@@ -144,7 +144,7 @@ export const Class = {
       symbol: isSet(object.symbol) ? String(object.symbol) : "",
       description: isSet(object.description) ? String(object.description) : "",
       uri: isSet(object.uri) ? String(object.uri) : "",
-      uri_hash: isSet(object.uri_hash) ? String(object.uri_hash) : "",
+      uriHash: isSet(object.uriHash) ? String(object.uriHash) : "",
       data: isSet(object.data) ? Any.fromJSON(object.data) : undefined
     };
   },
@@ -156,7 +156,7 @@ export const Class = {
     message.symbol !== undefined && (obj.symbol = message.symbol);
     message.description !== undefined && (obj.description = message.description);
     message.uri !== undefined && (obj.uri = message.uri);
-    message.uri_hash !== undefined && (obj.uri_hash = message.uri_hash);
+    message.uriHash !== undefined && (obj.uriHash = message.uriHash);
     message.data !== undefined && (obj.data = message.data ? Any.toJSON(message.data) : undefined);
     return obj;
   },
@@ -168,7 +168,7 @@ export const Class = {
     message.symbol = object.symbol ?? "";
     message.description = object.description ?? "";
     message.uri = object.uri ?? "";
-    message.uri_hash = object.uri_hash ?? "";
+    message.uriHash = object.uriHash ?? "";
     message.data = object.data !== undefined && object.data !== null ? Any.fromPartial(object.data) : undefined;
     return message;
   }
@@ -177,18 +177,18 @@ export const Class = {
 
 function createBaseNFT(): NFT {
   return {
-    class_id: "",
+    classId: "",
     id: "",
     uri: "",
-    uri_hash: "",
+    uriHash: "",
     data: undefined
   };
 }
 
 export const NFT = {
   encode(message: NFT, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.class_id !== "") {
-      writer.uint32(10).string(message.class_id);
+    if (message.classId !== "") {
+      writer.uint32(10).string(message.classId);
     }
 
     if (message.id !== "") {
@@ -199,8 +199,8 @@ export const NFT = {
       writer.uint32(26).string(message.uri);
     }
 
-    if (message.uri_hash !== "") {
-      writer.uint32(34).string(message.uri_hash);
+    if (message.uriHash !== "") {
+      writer.uint32(34).string(message.uriHash);
     }
 
     if (message.data !== undefined) {
@@ -220,7 +220,7 @@ export const NFT = {
 
       switch (tag >>> 3) {
         case 1:
-          message.class_id = reader.string();
+          message.classId = reader.string();
           break;
 
         case 2:
@@ -232,7 +232,7 @@ export const NFT = {
           break;
 
         case 4:
-          message.uri_hash = reader.string();
+          message.uriHash = reader.string();
           break;
 
         case 10:
@@ -250,30 +250,30 @@ export const NFT = {
 
   fromJSON(object: any): NFT {
     return {
-      class_id: isSet(object.class_id) ? String(object.class_id) : "",
+      classId: isSet(object.classId) ? String(object.classId) : "",
       id: isSet(object.id) ? String(object.id) : "",
       uri: isSet(object.uri) ? String(object.uri) : "",
-      uri_hash: isSet(object.uri_hash) ? String(object.uri_hash) : "",
+      uriHash: isSet(object.uriHash) ? String(object.uriHash) : "",
       data: isSet(object.data) ? Any.fromJSON(object.data) : undefined
     };
   },
 
   toJSON(message: NFT): unknown {
     const obj: any = {};
-    message.class_id !== undefined && (obj.class_id = message.class_id);
+    message.classId !== undefined && (obj.classId = message.classId);
     message.id !== undefined && (obj.id = message.id);
     message.uri !== undefined && (obj.uri = message.uri);
-    message.uri_hash !== undefined && (obj.uri_hash = message.uri_hash);
+    message.uriHash !== undefined && (obj.uriHash = message.uriHash);
     message.data !== undefined && (obj.data = message.data ? Any.toJSON(message.data) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<NFT>, I>>(object: I): NFT {
     const message = createBaseNFT();
-    message.class_id = object.class_id ?? "";
+    message.classId = object.classId ?? "";
     message.id = object.id ?? "";
     message.uri = object.uri ?? "";
-    message.uri_hash = object.uri_hash ?? "";
+    message.uriHash = object.uriHash ?? "";
     message.data = object.data !== undefined && object.data !== null ? Any.fromPartial(object.data) : undefined;
     return message;
   }

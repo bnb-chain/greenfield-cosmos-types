@@ -11,7 +11,7 @@ export interface Record {
   name: string;
   /** pub_key represents a public key in any format */
 
-  pub_key?: Any;
+  pubKey?: Any;
   /** local stores the private key locally. */
 
   local?: Record_Local;
@@ -31,7 +31,7 @@ export interface Record {
  */
 
 export interface Record_Local {
-  priv_key?: Any;
+  privKey?: Any;
 }
 /** Ledger item */
 
@@ -48,7 +48,7 @@ export interface Record_Offline {}
 function createBaseRecord(): Record {
   return {
     name: "",
-    pub_key: undefined,
+    pubKey: undefined,
     local: undefined,
     ledger: undefined,
     multi: undefined,
@@ -62,8 +62,8 @@ export const Record = {
       writer.uint32(10).string(message.name);
     }
 
-    if (message.pub_key !== undefined) {
-      Any.encode(message.pub_key, writer.uint32(18).fork()).ldelim();
+    if (message.pubKey !== undefined) {
+      Any.encode(message.pubKey, writer.uint32(18).fork()).ldelim();
     }
 
     if (message.local !== undefined) {
@@ -99,7 +99,7 @@ export const Record = {
           break;
 
         case 2:
-          message.pub_key = Any.decode(reader, reader.uint32());
+          message.pubKey = Any.decode(reader, reader.uint32());
           break;
 
         case 3:
@@ -130,7 +130,7 @@ export const Record = {
   fromJSON(object: any): Record {
     return {
       name: isSet(object.name) ? String(object.name) : "",
-      pub_key: isSet(object.pub_key) ? Any.fromJSON(object.pub_key) : undefined,
+      pubKey: isSet(object.pubKey) ? Any.fromJSON(object.pubKey) : undefined,
       local: isSet(object.local) ? Record_Local.fromJSON(object.local) : undefined,
       ledger: isSet(object.ledger) ? Record_Ledger.fromJSON(object.ledger) : undefined,
       multi: isSet(object.multi) ? Record_Multi.fromJSON(object.multi) : undefined,
@@ -141,7 +141,7 @@ export const Record = {
   toJSON(message: Record): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
-    message.pub_key !== undefined && (obj.pub_key = message.pub_key ? Any.toJSON(message.pub_key) : undefined);
+    message.pubKey !== undefined && (obj.pubKey = message.pubKey ? Any.toJSON(message.pubKey) : undefined);
     message.local !== undefined && (obj.local = message.local ? Record_Local.toJSON(message.local) : undefined);
     message.ledger !== undefined && (obj.ledger = message.ledger ? Record_Ledger.toJSON(message.ledger) : undefined);
     message.multi !== undefined && (obj.multi = message.multi ? Record_Multi.toJSON(message.multi) : undefined);
@@ -152,7 +152,7 @@ export const Record = {
   fromPartial<I extends Exact<DeepPartial<Record>, I>>(object: I): Record {
     const message = createBaseRecord();
     message.name = object.name ?? "";
-    message.pub_key = object.pub_key !== undefined && object.pub_key !== null ? Any.fromPartial(object.pub_key) : undefined;
+    message.pubKey = object.pubKey !== undefined && object.pubKey !== null ? Any.fromPartial(object.pubKey) : undefined;
     message.local = object.local !== undefined && object.local !== null ? Record_Local.fromPartial(object.local) : undefined;
     message.ledger = object.ledger !== undefined && object.ledger !== null ? Record_Ledger.fromPartial(object.ledger) : undefined;
     message.multi = object.multi !== undefined && object.multi !== null ? Record_Multi.fromPartial(object.multi) : undefined;
@@ -164,14 +164,14 @@ export const Record = {
 
 function createBaseRecord_Local(): Record_Local {
   return {
-    priv_key: undefined
+    privKey: undefined
   };
 }
 
 export const Record_Local = {
   encode(message: Record_Local, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.priv_key !== undefined) {
-      Any.encode(message.priv_key, writer.uint32(10).fork()).ldelim();
+    if (message.privKey !== undefined) {
+      Any.encode(message.privKey, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -187,7 +187,7 @@ export const Record_Local = {
 
       switch (tag >>> 3) {
         case 1:
-          message.priv_key = Any.decode(reader, reader.uint32());
+          message.privKey = Any.decode(reader, reader.uint32());
           break;
 
         default:
@@ -201,19 +201,19 @@ export const Record_Local = {
 
   fromJSON(object: any): Record_Local {
     return {
-      priv_key: isSet(object.priv_key) ? Any.fromJSON(object.priv_key) : undefined
+      privKey: isSet(object.privKey) ? Any.fromJSON(object.privKey) : undefined
     };
   },
 
   toJSON(message: Record_Local): unknown {
     const obj: any = {};
-    message.priv_key !== undefined && (obj.priv_key = message.priv_key ? Any.toJSON(message.priv_key) : undefined);
+    message.privKey !== undefined && (obj.privKey = message.privKey ? Any.toJSON(message.privKey) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Record_Local>, I>>(object: I): Record_Local {
     const message = createBaseRecord_Local();
-    message.priv_key = object.priv_key !== undefined && object.priv_key !== null ? Any.fromPartial(object.priv_key) : undefined;
+    message.privKey = object.privKey !== undefined && object.privKey !== null ? Any.fromPartial(object.privKey) : undefined;
     return message;
   }
 

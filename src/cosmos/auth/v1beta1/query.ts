@@ -82,7 +82,7 @@ export interface QueryModuleAccountByNameResponse {
  */
 
 export interface AddressBytesToStringRequest {
-  address_bytes: Uint8Array;
+  addressBytes: Uint8Array;
 }
 /**
  * AddressBytesToStringResponse is the response type for AddressString rpc method.
@@ -91,7 +91,7 @@ export interface AddressBytesToStringRequest {
  */
 
 export interface AddressBytesToStringResponse {
-  address_string: string;
+  addressString: string;
 }
 /**
  * AddressStringToBytesRequest is the request type for AccountBytes rpc method.
@@ -100,7 +100,7 @@ export interface AddressBytesToStringResponse {
  */
 
 export interface AddressStringToBytesRequest {
-  address_string: string;
+  addressString: string;
 }
 /**
  * AddressStringToBytesResponse is the response type for AddressBytes rpc method.
@@ -109,7 +109,7 @@ export interface AddressStringToBytesRequest {
  */
 
 export interface AddressStringToBytesResponse {
-  address_bytes: Uint8Array;
+  addressBytes: Uint8Array;
 }
 /**
  * QueryAccountAddressByIDRequest is the request type for AccountAddressByID rpc method
@@ -132,7 +132,7 @@ export interface QueryAccountAddressByIDRequest {
  */
 
 export interface QueryAccountAddressByIDResponse {
-  account_address: string;
+  accountAddress: string;
 }
 
 function createBaseQueryAccountsRequest(): QueryAccountsRequest {
@@ -703,14 +703,14 @@ export const QueryModuleAccountByNameResponse = {
 
 function createBaseAddressBytesToStringRequest(): AddressBytesToStringRequest {
   return {
-    address_bytes: new Uint8Array()
+    addressBytes: new Uint8Array()
   };
 }
 
 export const AddressBytesToStringRequest = {
   encode(message: AddressBytesToStringRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.address_bytes.length !== 0) {
-      writer.uint32(10).bytes(message.address_bytes);
+    if (message.addressBytes.length !== 0) {
+      writer.uint32(10).bytes(message.addressBytes);
     }
 
     return writer;
@@ -726,7 +726,7 @@ export const AddressBytesToStringRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.address_bytes = reader.bytes();
+          message.addressBytes = reader.bytes();
           break;
 
         default:
@@ -740,19 +740,19 @@ export const AddressBytesToStringRequest = {
 
   fromJSON(object: any): AddressBytesToStringRequest {
     return {
-      address_bytes: isSet(object.address_bytes) ? bytesFromBase64(object.address_bytes) : new Uint8Array()
+      addressBytes: isSet(object.addressBytes) ? bytesFromBase64(object.addressBytes) : new Uint8Array()
     };
   },
 
   toJSON(message: AddressBytesToStringRequest): unknown {
     const obj: any = {};
-    message.address_bytes !== undefined && (obj.address_bytes = base64FromBytes(message.address_bytes !== undefined ? message.address_bytes : new Uint8Array()));
+    message.addressBytes !== undefined && (obj.addressBytes = base64FromBytes(message.addressBytes !== undefined ? message.addressBytes : new Uint8Array()));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<AddressBytesToStringRequest>, I>>(object: I): AddressBytesToStringRequest {
     const message = createBaseAddressBytesToStringRequest();
-    message.address_bytes = object.address_bytes ?? new Uint8Array();
+    message.addressBytes = object.addressBytes ?? new Uint8Array();
     return message;
   }
 
@@ -760,14 +760,14 @@ export const AddressBytesToStringRequest = {
 
 function createBaseAddressBytesToStringResponse(): AddressBytesToStringResponse {
   return {
-    address_string: ""
+    addressString: ""
   };
 }
 
 export const AddressBytesToStringResponse = {
   encode(message: AddressBytesToStringResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.address_string !== "") {
-      writer.uint32(10).string(message.address_string);
+    if (message.addressString !== "") {
+      writer.uint32(10).string(message.addressString);
     }
 
     return writer;
@@ -783,7 +783,7 @@ export const AddressBytesToStringResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.address_string = reader.string();
+          message.addressString = reader.string();
           break;
 
         default:
@@ -797,19 +797,19 @@ export const AddressBytesToStringResponse = {
 
   fromJSON(object: any): AddressBytesToStringResponse {
     return {
-      address_string: isSet(object.address_string) ? String(object.address_string) : ""
+      addressString: isSet(object.addressString) ? String(object.addressString) : ""
     };
   },
 
   toJSON(message: AddressBytesToStringResponse): unknown {
     const obj: any = {};
-    message.address_string !== undefined && (obj.address_string = message.address_string);
+    message.addressString !== undefined && (obj.addressString = message.addressString);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<AddressBytesToStringResponse>, I>>(object: I): AddressBytesToStringResponse {
     const message = createBaseAddressBytesToStringResponse();
-    message.address_string = object.address_string ?? "";
+    message.addressString = object.addressString ?? "";
     return message;
   }
 
@@ -817,14 +817,14 @@ export const AddressBytesToStringResponse = {
 
 function createBaseAddressStringToBytesRequest(): AddressStringToBytesRequest {
   return {
-    address_string: ""
+    addressString: ""
   };
 }
 
 export const AddressStringToBytesRequest = {
   encode(message: AddressStringToBytesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.address_string !== "") {
-      writer.uint32(10).string(message.address_string);
+    if (message.addressString !== "") {
+      writer.uint32(10).string(message.addressString);
     }
 
     return writer;
@@ -840,7 +840,7 @@ export const AddressStringToBytesRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.address_string = reader.string();
+          message.addressString = reader.string();
           break;
 
         default:
@@ -854,19 +854,19 @@ export const AddressStringToBytesRequest = {
 
   fromJSON(object: any): AddressStringToBytesRequest {
     return {
-      address_string: isSet(object.address_string) ? String(object.address_string) : ""
+      addressString: isSet(object.addressString) ? String(object.addressString) : ""
     };
   },
 
   toJSON(message: AddressStringToBytesRequest): unknown {
     const obj: any = {};
-    message.address_string !== undefined && (obj.address_string = message.address_string);
+    message.addressString !== undefined && (obj.addressString = message.addressString);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<AddressStringToBytesRequest>, I>>(object: I): AddressStringToBytesRequest {
     const message = createBaseAddressStringToBytesRequest();
-    message.address_string = object.address_string ?? "";
+    message.addressString = object.addressString ?? "";
     return message;
   }
 
@@ -874,14 +874,14 @@ export const AddressStringToBytesRequest = {
 
 function createBaseAddressStringToBytesResponse(): AddressStringToBytesResponse {
   return {
-    address_bytes: new Uint8Array()
+    addressBytes: new Uint8Array()
   };
 }
 
 export const AddressStringToBytesResponse = {
   encode(message: AddressStringToBytesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.address_bytes.length !== 0) {
-      writer.uint32(10).bytes(message.address_bytes);
+    if (message.addressBytes.length !== 0) {
+      writer.uint32(10).bytes(message.addressBytes);
     }
 
     return writer;
@@ -897,7 +897,7 @@ export const AddressStringToBytesResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.address_bytes = reader.bytes();
+          message.addressBytes = reader.bytes();
           break;
 
         default:
@@ -911,19 +911,19 @@ export const AddressStringToBytesResponse = {
 
   fromJSON(object: any): AddressStringToBytesResponse {
     return {
-      address_bytes: isSet(object.address_bytes) ? bytesFromBase64(object.address_bytes) : new Uint8Array()
+      addressBytes: isSet(object.addressBytes) ? bytesFromBase64(object.addressBytes) : new Uint8Array()
     };
   },
 
   toJSON(message: AddressStringToBytesResponse): unknown {
     const obj: any = {};
-    message.address_bytes !== undefined && (obj.address_bytes = base64FromBytes(message.address_bytes !== undefined ? message.address_bytes : new Uint8Array()));
+    message.addressBytes !== undefined && (obj.addressBytes = base64FromBytes(message.addressBytes !== undefined ? message.addressBytes : new Uint8Array()));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<AddressStringToBytesResponse>, I>>(object: I): AddressStringToBytesResponse {
     const message = createBaseAddressStringToBytesResponse();
-    message.address_bytes = object.address_bytes ?? new Uint8Array();
+    message.addressBytes = object.addressBytes ?? new Uint8Array();
     return message;
   }
 
@@ -988,14 +988,14 @@ export const QueryAccountAddressByIDRequest = {
 
 function createBaseQueryAccountAddressByIDResponse(): QueryAccountAddressByIDResponse {
   return {
-    account_address: ""
+    accountAddress: ""
   };
 }
 
 export const QueryAccountAddressByIDResponse = {
   encode(message: QueryAccountAddressByIDResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.account_address !== "") {
-      writer.uint32(10).string(message.account_address);
+    if (message.accountAddress !== "") {
+      writer.uint32(10).string(message.accountAddress);
     }
 
     return writer;
@@ -1011,7 +1011,7 @@ export const QueryAccountAddressByIDResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.account_address = reader.string();
+          message.accountAddress = reader.string();
           break;
 
         default:
@@ -1025,19 +1025,19 @@ export const QueryAccountAddressByIDResponse = {
 
   fromJSON(object: any): QueryAccountAddressByIDResponse {
     return {
-      account_address: isSet(object.account_address) ? String(object.account_address) : ""
+      accountAddress: isSet(object.accountAddress) ? String(object.accountAddress) : ""
     };
   },
 
   toJSON(message: QueryAccountAddressByIDResponse): unknown {
     const obj: any = {};
-    message.account_address !== undefined && (obj.account_address = message.account_address);
+    message.accountAddress !== undefined && (obj.accountAddress = message.accountAddress);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryAccountAddressByIDResponse>, I>>(object: I): QueryAccountAddressByIDResponse {
     const message = createBaseQueryAccountAddressByIDResponse();
-    message.account_address = object.account_address ?? "";
+    message.accountAddress = object.accountAddress ?? "";
     return message;
   }
 

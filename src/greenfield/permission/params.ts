@@ -5,25 +5,25 @@ export const protobufPackage = "bnbchain.greenfield.permission";
 /** Params defines the parameters for the module. */
 
 export interface Params {
-  maximum_statements_num: Long;
-  maximum_group_num: Long;
+  maximumStatementsNum: Long;
+  maximumGroupNum: Long;
 }
 
 function createBaseParams(): Params {
   return {
-    maximum_statements_num: Long.UZERO,
-    maximum_group_num: Long.UZERO
+    maximumStatementsNum: Long.UZERO,
+    maximumGroupNum: Long.UZERO
   };
 }
 
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.maximum_statements_num.isZero()) {
-      writer.uint32(8).uint64(message.maximum_statements_num);
+    if (!message.maximumStatementsNum.isZero()) {
+      writer.uint32(8).uint64(message.maximumStatementsNum);
     }
 
-    if (!message.maximum_group_num.isZero()) {
-      writer.uint32(16).uint64(message.maximum_group_num);
+    if (!message.maximumGroupNum.isZero()) {
+      writer.uint32(16).uint64(message.maximumGroupNum);
     }
 
     return writer;
@@ -39,11 +39,11 @@ export const Params = {
 
       switch (tag >>> 3) {
         case 1:
-          message.maximum_statements_num = (reader.uint64() as Long);
+          message.maximumStatementsNum = (reader.uint64() as Long);
           break;
 
         case 2:
-          message.maximum_group_num = (reader.uint64() as Long);
+          message.maximumGroupNum = (reader.uint64() as Long);
           break;
 
         default:
@@ -57,22 +57,22 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
-      maximum_statements_num: isSet(object.maximum_statements_num) ? Long.fromValue(object.maximum_statements_num) : Long.UZERO,
-      maximum_group_num: isSet(object.maximum_group_num) ? Long.fromValue(object.maximum_group_num) : Long.UZERO
+      maximumStatementsNum: isSet(object.maximumStatementsNum) ? Long.fromValue(object.maximumStatementsNum) : Long.UZERO,
+      maximumGroupNum: isSet(object.maximumGroupNum) ? Long.fromValue(object.maximumGroupNum) : Long.UZERO
     };
   },
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.maximum_statements_num !== undefined && (obj.maximum_statements_num = (message.maximum_statements_num || Long.UZERO).toString());
-    message.maximum_group_num !== undefined && (obj.maximum_group_num = (message.maximum_group_num || Long.UZERO).toString());
+    message.maximumStatementsNum !== undefined && (obj.maximumStatementsNum = (message.maximumStatementsNum || Long.UZERO).toString());
+    message.maximumGroupNum !== undefined && (obj.maximumGroupNum = (message.maximumGroupNum || Long.UZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.maximum_statements_num = object.maximum_statements_num !== undefined && object.maximum_statements_num !== null ? Long.fromValue(object.maximum_statements_num) : Long.UZERO;
-    message.maximum_group_num = object.maximum_group_num !== undefined && object.maximum_group_num !== null ? Long.fromValue(object.maximum_group_num) : Long.UZERO;
+    message.maximumStatementsNum = object.maximumStatementsNum !== undefined && object.maximumStatementsNum !== null ? Long.fromValue(object.maximumStatementsNum) : Long.UZERO;
+    message.maximumGroupNum = object.maximumGroupNum !== undefined && object.maximumGroupNum !== null ? Long.fromValue(object.maximumGroupNum) : Long.UZERO;
     return message;
   }
 

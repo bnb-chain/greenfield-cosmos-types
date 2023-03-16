@@ -15,7 +15,7 @@ export interface QueryParamsResponse {
 /** QueryCrossChainPackageRequest is the request type for the Query/CrossChainPackage RPC method. */
 
 export interface QueryCrossChainPackageRequest {
-  channel_id: number;
+  channelId: number;
   sequence: Long;
 }
 /** QueryCrossChainPackageResponse is the response type for the Query/CrossChainPackage RPC method. */
@@ -26,7 +26,7 @@ export interface QueryCrossChainPackageResponse {
 /** QuerySendSequenceRequest is the request type for the Query/SendSequence RPC method. */
 
 export interface QuerySendSequenceRequest {
-  channel_id: number;
+  channelId: number;
 }
 /** QuerySendSequenceResponse is the response type for the Query/SendSequence RPC method. */
 
@@ -36,7 +36,7 @@ export interface QuerySendSequenceResponse {
 /** QuerySendSequenceRequest is the request type for the Query/ReceiveSequence RPC method. */
 
 export interface QueryReceiveSequenceRequest {
-  channel_id: number;
+  channelId: number;
 }
 /** QuerySendSequenceResponse is the response type for the Query/ReceiveSequence RPC method. */
 
@@ -146,15 +146,15 @@ export const QueryParamsResponse = {
 
 function createBaseQueryCrossChainPackageRequest(): QueryCrossChainPackageRequest {
   return {
-    channel_id: 0,
+    channelId: 0,
     sequence: Long.UZERO
   };
 }
 
 export const QueryCrossChainPackageRequest = {
   encode(message: QueryCrossChainPackageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.channel_id !== 0) {
-      writer.uint32(8).uint32(message.channel_id);
+    if (message.channelId !== 0) {
+      writer.uint32(8).uint32(message.channelId);
     }
 
     if (!message.sequence.isZero()) {
@@ -174,7 +174,7 @@ export const QueryCrossChainPackageRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.channel_id = reader.uint32();
+          message.channelId = reader.uint32();
           break;
 
         case 2:
@@ -192,21 +192,21 @@ export const QueryCrossChainPackageRequest = {
 
   fromJSON(object: any): QueryCrossChainPackageRequest {
     return {
-      channel_id: isSet(object.channel_id) ? Number(object.channel_id) : 0,
+      channelId: isSet(object.channelId) ? Number(object.channelId) : 0,
       sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO
     };
   },
 
   toJSON(message: QueryCrossChainPackageRequest): unknown {
     const obj: any = {};
-    message.channel_id !== undefined && (obj.channel_id = Math.round(message.channel_id));
+    message.channelId !== undefined && (obj.channelId = Math.round(message.channelId));
     message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryCrossChainPackageRequest>, I>>(object: I): QueryCrossChainPackageRequest {
     const message = createBaseQueryCrossChainPackageRequest();
-    message.channel_id = object.channel_id ?? 0;
+    message.channelId = object.channelId ?? 0;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
   }
@@ -272,14 +272,14 @@ export const QueryCrossChainPackageResponse = {
 
 function createBaseQuerySendSequenceRequest(): QuerySendSequenceRequest {
   return {
-    channel_id: 0
+    channelId: 0
   };
 }
 
 export const QuerySendSequenceRequest = {
   encode(message: QuerySendSequenceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.channel_id !== 0) {
-      writer.uint32(8).uint32(message.channel_id);
+    if (message.channelId !== 0) {
+      writer.uint32(8).uint32(message.channelId);
     }
 
     return writer;
@@ -295,7 +295,7 @@ export const QuerySendSequenceRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.channel_id = reader.uint32();
+          message.channelId = reader.uint32();
           break;
 
         default:
@@ -309,19 +309,19 @@ export const QuerySendSequenceRequest = {
 
   fromJSON(object: any): QuerySendSequenceRequest {
     return {
-      channel_id: isSet(object.channel_id) ? Number(object.channel_id) : 0
+      channelId: isSet(object.channelId) ? Number(object.channelId) : 0
     };
   },
 
   toJSON(message: QuerySendSequenceRequest): unknown {
     const obj: any = {};
-    message.channel_id !== undefined && (obj.channel_id = Math.round(message.channel_id));
+    message.channelId !== undefined && (obj.channelId = Math.round(message.channelId));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QuerySendSequenceRequest>, I>>(object: I): QuerySendSequenceRequest {
     const message = createBaseQuerySendSequenceRequest();
-    message.channel_id = object.channel_id ?? 0;
+    message.channelId = object.channelId ?? 0;
     return message;
   }
 
@@ -386,14 +386,14 @@ export const QuerySendSequenceResponse = {
 
 function createBaseQueryReceiveSequenceRequest(): QueryReceiveSequenceRequest {
   return {
-    channel_id: 0
+    channelId: 0
   };
 }
 
 export const QueryReceiveSequenceRequest = {
   encode(message: QueryReceiveSequenceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.channel_id !== 0) {
-      writer.uint32(8).uint32(message.channel_id);
+    if (message.channelId !== 0) {
+      writer.uint32(8).uint32(message.channelId);
     }
 
     return writer;
@@ -409,7 +409,7 @@ export const QueryReceiveSequenceRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.channel_id = reader.uint32();
+          message.channelId = reader.uint32();
           break;
 
         default:
@@ -423,19 +423,19 @@ export const QueryReceiveSequenceRequest = {
 
   fromJSON(object: any): QueryReceiveSequenceRequest {
     return {
-      channel_id: isSet(object.channel_id) ? Number(object.channel_id) : 0
+      channelId: isSet(object.channelId) ? Number(object.channelId) : 0
     };
   },
 
   toJSON(message: QueryReceiveSequenceRequest): unknown {
     const obj: any = {};
-    message.channel_id !== undefined && (obj.channel_id = Math.round(message.channel_id));
+    message.channelId !== undefined && (obj.channelId = Math.round(message.channelId));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryReceiveSequenceRequest>, I>>(object: I): QueryReceiveSequenceRequest {
     const message = createBaseQueryReceiveSequenceRequest();
-    message.channel_id = object.channel_id ?? 0;
+    message.channelId = object.channelId ?? 0;
     return message;
   }
 

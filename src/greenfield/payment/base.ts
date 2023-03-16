@@ -43,7 +43,7 @@ export function streamAccountStatusToJSON(object: StreamAccountStatus): string {
 
 export interface OutFlow {
   /** stream account address who receives the flow, usually SP(service provider) */
-  to_address: string;
+  toAddress: string;
   /** flow rate */
 
   rate: string;
@@ -51,15 +51,15 @@ export interface OutFlow {
 
 function createBaseOutFlow(): OutFlow {
   return {
-    to_address: "",
+    toAddress: "",
     rate: ""
   };
 }
 
 export const OutFlow = {
   encode(message: OutFlow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.to_address !== "") {
-      writer.uint32(10).string(message.to_address);
+    if (message.toAddress !== "") {
+      writer.uint32(10).string(message.toAddress);
     }
 
     if (message.rate !== "") {
@@ -79,7 +79,7 @@ export const OutFlow = {
 
       switch (tag >>> 3) {
         case 1:
-          message.to_address = reader.string();
+          message.toAddress = reader.string();
           break;
 
         case 2:
@@ -97,21 +97,21 @@ export const OutFlow = {
 
   fromJSON(object: any): OutFlow {
     return {
-      to_address: isSet(object.to_address) ? String(object.to_address) : "",
+      toAddress: isSet(object.toAddress) ? String(object.toAddress) : "",
       rate: isSet(object.rate) ? String(object.rate) : ""
     };
   },
 
   toJSON(message: OutFlow): unknown {
     const obj: any = {};
-    message.to_address !== undefined && (obj.to_address = message.to_address);
+    message.toAddress !== undefined && (obj.toAddress = message.toAddress);
     message.rate !== undefined && (obj.rate = message.rate);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<OutFlow>, I>>(object: I): OutFlow {
     const message = createBaseOutFlow();
-    message.to_address = object.to_address ?? "";
+    message.toAddress = object.toAddress ?? "";
     message.rate = object.rate ?? "";
     return message;
   }

@@ -20,34 +20,34 @@ export interface EventStreamRecordUpdate {
   account: string;
   /** latest update timestamp of the stream record */
 
-  crud_timestamp: Long;
+  crudTimestamp: Long;
   /**
    * The per-second rate that an account's balance is changing.
    * It is the sum of the account's inbound and outbound flow rates.
    */
 
-  netflow_rate: string;
+  netflowRate: string;
   /** The balance of the stream account at the latest CRUD timestamp. */
 
-  static_balance: string;
+  staticBalance: string;
   /**
    * reserved balance of the stream account
    * If the netflow rate is negative, the reserved balance is `netflow_rate * reserve_time`
    */
 
-  buffer_balance: string;
+  bufferBalance: string;
   /** the locked balance of the stream account after it puts a new object and before the object is sealed */
 
-  lock_balance: string;
+  lockBalance: string;
   /** the status of the stream account */
 
   status: StreamAccountStatus;
   /** the unix timestamp when the stream account will be settled */
 
-  settle_timestamp: Long;
+  settleTimestamp: Long;
   /** the accumulated outflow rates of the stream account */
 
-  out_flows: OutFlow[];
+  outFlows: OutFlow[];
 }
 /**
  * EventForceSettle may be emitted on all Msgs and EndBlocker when a payment account's
@@ -63,7 +63,7 @@ export interface EventForceSettle {
    * if the balance is negative, it's the debt of the system, which will be paid by the governance stream account
    */
 
-  settled_balance: string;
+  settledBalance: string;
 }
 export interface EventDeposit {
   /** from is the the address of the account to deposit from */
@@ -170,14 +170,14 @@ export const EventPaymentAccountUpdate = {
 function createBaseEventStreamRecordUpdate(): EventStreamRecordUpdate {
   return {
     account: "",
-    crud_timestamp: Long.ZERO,
-    netflow_rate: "",
-    static_balance: "",
-    buffer_balance: "",
-    lock_balance: "",
+    crudTimestamp: Long.ZERO,
+    netflowRate: "",
+    staticBalance: "",
+    bufferBalance: "",
+    lockBalance: "",
     status: 0,
-    settle_timestamp: Long.ZERO,
-    out_flows: []
+    settleTimestamp: Long.ZERO,
+    outFlows: []
   };
 }
 
@@ -187,35 +187,35 @@ export const EventStreamRecordUpdate = {
       writer.uint32(10).string(message.account);
     }
 
-    if (!message.crud_timestamp.isZero()) {
-      writer.uint32(16).int64(message.crud_timestamp);
+    if (!message.crudTimestamp.isZero()) {
+      writer.uint32(16).int64(message.crudTimestamp);
     }
 
-    if (message.netflow_rate !== "") {
-      writer.uint32(26).string(message.netflow_rate);
+    if (message.netflowRate !== "") {
+      writer.uint32(26).string(message.netflowRate);
     }
 
-    if (message.static_balance !== "") {
-      writer.uint32(34).string(message.static_balance);
+    if (message.staticBalance !== "") {
+      writer.uint32(34).string(message.staticBalance);
     }
 
-    if (message.buffer_balance !== "") {
-      writer.uint32(42).string(message.buffer_balance);
+    if (message.bufferBalance !== "") {
+      writer.uint32(42).string(message.bufferBalance);
     }
 
-    if (message.lock_balance !== "") {
-      writer.uint32(50).string(message.lock_balance);
+    if (message.lockBalance !== "") {
+      writer.uint32(50).string(message.lockBalance);
     }
 
     if (message.status !== 0) {
       writer.uint32(56).int32(message.status);
     }
 
-    if (!message.settle_timestamp.isZero()) {
-      writer.uint32(64).int64(message.settle_timestamp);
+    if (!message.settleTimestamp.isZero()) {
+      writer.uint32(64).int64(message.settleTimestamp);
     }
 
-    for (const v of message.out_flows) {
+    for (const v of message.outFlows) {
       OutFlow.encode(v!, writer.uint32(74).fork()).ldelim();
     }
 
@@ -236,23 +236,23 @@ export const EventStreamRecordUpdate = {
           break;
 
         case 2:
-          message.crud_timestamp = (reader.int64() as Long);
+          message.crudTimestamp = (reader.int64() as Long);
           break;
 
         case 3:
-          message.netflow_rate = reader.string();
+          message.netflowRate = reader.string();
           break;
 
         case 4:
-          message.static_balance = reader.string();
+          message.staticBalance = reader.string();
           break;
 
         case 5:
-          message.buffer_balance = reader.string();
+          message.bufferBalance = reader.string();
           break;
 
         case 6:
-          message.lock_balance = reader.string();
+          message.lockBalance = reader.string();
           break;
 
         case 7:
@@ -260,11 +260,11 @@ export const EventStreamRecordUpdate = {
           break;
 
         case 8:
-          message.settle_timestamp = (reader.int64() as Long);
+          message.settleTimestamp = (reader.int64() as Long);
           break;
 
         case 9:
-          message.out_flows.push(OutFlow.decode(reader, reader.uint32()));
+          message.outFlows.push(OutFlow.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -279,32 +279,32 @@ export const EventStreamRecordUpdate = {
   fromJSON(object: any): EventStreamRecordUpdate {
     return {
       account: isSet(object.account) ? String(object.account) : "",
-      crud_timestamp: isSet(object.crud_timestamp) ? Long.fromValue(object.crud_timestamp) : Long.ZERO,
-      netflow_rate: isSet(object.netflow_rate) ? String(object.netflow_rate) : "",
-      static_balance: isSet(object.static_balance) ? String(object.static_balance) : "",
-      buffer_balance: isSet(object.buffer_balance) ? String(object.buffer_balance) : "",
-      lock_balance: isSet(object.lock_balance) ? String(object.lock_balance) : "",
+      crudTimestamp: isSet(object.crudTimestamp) ? Long.fromValue(object.crudTimestamp) : Long.ZERO,
+      netflowRate: isSet(object.netflowRate) ? String(object.netflowRate) : "",
+      staticBalance: isSet(object.staticBalance) ? String(object.staticBalance) : "",
+      bufferBalance: isSet(object.bufferBalance) ? String(object.bufferBalance) : "",
+      lockBalance: isSet(object.lockBalance) ? String(object.lockBalance) : "",
       status: isSet(object.status) ? streamAccountStatusFromJSON(object.status) : 0,
-      settle_timestamp: isSet(object.settle_timestamp) ? Long.fromValue(object.settle_timestamp) : Long.ZERO,
-      out_flows: Array.isArray(object?.out_flows) ? object.out_flows.map((e: any) => OutFlow.fromJSON(e)) : []
+      settleTimestamp: isSet(object.settleTimestamp) ? Long.fromValue(object.settleTimestamp) : Long.ZERO,
+      outFlows: Array.isArray(object?.outFlows) ? object.outFlows.map((e: any) => OutFlow.fromJSON(e)) : []
     };
   },
 
   toJSON(message: EventStreamRecordUpdate): unknown {
     const obj: any = {};
     message.account !== undefined && (obj.account = message.account);
-    message.crud_timestamp !== undefined && (obj.crud_timestamp = (message.crud_timestamp || Long.ZERO).toString());
-    message.netflow_rate !== undefined && (obj.netflow_rate = message.netflow_rate);
-    message.static_balance !== undefined && (obj.static_balance = message.static_balance);
-    message.buffer_balance !== undefined && (obj.buffer_balance = message.buffer_balance);
-    message.lock_balance !== undefined && (obj.lock_balance = message.lock_balance);
+    message.crudTimestamp !== undefined && (obj.crudTimestamp = (message.crudTimestamp || Long.ZERO).toString());
+    message.netflowRate !== undefined && (obj.netflowRate = message.netflowRate);
+    message.staticBalance !== undefined && (obj.staticBalance = message.staticBalance);
+    message.bufferBalance !== undefined && (obj.bufferBalance = message.bufferBalance);
+    message.lockBalance !== undefined && (obj.lockBalance = message.lockBalance);
     message.status !== undefined && (obj.status = streamAccountStatusToJSON(message.status));
-    message.settle_timestamp !== undefined && (obj.settle_timestamp = (message.settle_timestamp || Long.ZERO).toString());
+    message.settleTimestamp !== undefined && (obj.settleTimestamp = (message.settleTimestamp || Long.ZERO).toString());
 
-    if (message.out_flows) {
-      obj.out_flows = message.out_flows.map(e => e ? OutFlow.toJSON(e) : undefined);
+    if (message.outFlows) {
+      obj.outFlows = message.outFlows.map(e => e ? OutFlow.toJSON(e) : undefined);
     } else {
-      obj.out_flows = [];
+      obj.outFlows = [];
     }
 
     return obj;
@@ -313,14 +313,14 @@ export const EventStreamRecordUpdate = {
   fromPartial<I extends Exact<DeepPartial<EventStreamRecordUpdate>, I>>(object: I): EventStreamRecordUpdate {
     const message = createBaseEventStreamRecordUpdate();
     message.account = object.account ?? "";
-    message.crud_timestamp = object.crud_timestamp !== undefined && object.crud_timestamp !== null ? Long.fromValue(object.crud_timestamp) : Long.ZERO;
-    message.netflow_rate = object.netflow_rate ?? "";
-    message.static_balance = object.static_balance ?? "";
-    message.buffer_balance = object.buffer_balance ?? "";
-    message.lock_balance = object.lock_balance ?? "";
+    message.crudTimestamp = object.crudTimestamp !== undefined && object.crudTimestamp !== null ? Long.fromValue(object.crudTimestamp) : Long.ZERO;
+    message.netflowRate = object.netflowRate ?? "";
+    message.staticBalance = object.staticBalance ?? "";
+    message.bufferBalance = object.bufferBalance ?? "";
+    message.lockBalance = object.lockBalance ?? "";
     message.status = object.status ?? 0;
-    message.settle_timestamp = object.settle_timestamp !== undefined && object.settle_timestamp !== null ? Long.fromValue(object.settle_timestamp) : Long.ZERO;
-    message.out_flows = object.out_flows?.map(e => OutFlow.fromPartial(e)) || [];
+    message.settleTimestamp = object.settleTimestamp !== undefined && object.settleTimestamp !== null ? Long.fromValue(object.settleTimestamp) : Long.ZERO;
+    message.outFlows = object.outFlows?.map(e => OutFlow.fromPartial(e)) || [];
     return message;
   }
 
@@ -329,7 +329,7 @@ export const EventStreamRecordUpdate = {
 function createBaseEventForceSettle(): EventForceSettle {
   return {
     addr: "",
-    settled_balance: ""
+    settledBalance: ""
   };
 }
 
@@ -339,8 +339,8 @@ export const EventForceSettle = {
       writer.uint32(10).string(message.addr);
     }
 
-    if (message.settled_balance !== "") {
-      writer.uint32(18).string(message.settled_balance);
+    if (message.settledBalance !== "") {
+      writer.uint32(18).string(message.settledBalance);
     }
 
     return writer;
@@ -360,7 +360,7 @@ export const EventForceSettle = {
           break;
 
         case 2:
-          message.settled_balance = reader.string();
+          message.settledBalance = reader.string();
           break;
 
         default:
@@ -375,21 +375,21 @@ export const EventForceSettle = {
   fromJSON(object: any): EventForceSettle {
     return {
       addr: isSet(object.addr) ? String(object.addr) : "",
-      settled_balance: isSet(object.settled_balance) ? String(object.settled_balance) : ""
+      settledBalance: isSet(object.settledBalance) ? String(object.settledBalance) : ""
     };
   },
 
   toJSON(message: EventForceSettle): unknown {
     const obj: any = {};
     message.addr !== undefined && (obj.addr = message.addr);
-    message.settled_balance !== undefined && (obj.settled_balance = message.settled_balance);
+    message.settledBalance !== undefined && (obj.settledBalance = message.settledBalance);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<EventForceSettle>, I>>(object: I): EventForceSettle {
     const message = createBaseEventForceSettle();
     message.addr = object.addr ?? "";
-    message.settled_balance = object.settled_balance ?? "";
+    message.settledBalance = object.settledBalance ?? "";
     return message;
   }
 

@@ -114,7 +114,7 @@ export interface Any {
    * Schemes other than `http`, `https` (or the empty scheme) might be
    * used with implementation specific semantics.
    */
-  type_url: string;
+  typeUrl: string;
   /** Must be a valid serialized protocol buffer of the above specified type. */
 
   value: Uint8Array;
@@ -122,15 +122,15 @@ export interface Any {
 
 function createBaseAny(): Any {
   return {
-    type_url: "",
+    typeUrl: "",
     value: new Uint8Array()
   };
 }
 
 export const Any = {
   encode(message: Any, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.type_url !== "") {
-      writer.uint32(10).string(message.type_url);
+    if (message.typeUrl !== "") {
+      writer.uint32(10).string(message.typeUrl);
     }
 
     if (message.value.length !== 0) {
@@ -150,7 +150,7 @@ export const Any = {
 
       switch (tag >>> 3) {
         case 1:
-          message.type_url = reader.string();
+          message.typeUrl = reader.string();
           break;
 
         case 2:
@@ -168,21 +168,21 @@ export const Any = {
 
   fromJSON(object: any): Any {
     return {
-      type_url: isSet(object.type_url) ? String(object.type_url) : "",
+      typeUrl: isSet(object.typeUrl) ? String(object.typeUrl) : "",
       value: isSet(object.value) ? bytesFromBase64(object.value) : new Uint8Array()
     };
   },
 
   toJSON(message: Any): unknown {
     const obj: any = {};
-    message.type_url !== undefined && (obj.type_url = message.type_url);
+    message.typeUrl !== undefined && (obj.typeUrl = message.typeUrl);
     message.value !== undefined && (obj.value = base64FromBytes(message.value !== undefined ? message.value : new Uint8Array()));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Any>, I>>(object: I): Any {
     const message = createBaseAny();
-    message.type_url = object.type_url ?? "";
+    message.typeUrl = object.typeUrl ?? "";
     message.value = object.value ?? new Uint8Array();
     return message;
   }

@@ -21,7 +21,7 @@ export interface QueryParamsResponse {
 
 export interface QueryValidatorOutstandingRewardsRequest {
   /** validator_address defines the validator address to query for. */
-  validator_address: string;
+  validatorAddress: string;
 }
 /**
  * QueryValidatorOutstandingRewardsResponse is the response type for the
@@ -38,7 +38,7 @@ export interface QueryValidatorOutstandingRewardsResponse {
 
 export interface QueryValidatorCommissionRequest {
   /** validator_address defines the validator address to query for. */
-  validator_address: string;
+  validatorAddress: string;
 }
 /**
  * QueryValidatorCommissionResponse is the response type for the
@@ -56,13 +56,13 @@ export interface QueryValidatorCommissionResponse {
 
 export interface QueryValidatorSlashesRequest {
   /** validator_address defines the validator address to query for. */
-  validator_address: string;
+  validatorAddress: string;
   /** starting_height defines the optional starting height to query the slashes. */
 
-  starting_height: Long;
+  startingHeight: Long;
   /** starting_height defines the optional ending height to query the slashes. */
 
-  ending_height: Long;
+  endingHeight: Long;
   /** pagination defines an optional pagination for the request. */
 
   pagination?: PageRequest;
@@ -86,10 +86,10 @@ export interface QueryValidatorSlashesResponse {
 
 export interface QueryDelegationRewardsRequest {
   /** delegator_address defines the delegator address to query for. */
-  delegator_address: string;
+  delegatorAddress: string;
   /** validator_address defines the validator address to query for. */
 
-  validator_address: string;
+  validatorAddress: string;
 }
 /**
  * QueryDelegationRewardsResponse is the response type for the
@@ -107,7 +107,7 @@ export interface QueryDelegationRewardsResponse {
 
 export interface QueryDelegationTotalRewardsRequest {
   /** delegator_address defines the delegator address to query for. */
-  delegator_address: string;
+  delegatorAddress: string;
 }
 /**
  * QueryDelegationTotalRewardsResponse is the response type for the
@@ -128,7 +128,7 @@ export interface QueryDelegationTotalRewardsResponse {
 
 export interface QueryDelegatorValidatorsRequest {
   /** delegator_address defines the delegator address to query for. */
-  delegator_address: string;
+  delegatorAddress: string;
 }
 /**
  * QueryDelegatorValidatorsResponse is the response type for the
@@ -146,7 +146,7 @@ export interface QueryDelegatorValidatorsResponse {
 
 export interface QueryDelegatorWithdrawAddressRequest {
   /** delegator_address defines the delegator address to query for. */
-  delegator_address: string;
+  delegatorAddress: string;
 }
 /**
  * QueryDelegatorWithdrawAddressResponse is the response type for the
@@ -155,7 +155,7 @@ export interface QueryDelegatorWithdrawAddressRequest {
 
 export interface QueryDelegatorWithdrawAddressResponse {
   /** withdraw_address defines the delegator address to query for. */
-  withdraw_address: string;
+  withdrawAddress: string;
 }
 /**
  * QueryCommunityPoolRequest is the request type for the Query/CommunityPool RPC
@@ -275,14 +275,14 @@ export const QueryParamsResponse = {
 
 function createBaseQueryValidatorOutstandingRewardsRequest(): QueryValidatorOutstandingRewardsRequest {
   return {
-    validator_address: ""
+    validatorAddress: ""
   };
 }
 
 export const QueryValidatorOutstandingRewardsRequest = {
   encode(message: QueryValidatorOutstandingRewardsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.validator_address !== "") {
-      writer.uint32(10).string(message.validator_address);
+    if (message.validatorAddress !== "") {
+      writer.uint32(10).string(message.validatorAddress);
     }
 
     return writer;
@@ -298,7 +298,7 @@ export const QueryValidatorOutstandingRewardsRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.validator_address = reader.string();
+          message.validatorAddress = reader.string();
           break;
 
         default:
@@ -312,19 +312,19 @@ export const QueryValidatorOutstandingRewardsRequest = {
 
   fromJSON(object: any): QueryValidatorOutstandingRewardsRequest {
     return {
-      validator_address: isSet(object.validator_address) ? String(object.validator_address) : ""
+      validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : ""
     };
   },
 
   toJSON(message: QueryValidatorOutstandingRewardsRequest): unknown {
     const obj: any = {};
-    message.validator_address !== undefined && (obj.validator_address = message.validator_address);
+    message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryValidatorOutstandingRewardsRequest>, I>>(object: I): QueryValidatorOutstandingRewardsRequest {
     const message = createBaseQueryValidatorOutstandingRewardsRequest();
-    message.validator_address = object.validator_address ?? "";
+    message.validatorAddress = object.validatorAddress ?? "";
     return message;
   }
 
@@ -389,14 +389,14 @@ export const QueryValidatorOutstandingRewardsResponse = {
 
 function createBaseQueryValidatorCommissionRequest(): QueryValidatorCommissionRequest {
   return {
-    validator_address: ""
+    validatorAddress: ""
   };
 }
 
 export const QueryValidatorCommissionRequest = {
   encode(message: QueryValidatorCommissionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.validator_address !== "") {
-      writer.uint32(10).string(message.validator_address);
+    if (message.validatorAddress !== "") {
+      writer.uint32(10).string(message.validatorAddress);
     }
 
     return writer;
@@ -412,7 +412,7 @@ export const QueryValidatorCommissionRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.validator_address = reader.string();
+          message.validatorAddress = reader.string();
           break;
 
         default:
@@ -426,19 +426,19 @@ export const QueryValidatorCommissionRequest = {
 
   fromJSON(object: any): QueryValidatorCommissionRequest {
     return {
-      validator_address: isSet(object.validator_address) ? String(object.validator_address) : ""
+      validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : ""
     };
   },
 
   toJSON(message: QueryValidatorCommissionRequest): unknown {
     const obj: any = {};
-    message.validator_address !== undefined && (obj.validator_address = message.validator_address);
+    message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryValidatorCommissionRequest>, I>>(object: I): QueryValidatorCommissionRequest {
     const message = createBaseQueryValidatorCommissionRequest();
-    message.validator_address = object.validator_address ?? "";
+    message.validatorAddress = object.validatorAddress ?? "";
     return message;
   }
 
@@ -503,25 +503,25 @@ export const QueryValidatorCommissionResponse = {
 
 function createBaseQueryValidatorSlashesRequest(): QueryValidatorSlashesRequest {
   return {
-    validator_address: "",
-    starting_height: Long.UZERO,
-    ending_height: Long.UZERO,
+    validatorAddress: "",
+    startingHeight: Long.UZERO,
+    endingHeight: Long.UZERO,
     pagination: undefined
   };
 }
 
 export const QueryValidatorSlashesRequest = {
   encode(message: QueryValidatorSlashesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.validator_address !== "") {
-      writer.uint32(10).string(message.validator_address);
+    if (message.validatorAddress !== "") {
+      writer.uint32(10).string(message.validatorAddress);
     }
 
-    if (!message.starting_height.isZero()) {
-      writer.uint32(16).uint64(message.starting_height);
+    if (!message.startingHeight.isZero()) {
+      writer.uint32(16).uint64(message.startingHeight);
     }
 
-    if (!message.ending_height.isZero()) {
-      writer.uint32(24).uint64(message.ending_height);
+    if (!message.endingHeight.isZero()) {
+      writer.uint32(24).uint64(message.endingHeight);
     }
 
     if (message.pagination !== undefined) {
@@ -541,15 +541,15 @@ export const QueryValidatorSlashesRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.validator_address = reader.string();
+          message.validatorAddress = reader.string();
           break;
 
         case 2:
-          message.starting_height = (reader.uint64() as Long);
+          message.startingHeight = (reader.uint64() as Long);
           break;
 
         case 3:
-          message.ending_height = (reader.uint64() as Long);
+          message.endingHeight = (reader.uint64() as Long);
           break;
 
         case 4:
@@ -567,27 +567,27 @@ export const QueryValidatorSlashesRequest = {
 
   fromJSON(object: any): QueryValidatorSlashesRequest {
     return {
-      validator_address: isSet(object.validator_address) ? String(object.validator_address) : "",
-      starting_height: isSet(object.starting_height) ? Long.fromValue(object.starting_height) : Long.UZERO,
-      ending_height: isSet(object.ending_height) ? Long.fromValue(object.ending_height) : Long.UZERO,
+      validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "",
+      startingHeight: isSet(object.startingHeight) ? Long.fromValue(object.startingHeight) : Long.UZERO,
+      endingHeight: isSet(object.endingHeight) ? Long.fromValue(object.endingHeight) : Long.UZERO,
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
 
   toJSON(message: QueryValidatorSlashesRequest): unknown {
     const obj: any = {};
-    message.validator_address !== undefined && (obj.validator_address = message.validator_address);
-    message.starting_height !== undefined && (obj.starting_height = (message.starting_height || Long.UZERO).toString());
-    message.ending_height !== undefined && (obj.ending_height = (message.ending_height || Long.UZERO).toString());
+    message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
+    message.startingHeight !== undefined && (obj.startingHeight = (message.startingHeight || Long.UZERO).toString());
+    message.endingHeight !== undefined && (obj.endingHeight = (message.endingHeight || Long.UZERO).toString());
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryValidatorSlashesRequest>, I>>(object: I): QueryValidatorSlashesRequest {
     const message = createBaseQueryValidatorSlashesRequest();
-    message.validator_address = object.validator_address ?? "";
-    message.starting_height = object.starting_height !== undefined && object.starting_height !== null ? Long.fromValue(object.starting_height) : Long.UZERO;
-    message.ending_height = object.ending_height !== undefined && object.ending_height !== null ? Long.fromValue(object.ending_height) : Long.UZERO;
+    message.validatorAddress = object.validatorAddress ?? "";
+    message.startingHeight = object.startingHeight !== undefined && object.startingHeight !== null ? Long.fromValue(object.startingHeight) : Long.UZERO;
+    message.endingHeight = object.endingHeight !== undefined && object.endingHeight !== null ? Long.fromValue(object.endingHeight) : Long.UZERO;
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
   }
@@ -671,19 +671,19 @@ export const QueryValidatorSlashesResponse = {
 
 function createBaseQueryDelegationRewardsRequest(): QueryDelegationRewardsRequest {
   return {
-    delegator_address: "",
-    validator_address: ""
+    delegatorAddress: "",
+    validatorAddress: ""
   };
 }
 
 export const QueryDelegationRewardsRequest = {
   encode(message: QueryDelegationRewardsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.delegator_address !== "") {
-      writer.uint32(10).string(message.delegator_address);
+    if (message.delegatorAddress !== "") {
+      writer.uint32(10).string(message.delegatorAddress);
     }
 
-    if (message.validator_address !== "") {
-      writer.uint32(18).string(message.validator_address);
+    if (message.validatorAddress !== "") {
+      writer.uint32(18).string(message.validatorAddress);
     }
 
     return writer;
@@ -699,11 +699,11 @@ export const QueryDelegationRewardsRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.delegator_address = reader.string();
+          message.delegatorAddress = reader.string();
           break;
 
         case 2:
-          message.validator_address = reader.string();
+          message.validatorAddress = reader.string();
           break;
 
         default:
@@ -717,22 +717,22 @@ export const QueryDelegationRewardsRequest = {
 
   fromJSON(object: any): QueryDelegationRewardsRequest {
     return {
-      delegator_address: isSet(object.delegator_address) ? String(object.delegator_address) : "",
-      validator_address: isSet(object.validator_address) ? String(object.validator_address) : ""
+      delegatorAddress: isSet(object.delegatorAddress) ? String(object.delegatorAddress) : "",
+      validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : ""
     };
   },
 
   toJSON(message: QueryDelegationRewardsRequest): unknown {
     const obj: any = {};
-    message.delegator_address !== undefined && (obj.delegator_address = message.delegator_address);
-    message.validator_address !== undefined && (obj.validator_address = message.validator_address);
+    message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
+    message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryDelegationRewardsRequest>, I>>(object: I): QueryDelegationRewardsRequest {
     const message = createBaseQueryDelegationRewardsRequest();
-    message.delegator_address = object.delegator_address ?? "";
-    message.validator_address = object.validator_address ?? "";
+    message.delegatorAddress = object.delegatorAddress ?? "";
+    message.validatorAddress = object.validatorAddress ?? "";
     return message;
   }
 
@@ -803,14 +803,14 @@ export const QueryDelegationRewardsResponse = {
 
 function createBaseQueryDelegationTotalRewardsRequest(): QueryDelegationTotalRewardsRequest {
   return {
-    delegator_address: ""
+    delegatorAddress: ""
   };
 }
 
 export const QueryDelegationTotalRewardsRequest = {
   encode(message: QueryDelegationTotalRewardsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.delegator_address !== "") {
-      writer.uint32(10).string(message.delegator_address);
+    if (message.delegatorAddress !== "") {
+      writer.uint32(10).string(message.delegatorAddress);
     }
 
     return writer;
@@ -826,7 +826,7 @@ export const QueryDelegationTotalRewardsRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.delegator_address = reader.string();
+          message.delegatorAddress = reader.string();
           break;
 
         default:
@@ -840,19 +840,19 @@ export const QueryDelegationTotalRewardsRequest = {
 
   fromJSON(object: any): QueryDelegationTotalRewardsRequest {
     return {
-      delegator_address: isSet(object.delegator_address) ? String(object.delegator_address) : ""
+      delegatorAddress: isSet(object.delegatorAddress) ? String(object.delegatorAddress) : ""
     };
   },
 
   toJSON(message: QueryDelegationTotalRewardsRequest): unknown {
     const obj: any = {};
-    message.delegator_address !== undefined && (obj.delegator_address = message.delegator_address);
+    message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryDelegationTotalRewardsRequest>, I>>(object: I): QueryDelegationTotalRewardsRequest {
     const message = createBaseQueryDelegationTotalRewardsRequest();
-    message.delegator_address = object.delegator_address ?? "";
+    message.delegatorAddress = object.delegatorAddress ?? "";
     return message;
   }
 
@@ -940,14 +940,14 @@ export const QueryDelegationTotalRewardsResponse = {
 
 function createBaseQueryDelegatorValidatorsRequest(): QueryDelegatorValidatorsRequest {
   return {
-    delegator_address: ""
+    delegatorAddress: ""
   };
 }
 
 export const QueryDelegatorValidatorsRequest = {
   encode(message: QueryDelegatorValidatorsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.delegator_address !== "") {
-      writer.uint32(10).string(message.delegator_address);
+    if (message.delegatorAddress !== "") {
+      writer.uint32(10).string(message.delegatorAddress);
     }
 
     return writer;
@@ -963,7 +963,7 @@ export const QueryDelegatorValidatorsRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.delegator_address = reader.string();
+          message.delegatorAddress = reader.string();
           break;
 
         default:
@@ -977,19 +977,19 @@ export const QueryDelegatorValidatorsRequest = {
 
   fromJSON(object: any): QueryDelegatorValidatorsRequest {
     return {
-      delegator_address: isSet(object.delegator_address) ? String(object.delegator_address) : ""
+      delegatorAddress: isSet(object.delegatorAddress) ? String(object.delegatorAddress) : ""
     };
   },
 
   toJSON(message: QueryDelegatorValidatorsRequest): unknown {
     const obj: any = {};
-    message.delegator_address !== undefined && (obj.delegator_address = message.delegator_address);
+    message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryDelegatorValidatorsRequest>, I>>(object: I): QueryDelegatorValidatorsRequest {
     const message = createBaseQueryDelegatorValidatorsRequest();
-    message.delegator_address = object.delegator_address ?? "";
+    message.delegatorAddress = object.delegatorAddress ?? "";
     return message;
   }
 
@@ -1060,14 +1060,14 @@ export const QueryDelegatorValidatorsResponse = {
 
 function createBaseQueryDelegatorWithdrawAddressRequest(): QueryDelegatorWithdrawAddressRequest {
   return {
-    delegator_address: ""
+    delegatorAddress: ""
   };
 }
 
 export const QueryDelegatorWithdrawAddressRequest = {
   encode(message: QueryDelegatorWithdrawAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.delegator_address !== "") {
-      writer.uint32(10).string(message.delegator_address);
+    if (message.delegatorAddress !== "") {
+      writer.uint32(10).string(message.delegatorAddress);
     }
 
     return writer;
@@ -1083,7 +1083,7 @@ export const QueryDelegatorWithdrawAddressRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.delegator_address = reader.string();
+          message.delegatorAddress = reader.string();
           break;
 
         default:
@@ -1097,19 +1097,19 @@ export const QueryDelegatorWithdrawAddressRequest = {
 
   fromJSON(object: any): QueryDelegatorWithdrawAddressRequest {
     return {
-      delegator_address: isSet(object.delegator_address) ? String(object.delegator_address) : ""
+      delegatorAddress: isSet(object.delegatorAddress) ? String(object.delegatorAddress) : ""
     };
   },
 
   toJSON(message: QueryDelegatorWithdrawAddressRequest): unknown {
     const obj: any = {};
-    message.delegator_address !== undefined && (obj.delegator_address = message.delegator_address);
+    message.delegatorAddress !== undefined && (obj.delegatorAddress = message.delegatorAddress);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryDelegatorWithdrawAddressRequest>, I>>(object: I): QueryDelegatorWithdrawAddressRequest {
     const message = createBaseQueryDelegatorWithdrawAddressRequest();
-    message.delegator_address = object.delegator_address ?? "";
+    message.delegatorAddress = object.delegatorAddress ?? "";
     return message;
   }
 
@@ -1117,14 +1117,14 @@ export const QueryDelegatorWithdrawAddressRequest = {
 
 function createBaseQueryDelegatorWithdrawAddressResponse(): QueryDelegatorWithdrawAddressResponse {
   return {
-    withdraw_address: ""
+    withdrawAddress: ""
   };
 }
 
 export const QueryDelegatorWithdrawAddressResponse = {
   encode(message: QueryDelegatorWithdrawAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.withdraw_address !== "") {
-      writer.uint32(10).string(message.withdraw_address);
+    if (message.withdrawAddress !== "") {
+      writer.uint32(10).string(message.withdrawAddress);
     }
 
     return writer;
@@ -1140,7 +1140,7 @@ export const QueryDelegatorWithdrawAddressResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.withdraw_address = reader.string();
+          message.withdrawAddress = reader.string();
           break;
 
         default:
@@ -1154,19 +1154,19 @@ export const QueryDelegatorWithdrawAddressResponse = {
 
   fromJSON(object: any): QueryDelegatorWithdrawAddressResponse {
     return {
-      withdraw_address: isSet(object.withdraw_address) ? String(object.withdraw_address) : ""
+      withdrawAddress: isSet(object.withdrawAddress) ? String(object.withdrawAddress) : ""
     };
   },
 
   toJSON(message: QueryDelegatorWithdrawAddressResponse): unknown {
     const obj: any = {};
-    message.withdraw_address !== undefined && (obj.withdraw_address = message.withdraw_address);
+    message.withdrawAddress !== undefined && (obj.withdrawAddress = message.withdrawAddress);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryDelegatorWithdrawAddressResponse>, I>>(object: I): QueryDelegatorWithdrawAddressResponse {
     const message = createBaseQueryDelegatorWithdrawAddressResponse();
-    message.withdraw_address = object.withdraw_address ?? "";
+    message.withdrawAddress = object.withdrawAddress ?? "";
     return message;
   }
 

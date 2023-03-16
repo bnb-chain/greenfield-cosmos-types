@@ -8,7 +8,7 @@ export interface ConfigRequest {}
 /** ConfigResponse defines the response structure for the Config gRPC query. */
 
 export interface ConfigResponse {
-  minimum_gas_price: string;
+  minimumGasPrice: string;
 }
 
 function createBaseConfigRequest(): ConfigRequest {
@@ -56,14 +56,14 @@ export const ConfigRequest = {
 
 function createBaseConfigResponse(): ConfigResponse {
   return {
-    minimum_gas_price: ""
+    minimumGasPrice: ""
   };
 }
 
 export const ConfigResponse = {
   encode(message: ConfigResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.minimum_gas_price !== "") {
-      writer.uint32(10).string(message.minimum_gas_price);
+    if (message.minimumGasPrice !== "") {
+      writer.uint32(10).string(message.minimumGasPrice);
     }
 
     return writer;
@@ -79,7 +79,7 @@ export const ConfigResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.minimum_gas_price = reader.string();
+          message.minimumGasPrice = reader.string();
           break;
 
         default:
@@ -93,19 +93,19 @@ export const ConfigResponse = {
 
   fromJSON(object: any): ConfigResponse {
     return {
-      minimum_gas_price: isSet(object.minimum_gas_price) ? String(object.minimum_gas_price) : ""
+      minimumGasPrice: isSet(object.minimumGasPrice) ? String(object.minimumGasPrice) : ""
     };
   },
 
   toJSON(message: ConfigResponse): unknown {
     const obj: any = {};
-    message.minimum_gas_price !== undefined && (obj.minimum_gas_price = message.minimum_gas_price);
+    message.minimumGasPrice !== undefined && (obj.minimumGasPrice = message.minimumGasPrice);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<ConfigResponse>, I>>(object: I): ConfigResponse {
     const message = createBaseConfigResponse();
-    message.minimum_gas_price = object.minimum_gas_price ?? "";
+    message.minimumGasPrice = object.minimumGasPrice ?? "";
     return message;
   }
 

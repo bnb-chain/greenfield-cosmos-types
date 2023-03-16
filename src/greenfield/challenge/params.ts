@@ -6,83 +6,83 @@ export const protobufPackage = "bnbchain.greenfield.challenge";
 
 export interface Params {
   /** Challenges which will be emitted in each block, including user triggered or randomly triggered. */
-  challenge_count_per_block: Long;
+  challengeCountPerBlock: Long;
   /** The count of blocks to stand for the period in which the same storage and object info cannot be slashed again. */
 
-  slash_cooling_off_period: Long;
+  slashCoolingOffPeriod: Long;
   /** The slash coin amount will be calculated from the size of object info, and adjusted by this rate. */
 
-  slash_amount_size_rate: string;
+  slashAmountSizeRate: string;
   /** The minimal slash amount. */
 
-  slash_amount_min: string;
+  slashAmountMin: string;
   /** The maximum slash amount. */
 
-  slash_amount_max: string;
+  slashAmountMax: string;
   /** The ratio of slash amount for all validator rewards. */
 
-  reward_validator_ratio: string;
+  rewardValidatorRatio: string;
   /** The ratio of reward amount for submitter rewards. */
 
-  reward_submitter_ratio: string;
+  rewardSubmitterRatio: string;
   /** The reward amount to submitter will be adjusted by the threshold. */
 
-  reward_submitter_threshold: string;
+  rewardSubmitterThreshold: string;
   /** Heartbeat interval defines the frequency of heartbeat based on challenges. */
 
-  heartbeat_interval: Long;
+  heartbeatInterval: Long;
 }
 
 function createBaseParams(): Params {
   return {
-    challenge_count_per_block: Long.UZERO,
-    slash_cooling_off_period: Long.UZERO,
-    slash_amount_size_rate: "",
-    slash_amount_min: "",
-    slash_amount_max: "",
-    reward_validator_ratio: "",
-    reward_submitter_ratio: "",
-    reward_submitter_threshold: "",
-    heartbeat_interval: Long.UZERO
+    challengeCountPerBlock: Long.UZERO,
+    slashCoolingOffPeriod: Long.UZERO,
+    slashAmountSizeRate: "",
+    slashAmountMin: "",
+    slashAmountMax: "",
+    rewardValidatorRatio: "",
+    rewardSubmitterRatio: "",
+    rewardSubmitterThreshold: "",
+    heartbeatInterval: Long.UZERO
   };
 }
 
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.challenge_count_per_block.isZero()) {
-      writer.uint32(8).uint64(message.challenge_count_per_block);
+    if (!message.challengeCountPerBlock.isZero()) {
+      writer.uint32(8).uint64(message.challengeCountPerBlock);
     }
 
-    if (!message.slash_cooling_off_period.isZero()) {
-      writer.uint32(16).uint64(message.slash_cooling_off_period);
+    if (!message.slashCoolingOffPeriod.isZero()) {
+      writer.uint32(16).uint64(message.slashCoolingOffPeriod);
     }
 
-    if (message.slash_amount_size_rate !== "") {
-      writer.uint32(26).string(message.slash_amount_size_rate);
+    if (message.slashAmountSizeRate !== "") {
+      writer.uint32(26).string(message.slashAmountSizeRate);
     }
 
-    if (message.slash_amount_min !== "") {
-      writer.uint32(34).string(message.slash_amount_min);
+    if (message.slashAmountMin !== "") {
+      writer.uint32(34).string(message.slashAmountMin);
     }
 
-    if (message.slash_amount_max !== "") {
-      writer.uint32(42).string(message.slash_amount_max);
+    if (message.slashAmountMax !== "") {
+      writer.uint32(42).string(message.slashAmountMax);
     }
 
-    if (message.reward_validator_ratio !== "") {
-      writer.uint32(50).string(message.reward_validator_ratio);
+    if (message.rewardValidatorRatio !== "") {
+      writer.uint32(50).string(message.rewardValidatorRatio);
     }
 
-    if (message.reward_submitter_ratio !== "") {
-      writer.uint32(58).string(message.reward_submitter_ratio);
+    if (message.rewardSubmitterRatio !== "") {
+      writer.uint32(58).string(message.rewardSubmitterRatio);
     }
 
-    if (message.reward_submitter_threshold !== "") {
-      writer.uint32(66).string(message.reward_submitter_threshold);
+    if (message.rewardSubmitterThreshold !== "") {
+      writer.uint32(66).string(message.rewardSubmitterThreshold);
     }
 
-    if (!message.heartbeat_interval.isZero()) {
-      writer.uint32(72).uint64(message.heartbeat_interval);
+    if (!message.heartbeatInterval.isZero()) {
+      writer.uint32(72).uint64(message.heartbeatInterval);
     }
 
     return writer;
@@ -98,39 +98,39 @@ export const Params = {
 
       switch (tag >>> 3) {
         case 1:
-          message.challenge_count_per_block = (reader.uint64() as Long);
+          message.challengeCountPerBlock = (reader.uint64() as Long);
           break;
 
         case 2:
-          message.slash_cooling_off_period = (reader.uint64() as Long);
+          message.slashCoolingOffPeriod = (reader.uint64() as Long);
           break;
 
         case 3:
-          message.slash_amount_size_rate = reader.string();
+          message.slashAmountSizeRate = reader.string();
           break;
 
         case 4:
-          message.slash_amount_min = reader.string();
+          message.slashAmountMin = reader.string();
           break;
 
         case 5:
-          message.slash_amount_max = reader.string();
+          message.slashAmountMax = reader.string();
           break;
 
         case 6:
-          message.reward_validator_ratio = reader.string();
+          message.rewardValidatorRatio = reader.string();
           break;
 
         case 7:
-          message.reward_submitter_ratio = reader.string();
+          message.rewardSubmitterRatio = reader.string();
           break;
 
         case 8:
-          message.reward_submitter_threshold = reader.string();
+          message.rewardSubmitterThreshold = reader.string();
           break;
 
         case 9:
-          message.heartbeat_interval = (reader.uint64() as Long);
+          message.heartbeatInterval = (reader.uint64() as Long);
           break;
 
         default:
@@ -144,43 +144,43 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
-      challenge_count_per_block: isSet(object.challenge_count_per_block) ? Long.fromValue(object.challenge_count_per_block) : Long.UZERO,
-      slash_cooling_off_period: isSet(object.slash_cooling_off_period) ? Long.fromValue(object.slash_cooling_off_period) : Long.UZERO,
-      slash_amount_size_rate: isSet(object.slash_amount_size_rate) ? String(object.slash_amount_size_rate) : "",
-      slash_amount_min: isSet(object.slash_amount_min) ? String(object.slash_amount_min) : "",
-      slash_amount_max: isSet(object.slash_amount_max) ? String(object.slash_amount_max) : "",
-      reward_validator_ratio: isSet(object.reward_validator_ratio) ? String(object.reward_validator_ratio) : "",
-      reward_submitter_ratio: isSet(object.reward_submitter_ratio) ? String(object.reward_submitter_ratio) : "",
-      reward_submitter_threshold: isSet(object.reward_submitter_threshold) ? String(object.reward_submitter_threshold) : "",
-      heartbeat_interval: isSet(object.heartbeat_interval) ? Long.fromValue(object.heartbeat_interval) : Long.UZERO
+      challengeCountPerBlock: isSet(object.challengeCountPerBlock) ? Long.fromValue(object.challengeCountPerBlock) : Long.UZERO,
+      slashCoolingOffPeriod: isSet(object.slashCoolingOffPeriod) ? Long.fromValue(object.slashCoolingOffPeriod) : Long.UZERO,
+      slashAmountSizeRate: isSet(object.slashAmountSizeRate) ? String(object.slashAmountSizeRate) : "",
+      slashAmountMin: isSet(object.slashAmountMin) ? String(object.slashAmountMin) : "",
+      slashAmountMax: isSet(object.slashAmountMax) ? String(object.slashAmountMax) : "",
+      rewardValidatorRatio: isSet(object.rewardValidatorRatio) ? String(object.rewardValidatorRatio) : "",
+      rewardSubmitterRatio: isSet(object.rewardSubmitterRatio) ? String(object.rewardSubmitterRatio) : "",
+      rewardSubmitterThreshold: isSet(object.rewardSubmitterThreshold) ? String(object.rewardSubmitterThreshold) : "",
+      heartbeatInterval: isSet(object.heartbeatInterval) ? Long.fromValue(object.heartbeatInterval) : Long.UZERO
     };
   },
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.challenge_count_per_block !== undefined && (obj.challenge_count_per_block = (message.challenge_count_per_block || Long.UZERO).toString());
-    message.slash_cooling_off_period !== undefined && (obj.slash_cooling_off_period = (message.slash_cooling_off_period || Long.UZERO).toString());
-    message.slash_amount_size_rate !== undefined && (obj.slash_amount_size_rate = message.slash_amount_size_rate);
-    message.slash_amount_min !== undefined && (obj.slash_amount_min = message.slash_amount_min);
-    message.slash_amount_max !== undefined && (obj.slash_amount_max = message.slash_amount_max);
-    message.reward_validator_ratio !== undefined && (obj.reward_validator_ratio = message.reward_validator_ratio);
-    message.reward_submitter_ratio !== undefined && (obj.reward_submitter_ratio = message.reward_submitter_ratio);
-    message.reward_submitter_threshold !== undefined && (obj.reward_submitter_threshold = message.reward_submitter_threshold);
-    message.heartbeat_interval !== undefined && (obj.heartbeat_interval = (message.heartbeat_interval || Long.UZERO).toString());
+    message.challengeCountPerBlock !== undefined && (obj.challengeCountPerBlock = (message.challengeCountPerBlock || Long.UZERO).toString());
+    message.slashCoolingOffPeriod !== undefined && (obj.slashCoolingOffPeriod = (message.slashCoolingOffPeriod || Long.UZERO).toString());
+    message.slashAmountSizeRate !== undefined && (obj.slashAmountSizeRate = message.slashAmountSizeRate);
+    message.slashAmountMin !== undefined && (obj.slashAmountMin = message.slashAmountMin);
+    message.slashAmountMax !== undefined && (obj.slashAmountMax = message.slashAmountMax);
+    message.rewardValidatorRatio !== undefined && (obj.rewardValidatorRatio = message.rewardValidatorRatio);
+    message.rewardSubmitterRatio !== undefined && (obj.rewardSubmitterRatio = message.rewardSubmitterRatio);
+    message.rewardSubmitterThreshold !== undefined && (obj.rewardSubmitterThreshold = message.rewardSubmitterThreshold);
+    message.heartbeatInterval !== undefined && (obj.heartbeatInterval = (message.heartbeatInterval || Long.UZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.challenge_count_per_block = object.challenge_count_per_block !== undefined && object.challenge_count_per_block !== null ? Long.fromValue(object.challenge_count_per_block) : Long.UZERO;
-    message.slash_cooling_off_period = object.slash_cooling_off_period !== undefined && object.slash_cooling_off_period !== null ? Long.fromValue(object.slash_cooling_off_period) : Long.UZERO;
-    message.slash_amount_size_rate = object.slash_amount_size_rate ?? "";
-    message.slash_amount_min = object.slash_amount_min ?? "";
-    message.slash_amount_max = object.slash_amount_max ?? "";
-    message.reward_validator_ratio = object.reward_validator_ratio ?? "";
-    message.reward_submitter_ratio = object.reward_submitter_ratio ?? "";
-    message.reward_submitter_threshold = object.reward_submitter_threshold ?? "";
-    message.heartbeat_interval = object.heartbeat_interval !== undefined && object.heartbeat_interval !== null ? Long.fromValue(object.heartbeat_interval) : Long.UZERO;
+    message.challengeCountPerBlock = object.challengeCountPerBlock !== undefined && object.challengeCountPerBlock !== null ? Long.fromValue(object.challengeCountPerBlock) : Long.UZERO;
+    message.slashCoolingOffPeriod = object.slashCoolingOffPeriod !== undefined && object.slashCoolingOffPeriod !== null ? Long.fromValue(object.slashCoolingOffPeriod) : Long.UZERO;
+    message.slashAmountSizeRate = object.slashAmountSizeRate ?? "";
+    message.slashAmountMin = object.slashAmountMin ?? "";
+    message.slashAmountMax = object.slashAmountMax ?? "";
+    message.rewardValidatorRatio = object.rewardValidatorRatio ?? "";
+    message.rewardSubmitterRatio = object.rewardSubmitterRatio ?? "";
+    message.rewardSubmitterThreshold = object.rewardSubmitterThreshold ?? "";
+    message.heartbeatInterval = object.heartbeatInterval !== undefined && object.heartbeatInterval !== null ? Long.fromValue(object.heartbeatInterval) : Long.UZERO;
     return message;
   }
 

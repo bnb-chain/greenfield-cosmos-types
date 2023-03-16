@@ -19,66 +19,66 @@ export interface QueryParamsResponse {
 /** this line is used by starport scaffolding # 3 */
 
 export interface QueryHeadBucketRequest {
-  bucket_name: string;
+  bucketName: string;
 }
 export interface QueryHeadBucketByIdRequest {
-  bucket_id: string;
+  bucketId: string;
 }
 export interface QueryHeadBucketResponse {
-  bucket_info?: BucketInfo;
+  bucketInfo?: BucketInfo;
 }
 export interface QueryHeadObjectRequest {
-  bucket_name: string;
-  object_name: string;
+  bucketName: string;
+  objectName: string;
 }
 export interface QueryHeadObjectByIdRequest {
-  object_id: string;
+  objectId: string;
 }
 export interface QueryHeadObjectResponse {
-  object_info?: ObjectInfo;
+  objectInfo?: ObjectInfo;
 }
 export interface QueryListBucketsRequest {
   pagination?: PageRequest;
 }
 export interface QueryListBucketsResponse {
-  bucket_infos: BucketInfo[];
+  bucketInfos: BucketInfo[];
   pagination?: PageResponse;
 }
 export interface QueryListObjectsRequest {
   pagination?: PageRequest;
-  bucket_name: string;
+  bucketName: string;
 }
 export interface QueryListObjectsByBucketIdRequest {
   pagination?: PageRequest;
-  bucket_id: string;
+  bucketId: string;
 }
 export interface QueryListObjectsResponse {
-  object_infos: ObjectInfo[];
+  objectInfos: ObjectInfo[];
   pagination?: PageResponse;
 }
 export interface QueryNFTRequest {
-  token_id: string;
+  tokenId: string;
 }
 export interface QueryBucketNFTResponse {
-  meta_data?: BucketMetaData;
+  metaData?: BucketMetaData;
 }
 export interface QueryObjectNFTResponse {
-  meta_data?: ObjectMetaData;
+  metaData?: ObjectMetaData;
 }
 export interface QueryGroupNFTResponse {
-  meta_data?: GroupMetaData;
+  metaData?: GroupMetaData;
 }
 export interface QueryGetPolicyRequest {
-  policy_id: string;
+  policyId: string;
 }
 export interface QueryGetPolicyResponse {
   policy?: Policy;
 }
 export interface QueryVerifyPermissionRequest {
   operator: string;
-  bucket_name: string;
-  object_name: string;
-  action_type: ActionType;
+  bucketName: string;
+  objectName: string;
+  actionType: ActionType;
 }
 export interface QueryVerifyPermissionResponse {
   effect: Effect;
@@ -186,14 +186,14 @@ export const QueryParamsResponse = {
 
 function createBaseQueryHeadBucketRequest(): QueryHeadBucketRequest {
   return {
-    bucket_name: ""
+    bucketName: ""
   };
 }
 
 export const QueryHeadBucketRequest = {
   encode(message: QueryHeadBucketRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.bucket_name !== "") {
-      writer.uint32(10).string(message.bucket_name);
+    if (message.bucketName !== "") {
+      writer.uint32(10).string(message.bucketName);
     }
 
     return writer;
@@ -209,7 +209,7 @@ export const QueryHeadBucketRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.bucket_name = reader.string();
+          message.bucketName = reader.string();
           break;
 
         default:
@@ -223,19 +223,19 @@ export const QueryHeadBucketRequest = {
 
   fromJSON(object: any): QueryHeadBucketRequest {
     return {
-      bucket_name: isSet(object.bucket_name) ? String(object.bucket_name) : ""
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : ""
     };
   },
 
   toJSON(message: QueryHeadBucketRequest): unknown {
     const obj: any = {};
-    message.bucket_name !== undefined && (obj.bucket_name = message.bucket_name);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryHeadBucketRequest>, I>>(object: I): QueryHeadBucketRequest {
     const message = createBaseQueryHeadBucketRequest();
-    message.bucket_name = object.bucket_name ?? "";
+    message.bucketName = object.bucketName ?? "";
     return message;
   }
 
@@ -243,14 +243,14 @@ export const QueryHeadBucketRequest = {
 
 function createBaseQueryHeadBucketByIdRequest(): QueryHeadBucketByIdRequest {
   return {
-    bucket_id: ""
+    bucketId: ""
   };
 }
 
 export const QueryHeadBucketByIdRequest = {
   encode(message: QueryHeadBucketByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.bucket_id !== "") {
-      writer.uint32(10).string(message.bucket_id);
+    if (message.bucketId !== "") {
+      writer.uint32(10).string(message.bucketId);
     }
 
     return writer;
@@ -266,7 +266,7 @@ export const QueryHeadBucketByIdRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.bucket_id = reader.string();
+          message.bucketId = reader.string();
           break;
 
         default:
@@ -280,19 +280,19 @@ export const QueryHeadBucketByIdRequest = {
 
   fromJSON(object: any): QueryHeadBucketByIdRequest {
     return {
-      bucket_id: isSet(object.bucket_id) ? String(object.bucket_id) : ""
+      bucketId: isSet(object.bucketId) ? String(object.bucketId) : ""
     };
   },
 
   toJSON(message: QueryHeadBucketByIdRequest): unknown {
     const obj: any = {};
-    message.bucket_id !== undefined && (obj.bucket_id = message.bucket_id);
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryHeadBucketByIdRequest>, I>>(object: I): QueryHeadBucketByIdRequest {
     const message = createBaseQueryHeadBucketByIdRequest();
-    message.bucket_id = object.bucket_id ?? "";
+    message.bucketId = object.bucketId ?? "";
     return message;
   }
 
@@ -300,14 +300,14 @@ export const QueryHeadBucketByIdRequest = {
 
 function createBaseQueryHeadBucketResponse(): QueryHeadBucketResponse {
   return {
-    bucket_info: undefined
+    bucketInfo: undefined
   };
 }
 
 export const QueryHeadBucketResponse = {
   encode(message: QueryHeadBucketResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.bucket_info !== undefined) {
-      BucketInfo.encode(message.bucket_info, writer.uint32(10).fork()).ldelim();
+    if (message.bucketInfo !== undefined) {
+      BucketInfo.encode(message.bucketInfo, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -323,7 +323,7 @@ export const QueryHeadBucketResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.bucket_info = BucketInfo.decode(reader, reader.uint32());
+          message.bucketInfo = BucketInfo.decode(reader, reader.uint32());
           break;
 
         default:
@@ -337,19 +337,19 @@ export const QueryHeadBucketResponse = {
 
   fromJSON(object: any): QueryHeadBucketResponse {
     return {
-      bucket_info: isSet(object.bucket_info) ? BucketInfo.fromJSON(object.bucket_info) : undefined
+      bucketInfo: isSet(object.bucketInfo) ? BucketInfo.fromJSON(object.bucketInfo) : undefined
     };
   },
 
   toJSON(message: QueryHeadBucketResponse): unknown {
     const obj: any = {};
-    message.bucket_info !== undefined && (obj.bucket_info = message.bucket_info ? BucketInfo.toJSON(message.bucket_info) : undefined);
+    message.bucketInfo !== undefined && (obj.bucketInfo = message.bucketInfo ? BucketInfo.toJSON(message.bucketInfo) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryHeadBucketResponse>, I>>(object: I): QueryHeadBucketResponse {
     const message = createBaseQueryHeadBucketResponse();
-    message.bucket_info = object.bucket_info !== undefined && object.bucket_info !== null ? BucketInfo.fromPartial(object.bucket_info) : undefined;
+    message.bucketInfo = object.bucketInfo !== undefined && object.bucketInfo !== null ? BucketInfo.fromPartial(object.bucketInfo) : undefined;
     return message;
   }
 
@@ -357,19 +357,19 @@ export const QueryHeadBucketResponse = {
 
 function createBaseQueryHeadObjectRequest(): QueryHeadObjectRequest {
   return {
-    bucket_name: "",
-    object_name: ""
+    bucketName: "",
+    objectName: ""
   };
 }
 
 export const QueryHeadObjectRequest = {
   encode(message: QueryHeadObjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.bucket_name !== "") {
-      writer.uint32(10).string(message.bucket_name);
+    if (message.bucketName !== "") {
+      writer.uint32(10).string(message.bucketName);
     }
 
-    if (message.object_name !== "") {
-      writer.uint32(18).string(message.object_name);
+    if (message.objectName !== "") {
+      writer.uint32(18).string(message.objectName);
     }
 
     return writer;
@@ -385,11 +385,11 @@ export const QueryHeadObjectRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.bucket_name = reader.string();
+          message.bucketName = reader.string();
           break;
 
         case 2:
-          message.object_name = reader.string();
+          message.objectName = reader.string();
           break;
 
         default:
@@ -403,22 +403,22 @@ export const QueryHeadObjectRequest = {
 
   fromJSON(object: any): QueryHeadObjectRequest {
     return {
-      bucket_name: isSet(object.bucket_name) ? String(object.bucket_name) : "",
-      object_name: isSet(object.object_name) ? String(object.object_name) : ""
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      objectName: isSet(object.objectName) ? String(object.objectName) : ""
     };
   },
 
   toJSON(message: QueryHeadObjectRequest): unknown {
     const obj: any = {};
-    message.bucket_name !== undefined && (obj.bucket_name = message.bucket_name);
-    message.object_name !== undefined && (obj.object_name = message.object_name);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.objectName !== undefined && (obj.objectName = message.objectName);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryHeadObjectRequest>, I>>(object: I): QueryHeadObjectRequest {
     const message = createBaseQueryHeadObjectRequest();
-    message.bucket_name = object.bucket_name ?? "";
-    message.object_name = object.object_name ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.objectName = object.objectName ?? "";
     return message;
   }
 
@@ -426,14 +426,14 @@ export const QueryHeadObjectRequest = {
 
 function createBaseQueryHeadObjectByIdRequest(): QueryHeadObjectByIdRequest {
   return {
-    object_id: ""
+    objectId: ""
   };
 }
 
 export const QueryHeadObjectByIdRequest = {
   encode(message: QueryHeadObjectByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.object_id !== "") {
-      writer.uint32(10).string(message.object_id);
+    if (message.objectId !== "") {
+      writer.uint32(10).string(message.objectId);
     }
 
     return writer;
@@ -449,7 +449,7 @@ export const QueryHeadObjectByIdRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.object_id = reader.string();
+          message.objectId = reader.string();
           break;
 
         default:
@@ -463,19 +463,19 @@ export const QueryHeadObjectByIdRequest = {
 
   fromJSON(object: any): QueryHeadObjectByIdRequest {
     return {
-      object_id: isSet(object.object_id) ? String(object.object_id) : ""
+      objectId: isSet(object.objectId) ? String(object.objectId) : ""
     };
   },
 
   toJSON(message: QueryHeadObjectByIdRequest): unknown {
     const obj: any = {};
-    message.object_id !== undefined && (obj.object_id = message.object_id);
+    message.objectId !== undefined && (obj.objectId = message.objectId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryHeadObjectByIdRequest>, I>>(object: I): QueryHeadObjectByIdRequest {
     const message = createBaseQueryHeadObjectByIdRequest();
-    message.object_id = object.object_id ?? "";
+    message.objectId = object.objectId ?? "";
     return message;
   }
 
@@ -483,14 +483,14 @@ export const QueryHeadObjectByIdRequest = {
 
 function createBaseQueryHeadObjectResponse(): QueryHeadObjectResponse {
   return {
-    object_info: undefined
+    objectInfo: undefined
   };
 }
 
 export const QueryHeadObjectResponse = {
   encode(message: QueryHeadObjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.object_info !== undefined) {
-      ObjectInfo.encode(message.object_info, writer.uint32(10).fork()).ldelim();
+    if (message.objectInfo !== undefined) {
+      ObjectInfo.encode(message.objectInfo, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -506,7 +506,7 @@ export const QueryHeadObjectResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.object_info = ObjectInfo.decode(reader, reader.uint32());
+          message.objectInfo = ObjectInfo.decode(reader, reader.uint32());
           break;
 
         default:
@@ -520,19 +520,19 @@ export const QueryHeadObjectResponse = {
 
   fromJSON(object: any): QueryHeadObjectResponse {
     return {
-      object_info: isSet(object.object_info) ? ObjectInfo.fromJSON(object.object_info) : undefined
+      objectInfo: isSet(object.objectInfo) ? ObjectInfo.fromJSON(object.objectInfo) : undefined
     };
   },
 
   toJSON(message: QueryHeadObjectResponse): unknown {
     const obj: any = {};
-    message.object_info !== undefined && (obj.object_info = message.object_info ? ObjectInfo.toJSON(message.object_info) : undefined);
+    message.objectInfo !== undefined && (obj.objectInfo = message.objectInfo ? ObjectInfo.toJSON(message.objectInfo) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryHeadObjectResponse>, I>>(object: I): QueryHeadObjectResponse {
     const message = createBaseQueryHeadObjectResponse();
-    message.object_info = object.object_info !== undefined && object.object_info !== null ? ObjectInfo.fromPartial(object.object_info) : undefined;
+    message.objectInfo = object.objectInfo !== undefined && object.objectInfo !== null ? ObjectInfo.fromPartial(object.objectInfo) : undefined;
     return message;
   }
 
@@ -597,14 +597,14 @@ export const QueryListBucketsRequest = {
 
 function createBaseQueryListBucketsResponse(): QueryListBucketsResponse {
   return {
-    bucket_infos: [],
+    bucketInfos: [],
     pagination: undefined
   };
 }
 
 export const QueryListBucketsResponse = {
   encode(message: QueryListBucketsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.bucket_infos) {
+    for (const v of message.bucketInfos) {
       BucketInfo.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
@@ -625,7 +625,7 @@ export const QueryListBucketsResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.bucket_infos.push(BucketInfo.decode(reader, reader.uint32()));
+          message.bucketInfos.push(BucketInfo.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -643,7 +643,7 @@ export const QueryListBucketsResponse = {
 
   fromJSON(object: any): QueryListBucketsResponse {
     return {
-      bucket_infos: Array.isArray(object?.bucket_infos) ? object.bucket_infos.map((e: any) => BucketInfo.fromJSON(e)) : [],
+      bucketInfos: Array.isArray(object?.bucketInfos) ? object.bucketInfos.map((e: any) => BucketInfo.fromJSON(e)) : [],
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
     };
   },
@@ -651,10 +651,10 @@ export const QueryListBucketsResponse = {
   toJSON(message: QueryListBucketsResponse): unknown {
     const obj: any = {};
 
-    if (message.bucket_infos) {
-      obj.bucket_infos = message.bucket_infos.map(e => e ? BucketInfo.toJSON(e) : undefined);
+    if (message.bucketInfos) {
+      obj.bucketInfos = message.bucketInfos.map(e => e ? BucketInfo.toJSON(e) : undefined);
     } else {
-      obj.bucket_infos = [];
+      obj.bucketInfos = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
@@ -663,7 +663,7 @@ export const QueryListBucketsResponse = {
 
   fromPartial<I extends Exact<DeepPartial<QueryListBucketsResponse>, I>>(object: I): QueryListBucketsResponse {
     const message = createBaseQueryListBucketsResponse();
-    message.bucket_infos = object.bucket_infos?.map(e => BucketInfo.fromPartial(e)) || [];
+    message.bucketInfos = object.bucketInfos?.map(e => BucketInfo.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
   }
@@ -673,7 +673,7 @@ export const QueryListBucketsResponse = {
 function createBaseQueryListObjectsRequest(): QueryListObjectsRequest {
   return {
     pagination: undefined,
-    bucket_name: ""
+    bucketName: ""
   };
 }
 
@@ -683,8 +683,8 @@ export const QueryListObjectsRequest = {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
 
-    if (message.bucket_name !== "") {
-      writer.uint32(18).string(message.bucket_name);
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
     }
 
     return writer;
@@ -704,7 +704,7 @@ export const QueryListObjectsRequest = {
           break;
 
         case 2:
-          message.bucket_name = reader.string();
+          message.bucketName = reader.string();
           break;
 
         default:
@@ -719,21 +719,21 @@ export const QueryListObjectsRequest = {
   fromJSON(object: any): QueryListObjectsRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-      bucket_name: isSet(object.bucket_name) ? String(object.bucket_name) : ""
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : ""
     };
   },
 
   toJSON(message: QueryListObjectsRequest): unknown {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    message.bucket_name !== undefined && (obj.bucket_name = message.bucket_name);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryListObjectsRequest>, I>>(object: I): QueryListObjectsRequest {
     const message = createBaseQueryListObjectsRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
-    message.bucket_name = object.bucket_name ?? "";
+    message.bucketName = object.bucketName ?? "";
     return message;
   }
 
@@ -742,7 +742,7 @@ export const QueryListObjectsRequest = {
 function createBaseQueryListObjectsByBucketIdRequest(): QueryListObjectsByBucketIdRequest {
   return {
     pagination: undefined,
-    bucket_id: ""
+    bucketId: ""
   };
 }
 
@@ -752,8 +752,8 @@ export const QueryListObjectsByBucketIdRequest = {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
 
-    if (message.bucket_id !== "") {
-      writer.uint32(18).string(message.bucket_id);
+    if (message.bucketId !== "") {
+      writer.uint32(18).string(message.bucketId);
     }
 
     return writer;
@@ -773,7 +773,7 @@ export const QueryListObjectsByBucketIdRequest = {
           break;
 
         case 2:
-          message.bucket_id = reader.string();
+          message.bucketId = reader.string();
           break;
 
         default:
@@ -788,21 +788,21 @@ export const QueryListObjectsByBucketIdRequest = {
   fromJSON(object: any): QueryListObjectsByBucketIdRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-      bucket_id: isSet(object.bucket_id) ? String(object.bucket_id) : ""
+      bucketId: isSet(object.bucketId) ? String(object.bucketId) : ""
     };
   },
 
   toJSON(message: QueryListObjectsByBucketIdRequest): unknown {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    message.bucket_id !== undefined && (obj.bucket_id = message.bucket_id);
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryListObjectsByBucketIdRequest>, I>>(object: I): QueryListObjectsByBucketIdRequest {
     const message = createBaseQueryListObjectsByBucketIdRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
-    message.bucket_id = object.bucket_id ?? "";
+    message.bucketId = object.bucketId ?? "";
     return message;
   }
 
@@ -810,14 +810,14 @@ export const QueryListObjectsByBucketIdRequest = {
 
 function createBaseQueryListObjectsResponse(): QueryListObjectsResponse {
   return {
-    object_infos: [],
+    objectInfos: [],
     pagination: undefined
   };
 }
 
 export const QueryListObjectsResponse = {
   encode(message: QueryListObjectsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.object_infos) {
+    for (const v of message.objectInfos) {
       ObjectInfo.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
@@ -838,7 +838,7 @@ export const QueryListObjectsResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.object_infos.push(ObjectInfo.decode(reader, reader.uint32()));
+          message.objectInfos.push(ObjectInfo.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -856,7 +856,7 @@ export const QueryListObjectsResponse = {
 
   fromJSON(object: any): QueryListObjectsResponse {
     return {
-      object_infos: Array.isArray(object?.object_infos) ? object.object_infos.map((e: any) => ObjectInfo.fromJSON(e)) : [],
+      objectInfos: Array.isArray(object?.objectInfos) ? object.objectInfos.map((e: any) => ObjectInfo.fromJSON(e)) : [],
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
     };
   },
@@ -864,10 +864,10 @@ export const QueryListObjectsResponse = {
   toJSON(message: QueryListObjectsResponse): unknown {
     const obj: any = {};
 
-    if (message.object_infos) {
-      obj.object_infos = message.object_infos.map(e => e ? ObjectInfo.toJSON(e) : undefined);
+    if (message.objectInfos) {
+      obj.objectInfos = message.objectInfos.map(e => e ? ObjectInfo.toJSON(e) : undefined);
     } else {
-      obj.object_infos = [];
+      obj.objectInfos = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
@@ -876,7 +876,7 @@ export const QueryListObjectsResponse = {
 
   fromPartial<I extends Exact<DeepPartial<QueryListObjectsResponse>, I>>(object: I): QueryListObjectsResponse {
     const message = createBaseQueryListObjectsResponse();
-    message.object_infos = object.object_infos?.map(e => ObjectInfo.fromPartial(e)) || [];
+    message.objectInfos = object.objectInfos?.map(e => ObjectInfo.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
   }
@@ -885,14 +885,14 @@ export const QueryListObjectsResponse = {
 
 function createBaseQueryNFTRequest(): QueryNFTRequest {
   return {
-    token_id: ""
+    tokenId: ""
   };
 }
 
 export const QueryNFTRequest = {
   encode(message: QueryNFTRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.token_id !== "") {
-      writer.uint32(10).string(message.token_id);
+    if (message.tokenId !== "") {
+      writer.uint32(10).string(message.tokenId);
     }
 
     return writer;
@@ -908,7 +908,7 @@ export const QueryNFTRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.token_id = reader.string();
+          message.tokenId = reader.string();
           break;
 
         default:
@@ -922,19 +922,19 @@ export const QueryNFTRequest = {
 
   fromJSON(object: any): QueryNFTRequest {
     return {
-      token_id: isSet(object.token_id) ? String(object.token_id) : ""
+      tokenId: isSet(object.tokenId) ? String(object.tokenId) : ""
     };
   },
 
   toJSON(message: QueryNFTRequest): unknown {
     const obj: any = {};
-    message.token_id !== undefined && (obj.token_id = message.token_id);
+    message.tokenId !== undefined && (obj.tokenId = message.tokenId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryNFTRequest>, I>>(object: I): QueryNFTRequest {
     const message = createBaseQueryNFTRequest();
-    message.token_id = object.token_id ?? "";
+    message.tokenId = object.tokenId ?? "";
     return message;
   }
 
@@ -942,14 +942,14 @@ export const QueryNFTRequest = {
 
 function createBaseQueryBucketNFTResponse(): QueryBucketNFTResponse {
   return {
-    meta_data: undefined
+    metaData: undefined
   };
 }
 
 export const QueryBucketNFTResponse = {
   encode(message: QueryBucketNFTResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.meta_data !== undefined) {
-      BucketMetaData.encode(message.meta_data, writer.uint32(10).fork()).ldelim();
+    if (message.metaData !== undefined) {
+      BucketMetaData.encode(message.metaData, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -965,7 +965,7 @@ export const QueryBucketNFTResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.meta_data = BucketMetaData.decode(reader, reader.uint32());
+          message.metaData = BucketMetaData.decode(reader, reader.uint32());
           break;
 
         default:
@@ -979,19 +979,19 @@ export const QueryBucketNFTResponse = {
 
   fromJSON(object: any): QueryBucketNFTResponse {
     return {
-      meta_data: isSet(object.meta_data) ? BucketMetaData.fromJSON(object.meta_data) : undefined
+      metaData: isSet(object.metaData) ? BucketMetaData.fromJSON(object.metaData) : undefined
     };
   },
 
   toJSON(message: QueryBucketNFTResponse): unknown {
     const obj: any = {};
-    message.meta_data !== undefined && (obj.meta_data = message.meta_data ? BucketMetaData.toJSON(message.meta_data) : undefined);
+    message.metaData !== undefined && (obj.metaData = message.metaData ? BucketMetaData.toJSON(message.metaData) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryBucketNFTResponse>, I>>(object: I): QueryBucketNFTResponse {
     const message = createBaseQueryBucketNFTResponse();
-    message.meta_data = object.meta_data !== undefined && object.meta_data !== null ? BucketMetaData.fromPartial(object.meta_data) : undefined;
+    message.metaData = object.metaData !== undefined && object.metaData !== null ? BucketMetaData.fromPartial(object.metaData) : undefined;
     return message;
   }
 
@@ -999,14 +999,14 @@ export const QueryBucketNFTResponse = {
 
 function createBaseQueryObjectNFTResponse(): QueryObjectNFTResponse {
   return {
-    meta_data: undefined
+    metaData: undefined
   };
 }
 
 export const QueryObjectNFTResponse = {
   encode(message: QueryObjectNFTResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.meta_data !== undefined) {
-      ObjectMetaData.encode(message.meta_data, writer.uint32(10).fork()).ldelim();
+    if (message.metaData !== undefined) {
+      ObjectMetaData.encode(message.metaData, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -1022,7 +1022,7 @@ export const QueryObjectNFTResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.meta_data = ObjectMetaData.decode(reader, reader.uint32());
+          message.metaData = ObjectMetaData.decode(reader, reader.uint32());
           break;
 
         default:
@@ -1036,19 +1036,19 @@ export const QueryObjectNFTResponse = {
 
   fromJSON(object: any): QueryObjectNFTResponse {
     return {
-      meta_data: isSet(object.meta_data) ? ObjectMetaData.fromJSON(object.meta_data) : undefined
+      metaData: isSet(object.metaData) ? ObjectMetaData.fromJSON(object.metaData) : undefined
     };
   },
 
   toJSON(message: QueryObjectNFTResponse): unknown {
     const obj: any = {};
-    message.meta_data !== undefined && (obj.meta_data = message.meta_data ? ObjectMetaData.toJSON(message.meta_data) : undefined);
+    message.metaData !== undefined && (obj.metaData = message.metaData ? ObjectMetaData.toJSON(message.metaData) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryObjectNFTResponse>, I>>(object: I): QueryObjectNFTResponse {
     const message = createBaseQueryObjectNFTResponse();
-    message.meta_data = object.meta_data !== undefined && object.meta_data !== null ? ObjectMetaData.fromPartial(object.meta_data) : undefined;
+    message.metaData = object.metaData !== undefined && object.metaData !== null ? ObjectMetaData.fromPartial(object.metaData) : undefined;
     return message;
   }
 
@@ -1056,14 +1056,14 @@ export const QueryObjectNFTResponse = {
 
 function createBaseQueryGroupNFTResponse(): QueryGroupNFTResponse {
   return {
-    meta_data: undefined
+    metaData: undefined
   };
 }
 
 export const QueryGroupNFTResponse = {
   encode(message: QueryGroupNFTResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.meta_data !== undefined) {
-      GroupMetaData.encode(message.meta_data, writer.uint32(10).fork()).ldelim();
+    if (message.metaData !== undefined) {
+      GroupMetaData.encode(message.metaData, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -1079,7 +1079,7 @@ export const QueryGroupNFTResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.meta_data = GroupMetaData.decode(reader, reader.uint32());
+          message.metaData = GroupMetaData.decode(reader, reader.uint32());
           break;
 
         default:
@@ -1093,19 +1093,19 @@ export const QueryGroupNFTResponse = {
 
   fromJSON(object: any): QueryGroupNFTResponse {
     return {
-      meta_data: isSet(object.meta_data) ? GroupMetaData.fromJSON(object.meta_data) : undefined
+      metaData: isSet(object.metaData) ? GroupMetaData.fromJSON(object.metaData) : undefined
     };
   },
 
   toJSON(message: QueryGroupNFTResponse): unknown {
     const obj: any = {};
-    message.meta_data !== undefined && (obj.meta_data = message.meta_data ? GroupMetaData.toJSON(message.meta_data) : undefined);
+    message.metaData !== undefined && (obj.metaData = message.metaData ? GroupMetaData.toJSON(message.metaData) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryGroupNFTResponse>, I>>(object: I): QueryGroupNFTResponse {
     const message = createBaseQueryGroupNFTResponse();
-    message.meta_data = object.meta_data !== undefined && object.meta_data !== null ? GroupMetaData.fromPartial(object.meta_data) : undefined;
+    message.metaData = object.metaData !== undefined && object.metaData !== null ? GroupMetaData.fromPartial(object.metaData) : undefined;
     return message;
   }
 
@@ -1113,14 +1113,14 @@ export const QueryGroupNFTResponse = {
 
 function createBaseQueryGetPolicyRequest(): QueryGetPolicyRequest {
   return {
-    policy_id: ""
+    policyId: ""
   };
 }
 
 export const QueryGetPolicyRequest = {
   encode(message: QueryGetPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.policy_id !== "") {
-      writer.uint32(10).string(message.policy_id);
+    if (message.policyId !== "") {
+      writer.uint32(10).string(message.policyId);
     }
 
     return writer;
@@ -1136,7 +1136,7 @@ export const QueryGetPolicyRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.policy_id = reader.string();
+          message.policyId = reader.string();
           break;
 
         default:
@@ -1150,19 +1150,19 @@ export const QueryGetPolicyRequest = {
 
   fromJSON(object: any): QueryGetPolicyRequest {
     return {
-      policy_id: isSet(object.policy_id) ? String(object.policy_id) : ""
+      policyId: isSet(object.policyId) ? String(object.policyId) : ""
     };
   },
 
   toJSON(message: QueryGetPolicyRequest): unknown {
     const obj: any = {};
-    message.policy_id !== undefined && (obj.policy_id = message.policy_id);
+    message.policyId !== undefined && (obj.policyId = message.policyId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryGetPolicyRequest>, I>>(object: I): QueryGetPolicyRequest {
     const message = createBaseQueryGetPolicyRequest();
-    message.policy_id = object.policy_id ?? "";
+    message.policyId = object.policyId ?? "";
     return message;
   }
 
@@ -1228,9 +1228,9 @@ export const QueryGetPolicyResponse = {
 function createBaseQueryVerifyPermissionRequest(): QueryVerifyPermissionRequest {
   return {
     operator: "",
-    bucket_name: "",
-    object_name: "",
-    action_type: 0
+    bucketName: "",
+    objectName: "",
+    actionType: 0
   };
 }
 
@@ -1240,16 +1240,16 @@ export const QueryVerifyPermissionRequest = {
       writer.uint32(10).string(message.operator);
     }
 
-    if (message.bucket_name !== "") {
-      writer.uint32(18).string(message.bucket_name);
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
     }
 
-    if (message.object_name !== "") {
-      writer.uint32(26).string(message.object_name);
+    if (message.objectName !== "") {
+      writer.uint32(26).string(message.objectName);
     }
 
-    if (message.action_type !== 0) {
-      writer.uint32(32).int32(message.action_type);
+    if (message.actionType !== 0) {
+      writer.uint32(32).int32(message.actionType);
     }
 
     return writer;
@@ -1269,15 +1269,15 @@ export const QueryVerifyPermissionRequest = {
           break;
 
         case 2:
-          message.bucket_name = reader.string();
+          message.bucketName = reader.string();
           break;
 
         case 3:
-          message.object_name = reader.string();
+          message.objectName = reader.string();
           break;
 
         case 4:
-          message.action_type = (reader.int32() as any);
+          message.actionType = (reader.int32() as any);
           break;
 
         default:
@@ -1292,27 +1292,27 @@ export const QueryVerifyPermissionRequest = {
   fromJSON(object: any): QueryVerifyPermissionRequest {
     return {
       operator: isSet(object.operator) ? String(object.operator) : "",
-      bucket_name: isSet(object.bucket_name) ? String(object.bucket_name) : "",
-      object_name: isSet(object.object_name) ? String(object.object_name) : "",
-      action_type: isSet(object.action_type) ? actionTypeFromJSON(object.action_type) : 0
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      objectName: isSet(object.objectName) ? String(object.objectName) : "",
+      actionType: isSet(object.actionType) ? actionTypeFromJSON(object.actionType) : 0
     };
   },
 
   toJSON(message: QueryVerifyPermissionRequest): unknown {
     const obj: any = {};
     message.operator !== undefined && (obj.operator = message.operator);
-    message.bucket_name !== undefined && (obj.bucket_name = message.bucket_name);
-    message.object_name !== undefined && (obj.object_name = message.object_name);
-    message.action_type !== undefined && (obj.action_type = actionTypeToJSON(message.action_type));
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.objectName !== undefined && (obj.objectName = message.objectName);
+    message.actionType !== undefined && (obj.actionType = actionTypeToJSON(message.actionType));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryVerifyPermissionRequest>, I>>(object: I): QueryVerifyPermissionRequest {
     const message = createBaseQueryVerifyPermissionRequest();
     message.operator = object.operator ?? "";
-    message.bucket_name = object.bucket_name ?? "";
-    message.object_name = object.object_name ?? "";
-    message.action_type = object.action_type ?? 0;
+    message.bucketName = object.bucketName ?? "";
+    message.objectName = object.objectName ?? "";
+    message.actionType = object.actionType ?? 0;
     return message;
   }
 

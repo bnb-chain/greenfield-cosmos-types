@@ -7,7 +7,7 @@ export const protobufPackage = "cosmos.gashub.v1alpha1";
 
 export interface MsgUpdateMsgGasParams {
   from: string;
-  new_params_set: MsgGasParams[];
+  newParamsSet: MsgGasParams[];
 }
 /** MsgUpdateMsgGasParamsResponse defines the Msg/UpdateMsgGasParams response type. */
 
@@ -16,7 +16,7 @@ export interface MsgUpdateMsgGasParamsResponse {}
 function createBaseMsgUpdateMsgGasParams(): MsgUpdateMsgGasParams {
   return {
     from: "",
-    new_params_set: []
+    newParamsSet: []
   };
 }
 
@@ -26,7 +26,7 @@ export const MsgUpdateMsgGasParams = {
       writer.uint32(10).string(message.from);
     }
 
-    for (const v of message.new_params_set) {
+    for (const v of message.newParamsSet) {
       MsgGasParams.encode(v!, writer.uint32(18).fork()).ldelim();
     }
 
@@ -47,7 +47,7 @@ export const MsgUpdateMsgGasParams = {
           break;
 
         case 2:
-          message.new_params_set.push(MsgGasParams.decode(reader, reader.uint32()));
+          message.newParamsSet.push(MsgGasParams.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -62,7 +62,7 @@ export const MsgUpdateMsgGasParams = {
   fromJSON(object: any): MsgUpdateMsgGasParams {
     return {
       from: isSet(object.from) ? String(object.from) : "",
-      new_params_set: Array.isArray(object?.new_params_set) ? object.new_params_set.map((e: any) => MsgGasParams.fromJSON(e)) : []
+      newParamsSet: Array.isArray(object?.newParamsSet) ? object.newParamsSet.map((e: any) => MsgGasParams.fromJSON(e)) : []
     };
   },
 
@@ -70,10 +70,10 @@ export const MsgUpdateMsgGasParams = {
     const obj: any = {};
     message.from !== undefined && (obj.from = message.from);
 
-    if (message.new_params_set) {
-      obj.new_params_set = message.new_params_set.map(e => e ? MsgGasParams.toJSON(e) : undefined);
+    if (message.newParamsSet) {
+      obj.newParamsSet = message.newParamsSet.map(e => e ? MsgGasParams.toJSON(e) : undefined);
     } else {
-      obj.new_params_set = [];
+      obj.newParamsSet = [];
     }
 
     return obj;
@@ -82,7 +82,7 @@ export const MsgUpdateMsgGasParams = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateMsgGasParams>, I>>(object: I): MsgUpdateMsgGasParams {
     const message = createBaseMsgUpdateMsgGasParams();
     message.from = object.from ?? "";
-    message.new_params_set = object.new_params_set?.map(e => MsgGasParams.fromPartial(e)) || [];
+    message.newParamsSet = object.newParamsSet?.map(e => MsgGasParams.fromPartial(e)) || [];
     return message;
   }
 

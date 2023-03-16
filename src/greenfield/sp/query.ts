@@ -27,17 +27,17 @@ export interface QueryStorageProvidersResponse {
   pagination?: PageResponse;
 }
 export interface QueryGetSpStoragePriceByTimeRequest {
-  sp_addr: string;
+  spAddr: string;
   timestamp: Long;
 }
 export interface QueryGetSpStoragePriceByTimeResponse {
-  sp_storage_price?: SpStoragePrice;
+  spStoragePrice?: SpStoragePrice;
 }
 export interface QueryGetSecondarySpStorePriceByTimeRequest {
   timestamp: Long;
 }
 export interface QueryGetSecondarySpStorePriceByTimeResponse {
-  secondary_sp_store_price?: SecondarySpStorePrice;
+  secondarySpStorePrice?: SecondarySpStorePrice;
 }
 export interface QueryStorageProviderRequest {
   spAddress: string;
@@ -280,15 +280,15 @@ export const QueryStorageProvidersResponse = {
 
 function createBaseQueryGetSpStoragePriceByTimeRequest(): QueryGetSpStoragePriceByTimeRequest {
   return {
-    sp_addr: "",
+    spAddr: "",
     timestamp: Long.ZERO
   };
 }
 
 export const QueryGetSpStoragePriceByTimeRequest = {
   encode(message: QueryGetSpStoragePriceByTimeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.sp_addr !== "") {
-      writer.uint32(10).string(message.sp_addr);
+    if (message.spAddr !== "") {
+      writer.uint32(10).string(message.spAddr);
     }
 
     if (!message.timestamp.isZero()) {
@@ -308,7 +308,7 @@ export const QueryGetSpStoragePriceByTimeRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.sp_addr = reader.string();
+          message.spAddr = reader.string();
           break;
 
         case 2:
@@ -326,21 +326,21 @@ export const QueryGetSpStoragePriceByTimeRequest = {
 
   fromJSON(object: any): QueryGetSpStoragePriceByTimeRequest {
     return {
-      sp_addr: isSet(object.sp_addr) ? String(object.sp_addr) : "",
+      spAddr: isSet(object.spAddr) ? String(object.spAddr) : "",
       timestamp: isSet(object.timestamp) ? Long.fromValue(object.timestamp) : Long.ZERO
     };
   },
 
   toJSON(message: QueryGetSpStoragePriceByTimeRequest): unknown {
     const obj: any = {};
-    message.sp_addr !== undefined && (obj.sp_addr = message.sp_addr);
+    message.spAddr !== undefined && (obj.spAddr = message.spAddr);
     message.timestamp !== undefined && (obj.timestamp = (message.timestamp || Long.ZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryGetSpStoragePriceByTimeRequest>, I>>(object: I): QueryGetSpStoragePriceByTimeRequest {
     const message = createBaseQueryGetSpStoragePriceByTimeRequest();
-    message.sp_addr = object.sp_addr ?? "";
+    message.spAddr = object.spAddr ?? "";
     message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
     return message;
   }
@@ -349,14 +349,14 @@ export const QueryGetSpStoragePriceByTimeRequest = {
 
 function createBaseQueryGetSpStoragePriceByTimeResponse(): QueryGetSpStoragePriceByTimeResponse {
   return {
-    sp_storage_price: undefined
+    spStoragePrice: undefined
   };
 }
 
 export const QueryGetSpStoragePriceByTimeResponse = {
   encode(message: QueryGetSpStoragePriceByTimeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.sp_storage_price !== undefined) {
-      SpStoragePrice.encode(message.sp_storage_price, writer.uint32(10).fork()).ldelim();
+    if (message.spStoragePrice !== undefined) {
+      SpStoragePrice.encode(message.spStoragePrice, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -372,7 +372,7 @@ export const QueryGetSpStoragePriceByTimeResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.sp_storage_price = SpStoragePrice.decode(reader, reader.uint32());
+          message.spStoragePrice = SpStoragePrice.decode(reader, reader.uint32());
           break;
 
         default:
@@ -386,19 +386,19 @@ export const QueryGetSpStoragePriceByTimeResponse = {
 
   fromJSON(object: any): QueryGetSpStoragePriceByTimeResponse {
     return {
-      sp_storage_price: isSet(object.sp_storage_price) ? SpStoragePrice.fromJSON(object.sp_storage_price) : undefined
+      spStoragePrice: isSet(object.spStoragePrice) ? SpStoragePrice.fromJSON(object.spStoragePrice) : undefined
     };
   },
 
   toJSON(message: QueryGetSpStoragePriceByTimeResponse): unknown {
     const obj: any = {};
-    message.sp_storage_price !== undefined && (obj.sp_storage_price = message.sp_storage_price ? SpStoragePrice.toJSON(message.sp_storage_price) : undefined);
+    message.spStoragePrice !== undefined && (obj.spStoragePrice = message.spStoragePrice ? SpStoragePrice.toJSON(message.spStoragePrice) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryGetSpStoragePriceByTimeResponse>, I>>(object: I): QueryGetSpStoragePriceByTimeResponse {
     const message = createBaseQueryGetSpStoragePriceByTimeResponse();
-    message.sp_storage_price = object.sp_storage_price !== undefined && object.sp_storage_price !== null ? SpStoragePrice.fromPartial(object.sp_storage_price) : undefined;
+    message.spStoragePrice = object.spStoragePrice !== undefined && object.spStoragePrice !== null ? SpStoragePrice.fromPartial(object.spStoragePrice) : undefined;
     return message;
   }
 
@@ -463,14 +463,14 @@ export const QueryGetSecondarySpStorePriceByTimeRequest = {
 
 function createBaseQueryGetSecondarySpStorePriceByTimeResponse(): QueryGetSecondarySpStorePriceByTimeResponse {
   return {
-    secondary_sp_store_price: undefined
+    secondarySpStorePrice: undefined
   };
 }
 
 export const QueryGetSecondarySpStorePriceByTimeResponse = {
   encode(message: QueryGetSecondarySpStorePriceByTimeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.secondary_sp_store_price !== undefined) {
-      SecondarySpStorePrice.encode(message.secondary_sp_store_price, writer.uint32(10).fork()).ldelim();
+    if (message.secondarySpStorePrice !== undefined) {
+      SecondarySpStorePrice.encode(message.secondarySpStorePrice, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -486,7 +486,7 @@ export const QueryGetSecondarySpStorePriceByTimeResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.secondary_sp_store_price = SecondarySpStorePrice.decode(reader, reader.uint32());
+          message.secondarySpStorePrice = SecondarySpStorePrice.decode(reader, reader.uint32());
           break;
 
         default:
@@ -500,19 +500,19 @@ export const QueryGetSecondarySpStorePriceByTimeResponse = {
 
   fromJSON(object: any): QueryGetSecondarySpStorePriceByTimeResponse {
     return {
-      secondary_sp_store_price: isSet(object.secondary_sp_store_price) ? SecondarySpStorePrice.fromJSON(object.secondary_sp_store_price) : undefined
+      secondarySpStorePrice: isSet(object.secondarySpStorePrice) ? SecondarySpStorePrice.fromJSON(object.secondarySpStorePrice) : undefined
     };
   },
 
   toJSON(message: QueryGetSecondarySpStorePriceByTimeResponse): unknown {
     const obj: any = {};
-    message.secondary_sp_store_price !== undefined && (obj.secondary_sp_store_price = message.secondary_sp_store_price ? SecondarySpStorePrice.toJSON(message.secondary_sp_store_price) : undefined);
+    message.secondarySpStorePrice !== undefined && (obj.secondarySpStorePrice = message.secondarySpStorePrice ? SecondarySpStorePrice.toJSON(message.secondarySpStorePrice) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryGetSecondarySpStorePriceByTimeResponse>, I>>(object: I): QueryGetSecondarySpStorePriceByTimeResponse {
     const message = createBaseQueryGetSecondarySpStorePriceByTimeResponse();
-    message.secondary_sp_store_price = object.secondary_sp_store_price !== undefined && object.secondary_sp_store_price !== null ? SecondarySpStorePrice.fromPartial(object.secondary_sp_store_price) : undefined;
+    message.secondarySpStorePrice = object.secondarySpStorePrice !== undefined && object.secondarySpStorePrice !== null ? SecondarySpStorePrice.fromPartial(object.secondarySpStorePrice) : undefined;
     return message;
   }
 
