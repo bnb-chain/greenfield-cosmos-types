@@ -9,18 +9,18 @@ export const protobufPackage = "bnbchain.greenfield.gensp";
 
 export interface GenesisState {
   /** gen_txs defines the genesis transactions. */
-  genspTxs: Uint8Array[];
+  gensp_txs: Uint8Array[];
 }
 
 function createBaseGenesisState(): GenesisState {
   return {
-    genspTxs: []
+    gensp_txs: []
   };
 }
 
 export const GenesisState = {
   encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.genspTxs) {
+    for (const v of message.gensp_txs) {
       writer.uint32(10).bytes(v!);
     }
 
@@ -37,7 +37,7 @@ export const GenesisState = {
 
       switch (tag >>> 3) {
         case 1:
-          message.genspTxs.push(reader.bytes());
+          message.gensp_txs.push(reader.bytes());
           break;
 
         default:
@@ -51,17 +51,17 @@ export const GenesisState = {
 
   fromJSON(object: any): GenesisState {
     return {
-      genspTxs: Array.isArray(object?.genspTxs) ? object.genspTxs.map((e: any) => bytesFromBase64(e)) : []
+      gensp_txs: Array.isArray(object?.gensp_txs) ? object.gensp_txs.map((e: any) => bytesFromBase64(e)) : []
     };
   },
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
 
-    if (message.genspTxs) {
-      obj.genspTxs = message.genspTxs.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
+    if (message.gensp_txs) {
+      obj.gensp_txs = message.gensp_txs.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
     } else {
-      obj.genspTxs = [];
+      obj.gensp_txs = [];
     }
 
     return obj;
@@ -69,7 +69,7 @@ export const GenesisState = {
 
   fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
-    message.genspTxs = object.genspTxs?.map(e => e) || [];
+    message.gensp_txs = object.gensp_txs?.map(e => e) || [];
     return message;
   }
 

@@ -15,7 +15,7 @@ export interface Snapshot {
 
 export interface Metadata {
   /** SHA-256 chunk hashes */
-  chunkHashes: Uint8Array[];
+  chunk_hashes: Uint8Array[];
 }
 /**
  * SnapshotItem is an item contained in a rootmulti.Store snapshot.
@@ -27,7 +27,7 @@ export interface SnapshotItem {
   store?: SnapshotStoreItem;
   iavl?: SnapshotIAVLItem;
   extension?: SnapshotExtensionMeta;
-  extensionPayload?: SnapshotExtensionPayload;
+  extension_payload?: SnapshotExtensionPayload;
   kv?: SnapshotKVItem;
   schema?: SnapshotSchema;
 }
@@ -202,13 +202,13 @@ export const Snapshot = {
 
 function createBaseMetadata(): Metadata {
   return {
-    chunkHashes: []
+    chunk_hashes: []
   };
 }
 
 export const Metadata = {
   encode(message: Metadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.chunkHashes) {
+    for (const v of message.chunk_hashes) {
       writer.uint32(10).bytes(v!);
     }
 
@@ -225,7 +225,7 @@ export const Metadata = {
 
       switch (tag >>> 3) {
         case 1:
-          message.chunkHashes.push(reader.bytes());
+          message.chunk_hashes.push(reader.bytes());
           break;
 
         default:
@@ -239,17 +239,17 @@ export const Metadata = {
 
   fromJSON(object: any): Metadata {
     return {
-      chunkHashes: Array.isArray(object?.chunkHashes) ? object.chunkHashes.map((e: any) => bytesFromBase64(e)) : []
+      chunk_hashes: Array.isArray(object?.chunk_hashes) ? object.chunk_hashes.map((e: any) => bytesFromBase64(e)) : []
     };
   },
 
   toJSON(message: Metadata): unknown {
     const obj: any = {};
 
-    if (message.chunkHashes) {
-      obj.chunkHashes = message.chunkHashes.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
+    if (message.chunk_hashes) {
+      obj.chunk_hashes = message.chunk_hashes.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
     } else {
-      obj.chunkHashes = [];
+      obj.chunk_hashes = [];
     }
 
     return obj;
@@ -257,7 +257,7 @@ export const Metadata = {
 
   fromPartial<I extends Exact<DeepPartial<Metadata>, I>>(object: I): Metadata {
     const message = createBaseMetadata();
-    message.chunkHashes = object.chunkHashes?.map(e => e) || [];
+    message.chunk_hashes = object.chunk_hashes?.map(e => e) || [];
     return message;
   }
 
@@ -268,7 +268,7 @@ function createBaseSnapshotItem(): SnapshotItem {
     store: undefined,
     iavl: undefined,
     extension: undefined,
-    extensionPayload: undefined,
+    extension_payload: undefined,
     kv: undefined,
     schema: undefined
   };
@@ -288,8 +288,8 @@ export const SnapshotItem = {
       SnapshotExtensionMeta.encode(message.extension, writer.uint32(26).fork()).ldelim();
     }
 
-    if (message.extensionPayload !== undefined) {
-      SnapshotExtensionPayload.encode(message.extensionPayload, writer.uint32(34).fork()).ldelim();
+    if (message.extension_payload !== undefined) {
+      SnapshotExtensionPayload.encode(message.extension_payload, writer.uint32(34).fork()).ldelim();
     }
 
     if (message.kv !== undefined) {
@@ -325,7 +325,7 @@ export const SnapshotItem = {
           break;
 
         case 4:
-          message.extensionPayload = SnapshotExtensionPayload.decode(reader, reader.uint32());
+          message.extension_payload = SnapshotExtensionPayload.decode(reader, reader.uint32());
           break;
 
         case 5:
@@ -350,7 +350,7 @@ export const SnapshotItem = {
       store: isSet(object.store) ? SnapshotStoreItem.fromJSON(object.store) : undefined,
       iavl: isSet(object.iavl) ? SnapshotIAVLItem.fromJSON(object.iavl) : undefined,
       extension: isSet(object.extension) ? SnapshotExtensionMeta.fromJSON(object.extension) : undefined,
-      extensionPayload: isSet(object.extensionPayload) ? SnapshotExtensionPayload.fromJSON(object.extensionPayload) : undefined,
+      extension_payload: isSet(object.extension_payload) ? SnapshotExtensionPayload.fromJSON(object.extension_payload) : undefined,
       kv: isSet(object.kv) ? SnapshotKVItem.fromJSON(object.kv) : undefined,
       schema: isSet(object.schema) ? SnapshotSchema.fromJSON(object.schema) : undefined
     };
@@ -361,7 +361,7 @@ export const SnapshotItem = {
     message.store !== undefined && (obj.store = message.store ? SnapshotStoreItem.toJSON(message.store) : undefined);
     message.iavl !== undefined && (obj.iavl = message.iavl ? SnapshotIAVLItem.toJSON(message.iavl) : undefined);
     message.extension !== undefined && (obj.extension = message.extension ? SnapshotExtensionMeta.toJSON(message.extension) : undefined);
-    message.extensionPayload !== undefined && (obj.extensionPayload = message.extensionPayload ? SnapshotExtensionPayload.toJSON(message.extensionPayload) : undefined);
+    message.extension_payload !== undefined && (obj.extension_payload = message.extension_payload ? SnapshotExtensionPayload.toJSON(message.extension_payload) : undefined);
     message.kv !== undefined && (obj.kv = message.kv ? SnapshotKVItem.toJSON(message.kv) : undefined);
     message.schema !== undefined && (obj.schema = message.schema ? SnapshotSchema.toJSON(message.schema) : undefined);
     return obj;
@@ -372,7 +372,7 @@ export const SnapshotItem = {
     message.store = object.store !== undefined && object.store !== null ? SnapshotStoreItem.fromPartial(object.store) : undefined;
     message.iavl = object.iavl !== undefined && object.iavl !== null ? SnapshotIAVLItem.fromPartial(object.iavl) : undefined;
     message.extension = object.extension !== undefined && object.extension !== null ? SnapshotExtensionMeta.fromPartial(object.extension) : undefined;
-    message.extensionPayload = object.extensionPayload !== undefined && object.extensionPayload !== null ? SnapshotExtensionPayload.fromPartial(object.extensionPayload) : undefined;
+    message.extension_payload = object.extension_payload !== undefined && object.extension_payload !== null ? SnapshotExtensionPayload.fromPartial(object.extension_payload) : undefined;
     message.kv = object.kv !== undefined && object.kv !== null ? SnapshotKVItem.fromPartial(object.kv) : undefined;
     message.schema = object.schema !== undefined && object.schema !== null ? SnapshotSchema.fromPartial(object.schema) : undefined;
     return message;

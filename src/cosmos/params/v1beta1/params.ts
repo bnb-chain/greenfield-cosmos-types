@@ -10,7 +10,7 @@ export interface ParameterChangeProposal {
   changes: ParamChange[];
   /** flag for cross chain proposal */
 
-  crossChain: boolean;
+  cross_chain: boolean;
   /** used with cross_chain field to specify destination smart contract address(es) */
 
   addresses: string[];
@@ -31,7 +31,7 @@ function createBaseParameterChangeProposal(): ParameterChangeProposal {
     title: "",
     description: "",
     changes: [],
-    crossChain: false,
+    cross_chain: false,
     addresses: []
   };
 }
@@ -50,8 +50,8 @@ export const ParameterChangeProposal = {
       ParamChange.encode(v!, writer.uint32(26).fork()).ldelim();
     }
 
-    if (message.crossChain === true) {
-      writer.uint32(32).bool(message.crossChain);
+    if (message.cross_chain === true) {
+      writer.uint32(32).bool(message.cross_chain);
     }
 
     for (const v of message.addresses) {
@@ -83,7 +83,7 @@ export const ParameterChangeProposal = {
           break;
 
         case 4:
-          message.crossChain = reader.bool();
+          message.cross_chain = reader.bool();
           break;
 
         case 5:
@@ -104,7 +104,7 @@ export const ParameterChangeProposal = {
       title: isSet(object.title) ? String(object.title) : "",
       description: isSet(object.description) ? String(object.description) : "",
       changes: Array.isArray(object?.changes) ? object.changes.map((e: any) => ParamChange.fromJSON(e)) : [],
-      crossChain: isSet(object.crossChain) ? Boolean(object.crossChain) : false,
+      cross_chain: isSet(object.cross_chain) ? Boolean(object.cross_chain) : false,
       addresses: Array.isArray(object?.addresses) ? object.addresses.map((e: any) => String(e)) : []
     };
   },
@@ -120,7 +120,7 @@ export const ParameterChangeProposal = {
       obj.changes = [];
     }
 
-    message.crossChain !== undefined && (obj.crossChain = message.crossChain);
+    message.cross_chain !== undefined && (obj.cross_chain = message.cross_chain);
 
     if (message.addresses) {
       obj.addresses = message.addresses.map(e => e);
@@ -136,7 +136,7 @@ export const ParameterChangeProposal = {
     message.title = object.title ?? "";
     message.description = object.description ?? "";
     message.changes = object.changes?.map(e => ParamChange.fromPartial(e)) || [];
-    message.crossChain = object.crossChain ?? false;
+    message.cross_chain = object.cross_chain ?? false;
     message.addresses = object.addresses?.map(e => e) || [];
     return message;
   }

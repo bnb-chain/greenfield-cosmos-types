@@ -21,48 +21,48 @@ export interface QueryGetStreamRecordRequest {
   account: string;
 }
 export interface QueryGetStreamRecordResponse {
-  streamRecord?: StreamRecord;
+  stream_record?: StreamRecord;
 }
 export interface QueryAllStreamRecordRequest {
   pagination?: PageRequest;
 }
 export interface QueryAllStreamRecordResponse {
-  streamRecord: StreamRecord[];
+  stream_record: StreamRecord[];
   pagination?: PageResponse;
 }
 export interface QueryGetPaymentAccountCountRequest {
   owner: string;
 }
 export interface QueryGetPaymentAccountCountResponse {
-  paymentAccountCount?: PaymentAccountCount;
+  payment_account_count?: PaymentAccountCount;
 }
 export interface QueryAllPaymentAccountCountRequest {
   pagination?: PageRequest;
 }
 export interface QueryAllPaymentAccountCountResponse {
-  paymentAccountCount: PaymentAccountCount[];
+  payment_account_count: PaymentAccountCount[];
   pagination?: PageResponse;
 }
 export interface QueryGetPaymentAccountRequest {
   addr: string;
 }
 export interface QueryGetPaymentAccountResponse {
-  paymentAccount?: PaymentAccount;
+  payment_account?: PaymentAccount;
 }
 export interface QueryAllPaymentAccountRequest {
   pagination?: PageRequest;
 }
 export interface QueryAllPaymentAccountResponse {
-  paymentAccount: PaymentAccount[];
+  payment_account: PaymentAccount[];
   pagination?: PageResponse;
 }
 export interface QueryDynamicBalanceRequest {
   account: string;
 }
 export interface QueryDynamicBalanceResponse {
-  dynamicBalance: string;
-  streamRecord?: StreamRecord;
-  currentTimestamp: Long;
+  dynamic_balance: string;
+  stream_record?: StreamRecord;
+  current_timestamp: Long;
 }
 export interface QueryGetPaymentAccountsByOwnerRequest {
   owner: string;
@@ -75,13 +75,13 @@ export interface QueryGetAutoSettleRecordRequest {
   addr: string;
 }
 export interface QueryGetAutoSettleRecordResponse {
-  autoSettleRecord?: AutoSettleRecord;
+  auto_settle_record?: AutoSettleRecord;
 }
 export interface QueryAllAutoSettleRecordRequest {
   pagination?: PageRequest;
 }
 export interface QueryAllAutoSettleRecordResponse {
-  autoSettleRecord: AutoSettleRecord[];
+  auto_settle_record: AutoSettleRecord[];
   pagination?: PageResponse;
 }
 
@@ -244,14 +244,14 @@ export const QueryGetStreamRecordRequest = {
 
 function createBaseQueryGetStreamRecordResponse(): QueryGetStreamRecordResponse {
   return {
-    streamRecord: undefined
+    stream_record: undefined
   };
 }
 
 export const QueryGetStreamRecordResponse = {
   encode(message: QueryGetStreamRecordResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.streamRecord !== undefined) {
-      StreamRecord.encode(message.streamRecord, writer.uint32(10).fork()).ldelim();
+    if (message.stream_record !== undefined) {
+      StreamRecord.encode(message.stream_record, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -267,7 +267,7 @@ export const QueryGetStreamRecordResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.streamRecord = StreamRecord.decode(reader, reader.uint32());
+          message.stream_record = StreamRecord.decode(reader, reader.uint32());
           break;
 
         default:
@@ -281,19 +281,19 @@ export const QueryGetStreamRecordResponse = {
 
   fromJSON(object: any): QueryGetStreamRecordResponse {
     return {
-      streamRecord: isSet(object.streamRecord) ? StreamRecord.fromJSON(object.streamRecord) : undefined
+      stream_record: isSet(object.stream_record) ? StreamRecord.fromJSON(object.stream_record) : undefined
     };
   },
 
   toJSON(message: QueryGetStreamRecordResponse): unknown {
     const obj: any = {};
-    message.streamRecord !== undefined && (obj.streamRecord = message.streamRecord ? StreamRecord.toJSON(message.streamRecord) : undefined);
+    message.stream_record !== undefined && (obj.stream_record = message.stream_record ? StreamRecord.toJSON(message.stream_record) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryGetStreamRecordResponse>, I>>(object: I): QueryGetStreamRecordResponse {
     const message = createBaseQueryGetStreamRecordResponse();
-    message.streamRecord = object.streamRecord !== undefined && object.streamRecord !== null ? StreamRecord.fromPartial(object.streamRecord) : undefined;
+    message.stream_record = object.stream_record !== undefined && object.stream_record !== null ? StreamRecord.fromPartial(object.stream_record) : undefined;
     return message;
   }
 
@@ -358,14 +358,14 @@ export const QueryAllStreamRecordRequest = {
 
 function createBaseQueryAllStreamRecordResponse(): QueryAllStreamRecordResponse {
   return {
-    streamRecord: [],
+    stream_record: [],
     pagination: undefined
   };
 }
 
 export const QueryAllStreamRecordResponse = {
   encode(message: QueryAllStreamRecordResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.streamRecord) {
+    for (const v of message.stream_record) {
       StreamRecord.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
@@ -386,7 +386,7 @@ export const QueryAllStreamRecordResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.streamRecord.push(StreamRecord.decode(reader, reader.uint32()));
+          message.stream_record.push(StreamRecord.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -404,7 +404,7 @@ export const QueryAllStreamRecordResponse = {
 
   fromJSON(object: any): QueryAllStreamRecordResponse {
     return {
-      streamRecord: Array.isArray(object?.streamRecord) ? object.streamRecord.map((e: any) => StreamRecord.fromJSON(e)) : [],
+      stream_record: Array.isArray(object?.stream_record) ? object.stream_record.map((e: any) => StreamRecord.fromJSON(e)) : [],
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
     };
   },
@@ -412,10 +412,10 @@ export const QueryAllStreamRecordResponse = {
   toJSON(message: QueryAllStreamRecordResponse): unknown {
     const obj: any = {};
 
-    if (message.streamRecord) {
-      obj.streamRecord = message.streamRecord.map(e => e ? StreamRecord.toJSON(e) : undefined);
+    if (message.stream_record) {
+      obj.stream_record = message.stream_record.map(e => e ? StreamRecord.toJSON(e) : undefined);
     } else {
-      obj.streamRecord = [];
+      obj.stream_record = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
@@ -424,7 +424,7 @@ export const QueryAllStreamRecordResponse = {
 
   fromPartial<I extends Exact<DeepPartial<QueryAllStreamRecordResponse>, I>>(object: I): QueryAllStreamRecordResponse {
     const message = createBaseQueryAllStreamRecordResponse();
-    message.streamRecord = object.streamRecord?.map(e => StreamRecord.fromPartial(e)) || [];
+    message.stream_record = object.stream_record?.map(e => StreamRecord.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
   }
@@ -490,14 +490,14 @@ export const QueryGetPaymentAccountCountRequest = {
 
 function createBaseQueryGetPaymentAccountCountResponse(): QueryGetPaymentAccountCountResponse {
   return {
-    paymentAccountCount: undefined
+    payment_account_count: undefined
   };
 }
 
 export const QueryGetPaymentAccountCountResponse = {
   encode(message: QueryGetPaymentAccountCountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.paymentAccountCount !== undefined) {
-      PaymentAccountCount.encode(message.paymentAccountCount, writer.uint32(10).fork()).ldelim();
+    if (message.payment_account_count !== undefined) {
+      PaymentAccountCount.encode(message.payment_account_count, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -513,7 +513,7 @@ export const QueryGetPaymentAccountCountResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.paymentAccountCount = PaymentAccountCount.decode(reader, reader.uint32());
+          message.payment_account_count = PaymentAccountCount.decode(reader, reader.uint32());
           break;
 
         default:
@@ -527,19 +527,19 @@ export const QueryGetPaymentAccountCountResponse = {
 
   fromJSON(object: any): QueryGetPaymentAccountCountResponse {
     return {
-      paymentAccountCount: isSet(object.paymentAccountCount) ? PaymentAccountCount.fromJSON(object.paymentAccountCount) : undefined
+      payment_account_count: isSet(object.payment_account_count) ? PaymentAccountCount.fromJSON(object.payment_account_count) : undefined
     };
   },
 
   toJSON(message: QueryGetPaymentAccountCountResponse): unknown {
     const obj: any = {};
-    message.paymentAccountCount !== undefined && (obj.paymentAccountCount = message.paymentAccountCount ? PaymentAccountCount.toJSON(message.paymentAccountCount) : undefined);
+    message.payment_account_count !== undefined && (obj.payment_account_count = message.payment_account_count ? PaymentAccountCount.toJSON(message.payment_account_count) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryGetPaymentAccountCountResponse>, I>>(object: I): QueryGetPaymentAccountCountResponse {
     const message = createBaseQueryGetPaymentAccountCountResponse();
-    message.paymentAccountCount = object.paymentAccountCount !== undefined && object.paymentAccountCount !== null ? PaymentAccountCount.fromPartial(object.paymentAccountCount) : undefined;
+    message.payment_account_count = object.payment_account_count !== undefined && object.payment_account_count !== null ? PaymentAccountCount.fromPartial(object.payment_account_count) : undefined;
     return message;
   }
 
@@ -604,14 +604,14 @@ export const QueryAllPaymentAccountCountRequest = {
 
 function createBaseQueryAllPaymentAccountCountResponse(): QueryAllPaymentAccountCountResponse {
   return {
-    paymentAccountCount: [],
+    payment_account_count: [],
     pagination: undefined
   };
 }
 
 export const QueryAllPaymentAccountCountResponse = {
   encode(message: QueryAllPaymentAccountCountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.paymentAccountCount) {
+    for (const v of message.payment_account_count) {
       PaymentAccountCount.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
@@ -632,7 +632,7 @@ export const QueryAllPaymentAccountCountResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.paymentAccountCount.push(PaymentAccountCount.decode(reader, reader.uint32()));
+          message.payment_account_count.push(PaymentAccountCount.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -650,7 +650,7 @@ export const QueryAllPaymentAccountCountResponse = {
 
   fromJSON(object: any): QueryAllPaymentAccountCountResponse {
     return {
-      paymentAccountCount: Array.isArray(object?.paymentAccountCount) ? object.paymentAccountCount.map((e: any) => PaymentAccountCount.fromJSON(e)) : [],
+      payment_account_count: Array.isArray(object?.payment_account_count) ? object.payment_account_count.map((e: any) => PaymentAccountCount.fromJSON(e)) : [],
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
     };
   },
@@ -658,10 +658,10 @@ export const QueryAllPaymentAccountCountResponse = {
   toJSON(message: QueryAllPaymentAccountCountResponse): unknown {
     const obj: any = {};
 
-    if (message.paymentAccountCount) {
-      obj.paymentAccountCount = message.paymentAccountCount.map(e => e ? PaymentAccountCount.toJSON(e) : undefined);
+    if (message.payment_account_count) {
+      obj.payment_account_count = message.payment_account_count.map(e => e ? PaymentAccountCount.toJSON(e) : undefined);
     } else {
-      obj.paymentAccountCount = [];
+      obj.payment_account_count = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
@@ -670,7 +670,7 @@ export const QueryAllPaymentAccountCountResponse = {
 
   fromPartial<I extends Exact<DeepPartial<QueryAllPaymentAccountCountResponse>, I>>(object: I): QueryAllPaymentAccountCountResponse {
     const message = createBaseQueryAllPaymentAccountCountResponse();
-    message.paymentAccountCount = object.paymentAccountCount?.map(e => PaymentAccountCount.fromPartial(e)) || [];
+    message.payment_account_count = object.payment_account_count?.map(e => PaymentAccountCount.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
   }
@@ -736,14 +736,14 @@ export const QueryGetPaymentAccountRequest = {
 
 function createBaseQueryGetPaymentAccountResponse(): QueryGetPaymentAccountResponse {
   return {
-    paymentAccount: undefined
+    payment_account: undefined
   };
 }
 
 export const QueryGetPaymentAccountResponse = {
   encode(message: QueryGetPaymentAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.paymentAccount !== undefined) {
-      PaymentAccount.encode(message.paymentAccount, writer.uint32(10).fork()).ldelim();
+    if (message.payment_account !== undefined) {
+      PaymentAccount.encode(message.payment_account, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -759,7 +759,7 @@ export const QueryGetPaymentAccountResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.paymentAccount = PaymentAccount.decode(reader, reader.uint32());
+          message.payment_account = PaymentAccount.decode(reader, reader.uint32());
           break;
 
         default:
@@ -773,19 +773,19 @@ export const QueryGetPaymentAccountResponse = {
 
   fromJSON(object: any): QueryGetPaymentAccountResponse {
     return {
-      paymentAccount: isSet(object.paymentAccount) ? PaymentAccount.fromJSON(object.paymentAccount) : undefined
+      payment_account: isSet(object.payment_account) ? PaymentAccount.fromJSON(object.payment_account) : undefined
     };
   },
 
   toJSON(message: QueryGetPaymentAccountResponse): unknown {
     const obj: any = {};
-    message.paymentAccount !== undefined && (obj.paymentAccount = message.paymentAccount ? PaymentAccount.toJSON(message.paymentAccount) : undefined);
+    message.payment_account !== undefined && (obj.payment_account = message.payment_account ? PaymentAccount.toJSON(message.payment_account) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryGetPaymentAccountResponse>, I>>(object: I): QueryGetPaymentAccountResponse {
     const message = createBaseQueryGetPaymentAccountResponse();
-    message.paymentAccount = object.paymentAccount !== undefined && object.paymentAccount !== null ? PaymentAccount.fromPartial(object.paymentAccount) : undefined;
+    message.payment_account = object.payment_account !== undefined && object.payment_account !== null ? PaymentAccount.fromPartial(object.payment_account) : undefined;
     return message;
   }
 
@@ -850,14 +850,14 @@ export const QueryAllPaymentAccountRequest = {
 
 function createBaseQueryAllPaymentAccountResponse(): QueryAllPaymentAccountResponse {
   return {
-    paymentAccount: [],
+    payment_account: [],
     pagination: undefined
   };
 }
 
 export const QueryAllPaymentAccountResponse = {
   encode(message: QueryAllPaymentAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.paymentAccount) {
+    for (const v of message.payment_account) {
       PaymentAccount.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
@@ -878,7 +878,7 @@ export const QueryAllPaymentAccountResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.paymentAccount.push(PaymentAccount.decode(reader, reader.uint32()));
+          message.payment_account.push(PaymentAccount.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -896,7 +896,7 @@ export const QueryAllPaymentAccountResponse = {
 
   fromJSON(object: any): QueryAllPaymentAccountResponse {
     return {
-      paymentAccount: Array.isArray(object?.paymentAccount) ? object.paymentAccount.map((e: any) => PaymentAccount.fromJSON(e)) : [],
+      payment_account: Array.isArray(object?.payment_account) ? object.payment_account.map((e: any) => PaymentAccount.fromJSON(e)) : [],
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
     };
   },
@@ -904,10 +904,10 @@ export const QueryAllPaymentAccountResponse = {
   toJSON(message: QueryAllPaymentAccountResponse): unknown {
     const obj: any = {};
 
-    if (message.paymentAccount) {
-      obj.paymentAccount = message.paymentAccount.map(e => e ? PaymentAccount.toJSON(e) : undefined);
+    if (message.payment_account) {
+      obj.payment_account = message.payment_account.map(e => e ? PaymentAccount.toJSON(e) : undefined);
     } else {
-      obj.paymentAccount = [];
+      obj.payment_account = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
@@ -916,7 +916,7 @@ export const QueryAllPaymentAccountResponse = {
 
   fromPartial<I extends Exact<DeepPartial<QueryAllPaymentAccountResponse>, I>>(object: I): QueryAllPaymentAccountResponse {
     const message = createBaseQueryAllPaymentAccountResponse();
-    message.paymentAccount = object.paymentAccount?.map(e => PaymentAccount.fromPartial(e)) || [];
+    message.payment_account = object.payment_account?.map(e => PaymentAccount.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
   }
@@ -982,24 +982,24 @@ export const QueryDynamicBalanceRequest = {
 
 function createBaseQueryDynamicBalanceResponse(): QueryDynamicBalanceResponse {
   return {
-    dynamicBalance: "",
-    streamRecord: undefined,
-    currentTimestamp: Long.ZERO
+    dynamic_balance: "",
+    stream_record: undefined,
+    current_timestamp: Long.ZERO
   };
 }
 
 export const QueryDynamicBalanceResponse = {
   encode(message: QueryDynamicBalanceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.dynamicBalance !== "") {
-      writer.uint32(10).string(message.dynamicBalance);
+    if (message.dynamic_balance !== "") {
+      writer.uint32(10).string(message.dynamic_balance);
     }
 
-    if (message.streamRecord !== undefined) {
-      StreamRecord.encode(message.streamRecord, writer.uint32(18).fork()).ldelim();
+    if (message.stream_record !== undefined) {
+      StreamRecord.encode(message.stream_record, writer.uint32(18).fork()).ldelim();
     }
 
-    if (!message.currentTimestamp.isZero()) {
-      writer.uint32(24).int64(message.currentTimestamp);
+    if (!message.current_timestamp.isZero()) {
+      writer.uint32(24).int64(message.current_timestamp);
     }
 
     return writer;
@@ -1015,15 +1015,15 @@ export const QueryDynamicBalanceResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.dynamicBalance = reader.string();
+          message.dynamic_balance = reader.string();
           break;
 
         case 2:
-          message.streamRecord = StreamRecord.decode(reader, reader.uint32());
+          message.stream_record = StreamRecord.decode(reader, reader.uint32());
           break;
 
         case 3:
-          message.currentTimestamp = (reader.int64() as Long);
+          message.current_timestamp = (reader.int64() as Long);
           break;
 
         default:
@@ -1037,25 +1037,25 @@ export const QueryDynamicBalanceResponse = {
 
   fromJSON(object: any): QueryDynamicBalanceResponse {
     return {
-      dynamicBalance: isSet(object.dynamicBalance) ? String(object.dynamicBalance) : "",
-      streamRecord: isSet(object.streamRecord) ? StreamRecord.fromJSON(object.streamRecord) : undefined,
-      currentTimestamp: isSet(object.currentTimestamp) ? Long.fromValue(object.currentTimestamp) : Long.ZERO
+      dynamic_balance: isSet(object.dynamic_balance) ? String(object.dynamic_balance) : "",
+      stream_record: isSet(object.stream_record) ? StreamRecord.fromJSON(object.stream_record) : undefined,
+      current_timestamp: isSet(object.current_timestamp) ? Long.fromValue(object.current_timestamp) : Long.ZERO
     };
   },
 
   toJSON(message: QueryDynamicBalanceResponse): unknown {
     const obj: any = {};
-    message.dynamicBalance !== undefined && (obj.dynamicBalance = message.dynamicBalance);
-    message.streamRecord !== undefined && (obj.streamRecord = message.streamRecord ? StreamRecord.toJSON(message.streamRecord) : undefined);
-    message.currentTimestamp !== undefined && (obj.currentTimestamp = (message.currentTimestamp || Long.ZERO).toString());
+    message.dynamic_balance !== undefined && (obj.dynamic_balance = message.dynamic_balance);
+    message.stream_record !== undefined && (obj.stream_record = message.stream_record ? StreamRecord.toJSON(message.stream_record) : undefined);
+    message.current_timestamp !== undefined && (obj.current_timestamp = (message.current_timestamp || Long.ZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryDynamicBalanceResponse>, I>>(object: I): QueryDynamicBalanceResponse {
     const message = createBaseQueryDynamicBalanceResponse();
-    message.dynamicBalance = object.dynamicBalance ?? "";
-    message.streamRecord = object.streamRecord !== undefined && object.streamRecord !== null ? StreamRecord.fromPartial(object.streamRecord) : undefined;
-    message.currentTimestamp = object.currentTimestamp !== undefined && object.currentTimestamp !== null ? Long.fromValue(object.currentTimestamp) : Long.ZERO;
+    message.dynamic_balance = object.dynamic_balance ?? "";
+    message.stream_record = object.stream_record !== undefined && object.stream_record !== null ? StreamRecord.fromPartial(object.stream_record) : undefined;
+    message.current_timestamp = object.current_timestamp !== undefined && object.current_timestamp !== null ? Long.fromValue(object.current_timestamp) : Long.ZERO;
     return message;
   }
 
@@ -1252,14 +1252,14 @@ export const QueryGetAutoSettleRecordRequest = {
 
 function createBaseQueryGetAutoSettleRecordResponse(): QueryGetAutoSettleRecordResponse {
   return {
-    autoSettleRecord: undefined
+    auto_settle_record: undefined
   };
 }
 
 export const QueryGetAutoSettleRecordResponse = {
   encode(message: QueryGetAutoSettleRecordResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.autoSettleRecord !== undefined) {
-      AutoSettleRecord.encode(message.autoSettleRecord, writer.uint32(10).fork()).ldelim();
+    if (message.auto_settle_record !== undefined) {
+      AutoSettleRecord.encode(message.auto_settle_record, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -1275,7 +1275,7 @@ export const QueryGetAutoSettleRecordResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.autoSettleRecord = AutoSettleRecord.decode(reader, reader.uint32());
+          message.auto_settle_record = AutoSettleRecord.decode(reader, reader.uint32());
           break;
 
         default:
@@ -1289,19 +1289,19 @@ export const QueryGetAutoSettleRecordResponse = {
 
   fromJSON(object: any): QueryGetAutoSettleRecordResponse {
     return {
-      autoSettleRecord: isSet(object.autoSettleRecord) ? AutoSettleRecord.fromJSON(object.autoSettleRecord) : undefined
+      auto_settle_record: isSet(object.auto_settle_record) ? AutoSettleRecord.fromJSON(object.auto_settle_record) : undefined
     };
   },
 
   toJSON(message: QueryGetAutoSettleRecordResponse): unknown {
     const obj: any = {};
-    message.autoSettleRecord !== undefined && (obj.autoSettleRecord = message.autoSettleRecord ? AutoSettleRecord.toJSON(message.autoSettleRecord) : undefined);
+    message.auto_settle_record !== undefined && (obj.auto_settle_record = message.auto_settle_record ? AutoSettleRecord.toJSON(message.auto_settle_record) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryGetAutoSettleRecordResponse>, I>>(object: I): QueryGetAutoSettleRecordResponse {
     const message = createBaseQueryGetAutoSettleRecordResponse();
-    message.autoSettleRecord = object.autoSettleRecord !== undefined && object.autoSettleRecord !== null ? AutoSettleRecord.fromPartial(object.autoSettleRecord) : undefined;
+    message.auto_settle_record = object.auto_settle_record !== undefined && object.auto_settle_record !== null ? AutoSettleRecord.fromPartial(object.auto_settle_record) : undefined;
     return message;
   }
 
@@ -1366,14 +1366,14 @@ export const QueryAllAutoSettleRecordRequest = {
 
 function createBaseQueryAllAutoSettleRecordResponse(): QueryAllAutoSettleRecordResponse {
   return {
-    autoSettleRecord: [],
+    auto_settle_record: [],
     pagination: undefined
   };
 }
 
 export const QueryAllAutoSettleRecordResponse = {
   encode(message: QueryAllAutoSettleRecordResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.autoSettleRecord) {
+    for (const v of message.auto_settle_record) {
       AutoSettleRecord.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
@@ -1394,7 +1394,7 @@ export const QueryAllAutoSettleRecordResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.autoSettleRecord.push(AutoSettleRecord.decode(reader, reader.uint32()));
+          message.auto_settle_record.push(AutoSettleRecord.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -1412,7 +1412,7 @@ export const QueryAllAutoSettleRecordResponse = {
 
   fromJSON(object: any): QueryAllAutoSettleRecordResponse {
     return {
-      autoSettleRecord: Array.isArray(object?.autoSettleRecord) ? object.autoSettleRecord.map((e: any) => AutoSettleRecord.fromJSON(e)) : [],
+      auto_settle_record: Array.isArray(object?.auto_settle_record) ? object.auto_settle_record.map((e: any) => AutoSettleRecord.fromJSON(e)) : [],
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
     };
   },
@@ -1420,10 +1420,10 @@ export const QueryAllAutoSettleRecordResponse = {
   toJSON(message: QueryAllAutoSettleRecordResponse): unknown {
     const obj: any = {};
 
-    if (message.autoSettleRecord) {
-      obj.autoSettleRecord = message.autoSettleRecord.map(e => e ? AutoSettleRecord.toJSON(e) : undefined);
+    if (message.auto_settle_record) {
+      obj.auto_settle_record = message.auto_settle_record.map(e => e ? AutoSettleRecord.toJSON(e) : undefined);
     } else {
-      obj.autoSettleRecord = [];
+      obj.auto_settle_record = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
@@ -1432,7 +1432,7 @@ export const QueryAllAutoSettleRecordResponse = {
 
   fromPartial<I extends Exact<DeepPartial<QueryAllAutoSettleRecordResponse>, I>>(object: I): QueryAllAutoSettleRecordResponse {
     const message = createBaseQueryAllAutoSettleRecordResponse();
-    message.autoSettleRecord = object.autoSettleRecord?.map(e => AutoSettleRecord.fromPartial(e)) || [];
+    message.auto_settle_record = object.auto_settle_record?.map(e => AutoSettleRecord.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
   }

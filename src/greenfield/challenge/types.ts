@@ -40,27 +40,27 @@ export function voteResultToJSON(object: VoteResult): string {
   }
 }
 export interface Slash {
-  spOperatorAddress: Uint8Array;
-  objectId: string;
+  sp_operator_address: Uint8Array;
+  object_id: string;
   height: Long;
 }
 
 function createBaseSlash(): Slash {
   return {
-    spOperatorAddress: new Uint8Array(),
-    objectId: "",
+    sp_operator_address: new Uint8Array(),
+    object_id: "",
     height: Long.UZERO
   };
 }
 
 export const Slash = {
   encode(message: Slash, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spOperatorAddress.length !== 0) {
-      writer.uint32(10).bytes(message.spOperatorAddress);
+    if (message.sp_operator_address.length !== 0) {
+      writer.uint32(10).bytes(message.sp_operator_address);
     }
 
-    if (message.objectId !== "") {
-      writer.uint32(18).string(message.objectId);
+    if (message.object_id !== "") {
+      writer.uint32(18).string(message.object_id);
     }
 
     if (!message.height.isZero()) {
@@ -80,11 +80,11 @@ export const Slash = {
 
       switch (tag >>> 3) {
         case 1:
-          message.spOperatorAddress = reader.bytes();
+          message.sp_operator_address = reader.bytes();
           break;
 
         case 2:
-          message.objectId = reader.string();
+          message.object_id = reader.string();
           break;
 
         case 3:
@@ -102,24 +102,24 @@ export const Slash = {
 
   fromJSON(object: any): Slash {
     return {
-      spOperatorAddress: isSet(object.spOperatorAddress) ? bytesFromBase64(object.spOperatorAddress) : new Uint8Array(),
-      objectId: isSet(object.objectId) ? String(object.objectId) : "",
+      sp_operator_address: isSet(object.sp_operator_address) ? bytesFromBase64(object.sp_operator_address) : new Uint8Array(),
+      object_id: isSet(object.object_id) ? String(object.object_id) : "",
       height: isSet(object.height) ? Long.fromValue(object.height) : Long.UZERO
     };
   },
 
   toJSON(message: Slash): unknown {
     const obj: any = {};
-    message.spOperatorAddress !== undefined && (obj.spOperatorAddress = base64FromBytes(message.spOperatorAddress !== undefined ? message.spOperatorAddress : new Uint8Array()));
-    message.objectId !== undefined && (obj.objectId = message.objectId);
+    message.sp_operator_address !== undefined && (obj.sp_operator_address = base64FromBytes(message.sp_operator_address !== undefined ? message.sp_operator_address : new Uint8Array()));
+    message.object_id !== undefined && (obj.object_id = message.object_id);
     message.height !== undefined && (obj.height = (message.height || Long.UZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Slash>, I>>(object: I): Slash {
     const message = createBaseSlash();
-    message.spOperatorAddress = object.spOperatorAddress ?? new Uint8Array();
-    message.objectId = object.objectId ?? "";
+    message.sp_operator_address = object.sp_operator_address ?? new Uint8Array();
+    message.object_id = object.object_id ?? "";
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.UZERO;
     return message;
   }

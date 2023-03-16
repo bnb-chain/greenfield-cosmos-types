@@ -9,21 +9,21 @@ export const protobufPackage = "bnbchain.greenfield.sp";
 export interface MsgCreateStorageProvider {
   creator: string;
   description?: Description;
-  spAddress: string;
-  fundingAddress: string;
-  sealAddress: string;
-  approvalAddress: string;
+  sp_address: string;
+  funding_address: string;
+  seal_address: string;
+  approval_address: string;
   endpoint: string;
   deposit?: Coin;
   /** read price, in bnb wei per charge byte */
 
-  readPrice: string;
+  read_price: string;
   /** free read quota, in byte */
 
-  freeReadQuota: Long;
+  free_read_quota: Long;
   /** store price, in bnb wei per charge byte */
 
-  storePrice: string;
+  store_price: string;
 }
 /** MsgCreateStorageProviderResponse defines the Msg/CreateStorageProvider response type. */
 
@@ -35,7 +35,7 @@ export interface MsgDeposit {
   creator: string;
   /** sp_address is the operator address of sp */
 
-  spAddress: string;
+  sp_address: string;
   /** deposit is a mount of token which used to deposit for SP */
 
   deposit?: Coin;
@@ -46,7 +46,7 @@ export interface MsgDepositResponse {}
 /** MsgEditStorageProvider defines a SDK message for editing an existing sp. */
 
 export interface MsgEditStorageProvider {
-  spAddress: string;
+  sp_address: string;
   endpoint: string;
   description?: Description;
 }
@@ -55,16 +55,16 @@ export interface MsgEditStorageProvider {
 export interface MsgEditStorageProviderResponse {}
 export interface MsgUpdateSpStoragePrice {
   /** sp address */
-  spAddress: string;
+  sp_address: string;
   /** read price, in bnb wei per charge byte */
 
-  readPrice: string;
+  read_price: string;
   /** free read quota, in byte */
 
-  freeReadQuota: Long;
+  free_read_quota: Long;
   /** store price, in bnb wei per charge byte */
 
-  storePrice: string;
+  store_price: string;
 }
 export interface MsgUpdateSpStoragePriceResponse {}
 
@@ -72,15 +72,15 @@ function createBaseMsgCreateStorageProvider(): MsgCreateStorageProvider {
   return {
     creator: "",
     description: undefined,
-    spAddress: "",
-    fundingAddress: "",
-    sealAddress: "",
-    approvalAddress: "",
+    sp_address: "",
+    funding_address: "",
+    seal_address: "",
+    approval_address: "",
     endpoint: "",
     deposit: undefined,
-    readPrice: "",
-    freeReadQuota: Long.UZERO,
-    storePrice: ""
+    read_price: "",
+    free_read_quota: Long.UZERO,
+    store_price: ""
   };
 }
 
@@ -94,20 +94,20 @@ export const MsgCreateStorageProvider = {
       Description.encode(message.description, writer.uint32(18).fork()).ldelim();
     }
 
-    if (message.spAddress !== "") {
-      writer.uint32(26).string(message.spAddress);
+    if (message.sp_address !== "") {
+      writer.uint32(26).string(message.sp_address);
     }
 
-    if (message.fundingAddress !== "") {
-      writer.uint32(34).string(message.fundingAddress);
+    if (message.funding_address !== "") {
+      writer.uint32(34).string(message.funding_address);
     }
 
-    if (message.sealAddress !== "") {
-      writer.uint32(42).string(message.sealAddress);
+    if (message.seal_address !== "") {
+      writer.uint32(42).string(message.seal_address);
     }
 
-    if (message.approvalAddress !== "") {
-      writer.uint32(50).string(message.approvalAddress);
+    if (message.approval_address !== "") {
+      writer.uint32(50).string(message.approval_address);
     }
 
     if (message.endpoint !== "") {
@@ -118,16 +118,16 @@ export const MsgCreateStorageProvider = {
       Coin.encode(message.deposit, writer.uint32(66).fork()).ldelim();
     }
 
-    if (message.readPrice !== "") {
-      writer.uint32(74).string(message.readPrice);
+    if (message.read_price !== "") {
+      writer.uint32(74).string(message.read_price);
     }
 
-    if (!message.freeReadQuota.isZero()) {
-      writer.uint32(80).uint64(message.freeReadQuota);
+    if (!message.free_read_quota.isZero()) {
+      writer.uint32(80).uint64(message.free_read_quota);
     }
 
-    if (message.storePrice !== "") {
-      writer.uint32(90).string(message.storePrice);
+    if (message.store_price !== "") {
+      writer.uint32(90).string(message.store_price);
     }
 
     return writer;
@@ -151,19 +151,19 @@ export const MsgCreateStorageProvider = {
           break;
 
         case 3:
-          message.spAddress = reader.string();
+          message.sp_address = reader.string();
           break;
 
         case 4:
-          message.fundingAddress = reader.string();
+          message.funding_address = reader.string();
           break;
 
         case 5:
-          message.sealAddress = reader.string();
+          message.seal_address = reader.string();
           break;
 
         case 6:
-          message.approvalAddress = reader.string();
+          message.approval_address = reader.string();
           break;
 
         case 7:
@@ -175,15 +175,15 @@ export const MsgCreateStorageProvider = {
           break;
 
         case 9:
-          message.readPrice = reader.string();
+          message.read_price = reader.string();
           break;
 
         case 10:
-          message.freeReadQuota = (reader.uint64() as Long);
+          message.free_read_quota = (reader.uint64() as Long);
           break;
 
         case 11:
-          message.storePrice = reader.string();
+          message.store_price = reader.string();
           break;
 
         default:
@@ -199,15 +199,15 @@ export const MsgCreateStorageProvider = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       description: isSet(object.description) ? Description.fromJSON(object.description) : undefined,
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
-      fundingAddress: isSet(object.fundingAddress) ? String(object.fundingAddress) : "",
-      sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
-      approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
+      sp_address: isSet(object.sp_address) ? String(object.sp_address) : "",
+      funding_address: isSet(object.funding_address) ? String(object.funding_address) : "",
+      seal_address: isSet(object.seal_address) ? String(object.seal_address) : "",
+      approval_address: isSet(object.approval_address) ? String(object.approval_address) : "",
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
       deposit: isSet(object.deposit) ? Coin.fromJSON(object.deposit) : undefined,
-      readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
-      freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
-      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+      read_price: isSet(object.read_price) ? String(object.read_price) : "",
+      free_read_quota: isSet(object.free_read_quota) ? Long.fromValue(object.free_read_quota) : Long.UZERO,
+      store_price: isSet(object.store_price) ? String(object.store_price) : ""
     };
   },
 
@@ -215,15 +215,15 @@ export const MsgCreateStorageProvider = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.description !== undefined && (obj.description = message.description ? Description.toJSON(message.description) : undefined);
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
-    message.fundingAddress !== undefined && (obj.fundingAddress = message.fundingAddress);
-    message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
-    message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
+    message.sp_address !== undefined && (obj.sp_address = message.sp_address);
+    message.funding_address !== undefined && (obj.funding_address = message.funding_address);
+    message.seal_address !== undefined && (obj.seal_address = message.seal_address);
+    message.approval_address !== undefined && (obj.approval_address = message.approval_address);
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
     message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toJSON(message.deposit) : undefined);
-    message.readPrice !== undefined && (obj.readPrice = message.readPrice);
-    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
-    message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    message.read_price !== undefined && (obj.read_price = message.read_price);
+    message.free_read_quota !== undefined && (obj.free_read_quota = (message.free_read_quota || Long.UZERO).toString());
+    message.store_price !== undefined && (obj.store_price = message.store_price);
     return obj;
   },
 
@@ -231,15 +231,15 @@ export const MsgCreateStorageProvider = {
     const message = createBaseMsgCreateStorageProvider();
     message.creator = object.creator ?? "";
     message.description = object.description !== undefined && object.description !== null ? Description.fromPartial(object.description) : undefined;
-    message.spAddress = object.spAddress ?? "";
-    message.fundingAddress = object.fundingAddress ?? "";
-    message.sealAddress = object.sealAddress ?? "";
-    message.approvalAddress = object.approvalAddress ?? "";
+    message.sp_address = object.sp_address ?? "";
+    message.funding_address = object.funding_address ?? "";
+    message.seal_address = object.seal_address ?? "";
+    message.approval_address = object.approval_address ?? "";
     message.endpoint = object.endpoint ?? "";
     message.deposit = object.deposit !== undefined && object.deposit !== null ? Coin.fromPartial(object.deposit) : undefined;
-    message.readPrice = object.readPrice ?? "";
-    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
-    message.storePrice = object.storePrice ?? "";
+    message.read_price = object.read_price ?? "";
+    message.free_read_quota = object.free_read_quota !== undefined && object.free_read_quota !== null ? Long.fromValue(object.free_read_quota) : Long.UZERO;
+    message.store_price = object.store_price ?? "";
     return message;
   }
 
@@ -291,7 +291,7 @@ export const MsgCreateStorageProviderResponse = {
 function createBaseMsgDeposit(): MsgDeposit {
   return {
     creator: "",
-    spAddress: "",
+    sp_address: "",
     deposit: undefined
   };
 }
@@ -302,8 +302,8 @@ export const MsgDeposit = {
       writer.uint32(10).string(message.creator);
     }
 
-    if (message.spAddress !== "") {
-      writer.uint32(18).string(message.spAddress);
+    if (message.sp_address !== "") {
+      writer.uint32(18).string(message.sp_address);
     }
 
     if (message.deposit !== undefined) {
@@ -327,7 +327,7 @@ export const MsgDeposit = {
           break;
 
         case 2:
-          message.spAddress = reader.string();
+          message.sp_address = reader.string();
           break;
 
         case 3:
@@ -346,7 +346,7 @@ export const MsgDeposit = {
   fromJSON(object: any): MsgDeposit {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      sp_address: isSet(object.sp_address) ? String(object.sp_address) : "",
       deposit: isSet(object.deposit) ? Coin.fromJSON(object.deposit) : undefined
     };
   },
@@ -354,7 +354,7 @@ export const MsgDeposit = {
   toJSON(message: MsgDeposit): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.sp_address !== undefined && (obj.sp_address = message.sp_address);
     message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toJSON(message.deposit) : undefined);
     return obj;
   },
@@ -362,7 +362,7 @@ export const MsgDeposit = {
   fromPartial<I extends Exact<DeepPartial<MsgDeposit>, I>>(object: I): MsgDeposit {
     const message = createBaseMsgDeposit();
     message.creator = object.creator ?? "";
-    message.spAddress = object.spAddress ?? "";
+    message.sp_address = object.sp_address ?? "";
     message.deposit = object.deposit !== undefined && object.deposit !== null ? Coin.fromPartial(object.deposit) : undefined;
     return message;
   }
@@ -414,7 +414,7 @@ export const MsgDepositResponse = {
 
 function createBaseMsgEditStorageProvider(): MsgEditStorageProvider {
   return {
-    spAddress: "",
+    sp_address: "",
     endpoint: "",
     description: undefined
   };
@@ -422,8 +422,8 @@ function createBaseMsgEditStorageProvider(): MsgEditStorageProvider {
 
 export const MsgEditStorageProvider = {
   encode(message: MsgEditStorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spAddress !== "") {
-      writer.uint32(10).string(message.spAddress);
+    if (message.sp_address !== "") {
+      writer.uint32(10).string(message.sp_address);
     }
 
     if (message.endpoint !== "") {
@@ -447,7 +447,7 @@ export const MsgEditStorageProvider = {
 
       switch (tag >>> 3) {
         case 1:
-          message.spAddress = reader.string();
+          message.sp_address = reader.string();
           break;
 
         case 2:
@@ -469,7 +469,7 @@ export const MsgEditStorageProvider = {
 
   fromJSON(object: any): MsgEditStorageProvider {
     return {
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      sp_address: isSet(object.sp_address) ? String(object.sp_address) : "",
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
       description: isSet(object.description) ? Description.fromJSON(object.description) : undefined
     };
@@ -477,7 +477,7 @@ export const MsgEditStorageProvider = {
 
   toJSON(message: MsgEditStorageProvider): unknown {
     const obj: any = {};
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.sp_address !== undefined && (obj.sp_address = message.sp_address);
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
     message.description !== undefined && (obj.description = message.description ? Description.toJSON(message.description) : undefined);
     return obj;
@@ -485,7 +485,7 @@ export const MsgEditStorageProvider = {
 
   fromPartial<I extends Exact<DeepPartial<MsgEditStorageProvider>, I>>(object: I): MsgEditStorageProvider {
     const message = createBaseMsgEditStorageProvider();
-    message.spAddress = object.spAddress ?? "";
+    message.sp_address = object.sp_address ?? "";
     message.endpoint = object.endpoint ?? "";
     message.description = object.description !== undefined && object.description !== null ? Description.fromPartial(object.description) : undefined;
     return message;
@@ -538,29 +538,29 @@ export const MsgEditStorageProviderResponse = {
 
 function createBaseMsgUpdateSpStoragePrice(): MsgUpdateSpStoragePrice {
   return {
-    spAddress: "",
-    readPrice: "",
-    freeReadQuota: Long.UZERO,
-    storePrice: ""
+    sp_address: "",
+    read_price: "",
+    free_read_quota: Long.UZERO,
+    store_price: ""
   };
 }
 
 export const MsgUpdateSpStoragePrice = {
   encode(message: MsgUpdateSpStoragePrice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spAddress !== "") {
-      writer.uint32(10).string(message.spAddress);
+    if (message.sp_address !== "") {
+      writer.uint32(10).string(message.sp_address);
     }
 
-    if (message.readPrice !== "") {
-      writer.uint32(18).string(message.readPrice);
+    if (message.read_price !== "") {
+      writer.uint32(18).string(message.read_price);
     }
 
-    if (!message.freeReadQuota.isZero()) {
-      writer.uint32(24).uint64(message.freeReadQuota);
+    if (!message.free_read_quota.isZero()) {
+      writer.uint32(24).uint64(message.free_read_quota);
     }
 
-    if (message.storePrice !== "") {
-      writer.uint32(34).string(message.storePrice);
+    if (message.store_price !== "") {
+      writer.uint32(34).string(message.store_price);
     }
 
     return writer;
@@ -576,19 +576,19 @@ export const MsgUpdateSpStoragePrice = {
 
       switch (tag >>> 3) {
         case 1:
-          message.spAddress = reader.string();
+          message.sp_address = reader.string();
           break;
 
         case 2:
-          message.readPrice = reader.string();
+          message.read_price = reader.string();
           break;
 
         case 3:
-          message.freeReadQuota = (reader.uint64() as Long);
+          message.free_read_quota = (reader.uint64() as Long);
           break;
 
         case 4:
-          message.storePrice = reader.string();
+          message.store_price = reader.string();
           break;
 
         default:
@@ -602,28 +602,28 @@ export const MsgUpdateSpStoragePrice = {
 
   fromJSON(object: any): MsgUpdateSpStoragePrice {
     return {
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
-      readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
-      freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
-      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+      sp_address: isSet(object.sp_address) ? String(object.sp_address) : "",
+      read_price: isSet(object.read_price) ? String(object.read_price) : "",
+      free_read_quota: isSet(object.free_read_quota) ? Long.fromValue(object.free_read_quota) : Long.UZERO,
+      store_price: isSet(object.store_price) ? String(object.store_price) : ""
     };
   },
 
   toJSON(message: MsgUpdateSpStoragePrice): unknown {
     const obj: any = {};
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
-    message.readPrice !== undefined && (obj.readPrice = message.readPrice);
-    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
-    message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    message.sp_address !== undefined && (obj.sp_address = message.sp_address);
+    message.read_price !== undefined && (obj.read_price = message.read_price);
+    message.free_read_quota !== undefined && (obj.free_read_quota = (message.free_read_quota || Long.UZERO).toString());
+    message.store_price !== undefined && (obj.store_price = message.store_price);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgUpdateSpStoragePrice>, I>>(object: I): MsgUpdateSpStoragePrice {
     const message = createBaseMsgUpdateSpStoragePrice();
-    message.spAddress = object.spAddress ?? "";
-    message.readPrice = object.readPrice ?? "";
-    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
-    message.storePrice = object.storePrice ?? "";
+    message.sp_address = object.sp_address ?? "";
+    message.read_price = object.read_price ?? "";
+    message.free_read_quota = object.free_read_quota !== undefined && object.free_read_quota !== null ? Long.fromValue(object.free_read_quota) : Long.UZERO;
+    message.store_price = object.store_price ?? "";
     return message;
   }
 

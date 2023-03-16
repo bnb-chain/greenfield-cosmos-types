@@ -105,27 +105,27 @@ export function objectStatusToJSON(object: ObjectStatus): string {
   }
 }
 export interface Approval {
-  expiredHeight: Long;
+  expired_height: Long;
   sig: Uint8Array;
 }
 /** SecondarySpSignDoc used to generate seal signature of secondary SP */
 
 export interface SecondarySpSignDoc {
-  spAddress: string;
+  sp_address: string;
   checksum: Uint8Array;
 }
 
 function createBaseApproval(): Approval {
   return {
-    expiredHeight: Long.UZERO,
+    expired_height: Long.UZERO,
     sig: new Uint8Array()
   };
 }
 
 export const Approval = {
   encode(message: Approval, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.expiredHeight.isZero()) {
-      writer.uint32(8).uint64(message.expiredHeight);
+    if (!message.expired_height.isZero()) {
+      writer.uint32(8).uint64(message.expired_height);
     }
 
     if (message.sig.length !== 0) {
@@ -145,7 +145,7 @@ export const Approval = {
 
       switch (tag >>> 3) {
         case 1:
-          message.expiredHeight = (reader.uint64() as Long);
+          message.expired_height = (reader.uint64() as Long);
           break;
 
         case 2:
@@ -163,21 +163,21 @@ export const Approval = {
 
   fromJSON(object: any): Approval {
     return {
-      expiredHeight: isSet(object.expiredHeight) ? Long.fromValue(object.expiredHeight) : Long.UZERO,
+      expired_height: isSet(object.expired_height) ? Long.fromValue(object.expired_height) : Long.UZERO,
       sig: isSet(object.sig) ? bytesFromBase64(object.sig) : new Uint8Array()
     };
   },
 
   toJSON(message: Approval): unknown {
     const obj: any = {};
-    message.expiredHeight !== undefined && (obj.expiredHeight = (message.expiredHeight || Long.UZERO).toString());
+    message.expired_height !== undefined && (obj.expired_height = (message.expired_height || Long.UZERO).toString());
     message.sig !== undefined && (obj.sig = base64FromBytes(message.sig !== undefined ? message.sig : new Uint8Array()));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Approval>, I>>(object: I): Approval {
     const message = createBaseApproval();
-    message.expiredHeight = object.expiredHeight !== undefined && object.expiredHeight !== null ? Long.fromValue(object.expiredHeight) : Long.UZERO;
+    message.expired_height = object.expired_height !== undefined && object.expired_height !== null ? Long.fromValue(object.expired_height) : Long.UZERO;
     message.sig = object.sig ?? new Uint8Array();
     return message;
   }
@@ -186,15 +186,15 @@ export const Approval = {
 
 function createBaseSecondarySpSignDoc(): SecondarySpSignDoc {
   return {
-    spAddress: "",
+    sp_address: "",
     checksum: new Uint8Array()
   };
 }
 
 export const SecondarySpSignDoc = {
   encode(message: SecondarySpSignDoc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spAddress !== "") {
-      writer.uint32(10).string(message.spAddress);
+    if (message.sp_address !== "") {
+      writer.uint32(10).string(message.sp_address);
     }
 
     if (message.checksum.length !== 0) {
@@ -214,7 +214,7 @@ export const SecondarySpSignDoc = {
 
       switch (tag >>> 3) {
         case 1:
-          message.spAddress = reader.string();
+          message.sp_address = reader.string();
           break;
 
         case 2:
@@ -232,21 +232,21 @@ export const SecondarySpSignDoc = {
 
   fromJSON(object: any): SecondarySpSignDoc {
     return {
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      sp_address: isSet(object.sp_address) ? String(object.sp_address) : "",
       checksum: isSet(object.checksum) ? bytesFromBase64(object.checksum) : new Uint8Array()
     };
   },
 
   toJSON(message: SecondarySpSignDoc): unknown {
     const obj: any = {};
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.sp_address !== undefined && (obj.sp_address = message.sp_address);
     message.checksum !== undefined && (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<SecondarySpSignDoc>, I>>(object: I): SecondarySpSignDoc {
     const message = createBaseSecondarySpSignDoc();
-    message.spAddress = object.spAddress ?? "";
+    message.sp_address = object.sp_address ?? "";
     message.checksum = object.checksum ?? new Uint8Array();
     return message;
   }

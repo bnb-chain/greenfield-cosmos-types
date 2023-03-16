@@ -6,51 +6,51 @@ export const protobufPackage = "bnbchain.greenfield.storage";
 
 export interface Params {
   /** max_segment_size is the maximum size of a segment. default: 16M */
-  maxSegmentSize: Long;
+  max_segment_size: Long;
   /** redundant_data_check_num is the num of data chunks of EC redundancy algorithm */
 
-  redundantDataChunkNum: number;
+  redundant_data_chunk_num: number;
   /** redundant_data_check_num is the num of parity chunks of EC redundancy algorithm */
 
-  redundantParityChunkNum: number;
+  redundant_parity_chunk_num: number;
   /** max_payload_size is the maximum size of the payload, default: 2G */
 
-  maxPayloadSize: Long;
+  max_payload_size: Long;
   /** min_charge_size is the minimum charge size of the payload, objects smaller than this size will be charged as this size */
 
-  minChargeSize: Long;
+  min_charge_size: Long;
 }
 
 function createBaseParams(): Params {
   return {
-    maxSegmentSize: Long.UZERO,
-    redundantDataChunkNum: 0,
-    redundantParityChunkNum: 0,
-    maxPayloadSize: Long.UZERO,
-    minChargeSize: Long.UZERO
+    max_segment_size: Long.UZERO,
+    redundant_data_chunk_num: 0,
+    redundant_parity_chunk_num: 0,
+    max_payload_size: Long.UZERO,
+    min_charge_size: Long.UZERO
   };
 }
 
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.maxSegmentSize.isZero()) {
-      writer.uint32(8).uint64(message.maxSegmentSize);
+    if (!message.max_segment_size.isZero()) {
+      writer.uint32(8).uint64(message.max_segment_size);
     }
 
-    if (message.redundantDataChunkNum !== 0) {
-      writer.uint32(16).uint32(message.redundantDataChunkNum);
+    if (message.redundant_data_chunk_num !== 0) {
+      writer.uint32(16).uint32(message.redundant_data_chunk_num);
     }
 
-    if (message.redundantParityChunkNum !== 0) {
-      writer.uint32(24).uint32(message.redundantParityChunkNum);
+    if (message.redundant_parity_chunk_num !== 0) {
+      writer.uint32(24).uint32(message.redundant_parity_chunk_num);
     }
 
-    if (!message.maxPayloadSize.isZero()) {
-      writer.uint32(32).uint64(message.maxPayloadSize);
+    if (!message.max_payload_size.isZero()) {
+      writer.uint32(32).uint64(message.max_payload_size);
     }
 
-    if (!message.minChargeSize.isZero()) {
-      writer.uint32(40).uint64(message.minChargeSize);
+    if (!message.min_charge_size.isZero()) {
+      writer.uint32(40).uint64(message.min_charge_size);
     }
 
     return writer;
@@ -66,23 +66,23 @@ export const Params = {
 
       switch (tag >>> 3) {
         case 1:
-          message.maxSegmentSize = (reader.uint64() as Long);
+          message.max_segment_size = (reader.uint64() as Long);
           break;
 
         case 2:
-          message.redundantDataChunkNum = reader.uint32();
+          message.redundant_data_chunk_num = reader.uint32();
           break;
 
         case 3:
-          message.redundantParityChunkNum = reader.uint32();
+          message.redundant_parity_chunk_num = reader.uint32();
           break;
 
         case 4:
-          message.maxPayloadSize = (reader.uint64() as Long);
+          message.max_payload_size = (reader.uint64() as Long);
           break;
 
         case 5:
-          message.minChargeSize = (reader.uint64() as Long);
+          message.min_charge_size = (reader.uint64() as Long);
           break;
 
         default:
@@ -96,31 +96,31 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
-      maxSegmentSize: isSet(object.maxSegmentSize) ? Long.fromValue(object.maxSegmentSize) : Long.UZERO,
-      redundantDataChunkNum: isSet(object.redundantDataChunkNum) ? Number(object.redundantDataChunkNum) : 0,
-      redundantParityChunkNum: isSet(object.redundantParityChunkNum) ? Number(object.redundantParityChunkNum) : 0,
-      maxPayloadSize: isSet(object.maxPayloadSize) ? Long.fromValue(object.maxPayloadSize) : Long.UZERO,
-      minChargeSize: isSet(object.minChargeSize) ? Long.fromValue(object.minChargeSize) : Long.UZERO
+      max_segment_size: isSet(object.max_segment_size) ? Long.fromValue(object.max_segment_size) : Long.UZERO,
+      redundant_data_chunk_num: isSet(object.redundant_data_chunk_num) ? Number(object.redundant_data_chunk_num) : 0,
+      redundant_parity_chunk_num: isSet(object.redundant_parity_chunk_num) ? Number(object.redundant_parity_chunk_num) : 0,
+      max_payload_size: isSet(object.max_payload_size) ? Long.fromValue(object.max_payload_size) : Long.UZERO,
+      min_charge_size: isSet(object.min_charge_size) ? Long.fromValue(object.min_charge_size) : Long.UZERO
     };
   },
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.maxSegmentSize !== undefined && (obj.maxSegmentSize = (message.maxSegmentSize || Long.UZERO).toString());
-    message.redundantDataChunkNum !== undefined && (obj.redundantDataChunkNum = Math.round(message.redundantDataChunkNum));
-    message.redundantParityChunkNum !== undefined && (obj.redundantParityChunkNum = Math.round(message.redundantParityChunkNum));
-    message.maxPayloadSize !== undefined && (obj.maxPayloadSize = (message.maxPayloadSize || Long.UZERO).toString());
-    message.minChargeSize !== undefined && (obj.minChargeSize = (message.minChargeSize || Long.UZERO).toString());
+    message.max_segment_size !== undefined && (obj.max_segment_size = (message.max_segment_size || Long.UZERO).toString());
+    message.redundant_data_chunk_num !== undefined && (obj.redundant_data_chunk_num = Math.round(message.redundant_data_chunk_num));
+    message.redundant_parity_chunk_num !== undefined && (obj.redundant_parity_chunk_num = Math.round(message.redundant_parity_chunk_num));
+    message.max_payload_size !== undefined && (obj.max_payload_size = (message.max_payload_size || Long.UZERO).toString());
+    message.min_charge_size !== undefined && (obj.min_charge_size = (message.min_charge_size || Long.UZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.maxSegmentSize = object.maxSegmentSize !== undefined && object.maxSegmentSize !== null ? Long.fromValue(object.maxSegmentSize) : Long.UZERO;
-    message.redundantDataChunkNum = object.redundantDataChunkNum ?? 0;
-    message.redundantParityChunkNum = object.redundantParityChunkNum ?? 0;
-    message.maxPayloadSize = object.maxPayloadSize !== undefined && object.maxPayloadSize !== null ? Long.fromValue(object.maxPayloadSize) : Long.UZERO;
-    message.minChargeSize = object.minChargeSize !== undefined && object.minChargeSize !== null ? Long.fromValue(object.minChargeSize) : Long.UZERO;
+    message.max_segment_size = object.max_segment_size !== undefined && object.max_segment_size !== null ? Long.fromValue(object.max_segment_size) : Long.UZERO;
+    message.redundant_data_chunk_num = object.redundant_data_chunk_num ?? 0;
+    message.redundant_parity_chunk_num = object.redundant_parity_chunk_num ?? 0;
+    message.max_payload_size = object.max_payload_size !== undefined && object.max_payload_size !== null ? Long.fromValue(object.max_payload_size) : Long.UZERO;
+    message.min_charge_size = object.min_charge_size !== undefined && object.min_charge_size !== null ? Long.fromValue(object.min_charge_size) : Long.UZERO;
     return message;
   }
 

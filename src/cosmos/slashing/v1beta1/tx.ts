@@ -5,7 +5,7 @@ export const protobufPackage = "cosmos.slashing.v1beta1";
 /** MsgUnjail defines the Msg/Unjail request type */
 
 export interface MsgUnjail {
-  validatorAddr: string;
+  validator_addr: string;
 }
 /** MsgUnjailResponse defines the Msg/Unjail response type */
 
@@ -14,7 +14,7 @@ export interface MsgUnjailResponse {}
 
 export interface MsgImpeach {
   from: string;
-  validatorAddress: string;
+  validator_address: string;
 }
 /** MsgImpeachResponse defines the Msg/Impeach response type. */
 
@@ -22,14 +22,14 @@ export interface MsgImpeachResponse {}
 
 function createBaseMsgUnjail(): MsgUnjail {
   return {
-    validatorAddr: ""
+    validator_addr: ""
   };
 }
 
 export const MsgUnjail = {
   encode(message: MsgUnjail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.validatorAddr !== "") {
-      writer.uint32(10).string(message.validatorAddr);
+    if (message.validator_addr !== "") {
+      writer.uint32(10).string(message.validator_addr);
     }
 
     return writer;
@@ -45,7 +45,7 @@ export const MsgUnjail = {
 
       switch (tag >>> 3) {
         case 1:
-          message.validatorAddr = reader.string();
+          message.validator_addr = reader.string();
           break;
 
         default:
@@ -59,19 +59,19 @@ export const MsgUnjail = {
 
   fromJSON(object: any): MsgUnjail {
     return {
-      validatorAddr: isSet(object.validatorAddr) ? String(object.validatorAddr) : ""
+      validator_addr: isSet(object.validator_addr) ? String(object.validator_addr) : ""
     };
   },
 
   toJSON(message: MsgUnjail): unknown {
     const obj: any = {};
-    message.validatorAddr !== undefined && (obj.validatorAddr = message.validatorAddr);
+    message.validator_addr !== undefined && (obj.validator_addr = message.validator_addr);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgUnjail>, I>>(object: I): MsgUnjail {
     const message = createBaseMsgUnjail();
-    message.validatorAddr = object.validatorAddr ?? "";
+    message.validator_addr = object.validator_addr ?? "";
     return message;
   }
 
@@ -123,7 +123,7 @@ export const MsgUnjailResponse = {
 function createBaseMsgImpeach(): MsgImpeach {
   return {
     from: "",
-    validatorAddress: ""
+    validator_address: ""
   };
 }
 
@@ -133,8 +133,8 @@ export const MsgImpeach = {
       writer.uint32(10).string(message.from);
     }
 
-    if (message.validatorAddress !== "") {
-      writer.uint32(18).string(message.validatorAddress);
+    if (message.validator_address !== "") {
+      writer.uint32(18).string(message.validator_address);
     }
 
     return writer;
@@ -154,7 +154,7 @@ export const MsgImpeach = {
           break;
 
         case 2:
-          message.validatorAddress = reader.string();
+          message.validator_address = reader.string();
           break;
 
         default:
@@ -169,21 +169,21 @@ export const MsgImpeach = {
   fromJSON(object: any): MsgImpeach {
     return {
       from: isSet(object.from) ? String(object.from) : "",
-      validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : ""
+      validator_address: isSet(object.validator_address) ? String(object.validator_address) : ""
     };
   },
 
   toJSON(message: MsgImpeach): unknown {
     const obj: any = {};
     message.from !== undefined && (obj.from = message.from);
-    message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
+    message.validator_address !== undefined && (obj.validator_address = message.validator_address);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgImpeach>, I>>(object: I): MsgImpeach {
     const message = createBaseMsgImpeach();
     message.from = object.from ?? "";
-    message.validatorAddress = object.validatorAddress ?? "";
+    message.validator_address = object.validator_address ?? "";
     return message;
   }
 

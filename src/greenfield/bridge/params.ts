@@ -6,27 +6,27 @@ export const protobufPackage = "bnbchain.greenfield.bridge";
 
 export interface Params {
   /** Relayer fee for the cross chain transfer out tx */
-  transferOutRelayerFee: string;
+  transfer_out_relayer_fee: string;
   /** Relayer fee for the ACK or FAIL_ACK package of the cross chain transfer out tx */
 
-  transferOutAckRelayerFee: string;
+  transfer_out_ack_relayer_fee: string;
 }
 
 function createBaseParams(): Params {
   return {
-    transferOutRelayerFee: "",
-    transferOutAckRelayerFee: ""
+    transfer_out_relayer_fee: "",
+    transfer_out_ack_relayer_fee: ""
   };
 }
 
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.transferOutRelayerFee !== "") {
-      writer.uint32(10).string(message.transferOutRelayerFee);
+    if (message.transfer_out_relayer_fee !== "") {
+      writer.uint32(10).string(message.transfer_out_relayer_fee);
     }
 
-    if (message.transferOutAckRelayerFee !== "") {
-      writer.uint32(18).string(message.transferOutAckRelayerFee);
+    if (message.transfer_out_ack_relayer_fee !== "") {
+      writer.uint32(18).string(message.transfer_out_ack_relayer_fee);
     }
 
     return writer;
@@ -42,11 +42,11 @@ export const Params = {
 
       switch (tag >>> 3) {
         case 1:
-          message.transferOutRelayerFee = reader.string();
+          message.transfer_out_relayer_fee = reader.string();
           break;
 
         case 2:
-          message.transferOutAckRelayerFee = reader.string();
+          message.transfer_out_ack_relayer_fee = reader.string();
           break;
 
         default:
@@ -60,22 +60,22 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
-      transferOutRelayerFee: isSet(object.transferOutRelayerFee) ? String(object.transferOutRelayerFee) : "",
-      transferOutAckRelayerFee: isSet(object.transferOutAckRelayerFee) ? String(object.transferOutAckRelayerFee) : ""
+      transfer_out_relayer_fee: isSet(object.transfer_out_relayer_fee) ? String(object.transfer_out_relayer_fee) : "",
+      transfer_out_ack_relayer_fee: isSet(object.transfer_out_ack_relayer_fee) ? String(object.transfer_out_ack_relayer_fee) : ""
     };
   },
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.transferOutRelayerFee !== undefined && (obj.transferOutRelayerFee = message.transferOutRelayerFee);
-    message.transferOutAckRelayerFee !== undefined && (obj.transferOutAckRelayerFee = message.transferOutAckRelayerFee);
+    message.transfer_out_relayer_fee !== undefined && (obj.transfer_out_relayer_fee = message.transfer_out_relayer_fee);
+    message.transfer_out_ack_relayer_fee !== undefined && (obj.transfer_out_ack_relayer_fee = message.transfer_out_ack_relayer_fee);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.transferOutRelayerFee = object.transferOutRelayerFee ?? "";
-    message.transferOutAckRelayerFee = object.transferOutAckRelayerFee ?? "";
+    message.transfer_out_relayer_fee = object.transfer_out_relayer_fee ?? "";
+    message.transfer_out_ack_relayer_fee = object.transfer_out_ack_relayer_fee ?? "";
     return message;
   }
 

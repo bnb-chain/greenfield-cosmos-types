@@ -5,31 +5,31 @@ export const protobufPackage = "cosmos.gashub.v1alpha1";
 /** EventUpdateMsgGasParams is emitted when update a msg's gas params */
 
 export interface EventUpdateMsgGasParams {
-  msgTypeUrl: string;
-  fromValue: string;
-  toValue: string;
+  msg_type_url: string;
+  from_value: string;
+  to_value: string;
 }
 
 function createBaseEventUpdateMsgGasParams(): EventUpdateMsgGasParams {
   return {
-    msgTypeUrl: "",
-    fromValue: "",
-    toValue: ""
+    msg_type_url: "",
+    from_value: "",
+    to_value: ""
   };
 }
 
 export const EventUpdateMsgGasParams = {
   encode(message: EventUpdateMsgGasParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.msgTypeUrl !== "") {
-      writer.uint32(10).string(message.msgTypeUrl);
+    if (message.msg_type_url !== "") {
+      writer.uint32(10).string(message.msg_type_url);
     }
 
-    if (message.fromValue !== "") {
-      writer.uint32(18).string(message.fromValue);
+    if (message.from_value !== "") {
+      writer.uint32(18).string(message.from_value);
     }
 
-    if (message.toValue !== "") {
-      writer.uint32(26).string(message.toValue);
+    if (message.to_value !== "") {
+      writer.uint32(26).string(message.to_value);
     }
 
     return writer;
@@ -45,15 +45,15 @@ export const EventUpdateMsgGasParams = {
 
       switch (tag >>> 3) {
         case 1:
-          message.msgTypeUrl = reader.string();
+          message.msg_type_url = reader.string();
           break;
 
         case 2:
-          message.fromValue = reader.string();
+          message.from_value = reader.string();
           break;
 
         case 3:
-          message.toValue = reader.string();
+          message.to_value = reader.string();
           break;
 
         default:
@@ -67,25 +67,25 @@ export const EventUpdateMsgGasParams = {
 
   fromJSON(object: any): EventUpdateMsgGasParams {
     return {
-      msgTypeUrl: isSet(object.msgTypeUrl) ? String(object.msgTypeUrl) : "",
-      fromValue: isSet(object.fromValue) ? String(object.fromValue) : "",
-      toValue: isSet(object.toValue) ? String(object.toValue) : ""
+      msg_type_url: isSet(object.msg_type_url) ? String(object.msg_type_url) : "",
+      from_value: isSet(object.from_value) ? String(object.from_value) : "",
+      to_value: isSet(object.to_value) ? String(object.to_value) : ""
     };
   },
 
   toJSON(message: EventUpdateMsgGasParams): unknown {
     const obj: any = {};
-    message.msgTypeUrl !== undefined && (obj.msgTypeUrl = message.msgTypeUrl);
-    message.fromValue !== undefined && (obj.fromValue = message.fromValue);
-    message.toValue !== undefined && (obj.toValue = message.toValue);
+    message.msg_type_url !== undefined && (obj.msg_type_url = message.msg_type_url);
+    message.from_value !== undefined && (obj.from_value = message.from_value);
+    message.to_value !== undefined && (obj.to_value = message.to_value);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<EventUpdateMsgGasParams>, I>>(object: I): EventUpdateMsgGasParams {
     const message = createBaseEventUpdateMsgGasParams();
-    message.msgTypeUrl = object.msgTypeUrl ?? "";
-    message.fromValue = object.fromValue ?? "";
-    message.toValue = object.toValue ?? "";
+    message.msg_type_url = object.msg_type_url ?? "";
+    message.from_value = object.from_value ?? "";
+    message.to_value = object.to_value ?? "";
     return message;
   }
 
