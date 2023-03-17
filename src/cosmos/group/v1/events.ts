@@ -9,16 +9,31 @@ export interface EventCreateGroup {
   /** group_id is the unique ID of the group. */
   groupId: Long;
 }
+/** EventCreateGroup is an event emitted when a group is created. */
+
+export interface EventCreateGroupSDKType {
+  group_id: Long;
+}
 /** EventUpdateGroup is an event emitted when a group is updated. */
 
 export interface EventUpdateGroup {
   /** group_id is the unique ID of the group. */
   groupId: Long;
 }
+/** EventUpdateGroup is an event emitted when a group is updated. */
+
+export interface EventUpdateGroupSDKType {
+  group_id: Long;
+}
 /** EventCreateGroupPolicy is an event emitted when a group policy is created. */
 
 export interface EventCreateGroupPolicy {
   /** address is the account address of the group policy. */
+  address: string;
+}
+/** EventCreateGroupPolicy is an event emitted when a group policy is created. */
+
+export interface EventCreateGroupPolicySDKType {
   address: string;
 }
 /** EventUpdateGroupPolicy is an event emitted when a group policy is updated. */
@@ -27,11 +42,21 @@ export interface EventUpdateGroupPolicy {
   /** address is the account address of the group policy. */
   address: string;
 }
+/** EventUpdateGroupPolicy is an event emitted when a group policy is updated. */
+
+export interface EventUpdateGroupPolicySDKType {
+  address: string;
+}
 /** EventSubmitProposal is an event emitted when a proposal is created. */
 
 export interface EventSubmitProposal {
   /** proposal_id is the unique ID of the proposal. */
   proposalId: Long;
+}
+/** EventSubmitProposal is an event emitted when a proposal is created. */
+
+export interface EventSubmitProposalSDKType {
+  proposal_id: Long;
 }
 /** EventWithdrawProposal is an event emitted when a proposal is withdrawn. */
 
@@ -39,11 +64,21 @@ export interface EventWithdrawProposal {
   /** proposal_id is the unique ID of the proposal. */
   proposalId: Long;
 }
+/** EventWithdrawProposal is an event emitted when a proposal is withdrawn. */
+
+export interface EventWithdrawProposalSDKType {
+  proposal_id: Long;
+}
 /** EventVote is an event emitted when a voter votes on a proposal. */
 
 export interface EventVote {
   /** proposal_id is the unique ID of the proposal. */
   proposalId: Long;
+}
+/** EventVote is an event emitted when a voter votes on a proposal. */
+
+export interface EventVoteSDKType {
+  proposal_id: Long;
 }
 /** EventExec is an event emitted when a proposal is executed. */
 
@@ -57,6 +92,13 @@ export interface EventExec {
 
   logs: string;
 }
+/** EventExec is an event emitted when a proposal is executed. */
+
+export interface EventExecSDKType {
+  proposal_id: Long;
+  result: ProposalExecutorResult;
+  logs: string;
+}
 /** EventLeaveGroup is an event emitted when group member leaves the group. */
 
 export interface EventLeaveGroup {
@@ -64,6 +106,12 @@ export interface EventLeaveGroup {
   groupId: Long;
   /** address is the account address of the group member. */
 
+  address: string;
+}
+/** EventLeaveGroup is an event emitted when group member leaves the group. */
+
+export interface EventLeaveGroupSDKType {
+  group_id: Long;
   address: string;
 }
 
@@ -120,6 +168,18 @@ export const EventCreateGroup = {
     const message = createBaseEventCreateGroup();
     message.groupId = object.groupId !== undefined && object.groupId !== null ? Long.fromValue(object.groupId) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: EventCreateGroupSDKType): EventCreateGroup {
+    return {
+      groupId: object?.group_id
+    };
+  },
+
+  toSDK(message: EventCreateGroup): EventCreateGroupSDKType {
+    const obj: any = {};
+    obj.group_id = message.groupId;
+    return obj;
   }
 
 };
@@ -177,6 +237,18 @@ export const EventUpdateGroup = {
     const message = createBaseEventUpdateGroup();
     message.groupId = object.groupId !== undefined && object.groupId !== null ? Long.fromValue(object.groupId) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: EventUpdateGroupSDKType): EventUpdateGroup {
+    return {
+      groupId: object?.group_id
+    };
+  },
+
+  toSDK(message: EventUpdateGroup): EventUpdateGroupSDKType {
+    const obj: any = {};
+    obj.group_id = message.groupId;
+    return obj;
   }
 
 };
@@ -234,6 +306,18 @@ export const EventCreateGroupPolicy = {
     const message = createBaseEventCreateGroupPolicy();
     message.address = object.address ?? "";
     return message;
+  },
+
+  fromSDK(object: EventCreateGroupPolicySDKType): EventCreateGroupPolicy {
+    return {
+      address: object?.address
+    };
+  },
+
+  toSDK(message: EventCreateGroupPolicy): EventCreateGroupPolicySDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    return obj;
   }
 
 };
@@ -291,6 +375,18 @@ export const EventUpdateGroupPolicy = {
     const message = createBaseEventUpdateGroupPolicy();
     message.address = object.address ?? "";
     return message;
+  },
+
+  fromSDK(object: EventUpdateGroupPolicySDKType): EventUpdateGroupPolicy {
+    return {
+      address: object?.address
+    };
+  },
+
+  toSDK(message: EventUpdateGroupPolicy): EventUpdateGroupPolicySDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    return obj;
   }
 
 };
@@ -348,6 +444,18 @@ export const EventSubmitProposal = {
     const message = createBaseEventSubmitProposal();
     message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? Long.fromValue(object.proposalId) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: EventSubmitProposalSDKType): EventSubmitProposal {
+    return {
+      proposalId: object?.proposal_id
+    };
+  },
+
+  toSDK(message: EventSubmitProposal): EventSubmitProposalSDKType {
+    const obj: any = {};
+    obj.proposal_id = message.proposalId;
+    return obj;
   }
 
 };
@@ -405,6 +513,18 @@ export const EventWithdrawProposal = {
     const message = createBaseEventWithdrawProposal();
     message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? Long.fromValue(object.proposalId) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: EventWithdrawProposalSDKType): EventWithdrawProposal {
+    return {
+      proposalId: object?.proposal_id
+    };
+  },
+
+  toSDK(message: EventWithdrawProposal): EventWithdrawProposalSDKType {
+    const obj: any = {};
+    obj.proposal_id = message.proposalId;
+    return obj;
   }
 
 };
@@ -462,6 +582,18 @@ export const EventVote = {
     const message = createBaseEventVote();
     message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? Long.fromValue(object.proposalId) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: EventVoteSDKType): EventVote {
+    return {
+      proposalId: object?.proposal_id
+    };
+  },
+
+  toSDK(message: EventVote): EventVoteSDKType {
+    const obj: any = {};
+    obj.proposal_id = message.proposalId;
+    return obj;
   }
 
 };
@@ -543,6 +675,22 @@ export const EventExec = {
     message.result = object.result ?? 0;
     message.logs = object.logs ?? "";
     return message;
+  },
+
+  fromSDK(object: EventExecSDKType): EventExec {
+    return {
+      proposalId: object?.proposal_id,
+      result: isSet(object.result) ? proposalExecutorResultFromJSON(object.result) : 0,
+      logs: object?.logs
+    };
+  },
+
+  toSDK(message: EventExec): EventExecSDKType {
+    const obj: any = {};
+    obj.proposal_id = message.proposalId;
+    message.result !== undefined && (obj.result = proposalExecutorResultToJSON(message.result));
+    obj.logs = message.logs;
+    return obj;
   }
 
 };
@@ -612,6 +760,20 @@ export const EventLeaveGroup = {
     message.groupId = object.groupId !== undefined && object.groupId !== null ? Long.fromValue(object.groupId) : Long.UZERO;
     message.address = object.address ?? "";
     return message;
+  },
+
+  fromSDK(object: EventLeaveGroupSDKType): EventLeaveGroup {
+    return {
+      groupId: object?.group_id,
+      address: object?.address
+    };
+  },
+
+  toSDK(message: EventLeaveGroup): EventLeaveGroupSDKType {
+    const obj: any = {};
+    obj.group_id = message.groupId;
+    obj.address = message.address;
+    return obj;
   }
 
 };

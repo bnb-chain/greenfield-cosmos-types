@@ -11,11 +11,25 @@ export interface Snapshot {
   hash: Uint8Array;
   metadata?: Metadata;
 }
+/** Snapshot contains Tendermint state sync snapshot info. */
+
+export interface SnapshotSDKType {
+  height: Long;
+  format: number;
+  chunks: number;
+  hash: Uint8Array;
+  metadata?: MetadataSDKType;
+}
 /** Metadata contains SDK-specific snapshot metadata. */
 
 export interface Metadata {
   /** SHA-256 chunk hashes */
   chunkHashes: Uint8Array[];
+}
+/** Metadata contains SDK-specific snapshot metadata. */
+
+export interface MetadataSDKType {
+  chunk_hashes: Uint8Array[];
 }
 /**
  * SnapshotItem is an item contained in a rootmulti.Store snapshot.
@@ -32,12 +46,35 @@ export interface SnapshotItem {
   schema?: SnapshotSchema;
 }
 /**
+ * SnapshotItem is an item contained in a rootmulti.Store snapshot.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface SnapshotItemSDKType {
+  store?: SnapshotStoreItemSDKType;
+  iavl?: SnapshotIAVLItemSDKType;
+  extension?: SnapshotExtensionMetaSDKType;
+  extension_payload?: SnapshotExtensionPayloadSDKType;
+  kv?: SnapshotKVItemSDKType;
+  schema?: SnapshotSchemaSDKType;
+}
+/**
  * SnapshotStoreItem contains metadata about a snapshotted store.
  * 
  * Since: cosmos-sdk 0.46
  */
 
 export interface SnapshotStoreItem {
+  name: string;
+}
+/**
+ * SnapshotStoreItem contains metadata about a snapshotted store.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface SnapshotStoreItemSDKType {
   name: string;
 }
 /**
@@ -57,12 +94,34 @@ export interface SnapshotIAVLItem {
   height: number;
 }
 /**
+ * SnapshotIAVLItem is an exported IAVL node.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface SnapshotIAVLItemSDKType {
+  key: Uint8Array;
+  value: Uint8Array;
+  version: Long;
+  height: number;
+}
+/**
  * SnapshotExtensionMeta contains metadata about an external snapshotter.
  * 
  * Since: cosmos-sdk 0.46
  */
 
 export interface SnapshotExtensionMeta {
+  name: string;
+  format: number;
+}
+/**
+ * SnapshotExtensionMeta contains metadata about an external snapshotter.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface SnapshotExtensionMetaSDKType {
   name: string;
   format: number;
 }
@@ -76,6 +135,15 @@ export interface SnapshotExtensionPayload {
   payload: Uint8Array;
 }
 /**
+ * SnapshotExtensionPayload contains payloads of an external snapshotter.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface SnapshotExtensionPayloadSDKType {
+  payload: Uint8Array;
+}
+/**
  * SnapshotKVItem is an exported Key/Value Pair
  * 
  * Since: cosmos-sdk 0.46
@@ -86,12 +154,31 @@ export interface SnapshotKVItem {
   value: Uint8Array;
 }
 /**
+ * SnapshotKVItem is an exported Key/Value Pair
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface SnapshotKVItemSDKType {
+  key: Uint8Array;
+  value: Uint8Array;
+}
+/**
  * SnapshotSchema is an exported schema of smt store
  * 
  * Since: cosmos-sdk 0.46
  */
 
 export interface SnapshotSchema {
+  keys: Uint8Array[];
+}
+/**
+ * SnapshotSchema is an exported schema of smt store
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface SnapshotSchemaSDKType {
   keys: Uint8Array[];
 }
 
@@ -196,6 +283,26 @@ export const Snapshot = {
     message.hash = object.hash ?? new Uint8Array();
     message.metadata = object.metadata !== undefined && object.metadata !== null ? Metadata.fromPartial(object.metadata) : undefined;
     return message;
+  },
+
+  fromSDK(object: SnapshotSDKType): Snapshot {
+    return {
+      height: object?.height,
+      format: object?.format,
+      chunks: object?.chunks,
+      hash: object?.hash,
+      metadata: object.metadata ? Metadata.fromSDK(object.metadata) : undefined
+    };
+  },
+
+  toSDK(message: Snapshot): SnapshotSDKType {
+    const obj: any = {};
+    obj.height = message.height;
+    obj.format = message.format;
+    obj.chunks = message.chunks;
+    obj.hash = message.hash;
+    message.metadata !== undefined && (obj.metadata = message.metadata ? Metadata.toSDK(message.metadata) : undefined);
+    return obj;
   }
 
 };
@@ -259,6 +366,24 @@ export const Metadata = {
     const message = createBaseMetadata();
     message.chunkHashes = object.chunkHashes?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: MetadataSDKType): Metadata {
+    return {
+      chunkHashes: Array.isArray(object?.chunk_hashes) ? object.chunk_hashes.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: Metadata): MetadataSDKType {
+    const obj: any = {};
+
+    if (message.chunkHashes) {
+      obj.chunk_hashes = message.chunkHashes.map(e => e);
+    } else {
+      obj.chunk_hashes = [];
+    }
+
+    return obj;
   }
 
 };
@@ -376,6 +501,28 @@ export const SnapshotItem = {
     message.kv = object.kv !== undefined && object.kv !== null ? SnapshotKVItem.fromPartial(object.kv) : undefined;
     message.schema = object.schema !== undefined && object.schema !== null ? SnapshotSchema.fromPartial(object.schema) : undefined;
     return message;
+  },
+
+  fromSDK(object: SnapshotItemSDKType): SnapshotItem {
+    return {
+      store: object.store ? SnapshotStoreItem.fromSDK(object.store) : undefined,
+      iavl: object.iavl ? SnapshotIAVLItem.fromSDK(object.iavl) : undefined,
+      extension: object.extension ? SnapshotExtensionMeta.fromSDK(object.extension) : undefined,
+      extensionPayload: object.extension_payload ? SnapshotExtensionPayload.fromSDK(object.extension_payload) : undefined,
+      kv: object.kv ? SnapshotKVItem.fromSDK(object.kv) : undefined,
+      schema: object.schema ? SnapshotSchema.fromSDK(object.schema) : undefined
+    };
+  },
+
+  toSDK(message: SnapshotItem): SnapshotItemSDKType {
+    const obj: any = {};
+    message.store !== undefined && (obj.store = message.store ? SnapshotStoreItem.toSDK(message.store) : undefined);
+    message.iavl !== undefined && (obj.iavl = message.iavl ? SnapshotIAVLItem.toSDK(message.iavl) : undefined);
+    message.extension !== undefined && (obj.extension = message.extension ? SnapshotExtensionMeta.toSDK(message.extension) : undefined);
+    message.extensionPayload !== undefined && (obj.extension_payload = message.extensionPayload ? SnapshotExtensionPayload.toSDK(message.extensionPayload) : undefined);
+    message.kv !== undefined && (obj.kv = message.kv ? SnapshotKVItem.toSDK(message.kv) : undefined);
+    message.schema !== undefined && (obj.schema = message.schema ? SnapshotSchema.toSDK(message.schema) : undefined);
+    return obj;
   }
 
 };
@@ -433,6 +580,18 @@ export const SnapshotStoreItem = {
     const message = createBaseSnapshotStoreItem();
     message.name = object.name ?? "";
     return message;
+  },
+
+  fromSDK(object: SnapshotStoreItemSDKType): SnapshotStoreItem {
+    return {
+      name: object?.name
+    };
+  },
+
+  toSDK(message: SnapshotStoreItem): SnapshotStoreItemSDKType {
+    const obj: any = {};
+    obj.name = message.name;
+    return obj;
   }
 
 };
@@ -526,6 +685,24 @@ export const SnapshotIAVLItem = {
     message.version = object.version !== undefined && object.version !== null ? Long.fromValue(object.version) : Long.ZERO;
     message.height = object.height ?? 0;
     return message;
+  },
+
+  fromSDK(object: SnapshotIAVLItemSDKType): SnapshotIAVLItem {
+    return {
+      key: object?.key,
+      value: object?.value,
+      version: object?.version,
+      height: object?.height
+    };
+  },
+
+  toSDK(message: SnapshotIAVLItem): SnapshotIAVLItemSDKType {
+    const obj: any = {};
+    obj.key = message.key;
+    obj.value = message.value;
+    obj.version = message.version;
+    obj.height = message.height;
+    return obj;
   }
 
 };
@@ -595,6 +772,20 @@ export const SnapshotExtensionMeta = {
     message.name = object.name ?? "";
     message.format = object.format ?? 0;
     return message;
+  },
+
+  fromSDK(object: SnapshotExtensionMetaSDKType): SnapshotExtensionMeta {
+    return {
+      name: object?.name,
+      format: object?.format
+    };
+  },
+
+  toSDK(message: SnapshotExtensionMeta): SnapshotExtensionMetaSDKType {
+    const obj: any = {};
+    obj.name = message.name;
+    obj.format = message.format;
+    return obj;
   }
 
 };
@@ -652,6 +843,18 @@ export const SnapshotExtensionPayload = {
     const message = createBaseSnapshotExtensionPayload();
     message.payload = object.payload ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: SnapshotExtensionPayloadSDKType): SnapshotExtensionPayload {
+    return {
+      payload: object?.payload
+    };
+  },
+
+  toSDK(message: SnapshotExtensionPayload): SnapshotExtensionPayloadSDKType {
+    const obj: any = {};
+    obj.payload = message.payload;
+    return obj;
   }
 
 };
@@ -721,6 +924,20 @@ export const SnapshotKVItem = {
     message.key = object.key ?? new Uint8Array();
     message.value = object.value ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: SnapshotKVItemSDKType): SnapshotKVItem {
+    return {
+      key: object?.key,
+      value: object?.value
+    };
+  },
+
+  toSDK(message: SnapshotKVItem): SnapshotKVItemSDKType {
+    const obj: any = {};
+    obj.key = message.key;
+    obj.value = message.value;
+    return obj;
   }
 
 };
@@ -784,6 +1001,24 @@ export const SnapshotSchema = {
     const message = createBaseSnapshotSchema();
     message.keys = object.keys?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: SnapshotSchemaSDKType): SnapshotSchema {
+    return {
+      keys: Array.isArray(object?.keys) ? object.keys.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: SnapshotSchema): SnapshotSchemaSDKType {
+    const obj: any = {};
+
+    if (message.keys) {
+      obj.keys = message.keys.map(e => e);
+    } else {
+      obj.keys = [];
+    }
+
+    return obj;
   }
 
 };

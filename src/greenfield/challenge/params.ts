@@ -32,6 +32,19 @@ export interface Params {
 
   heartbeatInterval: Long;
 }
+/** Params defines the parameters for the module. */
+
+export interface ParamsSDKType {
+  challenge_count_per_block: Long;
+  slash_cooling_off_period: Long;
+  slash_amount_size_rate: string;
+  slash_amount_min: string;
+  slash_amount_max: string;
+  reward_validator_ratio: string;
+  reward_submitter_ratio: string;
+  reward_submitter_threshold: string;
+  heartbeat_interval: Long;
+}
 
 function createBaseParams(): Params {
   return {
@@ -182,6 +195,34 @@ export const Params = {
     message.rewardSubmitterThreshold = object.rewardSubmitterThreshold ?? "";
     message.heartbeatInterval = object.heartbeatInterval !== undefined && object.heartbeatInterval !== null ? Long.fromValue(object.heartbeatInterval) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      challengeCountPerBlock: object?.challenge_count_per_block,
+      slashCoolingOffPeriod: object?.slash_cooling_off_period,
+      slashAmountSizeRate: object?.slash_amount_size_rate,
+      slashAmountMin: object?.slash_amount_min,
+      slashAmountMax: object?.slash_amount_max,
+      rewardValidatorRatio: object?.reward_validator_ratio,
+      rewardSubmitterRatio: object?.reward_submitter_ratio,
+      rewardSubmitterThreshold: object?.reward_submitter_threshold,
+      heartbeatInterval: object?.heartbeat_interval
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+    obj.challenge_count_per_block = message.challengeCountPerBlock;
+    obj.slash_cooling_off_period = message.slashCoolingOffPeriod;
+    obj.slash_amount_size_rate = message.slashAmountSizeRate;
+    obj.slash_amount_min = message.slashAmountMin;
+    obj.slash_amount_max = message.slashAmountMax;
+    obj.reward_validator_ratio = message.rewardValidatorRatio;
+    obj.reward_submitter_ratio = message.rewardSubmitterRatio;
+    obj.reward_submitter_threshold = message.rewardSubmitterThreshold;
+    obj.heartbeat_interval = message.heartbeatInterval;
+    return obj;
   }
 
 };

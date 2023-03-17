@@ -1,18 +1,26 @@
 /* eslint-disable */
-import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
-import { Params } from "./params";
-import { StorageProvider, SpStoragePrice, SecondarySpStorePrice } from "./types";
+import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
+import { Params, ParamsSDKType } from "./params";
+import { StorageProvider, StorageProviderSDKType, SpStoragePrice, SpStoragePriceSDKType, SecondarySpStorePrice, SecondarySpStorePriceSDKType } from "./types";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Long, Rpc } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.sp";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
+/** QueryParamsRequest is request type for the Query/Params RPC method. */
+
+export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 
 export interface QueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: Params;
+}
+/** QueryParamsResponse is response type for the Query/Params RPC method. */
+
+export interface QueryParamsResponseSDKType {
+  params?: ParamsSDKType;
 }
 /** this line is used by starport scaffolding # 3 */
 
@@ -20,30 +28,58 @@ export interface QueryStorageProvidersRequest {
   /** pagination defines an optional pagination for the request. */
   pagination?: PageRequest;
 }
+/** this line is used by starport scaffolding # 3 */
+
+export interface QueryStorageProvidersRequestSDKType {
+  pagination?: PageRequestSDKType;
+}
 export interface QueryStorageProvidersResponse {
   sps: StorageProvider[];
   /** pagination defines the pagination in the response. */
 
   pagination?: PageResponse;
 }
+export interface QueryStorageProvidersResponseSDKType {
+  sps: StorageProviderSDKType[];
+  pagination?: PageResponseSDKType;
+}
 export interface QueryGetSpStoragePriceByTimeRequest {
   spAddr: string;
+  timestamp: Long;
+}
+export interface QueryGetSpStoragePriceByTimeRequestSDKType {
+  sp_addr: string;
   timestamp: Long;
 }
 export interface QueryGetSpStoragePriceByTimeResponse {
   spStoragePrice?: SpStoragePrice;
 }
+export interface QueryGetSpStoragePriceByTimeResponseSDKType {
+  sp_storage_price?: SpStoragePriceSDKType;
+}
 export interface QueryGetSecondarySpStorePriceByTimeRequest {
+  timestamp: Long;
+}
+export interface QueryGetSecondarySpStorePriceByTimeRequestSDKType {
   timestamp: Long;
 }
 export interface QueryGetSecondarySpStorePriceByTimeResponse {
   secondarySpStorePrice?: SecondarySpStorePrice;
 }
+export interface QueryGetSecondarySpStorePriceByTimeResponseSDKType {
+  secondary_sp_store_price?: SecondarySpStorePriceSDKType;
+}
 export interface QueryStorageProviderRequest {
+  spAddress: string;
+}
+export interface QueryStorageProviderRequestSDKType {
   spAddress: string;
 }
 export interface QueryStorageProviderResponse {
   storageProvider?: StorageProvider;
+}
+export interface QueryStorageProviderResponseSDKType {
+  storageProvider?: StorageProviderSDKType;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -85,6 +121,15 @@ export const QueryParamsRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(_: I): QueryParamsRequest {
     const message = createBaseQueryParamsRequest();
     return message;
+  },
+
+  fromSDK(_: QueryParamsRequestSDKType): QueryParamsRequest {
+    return {};
+  },
+
+  toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -142,6 +187,18 @@ export const QueryParamsResponse = {
     const message = createBaseQueryParamsResponse();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryParamsResponseSDKType): QueryParamsResponse {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
   }
 
 };
@@ -199,6 +256,18 @@ export const QueryStorageProvidersRequest = {
     const message = createBaseQueryStorageProvidersRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryStorageProvidersRequestSDKType): QueryStorageProvidersRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryStorageProvidersRequest): QueryStorageProvidersRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -274,6 +343,26 @@ export const QueryStorageProvidersResponse = {
     message.sps = object.sps?.map(e => StorageProvider.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryStorageProvidersResponseSDKType): QueryStorageProvidersResponse {
+    return {
+      sps: Array.isArray(object?.sps) ? object.sps.map((e: any) => StorageProvider.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryStorageProvidersResponse): QueryStorageProvidersResponseSDKType {
+    const obj: any = {};
+
+    if (message.sps) {
+      obj.sps = message.sps.map(e => e ? StorageProvider.toSDK(e) : undefined);
+    } else {
+      obj.sps = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -343,6 +432,20 @@ export const QueryGetSpStoragePriceByTimeRequest = {
     message.spAddr = object.spAddr ?? "";
     message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: QueryGetSpStoragePriceByTimeRequestSDKType): QueryGetSpStoragePriceByTimeRequest {
+    return {
+      spAddr: object?.sp_addr,
+      timestamp: object?.timestamp
+    };
+  },
+
+  toSDK(message: QueryGetSpStoragePriceByTimeRequest): QueryGetSpStoragePriceByTimeRequestSDKType {
+    const obj: any = {};
+    obj.sp_addr = message.spAddr;
+    obj.timestamp = message.timestamp;
+    return obj;
   }
 
 };
@@ -400,6 +503,18 @@ export const QueryGetSpStoragePriceByTimeResponse = {
     const message = createBaseQueryGetSpStoragePriceByTimeResponse();
     message.spStoragePrice = object.spStoragePrice !== undefined && object.spStoragePrice !== null ? SpStoragePrice.fromPartial(object.spStoragePrice) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryGetSpStoragePriceByTimeResponseSDKType): QueryGetSpStoragePriceByTimeResponse {
+    return {
+      spStoragePrice: object.sp_storage_price ? SpStoragePrice.fromSDK(object.sp_storage_price) : undefined
+    };
+  },
+
+  toSDK(message: QueryGetSpStoragePriceByTimeResponse): QueryGetSpStoragePriceByTimeResponseSDKType {
+    const obj: any = {};
+    message.spStoragePrice !== undefined && (obj.sp_storage_price = message.spStoragePrice ? SpStoragePrice.toSDK(message.spStoragePrice) : undefined);
+    return obj;
   }
 
 };
@@ -457,6 +572,18 @@ export const QueryGetSecondarySpStorePriceByTimeRequest = {
     const message = createBaseQueryGetSecondarySpStorePriceByTimeRequest();
     message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: QueryGetSecondarySpStorePriceByTimeRequestSDKType): QueryGetSecondarySpStorePriceByTimeRequest {
+    return {
+      timestamp: object?.timestamp
+    };
+  },
+
+  toSDK(message: QueryGetSecondarySpStorePriceByTimeRequest): QueryGetSecondarySpStorePriceByTimeRequestSDKType {
+    const obj: any = {};
+    obj.timestamp = message.timestamp;
+    return obj;
   }
 
 };
@@ -514,6 +641,18 @@ export const QueryGetSecondarySpStorePriceByTimeResponse = {
     const message = createBaseQueryGetSecondarySpStorePriceByTimeResponse();
     message.secondarySpStorePrice = object.secondarySpStorePrice !== undefined && object.secondarySpStorePrice !== null ? SecondarySpStorePrice.fromPartial(object.secondarySpStorePrice) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryGetSecondarySpStorePriceByTimeResponseSDKType): QueryGetSecondarySpStorePriceByTimeResponse {
+    return {
+      secondarySpStorePrice: object.secondary_sp_store_price ? SecondarySpStorePrice.fromSDK(object.secondary_sp_store_price) : undefined
+    };
+  },
+
+  toSDK(message: QueryGetSecondarySpStorePriceByTimeResponse): QueryGetSecondarySpStorePriceByTimeResponseSDKType {
+    const obj: any = {};
+    message.secondarySpStorePrice !== undefined && (obj.secondary_sp_store_price = message.secondarySpStorePrice ? SecondarySpStorePrice.toSDK(message.secondarySpStorePrice) : undefined);
+    return obj;
   }
 
 };
@@ -571,6 +710,18 @@ export const QueryStorageProviderRequest = {
     const message = createBaseQueryStorageProviderRequest();
     message.spAddress = object.spAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryStorageProviderRequestSDKType): QueryStorageProviderRequest {
+    return {
+      spAddress: object?.spAddress
+    };
+  },
+
+  toSDK(message: QueryStorageProviderRequest): QueryStorageProviderRequestSDKType {
+    const obj: any = {};
+    obj.spAddress = message.spAddress;
+    return obj;
   }
 
 };
@@ -628,6 +779,18 @@ export const QueryStorageProviderResponse = {
     const message = createBaseQueryStorageProviderResponse();
     message.storageProvider = object.storageProvider !== undefined && object.storageProvider !== null ? StorageProvider.fromPartial(object.storageProvider) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryStorageProviderResponseSDKType): QueryStorageProviderResponse {
+    return {
+      storageProvider: object.storageProvider ? StorageProvider.fromSDK(object.storageProvider) : undefined
+    };
+  },
+
+  toSDK(message: QueryStorageProviderResponse): QueryStorageProviderResponseSDKType {
+    const obj: any = {};
+    message.storageProvider !== undefined && (obj.storageProvider = message.storageProvider ? StorageProvider.toSDK(message.storageProvider) : undefined);
+    return obj;
   }
 
 };

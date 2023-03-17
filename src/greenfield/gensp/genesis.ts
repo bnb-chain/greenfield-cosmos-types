@@ -11,6 +11,14 @@ export interface GenesisState {
   /** gen_txs defines the genesis transactions. */
   genspTxs: Uint8Array[];
 }
+/**
+ * GenesisState defines the gensp module's genesis state.
+ * GenesisState defines the raw genesis transaction in JSON.
+ */
+
+export interface GenesisStateSDKType {
+  gensp_txs: Uint8Array[];
+}
 
 function createBaseGenesisState(): GenesisState {
   return {
@@ -71,6 +79,24 @@ export const GenesisState = {
     const message = createBaseGenesisState();
     message.genspTxs = object.genspTxs?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: GenesisStateSDKType): GenesisState {
+    return {
+      genspTxs: Array.isArray(object?.gensp_txs) ? object.gensp_txs.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: GenesisState): GenesisStateSDKType {
+    const obj: any = {};
+
+    if (message.genspTxs) {
+      obj.gensp_txs = message.genspTxs.map(e => e);
+    } else {
+      obj.gensp_txs = [];
+    }
+
+    return obj;
   }
 
 };

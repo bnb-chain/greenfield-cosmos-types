@@ -13,12 +13,32 @@ export interface App {
   software: string;
 }
 /**
+ * App includes the protocol and software version for the application.
+ * This information is included in ResponseInfo. The App.Protocol can be
+ * updated in ResponseEndBlock.
+ */
+
+export interface AppSDKType {
+  protocol: Long;
+  software: string;
+}
+/**
  * Consensus captures the consensus rules for processing a block in the blockchain,
  * including all blockchain data structures and the rules of the application's
  * state transition machine.
  */
 
 export interface Consensus {
+  block: Long;
+  app: Long;
+}
+/**
+ * Consensus captures the consensus rules for processing a block in the blockchain,
+ * including all blockchain data structures and the rules of the application's
+ * state transition machine.
+ */
+
+export interface ConsensusSDKType {
   block: Long;
   app: Long;
 }
@@ -88,6 +108,20 @@ export const App = {
     message.protocol = object.protocol !== undefined && object.protocol !== null ? Long.fromValue(object.protocol) : Long.UZERO;
     message.software = object.software ?? "";
     return message;
+  },
+
+  fromSDK(object: AppSDKType): App {
+    return {
+      protocol: object?.protocol,
+      software: object?.software
+    };
+  },
+
+  toSDK(message: App): AppSDKType {
+    const obj: any = {};
+    obj.protocol = message.protocol;
+    obj.software = message.software;
+    return obj;
   }
 
 };
@@ -157,6 +191,20 @@ export const Consensus = {
     message.block = object.block !== undefined && object.block !== null ? Long.fromValue(object.block) : Long.UZERO;
     message.app = object.app !== undefined && object.app !== null ? Long.fromValue(object.app) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: ConsensusSDKType): Consensus {
+    return {
+      block: object?.block,
+      app: object?.app
+    };
+  },
+
+  toSDK(message: Consensus): ConsensusSDKType {
+    const obj: any = {};
+    obj.block = message.block;
+    obj.app = message.app;
+    return obj;
   }
 
 };

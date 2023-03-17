@@ -23,6 +23,15 @@ export interface Params {
 
   feeDenom: string;
 }
+/** Params defines the parameters for the module. */
+
+export interface ParamsSDKType {
+  reserve_time: Long;
+  payment_account_count_limit: Long;
+  forced_settle_time: Long;
+  max_auto_force_settle_num: Long;
+  fee_denom: string;
+}
 
 function createBaseParams(): Params {
   return {
@@ -125,6 +134,26 @@ export const Params = {
     message.maxAutoForceSettleNum = object.maxAutoForceSettleNum !== undefined && object.maxAutoForceSettleNum !== null ? Long.fromValue(object.maxAutoForceSettleNum) : Long.UZERO;
     message.feeDenom = object.feeDenom ?? "";
     return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      reserveTime: object?.reserve_time,
+      paymentAccountCountLimit: object?.payment_account_count_limit,
+      forcedSettleTime: object?.forced_settle_time,
+      maxAutoForceSettleNum: object?.max_auto_force_settle_num,
+      feeDenom: object?.fee_denom
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+    obj.reserve_time = message.reserveTime;
+    obj.payment_account_count_limit = message.paymentAccountCountLimit;
+    obj.forced_settle_time = message.forcedSettleTime;
+    obj.max_auto_force_settle_num = message.maxAutoForceSettleNum;
+    obj.fee_denom = message.feeDenom;
+    return obj;
   }
 
 };

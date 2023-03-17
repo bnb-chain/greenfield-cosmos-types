@@ -14,6 +14,13 @@ export interface PaymentAccount {
 
   refundable: boolean;
 }
+/** PaymentAccount defines a payment account */
+
+export interface PaymentAccountSDKType {
+  addr: string;
+  owner: string;
+  refundable: boolean;
+}
 
 function createBasePaymentAccount(): PaymentAccount {
   return {
@@ -92,6 +99,22 @@ export const PaymentAccount = {
     message.owner = object.owner ?? "";
     message.refundable = object.refundable ?? false;
     return message;
+  },
+
+  fromSDK(object: PaymentAccountSDKType): PaymentAccount {
+    return {
+      addr: object?.addr,
+      owner: object?.owner,
+      refundable: object?.refundable
+    };
+  },
+
+  toSDK(message: PaymentAccount): PaymentAccountSDKType {
+    const obj: any = {};
+    obj.addr = message.addr;
+    obj.owner = message.owner;
+    obj.refundable = message.refundable;
+    return obj;
   }
 
 };

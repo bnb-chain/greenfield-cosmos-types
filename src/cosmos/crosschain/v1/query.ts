@@ -1,16 +1,24 @@
 /* eslint-disable */
-import { Params } from "./crosschain";
+import { Params, ParamsSDKType } from "./crosschain";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Long, bytesFromBase64, base64FromBytes, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.crosschain.v1";
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
+/** QueryParamsRequest is the request type for the Query/Params RPC method. */
+
+export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 
 export interface QueryParamsResponse {
   /** params defines the parameters of the module. */
   params?: Params;
+}
+/** QueryParamsResponse is the response type for the Query/Params RPC method. */
+
+export interface QueryParamsResponseSDKType {
+  params?: ParamsSDKType;
 }
 /** QueryCrossChainPackageRequest is the request type for the Query/CrossChainPackage RPC method. */
 
@@ -18,9 +26,20 @@ export interface QueryCrossChainPackageRequest {
   channelId: number;
   sequence: Long;
 }
+/** QueryCrossChainPackageRequest is the request type for the Query/CrossChainPackage RPC method. */
+
+export interface QueryCrossChainPackageRequestSDKType {
+  channel_id: number;
+  sequence: Long;
+}
 /** QueryCrossChainPackageResponse is the response type for the Query/CrossChainPackage RPC method. */
 
 export interface QueryCrossChainPackageResponse {
+  package: Uint8Array;
+}
+/** QueryCrossChainPackageResponse is the response type for the Query/CrossChainPackage RPC method. */
+
+export interface QueryCrossChainPackageResponseSDKType {
   package: Uint8Array;
 }
 /** QuerySendSequenceRequest is the request type for the Query/SendSequence RPC method. */
@@ -28,9 +47,19 @@ export interface QueryCrossChainPackageResponse {
 export interface QuerySendSequenceRequest {
   channelId: number;
 }
+/** QuerySendSequenceRequest is the request type for the Query/SendSequence RPC method. */
+
+export interface QuerySendSequenceRequestSDKType {
+  channel_id: number;
+}
 /** QuerySendSequenceResponse is the response type for the Query/SendSequence RPC method. */
 
 export interface QuerySendSequenceResponse {
+  sequence: Long;
+}
+/** QuerySendSequenceResponse is the response type for the Query/SendSequence RPC method. */
+
+export interface QuerySendSequenceResponseSDKType {
   sequence: Long;
 }
 /** QuerySendSequenceRequest is the request type for the Query/ReceiveSequence RPC method. */
@@ -38,9 +67,19 @@ export interface QuerySendSequenceResponse {
 export interface QueryReceiveSequenceRequest {
   channelId: number;
 }
+/** QuerySendSequenceRequest is the request type for the Query/ReceiveSequence RPC method. */
+
+export interface QueryReceiveSequenceRequestSDKType {
+  channel_id: number;
+}
 /** QuerySendSequenceResponse is the response type for the Query/ReceiveSequence RPC method. */
 
 export interface QueryReceiveSequenceResponse {
+  sequence: Long;
+}
+/** QuerySendSequenceResponse is the response type for the Query/ReceiveSequence RPC method. */
+
+export interface QueryReceiveSequenceResponseSDKType {
   sequence: Long;
 }
 
@@ -83,6 +122,15 @@ export const QueryParamsRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(_: I): QueryParamsRequest {
     const message = createBaseQueryParamsRequest();
     return message;
+  },
+
+  fromSDK(_: QueryParamsRequestSDKType): QueryParamsRequest {
+    return {};
+  },
+
+  toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -140,6 +188,18 @@ export const QueryParamsResponse = {
     const message = createBaseQueryParamsResponse();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryParamsResponseSDKType): QueryParamsResponse {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
   }
 
 };
@@ -209,6 +269,20 @@ export const QueryCrossChainPackageRequest = {
     message.channelId = object.channelId ?? 0;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: QueryCrossChainPackageRequestSDKType): QueryCrossChainPackageRequest {
+    return {
+      channelId: object?.channel_id,
+      sequence: object?.sequence
+    };
+  },
+
+  toSDK(message: QueryCrossChainPackageRequest): QueryCrossChainPackageRequestSDKType {
+    const obj: any = {};
+    obj.channel_id = message.channelId;
+    obj.sequence = message.sequence;
+    return obj;
   }
 
 };
@@ -266,6 +340,18 @@ export const QueryCrossChainPackageResponse = {
     const message = createBaseQueryCrossChainPackageResponse();
     message.package = object.package ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: QueryCrossChainPackageResponseSDKType): QueryCrossChainPackageResponse {
+    return {
+      package: object?.package
+    };
+  },
+
+  toSDK(message: QueryCrossChainPackageResponse): QueryCrossChainPackageResponseSDKType {
+    const obj: any = {};
+    obj.package = message.package;
+    return obj;
   }
 
 };
@@ -323,6 +409,18 @@ export const QuerySendSequenceRequest = {
     const message = createBaseQuerySendSequenceRequest();
     message.channelId = object.channelId ?? 0;
     return message;
+  },
+
+  fromSDK(object: QuerySendSequenceRequestSDKType): QuerySendSequenceRequest {
+    return {
+      channelId: object?.channel_id
+    };
+  },
+
+  toSDK(message: QuerySendSequenceRequest): QuerySendSequenceRequestSDKType {
+    const obj: any = {};
+    obj.channel_id = message.channelId;
+    return obj;
   }
 
 };
@@ -380,6 +478,18 @@ export const QuerySendSequenceResponse = {
     const message = createBaseQuerySendSequenceResponse();
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: QuerySendSequenceResponseSDKType): QuerySendSequenceResponse {
+    return {
+      sequence: object?.sequence
+    };
+  },
+
+  toSDK(message: QuerySendSequenceResponse): QuerySendSequenceResponseSDKType {
+    const obj: any = {};
+    obj.sequence = message.sequence;
+    return obj;
   }
 
 };
@@ -437,6 +547,18 @@ export const QueryReceiveSequenceRequest = {
     const message = createBaseQueryReceiveSequenceRequest();
     message.channelId = object.channelId ?? 0;
     return message;
+  },
+
+  fromSDK(object: QueryReceiveSequenceRequestSDKType): QueryReceiveSequenceRequest {
+    return {
+      channelId: object?.channel_id
+    };
+  },
+
+  toSDK(message: QueryReceiveSequenceRequest): QueryReceiveSequenceRequestSDKType {
+    const obj: any = {};
+    obj.channel_id = message.channelId;
+    return obj;
   }
 
 };
@@ -494,6 +616,18 @@ export const QueryReceiveSequenceResponse = {
     const message = createBaseQueryReceiveSequenceResponse();
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: QueryReceiveSequenceResponseSDKType): QueryReceiveSequenceResponse {
+    return {
+      sequence: object?.sequence
+    };
+  },
+
+  toSDK(message: QueryReceiveSequenceResponse): QueryReceiveSequenceResponseSDKType {
+    const obj: any = {};
+    obj.sequence = message.sequence;
+    return obj;
   }
 
 };

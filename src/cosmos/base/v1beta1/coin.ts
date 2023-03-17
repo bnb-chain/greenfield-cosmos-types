@@ -14,6 +14,17 @@ export interface Coin {
   amount: string;
 }
 /**
+ * Coin defines a token with a denomination and an amount.
+ * 
+ * NOTE: The amount field is an Int which implements the custom method
+ * signatures required by gogoproto.
+ */
+
+export interface CoinSDKType {
+  denom: string;
+  amount: string;
+}
+/**
  * DecCoin defines a token with a denomination and a decimal amount.
  * 
  * NOTE: The amount field is an Dec which implements the custom method
@@ -24,14 +35,35 @@ export interface DecCoin {
   denom: string;
   amount: string;
 }
+/**
+ * DecCoin defines a token with a denomination and a decimal amount.
+ * 
+ * NOTE: The amount field is an Dec which implements the custom method
+ * signatures required by gogoproto.
+ */
+
+export interface DecCoinSDKType {
+  denom: string;
+  amount: string;
+}
 /** IntProto defines a Protobuf wrapper around an Int object. */
 
 export interface IntProto {
   int: string;
 }
+/** IntProto defines a Protobuf wrapper around an Int object. */
+
+export interface IntProtoSDKType {
+  int: string;
+}
 /** DecProto defines a Protobuf wrapper around a Dec object. */
 
 export interface DecProto {
+  dec: string;
+}
+/** DecProto defines a Protobuf wrapper around a Dec object. */
+
+export interface DecProtoSDKType {
   dec: string;
 }
 
@@ -100,6 +132,20 @@ export const Coin = {
     message.denom = object.denom ?? "";
     message.amount = object.amount ?? "";
     return message;
+  },
+
+  fromSDK(object: CoinSDKType): Coin {
+    return {
+      denom: object?.denom,
+      amount: object?.amount
+    };
+  },
+
+  toSDK(message: Coin): CoinSDKType {
+    const obj: any = {};
+    obj.denom = message.denom;
+    obj.amount = message.amount;
+    return obj;
   }
 
 };
@@ -169,6 +215,20 @@ export const DecCoin = {
     message.denom = object.denom ?? "";
     message.amount = object.amount ?? "";
     return message;
+  },
+
+  fromSDK(object: DecCoinSDKType): DecCoin {
+    return {
+      denom: object?.denom,
+      amount: object?.amount
+    };
+  },
+
+  toSDK(message: DecCoin): DecCoinSDKType {
+    const obj: any = {};
+    obj.denom = message.denom;
+    obj.amount = message.amount;
+    return obj;
   }
 
 };
@@ -226,6 +286,18 @@ export const IntProto = {
     const message = createBaseIntProto();
     message.int = object.int ?? "";
     return message;
+  },
+
+  fromSDK(object: IntProtoSDKType): IntProto {
+    return {
+      int: object?.int
+    };
+  },
+
+  toSDK(message: IntProto): IntProtoSDKType {
+    const obj: any = {};
+    obj.int = message.int;
+    return obj;
   }
 
 };
@@ -283,6 +355,18 @@ export const DecProto = {
     const message = createBaseDecProto();
     message.dec = object.dec ?? "";
     return message;
+  },
+
+  fromSDK(object: DecProtoSDKType): DecProto {
+    return {
+      dec: object?.dec
+    };
+  },
+
+  toSDK(message: DecProto): DecProtoSDKType {
+    const obj: any = {};
+    obj.dec = message.dec;
+    return obj;
   }
 
 };

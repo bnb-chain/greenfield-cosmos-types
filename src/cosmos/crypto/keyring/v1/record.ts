@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { Any } from "../../../../google/protobuf/any";
-import { BIP44Params } from "../../hd/v1/hd";
+import { Any, AnySDKType } from "../../../../google/protobuf/any";
+import { BIP44Params, BIP44ParamsSDKType } from "../../hd/v1/hd";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../../../helpers";
 export const protobufPackage = "cosmos.crypto.keyring.v1";
@@ -25,6 +25,16 @@ export interface Record {
 
   offline?: Record_Offline;
 }
+/** Record is used for representing a key in the keyring. */
+
+export interface RecordSDKType {
+  name: string;
+  pub_key?: AnySDKType;
+  local?: Record_LocalSDKType;
+  ledger?: Record_LedgerSDKType;
+  multi?: Record_MultiSDKType;
+  offline?: Record_OfflineSDKType;
+}
 /**
  * Item is a keyring item stored in a keyring backend.
  * Local item
@@ -33,17 +43,36 @@ export interface Record {
 export interface Record_Local {
   privKey?: Any;
 }
+/**
+ * Item is a keyring item stored in a keyring backend.
+ * Local item
+ */
+
+export interface Record_LocalSDKType {
+  priv_key?: AnySDKType;
+}
 /** Ledger item */
 
 export interface Record_Ledger {
   path?: BIP44Params;
 }
+/** Ledger item */
+
+export interface Record_LedgerSDKType {
+  path?: BIP44ParamsSDKType;
+}
 /** Multi item */
 
 export interface Record_Multi {}
+/** Multi item */
+
+export interface Record_MultiSDKType {}
 /** Offline item */
 
 export interface Record_Offline {}
+/** Offline item */
+
+export interface Record_OfflineSDKType {}
 
 function createBaseRecord(): Record {
   return {
@@ -158,6 +187,28 @@ export const Record = {
     message.multi = object.multi !== undefined && object.multi !== null ? Record_Multi.fromPartial(object.multi) : undefined;
     message.offline = object.offline !== undefined && object.offline !== null ? Record_Offline.fromPartial(object.offline) : undefined;
     return message;
+  },
+
+  fromSDK(object: RecordSDKType): Record {
+    return {
+      name: object?.name,
+      pubKey: object.pub_key ? Any.fromSDK(object.pub_key) : undefined,
+      local: object.local ? Record_Local.fromSDK(object.local) : undefined,
+      ledger: object.ledger ? Record_Ledger.fromSDK(object.ledger) : undefined,
+      multi: object.multi ? Record_Multi.fromSDK(object.multi) : undefined,
+      offline: object.offline ? Record_Offline.fromSDK(object.offline) : undefined
+    };
+  },
+
+  toSDK(message: Record): RecordSDKType {
+    const obj: any = {};
+    obj.name = message.name;
+    message.pubKey !== undefined && (obj.pub_key = message.pubKey ? Any.toSDK(message.pubKey) : undefined);
+    message.local !== undefined && (obj.local = message.local ? Record_Local.toSDK(message.local) : undefined);
+    message.ledger !== undefined && (obj.ledger = message.ledger ? Record_Ledger.toSDK(message.ledger) : undefined);
+    message.multi !== undefined && (obj.multi = message.multi ? Record_Multi.toSDK(message.multi) : undefined);
+    message.offline !== undefined && (obj.offline = message.offline ? Record_Offline.toSDK(message.offline) : undefined);
+    return obj;
   }
 
 };
@@ -215,6 +266,18 @@ export const Record_Local = {
     const message = createBaseRecord_Local();
     message.privKey = object.privKey !== undefined && object.privKey !== null ? Any.fromPartial(object.privKey) : undefined;
     return message;
+  },
+
+  fromSDK(object: Record_LocalSDKType): Record_Local {
+    return {
+      privKey: object.priv_key ? Any.fromSDK(object.priv_key) : undefined
+    };
+  },
+
+  toSDK(message: Record_Local): Record_LocalSDKType {
+    const obj: any = {};
+    message.privKey !== undefined && (obj.priv_key = message.privKey ? Any.toSDK(message.privKey) : undefined);
+    return obj;
   }
 
 };
@@ -272,6 +335,18 @@ export const Record_Ledger = {
     const message = createBaseRecord_Ledger();
     message.path = object.path !== undefined && object.path !== null ? BIP44Params.fromPartial(object.path) : undefined;
     return message;
+  },
+
+  fromSDK(object: Record_LedgerSDKType): Record_Ledger {
+    return {
+      path: object.path ? BIP44Params.fromSDK(object.path) : undefined
+    };
+  },
+
+  toSDK(message: Record_Ledger): Record_LedgerSDKType {
+    const obj: any = {};
+    message.path !== undefined && (obj.path = message.path ? BIP44Params.toSDK(message.path) : undefined);
+    return obj;
   }
 
 };
@@ -315,6 +390,15 @@ export const Record_Multi = {
   fromPartial<I extends Exact<DeepPartial<Record_Multi>, I>>(_: I): Record_Multi {
     const message = createBaseRecord_Multi();
     return message;
+  },
+
+  fromSDK(_: Record_MultiSDKType): Record_Multi {
+    return {};
+  },
+
+  toSDK(_: Record_Multi): Record_MultiSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -358,6 +442,15 @@ export const Record_Offline = {
   fromPartial<I extends Exact<DeepPartial<Record_Offline>, I>>(_: I): Record_Offline {
     const message = createBaseRecord_Offline();
     return message;
+  },
+
+  fromSDK(_: Record_OfflineSDKType): Record_Offline {
+    return {};
+  },
+
+  toSDK(_: Record_Offline): Record_OfflineSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

@@ -31,6 +31,13 @@ export interface ModuleDescriptor {
 
   canMigrateFrom: MigrateFromInfo[];
 }
+/** ModuleDescriptor describes an app module. */
+
+export interface ModuleDescriptorSDKType {
+  go_import: string;
+  use_package: PackageReferenceSDKType[];
+  can_migrate_from: MigrateFromInfoSDKType[];
+}
 /** PackageReference is a reference to a protobuf package used by a module. */
 
 export interface PackageReference {
@@ -76,6 +83,12 @@ export interface PackageReference {
 
   revision: number;
 }
+/** PackageReference is a reference to a protobuf package used by a module. */
+
+export interface PackageReferenceSDKType {
+  name: string;
+  revision: number;
+}
 /**
  * MigrateFromInfo is information on a module version that a newer module
  * can migrate from.
@@ -86,6 +99,14 @@ export interface MigrateFromInfo {
    * module is the fully-qualified protobuf name of the module config object
    * for the previous module version, ex: "cosmos.group.module.v1.Module".
    */
+  module: string;
+}
+/**
+ * MigrateFromInfo is information on a module version that a newer module
+ * can migrate from.
+ */
+
+export interface MigrateFromInfoSDKType {
   module: string;
 }
 
@@ -177,6 +198,33 @@ export const ModuleDescriptor = {
     message.usePackage = object.usePackage?.map(e => PackageReference.fromPartial(e)) || [];
     message.canMigrateFrom = object.canMigrateFrom?.map(e => MigrateFromInfo.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: ModuleDescriptorSDKType): ModuleDescriptor {
+    return {
+      goImport: object?.go_import,
+      usePackage: Array.isArray(object?.use_package) ? object.use_package.map((e: any) => PackageReference.fromSDK(e)) : [],
+      canMigrateFrom: Array.isArray(object?.can_migrate_from) ? object.can_migrate_from.map((e: any) => MigrateFromInfo.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: ModuleDescriptor): ModuleDescriptorSDKType {
+    const obj: any = {};
+    obj.go_import = message.goImport;
+
+    if (message.usePackage) {
+      obj.use_package = message.usePackage.map(e => e ? PackageReference.toSDK(e) : undefined);
+    } else {
+      obj.use_package = [];
+    }
+
+    if (message.canMigrateFrom) {
+      obj.can_migrate_from = message.canMigrateFrom.map(e => e ? MigrateFromInfo.toSDK(e) : undefined);
+    } else {
+      obj.can_migrate_from = [];
+    }
+
+    return obj;
   }
 
 };
@@ -246,6 +294,20 @@ export const PackageReference = {
     message.name = object.name ?? "";
     message.revision = object.revision ?? 0;
     return message;
+  },
+
+  fromSDK(object: PackageReferenceSDKType): PackageReference {
+    return {
+      name: object?.name,
+      revision: object?.revision
+    };
+  },
+
+  toSDK(message: PackageReference): PackageReferenceSDKType {
+    const obj: any = {};
+    obj.name = message.name;
+    obj.revision = message.revision;
+    return obj;
   }
 
 };
@@ -303,6 +365,18 @@ export const MigrateFromInfo = {
     const message = createBaseMigrateFromInfo();
     message.module = object.module ?? "";
     return message;
+  },
+
+  fromSDK(object: MigrateFromInfoSDKType): MigrateFromInfo {
+    return {
+      module: object?.module
+    };
+  },
+
+  toSDK(message: MigrateFromInfo): MigrateFromInfoSDKType {
+    const obj: any = {};
+    obj.module = message.module;
+    return obj;
   }
 
 };

@@ -7,6 +7,7 @@ export enum SourceType {
   SOURCE_TYPE_BSC_CROSS_CHAIN = 1,
   UNRECOGNIZED = -1,
 }
+export const SourceTypeSDKType = SourceType;
 export function sourceTypeFromJSON(object: any): SourceType {
   switch (object) {
     case 0:
@@ -41,6 +42,7 @@ export enum RedundancyType {
   REDUNDANCY_EC_TYPE = 1,
   UNRECOGNIZED = -1,
 }
+export const RedundancyTypeSDKType = RedundancyType;
 export function redundancyTypeFromJSON(object: any): RedundancyType {
   switch (object) {
     case 0:
@@ -75,6 +77,7 @@ export enum ObjectStatus {
   OBJECT_STATUS_SEALED = 1,
   UNRECOGNIZED = -1,
 }
+export const ObjectStatusSDKType = ObjectStatus;
 export function objectStatusFromJSON(object: any): ObjectStatus {
   switch (object) {
     case 0:
@@ -108,10 +111,20 @@ export interface Approval {
   expiredHeight: Long;
   sig: Uint8Array;
 }
+export interface ApprovalSDKType {
+  expired_height: Long;
+  sig: Uint8Array;
+}
 /** SecondarySpSignDoc used to generate seal signature of secondary SP */
 
 export interface SecondarySpSignDoc {
   spAddress: string;
+  checksum: Uint8Array;
+}
+/** SecondarySpSignDoc used to generate seal signature of secondary SP */
+
+export interface SecondarySpSignDocSDKType {
+  sp_address: string;
   checksum: Uint8Array;
 }
 
@@ -180,6 +193,20 @@ export const Approval = {
     message.expiredHeight = object.expiredHeight !== undefined && object.expiredHeight !== null ? Long.fromValue(object.expiredHeight) : Long.UZERO;
     message.sig = object.sig ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: ApprovalSDKType): Approval {
+    return {
+      expiredHeight: object?.expired_height,
+      sig: object?.sig
+    };
+  },
+
+  toSDK(message: Approval): ApprovalSDKType {
+    const obj: any = {};
+    obj.expired_height = message.expiredHeight;
+    obj.sig = message.sig;
+    return obj;
   }
 
 };
@@ -249,6 +276,20 @@ export const SecondarySpSignDoc = {
     message.spAddress = object.spAddress ?? "";
     message.checksum = object.checksum ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: SecondarySpSignDocSDKType): SecondarySpSignDoc {
+    return {
+      spAddress: object?.sp_address,
+      checksum: object?.checksum
+    };
+  },
+
+  toSDK(message: SecondarySpSignDoc): SecondarySpSignDocSDKType {
+    const obj: any = {};
+    obj.sp_address = message.spAddress;
+    obj.checksum = message.checksum;
+    return obj;
   }
 
 };

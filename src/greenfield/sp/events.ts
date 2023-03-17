@@ -23,6 +23,16 @@ export interface EventCreateStorageProvider {
 
   totalDeposit: string;
 }
+/** EventCreateStorageProvider is emitted when there is a storage provider created */
+
+export interface EventCreateStorageProviderSDKType {
+  sp_address: string;
+  funding_address: string;
+  seal_address: string;
+  approval_address: string;
+  endpoint: string;
+  total_deposit: string;
+}
 /** EventEditStorageProvider is emitted when SP's metadata is edited. */
 
 export interface EventEditStorageProvider {
@@ -31,6 +41,12 @@ export interface EventEditStorageProvider {
   /** new_endpoint is the service endpoint of the storage provider after edit */
 
   newEndpoint: string;
+}
+/** EventEditStorageProvider is emitted when SP's metadata is edited. */
+
+export interface EventEditStorageProviderSDKType {
+  old_endpoint: string;
+  new_endpoint: string;
 }
 /** EventDeposit is emitted when sp deposit tokens. */
 
@@ -43,6 +59,13 @@ export interface EventDeposit {
   /** total_deposit is the total token coins this storage provider deposited */
 
   totalDeposit: string;
+}
+/** EventDeposit is emitted when sp deposit tokens. */
+
+export interface EventDepositSDKType {
+  sp_address: string;
+  deposit: string;
+  total_deposit: string;
 }
 export interface EventSpStoragePriceUpdate {
   /** sp address */
@@ -60,12 +83,23 @@ export interface EventSpStoragePriceUpdate {
 
   storePrice: string;
 }
+export interface EventSpStoragePriceUpdateSDKType {
+  sp_address: string;
+  update_time: Long;
+  read_price: string;
+  free_read_quota: Long;
+  store_price: string;
+}
 export interface EventSecondarySpStorePriceUpdate {
   /** update time, in unix timestamp */
   updateTime: Long;
   /** store price, in bnb wei per charge byte */
 
   storePrice: string;
+}
+export interface EventSecondarySpStorePriceUpdateSDKType {
+  update_time: Long;
+  store_price: string;
 }
 
 function createBaseEventCreateStorageProvider(): EventCreateStorageProvider {
@@ -181,6 +215,28 @@ export const EventCreateStorageProvider = {
     message.endpoint = object.endpoint ?? "";
     message.totalDeposit = object.totalDeposit ?? "";
     return message;
+  },
+
+  fromSDK(object: EventCreateStorageProviderSDKType): EventCreateStorageProvider {
+    return {
+      spAddress: object?.sp_address,
+      fundingAddress: object?.funding_address,
+      sealAddress: object?.seal_address,
+      approvalAddress: object?.approval_address,
+      endpoint: object?.endpoint,
+      totalDeposit: object?.total_deposit
+    };
+  },
+
+  toSDK(message: EventCreateStorageProvider): EventCreateStorageProviderSDKType {
+    const obj: any = {};
+    obj.sp_address = message.spAddress;
+    obj.funding_address = message.fundingAddress;
+    obj.seal_address = message.sealAddress;
+    obj.approval_address = message.approvalAddress;
+    obj.endpoint = message.endpoint;
+    obj.total_deposit = message.totalDeposit;
+    return obj;
   }
 
 };
@@ -250,6 +306,20 @@ export const EventEditStorageProvider = {
     message.oldEndpoint = object.oldEndpoint ?? "";
     message.newEndpoint = object.newEndpoint ?? "";
     return message;
+  },
+
+  fromSDK(object: EventEditStorageProviderSDKType): EventEditStorageProvider {
+    return {
+      oldEndpoint: object?.old_endpoint,
+      newEndpoint: object?.new_endpoint
+    };
+  },
+
+  toSDK(message: EventEditStorageProvider): EventEditStorageProviderSDKType {
+    const obj: any = {};
+    obj.old_endpoint = message.oldEndpoint;
+    obj.new_endpoint = message.newEndpoint;
+    return obj;
   }
 
 };
@@ -331,6 +401,22 @@ export const EventDeposit = {
     message.deposit = object.deposit ?? "";
     message.totalDeposit = object.totalDeposit ?? "";
     return message;
+  },
+
+  fromSDK(object: EventDepositSDKType): EventDeposit {
+    return {
+      spAddress: object?.sp_address,
+      deposit: object?.deposit,
+      totalDeposit: object?.total_deposit
+    };
+  },
+
+  toSDK(message: EventDeposit): EventDepositSDKType {
+    const obj: any = {};
+    obj.sp_address = message.spAddress;
+    obj.deposit = message.deposit;
+    obj.total_deposit = message.totalDeposit;
+    return obj;
   }
 
 };
@@ -436,6 +522,26 @@ export const EventSpStoragePriceUpdate = {
     message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
     message.storePrice = object.storePrice ?? "";
     return message;
+  },
+
+  fromSDK(object: EventSpStoragePriceUpdateSDKType): EventSpStoragePriceUpdate {
+    return {
+      spAddress: object?.sp_address,
+      updateTime: object?.update_time,
+      readPrice: object?.read_price,
+      freeReadQuota: object?.free_read_quota,
+      storePrice: object?.store_price
+    };
+  },
+
+  toSDK(message: EventSpStoragePriceUpdate): EventSpStoragePriceUpdateSDKType {
+    const obj: any = {};
+    obj.sp_address = message.spAddress;
+    obj.update_time = message.updateTime;
+    obj.read_price = message.readPrice;
+    obj.free_read_quota = message.freeReadQuota;
+    obj.store_price = message.storePrice;
+    return obj;
   }
 
 };
@@ -505,6 +611,20 @@ export const EventSecondarySpStorePriceUpdate = {
     message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Long.fromValue(object.updateTime) : Long.ZERO;
     message.storePrice = object.storePrice ?? "";
     return message;
+  },
+
+  fromSDK(object: EventSecondarySpStorePriceUpdateSDKType): EventSecondarySpStorePriceUpdate {
+    return {
+      updateTime: object?.update_time,
+      storePrice: object?.store_price
+    };
+  },
+
+  toSDK(message: EventSecondarySpStorePriceUpdate): EventSecondarySpStorePriceUpdateSDKType {
+    const obj: any = {};
+    obj.update_time = message.updateTime;
+    obj.store_price = message.storePrice;
+    return obj;
   }
 
 };

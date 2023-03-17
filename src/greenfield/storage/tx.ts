@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { Approval, RedundancyType, redundancyTypeFromJSON, redundancyTypeToJSON } from "./common";
-import { Principal, Statement } from "../permission/common";
+import { Approval, ApprovalSDKType, RedundancyType, redundancyTypeFromJSON, redundancyTypeToJSON } from "./common";
+import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "../permission/common";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, Rpc } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.storage";
@@ -29,8 +29,20 @@ export interface MsgCreateBucket {
 
   readQuota: Long;
 }
+export interface MsgCreateBucketSDKType {
+  creator: string;
+  bucket_name: string;
+  is_public: boolean;
+  payment_address: string;
+  primary_sp_address: string;
+  primary_sp_approval?: ApprovalSDKType;
+  read_quota: Long;
+}
 export interface MsgCreateBucketResponse {
   bucketId: string;
+}
+export interface MsgCreateBucketResponseSDKType {
+  bucket_id: string;
 }
 export interface MsgDeleteBucket {
   /** creator is the account address of the grantee who has the DeleteBucket permission of the bucket to be deleted. */
@@ -39,7 +51,12 @@ export interface MsgDeleteBucket {
 
   bucketName: string;
 }
+export interface MsgDeleteBucketSDKType {
+  operator: string;
+  bucket_name: string;
+}
 export interface MsgDeleteBucketResponse {}
+export interface MsgDeleteBucketResponseSDKType {}
 export interface MsgCreateObject {
   /** creator is the account address of object uploader */
   creator: string;
@@ -74,8 +91,23 @@ export interface MsgCreateObject {
 
   expectSecondarySpAddresses: string[];
 }
+export interface MsgCreateObjectSDKType {
+  creator: string;
+  bucket_name: string;
+  object_name: string;
+  payload_size: Long;
+  is_public: boolean;
+  content_type: string;
+  primary_sp_approval?: ApprovalSDKType;
+  expect_checksums: Uint8Array[];
+  redundancy_type: RedundancyType;
+  expect_secondary_sp_addresses: string[];
+}
 export interface MsgCreateObjectResponse {
   objectId: string;
+}
+export interface MsgCreateObjectResponseSDKType {
+  object_id: string;
 }
 export interface MsgSealObject {
   /** operator is the account address of primary SP */
@@ -96,7 +128,15 @@ export interface MsgSealObject {
 
   secondarySpSignatures: Uint8Array[];
 }
+export interface MsgSealObjectSDKType {
+  operator: string;
+  bucket_name: string;
+  object_name: string;
+  secondary_sp_addresses: string[];
+  secondary_sp_signatures: Uint8Array[];
+}
 export interface MsgSealObjectResponse {}
+export interface MsgSealObjectResponseSDKType {}
 export interface MsgRejectSealObject {
   /** operator is the account address of the object owner */
   operator: string;
@@ -107,7 +147,13 @@ export interface MsgRejectSealObject {
 
   objectName: string;
 }
+export interface MsgRejectSealObjectSDKType {
+  operator: string;
+  bucket_name: string;
+  object_name: string;
+}
 export interface MsgRejectSealObjectResponse {}
+export interface MsgRejectSealObjectResponseSDKType {}
 export interface MsgCopyObject {
   /** operator is the account address of the operator who has the CopyObject permission of the object to be deleted. */
   operator: string;
@@ -127,8 +173,19 @@ export interface MsgCopyObject {
 
   dstPrimarySpApproval?: Approval;
 }
+export interface MsgCopyObjectSDKType {
+  operator: string;
+  src_bucket_name: string;
+  dst_bucket_name: string;
+  src_object_name: string;
+  dst_object_name: string;
+  dst_primary_sp_approval?: ApprovalSDKType;
+}
 export interface MsgCopyObjectResponse {
   objectId: string;
+}
+export interface MsgCopyObjectResponseSDKType {
+  object_id: string;
 }
 export interface MsgDeleteObject {
   /** operator is the account address of the operator who has the DeleteObject permission of the object to be deleted. */
@@ -140,7 +197,13 @@ export interface MsgDeleteObject {
 
   objectName: string;
 }
+export interface MsgDeleteObjectSDKType {
+  operator: string;
+  bucket_name: string;
+  object_name: string;
+}
 export interface MsgDeleteObjectResponse {}
+export interface MsgDeleteObjectResponseSDKType {}
 export interface MsgCreateGroup {
   /** owner is the account address of group owner who create the group */
   creator: string;
@@ -151,8 +214,16 @@ export interface MsgCreateGroup {
 
   members: string[];
 }
+export interface MsgCreateGroupSDKType {
+  creator: string;
+  group_name: string;
+  members: string[];
+}
 export interface MsgCreateGroupResponse {
   groupId: string;
+}
+export interface MsgCreateGroupResponseSDKType {
+  group_id: string;
 }
 export interface MsgDeleteGroup {
   /** operator is the account address of the operator who has the DeleteGroup permission of the group to be deleted. */
@@ -161,7 +232,12 @@ export interface MsgDeleteGroup {
 
   groupName: string;
 }
+export interface MsgDeleteGroupSDKType {
+  operator: string;
+  group_name: string;
+}
 export interface MsgDeleteGroupResponse {}
+export interface MsgDeleteGroupResponseSDKType {}
 export interface MsgUpdateGroupMember {
   /** operator is the account address of the operator who has the UpdateGroupMember permission of the group. */
   operator: string;
@@ -175,7 +251,14 @@ export interface MsgUpdateGroupMember {
 
   membersToDelete: string[];
 }
+export interface MsgUpdateGroupMemberSDKType {
+  operator: string;
+  group_name: string;
+  members_to_add: string[];
+  members_to_delete: string[];
+}
 export interface MsgUpdateGroupMemberResponse {}
+export interface MsgUpdateGroupMemberResponseSDKType {}
 export interface MsgLeaveGroup {
   /** member is the account address of the member who want to leave the group */
   member: string;
@@ -186,7 +269,13 @@ export interface MsgLeaveGroup {
 
   groupName: string;
 }
+export interface MsgLeaveGroupSDKType {
+  member: string;
+  group_owner: string;
+  group_name: string;
+}
 export interface MsgLeaveGroupResponse {}
+export interface MsgLeaveGroupResponseSDKType {}
 export interface MsgUpdateBucketInfo {
   /** operator is the account address of the operator */
   operator: string;
@@ -200,7 +289,14 @@ export interface MsgUpdateBucketInfo {
 
   paymentAddress: string;
 }
+export interface MsgUpdateBucketInfoSDKType {
+  operator: string;
+  bucket_name: string;
+  read_quota: Long;
+  payment_address: string;
+}
 export interface MsgUpdateBucketInfoResponse {}
+export interface MsgUpdateBucketInfoResponseSDKType {}
 export interface MsgCancelCreateObject {
   /** operator is the account address of the operator */
   operator: string;
@@ -211,7 +307,13 @@ export interface MsgCancelCreateObject {
 
   objectName: string;
 }
+export interface MsgCancelCreateObjectSDKType {
+  operator: string;
+  bucket_name: string;
+  object_name: string;
+}
 export interface MsgCancelCreateObjectResponse {}
+export interface MsgCancelCreateObjectResponseSDKType {}
 export interface MsgPutPolicy {
   /** operator defines the granter who grant the permission to another principal */
   operator: string;
@@ -225,7 +327,16 @@ export interface MsgPutPolicy {
 
   statements: Statement[];
 }
+export interface MsgPutPolicySDKType {
+  operator: string;
+  principal?: PrincipalSDKType;
+  resource: string;
+  statements: StatementSDKType[];
+}
 export interface MsgPutPolicyResponse {
+  id: string;
+}
+export interface MsgPutPolicyResponseSDKType {
   id: string;
 }
 export interface MsgDeletePolicy {
@@ -238,7 +349,15 @@ export interface MsgDeletePolicy {
 
   resource: string;
 }
+export interface MsgDeletePolicySDKType {
+  operator: string;
+  principal?: PrincipalSDKType;
+  resource: string;
+}
 export interface MsgDeletePolicyResponse {
+  id: string;
+}
+export interface MsgDeletePolicyResponseSDKType {
   id: string;
 }
 
@@ -367,6 +486,30 @@ export const MsgCreateBucket = {
     message.primarySpApproval = object.primarySpApproval !== undefined && object.primarySpApproval !== null ? Approval.fromPartial(object.primarySpApproval) : undefined;
     message.readQuota = object.readQuota !== undefined && object.readQuota !== null ? Long.fromValue(object.readQuota) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: MsgCreateBucketSDKType): MsgCreateBucket {
+    return {
+      creator: object?.creator,
+      bucketName: object?.bucket_name,
+      isPublic: object?.is_public,
+      paymentAddress: object?.payment_address,
+      primarySpAddress: object?.primary_sp_address,
+      primarySpApproval: object.primary_sp_approval ? Approval.fromSDK(object.primary_sp_approval) : undefined,
+      readQuota: object?.read_quota
+    };
+  },
+
+  toSDK(message: MsgCreateBucket): MsgCreateBucketSDKType {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.bucket_name = message.bucketName;
+    obj.is_public = message.isPublic;
+    obj.payment_address = message.paymentAddress;
+    obj.primary_sp_address = message.primarySpAddress;
+    message.primarySpApproval !== undefined && (obj.primary_sp_approval = message.primarySpApproval ? Approval.toSDK(message.primarySpApproval) : undefined);
+    obj.read_quota = message.readQuota;
+    return obj;
   }
 
 };
@@ -424,6 +567,18 @@ export const MsgCreateBucketResponse = {
     const message = createBaseMsgCreateBucketResponse();
     message.bucketId = object.bucketId ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgCreateBucketResponseSDKType): MsgCreateBucketResponse {
+    return {
+      bucketId: object?.bucket_id
+    };
+  },
+
+  toSDK(message: MsgCreateBucketResponse): MsgCreateBucketResponseSDKType {
+    const obj: any = {};
+    obj.bucket_id = message.bucketId;
+    return obj;
   }
 
 };
@@ -493,6 +648,20 @@ export const MsgDeleteBucket = {
     message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgDeleteBucketSDKType): MsgDeleteBucket {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name
+    };
+  },
+
+  toSDK(message: MsgDeleteBucket): MsgDeleteBucketSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    return obj;
   }
 
 };
@@ -536,6 +705,15 @@ export const MsgDeleteBucketResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgDeleteBucketResponse>, I>>(_: I): MsgDeleteBucketResponse {
     const message = createBaseMsgDeleteBucketResponse();
     return message;
+  },
+
+  fromSDK(_: MsgDeleteBucketResponseSDKType): MsgDeleteBucketResponse {
+    return {};
+  },
+
+  toSDK(_: MsgDeleteBucketResponse): MsgDeleteBucketResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -713,6 +891,48 @@ export const MsgCreateObject = {
     message.redundancyType = object.redundancyType ?? 0;
     message.expectSecondarySpAddresses = object.expectSecondarySpAddresses?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: MsgCreateObjectSDKType): MsgCreateObject {
+    return {
+      creator: object?.creator,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name,
+      payloadSize: object?.payload_size,
+      isPublic: object?.is_public,
+      contentType: object?.content_type,
+      primarySpApproval: object.primary_sp_approval ? Approval.fromSDK(object.primary_sp_approval) : undefined,
+      expectChecksums: Array.isArray(object?.expect_checksums) ? object.expect_checksums.map((e: any) => e) : [],
+      redundancyType: isSet(object.redundancy_type) ? redundancyTypeFromJSON(object.redundancy_type) : 0,
+      expectSecondarySpAddresses: Array.isArray(object?.expect_secondary_sp_addresses) ? object.expect_secondary_sp_addresses.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: MsgCreateObject): MsgCreateObjectSDKType {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.payload_size = message.payloadSize;
+    obj.is_public = message.isPublic;
+    obj.content_type = message.contentType;
+    message.primarySpApproval !== undefined && (obj.primary_sp_approval = message.primarySpApproval ? Approval.toSDK(message.primarySpApproval) : undefined);
+
+    if (message.expectChecksums) {
+      obj.expect_checksums = message.expectChecksums.map(e => e);
+    } else {
+      obj.expect_checksums = [];
+    }
+
+    message.redundancyType !== undefined && (obj.redundancy_type = redundancyTypeToJSON(message.redundancyType));
+
+    if (message.expectSecondarySpAddresses) {
+      obj.expect_secondary_sp_addresses = message.expectSecondarySpAddresses.map(e => e);
+    } else {
+      obj.expect_secondary_sp_addresses = [];
+    }
+
+    return obj;
   }
 
 };
@@ -770,6 +990,18 @@ export const MsgCreateObjectResponse = {
     const message = createBaseMsgCreateObjectResponse();
     message.objectId = object.objectId ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgCreateObjectResponseSDKType): MsgCreateObjectResponse {
+    return {
+      objectId: object?.object_id
+    };
+  },
+
+  toSDK(message: MsgCreateObjectResponse): MsgCreateObjectResponseSDKType {
+    const obj: any = {};
+    obj.object_id = message.objectId;
+    return obj;
   }
 
 };
@@ -886,6 +1118,37 @@ export const MsgSealObject = {
     message.secondarySpAddresses = object.secondarySpAddresses?.map(e => e) || [];
     message.secondarySpSignatures = object.secondarySpSignatures?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: MsgSealObjectSDKType): MsgSealObject {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name,
+      secondarySpAddresses: Array.isArray(object?.secondary_sp_addresses) ? object.secondary_sp_addresses.map((e: any) => e) : [],
+      secondarySpSignatures: Array.isArray(object?.secondary_sp_signatures) ? object.secondary_sp_signatures.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: MsgSealObject): MsgSealObjectSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+
+    if (message.secondarySpAddresses) {
+      obj.secondary_sp_addresses = message.secondarySpAddresses.map(e => e);
+    } else {
+      obj.secondary_sp_addresses = [];
+    }
+
+    if (message.secondarySpSignatures) {
+      obj.secondary_sp_signatures = message.secondarySpSignatures.map(e => e);
+    } else {
+      obj.secondary_sp_signatures = [];
+    }
+
+    return obj;
   }
 
 };
@@ -929,6 +1192,15 @@ export const MsgSealObjectResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgSealObjectResponse>, I>>(_: I): MsgSealObjectResponse {
     const message = createBaseMsgSealObjectResponse();
     return message;
+  },
+
+  fromSDK(_: MsgSealObjectResponseSDKType): MsgSealObjectResponse {
+    return {};
+  },
+
+  toSDK(_: MsgSealObjectResponse): MsgSealObjectResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -1010,6 +1282,22 @@ export const MsgRejectSealObject = {
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgRejectSealObjectSDKType): MsgRejectSealObject {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name
+    };
+  },
+
+  toSDK(message: MsgRejectSealObject): MsgRejectSealObjectSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    return obj;
   }
 
 };
@@ -1053,6 +1341,15 @@ export const MsgRejectSealObjectResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgRejectSealObjectResponse>, I>>(_: I): MsgRejectSealObjectResponse {
     const message = createBaseMsgRejectSealObjectResponse();
     return message;
+  },
+
+  fromSDK(_: MsgRejectSealObjectResponseSDKType): MsgRejectSealObjectResponse {
+    return {};
+  },
+
+  toSDK(_: MsgRejectSealObjectResponse): MsgRejectSealObjectResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -1170,6 +1467,28 @@ export const MsgCopyObject = {
     message.dstObjectName = object.dstObjectName ?? "";
     message.dstPrimarySpApproval = object.dstPrimarySpApproval !== undefined && object.dstPrimarySpApproval !== null ? Approval.fromPartial(object.dstPrimarySpApproval) : undefined;
     return message;
+  },
+
+  fromSDK(object: MsgCopyObjectSDKType): MsgCopyObject {
+    return {
+      operator: object?.operator,
+      srcBucketName: object?.src_bucket_name,
+      dstBucketName: object?.dst_bucket_name,
+      srcObjectName: object?.src_object_name,
+      dstObjectName: object?.dst_object_name,
+      dstPrimarySpApproval: object.dst_primary_sp_approval ? Approval.fromSDK(object.dst_primary_sp_approval) : undefined
+    };
+  },
+
+  toSDK(message: MsgCopyObject): MsgCopyObjectSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.src_bucket_name = message.srcBucketName;
+    obj.dst_bucket_name = message.dstBucketName;
+    obj.src_object_name = message.srcObjectName;
+    obj.dst_object_name = message.dstObjectName;
+    message.dstPrimarySpApproval !== undefined && (obj.dst_primary_sp_approval = message.dstPrimarySpApproval ? Approval.toSDK(message.dstPrimarySpApproval) : undefined);
+    return obj;
   }
 
 };
@@ -1227,6 +1546,18 @@ export const MsgCopyObjectResponse = {
     const message = createBaseMsgCopyObjectResponse();
     message.objectId = object.objectId ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgCopyObjectResponseSDKType): MsgCopyObjectResponse {
+    return {
+      objectId: object?.object_id
+    };
+  },
+
+  toSDK(message: MsgCopyObjectResponse): MsgCopyObjectResponseSDKType {
+    const obj: any = {};
+    obj.object_id = message.objectId;
+    return obj;
   }
 
 };
@@ -1308,6 +1639,22 @@ export const MsgDeleteObject = {
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgDeleteObjectSDKType): MsgDeleteObject {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name
+    };
+  },
+
+  toSDK(message: MsgDeleteObject): MsgDeleteObjectSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    return obj;
   }
 
 };
@@ -1351,6 +1698,15 @@ export const MsgDeleteObjectResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgDeleteObjectResponse>, I>>(_: I): MsgDeleteObjectResponse {
     const message = createBaseMsgDeleteObjectResponse();
     return message;
+  },
+
+  fromSDK(_: MsgDeleteObjectResponseSDKType): MsgDeleteObjectResponse {
+    return {};
+  },
+
+  toSDK(_: MsgDeleteObjectResponse): MsgDeleteObjectResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -1438,6 +1794,28 @@ export const MsgCreateGroup = {
     message.groupName = object.groupName ?? "";
     message.members = object.members?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: MsgCreateGroupSDKType): MsgCreateGroup {
+    return {
+      creator: object?.creator,
+      groupName: object?.group_name,
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: MsgCreateGroup): MsgCreateGroupSDKType {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.group_name = message.groupName;
+
+    if (message.members) {
+      obj.members = message.members.map(e => e);
+    } else {
+      obj.members = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1495,6 +1873,18 @@ export const MsgCreateGroupResponse = {
     const message = createBaseMsgCreateGroupResponse();
     message.groupId = object.groupId ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgCreateGroupResponseSDKType): MsgCreateGroupResponse {
+    return {
+      groupId: object?.group_id
+    };
+  },
+
+  toSDK(message: MsgCreateGroupResponse): MsgCreateGroupResponseSDKType {
+    const obj: any = {};
+    obj.group_id = message.groupId;
+    return obj;
   }
 
 };
@@ -1564,6 +1954,20 @@ export const MsgDeleteGroup = {
     message.operator = object.operator ?? "";
     message.groupName = object.groupName ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgDeleteGroupSDKType): MsgDeleteGroup {
+    return {
+      operator: object?.operator,
+      groupName: object?.group_name
+    };
+  },
+
+  toSDK(message: MsgDeleteGroup): MsgDeleteGroupSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.group_name = message.groupName;
+    return obj;
   }
 
 };
@@ -1607,6 +2011,15 @@ export const MsgDeleteGroupResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgDeleteGroupResponse>, I>>(_: I): MsgDeleteGroupResponse {
     const message = createBaseMsgDeleteGroupResponse();
     return message;
+  },
+
+  fromSDK(_: MsgDeleteGroupResponseSDKType): MsgDeleteGroupResponse {
+    return {};
+  },
+
+  toSDK(_: MsgDeleteGroupResponse): MsgDeleteGroupResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -1711,6 +2124,35 @@ export const MsgUpdateGroupMember = {
     message.membersToAdd = object.membersToAdd?.map(e => e) || [];
     message.membersToDelete = object.membersToDelete?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: MsgUpdateGroupMemberSDKType): MsgUpdateGroupMember {
+    return {
+      operator: object?.operator,
+      groupName: object?.group_name,
+      membersToAdd: Array.isArray(object?.members_to_add) ? object.members_to_add.map((e: any) => e) : [],
+      membersToDelete: Array.isArray(object?.members_to_delete) ? object.members_to_delete.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: MsgUpdateGroupMember): MsgUpdateGroupMemberSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.group_name = message.groupName;
+
+    if (message.membersToAdd) {
+      obj.members_to_add = message.membersToAdd.map(e => e);
+    } else {
+      obj.members_to_add = [];
+    }
+
+    if (message.membersToDelete) {
+      obj.members_to_delete = message.membersToDelete.map(e => e);
+    } else {
+      obj.members_to_delete = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1754,6 +2196,15 @@ export const MsgUpdateGroupMemberResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateGroupMemberResponse>, I>>(_: I): MsgUpdateGroupMemberResponse {
     const message = createBaseMsgUpdateGroupMemberResponse();
     return message;
+  },
+
+  fromSDK(_: MsgUpdateGroupMemberResponseSDKType): MsgUpdateGroupMemberResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateGroupMemberResponse): MsgUpdateGroupMemberResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -1835,6 +2286,22 @@ export const MsgLeaveGroup = {
     message.groupOwner = object.groupOwner ?? "";
     message.groupName = object.groupName ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgLeaveGroupSDKType): MsgLeaveGroup {
+    return {
+      member: object?.member,
+      groupOwner: object?.group_owner,
+      groupName: object?.group_name
+    };
+  },
+
+  toSDK(message: MsgLeaveGroup): MsgLeaveGroupSDKType {
+    const obj: any = {};
+    obj.member = message.member;
+    obj.group_owner = message.groupOwner;
+    obj.group_name = message.groupName;
+    return obj;
   }
 
 };
@@ -1878,6 +2345,15 @@ export const MsgLeaveGroupResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgLeaveGroupResponse>, I>>(_: I): MsgLeaveGroupResponse {
     const message = createBaseMsgLeaveGroupResponse();
     return message;
+  },
+
+  fromSDK(_: MsgLeaveGroupResponseSDKType): MsgLeaveGroupResponse {
+    return {};
+  },
+
+  toSDK(_: MsgLeaveGroupResponse): MsgLeaveGroupResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -1971,6 +2447,24 @@ export const MsgUpdateBucketInfo = {
     message.readQuota = object.readQuota !== undefined && object.readQuota !== null ? Long.fromValue(object.readQuota) : Long.UZERO;
     message.paymentAddress = object.paymentAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgUpdateBucketInfoSDKType): MsgUpdateBucketInfo {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      readQuota: object?.read_quota,
+      paymentAddress: object?.payment_address
+    };
+  },
+
+  toSDK(message: MsgUpdateBucketInfo): MsgUpdateBucketInfoSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.read_quota = message.readQuota;
+    obj.payment_address = message.paymentAddress;
+    return obj;
   }
 
 };
@@ -2014,6 +2508,15 @@ export const MsgUpdateBucketInfoResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateBucketInfoResponse>, I>>(_: I): MsgUpdateBucketInfoResponse {
     const message = createBaseMsgUpdateBucketInfoResponse();
     return message;
+  },
+
+  fromSDK(_: MsgUpdateBucketInfoResponseSDKType): MsgUpdateBucketInfoResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateBucketInfoResponse): MsgUpdateBucketInfoResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -2095,6 +2598,22 @@ export const MsgCancelCreateObject = {
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgCancelCreateObjectSDKType): MsgCancelCreateObject {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name
+    };
+  },
+
+  toSDK(message: MsgCancelCreateObject): MsgCancelCreateObjectSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    return obj;
   }
 
 };
@@ -2138,6 +2657,15 @@ export const MsgCancelCreateObjectResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgCancelCreateObjectResponse>, I>>(_: I): MsgCancelCreateObjectResponse {
     const message = createBaseMsgCancelCreateObjectResponse();
     return message;
+  },
+
+  fromSDK(_: MsgCancelCreateObjectResponseSDKType): MsgCancelCreateObjectResponse {
+    return {};
+  },
+
+  toSDK(_: MsgCancelCreateObjectResponse): MsgCancelCreateObjectResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -2237,6 +2765,30 @@ export const MsgPutPolicy = {
     message.resource = object.resource ?? "";
     message.statements = object.statements?.map(e => Statement.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: MsgPutPolicySDKType): MsgPutPolicy {
+    return {
+      operator: object?.operator,
+      principal: object.principal ? Principal.fromSDK(object.principal) : undefined,
+      resource: object?.resource,
+      statements: Array.isArray(object?.statements) ? object.statements.map((e: any) => Statement.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: MsgPutPolicy): MsgPutPolicySDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    message.principal !== undefined && (obj.principal = message.principal ? Principal.toSDK(message.principal) : undefined);
+    obj.resource = message.resource;
+
+    if (message.statements) {
+      obj.statements = message.statements.map(e => e ? Statement.toSDK(e) : undefined);
+    } else {
+      obj.statements = [];
+    }
+
+    return obj;
   }
 
 };
@@ -2294,6 +2846,18 @@ export const MsgPutPolicyResponse = {
     const message = createBaseMsgPutPolicyResponse();
     message.id = object.id ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgPutPolicyResponseSDKType): MsgPutPolicyResponse {
+    return {
+      id: object?.id
+    };
+  },
+
+  toSDK(message: MsgPutPolicyResponse): MsgPutPolicyResponseSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    return obj;
   }
 
 };
@@ -2375,6 +2939,22 @@ export const MsgDeletePolicy = {
     message.principal = object.principal !== undefined && object.principal !== null ? Principal.fromPartial(object.principal) : undefined;
     message.resource = object.resource ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgDeletePolicySDKType): MsgDeletePolicy {
+    return {
+      operator: object?.operator,
+      principal: object.principal ? Principal.fromSDK(object.principal) : undefined,
+      resource: object?.resource
+    };
+  },
+
+  toSDK(message: MsgDeletePolicy): MsgDeletePolicySDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    message.principal !== undefined && (obj.principal = message.principal ? Principal.toSDK(message.principal) : undefined);
+    obj.resource = message.resource;
+    return obj;
   }
 
 };
@@ -2432,6 +3012,18 @@ export const MsgDeletePolicyResponse = {
     const message = createBaseMsgDeletePolicyResponse();
     message.id = object.id ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgDeletePolicyResponseSDKType): MsgDeletePolicyResponse {
+    return {
+      id: object?.id
+    };
+  },
+
+  toSDK(message: MsgDeletePolicyResponse): MsgDeletePolicyResponseSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    return obj;
   }
 
 };

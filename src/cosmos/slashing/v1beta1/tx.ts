@@ -7,18 +7,35 @@ export const protobufPackage = "cosmos.slashing.v1beta1";
 export interface MsgUnjail {
   validatorAddr: string;
 }
+/** MsgUnjail defines the Msg/Unjail request type */
+
+export interface MsgUnjailSDKType {
+  validator_addr: string;
+}
 /** MsgUnjailResponse defines the Msg/Unjail response type */
 
 export interface MsgUnjailResponse {}
+/** MsgUnjailResponse defines the Msg/Unjail response type */
+
+export interface MsgUnjailResponseSDKType {}
 /** MsgImpeach defines the Msg/Impeach request type */
 
 export interface MsgImpeach {
   from: string;
   validatorAddress: string;
 }
+/** MsgImpeach defines the Msg/Impeach request type */
+
+export interface MsgImpeachSDKType {
+  from: string;
+  validator_address: string;
+}
 /** MsgImpeachResponse defines the Msg/Impeach response type. */
 
 export interface MsgImpeachResponse {}
+/** MsgImpeachResponse defines the Msg/Impeach response type. */
+
+export interface MsgImpeachResponseSDKType {}
 
 function createBaseMsgUnjail(): MsgUnjail {
   return {
@@ -73,6 +90,18 @@ export const MsgUnjail = {
     const message = createBaseMsgUnjail();
     message.validatorAddr = object.validatorAddr ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgUnjailSDKType): MsgUnjail {
+    return {
+      validatorAddr: object?.validator_addr
+    };
+  },
+
+  toSDK(message: MsgUnjail): MsgUnjailSDKType {
+    const obj: any = {};
+    obj.validator_addr = message.validatorAddr;
+    return obj;
   }
 
 };
@@ -116,6 +145,15 @@ export const MsgUnjailResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgUnjailResponse>, I>>(_: I): MsgUnjailResponse {
     const message = createBaseMsgUnjailResponse();
     return message;
+  },
+
+  fromSDK(_: MsgUnjailResponseSDKType): MsgUnjailResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUnjailResponse): MsgUnjailResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -185,6 +223,20 @@ export const MsgImpeach = {
     message.from = object.from ?? "";
     message.validatorAddress = object.validatorAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgImpeachSDKType): MsgImpeach {
+    return {
+      from: object?.from,
+      validatorAddress: object?.validator_address
+    };
+  },
+
+  toSDK(message: MsgImpeach): MsgImpeachSDKType {
+    const obj: any = {};
+    obj.from = message.from;
+    obj.validator_address = message.validatorAddress;
+    return obj;
   }
 
 };
@@ -228,6 +280,15 @@ export const MsgImpeachResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgImpeachResponse>, I>>(_: I): MsgImpeachResponse {
     const message = createBaseMsgImpeachResponse();
     return message;
+  },
+
+  fromSDK(_: MsgImpeachResponseSDKType): MsgImpeachResponse {
+    return {};
+  },
+
+  toSDK(_: MsgImpeachResponse): MsgImpeachResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { Coin } from "../../base/v1beta1/coin";
-import { Period } from "./vesting";
+import { Coin, CoinSDKType } from "../../base/v1beta1/coin";
+import { Period, PeriodSDKType } from "./vesting";
 import { Long, isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.vesting.v1beta1";
@@ -16,9 +16,24 @@ export interface MsgCreateVestingAccount {
   endTime: Long;
   delayed: boolean;
 }
+/**
+ * MsgCreateVestingAccount defines a message that enables creating a vesting
+ * account.
+ */
+
+export interface MsgCreateVestingAccountSDKType {
+  from_address: string;
+  to_address: string;
+  amount: CoinSDKType[];
+  end_time: Long;
+  delayed: boolean;
+}
 /** MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount response type. */
 
 export interface MsgCreateVestingAccountResponse {}
+/** MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount response type. */
+
+export interface MsgCreateVestingAccountResponseSDKType {}
 /**
  * MsgCreatePermanentLockedAccount defines a message that enables creating a permanent
  * locked account.
@@ -32,12 +47,31 @@ export interface MsgCreatePermanentLockedAccount {
   amount: Coin[];
 }
 /**
+ * MsgCreatePermanentLockedAccount defines a message that enables creating a permanent
+ * locked account.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface MsgCreatePermanentLockedAccountSDKType {
+  from_address: string;
+  to_address: string;
+  amount: CoinSDKType[];
+}
+/**
  * MsgCreatePermanentLockedAccountResponse defines the Msg/CreatePermanentLockedAccount response type.
  * 
  * Since: cosmos-sdk 0.46
  */
 
 export interface MsgCreatePermanentLockedAccountResponse {}
+/**
+ * MsgCreatePermanentLockedAccountResponse defines the Msg/CreatePermanentLockedAccount response type.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface MsgCreatePermanentLockedAccountResponseSDKType {}
 /**
  * MsgCreateVestingAccount defines a message that enables creating a vesting
  * account.
@@ -52,6 +86,19 @@ export interface MsgCreatePeriodicVestingAccount {
   vestingPeriods: Period[];
 }
 /**
+ * MsgCreateVestingAccount defines a message that enables creating a vesting
+ * account.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface MsgCreatePeriodicVestingAccountSDKType {
+  from_address: string;
+  to_address: string;
+  start_time: Long;
+  vesting_periods: PeriodSDKType[];
+}
+/**
  * MsgCreateVestingAccountResponse defines the Msg/CreatePeriodicVestingAccount
  * response type.
  * 
@@ -59,6 +106,14 @@ export interface MsgCreatePeriodicVestingAccount {
  */
 
 export interface MsgCreatePeriodicVestingAccountResponse {}
+/**
+ * MsgCreateVestingAccountResponse defines the Msg/CreatePeriodicVestingAccount
+ * response type.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface MsgCreatePeriodicVestingAccountResponseSDKType {}
 
 function createBaseMsgCreateVestingAccount(): MsgCreateVestingAccount {
   return {
@@ -167,6 +222,32 @@ export const MsgCreateVestingAccount = {
     message.endTime = object.endTime !== undefined && object.endTime !== null ? Long.fromValue(object.endTime) : Long.ZERO;
     message.delayed = object.delayed ?? false;
     return message;
+  },
+
+  fromSDK(object: MsgCreateVestingAccountSDKType): MsgCreateVestingAccount {
+    return {
+      fromAddress: object?.from_address,
+      toAddress: object?.to_address,
+      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromSDK(e)) : [],
+      endTime: object?.end_time,
+      delayed: object?.delayed
+    };
+  },
+
+  toSDK(message: MsgCreateVestingAccount): MsgCreateVestingAccountSDKType {
+    const obj: any = {};
+    obj.from_address = message.fromAddress;
+    obj.to_address = message.toAddress;
+
+    if (message.amount) {
+      obj.amount = message.amount.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.amount = [];
+    }
+
+    obj.end_time = message.endTime;
+    obj.delayed = message.delayed;
+    return obj;
   }
 
 };
@@ -210,6 +291,15 @@ export const MsgCreateVestingAccountResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgCreateVestingAccountResponse>, I>>(_: I): MsgCreateVestingAccountResponse {
     const message = createBaseMsgCreateVestingAccountResponse();
     return message;
+  },
+
+  fromSDK(_: MsgCreateVestingAccountResponseSDKType): MsgCreateVestingAccountResponse {
+    return {};
+  },
+
+  toSDK(_: MsgCreateVestingAccountResponse): MsgCreateVestingAccountResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -297,6 +387,28 @@ export const MsgCreatePermanentLockedAccount = {
     message.toAddress = object.toAddress ?? "";
     message.amount = object.amount?.map(e => Coin.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: MsgCreatePermanentLockedAccountSDKType): MsgCreatePermanentLockedAccount {
+    return {
+      fromAddress: object?.from_address,
+      toAddress: object?.to_address,
+      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: MsgCreatePermanentLockedAccount): MsgCreatePermanentLockedAccountSDKType {
+    const obj: any = {};
+    obj.from_address = message.fromAddress;
+    obj.to_address = message.toAddress;
+
+    if (message.amount) {
+      obj.amount = message.amount.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.amount = [];
+    }
+
+    return obj;
   }
 
 };
@@ -340,6 +452,15 @@ export const MsgCreatePermanentLockedAccountResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgCreatePermanentLockedAccountResponse>, I>>(_: I): MsgCreatePermanentLockedAccountResponse {
     const message = createBaseMsgCreatePermanentLockedAccountResponse();
     return message;
+  },
+
+  fromSDK(_: MsgCreatePermanentLockedAccountResponseSDKType): MsgCreatePermanentLockedAccountResponse {
+    return {};
+  },
+
+  toSDK(_: MsgCreatePermanentLockedAccountResponse): MsgCreatePermanentLockedAccountResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -439,6 +560,30 @@ export const MsgCreatePeriodicVestingAccount = {
     message.startTime = object.startTime !== undefined && object.startTime !== null ? Long.fromValue(object.startTime) : Long.ZERO;
     message.vestingPeriods = object.vestingPeriods?.map(e => Period.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: MsgCreatePeriodicVestingAccountSDKType): MsgCreatePeriodicVestingAccount {
+    return {
+      fromAddress: object?.from_address,
+      toAddress: object?.to_address,
+      startTime: object?.start_time,
+      vestingPeriods: Array.isArray(object?.vesting_periods) ? object.vesting_periods.map((e: any) => Period.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: MsgCreatePeriodicVestingAccount): MsgCreatePeriodicVestingAccountSDKType {
+    const obj: any = {};
+    obj.from_address = message.fromAddress;
+    obj.to_address = message.toAddress;
+    obj.start_time = message.startTime;
+
+    if (message.vestingPeriods) {
+      obj.vesting_periods = message.vestingPeriods.map(e => e ? Period.toSDK(e) : undefined);
+    } else {
+      obj.vesting_periods = [];
+    }
+
+    return obj;
   }
 
 };
@@ -482,6 +627,15 @@ export const MsgCreatePeriodicVestingAccountResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgCreatePeriodicVestingAccountResponse>, I>>(_: I): MsgCreatePeriodicVestingAccountResponse {
     const message = createBaseMsgCreatePeriodicVestingAccountResponse();
     return message;
+  },
+
+  fromSDK(_: MsgCreatePeriodicVestingAccountResponseSDKType): MsgCreatePeriodicVestingAccountResponse {
+    return {};
+  },
+
+  toSDK(_: MsgCreatePeriodicVestingAccountResponse): MsgCreatePeriodicVestingAccountResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

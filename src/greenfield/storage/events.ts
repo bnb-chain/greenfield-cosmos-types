@@ -33,6 +33,19 @@ export interface EventCreateBucket {
 
   primarySpAddress: string;
 }
+/** EventCreateBucket is emitted on MsgCreateBucket */
+
+export interface EventCreateBucketSDKType {
+  owner_address: string;
+  bucket_name: string;
+  is_public: boolean;
+  create_at: Long;
+  id: string;
+  source_type: SourceType;
+  read_quota: Long;
+  payment_address: string;
+  primary_sp_address: string;
+}
 /** EventDeleteBucket is emitted on MsgDeleteBucket */
 
 export interface EventDeleteBucket {
@@ -50,6 +63,15 @@ export interface EventDeleteBucket {
   /** primary_sp_address define the account address of primary sp */
 
   primarySpAddress: string;
+}
+/** EventDeleteBucket is emitted on MsgDeleteBucket */
+
+export interface EventDeleteBucketSDKType {
+  operator_address: string;
+  owner_address: string;
+  bucket_name: string;
+  id: string;
+  primary_sp_address: string;
 }
 /** EventUpdateBucketInfo is emitted on MsgUpdateBucketInfo */
 
@@ -74,6 +96,17 @@ export interface EventUpdateBucketInfo {
   /** payment_address_after define the payment address after updated */
 
   paymentAddressAfter: string;
+}
+/** EventUpdateBucketInfo is emitted on MsgUpdateBucketInfo */
+
+export interface EventUpdateBucketInfoSDKType {
+  operator_address: string;
+  bucket_name: string;
+  id: string;
+  read_quota_before: Long;
+  read_quota_after: Long;
+  payment_address_before: string;
+  payment_address_after: string;
 }
 /** EventCreateObject is emitted on MsgCreateObject */
 
@@ -123,6 +156,25 @@ export interface EventCreateObject {
 
   checksums: Uint8Array[];
 }
+/** EventCreateObject is emitted on MsgCreateObject */
+
+export interface EventCreateObjectSDKType {
+  creator_address: string;
+  owner_address: string;
+  bucket_name: string;
+  object_name: string;
+  bucket_id: string;
+  object_id: string;
+  primary_sp_address: string;
+  payload_size: Long;
+  is_public: boolean;
+  content_type: string;
+  create_at: Long;
+  status: ObjectStatus;
+  redundancy_type: RedundancyType;
+  source_type: SourceType;
+  checksums: Uint8Array[];
+}
 /** EventSealObject is emitted on MsgSealObject */
 
 export interface EventCancelCreateObject {
@@ -139,6 +191,15 @@ export interface EventCancelCreateObject {
   primarySpAddress: string;
   /** id define an u256 id for object */
 
+  id: string;
+}
+/** EventSealObject is emitted on MsgSealObject */
+
+export interface EventCancelCreateObjectSDKType {
+  operator_address: string;
+  bucket_name: string;
+  object_name: string;
+  primary_sp_address: string;
   id: string;
 }
 /** EventSealObject is emitted on MsgSealObject */
@@ -161,6 +222,16 @@ export interface EventSealObject {
   /** secondary_sp_address define all the operator address of the secondary sps */
 
   secondarySpAddress: string[];
+}
+/** EventSealObject is emitted on MsgSealObject */
+
+export interface EventSealObjectSDKType {
+  operator_address: string;
+  bucket_name: string;
+  object_name: string;
+  id: string;
+  status: ObjectStatus;
+  secondary_sp_address: string[];
 }
 /** EventCopyObject is emitted on MsgCopyObject */
 
@@ -186,6 +257,17 @@ export interface EventCopyObject {
 
   dstObjectId: string;
 }
+/** EventCopyObject is emitted on MsgCopyObject */
+
+export interface EventCopyObjectSDKType {
+  operator_address: string;
+  src_bucket_name: string;
+  src_object_name: string;
+  dst_bucket_name: string;
+  dst_object_name: string;
+  src_object_id: string;
+  dst_object_id: string;
+}
 /** EventDeleteObject is emitted on MsgDeleteObject */
 
 export interface EventDeleteObject {
@@ -207,6 +289,16 @@ export interface EventDeleteObject {
 
   secondarySpAddresses: string[];
 }
+/** EventDeleteObject is emitted on MsgDeleteObject */
+
+export interface EventDeleteObjectSDKType {
+  operator_address: string;
+  bucket_name: string;
+  object_name: string;
+  id: string;
+  primary_sp_address: string;
+  secondary_sp_addresses: string[];
+}
 /** EventRejectSealObject is emitted on MsgRejectSealObject */
 
 export interface EventRejectSealObject {
@@ -220,6 +312,14 @@ export interface EventRejectSealObject {
   objectName: string;
   /** id define an u256 id for object */
 
+  id: string;
+}
+/** EventRejectSealObject is emitted on MsgRejectSealObject */
+
+export interface EventRejectSealObjectSDKType {
+  operator_address: string;
+  bucket_name: string;
+  object_name: string;
   id: string;
 }
 /** EventCreateGroup is emitted on MsgCreateGroup */
@@ -240,6 +340,15 @@ export interface EventCreateGroup {
 
   members: string[];
 }
+/** EventCreateGroup is emitted on MsgCreateGroup */
+
+export interface EventCreateGroupSDKType {
+  owner_address: string;
+  group_name: string;
+  id: string;
+  source_type: SourceType;
+  members: string[];
+}
 /** EventDeleteGroup is emitted on MsgDeleteGroup */
 
 export interface EventDeleteGroup {
@@ -250,6 +359,13 @@ export interface EventDeleteGroup {
   groupName: string;
   /** id define an u256 id for group */
 
+  id: string;
+}
+/** EventDeleteGroup is emitted on MsgDeleteGroup */
+
+export interface EventDeleteGroupSDKType {
+  owner_address: string;
+  group_name: string;
   id: string;
 }
 /** EventLeaveGroup is emitted on MsgLeaveGroup */
@@ -265,6 +381,14 @@ export interface EventLeaveGroup {
   groupName: string;
   /** id define an u256 id for group */
 
+  id: string;
+}
+/** EventLeaveGroup is emitted on MsgLeaveGroup */
+
+export interface EventLeaveGroupSDKType {
+  member_address: string;
+  owner_address: string;
+  group_name: string;
   id: string;
 }
 /** EventUpdateGroupMember is emitted on MsgUpdateGroupMember */
@@ -287,6 +411,16 @@ export interface EventUpdateGroupMember {
   /** members_to_add defines all the members to be deleted from the group */
 
   membersToDelete: string[];
+}
+/** EventUpdateGroupMember is emitted on MsgUpdateGroupMember */
+
+export interface EventUpdateGroupMemberSDKType {
+  operator_address: string;
+  owner_address: string;
+  group_name: string;
+  id: string;
+  members_to_add: string[];
+  members_to_delete: string[];
 }
 
 function createBaseEventCreateBucket(): EventCreateBucket {
@@ -438,6 +572,34 @@ export const EventCreateBucket = {
     message.paymentAddress = object.paymentAddress ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: EventCreateBucketSDKType): EventCreateBucket {
+    return {
+      ownerAddress: object?.owner_address,
+      bucketName: object?.bucket_name,
+      isPublic: object?.is_public,
+      createAt: object?.create_at,
+      id: object?.id,
+      sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
+      readQuota: object?.read_quota,
+      paymentAddress: object?.payment_address,
+      primarySpAddress: object?.primary_sp_address
+    };
+  },
+
+  toSDK(message: EventCreateBucket): EventCreateBucketSDKType {
+    const obj: any = {};
+    obj.owner_address = message.ownerAddress;
+    obj.bucket_name = message.bucketName;
+    obj.is_public = message.isPublic;
+    obj.create_at = message.createAt;
+    obj.id = message.id;
+    message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
+    obj.read_quota = message.readQuota;
+    obj.payment_address = message.paymentAddress;
+    obj.primary_sp_address = message.primarySpAddress;
+    return obj;
   }
 
 };
@@ -543,6 +705,26 @@ export const EventDeleteBucket = {
     message.id = object.id ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: EventDeleteBucketSDKType): EventDeleteBucket {
+    return {
+      operatorAddress: object?.operator_address,
+      ownerAddress: object?.owner_address,
+      bucketName: object?.bucket_name,
+      id: object?.id,
+      primarySpAddress: object?.primary_sp_address
+    };
+  },
+
+  toSDK(message: EventDeleteBucket): EventDeleteBucketSDKType {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    obj.owner_address = message.ownerAddress;
+    obj.bucket_name = message.bucketName;
+    obj.id = message.id;
+    obj.primary_sp_address = message.primarySpAddress;
+    return obj;
   }
 
 };
@@ -672,6 +854,30 @@ export const EventUpdateBucketInfo = {
     message.paymentAddressBefore = object.paymentAddressBefore ?? "";
     message.paymentAddressAfter = object.paymentAddressAfter ?? "";
     return message;
+  },
+
+  fromSDK(object: EventUpdateBucketInfoSDKType): EventUpdateBucketInfo {
+    return {
+      operatorAddress: object?.operator_address,
+      bucketName: object?.bucket_name,
+      id: object?.id,
+      readQuotaBefore: object?.read_quota_before,
+      readQuotaAfter: object?.read_quota_after,
+      paymentAddressBefore: object?.payment_address_before,
+      paymentAddressAfter: object?.payment_address_after
+    };
+  },
+
+  toSDK(message: EventUpdateBucketInfo): EventUpdateBucketInfoSDKType {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    obj.bucket_name = message.bucketName;
+    obj.id = message.id;
+    obj.read_quota_before = message.readQuotaBefore;
+    obj.read_quota_after = message.readQuotaAfter;
+    obj.payment_address_before = message.paymentAddressBefore;
+    obj.payment_address_after = message.paymentAddressAfter;
+    return obj;
   }
 
 };
@@ -903,6 +1109,52 @@ export const EventCreateObject = {
     message.sourceType = object.sourceType ?? 0;
     message.checksums = object.checksums?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: EventCreateObjectSDKType): EventCreateObject {
+    return {
+      creatorAddress: object?.creator_address,
+      ownerAddress: object?.owner_address,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name,
+      bucketId: object?.bucket_id,
+      objectId: object?.object_id,
+      primarySpAddress: object?.primary_sp_address,
+      payloadSize: object?.payload_size,
+      isPublic: object?.is_public,
+      contentType: object?.content_type,
+      createAt: object?.create_at,
+      status: isSet(object.status) ? objectStatusFromJSON(object.status) : 0,
+      redundancyType: isSet(object.redundancy_type) ? redundancyTypeFromJSON(object.redundancy_type) : 0,
+      sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
+      checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: EventCreateObject): EventCreateObjectSDKType {
+    const obj: any = {};
+    obj.creator_address = message.creatorAddress;
+    obj.owner_address = message.ownerAddress;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.bucket_id = message.bucketId;
+    obj.object_id = message.objectId;
+    obj.primary_sp_address = message.primarySpAddress;
+    obj.payload_size = message.payloadSize;
+    obj.is_public = message.isPublic;
+    obj.content_type = message.contentType;
+    obj.create_at = message.createAt;
+    message.status !== undefined && (obj.status = objectStatusToJSON(message.status));
+    message.redundancyType !== undefined && (obj.redundancy_type = redundancyTypeToJSON(message.redundancyType));
+    message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
+
+    if (message.checksums) {
+      obj.checksums = message.checksums.map(e => e);
+    } else {
+      obj.checksums = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1008,6 +1260,26 @@ export const EventCancelCreateObject = {
     message.primarySpAddress = object.primarySpAddress ?? "";
     message.id = object.id ?? "";
     return message;
+  },
+
+  fromSDK(object: EventCancelCreateObjectSDKType): EventCancelCreateObject {
+    return {
+      operatorAddress: object?.operator_address,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name,
+      primarySpAddress: object?.primary_sp_address,
+      id: object?.id
+    };
+  },
+
+  toSDK(message: EventCancelCreateObject): EventCancelCreateObjectSDKType {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.primary_sp_address = message.primarySpAddress;
+    obj.id = message.id;
+    return obj;
   }
 
 };
@@ -1131,6 +1403,34 @@ export const EventSealObject = {
     message.status = object.status ?? 0;
     message.secondarySpAddress = object.secondarySpAddress?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: EventSealObjectSDKType): EventSealObject {
+    return {
+      operatorAddress: object?.operator_address,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name,
+      id: object?.id,
+      status: isSet(object.status) ? objectStatusFromJSON(object.status) : 0,
+      secondarySpAddress: Array.isArray(object?.secondary_sp_address) ? object.secondary_sp_address.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: EventSealObject): EventSealObjectSDKType {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.id = message.id;
+    message.status !== undefined && (obj.status = objectStatusToJSON(message.status));
+
+    if (message.secondarySpAddress) {
+      obj.secondary_sp_address = message.secondarySpAddress.map(e => e);
+    } else {
+      obj.secondary_sp_address = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1260,6 +1560,30 @@ export const EventCopyObject = {
     message.srcObjectId = object.srcObjectId ?? "";
     message.dstObjectId = object.dstObjectId ?? "";
     return message;
+  },
+
+  fromSDK(object: EventCopyObjectSDKType): EventCopyObject {
+    return {
+      operatorAddress: object?.operator_address,
+      srcBucketName: object?.src_bucket_name,
+      srcObjectName: object?.src_object_name,
+      dstBucketName: object?.dst_bucket_name,
+      dstObjectName: object?.dst_object_name,
+      srcObjectId: object?.src_object_id,
+      dstObjectId: object?.dst_object_id
+    };
+  },
+
+  toSDK(message: EventCopyObject): EventCopyObjectSDKType {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    obj.src_bucket_name = message.srcBucketName;
+    obj.src_object_name = message.srcObjectName;
+    obj.dst_bucket_name = message.dstBucketName;
+    obj.dst_object_name = message.dstObjectName;
+    obj.src_object_id = message.srcObjectId;
+    obj.dst_object_id = message.dstObjectId;
+    return obj;
   }
 
 };
@@ -1383,6 +1707,34 @@ export const EventDeleteObject = {
     message.primarySpAddress = object.primarySpAddress ?? "";
     message.secondarySpAddresses = object.secondarySpAddresses?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: EventDeleteObjectSDKType): EventDeleteObject {
+    return {
+      operatorAddress: object?.operator_address,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name,
+      id: object?.id,
+      primarySpAddress: object?.primary_sp_address,
+      secondarySpAddresses: Array.isArray(object?.secondary_sp_addresses) ? object.secondary_sp_addresses.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: EventDeleteObject): EventDeleteObjectSDKType {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.id = message.id;
+    obj.primary_sp_address = message.primarySpAddress;
+
+    if (message.secondarySpAddresses) {
+      obj.secondary_sp_addresses = message.secondarySpAddresses.map(e => e);
+    } else {
+      obj.secondary_sp_addresses = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1476,6 +1828,24 @@ export const EventRejectSealObject = {
     message.objectName = object.objectName ?? "";
     message.id = object.id ?? "";
     return message;
+  },
+
+  fromSDK(object: EventRejectSealObjectSDKType): EventRejectSealObject {
+    return {
+      operatorAddress: object?.operator_address,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name,
+      id: object?.id
+    };
+  },
+
+  toSDK(message: EventRejectSealObject): EventRejectSealObjectSDKType {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.id = message.id;
+    return obj;
   }
 
 };
@@ -1587,6 +1957,32 @@ export const EventCreateGroup = {
     message.sourceType = object.sourceType ?? 0;
     message.members = object.members?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: EventCreateGroupSDKType): EventCreateGroup {
+    return {
+      ownerAddress: object?.owner_address,
+      groupName: object?.group_name,
+      id: object?.id,
+      sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: EventCreateGroup): EventCreateGroupSDKType {
+    const obj: any = {};
+    obj.owner_address = message.ownerAddress;
+    obj.group_name = message.groupName;
+    obj.id = message.id;
+    message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
+
+    if (message.members) {
+      obj.members = message.members.map(e => e);
+    } else {
+      obj.members = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1668,6 +2064,22 @@ export const EventDeleteGroup = {
     message.groupName = object.groupName ?? "";
     message.id = object.id ?? "";
     return message;
+  },
+
+  fromSDK(object: EventDeleteGroupSDKType): EventDeleteGroup {
+    return {
+      ownerAddress: object?.owner_address,
+      groupName: object?.group_name,
+      id: object?.id
+    };
+  },
+
+  toSDK(message: EventDeleteGroup): EventDeleteGroupSDKType {
+    const obj: any = {};
+    obj.owner_address = message.ownerAddress;
+    obj.group_name = message.groupName;
+    obj.id = message.id;
+    return obj;
   }
 
 };
@@ -1761,6 +2173,24 @@ export const EventLeaveGroup = {
     message.groupName = object.groupName ?? "";
     message.id = object.id ?? "";
     return message;
+  },
+
+  fromSDK(object: EventLeaveGroupSDKType): EventLeaveGroup {
+    return {
+      memberAddress: object?.member_address,
+      ownerAddress: object?.owner_address,
+      groupName: object?.group_name,
+      id: object?.id
+    };
+  },
+
+  toSDK(message: EventLeaveGroup): EventLeaveGroupSDKType {
+    const obj: any = {};
+    obj.member_address = message.memberAddress;
+    obj.owner_address = message.ownerAddress;
+    obj.group_name = message.groupName;
+    obj.id = message.id;
+    return obj;
   }
 
 };
@@ -1889,6 +2319,39 @@ export const EventUpdateGroupMember = {
     message.membersToAdd = object.membersToAdd?.map(e => e) || [];
     message.membersToDelete = object.membersToDelete?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: EventUpdateGroupMemberSDKType): EventUpdateGroupMember {
+    return {
+      operatorAddress: object?.operator_address,
+      ownerAddress: object?.owner_address,
+      groupName: object?.group_name,
+      id: object?.id,
+      membersToAdd: Array.isArray(object?.members_to_add) ? object.members_to_add.map((e: any) => e) : [],
+      membersToDelete: Array.isArray(object?.members_to_delete) ? object.members_to_delete.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: EventUpdateGroupMember): EventUpdateGroupMemberSDKType {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    obj.owner_address = message.ownerAddress;
+    obj.group_name = message.groupName;
+    obj.id = message.id;
+
+    if (message.membersToAdd) {
+      obj.members_to_add = message.membersToAdd.map(e => e);
+    } else {
+      obj.members_to_add = [];
+    }
+
+    if (message.membersToDelete) {
+      obj.members_to_delete = message.membersToDelete.map(e => e);
+    } else {
+      obj.members_to_delete = [];
+    }
+
+    return obj;
   }
 
 };

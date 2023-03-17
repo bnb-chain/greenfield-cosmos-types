@@ -1,62 +1,112 @@
 /* eslint-disable */
-import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
-import { Params } from "./params";
-import { StreamRecord } from "./stream_record";
-import { PaymentAccountCount } from "./payment_account_count";
-import { PaymentAccount } from "./payment_account";
-import { AutoSettleRecord } from "./auto_settle_record";
+import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
+import { Params, ParamsSDKType } from "./params";
+import { StreamRecord, StreamRecordSDKType } from "./stream_record";
+import { PaymentAccountCount, PaymentAccountCountSDKType } from "./payment_account_count";
+import { PaymentAccount, PaymentAccountSDKType } from "./payment_account";
+import { AutoSettleRecord, AutoSettleRecordSDKType } from "./auto_settle_record";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Long, Rpc } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.payment";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
+/** QueryParamsRequest is request type for the Query/Params RPC method. */
+
+export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 
 export interface QueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: Params;
 }
+/** QueryParamsResponse is response type for the Query/Params RPC method. */
+
+export interface QueryParamsResponseSDKType {
+  params?: ParamsSDKType;
+}
 export interface QueryGetStreamRecordRequest {
+  account: string;
+}
+export interface QueryGetStreamRecordRequestSDKType {
   account: string;
 }
 export interface QueryGetStreamRecordResponse {
   streamRecord?: StreamRecord;
 }
+export interface QueryGetStreamRecordResponseSDKType {
+  stream_record?: StreamRecordSDKType;
+}
 export interface QueryAllStreamRecordRequest {
   pagination?: PageRequest;
+}
+export interface QueryAllStreamRecordRequestSDKType {
+  pagination?: PageRequestSDKType;
 }
 export interface QueryAllStreamRecordResponse {
   streamRecord: StreamRecord[];
   pagination?: PageResponse;
 }
+export interface QueryAllStreamRecordResponseSDKType {
+  stream_record: StreamRecordSDKType[];
+  pagination?: PageResponseSDKType;
+}
 export interface QueryGetPaymentAccountCountRequest {
+  owner: string;
+}
+export interface QueryGetPaymentAccountCountRequestSDKType {
   owner: string;
 }
 export interface QueryGetPaymentAccountCountResponse {
   paymentAccountCount?: PaymentAccountCount;
 }
+export interface QueryGetPaymentAccountCountResponseSDKType {
+  payment_account_count?: PaymentAccountCountSDKType;
+}
 export interface QueryAllPaymentAccountCountRequest {
   pagination?: PageRequest;
+}
+export interface QueryAllPaymentAccountCountRequestSDKType {
+  pagination?: PageRequestSDKType;
 }
 export interface QueryAllPaymentAccountCountResponse {
   paymentAccountCount: PaymentAccountCount[];
   pagination?: PageResponse;
 }
+export interface QueryAllPaymentAccountCountResponseSDKType {
+  payment_account_count: PaymentAccountCountSDKType[];
+  pagination?: PageResponseSDKType;
+}
 export interface QueryGetPaymentAccountRequest {
+  addr: string;
+}
+export interface QueryGetPaymentAccountRequestSDKType {
   addr: string;
 }
 export interface QueryGetPaymentAccountResponse {
   paymentAccount?: PaymentAccount;
 }
+export interface QueryGetPaymentAccountResponseSDKType {
+  payment_account?: PaymentAccountSDKType;
+}
 export interface QueryAllPaymentAccountRequest {
   pagination?: PageRequest;
+}
+export interface QueryAllPaymentAccountRequestSDKType {
+  pagination?: PageRequestSDKType;
 }
 export interface QueryAllPaymentAccountResponse {
   paymentAccount: PaymentAccount[];
   pagination?: PageResponse;
 }
+export interface QueryAllPaymentAccountResponseSDKType {
+  payment_account: PaymentAccountSDKType[];
+  pagination?: PageResponseSDKType;
+}
 export interface QueryDynamicBalanceRequest {
+  account: string;
+}
+export interface QueryDynamicBalanceRequestSDKType {
   account: string;
 }
 export interface QueryDynamicBalanceResponse {
@@ -64,25 +114,50 @@ export interface QueryDynamicBalanceResponse {
   streamRecord?: StreamRecord;
   currentTimestamp: Long;
 }
+export interface QueryDynamicBalanceResponseSDKType {
+  dynamic_balance: string;
+  stream_record?: StreamRecordSDKType;
+  current_timestamp: Long;
+}
 export interface QueryGetPaymentAccountsByOwnerRequest {
   owner: string;
 }
+export interface QueryGetPaymentAccountsByOwnerRequestSDKType {
+  owner: string;
+}
 export interface QueryGetPaymentAccountsByOwnerResponse {
+  paymentAccounts: string[];
+}
+export interface QueryGetPaymentAccountsByOwnerResponseSDKType {
   paymentAccounts: string[];
 }
 export interface QueryGetAutoSettleRecordRequest {
   timestamp: Long;
   addr: string;
 }
+export interface QueryGetAutoSettleRecordRequestSDKType {
+  timestamp: Long;
+  addr: string;
+}
 export interface QueryGetAutoSettleRecordResponse {
   autoSettleRecord?: AutoSettleRecord;
+}
+export interface QueryGetAutoSettleRecordResponseSDKType {
+  auto_settle_record?: AutoSettleRecordSDKType;
 }
 export interface QueryAllAutoSettleRecordRequest {
   pagination?: PageRequest;
 }
+export interface QueryAllAutoSettleRecordRequestSDKType {
+  pagination?: PageRequestSDKType;
+}
 export interface QueryAllAutoSettleRecordResponse {
   autoSettleRecord: AutoSettleRecord[];
   pagination?: PageResponse;
+}
+export interface QueryAllAutoSettleRecordResponseSDKType {
+  auto_settle_record: AutoSettleRecordSDKType[];
+  pagination?: PageResponseSDKType;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -124,6 +199,15 @@ export const QueryParamsRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(_: I): QueryParamsRequest {
     const message = createBaseQueryParamsRequest();
     return message;
+  },
+
+  fromSDK(_: QueryParamsRequestSDKType): QueryParamsRequest {
+    return {};
+  },
+
+  toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -181,6 +265,18 @@ export const QueryParamsResponse = {
     const message = createBaseQueryParamsResponse();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryParamsResponseSDKType): QueryParamsResponse {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
   }
 
 };
@@ -238,6 +334,18 @@ export const QueryGetStreamRecordRequest = {
     const message = createBaseQueryGetStreamRecordRequest();
     message.account = object.account ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryGetStreamRecordRequestSDKType): QueryGetStreamRecordRequest {
+    return {
+      account: object?.account
+    };
+  },
+
+  toSDK(message: QueryGetStreamRecordRequest): QueryGetStreamRecordRequestSDKType {
+    const obj: any = {};
+    obj.account = message.account;
+    return obj;
   }
 
 };
@@ -295,6 +403,18 @@ export const QueryGetStreamRecordResponse = {
     const message = createBaseQueryGetStreamRecordResponse();
     message.streamRecord = object.streamRecord !== undefined && object.streamRecord !== null ? StreamRecord.fromPartial(object.streamRecord) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryGetStreamRecordResponseSDKType): QueryGetStreamRecordResponse {
+    return {
+      streamRecord: object.stream_record ? StreamRecord.fromSDK(object.stream_record) : undefined
+    };
+  },
+
+  toSDK(message: QueryGetStreamRecordResponse): QueryGetStreamRecordResponseSDKType {
+    const obj: any = {};
+    message.streamRecord !== undefined && (obj.stream_record = message.streamRecord ? StreamRecord.toSDK(message.streamRecord) : undefined);
+    return obj;
   }
 
 };
@@ -352,6 +472,18 @@ export const QueryAllStreamRecordRequest = {
     const message = createBaseQueryAllStreamRecordRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllStreamRecordRequestSDKType): QueryAllStreamRecordRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllStreamRecordRequest): QueryAllStreamRecordRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -427,6 +559,26 @@ export const QueryAllStreamRecordResponse = {
     message.streamRecord = object.streamRecord?.map(e => StreamRecord.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllStreamRecordResponseSDKType): QueryAllStreamRecordResponse {
+    return {
+      streamRecord: Array.isArray(object?.stream_record) ? object.stream_record.map((e: any) => StreamRecord.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllStreamRecordResponse): QueryAllStreamRecordResponseSDKType {
+    const obj: any = {};
+
+    if (message.streamRecord) {
+      obj.stream_record = message.streamRecord.map(e => e ? StreamRecord.toSDK(e) : undefined);
+    } else {
+      obj.stream_record = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -484,6 +636,18 @@ export const QueryGetPaymentAccountCountRequest = {
     const message = createBaseQueryGetPaymentAccountCountRequest();
     message.owner = object.owner ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryGetPaymentAccountCountRequestSDKType): QueryGetPaymentAccountCountRequest {
+    return {
+      owner: object?.owner
+    };
+  },
+
+  toSDK(message: QueryGetPaymentAccountCountRequest): QueryGetPaymentAccountCountRequestSDKType {
+    const obj: any = {};
+    obj.owner = message.owner;
+    return obj;
   }
 
 };
@@ -541,6 +705,18 @@ export const QueryGetPaymentAccountCountResponse = {
     const message = createBaseQueryGetPaymentAccountCountResponse();
     message.paymentAccountCount = object.paymentAccountCount !== undefined && object.paymentAccountCount !== null ? PaymentAccountCount.fromPartial(object.paymentAccountCount) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryGetPaymentAccountCountResponseSDKType): QueryGetPaymentAccountCountResponse {
+    return {
+      paymentAccountCount: object.payment_account_count ? PaymentAccountCount.fromSDK(object.payment_account_count) : undefined
+    };
+  },
+
+  toSDK(message: QueryGetPaymentAccountCountResponse): QueryGetPaymentAccountCountResponseSDKType {
+    const obj: any = {};
+    message.paymentAccountCount !== undefined && (obj.payment_account_count = message.paymentAccountCount ? PaymentAccountCount.toSDK(message.paymentAccountCount) : undefined);
+    return obj;
   }
 
 };
@@ -598,6 +774,18 @@ export const QueryAllPaymentAccountCountRequest = {
     const message = createBaseQueryAllPaymentAccountCountRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllPaymentAccountCountRequestSDKType): QueryAllPaymentAccountCountRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllPaymentAccountCountRequest): QueryAllPaymentAccountCountRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -673,6 +861,26 @@ export const QueryAllPaymentAccountCountResponse = {
     message.paymentAccountCount = object.paymentAccountCount?.map(e => PaymentAccountCount.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllPaymentAccountCountResponseSDKType): QueryAllPaymentAccountCountResponse {
+    return {
+      paymentAccountCount: Array.isArray(object?.payment_account_count) ? object.payment_account_count.map((e: any) => PaymentAccountCount.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllPaymentAccountCountResponse): QueryAllPaymentAccountCountResponseSDKType {
+    const obj: any = {};
+
+    if (message.paymentAccountCount) {
+      obj.payment_account_count = message.paymentAccountCount.map(e => e ? PaymentAccountCount.toSDK(e) : undefined);
+    } else {
+      obj.payment_account_count = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -730,6 +938,18 @@ export const QueryGetPaymentAccountRequest = {
     const message = createBaseQueryGetPaymentAccountRequest();
     message.addr = object.addr ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryGetPaymentAccountRequestSDKType): QueryGetPaymentAccountRequest {
+    return {
+      addr: object?.addr
+    };
+  },
+
+  toSDK(message: QueryGetPaymentAccountRequest): QueryGetPaymentAccountRequestSDKType {
+    const obj: any = {};
+    obj.addr = message.addr;
+    return obj;
   }
 
 };
@@ -787,6 +1007,18 @@ export const QueryGetPaymentAccountResponse = {
     const message = createBaseQueryGetPaymentAccountResponse();
     message.paymentAccount = object.paymentAccount !== undefined && object.paymentAccount !== null ? PaymentAccount.fromPartial(object.paymentAccount) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryGetPaymentAccountResponseSDKType): QueryGetPaymentAccountResponse {
+    return {
+      paymentAccount: object.payment_account ? PaymentAccount.fromSDK(object.payment_account) : undefined
+    };
+  },
+
+  toSDK(message: QueryGetPaymentAccountResponse): QueryGetPaymentAccountResponseSDKType {
+    const obj: any = {};
+    message.paymentAccount !== undefined && (obj.payment_account = message.paymentAccount ? PaymentAccount.toSDK(message.paymentAccount) : undefined);
+    return obj;
   }
 
 };
@@ -844,6 +1076,18 @@ export const QueryAllPaymentAccountRequest = {
     const message = createBaseQueryAllPaymentAccountRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllPaymentAccountRequestSDKType): QueryAllPaymentAccountRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllPaymentAccountRequest): QueryAllPaymentAccountRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -919,6 +1163,26 @@ export const QueryAllPaymentAccountResponse = {
     message.paymentAccount = object.paymentAccount?.map(e => PaymentAccount.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllPaymentAccountResponseSDKType): QueryAllPaymentAccountResponse {
+    return {
+      paymentAccount: Array.isArray(object?.payment_account) ? object.payment_account.map((e: any) => PaymentAccount.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllPaymentAccountResponse): QueryAllPaymentAccountResponseSDKType {
+    const obj: any = {};
+
+    if (message.paymentAccount) {
+      obj.payment_account = message.paymentAccount.map(e => e ? PaymentAccount.toSDK(e) : undefined);
+    } else {
+      obj.payment_account = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -976,6 +1240,18 @@ export const QueryDynamicBalanceRequest = {
     const message = createBaseQueryDynamicBalanceRequest();
     message.account = object.account ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryDynamicBalanceRequestSDKType): QueryDynamicBalanceRequest {
+    return {
+      account: object?.account
+    };
+  },
+
+  toSDK(message: QueryDynamicBalanceRequest): QueryDynamicBalanceRequestSDKType {
+    const obj: any = {};
+    obj.account = message.account;
+    return obj;
   }
 
 };
@@ -1057,6 +1333,22 @@ export const QueryDynamicBalanceResponse = {
     message.streamRecord = object.streamRecord !== undefined && object.streamRecord !== null ? StreamRecord.fromPartial(object.streamRecord) : undefined;
     message.currentTimestamp = object.currentTimestamp !== undefined && object.currentTimestamp !== null ? Long.fromValue(object.currentTimestamp) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: QueryDynamicBalanceResponseSDKType): QueryDynamicBalanceResponse {
+    return {
+      dynamicBalance: object?.dynamic_balance,
+      streamRecord: object.stream_record ? StreamRecord.fromSDK(object.stream_record) : undefined,
+      currentTimestamp: object?.current_timestamp
+    };
+  },
+
+  toSDK(message: QueryDynamicBalanceResponse): QueryDynamicBalanceResponseSDKType {
+    const obj: any = {};
+    obj.dynamic_balance = message.dynamicBalance;
+    message.streamRecord !== undefined && (obj.stream_record = message.streamRecord ? StreamRecord.toSDK(message.streamRecord) : undefined);
+    obj.current_timestamp = message.currentTimestamp;
+    return obj;
   }
 
 };
@@ -1114,6 +1406,18 @@ export const QueryGetPaymentAccountsByOwnerRequest = {
     const message = createBaseQueryGetPaymentAccountsByOwnerRequest();
     message.owner = object.owner ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryGetPaymentAccountsByOwnerRequestSDKType): QueryGetPaymentAccountsByOwnerRequest {
+    return {
+      owner: object?.owner
+    };
+  },
+
+  toSDK(message: QueryGetPaymentAccountsByOwnerRequest): QueryGetPaymentAccountsByOwnerRequestSDKType {
+    const obj: any = {};
+    obj.owner = message.owner;
+    return obj;
   }
 
 };
@@ -1177,6 +1481,24 @@ export const QueryGetPaymentAccountsByOwnerResponse = {
     const message = createBaseQueryGetPaymentAccountsByOwnerResponse();
     message.paymentAccounts = object.paymentAccounts?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: QueryGetPaymentAccountsByOwnerResponseSDKType): QueryGetPaymentAccountsByOwnerResponse {
+    return {
+      paymentAccounts: Array.isArray(object?.paymentAccounts) ? object.paymentAccounts.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: QueryGetPaymentAccountsByOwnerResponse): QueryGetPaymentAccountsByOwnerResponseSDKType {
+    const obj: any = {};
+
+    if (message.paymentAccounts) {
+      obj.paymentAccounts = message.paymentAccounts.map(e => e);
+    } else {
+      obj.paymentAccounts = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1246,6 +1568,20 @@ export const QueryGetAutoSettleRecordRequest = {
     message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
     message.addr = object.addr ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryGetAutoSettleRecordRequestSDKType): QueryGetAutoSettleRecordRequest {
+    return {
+      timestamp: object?.timestamp,
+      addr: object?.addr
+    };
+  },
+
+  toSDK(message: QueryGetAutoSettleRecordRequest): QueryGetAutoSettleRecordRequestSDKType {
+    const obj: any = {};
+    obj.timestamp = message.timestamp;
+    obj.addr = message.addr;
+    return obj;
   }
 
 };
@@ -1303,6 +1639,18 @@ export const QueryGetAutoSettleRecordResponse = {
     const message = createBaseQueryGetAutoSettleRecordResponse();
     message.autoSettleRecord = object.autoSettleRecord !== undefined && object.autoSettleRecord !== null ? AutoSettleRecord.fromPartial(object.autoSettleRecord) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryGetAutoSettleRecordResponseSDKType): QueryGetAutoSettleRecordResponse {
+    return {
+      autoSettleRecord: object.auto_settle_record ? AutoSettleRecord.fromSDK(object.auto_settle_record) : undefined
+    };
+  },
+
+  toSDK(message: QueryGetAutoSettleRecordResponse): QueryGetAutoSettleRecordResponseSDKType {
+    const obj: any = {};
+    message.autoSettleRecord !== undefined && (obj.auto_settle_record = message.autoSettleRecord ? AutoSettleRecord.toSDK(message.autoSettleRecord) : undefined);
+    return obj;
   }
 
 };
@@ -1360,6 +1708,18 @@ export const QueryAllAutoSettleRecordRequest = {
     const message = createBaseQueryAllAutoSettleRecordRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllAutoSettleRecordRequestSDKType): QueryAllAutoSettleRecordRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllAutoSettleRecordRequest): QueryAllAutoSettleRecordRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -1435,6 +1795,26 @@ export const QueryAllAutoSettleRecordResponse = {
     message.autoSettleRecord = object.autoSettleRecord?.map(e => AutoSettleRecord.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllAutoSettleRecordResponseSDKType): QueryAllAutoSettleRecordResponse {
+    return {
+      autoSettleRecord: Array.isArray(object?.auto_settle_record) ? object.auto_settle_record.map((e: any) => AutoSettleRecord.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllAutoSettleRecordResponse): QueryAllAutoSettleRecordResponseSDKType {
+    const obj: any = {};
+
+    if (message.autoSettleRecord) {
+      obj.auto_settle_record = message.autoSettleRecord.map(e => e ? AutoSettleRecord.toSDK(e) : undefined);
+    } else {
+      obj.auto_settle_record = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };

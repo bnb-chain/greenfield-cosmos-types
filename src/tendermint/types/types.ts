@@ -1,8 +1,8 @@
 /* eslint-disable */
-import { Proof } from "../crypto/proof";
-import { Consensus } from "../version/types";
-import { Timestamp } from "../../google/protobuf/timestamp";
-import { ValidatorSet } from "./validator";
+import { Proof, ProofSDKType } from "../crypto/proof";
+import { Consensus, ConsensusSDKType } from "../version/types";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
+import { ValidatorSet, ValidatorSetSDKType } from "./validator";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact, Long, fromJsonTimestamp, fromTimestamp } from "../../helpers";
 export const protobufPackage = "tendermint.types";
@@ -15,6 +15,7 @@ export enum BlockIDFlag {
   BLOCK_ID_FLAG_NIL = 3,
   UNRECOGNIZED = -1,
 }
+export const BlockIDFlagSDKType = BlockIDFlag;
 export function blockIDFlagFromJSON(object: any): BlockIDFlag {
   switch (object) {
     case 0:
@@ -71,6 +72,7 @@ export enum SignedMsgType {
   SIGNED_MSG_TYPE_PROPOSAL = 32,
   UNRECOGNIZED = -1,
 }
+export const SignedMsgTypeSDKType = SignedMsgType;
 export function signedMsgTypeFromJSON(object: any): SignedMsgType {
   switch (object) {
     case 0:
@@ -120,16 +122,33 @@ export interface PartSetHeader {
   total: number;
   hash: Uint8Array;
 }
+/** PartsetHeader */
+
+export interface PartSetHeaderSDKType {
+  total: number;
+  hash: Uint8Array;
+}
 export interface Part {
   index: number;
   bytes: Uint8Array;
   proof?: Proof;
+}
+export interface PartSDKType {
+  index: number;
+  bytes: Uint8Array;
+  proof?: ProofSDKType;
 }
 /** BlockID */
 
 export interface BlockID {
   hash: Uint8Array;
   partSetHeader?: PartSetHeader;
+}
+/** BlockID */
+
+export interface BlockIDSDKType {
+  hash: Uint8Array;
+  part_set_header?: PartSetHeaderSDKType;
 }
 /** Header defines the structure of a Tendermint block header. */
 
@@ -166,6 +185,24 @@ export interface Header {
 
   proposerAddress: Uint8Array;
 }
+/** Header defines the structure of a Tendermint block header. */
+
+export interface HeaderSDKType {
+  version?: ConsensusSDKType;
+  chain_id: string;
+  height: Long;
+  time?: TimestampSDKType;
+  last_block_id?: BlockIDSDKType;
+  last_commit_hash: Uint8Array;
+  data_hash: Uint8Array;
+  validators_hash: Uint8Array;
+  next_validators_hash: Uint8Array;
+  consensus_hash: Uint8Array;
+  app_hash: Uint8Array;
+  last_results_hash: Uint8Array;
+  evidence_hash: Uint8Array;
+  proposer_address: Uint8Array;
+}
 /** Data contains the set of transactions included in the block */
 
 export interface Data {
@@ -174,6 +211,11 @@ export interface Data {
    * NOTE: not all txs here are valid.  We're just agreeing on the order first.
    * This means that block.AppHash does not include these txs.
    */
+  txs: Uint8Array[];
+}
+/** Data contains the set of transactions included in the block */
+
+export interface DataSDKType {
   txs: Uint8Array[];
 }
 /**
@@ -193,6 +235,21 @@ export interface Vote {
   validatorIndex: number;
   signature: Uint8Array;
 }
+/**
+ * Vote represents a prevote, precommit, or commit vote from validators for
+ * consensus.
+ */
+
+export interface VoteSDKType {
+  type: SignedMsgType;
+  height: Long;
+  round: number;
+  block_id?: BlockIDSDKType;
+  timestamp?: TimestampSDKType;
+  validator_address: Uint8Array;
+  validator_index: number;
+  signature: Uint8Array;
+}
 /** Commit contains the evidence that a block was committed by a set of validators. */
 
 export interface Commit {
@@ -201,12 +258,28 @@ export interface Commit {
   blockId?: BlockID;
   signatures: CommitSig[];
 }
+/** Commit contains the evidence that a block was committed by a set of validators. */
+
+export interface CommitSDKType {
+  height: Long;
+  round: number;
+  block_id?: BlockIDSDKType;
+  signatures: CommitSigSDKType[];
+}
 /** CommitSig is a part of the Vote included in a Commit. */
 
 export interface CommitSig {
   blockIdFlag: BlockIDFlag;
   validatorAddress: Uint8Array;
   timestamp?: Timestamp;
+  signature: Uint8Array;
+}
+/** CommitSig is a part of the Vote included in a Commit. */
+
+export interface CommitSigSDKType {
+  block_id_flag: BlockIDFlag;
+  validator_address: Uint8Array;
+  timestamp?: TimestampSDKType;
   signature: Uint8Array;
 }
 export interface Proposal {
@@ -218,13 +291,30 @@ export interface Proposal {
   timestamp?: Timestamp;
   signature: Uint8Array;
 }
+export interface ProposalSDKType {
+  type: SignedMsgType;
+  height: Long;
+  round: number;
+  pol_round: number;
+  block_id?: BlockIDSDKType;
+  timestamp?: TimestampSDKType;
+  signature: Uint8Array;
+}
 export interface SignedHeader {
   header?: Header;
   commit?: Commit;
 }
+export interface SignedHeaderSDKType {
+  header?: HeaderSDKType;
+  commit?: CommitSDKType;
+}
 export interface LightBlock {
   signedHeader?: SignedHeader;
   validatorSet?: ValidatorSet;
+}
+export interface LightBlockSDKType {
+  signed_header?: SignedHeaderSDKType;
+  validator_set?: ValidatorSetSDKType;
 }
 export interface BlockMeta {
   blockId?: BlockID;
@@ -232,12 +322,25 @@ export interface BlockMeta {
   header?: Header;
   numTxs: Long;
 }
+export interface BlockMetaSDKType {
+  block_id?: BlockIDSDKType;
+  block_size: Long;
+  header?: HeaderSDKType;
+  num_txs: Long;
+}
 /** TxProof represents a Merkle proof of the presence of a transaction in the Merkle tree. */
 
 export interface TxProof {
   rootHash: Uint8Array;
   data: Uint8Array;
   proof?: Proof;
+}
+/** TxProof represents a Merkle proof of the presence of a transaction in the Merkle tree. */
+
+export interface TxProofSDKType {
+  root_hash: Uint8Array;
+  data: Uint8Array;
+  proof?: ProofSDKType;
 }
 
 function createBasePartSetHeader(): PartSetHeader {
@@ -305,6 +408,20 @@ export const PartSetHeader = {
     message.total = object.total ?? 0;
     message.hash = object.hash ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: PartSetHeaderSDKType): PartSetHeader {
+    return {
+      total: object?.total,
+      hash: object?.hash
+    };
+  },
+
+  toSDK(message: PartSetHeader): PartSetHeaderSDKType {
+    const obj: any = {};
+    obj.total = message.total;
+    obj.hash = message.hash;
+    return obj;
   }
 
 };
@@ -386,6 +503,22 @@ export const Part = {
     message.bytes = object.bytes ?? new Uint8Array();
     message.proof = object.proof !== undefined && object.proof !== null ? Proof.fromPartial(object.proof) : undefined;
     return message;
+  },
+
+  fromSDK(object: PartSDKType): Part {
+    return {
+      index: object?.index,
+      bytes: object?.bytes,
+      proof: object.proof ? Proof.fromSDK(object.proof) : undefined
+    };
+  },
+
+  toSDK(message: Part): PartSDKType {
+    const obj: any = {};
+    obj.index = message.index;
+    obj.bytes = message.bytes;
+    message.proof !== undefined && (obj.proof = message.proof ? Proof.toSDK(message.proof) : undefined);
+    return obj;
   }
 
 };
@@ -455,6 +588,20 @@ export const BlockID = {
     message.hash = object.hash ?? new Uint8Array();
     message.partSetHeader = object.partSetHeader !== undefined && object.partSetHeader !== null ? PartSetHeader.fromPartial(object.partSetHeader) : undefined;
     return message;
+  },
+
+  fromSDK(object: BlockIDSDKType): BlockID {
+    return {
+      hash: object?.hash,
+      partSetHeader: object.part_set_header ? PartSetHeader.fromSDK(object.part_set_header) : undefined
+    };
+  },
+
+  toSDK(message: BlockID): BlockIDSDKType {
+    const obj: any = {};
+    obj.hash = message.hash;
+    message.partSetHeader !== undefined && (obj.part_set_header = message.partSetHeader ? PartSetHeader.toSDK(message.partSetHeader) : undefined);
+    return obj;
   }
 
 };
@@ -668,6 +815,44 @@ export const Header = {
     message.evidenceHash = object.evidenceHash ?? new Uint8Array();
     message.proposerAddress = object.proposerAddress ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: HeaderSDKType): Header {
+    return {
+      version: object.version ? Consensus.fromSDK(object.version) : undefined,
+      chainId: object?.chain_id,
+      height: object?.height,
+      time: object.time ? Timestamp.fromSDK(object.time) : undefined,
+      lastBlockId: object.last_block_id ? BlockID.fromSDK(object.last_block_id) : undefined,
+      lastCommitHash: object?.last_commit_hash,
+      dataHash: object?.data_hash,
+      validatorsHash: object?.validators_hash,
+      nextValidatorsHash: object?.next_validators_hash,
+      consensusHash: object?.consensus_hash,
+      appHash: object?.app_hash,
+      lastResultsHash: object?.last_results_hash,
+      evidenceHash: object?.evidence_hash,
+      proposerAddress: object?.proposer_address
+    };
+  },
+
+  toSDK(message: Header): HeaderSDKType {
+    const obj: any = {};
+    message.version !== undefined && (obj.version = message.version ? Consensus.toSDK(message.version) : undefined);
+    obj.chain_id = message.chainId;
+    obj.height = message.height;
+    message.time !== undefined && (obj.time = message.time ? Timestamp.toSDK(message.time) : undefined);
+    message.lastBlockId !== undefined && (obj.last_block_id = message.lastBlockId ? BlockID.toSDK(message.lastBlockId) : undefined);
+    obj.last_commit_hash = message.lastCommitHash;
+    obj.data_hash = message.dataHash;
+    obj.validators_hash = message.validatorsHash;
+    obj.next_validators_hash = message.nextValidatorsHash;
+    obj.consensus_hash = message.consensusHash;
+    obj.app_hash = message.appHash;
+    obj.last_results_hash = message.lastResultsHash;
+    obj.evidence_hash = message.evidenceHash;
+    obj.proposer_address = message.proposerAddress;
+    return obj;
   }
 
 };
@@ -731,6 +916,24 @@ export const Data = {
     const message = createBaseData();
     message.txs = object.txs?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: DataSDKType): Data {
+    return {
+      txs: Array.isArray(object?.txs) ? object.txs.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: Data): DataSDKType {
+    const obj: any = {};
+
+    if (message.txs) {
+      obj.txs = message.txs.map(e => e);
+    } else {
+      obj.txs = [];
+    }
+
+    return obj;
   }
 
 };
@@ -872,6 +1075,32 @@ export const Vote = {
     message.validatorIndex = object.validatorIndex ?? 0;
     message.signature = object.signature ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: VoteSDKType): Vote {
+    return {
+      type: isSet(object.type) ? signedMsgTypeFromJSON(object.type) : 0,
+      height: object?.height,
+      round: object?.round,
+      blockId: object.block_id ? BlockID.fromSDK(object.block_id) : undefined,
+      timestamp: object.timestamp ? Timestamp.fromSDK(object.timestamp) : undefined,
+      validatorAddress: object?.validator_address,
+      validatorIndex: object?.validator_index,
+      signature: object?.signature
+    };
+  },
+
+  toSDK(message: Vote): VoteSDKType {
+    const obj: any = {};
+    message.type !== undefined && (obj.type = signedMsgTypeToJSON(message.type));
+    obj.height = message.height;
+    obj.round = message.round;
+    message.blockId !== undefined && (obj.block_id = message.blockId ? BlockID.toSDK(message.blockId) : undefined);
+    message.timestamp !== undefined && (obj.timestamp = message.timestamp ? Timestamp.toSDK(message.timestamp) : undefined);
+    obj.validator_address = message.validatorAddress;
+    obj.validator_index = message.validatorIndex;
+    obj.signature = message.signature;
+    return obj;
   }
 
 };
@@ -971,6 +1200,30 @@ export const Commit = {
     message.blockId = object.blockId !== undefined && object.blockId !== null ? BlockID.fromPartial(object.blockId) : undefined;
     message.signatures = object.signatures?.map(e => CommitSig.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: CommitSDKType): Commit {
+    return {
+      height: object?.height,
+      round: object?.round,
+      blockId: object.block_id ? BlockID.fromSDK(object.block_id) : undefined,
+      signatures: Array.isArray(object?.signatures) ? object.signatures.map((e: any) => CommitSig.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: Commit): CommitSDKType {
+    const obj: any = {};
+    obj.height = message.height;
+    obj.round = message.round;
+    message.blockId !== undefined && (obj.block_id = message.blockId ? BlockID.toSDK(message.blockId) : undefined);
+
+    if (message.signatures) {
+      obj.signatures = message.signatures.map(e => e ? CommitSig.toSDK(e) : undefined);
+    } else {
+      obj.signatures = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1064,6 +1317,24 @@ export const CommitSig = {
     message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Timestamp.fromPartial(object.timestamp) : undefined;
     message.signature = object.signature ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: CommitSigSDKType): CommitSig {
+    return {
+      blockIdFlag: isSet(object.block_id_flag) ? blockIDFlagFromJSON(object.block_id_flag) : 0,
+      validatorAddress: object?.validator_address,
+      timestamp: object.timestamp ? Timestamp.fromSDK(object.timestamp) : undefined,
+      signature: object?.signature
+    };
+  },
+
+  toSDK(message: CommitSig): CommitSigSDKType {
+    const obj: any = {};
+    message.blockIdFlag !== undefined && (obj.block_id_flag = blockIDFlagToJSON(message.blockIdFlag));
+    obj.validator_address = message.validatorAddress;
+    message.timestamp !== undefined && (obj.timestamp = message.timestamp ? Timestamp.toSDK(message.timestamp) : undefined);
+    obj.signature = message.signature;
+    return obj;
   }
 
 };
@@ -1193,6 +1464,30 @@ export const Proposal = {
     message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Timestamp.fromPartial(object.timestamp) : undefined;
     message.signature = object.signature ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: ProposalSDKType): Proposal {
+    return {
+      type: isSet(object.type) ? signedMsgTypeFromJSON(object.type) : 0,
+      height: object?.height,
+      round: object?.round,
+      polRound: object?.pol_round,
+      blockId: object.block_id ? BlockID.fromSDK(object.block_id) : undefined,
+      timestamp: object.timestamp ? Timestamp.fromSDK(object.timestamp) : undefined,
+      signature: object?.signature
+    };
+  },
+
+  toSDK(message: Proposal): ProposalSDKType {
+    const obj: any = {};
+    message.type !== undefined && (obj.type = signedMsgTypeToJSON(message.type));
+    obj.height = message.height;
+    obj.round = message.round;
+    obj.pol_round = message.polRound;
+    message.blockId !== undefined && (obj.block_id = message.blockId ? BlockID.toSDK(message.blockId) : undefined);
+    message.timestamp !== undefined && (obj.timestamp = message.timestamp ? Timestamp.toSDK(message.timestamp) : undefined);
+    obj.signature = message.signature;
+    return obj;
   }
 
 };
@@ -1262,6 +1557,20 @@ export const SignedHeader = {
     message.header = object.header !== undefined && object.header !== null ? Header.fromPartial(object.header) : undefined;
     message.commit = object.commit !== undefined && object.commit !== null ? Commit.fromPartial(object.commit) : undefined;
     return message;
+  },
+
+  fromSDK(object: SignedHeaderSDKType): SignedHeader {
+    return {
+      header: object.header ? Header.fromSDK(object.header) : undefined,
+      commit: object.commit ? Commit.fromSDK(object.commit) : undefined
+    };
+  },
+
+  toSDK(message: SignedHeader): SignedHeaderSDKType {
+    const obj: any = {};
+    message.header !== undefined && (obj.header = message.header ? Header.toSDK(message.header) : undefined);
+    message.commit !== undefined && (obj.commit = message.commit ? Commit.toSDK(message.commit) : undefined);
+    return obj;
   }
 
 };
@@ -1331,6 +1640,20 @@ export const LightBlock = {
     message.signedHeader = object.signedHeader !== undefined && object.signedHeader !== null ? SignedHeader.fromPartial(object.signedHeader) : undefined;
     message.validatorSet = object.validatorSet !== undefined && object.validatorSet !== null ? ValidatorSet.fromPartial(object.validatorSet) : undefined;
     return message;
+  },
+
+  fromSDK(object: LightBlockSDKType): LightBlock {
+    return {
+      signedHeader: object.signed_header ? SignedHeader.fromSDK(object.signed_header) : undefined,
+      validatorSet: object.validator_set ? ValidatorSet.fromSDK(object.validator_set) : undefined
+    };
+  },
+
+  toSDK(message: LightBlock): LightBlockSDKType {
+    const obj: any = {};
+    message.signedHeader !== undefined && (obj.signed_header = message.signedHeader ? SignedHeader.toSDK(message.signedHeader) : undefined);
+    message.validatorSet !== undefined && (obj.validator_set = message.validatorSet ? ValidatorSet.toSDK(message.validatorSet) : undefined);
+    return obj;
   }
 
 };
@@ -1424,6 +1747,24 @@ export const BlockMeta = {
     message.header = object.header !== undefined && object.header !== null ? Header.fromPartial(object.header) : undefined;
     message.numTxs = object.numTxs !== undefined && object.numTxs !== null ? Long.fromValue(object.numTxs) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: BlockMetaSDKType): BlockMeta {
+    return {
+      blockId: object.block_id ? BlockID.fromSDK(object.block_id) : undefined,
+      blockSize: object?.block_size,
+      header: object.header ? Header.fromSDK(object.header) : undefined,
+      numTxs: object?.num_txs
+    };
+  },
+
+  toSDK(message: BlockMeta): BlockMetaSDKType {
+    const obj: any = {};
+    message.blockId !== undefined && (obj.block_id = message.blockId ? BlockID.toSDK(message.blockId) : undefined);
+    obj.block_size = message.blockSize;
+    message.header !== undefined && (obj.header = message.header ? Header.toSDK(message.header) : undefined);
+    obj.num_txs = message.numTxs;
+    return obj;
   }
 
 };
@@ -1505,6 +1846,22 @@ export const TxProof = {
     message.data = object.data ?? new Uint8Array();
     message.proof = object.proof !== undefined && object.proof !== null ? Proof.fromPartial(object.proof) : undefined;
     return message;
+  },
+
+  fromSDK(object: TxProofSDKType): TxProof {
+    return {
+      rootHash: object?.root_hash,
+      data: object?.data,
+      proof: object.proof ? Proof.fromSDK(object.proof) : undefined
+    };
+  },
+
+  toSDK(message: TxProof): TxProofSDKType {
+    const obj: any = {};
+    obj.root_hash = message.rootHash;
+    obj.data = message.data;
+    message.proof !== undefined && (obj.proof = message.proof ? Proof.toSDK(message.proof) : undefined);
+    return obj;
   }
 
 };

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Coin } from "../../cosmos/base/v1beta1/coin";
+import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.bridge";
@@ -21,6 +21,15 @@ export interface EventCrossTransferOut {
 
   sequence: Long;
 }
+/** EventCrossTransferOut is emitted when a cross chain transfer out tx created */
+
+export interface EventCrossTransferOutSDKType {
+  from: string;
+  to: string;
+  amount?: CoinSDKType;
+  relayer_fee?: CoinSDKType;
+  sequence: Long;
+}
 /** EventCrossTransferOutRefund is emitted when a cross chain transfer out tx failed */
 
 export interface EventCrossTransferOutRefund {
@@ -36,6 +45,14 @@ export interface EventCrossTransferOutRefund {
 
   sequence: Long;
 }
+/** EventCrossTransferOutRefund is emitted when a cross chain transfer out tx failed */
+
+export interface EventCrossTransferOutRefundSDKType {
+  refund_address: string;
+  amount?: CoinSDKType;
+  refund_reason: number;
+  sequence: Long;
+}
 /** EventCrossTransferIn is emitted when a cross chain transfer in tx happened */
 
 export interface EventCrossTransferIn {
@@ -49,6 +66,14 @@ export interface EventCrossTransferIn {
   refundAddress: string;
   /** Sequence of the corresponding cross chain package */
 
+  sequence: Long;
+}
+/** EventCrossTransferIn is emitted when a cross chain transfer in tx happened */
+
+export interface EventCrossTransferInSDKType {
+  amount?: CoinSDKType;
+  receiver_address: string;
+  refund_address: string;
   sequence: Long;
 }
 
@@ -153,6 +178,26 @@ export const EventCrossTransferOut = {
     message.relayerFee = object.relayerFee !== undefined && object.relayerFee !== null ? Coin.fromPartial(object.relayerFee) : undefined;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: EventCrossTransferOutSDKType): EventCrossTransferOut {
+    return {
+      from: object?.from,
+      to: object?.to,
+      amount: object.amount ? Coin.fromSDK(object.amount) : undefined,
+      relayerFee: object.relayer_fee ? Coin.fromSDK(object.relayer_fee) : undefined,
+      sequence: object?.sequence
+    };
+  },
+
+  toSDK(message: EventCrossTransferOut): EventCrossTransferOutSDKType {
+    const obj: any = {};
+    obj.from = message.from;
+    obj.to = message.to;
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
+    message.relayerFee !== undefined && (obj.relayer_fee = message.relayerFee ? Coin.toSDK(message.relayerFee) : undefined);
+    obj.sequence = message.sequence;
+    return obj;
   }
 
 };
@@ -246,6 +291,24 @@ export const EventCrossTransferOutRefund = {
     message.refundReason = object.refundReason ?? 0;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: EventCrossTransferOutRefundSDKType): EventCrossTransferOutRefund {
+    return {
+      refundAddress: object?.refund_address,
+      amount: object.amount ? Coin.fromSDK(object.amount) : undefined,
+      refundReason: object?.refund_reason,
+      sequence: object?.sequence
+    };
+  },
+
+  toSDK(message: EventCrossTransferOutRefund): EventCrossTransferOutRefundSDKType {
+    const obj: any = {};
+    obj.refund_address = message.refundAddress;
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
+    obj.refund_reason = message.refundReason;
+    obj.sequence = message.sequence;
+    return obj;
   }
 
 };
@@ -339,6 +402,24 @@ export const EventCrossTransferIn = {
     message.refundAddress = object.refundAddress ?? "";
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: EventCrossTransferInSDKType): EventCrossTransferIn {
+    return {
+      amount: object.amount ? Coin.fromSDK(object.amount) : undefined,
+      receiverAddress: object?.receiver_address,
+      refundAddress: object?.refund_address,
+      sequence: object?.sequence
+    };
+  },
+
+  toSDK(message: EventCrossTransferIn): EventCrossTransferInSDKType {
+    const obj: any = {};
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
+    obj.receiver_address = message.receiverAddress;
+    obj.refund_address = message.refundAddress;
+    obj.sequence = message.sequence;
+    return obj;
   }
 
 };

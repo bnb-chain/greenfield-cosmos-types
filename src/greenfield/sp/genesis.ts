@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { Params } from "./params";
-import { StorageProvider, SpStoragePrice } from "./types";
+import { Params, ParamsSDKType } from "./params";
+import { StorageProvider, StorageProviderSDKType, SpStoragePrice, SpStoragePriceSDKType } from "./types";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.sp";
@@ -12,6 +12,13 @@ export interface GenesisState {
 
   storageProviders: StorageProvider[];
   spStoragePriceList: SpStoragePrice[];
+}
+/** GenesisState defines the sp module's genesis state. */
+
+export interface GenesisStateSDKType {
+  params?: ParamsSDKType;
+  storage_providers: StorageProviderSDKType[];
+  sp_storage_price_list: SpStoragePriceSDKType[];
 }
 
 function createBaseGenesisState(): GenesisState {
@@ -102,6 +109,33 @@ export const GenesisState = {
     message.storageProviders = object.storageProviders?.map(e => StorageProvider.fromPartial(e)) || [];
     message.spStoragePriceList = object.spStoragePriceList?.map(e => SpStoragePrice.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: GenesisStateSDKType): GenesisState {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined,
+      storageProviders: Array.isArray(object?.storage_providers) ? object.storage_providers.map((e: any) => StorageProvider.fromSDK(e)) : [],
+      spStoragePriceList: Array.isArray(object?.sp_storage_price_list) ? object.sp_storage_price_list.map((e: any) => SpStoragePrice.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: GenesisState): GenesisStateSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+
+    if (message.storageProviders) {
+      obj.storage_providers = message.storageProviders.map(e => e ? StorageProvider.toSDK(e) : undefined);
+    } else {
+      obj.storage_providers = [];
+    }
+
+    if (message.spStoragePriceList) {
+      obj.sp_storage_price_list = message.spStoragePriceList.map(e => e ? SpStoragePrice.toSDK(e) : undefined);
+    } else {
+      obj.sp_storage_price_list = [];
+    }
+
+    return obj;
   }
 
 };

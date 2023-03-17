@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Any } from "../../../google/protobuf/any";
+import { Any, AnySDKType } from "../../../google/protobuf/any";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.nft.v1beta1";
@@ -27,6 +27,17 @@ export interface Class {
 
   data?: Any;
 }
+/** Class defines the class of the nft type. */
+
+export interface ClassSDKType {
+  id: string;
+  name: string;
+  symbol: string;
+  description: string;
+  uri: string;
+  uri_hash: string;
+  data?: AnySDKType;
+}
 /** NFT defines the NFT. */
 
 export interface NFT {
@@ -44,6 +55,15 @@ export interface NFT {
   /** data is an app specific data of the NFT. Optional */
 
   data?: Any;
+}
+/** NFT defines the NFT. */
+
+export interface NFTSDKType {
+  class_id: string;
+  id: string;
+  uri: string;
+  uri_hash: string;
+  data?: AnySDKType;
 }
 
 function createBaseClass(): Class {
@@ -171,6 +191,30 @@ export const Class = {
     message.uriHash = object.uriHash ?? "";
     message.data = object.data !== undefined && object.data !== null ? Any.fromPartial(object.data) : undefined;
     return message;
+  },
+
+  fromSDK(object: ClassSDKType): Class {
+    return {
+      id: object?.id,
+      name: object?.name,
+      symbol: object?.symbol,
+      description: object?.description,
+      uri: object?.uri,
+      uriHash: object?.uri_hash,
+      data: object.data ? Any.fromSDK(object.data) : undefined
+    };
+  },
+
+  toSDK(message: Class): ClassSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.name = message.name;
+    obj.symbol = message.symbol;
+    obj.description = message.description;
+    obj.uri = message.uri;
+    obj.uri_hash = message.uriHash;
+    message.data !== undefined && (obj.data = message.data ? Any.toSDK(message.data) : undefined);
+    return obj;
   }
 
 };
@@ -276,6 +320,26 @@ export const NFT = {
     message.uriHash = object.uriHash ?? "";
     message.data = object.data !== undefined && object.data !== null ? Any.fromPartial(object.data) : undefined;
     return message;
+  },
+
+  fromSDK(object: NFTSDKType): NFT {
+    return {
+      classId: object?.class_id,
+      id: object?.id,
+      uri: object?.uri,
+      uriHash: object?.uri_hash,
+      data: object.data ? Any.fromSDK(object.data) : undefined
+    };
+  },
+
+  toSDK(message: NFT): NFTSDKType {
+    const obj: any = {};
+    obj.class_id = message.classId;
+    obj.id = message.id;
+    obj.uri = message.uri;
+    obj.uri_hash = message.uriHash;
+    message.data !== undefined && (obj.data = message.data ? Any.toSDK(message.data) : undefined);
+    return obj;
   }
 
 };

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Principal, Statement } from "./common";
+import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "./common";
 import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from "../resource/types";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
@@ -12,12 +12,27 @@ export interface Policy {
   statements: Statement[];
   memberStatement?: Statement;
 }
+export interface PolicySDKType {
+  id: string;
+  principal?: PrincipalSDKType;
+  resource_type: ResourceType;
+  resource_id: string;
+  statements: StatementSDKType[];
+  member_statement?: StatementSDKType;
+}
 export interface PolicyGroup {
   items: PolicyGroup_Item[];
+}
+export interface PolicyGroupSDKType {
+  items: PolicyGroup_ItemSDKType[];
 }
 export interface PolicyGroup_Item {
   policyId: string;
   groupId: string;
+}
+export interface PolicyGroup_ItemSDKType {
+  policy_id: string;
+  group_id: string;
 }
 
 function createBasePolicy(): Policy {
@@ -139,6 +154,34 @@ export const Policy = {
     message.statements = object.statements?.map(e => Statement.fromPartial(e)) || [];
     message.memberStatement = object.memberStatement !== undefined && object.memberStatement !== null ? Statement.fromPartial(object.memberStatement) : undefined;
     return message;
+  },
+
+  fromSDK(object: PolicySDKType): Policy {
+    return {
+      id: object?.id,
+      principal: object.principal ? Principal.fromSDK(object.principal) : undefined,
+      resourceType: isSet(object.resource_type) ? resourceTypeFromJSON(object.resource_type) : 0,
+      resourceId: object?.resource_id,
+      statements: Array.isArray(object?.statements) ? object.statements.map((e: any) => Statement.fromSDK(e)) : [],
+      memberStatement: object.member_statement ? Statement.fromSDK(object.member_statement) : undefined
+    };
+  },
+
+  toSDK(message: Policy): PolicySDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    message.principal !== undefined && (obj.principal = message.principal ? Principal.toSDK(message.principal) : undefined);
+    message.resourceType !== undefined && (obj.resource_type = resourceTypeToJSON(message.resourceType));
+    obj.resource_id = message.resourceId;
+
+    if (message.statements) {
+      obj.statements = message.statements.map(e => e ? Statement.toSDK(e) : undefined);
+    } else {
+      obj.statements = [];
+    }
+
+    message.memberStatement !== undefined && (obj.member_statement = message.memberStatement ? Statement.toSDK(message.memberStatement) : undefined);
+    return obj;
   }
 
 };
@@ -202,6 +245,24 @@ export const PolicyGroup = {
     const message = createBasePolicyGroup();
     message.items = object.items?.map(e => PolicyGroup_Item.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: PolicyGroupSDKType): PolicyGroup {
+    return {
+      items: Array.isArray(object?.items) ? object.items.map((e: any) => PolicyGroup_Item.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: PolicyGroup): PolicyGroupSDKType {
+    const obj: any = {};
+
+    if (message.items) {
+      obj.items = message.items.map(e => e ? PolicyGroup_Item.toSDK(e) : undefined);
+    } else {
+      obj.items = [];
+    }
+
+    return obj;
   }
 
 };
@@ -271,6 +332,20 @@ export const PolicyGroup_Item = {
     message.policyId = object.policyId ?? "";
     message.groupId = object.groupId ?? "";
     return message;
+  },
+
+  fromSDK(object: PolicyGroup_ItemSDKType): PolicyGroup_Item {
+    return {
+      policyId: object?.policy_id,
+      groupId: object?.group_id
+    };
+  },
+
+  toSDK(message: PolicyGroup_Item): PolicyGroup_ItemSDKType {
+    const obj: any = {};
+    obj.policy_id = message.policyId;
+    obj.group_id = message.groupId;
+    return obj;
   }
 
 };

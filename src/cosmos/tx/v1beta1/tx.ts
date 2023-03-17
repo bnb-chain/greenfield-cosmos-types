@@ -1,8 +1,8 @@
 /* eslint-disable */
-import { Any } from "../../../google/protobuf/any";
+import { Any, AnySDKType } from "../../../google/protobuf/any";
 import { SignMode, signModeFromJSON, signModeToJSON } from "../signing/v1beta1/signing";
-import { CompactBitArray } from "../../crypto/multisig/v1beta1/multisig";
-import { Coin } from "../../base/v1beta1/coin";
+import { CompactBitArray, CompactBitArraySDKType } from "../../crypto/multisig/v1beta1/multisig";
+import { Coin, CoinSDKType } from "../../base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact, Long } from "../../../helpers";
 export const protobufPackage = "cosmos.tx.v1beta1";
@@ -23,6 +23,13 @@ export interface Tx {
    * public key and signing mode by position.
    */
 
+  signatures: Uint8Array[];
+}
+/** Tx is the standard type used for broadcasting transactions. */
+
+export interface TxSDKType {
+  body?: TxBodySDKType;
+  auth_info?: AuthInfoSDKType;
   signatures: Uint8Array[];
 }
 /**
@@ -53,6 +60,19 @@ export interface TxRaw {
 
   signatures: Uint8Array[];
 }
+/**
+ * TxRaw is a variant of Tx that pins the signer's exact binary representation
+ * of body and auth_info. This is used for signing, broadcasting and
+ * verification. The binary `serialize(tx: TxRaw)` is stored in Tendermint and
+ * the hash `sha256(serialize(tx: TxRaw))` becomes the "txhash", commonly used
+ * as the transaction ID.
+ */
+
+export interface TxRawSDKType {
+  body_bytes: Uint8Array;
+  auth_info_bytes: Uint8Array;
+  signatures: Uint8Array[];
+}
 /** SignDoc is the type used for generating sign bytes for SIGN_MODE_DIRECT. */
 
 export interface SignDoc {
@@ -77,6 +97,14 @@ export interface SignDoc {
   /** account_number is the account number of the account in state */
 
   accountNumber: Long;
+}
+/** SignDoc is the type used for generating sign bytes for SIGN_MODE_DIRECT. */
+
+export interface SignDocSDKType {
+  body_bytes: Uint8Array;
+  auth_info_bytes: Uint8Array;
+  chain_id: string;
+  account_number: Long;
 }
 /**
  * SignDocDirectAux is the type used for generating sign bytes for
@@ -117,6 +145,21 @@ export interface SignDocDirectAux {
    */
 
   tip?: Tip;
+}
+/**
+ * SignDocDirectAux is the type used for generating sign bytes for
+ * SIGN_MODE_DIRECT_AUX.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface SignDocDirectAuxSDKType {
+  body_bytes: Uint8Array;
+  public_key?: AnySDKType;
+  chain_id: string;
+  account_number: Long;
+  sequence: Long;
+  tip?: TipSDKType;
 }
 /**
  * SignDocEIP712 is the type used for generating sign bytes for
@@ -168,6 +211,21 @@ export interface SignDocEip712 {
 
   tip?: Tip;
 }
+/**
+ * SignDocEIP712 is the type used for generating sign bytes for
+ * SIGN_MODE_EIP_712.
+ */
+
+export interface SignDocEip712SDKType {
+  chain_id: Long;
+  account_number: Long;
+  sequence: Long;
+  fee?: FeeSDKType;
+  msg?: AnySDKType;
+  timeout_height: Long;
+  memo: string;
+  tip?: TipSDKType;
+}
 /** TxBody is the body of a transaction that all signers sign over. */
 
 export interface TxBody {
@@ -209,6 +267,15 @@ export interface TxBody {
 
   nonCriticalExtensionOptions: Any[];
 }
+/** TxBody is the body of a transaction that all signers sign over. */
+
+export interface TxBodySDKType {
+  messages: AnySDKType[];
+  memo: string;
+  timeout_height: Long;
+  extension_options: AnySDKType[];
+  non_critical_extension_options: AnySDKType[];
+}
 /**
  * AuthInfo describes the fee and signer modes that are used to sign a
  * transaction.
@@ -242,6 +309,16 @@ export interface AuthInfo {
   tip?: Tip;
 }
 /**
+ * AuthInfo describes the fee and signer modes that are used to sign a
+ * transaction.
+ */
+
+export interface AuthInfoSDKType {
+  signer_infos: SignerInfoSDKType[];
+  fee?: FeeSDKType;
+  tip?: TipSDKType;
+}
+/**
  * SignerInfo describes the public key and signing mode of a single top-level
  * signer.
  */
@@ -267,6 +344,16 @@ export interface SignerInfo {
 
   sequence: Long;
 }
+/**
+ * SignerInfo describes the public key and signing mode of a single top-level
+ * signer.
+ */
+
+export interface SignerInfoSDKType {
+  public_key?: AnySDKType;
+  mode_info?: ModeInfoSDKType;
+  sequence: Long;
+}
 /** ModeInfo describes the signing mode of a single or nested multisig signer. */
 
 export interface ModeInfo {
@@ -276,6 +363,12 @@ export interface ModeInfo {
 
   multi?: ModeInfo_Multi;
 }
+/** ModeInfo describes the signing mode of a single or nested multisig signer. */
+
+export interface ModeInfoSDKType {
+  single?: ModeInfo_SingleSDKType;
+  multi?: ModeInfo_MultiSDKType;
+}
 /**
  * Single is the mode info for a single signer. It is structured as a message
  * to allow for additional fields such as locale for SIGN_MODE_TEXTUAL in the
@@ -284,6 +377,15 @@ export interface ModeInfo {
 
 export interface ModeInfo_Single {
   /** mode is the signing mode of the single signer */
+  mode: SignMode;
+}
+/**
+ * Single is the mode info for a single signer. It is structured as a message
+ * to allow for additional fields such as locale for SIGN_MODE_TEXTUAL in the
+ * future
+ */
+
+export interface ModeInfo_SingleSDKType {
   mode: SignMode;
 }
 /** Multi is the mode info for a multisig public key */
@@ -297,6 +399,12 @@ export interface ModeInfo_Multi {
    */
 
   modeInfos: ModeInfo[];
+}
+/** Multi is the mode info for a multisig public key */
+
+export interface ModeInfo_MultiSDKType {
+  bitarray?: CompactBitArraySDKType;
+  mode_infos: ModeInfoSDKType[];
 }
 /**
  * Fee includes the amount of coins paid in fees and the maximum
@@ -329,6 +437,18 @@ export interface Fee {
   granter: string;
 }
 /**
+ * Fee includes the amount of coins paid in fees and the maximum
+ * gas to be used by the transaction. The ratio yields an effective "gasprice",
+ * which must be above some miminum to be accepted into the mempool.
+ */
+
+export interface FeeSDKType {
+  amount: CoinSDKType[];
+  gas_limit: Long;
+  payer: string;
+  granter: string;
+}
+/**
  * Tip is the tip used for meta-transactions.
  * 
  * Since: cosmos-sdk 0.46
@@ -339,6 +459,16 @@ export interface Tip {
   amount: Coin[];
   /** tipper is the address of the account paying for the tip */
 
+  tipper: string;
+}
+/**
+ * Tip is the tip used for meta-transactions.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface TipSDKType {
+  amount: CoinSDKType[];
   tipper: string;
 }
 /**
@@ -369,6 +499,21 @@ export interface AuxSignerData {
   mode: SignMode;
   /** sig is the signature of the sign doc. */
 
+  sig: Uint8Array;
+}
+/**
+ * AuxSignerData is the intermediary format that an auxiliary signer (e.g. a
+ * tipper) builds and sends to the fee payer (who will build and broadcast the
+ * actual tx). AuxSignerData is not a valid tx in itself, and will be rejected
+ * by the node if sent directly as-is.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface AuxSignerDataSDKType {
+  address: string;
+  sign_doc?: SignDocDirectAuxSDKType;
+  mode: SignMode;
   sig: Uint8Array;
 }
 
@@ -455,6 +600,28 @@ export const Tx = {
     message.authInfo = object.authInfo !== undefined && object.authInfo !== null ? AuthInfo.fromPartial(object.authInfo) : undefined;
     message.signatures = object.signatures?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: TxSDKType): Tx {
+    return {
+      body: object.body ? TxBody.fromSDK(object.body) : undefined,
+      authInfo: object.auth_info ? AuthInfo.fromSDK(object.auth_info) : undefined,
+      signatures: Array.isArray(object?.signatures) ? object.signatures.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: Tx): TxSDKType {
+    const obj: any = {};
+    message.body !== undefined && (obj.body = message.body ? TxBody.toSDK(message.body) : undefined);
+    message.authInfo !== undefined && (obj.auth_info = message.authInfo ? AuthInfo.toSDK(message.authInfo) : undefined);
+
+    if (message.signatures) {
+      obj.signatures = message.signatures.map(e => e);
+    } else {
+      obj.signatures = [];
+    }
+
+    return obj;
   }
 
 };
@@ -542,6 +709,28 @@ export const TxRaw = {
     message.authInfoBytes = object.authInfoBytes ?? new Uint8Array();
     message.signatures = object.signatures?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: TxRawSDKType): TxRaw {
+    return {
+      bodyBytes: object?.body_bytes,
+      authInfoBytes: object?.auth_info_bytes,
+      signatures: Array.isArray(object?.signatures) ? object.signatures.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: TxRaw): TxRawSDKType {
+    const obj: any = {};
+    obj.body_bytes = message.bodyBytes;
+    obj.auth_info_bytes = message.authInfoBytes;
+
+    if (message.signatures) {
+      obj.signatures = message.signatures.map(e => e);
+    } else {
+      obj.signatures = [];
+    }
+
+    return obj;
   }
 
 };
@@ -635,6 +824,24 @@ export const SignDoc = {
     message.chainId = object.chainId ?? "";
     message.accountNumber = object.accountNumber !== undefined && object.accountNumber !== null ? Long.fromValue(object.accountNumber) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: SignDocSDKType): SignDoc {
+    return {
+      bodyBytes: object?.body_bytes,
+      authInfoBytes: object?.auth_info_bytes,
+      chainId: object?.chain_id,
+      accountNumber: object?.account_number
+    };
+  },
+
+  toSDK(message: SignDoc): SignDocSDKType {
+    const obj: any = {};
+    obj.body_bytes = message.bodyBytes;
+    obj.auth_info_bytes = message.authInfoBytes;
+    obj.chain_id = message.chainId;
+    obj.account_number = message.accountNumber;
+    return obj;
   }
 
 };
@@ -752,6 +959,28 @@ export const SignDocDirectAux = {
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     message.tip = object.tip !== undefined && object.tip !== null ? Tip.fromPartial(object.tip) : undefined;
     return message;
+  },
+
+  fromSDK(object: SignDocDirectAuxSDKType): SignDocDirectAux {
+    return {
+      bodyBytes: object?.body_bytes,
+      publicKey: object.public_key ? Any.fromSDK(object.public_key) : undefined,
+      chainId: object?.chain_id,
+      accountNumber: object?.account_number,
+      sequence: object?.sequence,
+      tip: object.tip ? Tip.fromSDK(object.tip) : undefined
+    };
+  },
+
+  toSDK(message: SignDocDirectAux): SignDocDirectAuxSDKType {
+    const obj: any = {};
+    obj.body_bytes = message.bodyBytes;
+    message.publicKey !== undefined && (obj.public_key = message.publicKey ? Any.toSDK(message.publicKey) : undefined);
+    obj.chain_id = message.chainId;
+    obj.account_number = message.accountNumber;
+    obj.sequence = message.sequence;
+    message.tip !== undefined && (obj.tip = message.tip ? Tip.toSDK(message.tip) : undefined);
+    return obj;
   }
 
 };
@@ -893,6 +1122,32 @@ export const SignDocEip712 = {
     message.memo = object.memo ?? "";
     message.tip = object.tip !== undefined && object.tip !== null ? Tip.fromPartial(object.tip) : undefined;
     return message;
+  },
+
+  fromSDK(object: SignDocEip712SDKType): SignDocEip712 {
+    return {
+      chainId: object?.chain_id,
+      accountNumber: object?.account_number,
+      sequence: object?.sequence,
+      fee: object.fee ? Fee.fromSDK(object.fee) : undefined,
+      msg: object.msg ? Any.fromSDK(object.msg) : undefined,
+      timeoutHeight: object?.timeout_height,
+      memo: object?.memo,
+      tip: object.tip ? Tip.fromSDK(object.tip) : undefined
+    };
+  },
+
+  toSDK(message: SignDocEip712): SignDocEip712SDKType {
+    const obj: any = {};
+    obj.chain_id = message.chainId;
+    obj.account_number = message.accountNumber;
+    obj.sequence = message.sequence;
+    message.fee !== undefined && (obj.fee = message.fee ? Fee.toSDK(message.fee) : undefined);
+    message.msg !== undefined && (obj.msg = message.msg ? Any.toSDK(message.msg) : undefined);
+    obj.timeout_height = message.timeoutHeight;
+    obj.memo = message.memo;
+    message.tip !== undefined && (obj.tip = message.tip ? Tip.toSDK(message.tip) : undefined);
+    return obj;
   }
 
 };
@@ -1015,6 +1270,43 @@ export const TxBody = {
     message.extensionOptions = object.extensionOptions?.map(e => Any.fromPartial(e)) || [];
     message.nonCriticalExtensionOptions = object.nonCriticalExtensionOptions?.map(e => Any.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: TxBodySDKType): TxBody {
+    return {
+      messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Any.fromSDK(e)) : [],
+      memo: object?.memo,
+      timeoutHeight: object?.timeout_height,
+      extensionOptions: Array.isArray(object?.extension_options) ? object.extension_options.map((e: any) => Any.fromSDK(e)) : [],
+      nonCriticalExtensionOptions: Array.isArray(object?.non_critical_extension_options) ? object.non_critical_extension_options.map((e: any) => Any.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: TxBody): TxBodySDKType {
+    const obj: any = {};
+
+    if (message.messages) {
+      obj.messages = message.messages.map(e => e ? Any.toSDK(e) : undefined);
+    } else {
+      obj.messages = [];
+    }
+
+    obj.memo = message.memo;
+    obj.timeout_height = message.timeoutHeight;
+
+    if (message.extensionOptions) {
+      obj.extension_options = message.extensionOptions.map(e => e ? Any.toSDK(e) : undefined);
+    } else {
+      obj.extension_options = [];
+    }
+
+    if (message.nonCriticalExtensionOptions) {
+      obj.non_critical_extension_options = message.nonCriticalExtensionOptions.map(e => e ? Any.toSDK(e) : undefined);
+    } else {
+      obj.non_critical_extension_options = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1102,6 +1394,28 @@ export const AuthInfo = {
     message.fee = object.fee !== undefined && object.fee !== null ? Fee.fromPartial(object.fee) : undefined;
     message.tip = object.tip !== undefined && object.tip !== null ? Tip.fromPartial(object.tip) : undefined;
     return message;
+  },
+
+  fromSDK(object: AuthInfoSDKType): AuthInfo {
+    return {
+      signerInfos: Array.isArray(object?.signer_infos) ? object.signer_infos.map((e: any) => SignerInfo.fromSDK(e)) : [],
+      fee: object.fee ? Fee.fromSDK(object.fee) : undefined,
+      tip: object.tip ? Tip.fromSDK(object.tip) : undefined
+    };
+  },
+
+  toSDK(message: AuthInfo): AuthInfoSDKType {
+    const obj: any = {};
+
+    if (message.signerInfos) {
+      obj.signer_infos = message.signerInfos.map(e => e ? SignerInfo.toSDK(e) : undefined);
+    } else {
+      obj.signer_infos = [];
+    }
+
+    message.fee !== undefined && (obj.fee = message.fee ? Fee.toSDK(message.fee) : undefined);
+    message.tip !== undefined && (obj.tip = message.tip ? Tip.toSDK(message.tip) : undefined);
+    return obj;
   }
 
 };
@@ -1183,6 +1497,22 @@ export const SignerInfo = {
     message.modeInfo = object.modeInfo !== undefined && object.modeInfo !== null ? ModeInfo.fromPartial(object.modeInfo) : undefined;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: SignerInfoSDKType): SignerInfo {
+    return {
+      publicKey: object.public_key ? Any.fromSDK(object.public_key) : undefined,
+      modeInfo: object.mode_info ? ModeInfo.fromSDK(object.mode_info) : undefined,
+      sequence: object?.sequence
+    };
+  },
+
+  toSDK(message: SignerInfo): SignerInfoSDKType {
+    const obj: any = {};
+    message.publicKey !== undefined && (obj.public_key = message.publicKey ? Any.toSDK(message.publicKey) : undefined);
+    message.modeInfo !== undefined && (obj.mode_info = message.modeInfo ? ModeInfo.toSDK(message.modeInfo) : undefined);
+    obj.sequence = message.sequence;
+    return obj;
   }
 
 };
@@ -1252,6 +1582,20 @@ export const ModeInfo = {
     message.single = object.single !== undefined && object.single !== null ? ModeInfo_Single.fromPartial(object.single) : undefined;
     message.multi = object.multi !== undefined && object.multi !== null ? ModeInfo_Multi.fromPartial(object.multi) : undefined;
     return message;
+  },
+
+  fromSDK(object: ModeInfoSDKType): ModeInfo {
+    return {
+      single: object.single ? ModeInfo_Single.fromSDK(object.single) : undefined,
+      multi: object.multi ? ModeInfo_Multi.fromSDK(object.multi) : undefined
+    };
+  },
+
+  toSDK(message: ModeInfo): ModeInfoSDKType {
+    const obj: any = {};
+    message.single !== undefined && (obj.single = message.single ? ModeInfo_Single.toSDK(message.single) : undefined);
+    message.multi !== undefined && (obj.multi = message.multi ? ModeInfo_Multi.toSDK(message.multi) : undefined);
+    return obj;
   }
 
 };
@@ -1309,6 +1653,18 @@ export const ModeInfo_Single = {
     const message = createBaseModeInfo_Single();
     message.mode = object.mode ?? 0;
     return message;
+  },
+
+  fromSDK(object: ModeInfo_SingleSDKType): ModeInfo_Single {
+    return {
+      mode: isSet(object.mode) ? signModeFromJSON(object.mode) : 0
+    };
+  },
+
+  toSDK(message: ModeInfo_Single): ModeInfo_SingleSDKType {
+    const obj: any = {};
+    message.mode !== undefined && (obj.mode = signModeToJSON(message.mode));
+    return obj;
   }
 
 };
@@ -1384,6 +1740,26 @@ export const ModeInfo_Multi = {
     message.bitarray = object.bitarray !== undefined && object.bitarray !== null ? CompactBitArray.fromPartial(object.bitarray) : undefined;
     message.modeInfos = object.modeInfos?.map(e => ModeInfo.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: ModeInfo_MultiSDKType): ModeInfo_Multi {
+    return {
+      bitarray: object.bitarray ? CompactBitArray.fromSDK(object.bitarray) : undefined,
+      modeInfos: Array.isArray(object?.mode_infos) ? object.mode_infos.map((e: any) => ModeInfo.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: ModeInfo_Multi): ModeInfo_MultiSDKType {
+    const obj: any = {};
+    message.bitarray !== undefined && (obj.bitarray = message.bitarray ? CompactBitArray.toSDK(message.bitarray) : undefined);
+
+    if (message.modeInfos) {
+      obj.mode_infos = message.modeInfos.map(e => e ? ModeInfo.toSDK(e) : undefined);
+    } else {
+      obj.mode_infos = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1483,6 +1859,30 @@ export const Fee = {
     message.payer = object.payer ?? "";
     message.granter = object.granter ?? "";
     return message;
+  },
+
+  fromSDK(object: FeeSDKType): Fee {
+    return {
+      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromSDK(e)) : [],
+      gasLimit: object?.gas_limit,
+      payer: object?.payer,
+      granter: object?.granter
+    };
+  },
+
+  toSDK(message: Fee): FeeSDKType {
+    const obj: any = {};
+
+    if (message.amount) {
+      obj.amount = message.amount.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.amount = [];
+    }
+
+    obj.gas_limit = message.gasLimit;
+    obj.payer = message.payer;
+    obj.granter = message.granter;
+    return obj;
   }
 
 };
@@ -1558,6 +1958,26 @@ export const Tip = {
     message.amount = object.amount?.map(e => Coin.fromPartial(e)) || [];
     message.tipper = object.tipper ?? "";
     return message;
+  },
+
+  fromSDK(object: TipSDKType): Tip {
+    return {
+      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromSDK(e)) : [],
+      tipper: object?.tipper
+    };
+  },
+
+  toSDK(message: Tip): TipSDKType {
+    const obj: any = {};
+
+    if (message.amount) {
+      obj.amount = message.amount.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.amount = [];
+    }
+
+    obj.tipper = message.tipper;
+    return obj;
   }
 
 };
@@ -1651,6 +2071,24 @@ export const AuxSignerData = {
     message.mode = object.mode ?? 0;
     message.sig = object.sig ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: AuxSignerDataSDKType): AuxSignerData {
+    return {
+      address: object?.address,
+      signDoc: object.sign_doc ? SignDocDirectAux.fromSDK(object.sign_doc) : undefined,
+      mode: isSet(object.mode) ? signModeFromJSON(object.mode) : 0,
+      sig: object?.sig
+    };
+  },
+
+  toSDK(message: AuxSignerData): AuxSignerDataSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    message.signDoc !== undefined && (obj.sign_doc = message.signDoc ? SignDocDirectAux.toSDK(message.signDoc) : undefined);
+    message.mode !== undefined && (obj.mode = signModeToJSON(message.mode));
+    obj.sig = message.sig;
+    return obj;
   }
 
 };

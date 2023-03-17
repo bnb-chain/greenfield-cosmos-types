@@ -12,6 +12,15 @@ export interface MultiSignature {
   signatures: Uint8Array[];
 }
 /**
+ * MultiSignature wraps the signatures from a multisig.LegacyAminoPubKey.
+ * See cosmos.tx.v1betata1.ModeInfo.Multi for how to specify which signers
+ * signed and with which modes.
+ */
+
+export interface MultiSignatureSDKType {
+  signatures: Uint8Array[];
+}
+/**
  * CompactBitArray is an implementation of a space efficient bit array.
  * This is used to ensure that the encoded data takes up a minimal amount of
  * space after proto encoding.
@@ -20,6 +29,17 @@ export interface MultiSignature {
 
 export interface CompactBitArray {
   extraBitsStored: number;
+  elems: Uint8Array;
+}
+/**
+ * CompactBitArray is an implementation of a space efficient bit array.
+ * This is used to ensure that the encoded data takes up a minimal amount of
+ * space after proto encoding.
+ * This is not thread safe, and is not intended for concurrent usage.
+ */
+
+export interface CompactBitArraySDKType {
+  extra_bits_stored: number;
   elems: Uint8Array;
 }
 
@@ -82,6 +102,24 @@ export const MultiSignature = {
     const message = createBaseMultiSignature();
     message.signatures = object.signatures?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: MultiSignatureSDKType): MultiSignature {
+    return {
+      signatures: Array.isArray(object?.signatures) ? object.signatures.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: MultiSignature): MultiSignatureSDKType {
+    const obj: any = {};
+
+    if (message.signatures) {
+      obj.signatures = message.signatures.map(e => e);
+    } else {
+      obj.signatures = [];
+    }
+
+    return obj;
   }
 
 };
@@ -151,6 +189,20 @@ export const CompactBitArray = {
     message.extraBitsStored = object.extraBitsStored ?? 0;
     message.elems = object.elems ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: CompactBitArraySDKType): CompactBitArray {
+    return {
+      extraBitsStored: object?.extra_bits_stored,
+      elems: object?.elems
+    };
+  },
+
+  toSDK(message: CompactBitArray): CompactBitArraySDKType {
+    const obj: any = {};
+    obj.extra_bits_stored = message.extraBitsStored;
+    obj.elems = message.elems;
+    return obj;
   }
 
 };

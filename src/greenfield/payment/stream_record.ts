@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { StreamAccountStatus, OutFlow, streamAccountStatusFromJSON, streamAccountStatusToJSON } from "./base";
+import { StreamAccountStatus, OutFlow, OutFlowSDKType, streamAccountStatusFromJSON, streamAccountStatusToJSON } from "./base";
 import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.payment";
@@ -38,6 +38,19 @@ export interface StreamRecord {
   /** the accumulated outflow rates of the stream account */
 
   outFlows: OutFlow[];
+}
+/** Stream Payment Record of a stream account */
+
+export interface StreamRecordSDKType {
+  account: string;
+  crud_timestamp: Long;
+  netflow_rate: string;
+  static_balance: string;
+  buffer_balance: string;
+  lock_balance: string;
+  status: StreamAccountStatus;
+  settle_timestamp: Long;
+  out_flows: OutFlowSDKType[];
 }
 
 function createBaseStreamRecord(): StreamRecord {
@@ -195,6 +208,40 @@ export const StreamRecord = {
     message.settleTimestamp = object.settleTimestamp !== undefined && object.settleTimestamp !== null ? Long.fromValue(object.settleTimestamp) : Long.ZERO;
     message.outFlows = object.outFlows?.map(e => OutFlow.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: StreamRecordSDKType): StreamRecord {
+    return {
+      account: object?.account,
+      crudTimestamp: object?.crud_timestamp,
+      netflowRate: object?.netflow_rate,
+      staticBalance: object?.static_balance,
+      bufferBalance: object?.buffer_balance,
+      lockBalance: object?.lock_balance,
+      status: isSet(object.status) ? streamAccountStatusFromJSON(object.status) : 0,
+      settleTimestamp: object?.settle_timestamp,
+      outFlows: Array.isArray(object?.out_flows) ? object.out_flows.map((e: any) => OutFlow.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: StreamRecord): StreamRecordSDKType {
+    const obj: any = {};
+    obj.account = message.account;
+    obj.crud_timestamp = message.crudTimestamp;
+    obj.netflow_rate = message.netflowRate;
+    obj.static_balance = message.staticBalance;
+    obj.buffer_balance = message.bufferBalance;
+    obj.lock_balance = message.lockBalance;
+    message.status !== undefined && (obj.status = streamAccountStatusToJSON(message.status));
+    obj.settle_timestamp = message.settleTimestamp;
+
+    if (message.outFlows) {
+      obj.out_flows = message.outFlows.map(e => e ? OutFlow.toSDK(e) : undefined);
+    } else {
+      obj.out_flows = [];
+    }
+
+    return obj;
   }
 
 };

@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { MemberRequest, VoteOption, ProposalExecutorResult, voteOptionFromJSON, voteOptionToJSON, proposalExecutorResultFromJSON, proposalExecutorResultToJSON } from "./types";
-import { Any } from "../../../google/protobuf/any";
+import { MemberRequest, MemberRequestSDKType, VoteOption, ProposalExecutorResult, voteOptionFromJSON, voteOptionToJSON, proposalExecutorResultFromJSON, proposalExecutorResultToJSON } from "./types";
+import { Any, AnySDKType } from "../../../google/protobuf/any";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.group.v1";
@@ -22,6 +22,7 @@ export enum Exec {
   EXEC_TRY = 1,
   UNRECOGNIZED = -1,
 }
+export const ExecSDKType = Exec;
 export function execFromJSON(object: any): Exec {
   switch (object) {
     case 0:
@@ -63,11 +64,23 @@ export interface MsgCreateGroup {
 
   metadata: string;
 }
+/** MsgCreateGroup is the Msg/CreateGroup request type. */
+
+export interface MsgCreateGroupSDKType {
+  admin: string;
+  members: MemberRequestSDKType[];
+  metadata: string;
+}
 /** MsgCreateGroupResponse is the Msg/CreateGroup response type. */
 
 export interface MsgCreateGroupResponse {
   /** group_id is the unique ID of the newly created group. */
   groupId: Long;
+}
+/** MsgCreateGroupResponse is the Msg/CreateGroup response type. */
+
+export interface MsgCreateGroupResponseSDKType {
+  group_id: Long;
 }
 /** MsgUpdateGroupMembers is the Msg/UpdateGroupMembers request type. */
 
@@ -84,9 +97,19 @@ export interface MsgUpdateGroupMembers {
 
   memberUpdates: MemberRequest[];
 }
+/** MsgUpdateGroupMembers is the Msg/UpdateGroupMembers request type. */
+
+export interface MsgUpdateGroupMembersSDKType {
+  admin: string;
+  group_id: Long;
+  member_updates: MemberRequestSDKType[];
+}
 /** MsgUpdateGroupMembersResponse is the Msg/UpdateGroupMembers response type. */
 
 export interface MsgUpdateGroupMembersResponse {}
+/** MsgUpdateGroupMembersResponse is the Msg/UpdateGroupMembers response type. */
+
+export interface MsgUpdateGroupMembersResponseSDKType {}
 /** MsgUpdateGroupAdmin is the Msg/UpdateGroupAdmin request type. */
 
 export interface MsgUpdateGroupAdmin {
@@ -99,9 +122,19 @@ export interface MsgUpdateGroupAdmin {
 
   newAdmin: string;
 }
+/** MsgUpdateGroupAdmin is the Msg/UpdateGroupAdmin request type. */
+
+export interface MsgUpdateGroupAdminSDKType {
+  admin: string;
+  group_id: Long;
+  new_admin: string;
+}
 /** MsgUpdateGroupAdminResponse is the Msg/UpdateGroupAdmin response type. */
 
 export interface MsgUpdateGroupAdminResponse {}
+/** MsgUpdateGroupAdminResponse is the Msg/UpdateGroupAdmin response type. */
+
+export interface MsgUpdateGroupAdminResponseSDKType {}
 /** MsgUpdateGroupMetadata is the Msg/UpdateGroupMetadata request type. */
 
 export interface MsgUpdateGroupMetadata {
@@ -114,9 +147,19 @@ export interface MsgUpdateGroupMetadata {
 
   metadata: string;
 }
+/** MsgUpdateGroupMetadata is the Msg/UpdateGroupMetadata request type. */
+
+export interface MsgUpdateGroupMetadataSDKType {
+  admin: string;
+  group_id: Long;
+  metadata: string;
+}
 /** MsgUpdateGroupMetadataResponse is the Msg/UpdateGroupMetadata response type. */
 
 export interface MsgUpdateGroupMetadataResponse {}
+/** MsgUpdateGroupMetadataResponse is the Msg/UpdateGroupMetadata response type. */
+
+export interface MsgUpdateGroupMetadataResponseSDKType {}
 /** MsgCreateGroupPolicy is the Msg/CreateGroupPolicy request type. */
 
 export interface MsgCreateGroupPolicy {
@@ -132,10 +175,23 @@ export interface MsgCreateGroupPolicy {
 
   decisionPolicy?: Any;
 }
+/** MsgCreateGroupPolicy is the Msg/CreateGroupPolicy request type. */
+
+export interface MsgCreateGroupPolicySDKType {
+  admin: string;
+  group_id: Long;
+  metadata: string;
+  decision_policy?: AnySDKType;
+}
 /** MsgCreateGroupPolicyResponse is the Msg/CreateGroupPolicy response type. */
 
 export interface MsgCreateGroupPolicyResponse {
   /** address is the account address of the newly created group policy. */
+  address: string;
+}
+/** MsgCreateGroupPolicyResponse is the Msg/CreateGroupPolicy response type. */
+
+export interface MsgCreateGroupPolicyResponseSDKType {
   address: string;
 }
 /** MsgUpdateGroupPolicyAdmin is the Msg/UpdateGroupPolicyAdmin request type. */
@@ -149,6 +205,13 @@ export interface MsgUpdateGroupPolicyAdmin {
   /** new_admin is the new group policy admin. */
 
   newAdmin: string;
+}
+/** MsgUpdateGroupPolicyAdmin is the Msg/UpdateGroupPolicyAdmin request type. */
+
+export interface MsgUpdateGroupPolicyAdminSDKType {
+  admin: string;
+  group_policy_address: string;
+  new_admin: string;
 }
 /** MsgCreateGroupWithPolicy is the Msg/CreateGroupWithPolicy request type. */
 
@@ -174,6 +237,16 @@ export interface MsgCreateGroupWithPolicy {
 
   decisionPolicy?: Any;
 }
+/** MsgCreateGroupWithPolicy is the Msg/CreateGroupWithPolicy request type. */
+
+export interface MsgCreateGroupWithPolicySDKType {
+  admin: string;
+  members: MemberRequestSDKType[];
+  group_metadata: string;
+  group_policy_metadata: string;
+  group_policy_as_admin: boolean;
+  decision_policy?: AnySDKType;
+}
 /** MsgCreateGroupWithPolicyResponse is the Msg/CreateGroupWithPolicy response type. */
 
 export interface MsgCreateGroupWithPolicyResponse {
@@ -183,9 +256,18 @@ export interface MsgCreateGroupWithPolicyResponse {
 
   groupPolicyAddress: string;
 }
+/** MsgCreateGroupWithPolicyResponse is the Msg/CreateGroupWithPolicy response type. */
+
+export interface MsgCreateGroupWithPolicyResponseSDKType {
+  group_id: Long;
+  group_policy_address: string;
+}
 /** MsgUpdateGroupPolicyAdminResponse is the Msg/UpdateGroupPolicyAdmin response type. */
 
 export interface MsgUpdateGroupPolicyAdminResponse {}
+/** MsgUpdateGroupPolicyAdminResponse is the Msg/UpdateGroupPolicyAdmin response type. */
+
+export interface MsgUpdateGroupPolicyAdminResponseSDKType {}
 /** MsgUpdateGroupPolicyDecisionPolicy is the Msg/UpdateGroupPolicyDecisionPolicy request type. */
 
 export interface MsgUpdateGroupPolicyDecisionPolicy {
@@ -198,9 +280,19 @@ export interface MsgUpdateGroupPolicyDecisionPolicy {
 
   decisionPolicy?: Any;
 }
+/** MsgUpdateGroupPolicyDecisionPolicy is the Msg/UpdateGroupPolicyDecisionPolicy request type. */
+
+export interface MsgUpdateGroupPolicyDecisionPolicySDKType {
+  admin: string;
+  group_policy_address: string;
+  decision_policy?: AnySDKType;
+}
 /** MsgUpdateGroupPolicyDecisionPolicyResponse is the Msg/UpdateGroupPolicyDecisionPolicy response type. */
 
 export interface MsgUpdateGroupPolicyDecisionPolicyResponse {}
+/** MsgUpdateGroupPolicyDecisionPolicyResponse is the Msg/UpdateGroupPolicyDecisionPolicy response type. */
+
+export interface MsgUpdateGroupPolicyDecisionPolicyResponseSDKType {}
 /** MsgUpdateGroupPolicyMetadata is the Msg/UpdateGroupPolicyMetadata request type. */
 
 export interface MsgUpdateGroupPolicyMetadata {
@@ -213,9 +305,19 @@ export interface MsgUpdateGroupPolicyMetadata {
 
   metadata: string;
 }
+/** MsgUpdateGroupPolicyMetadata is the Msg/UpdateGroupPolicyMetadata request type. */
+
+export interface MsgUpdateGroupPolicyMetadataSDKType {
+  admin: string;
+  group_policy_address: string;
+  metadata: string;
+}
 /** MsgUpdateGroupPolicyMetadataResponse is the Msg/UpdateGroupPolicyMetadata response type. */
 
 export interface MsgUpdateGroupPolicyMetadataResponse {}
+/** MsgUpdateGroupPolicyMetadataResponse is the Msg/UpdateGroupPolicyMetadata response type. */
+
+export interface MsgUpdateGroupPolicyMetadataResponseSDKType {}
 /** MsgSubmitProposal is the Msg/SubmitProposal request type. */
 
 export interface MsgSubmitProposal {
@@ -241,11 +343,25 @@ export interface MsgSubmitProposal {
 
   exec: Exec;
 }
+/** MsgSubmitProposal is the Msg/SubmitProposal request type. */
+
+export interface MsgSubmitProposalSDKType {
+  group_policy_address: string;
+  proposers: string[];
+  metadata: string;
+  messages: AnySDKType[];
+  exec: Exec;
+}
 /** MsgSubmitProposalResponse is the Msg/SubmitProposal response type. */
 
 export interface MsgSubmitProposalResponse {
   /** proposal is the unique ID of the proposal. */
   proposalId: Long;
+}
+/** MsgSubmitProposalResponse is the Msg/SubmitProposal response type. */
+
+export interface MsgSubmitProposalResponseSDKType {
+  proposal_id: Long;
 }
 /** MsgWithdrawProposal is the Msg/WithdrawProposal request type. */
 
@@ -256,9 +372,18 @@ export interface MsgWithdrawProposal {
 
   address: string;
 }
+/** MsgWithdrawProposal is the Msg/WithdrawProposal request type. */
+
+export interface MsgWithdrawProposalSDKType {
+  proposal_id: Long;
+  address: string;
+}
 /** MsgWithdrawProposalResponse is the Msg/WithdrawProposal response type. */
 
 export interface MsgWithdrawProposalResponse {}
+/** MsgWithdrawProposalResponse is the Msg/WithdrawProposal response type. */
+
+export interface MsgWithdrawProposalResponseSDKType {}
 /** MsgVote is the Msg/Vote request type. */
 
 export interface MsgVote {
@@ -280,9 +405,21 @@ export interface MsgVote {
 
   exec: Exec;
 }
+/** MsgVote is the Msg/Vote request type. */
+
+export interface MsgVoteSDKType {
+  proposal_id: Long;
+  voter: string;
+  option: VoteOption;
+  metadata: string;
+  exec: Exec;
+}
 /** MsgVoteResponse is the Msg/Vote response type. */
 
 export interface MsgVoteResponse {}
+/** MsgVoteResponse is the Msg/Vote response type. */
+
+export interface MsgVoteResponseSDKType {}
 /** MsgExec is the Msg/Exec request type. */
 
 export interface MsgExec {
@@ -292,10 +429,21 @@ export interface MsgExec {
 
   executor: string;
 }
+/** MsgExec is the Msg/Exec request type. */
+
+export interface MsgExecSDKType {
+  proposal_id: Long;
+  executor: string;
+}
 /** MsgExecResponse is the Msg/Exec request type. */
 
 export interface MsgExecResponse {
   /** result is the final result of the proposal execution. */
+  result: ProposalExecutorResult;
+}
+/** MsgExecResponse is the Msg/Exec request type. */
+
+export interface MsgExecResponseSDKType {
   result: ProposalExecutorResult;
 }
 /** MsgLeaveGroup is the Msg/LeaveGroup request type. */
@@ -307,9 +455,18 @@ export interface MsgLeaveGroup {
 
   groupId: Long;
 }
+/** MsgLeaveGroup is the Msg/LeaveGroup request type. */
+
+export interface MsgLeaveGroupSDKType {
+  address: string;
+  group_id: Long;
+}
 /** MsgLeaveGroupResponse is the Msg/LeaveGroup response type. */
 
 export interface MsgLeaveGroupResponse {}
+/** MsgLeaveGroupResponse is the Msg/LeaveGroup response type. */
+
+export interface MsgLeaveGroupResponseSDKType {}
 
 function createBaseMsgCreateGroup(): MsgCreateGroup {
   return {
@@ -394,6 +551,28 @@ export const MsgCreateGroup = {
     message.members = object.members?.map(e => MemberRequest.fromPartial(e)) || [];
     message.metadata = object.metadata ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgCreateGroupSDKType): MsgCreateGroup {
+    return {
+      admin: object?.admin,
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => MemberRequest.fromSDK(e)) : [],
+      metadata: object?.metadata
+    };
+  },
+
+  toSDK(message: MsgCreateGroup): MsgCreateGroupSDKType {
+    const obj: any = {};
+    obj.admin = message.admin;
+
+    if (message.members) {
+      obj.members = message.members.map(e => e ? MemberRequest.toSDK(e) : undefined);
+    } else {
+      obj.members = [];
+    }
+
+    obj.metadata = message.metadata;
+    return obj;
   }
 
 };
@@ -451,6 +630,18 @@ export const MsgCreateGroupResponse = {
     const message = createBaseMsgCreateGroupResponse();
     message.groupId = object.groupId !== undefined && object.groupId !== null ? Long.fromValue(object.groupId) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: MsgCreateGroupResponseSDKType): MsgCreateGroupResponse {
+    return {
+      groupId: object?.group_id
+    };
+  },
+
+  toSDK(message: MsgCreateGroupResponse): MsgCreateGroupResponseSDKType {
+    const obj: any = {};
+    obj.group_id = message.groupId;
+    return obj;
   }
 
 };
@@ -538,6 +729,28 @@ export const MsgUpdateGroupMembers = {
     message.groupId = object.groupId !== undefined && object.groupId !== null ? Long.fromValue(object.groupId) : Long.UZERO;
     message.memberUpdates = object.memberUpdates?.map(e => MemberRequest.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: MsgUpdateGroupMembersSDKType): MsgUpdateGroupMembers {
+    return {
+      admin: object?.admin,
+      groupId: object?.group_id,
+      memberUpdates: Array.isArray(object?.member_updates) ? object.member_updates.map((e: any) => MemberRequest.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: MsgUpdateGroupMembers): MsgUpdateGroupMembersSDKType {
+    const obj: any = {};
+    obj.admin = message.admin;
+    obj.group_id = message.groupId;
+
+    if (message.memberUpdates) {
+      obj.member_updates = message.memberUpdates.map(e => e ? MemberRequest.toSDK(e) : undefined);
+    } else {
+      obj.member_updates = [];
+    }
+
+    return obj;
   }
 
 };
@@ -581,6 +794,15 @@ export const MsgUpdateGroupMembersResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateGroupMembersResponse>, I>>(_: I): MsgUpdateGroupMembersResponse {
     const message = createBaseMsgUpdateGroupMembersResponse();
     return message;
+  },
+
+  fromSDK(_: MsgUpdateGroupMembersResponseSDKType): MsgUpdateGroupMembersResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateGroupMembersResponse): MsgUpdateGroupMembersResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -662,6 +884,22 @@ export const MsgUpdateGroupAdmin = {
     message.groupId = object.groupId !== undefined && object.groupId !== null ? Long.fromValue(object.groupId) : Long.UZERO;
     message.newAdmin = object.newAdmin ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgUpdateGroupAdminSDKType): MsgUpdateGroupAdmin {
+    return {
+      admin: object?.admin,
+      groupId: object?.group_id,
+      newAdmin: object?.new_admin
+    };
+  },
+
+  toSDK(message: MsgUpdateGroupAdmin): MsgUpdateGroupAdminSDKType {
+    const obj: any = {};
+    obj.admin = message.admin;
+    obj.group_id = message.groupId;
+    obj.new_admin = message.newAdmin;
+    return obj;
   }
 
 };
@@ -705,6 +943,15 @@ export const MsgUpdateGroupAdminResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateGroupAdminResponse>, I>>(_: I): MsgUpdateGroupAdminResponse {
     const message = createBaseMsgUpdateGroupAdminResponse();
     return message;
+  },
+
+  fromSDK(_: MsgUpdateGroupAdminResponseSDKType): MsgUpdateGroupAdminResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateGroupAdminResponse): MsgUpdateGroupAdminResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -786,6 +1033,22 @@ export const MsgUpdateGroupMetadata = {
     message.groupId = object.groupId !== undefined && object.groupId !== null ? Long.fromValue(object.groupId) : Long.UZERO;
     message.metadata = object.metadata ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgUpdateGroupMetadataSDKType): MsgUpdateGroupMetadata {
+    return {
+      admin: object?.admin,
+      groupId: object?.group_id,
+      metadata: object?.metadata
+    };
+  },
+
+  toSDK(message: MsgUpdateGroupMetadata): MsgUpdateGroupMetadataSDKType {
+    const obj: any = {};
+    obj.admin = message.admin;
+    obj.group_id = message.groupId;
+    obj.metadata = message.metadata;
+    return obj;
   }
 
 };
@@ -829,6 +1092,15 @@ export const MsgUpdateGroupMetadataResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateGroupMetadataResponse>, I>>(_: I): MsgUpdateGroupMetadataResponse {
     const message = createBaseMsgUpdateGroupMetadataResponse();
     return message;
+  },
+
+  fromSDK(_: MsgUpdateGroupMetadataResponseSDKType): MsgUpdateGroupMetadataResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateGroupMetadataResponse): MsgUpdateGroupMetadataResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -922,6 +1194,24 @@ export const MsgCreateGroupPolicy = {
     message.metadata = object.metadata ?? "";
     message.decisionPolicy = object.decisionPolicy !== undefined && object.decisionPolicy !== null ? Any.fromPartial(object.decisionPolicy) : undefined;
     return message;
+  },
+
+  fromSDK(object: MsgCreateGroupPolicySDKType): MsgCreateGroupPolicy {
+    return {
+      admin: object?.admin,
+      groupId: object?.group_id,
+      metadata: object?.metadata,
+      decisionPolicy: object.decision_policy ? Any.fromSDK(object.decision_policy) : undefined
+    };
+  },
+
+  toSDK(message: MsgCreateGroupPolicy): MsgCreateGroupPolicySDKType {
+    const obj: any = {};
+    obj.admin = message.admin;
+    obj.group_id = message.groupId;
+    obj.metadata = message.metadata;
+    message.decisionPolicy !== undefined && (obj.decision_policy = message.decisionPolicy ? Any.toSDK(message.decisionPolicy) : undefined);
+    return obj;
   }
 
 };
@@ -979,6 +1269,18 @@ export const MsgCreateGroupPolicyResponse = {
     const message = createBaseMsgCreateGroupPolicyResponse();
     message.address = object.address ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgCreateGroupPolicyResponseSDKType): MsgCreateGroupPolicyResponse {
+    return {
+      address: object?.address
+    };
+  },
+
+  toSDK(message: MsgCreateGroupPolicyResponse): MsgCreateGroupPolicyResponseSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    return obj;
   }
 
 };
@@ -1060,6 +1362,22 @@ export const MsgUpdateGroupPolicyAdmin = {
     message.groupPolicyAddress = object.groupPolicyAddress ?? "";
     message.newAdmin = object.newAdmin ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgUpdateGroupPolicyAdminSDKType): MsgUpdateGroupPolicyAdmin {
+    return {
+      admin: object?.admin,
+      groupPolicyAddress: object?.group_policy_address,
+      newAdmin: object?.new_admin
+    };
+  },
+
+  toSDK(message: MsgUpdateGroupPolicyAdmin): MsgUpdateGroupPolicyAdminSDKType {
+    const obj: any = {};
+    obj.admin = message.admin;
+    obj.group_policy_address = message.groupPolicyAddress;
+    obj.new_admin = message.newAdmin;
+    return obj;
   }
 
 };
@@ -1183,6 +1501,34 @@ export const MsgCreateGroupWithPolicy = {
     message.groupPolicyAsAdmin = object.groupPolicyAsAdmin ?? false;
     message.decisionPolicy = object.decisionPolicy !== undefined && object.decisionPolicy !== null ? Any.fromPartial(object.decisionPolicy) : undefined;
     return message;
+  },
+
+  fromSDK(object: MsgCreateGroupWithPolicySDKType): MsgCreateGroupWithPolicy {
+    return {
+      admin: object?.admin,
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => MemberRequest.fromSDK(e)) : [],
+      groupMetadata: object?.group_metadata,
+      groupPolicyMetadata: object?.group_policy_metadata,
+      groupPolicyAsAdmin: object?.group_policy_as_admin,
+      decisionPolicy: object.decision_policy ? Any.fromSDK(object.decision_policy) : undefined
+    };
+  },
+
+  toSDK(message: MsgCreateGroupWithPolicy): MsgCreateGroupWithPolicySDKType {
+    const obj: any = {};
+    obj.admin = message.admin;
+
+    if (message.members) {
+      obj.members = message.members.map(e => e ? MemberRequest.toSDK(e) : undefined);
+    } else {
+      obj.members = [];
+    }
+
+    obj.group_metadata = message.groupMetadata;
+    obj.group_policy_metadata = message.groupPolicyMetadata;
+    obj.group_policy_as_admin = message.groupPolicyAsAdmin;
+    message.decisionPolicy !== undefined && (obj.decision_policy = message.decisionPolicy ? Any.toSDK(message.decisionPolicy) : undefined);
+    return obj;
   }
 
 };
@@ -1252,6 +1598,20 @@ export const MsgCreateGroupWithPolicyResponse = {
     message.groupId = object.groupId !== undefined && object.groupId !== null ? Long.fromValue(object.groupId) : Long.UZERO;
     message.groupPolicyAddress = object.groupPolicyAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgCreateGroupWithPolicyResponseSDKType): MsgCreateGroupWithPolicyResponse {
+    return {
+      groupId: object?.group_id,
+      groupPolicyAddress: object?.group_policy_address
+    };
+  },
+
+  toSDK(message: MsgCreateGroupWithPolicyResponse): MsgCreateGroupWithPolicyResponseSDKType {
+    const obj: any = {};
+    obj.group_id = message.groupId;
+    obj.group_policy_address = message.groupPolicyAddress;
+    return obj;
   }
 
 };
@@ -1295,6 +1655,15 @@ export const MsgUpdateGroupPolicyAdminResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateGroupPolicyAdminResponse>, I>>(_: I): MsgUpdateGroupPolicyAdminResponse {
     const message = createBaseMsgUpdateGroupPolicyAdminResponse();
     return message;
+  },
+
+  fromSDK(_: MsgUpdateGroupPolicyAdminResponseSDKType): MsgUpdateGroupPolicyAdminResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateGroupPolicyAdminResponse): MsgUpdateGroupPolicyAdminResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -1376,6 +1745,22 @@ export const MsgUpdateGroupPolicyDecisionPolicy = {
     message.groupPolicyAddress = object.groupPolicyAddress ?? "";
     message.decisionPolicy = object.decisionPolicy !== undefined && object.decisionPolicy !== null ? Any.fromPartial(object.decisionPolicy) : undefined;
     return message;
+  },
+
+  fromSDK(object: MsgUpdateGroupPolicyDecisionPolicySDKType): MsgUpdateGroupPolicyDecisionPolicy {
+    return {
+      admin: object?.admin,
+      groupPolicyAddress: object?.group_policy_address,
+      decisionPolicy: object.decision_policy ? Any.fromSDK(object.decision_policy) : undefined
+    };
+  },
+
+  toSDK(message: MsgUpdateGroupPolicyDecisionPolicy): MsgUpdateGroupPolicyDecisionPolicySDKType {
+    const obj: any = {};
+    obj.admin = message.admin;
+    obj.group_policy_address = message.groupPolicyAddress;
+    message.decisionPolicy !== undefined && (obj.decision_policy = message.decisionPolicy ? Any.toSDK(message.decisionPolicy) : undefined);
+    return obj;
   }
 
 };
@@ -1419,6 +1804,15 @@ export const MsgUpdateGroupPolicyDecisionPolicyResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateGroupPolicyDecisionPolicyResponse>, I>>(_: I): MsgUpdateGroupPolicyDecisionPolicyResponse {
     const message = createBaseMsgUpdateGroupPolicyDecisionPolicyResponse();
     return message;
+  },
+
+  fromSDK(_: MsgUpdateGroupPolicyDecisionPolicyResponseSDKType): MsgUpdateGroupPolicyDecisionPolicyResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateGroupPolicyDecisionPolicyResponse): MsgUpdateGroupPolicyDecisionPolicyResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -1500,6 +1894,22 @@ export const MsgUpdateGroupPolicyMetadata = {
     message.groupPolicyAddress = object.groupPolicyAddress ?? "";
     message.metadata = object.metadata ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgUpdateGroupPolicyMetadataSDKType): MsgUpdateGroupPolicyMetadata {
+    return {
+      admin: object?.admin,
+      groupPolicyAddress: object?.group_policy_address,
+      metadata: object?.metadata
+    };
+  },
+
+  toSDK(message: MsgUpdateGroupPolicyMetadata): MsgUpdateGroupPolicyMetadataSDKType {
+    const obj: any = {};
+    obj.admin = message.admin;
+    obj.group_policy_address = message.groupPolicyAddress;
+    obj.metadata = message.metadata;
+    return obj;
   }
 
 };
@@ -1543,6 +1953,15 @@ export const MsgUpdateGroupPolicyMetadataResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateGroupPolicyMetadataResponse>, I>>(_: I): MsgUpdateGroupPolicyMetadataResponse {
     const message = createBaseMsgUpdateGroupPolicyMetadataResponse();
     return message;
+  },
+
+  fromSDK(_: MsgUpdateGroupPolicyMetadataResponseSDKType): MsgUpdateGroupPolicyMetadataResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateGroupPolicyMetadataResponse): MsgUpdateGroupPolicyMetadataResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -1660,6 +2079,38 @@ export const MsgSubmitProposal = {
     message.messages = object.messages?.map(e => Any.fromPartial(e)) || [];
     message.exec = object.exec ?? 0;
     return message;
+  },
+
+  fromSDK(object: MsgSubmitProposalSDKType): MsgSubmitProposal {
+    return {
+      groupPolicyAddress: object?.group_policy_address,
+      proposers: Array.isArray(object?.proposers) ? object.proposers.map((e: any) => e) : [],
+      metadata: object?.metadata,
+      messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Any.fromSDK(e)) : [],
+      exec: isSet(object.exec) ? execFromJSON(object.exec) : 0
+    };
+  },
+
+  toSDK(message: MsgSubmitProposal): MsgSubmitProposalSDKType {
+    const obj: any = {};
+    obj.group_policy_address = message.groupPolicyAddress;
+
+    if (message.proposers) {
+      obj.proposers = message.proposers.map(e => e);
+    } else {
+      obj.proposers = [];
+    }
+
+    obj.metadata = message.metadata;
+
+    if (message.messages) {
+      obj.messages = message.messages.map(e => e ? Any.toSDK(e) : undefined);
+    } else {
+      obj.messages = [];
+    }
+
+    message.exec !== undefined && (obj.exec = execToJSON(message.exec));
+    return obj;
   }
 
 };
@@ -1717,6 +2168,18 @@ export const MsgSubmitProposalResponse = {
     const message = createBaseMsgSubmitProposalResponse();
     message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? Long.fromValue(object.proposalId) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: MsgSubmitProposalResponseSDKType): MsgSubmitProposalResponse {
+    return {
+      proposalId: object?.proposal_id
+    };
+  },
+
+  toSDK(message: MsgSubmitProposalResponse): MsgSubmitProposalResponseSDKType {
+    const obj: any = {};
+    obj.proposal_id = message.proposalId;
+    return obj;
   }
 
 };
@@ -1786,6 +2249,20 @@ export const MsgWithdrawProposal = {
     message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? Long.fromValue(object.proposalId) : Long.UZERO;
     message.address = object.address ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgWithdrawProposalSDKType): MsgWithdrawProposal {
+    return {
+      proposalId: object?.proposal_id,
+      address: object?.address
+    };
+  },
+
+  toSDK(message: MsgWithdrawProposal): MsgWithdrawProposalSDKType {
+    const obj: any = {};
+    obj.proposal_id = message.proposalId;
+    obj.address = message.address;
+    return obj;
   }
 
 };
@@ -1829,6 +2306,15 @@ export const MsgWithdrawProposalResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgWithdrawProposalResponse>, I>>(_: I): MsgWithdrawProposalResponse {
     const message = createBaseMsgWithdrawProposalResponse();
     return message;
+  },
+
+  fromSDK(_: MsgWithdrawProposalResponseSDKType): MsgWithdrawProposalResponse {
+    return {};
+  },
+
+  toSDK(_: MsgWithdrawProposalResponse): MsgWithdrawProposalResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -1934,6 +2420,26 @@ export const MsgVote = {
     message.metadata = object.metadata ?? "";
     message.exec = object.exec ?? 0;
     return message;
+  },
+
+  fromSDK(object: MsgVoteSDKType): MsgVote {
+    return {
+      proposalId: object?.proposal_id,
+      voter: object?.voter,
+      option: isSet(object.option) ? voteOptionFromJSON(object.option) : 0,
+      metadata: object?.metadata,
+      exec: isSet(object.exec) ? execFromJSON(object.exec) : 0
+    };
+  },
+
+  toSDK(message: MsgVote): MsgVoteSDKType {
+    const obj: any = {};
+    obj.proposal_id = message.proposalId;
+    obj.voter = message.voter;
+    message.option !== undefined && (obj.option = voteOptionToJSON(message.option));
+    obj.metadata = message.metadata;
+    message.exec !== undefined && (obj.exec = execToJSON(message.exec));
+    return obj;
   }
 
 };
@@ -1977,6 +2483,15 @@ export const MsgVoteResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgVoteResponse>, I>>(_: I): MsgVoteResponse {
     const message = createBaseMsgVoteResponse();
     return message;
+  },
+
+  fromSDK(_: MsgVoteResponseSDKType): MsgVoteResponse {
+    return {};
+  },
+
+  toSDK(_: MsgVoteResponse): MsgVoteResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -2046,6 +2561,20 @@ export const MsgExec = {
     message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? Long.fromValue(object.proposalId) : Long.UZERO;
     message.executor = object.executor ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgExecSDKType): MsgExec {
+    return {
+      proposalId: object?.proposal_id,
+      executor: object?.executor
+    };
+  },
+
+  toSDK(message: MsgExec): MsgExecSDKType {
+    const obj: any = {};
+    obj.proposal_id = message.proposalId;
+    obj.executor = message.executor;
+    return obj;
   }
 
 };
@@ -2103,6 +2632,18 @@ export const MsgExecResponse = {
     const message = createBaseMsgExecResponse();
     message.result = object.result ?? 0;
     return message;
+  },
+
+  fromSDK(object: MsgExecResponseSDKType): MsgExecResponse {
+    return {
+      result: isSet(object.result) ? proposalExecutorResultFromJSON(object.result) : 0
+    };
+  },
+
+  toSDK(message: MsgExecResponse): MsgExecResponseSDKType {
+    const obj: any = {};
+    message.result !== undefined && (obj.result = proposalExecutorResultToJSON(message.result));
+    return obj;
   }
 
 };
@@ -2172,6 +2713,20 @@ export const MsgLeaveGroup = {
     message.address = object.address ?? "";
     message.groupId = object.groupId !== undefined && object.groupId !== null ? Long.fromValue(object.groupId) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: MsgLeaveGroupSDKType): MsgLeaveGroup {
+    return {
+      address: object?.address,
+      groupId: object?.group_id
+    };
+  },
+
+  toSDK(message: MsgLeaveGroup): MsgLeaveGroupSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    obj.group_id = message.groupId;
+    return obj;
   }
 
 };
@@ -2215,6 +2770,15 @@ export const MsgLeaveGroupResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgLeaveGroupResponse>, I>>(_: I): MsgLeaveGroupResponse {
     const message = createBaseMsgLeaveGroupResponse();
     return message;
+  },
+
+  fromSDK(_: MsgLeaveGroupResponseSDKType): MsgLeaveGroupResponse {
+    return {};
+  },
+
+  toSDK(_: MsgLeaveGroupResponse): MsgLeaveGroupResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

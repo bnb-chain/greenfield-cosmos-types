@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Plan, ModuleVersion } from "./upgrade";
+import { Plan, PlanSDKType, ModuleVersion, ModuleVersionSDKType } from "./upgrade";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Long, bytesFromBase64, base64FromBytes, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.upgrade.v1beta1";
@@ -10,6 +10,12 @@ export const protobufPackage = "cosmos.upgrade.v1beta1";
 
 export interface QueryCurrentPlanRequest {}
 /**
+ * QueryCurrentPlanRequest is the request type for the Query/CurrentPlan RPC
+ * method.
+ */
+
+export interface QueryCurrentPlanRequestSDKType {}
+/**
  * QueryCurrentPlanResponse is the response type for the Query/CurrentPlan RPC
  * method.
  */
@@ -17,6 +23,14 @@ export interface QueryCurrentPlanRequest {}
 export interface QueryCurrentPlanResponse {
   /** plan is the current upgrade plan. */
   plan: Plan[];
+}
+/**
+ * QueryCurrentPlanResponse is the response type for the Query/CurrentPlan RPC
+ * method.
+ */
+
+export interface QueryCurrentPlanResponseSDKType {
+  plan: PlanSDKType[];
 }
 /**
  * QueryCurrentPlanRequest is the request type for the Query/AppliedPlan RPC
@@ -28,12 +42,28 @@ export interface QueryAppliedPlanRequest {
   name: string;
 }
 /**
+ * QueryCurrentPlanRequest is the request type for the Query/AppliedPlan RPC
+ * method.
+ */
+
+export interface QueryAppliedPlanRequestSDKType {
+  name: string;
+}
+/**
  * QueryAppliedPlanResponse is the response type for the Query/AppliedPlan RPC
  * method.
  */
 
 export interface QueryAppliedPlanResponse {
   /** height is the block height at which the plan was applied. */
+  height: Long;
+}
+/**
+ * QueryAppliedPlanResponse is the response type for the Query/AppliedPlan RPC
+ * method.
+ */
+
+export interface QueryAppliedPlanResponseSDKType {
   height: Long;
 }
 /**
@@ -51,6 +81,16 @@ export interface QueryUpgradedConsensusStateRequest {
   lastHeight: Long;
 }
 /**
+ * QueryUpgradedConsensusStateRequest is the request type for the Query/UpgradedConsensusState
+ * RPC method.
+ */
+
+/** @deprecated */
+
+export interface QueryUpgradedConsensusStateRequestSDKType {
+  last_height: Long;
+}
+/**
  * QueryUpgradedConsensusStateResponse is the response type for the Query/UpgradedConsensusState
  * RPC method.
  */
@@ -60,6 +100,16 @@ export interface QueryUpgradedConsensusStateRequest {
 export interface QueryUpgradedConsensusStateResponse {
   /** Since: cosmos-sdk 0.43 */
   upgradedConsensusState: Uint8Array;
+}
+/**
+ * QueryUpgradedConsensusStateResponse is the response type for the Query/UpgradedConsensusState
+ * RPC method.
+ */
+
+/** @deprecated */
+
+export interface QueryUpgradedConsensusStateResponseSDKType {
+  upgraded_consensus_state: Uint8Array;
 }
 /**
  * QueryModuleVersionsRequest is the request type for the Query/ModuleVersions
@@ -77,6 +127,16 @@ export interface QueryModuleVersionsRequest {
   moduleName: string;
 }
 /**
+ * QueryModuleVersionsRequest is the request type for the Query/ModuleVersions
+ * RPC method.
+ * 
+ * Since: cosmos-sdk 0.43
+ */
+
+export interface QueryModuleVersionsRequestSDKType {
+  module_name: string;
+}
+/**
  * QueryModuleVersionsResponse is the response type for the Query/ModuleVersions
  * RPC method.
  * 
@@ -88,6 +148,16 @@ export interface QueryModuleVersionsResponse {
   moduleVersions: ModuleVersion[];
 }
 /**
+ * QueryModuleVersionsResponse is the response type for the Query/ModuleVersions
+ * RPC method.
+ * 
+ * Since: cosmos-sdk 0.43
+ */
+
+export interface QueryModuleVersionsResponseSDKType {
+  module_versions: ModuleVersionSDKType[];
+}
+/**
  * QueryAuthorityRequest is the request type for Query/Authority
  * 
  * Since: cosmos-sdk 0.46
@@ -95,12 +165,28 @@ export interface QueryModuleVersionsResponse {
 
 export interface QueryAuthorityRequest {}
 /**
+ * QueryAuthorityRequest is the request type for Query/Authority
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface QueryAuthorityRequestSDKType {}
+/**
  * QueryAuthorityResponse is the response type for Query/Authority
  * 
  * Since: cosmos-sdk 0.46
  */
 
 export interface QueryAuthorityResponse {
+  address: string;
+}
+/**
+ * QueryAuthorityResponse is the response type for Query/Authority
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface QueryAuthorityResponseSDKType {
   address: string;
 }
 
@@ -143,6 +229,15 @@ export const QueryCurrentPlanRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryCurrentPlanRequest>, I>>(_: I): QueryCurrentPlanRequest {
     const message = createBaseQueryCurrentPlanRequest();
     return message;
+  },
+
+  fromSDK(_: QueryCurrentPlanRequestSDKType): QueryCurrentPlanRequest {
+    return {};
+  },
+
+  toSDK(_: QueryCurrentPlanRequest): QueryCurrentPlanRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -206,6 +301,24 @@ export const QueryCurrentPlanResponse = {
     const message = createBaseQueryCurrentPlanResponse();
     message.plan = object.plan?.map(e => Plan.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: QueryCurrentPlanResponseSDKType): QueryCurrentPlanResponse {
+    return {
+      plan: Array.isArray(object?.plan) ? object.plan.map((e: any) => Plan.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: QueryCurrentPlanResponse): QueryCurrentPlanResponseSDKType {
+    const obj: any = {};
+
+    if (message.plan) {
+      obj.plan = message.plan.map(e => e ? Plan.toSDK(e) : undefined);
+    } else {
+      obj.plan = [];
+    }
+
+    return obj;
   }
 
 };
@@ -263,6 +376,18 @@ export const QueryAppliedPlanRequest = {
     const message = createBaseQueryAppliedPlanRequest();
     message.name = object.name ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryAppliedPlanRequestSDKType): QueryAppliedPlanRequest {
+    return {
+      name: object?.name
+    };
+  },
+
+  toSDK(message: QueryAppliedPlanRequest): QueryAppliedPlanRequestSDKType {
+    const obj: any = {};
+    obj.name = message.name;
+    return obj;
   }
 
 };
@@ -320,6 +445,18 @@ export const QueryAppliedPlanResponse = {
     const message = createBaseQueryAppliedPlanResponse();
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: QueryAppliedPlanResponseSDKType): QueryAppliedPlanResponse {
+    return {
+      height: object?.height
+    };
+  },
+
+  toSDK(message: QueryAppliedPlanResponse): QueryAppliedPlanResponseSDKType {
+    const obj: any = {};
+    obj.height = message.height;
+    return obj;
   }
 
 };
@@ -377,6 +514,18 @@ export const QueryUpgradedConsensusStateRequest = {
     const message = createBaseQueryUpgradedConsensusStateRequest();
     message.lastHeight = object.lastHeight !== undefined && object.lastHeight !== null ? Long.fromValue(object.lastHeight) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: QueryUpgradedConsensusStateRequestSDKType): QueryUpgradedConsensusStateRequest {
+    return {
+      lastHeight: object?.last_height
+    };
+  },
+
+  toSDK(message: QueryUpgradedConsensusStateRequest): QueryUpgradedConsensusStateRequestSDKType {
+    const obj: any = {};
+    obj.last_height = message.lastHeight;
+    return obj;
   }
 
 };
@@ -434,6 +583,18 @@ export const QueryUpgradedConsensusStateResponse = {
     const message = createBaseQueryUpgradedConsensusStateResponse();
     message.upgradedConsensusState = object.upgradedConsensusState ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: QueryUpgradedConsensusStateResponseSDKType): QueryUpgradedConsensusStateResponse {
+    return {
+      upgradedConsensusState: object?.upgraded_consensus_state
+    };
+  },
+
+  toSDK(message: QueryUpgradedConsensusStateResponse): QueryUpgradedConsensusStateResponseSDKType {
+    const obj: any = {};
+    obj.upgraded_consensus_state = message.upgradedConsensusState;
+    return obj;
   }
 
 };
@@ -491,6 +652,18 @@ export const QueryModuleVersionsRequest = {
     const message = createBaseQueryModuleVersionsRequest();
     message.moduleName = object.moduleName ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryModuleVersionsRequestSDKType): QueryModuleVersionsRequest {
+    return {
+      moduleName: object?.module_name
+    };
+  },
+
+  toSDK(message: QueryModuleVersionsRequest): QueryModuleVersionsRequestSDKType {
+    const obj: any = {};
+    obj.module_name = message.moduleName;
+    return obj;
   }
 
 };
@@ -554,6 +727,24 @@ export const QueryModuleVersionsResponse = {
     const message = createBaseQueryModuleVersionsResponse();
     message.moduleVersions = object.moduleVersions?.map(e => ModuleVersion.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: QueryModuleVersionsResponseSDKType): QueryModuleVersionsResponse {
+    return {
+      moduleVersions: Array.isArray(object?.module_versions) ? object.module_versions.map((e: any) => ModuleVersion.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: QueryModuleVersionsResponse): QueryModuleVersionsResponseSDKType {
+    const obj: any = {};
+
+    if (message.moduleVersions) {
+      obj.module_versions = message.moduleVersions.map(e => e ? ModuleVersion.toSDK(e) : undefined);
+    } else {
+      obj.module_versions = [];
+    }
+
+    return obj;
   }
 
 };
@@ -597,6 +788,15 @@ export const QueryAuthorityRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryAuthorityRequest>, I>>(_: I): QueryAuthorityRequest {
     const message = createBaseQueryAuthorityRequest();
     return message;
+  },
+
+  fromSDK(_: QueryAuthorityRequestSDKType): QueryAuthorityRequest {
+    return {};
+  },
+
+  toSDK(_: QueryAuthorityRequest): QueryAuthorityRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -654,6 +854,18 @@ export const QueryAuthorityResponse = {
     const message = createBaseQueryAuthorityResponse();
     message.address = object.address ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryAuthorityResponseSDKType): QueryAuthorityResponse {
+    return {
+      address: object?.address
+    };
+  },
+
+  toSDK(message: QueryAuthorityResponse): QueryAuthorityResponseSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    return obj;
   }
 
 };

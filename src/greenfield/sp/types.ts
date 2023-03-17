@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Coin } from "../../cosmos/base/v1beta1/coin";
+import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.sp";
@@ -12,6 +12,7 @@ export enum Status {
   STATUS_OUT_OF_SERVICE = 3,
   UNRECOGNIZED = -1,
 }
+export const StatusSDKType = Status;
 export function statusFromJSON(object: any): Status {
   switch (object) {
     case 0:
@@ -73,6 +74,15 @@ export interface Description {
 
   details: string;
 }
+/** Description defines a storage provider description. */
+
+export interface DescriptionSDKType {
+  moniker: string;
+  identity: string;
+  website: string;
+  security_contact: string;
+  details: string;
+}
 /**
  * StorageProvider defines the meta info of storage provider
  * TODO: add endpoint for RPC/HTTP/Websocket and p2p identity
@@ -104,9 +114,29 @@ export interface StorageProvider {
 
   description?: Description;
 }
+/**
+ * StorageProvider defines the meta info of storage provider
+ * TODO: add endpoint for RPC/HTTP/Websocket and p2p identity
+ * TODO: add more account address for different role.
+ */
+
+export interface StorageProviderSDKType {
+  operator_address: string;
+  funding_address: string;
+  seal_address: string;
+  approval_address: string;
+  total_deposit: string;
+  status: Status;
+  endpoint: string;
+  description?: DescriptionSDKType;
+}
 export interface RewardInfo {
   address: string;
   amount?: Coin;
+}
+export interface RewardInfoSDKType {
+  address: string;
+  amount?: CoinSDKType;
 }
 /** storage price of a specific sp */
 
@@ -126,6 +156,15 @@ export interface SpStoragePrice {
 
   storePrice: string;
 }
+/** storage price of a specific sp */
+
+export interface SpStoragePriceSDKType {
+  sp_address: string;
+  update_time: Long;
+  read_price: string;
+  free_read_quota: Long;
+  store_price: string;
+}
 /**
  * global secondary sp store price
  * this is the price for all secondary sps
@@ -137,6 +176,15 @@ export interface SecondarySpStorePrice {
   /** store price, in bnb wei per charge byte */
 
   storePrice: string;
+}
+/**
+ * global secondary sp store price
+ * this is the price for all secondary sps
+ */
+
+export interface SecondarySpStorePriceSDKType {
+  update_time: Long;
+  store_price: string;
 }
 
 function createBaseDescription(): Description {
@@ -240,6 +288,26 @@ export const Description = {
     message.securityContact = object.securityContact ?? "";
     message.details = object.details ?? "";
     return message;
+  },
+
+  fromSDK(object: DescriptionSDKType): Description {
+    return {
+      moniker: object?.moniker,
+      identity: object?.identity,
+      website: object?.website,
+      securityContact: object?.security_contact,
+      details: object?.details
+    };
+  },
+
+  toSDK(message: Description): DescriptionSDKType {
+    const obj: any = {};
+    obj.moniker = message.moniker;
+    obj.identity = message.identity;
+    obj.website = message.website;
+    obj.security_contact = message.securityContact;
+    obj.details = message.details;
+    return obj;
   }
 
 };
@@ -381,6 +449,32 @@ export const StorageProvider = {
     message.endpoint = object.endpoint ?? "";
     message.description = object.description !== undefined && object.description !== null ? Description.fromPartial(object.description) : undefined;
     return message;
+  },
+
+  fromSDK(object: StorageProviderSDKType): StorageProvider {
+    return {
+      operatorAddress: object?.operator_address,
+      fundingAddress: object?.funding_address,
+      sealAddress: object?.seal_address,
+      approvalAddress: object?.approval_address,
+      totalDeposit: object?.total_deposit,
+      status: isSet(object.status) ? statusFromJSON(object.status) : 0,
+      endpoint: object?.endpoint,
+      description: object.description ? Description.fromSDK(object.description) : undefined
+    };
+  },
+
+  toSDK(message: StorageProvider): StorageProviderSDKType {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    obj.funding_address = message.fundingAddress;
+    obj.seal_address = message.sealAddress;
+    obj.approval_address = message.approvalAddress;
+    obj.total_deposit = message.totalDeposit;
+    message.status !== undefined && (obj.status = statusToJSON(message.status));
+    obj.endpoint = message.endpoint;
+    message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
+    return obj;
   }
 
 };
@@ -450,6 +544,20 @@ export const RewardInfo = {
     message.address = object.address ?? "";
     message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
     return message;
+  },
+
+  fromSDK(object: RewardInfoSDKType): RewardInfo {
+    return {
+      address: object?.address,
+      amount: object.amount ? Coin.fromSDK(object.amount) : undefined
+    };
+  },
+
+  toSDK(message: RewardInfo): RewardInfoSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
+    return obj;
   }
 
 };
@@ -555,6 +663,26 @@ export const SpStoragePrice = {
     message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
     message.storePrice = object.storePrice ?? "";
     return message;
+  },
+
+  fromSDK(object: SpStoragePriceSDKType): SpStoragePrice {
+    return {
+      spAddress: object?.sp_address,
+      updateTime: object?.update_time,
+      readPrice: object?.read_price,
+      freeReadQuota: object?.free_read_quota,
+      storePrice: object?.store_price
+    };
+  },
+
+  toSDK(message: SpStoragePrice): SpStoragePriceSDKType {
+    const obj: any = {};
+    obj.sp_address = message.spAddress;
+    obj.update_time = message.updateTime;
+    obj.read_price = message.readPrice;
+    obj.free_read_quota = message.freeReadQuota;
+    obj.store_price = message.storePrice;
+    return obj;
   }
 
 };
@@ -624,6 +752,20 @@ export const SecondarySpStorePrice = {
     message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Long.fromValue(object.updateTime) : Long.ZERO;
     message.storePrice = object.storePrice ?? "";
     return message;
+  },
+
+  fromSDK(object: SecondarySpStorePriceSDKType): SecondarySpStorePrice {
+    return {
+      updateTime: object?.update_time,
+      storePrice: object?.store_price
+    };
+  },
+
+  toSDK(message: SecondarySpStorePrice): SecondarySpStorePriceSDKType {
+    const obj: any = {};
+    obj.update_time = message.updateTime;
+    obj.store_price = message.storePrice;
+    return obj;
   }
 
 };

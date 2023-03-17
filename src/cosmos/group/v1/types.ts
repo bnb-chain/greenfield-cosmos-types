@@ -1,7 +1,7 @@
 /* eslint-disable */
-import { Timestamp } from "../../../google/protobuf/timestamp";
-import { Duration } from "../../../google/protobuf/duration";
-import { Any } from "../../../google/protobuf/any";
+import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
+import { Duration, DurationSDKType } from "../../../google/protobuf/duration";
+import { Any, AnySDKType } from "../../../google/protobuf/any";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact, Long } from "../../../helpers";
 export const protobufPackage = "cosmos.group.v1";
@@ -27,6 +27,7 @@ export enum VoteOption {
   VOTE_OPTION_NO_WITH_VETO = 4,
   UNRECOGNIZED = -1,
 }
+export const VoteOptionSDKType = VoteOption;
 export function voteOptionFromJSON(object: any): VoteOption {
   switch (object) {
     case 0:
@@ -111,6 +112,7 @@ export enum ProposalStatus {
   PROPOSAL_STATUS_WITHDRAWN = 5,
   UNRECOGNIZED = -1,
 }
+export const ProposalStatusSDKType = ProposalStatus;
 export function proposalStatusFromJSON(object: any): ProposalStatus {
   switch (object) {
     case 0:
@@ -184,6 +186,7 @@ export enum ProposalExecutorResult {
   PROPOSAL_EXECUTOR_RESULT_FAILURE = 3,
   UNRECOGNIZED = -1,
 }
+export const ProposalExecutorResultSDKType = ProposalExecutorResult;
 export function proposalExecutorResultFromJSON(object: any): ProposalExecutorResult {
   switch (object) {
     case 0:
@@ -246,6 +249,17 @@ export interface Member {
   addedAt?: Timestamp;
 }
 /**
+ * Member represents a group member with an account address,
+ * non-zero weight, metadata and added_at timestamp.
+ */
+
+export interface MemberSDKType {
+  address: string;
+  weight: string;
+  metadata: string;
+  added_at?: TimestampSDKType;
+}
+/**
  * MemberRequest represents a group member to be used in Msg server requests.
  * Contrary to `Member`, it doesn't have any `added_at` field
  * since this field cannot be set as part of requests.
@@ -259,6 +273,17 @@ export interface MemberRequest {
   weight: string;
   /** metadata is any arbitrary metadata attached to the member. */
 
+  metadata: string;
+}
+/**
+ * MemberRequest represents a group member to be used in Msg server requests.
+ * Contrary to `Member`, it doesn't have any `added_at` field
+ * since this field cannot be set as part of requests.
+ */
+
+export interface MemberRequestSDKType {
+  address: string;
+  weight: string;
   metadata: string;
 }
 /**
@@ -281,6 +306,19 @@ export interface ThresholdDecisionPolicy {
   windows?: DecisionPolicyWindows;
 }
 /**
+ * ThresholdDecisionPolicy is a decision policy where a proposal passes when it
+ * satisfies the two following conditions:
+ * 1. The sum of all `YES` voters' weights is greater or equal than the defined
+ *    `threshold`.
+ * 2. The voting and execution periods of the proposal respect the parameters
+ *    given by `windows`.
+ */
+
+export interface ThresholdDecisionPolicySDKType {
+  threshold: string;
+  windows?: DecisionPolicyWindowsSDKType;
+}
+/**
  * PercentageDecisionPolicy is a decision policy where a proposal passes when
  * it satisfies the two following conditions:
  * 1. The percentage of all `YES` voters' weights out of the total group weight
@@ -298,6 +336,19 @@ export interface PercentageDecisionPolicy {
   /** windows defines the different windows for voting and execution. */
 
   windows?: DecisionPolicyWindows;
+}
+/**
+ * PercentageDecisionPolicy is a decision policy where a proposal passes when
+ * it satisfies the two following conditions:
+ * 1. The percentage of all `YES` voters' weights out of the total group weight
+ *    is greater or equal than the given `percentage`.
+ * 2. The voting and execution periods of the proposal respect the parameters
+ *    given by `windows`.
+ */
+
+export interface PercentageDecisionPolicySDKType {
+  percentage: string;
+  windows?: DecisionPolicyWindowsSDKType;
 }
 /** DecisionPolicyWindows defines the different windows for voting and execution. */
 
@@ -322,6 +373,12 @@ export interface DecisionPolicyWindows {
    */
 
   minExecutionPeriod?: Duration;
+}
+/** DecisionPolicyWindows defines the different windows for voting and execution. */
+
+export interface DecisionPolicyWindowsSDKType {
+  voting_period?: DurationSDKType;
+  min_execution_period?: DurationSDKType;
 }
 /** GroupInfo represents the high-level on-chain information for a group. */
 
@@ -349,6 +406,16 @@ export interface GroupInfo {
 
   createdAt?: Timestamp;
 }
+/** GroupInfo represents the high-level on-chain information for a group. */
+
+export interface GroupInfoSDKType {
+  id: Long;
+  admin: string;
+  metadata: string;
+  version: Long;
+  total_weight: string;
+  created_at?: TimestampSDKType;
+}
 /** GroupMember represents the relationship between a group and a member. */
 
 export interface GroupMember {
@@ -357,6 +424,12 @@ export interface GroupMember {
   /** member is the member data. */
 
   member?: Member;
+}
+/** GroupMember represents the relationship between a group and a member. */
+
+export interface GroupMemberSDKType {
+  group_id: Long;
+  member?: MemberSDKType;
 }
 /** GroupPolicyInfo represents the high-level on-chain information for a group policy. */
 
@@ -384,6 +457,17 @@ export interface GroupPolicyInfo {
   /** created_at is a timestamp specifying when a group policy was created. */
 
   createdAt?: Timestamp;
+}
+/** GroupPolicyInfo represents the high-level on-chain information for a group policy. */
+
+export interface GroupPolicyInfoSDKType {
+  address: string;
+  group_id: Long;
+  admin: string;
+  metadata: string;
+  version: Long;
+  decision_policy?: AnySDKType;
+  created_at?: TimestampSDKType;
 }
 /**
  * Proposal defines a group proposal. Any member of a group can submit a proposal
@@ -448,6 +532,27 @@ export interface Proposal {
 
   messages: Any[];
 }
+/**
+ * Proposal defines a group proposal. Any member of a group can submit a proposal
+ * for a group policy to decide upon.
+ * A proposal consists of a set of `sdk.Msg`s that will be executed if the proposal
+ * passes as well as some optional metadata associated with the proposal.
+ */
+
+export interface ProposalSDKType {
+  id: Long;
+  group_policy_address: string;
+  metadata: string;
+  proposers: string[];
+  submit_time?: TimestampSDKType;
+  group_version: Long;
+  group_policy_version: Long;
+  status: ProposalStatus;
+  final_tally_result?: TallyResultSDKType;
+  voting_period_end?: TimestampSDKType;
+  executor_result: ProposalExecutorResult;
+  messages: AnySDKType[];
+}
 /** TallyResult represents the sum of weighted votes for each vote option. */
 
 export interface TallyResult {
@@ -462,6 +567,14 @@ export interface TallyResult {
   /** no_with_veto_count is the weighted sum of veto. */
 
   noWithVetoCount: string;
+}
+/** TallyResult represents the sum of weighted votes for each vote option. */
+
+export interface TallyResultSDKType {
+  yes_count: string;
+  abstain_count: string;
+  no_count: string;
+  no_with_veto_count: string;
 }
 /** Vote represents a vote for a proposal. */
 
@@ -480,6 +593,15 @@ export interface Vote {
   /** submit_time is the timestamp when the vote was submitted. */
 
   submitTime?: Timestamp;
+}
+/** Vote represents a vote for a proposal. */
+
+export interface VoteSDKType {
+  proposal_id: Long;
+  voter: string;
+  option: VoteOption;
+  metadata: string;
+  submit_time?: TimestampSDKType;
 }
 
 function createBaseMember(): Member {
@@ -571,6 +693,24 @@ export const Member = {
     message.metadata = object.metadata ?? "";
     message.addedAt = object.addedAt !== undefined && object.addedAt !== null ? Timestamp.fromPartial(object.addedAt) : undefined;
     return message;
+  },
+
+  fromSDK(object: MemberSDKType): Member {
+    return {
+      address: object?.address,
+      weight: object?.weight,
+      metadata: object?.metadata,
+      addedAt: object.added_at ? Timestamp.fromSDK(object.added_at) : undefined
+    };
+  },
+
+  toSDK(message: Member): MemberSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    obj.weight = message.weight;
+    obj.metadata = message.metadata;
+    message.addedAt !== undefined && (obj.added_at = message.addedAt ? Timestamp.toSDK(message.addedAt) : undefined);
+    return obj;
   }
 
 };
@@ -652,6 +792,22 @@ export const MemberRequest = {
     message.weight = object.weight ?? "";
     message.metadata = object.metadata ?? "";
     return message;
+  },
+
+  fromSDK(object: MemberRequestSDKType): MemberRequest {
+    return {
+      address: object?.address,
+      weight: object?.weight,
+      metadata: object?.metadata
+    };
+  },
+
+  toSDK(message: MemberRequest): MemberRequestSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    obj.weight = message.weight;
+    obj.metadata = message.metadata;
+    return obj;
   }
 
 };
@@ -721,6 +877,20 @@ export const ThresholdDecisionPolicy = {
     message.threshold = object.threshold ?? "";
     message.windows = object.windows !== undefined && object.windows !== null ? DecisionPolicyWindows.fromPartial(object.windows) : undefined;
     return message;
+  },
+
+  fromSDK(object: ThresholdDecisionPolicySDKType): ThresholdDecisionPolicy {
+    return {
+      threshold: object?.threshold,
+      windows: object.windows ? DecisionPolicyWindows.fromSDK(object.windows) : undefined
+    };
+  },
+
+  toSDK(message: ThresholdDecisionPolicy): ThresholdDecisionPolicySDKType {
+    const obj: any = {};
+    obj.threshold = message.threshold;
+    message.windows !== undefined && (obj.windows = message.windows ? DecisionPolicyWindows.toSDK(message.windows) : undefined);
+    return obj;
   }
 
 };
@@ -790,6 +960,20 @@ export const PercentageDecisionPolicy = {
     message.percentage = object.percentage ?? "";
     message.windows = object.windows !== undefined && object.windows !== null ? DecisionPolicyWindows.fromPartial(object.windows) : undefined;
     return message;
+  },
+
+  fromSDK(object: PercentageDecisionPolicySDKType): PercentageDecisionPolicy {
+    return {
+      percentage: object?.percentage,
+      windows: object.windows ? DecisionPolicyWindows.fromSDK(object.windows) : undefined
+    };
+  },
+
+  toSDK(message: PercentageDecisionPolicy): PercentageDecisionPolicySDKType {
+    const obj: any = {};
+    obj.percentage = message.percentage;
+    message.windows !== undefined && (obj.windows = message.windows ? DecisionPolicyWindows.toSDK(message.windows) : undefined);
+    return obj;
   }
 
 };
@@ -859,6 +1043,20 @@ export const DecisionPolicyWindows = {
     message.votingPeriod = object.votingPeriod !== undefined && object.votingPeriod !== null ? Duration.fromPartial(object.votingPeriod) : undefined;
     message.minExecutionPeriod = object.minExecutionPeriod !== undefined && object.minExecutionPeriod !== null ? Duration.fromPartial(object.minExecutionPeriod) : undefined;
     return message;
+  },
+
+  fromSDK(object: DecisionPolicyWindowsSDKType): DecisionPolicyWindows {
+    return {
+      votingPeriod: object.voting_period ? Duration.fromSDK(object.voting_period) : undefined,
+      minExecutionPeriod: object.min_execution_period ? Duration.fromSDK(object.min_execution_period) : undefined
+    };
+  },
+
+  toSDK(message: DecisionPolicyWindows): DecisionPolicyWindowsSDKType {
+    const obj: any = {};
+    message.votingPeriod !== undefined && (obj.voting_period = message.votingPeriod ? Duration.toSDK(message.votingPeriod) : undefined);
+    message.minExecutionPeriod !== undefined && (obj.min_execution_period = message.minExecutionPeriod ? Duration.toSDK(message.minExecutionPeriod) : undefined);
+    return obj;
   }
 
 };
@@ -976,6 +1174,28 @@ export const GroupInfo = {
     message.totalWeight = object.totalWeight ?? "";
     message.createdAt = object.createdAt !== undefined && object.createdAt !== null ? Timestamp.fromPartial(object.createdAt) : undefined;
     return message;
+  },
+
+  fromSDK(object: GroupInfoSDKType): GroupInfo {
+    return {
+      id: object?.id,
+      admin: object?.admin,
+      metadata: object?.metadata,
+      version: object?.version,
+      totalWeight: object?.total_weight,
+      createdAt: object.created_at ? Timestamp.fromSDK(object.created_at) : undefined
+    };
+  },
+
+  toSDK(message: GroupInfo): GroupInfoSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.admin = message.admin;
+    obj.metadata = message.metadata;
+    obj.version = message.version;
+    obj.total_weight = message.totalWeight;
+    message.createdAt !== undefined && (obj.created_at = message.createdAt ? Timestamp.toSDK(message.createdAt) : undefined);
+    return obj;
   }
 
 };
@@ -1045,6 +1265,20 @@ export const GroupMember = {
     message.groupId = object.groupId !== undefined && object.groupId !== null ? Long.fromValue(object.groupId) : Long.UZERO;
     message.member = object.member !== undefined && object.member !== null ? Member.fromPartial(object.member) : undefined;
     return message;
+  },
+
+  fromSDK(object: GroupMemberSDKType): GroupMember {
+    return {
+      groupId: object?.group_id,
+      member: object.member ? Member.fromSDK(object.member) : undefined
+    };
+  },
+
+  toSDK(message: GroupMember): GroupMemberSDKType {
+    const obj: any = {};
+    obj.group_id = message.groupId;
+    message.member !== undefined && (obj.member = message.member ? Member.toSDK(message.member) : undefined);
+    return obj;
   }
 
 };
@@ -1174,6 +1408,30 @@ export const GroupPolicyInfo = {
     message.decisionPolicy = object.decisionPolicy !== undefined && object.decisionPolicy !== null ? Any.fromPartial(object.decisionPolicy) : undefined;
     message.createdAt = object.createdAt !== undefined && object.createdAt !== null ? Timestamp.fromPartial(object.createdAt) : undefined;
     return message;
+  },
+
+  fromSDK(object: GroupPolicyInfoSDKType): GroupPolicyInfo {
+    return {
+      address: object?.address,
+      groupId: object?.group_id,
+      admin: object?.admin,
+      metadata: object?.metadata,
+      version: object?.version,
+      decisionPolicy: object.decision_policy ? Any.fromSDK(object.decision_policy) : undefined,
+      createdAt: object.created_at ? Timestamp.fromSDK(object.created_at) : undefined
+    };
+  },
+
+  toSDK(message: GroupPolicyInfo): GroupPolicyInfoSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    obj.group_id = message.groupId;
+    obj.admin = message.admin;
+    obj.metadata = message.metadata;
+    obj.version = message.version;
+    message.decisionPolicy !== undefined && (obj.decision_policy = message.decisionPolicy ? Any.toSDK(message.decisionPolicy) : undefined);
+    message.createdAt !== undefined && (obj.created_at = message.createdAt ? Timestamp.toSDK(message.createdAt) : undefined);
+    return obj;
   }
 
 };
@@ -1375,6 +1633,52 @@ export const Proposal = {
     message.executorResult = object.executorResult ?? 0;
     message.messages = object.messages?.map(e => Any.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: ProposalSDKType): Proposal {
+    return {
+      id: object?.id,
+      groupPolicyAddress: object?.group_policy_address,
+      metadata: object?.metadata,
+      proposers: Array.isArray(object?.proposers) ? object.proposers.map((e: any) => e) : [],
+      submitTime: object.submit_time ? Timestamp.fromSDK(object.submit_time) : undefined,
+      groupVersion: object?.group_version,
+      groupPolicyVersion: object?.group_policy_version,
+      status: isSet(object.status) ? proposalStatusFromJSON(object.status) : 0,
+      finalTallyResult: object.final_tally_result ? TallyResult.fromSDK(object.final_tally_result) : undefined,
+      votingPeriodEnd: object.voting_period_end ? Timestamp.fromSDK(object.voting_period_end) : undefined,
+      executorResult: isSet(object.executor_result) ? proposalExecutorResultFromJSON(object.executor_result) : 0,
+      messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Any.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: Proposal): ProposalSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.group_policy_address = message.groupPolicyAddress;
+    obj.metadata = message.metadata;
+
+    if (message.proposers) {
+      obj.proposers = message.proposers.map(e => e);
+    } else {
+      obj.proposers = [];
+    }
+
+    message.submitTime !== undefined && (obj.submit_time = message.submitTime ? Timestamp.toSDK(message.submitTime) : undefined);
+    obj.group_version = message.groupVersion;
+    obj.group_policy_version = message.groupPolicyVersion;
+    message.status !== undefined && (obj.status = proposalStatusToJSON(message.status));
+    message.finalTallyResult !== undefined && (obj.final_tally_result = message.finalTallyResult ? TallyResult.toSDK(message.finalTallyResult) : undefined);
+    message.votingPeriodEnd !== undefined && (obj.voting_period_end = message.votingPeriodEnd ? Timestamp.toSDK(message.votingPeriodEnd) : undefined);
+    message.executorResult !== undefined && (obj.executor_result = proposalExecutorResultToJSON(message.executorResult));
+
+    if (message.messages) {
+      obj.messages = message.messages.map(e => e ? Any.toSDK(e) : undefined);
+    } else {
+      obj.messages = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1468,6 +1772,24 @@ export const TallyResult = {
     message.noCount = object.noCount ?? "";
     message.noWithVetoCount = object.noWithVetoCount ?? "";
     return message;
+  },
+
+  fromSDK(object: TallyResultSDKType): TallyResult {
+    return {
+      yesCount: object?.yes_count,
+      abstainCount: object?.abstain_count,
+      noCount: object?.no_count,
+      noWithVetoCount: object?.no_with_veto_count
+    };
+  },
+
+  toSDK(message: TallyResult): TallyResultSDKType {
+    const obj: any = {};
+    obj.yes_count = message.yesCount;
+    obj.abstain_count = message.abstainCount;
+    obj.no_count = message.noCount;
+    obj.no_with_veto_count = message.noWithVetoCount;
+    return obj;
   }
 
 };
@@ -1573,6 +1895,26 @@ export const Vote = {
     message.metadata = object.metadata ?? "";
     message.submitTime = object.submitTime !== undefined && object.submitTime !== null ? Timestamp.fromPartial(object.submitTime) : undefined;
     return message;
+  },
+
+  fromSDK(object: VoteSDKType): Vote {
+    return {
+      proposalId: object?.proposal_id,
+      voter: object?.voter,
+      option: isSet(object.option) ? voteOptionFromJSON(object.option) : 0,
+      metadata: object?.metadata,
+      submitTime: object.submit_time ? Timestamp.fromSDK(object.submit_time) : undefined
+    };
+  },
+
+  toSDK(message: Vote): VoteSDKType {
+    const obj: any = {};
+    obj.proposal_id = message.proposalId;
+    obj.voter = message.voter;
+    message.option !== undefined && (obj.option = voteOptionToJSON(message.option));
+    obj.metadata = message.metadata;
+    message.submitTime !== undefined && (obj.submit_time = message.submitTime ? Timestamp.toSDK(message.submitTime) : undefined);
+    return obj;
   }
 
 };

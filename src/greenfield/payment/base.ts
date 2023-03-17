@@ -7,6 +7,7 @@ export enum StreamAccountStatus {
   STREAM_ACCOUNT_STATUS_FROZEN = 1,
   UNRECOGNIZED = -1,
 }
+export const StreamAccountStatusSDKType = StreamAccountStatus;
 export function streamAccountStatusFromJSON(object: any): StreamAccountStatus {
   switch (object) {
     case 0:
@@ -46,6 +47,15 @@ export interface OutFlow {
   toAddress: string;
   /** flow rate */
 
+  rate: string;
+}
+/**
+ * OutFlow defines the accumulative outflow stream rate in BNB
+ * from a stream account or a bucket to a SP
+ */
+
+export interface OutFlowSDKType {
+  to_address: string;
   rate: string;
 }
 
@@ -114,6 +124,20 @@ export const OutFlow = {
     message.toAddress = object.toAddress ?? "";
     message.rate = object.rate ?? "";
     return message;
+  },
+
+  fromSDK(object: OutFlowSDKType): OutFlow {
+    return {
+      toAddress: object?.to_address,
+      rate: object?.rate
+    };
+  },
+
+  toSDK(message: OutFlow): OutFlowSDKType {
+    const obj: any = {};
+    obj.to_address = message.toAddress;
+    obj.rate = message.rate;
+    return obj;
   }
 
 };

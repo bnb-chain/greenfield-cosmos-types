@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Grant } from "./feegrant";
+import { Grant, GrantSDKType } from "./feegrant";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.feegrant.v1beta1";
@@ -7,6 +7,11 @@ export const protobufPackage = "cosmos.feegrant.v1beta1";
 
 export interface GenesisState {
   allowances: Grant[];
+}
+/** GenesisState contains a set of fee allowances, persisted from the store */
+
+export interface GenesisStateSDKType {
+  allowances: GrantSDKType[];
 }
 
 function createBaseGenesisState(): GenesisState {
@@ -68,6 +73,24 @@ export const GenesisState = {
     const message = createBaseGenesisState();
     message.allowances = object.allowances?.map(e => Grant.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: GenesisStateSDKType): GenesisState {
+    return {
+      allowances: Array.isArray(object?.allowances) ? object.allowances.map((e: any) => Grant.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: GenesisState): GenesisStateSDKType {
+    const obj: any = {};
+
+    if (message.allowances) {
+      obj.allowances = message.allowances.map(e => e ? Grant.toSDK(e) : undefined);
+    } else {
+      obj.allowances = [];
+    }
+
+    return obj;
   }
 
 };

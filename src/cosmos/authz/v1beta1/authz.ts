@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { Any } from "../../../google/protobuf/any";
-import { Timestamp } from "../../../google/protobuf/timestamp";
+import { Any, AnySDKType } from "../../../google/protobuf/any";
+import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
 export const protobufPackage = "cosmos.authz.v1beta1";
@@ -11,6 +11,14 @@ export const protobufPackage = "cosmos.authz.v1beta1";
 
 export interface GenericAuthorization {
   /** Msg, identified by it's type URL, to grant unrestricted permissions to execute */
+  msg: string;
+}
+/**
+ * GenericAuthorization gives the grantee unrestricted permissions to execute
+ * the provided method on behalf of the granter's account.
+ */
+
+export interface GenericAuthorizationSDKType {
   msg: string;
 }
 /**
@@ -29,6 +37,15 @@ export interface Grant {
   expiration?: Timestamp;
 }
 /**
+ * Grant gives permissions to execute
+ * the provide method with expiration time.
+ */
+
+export interface GrantSDKType {
+  authorization?: AnySDKType;
+  expiration?: TimestampSDKType;
+}
+/**
  * GrantAuthorization extends a grant with both the addresses of the grantee and granter.
  * It is used in genesis.proto and query.proto
  */
@@ -39,11 +56,27 @@ export interface GrantAuthorization {
   authorization?: Any;
   expiration?: Timestamp;
 }
+/**
+ * GrantAuthorization extends a grant with both the addresses of the grantee and granter.
+ * It is used in genesis.proto and query.proto
+ */
+
+export interface GrantAuthorizationSDKType {
+  granter: string;
+  grantee: string;
+  authorization?: AnySDKType;
+  expiration?: TimestampSDKType;
+}
 /** GrantQueueItem contains the list of TypeURL of a sdk.Msg. */
 
 export interface GrantQueueItem {
   /** msg_type_urls contains the list of TypeURL of a sdk.Msg. */
   msgTypeUrls: string[];
+}
+/** GrantQueueItem contains the list of TypeURL of a sdk.Msg. */
+
+export interface GrantQueueItemSDKType {
+  msg_type_urls: string[];
 }
 
 function createBaseGenericAuthorization(): GenericAuthorization {
@@ -99,6 +132,18 @@ export const GenericAuthorization = {
     const message = createBaseGenericAuthorization();
     message.msg = object.msg ?? "";
     return message;
+  },
+
+  fromSDK(object: GenericAuthorizationSDKType): GenericAuthorization {
+    return {
+      msg: object?.msg
+    };
+  },
+
+  toSDK(message: GenericAuthorization): GenericAuthorizationSDKType {
+    const obj: any = {};
+    obj.msg = message.msg;
+    return obj;
   }
 
 };
@@ -168,6 +213,20 @@ export const Grant = {
     message.authorization = object.authorization !== undefined && object.authorization !== null ? Any.fromPartial(object.authorization) : undefined;
     message.expiration = object.expiration !== undefined && object.expiration !== null ? Timestamp.fromPartial(object.expiration) : undefined;
     return message;
+  },
+
+  fromSDK(object: GrantSDKType): Grant {
+    return {
+      authorization: object.authorization ? Any.fromSDK(object.authorization) : undefined,
+      expiration: object.expiration ? Timestamp.fromSDK(object.expiration) : undefined
+    };
+  },
+
+  toSDK(message: Grant): GrantSDKType {
+    const obj: any = {};
+    message.authorization !== undefined && (obj.authorization = message.authorization ? Any.toSDK(message.authorization) : undefined);
+    message.expiration !== undefined && (obj.expiration = message.expiration ? Timestamp.toSDK(message.expiration) : undefined);
+    return obj;
   }
 
 };
@@ -261,6 +320,24 @@ export const GrantAuthorization = {
     message.authorization = object.authorization !== undefined && object.authorization !== null ? Any.fromPartial(object.authorization) : undefined;
     message.expiration = object.expiration !== undefined && object.expiration !== null ? Timestamp.fromPartial(object.expiration) : undefined;
     return message;
+  },
+
+  fromSDK(object: GrantAuthorizationSDKType): GrantAuthorization {
+    return {
+      granter: object?.granter,
+      grantee: object?.grantee,
+      authorization: object.authorization ? Any.fromSDK(object.authorization) : undefined,
+      expiration: object.expiration ? Timestamp.fromSDK(object.expiration) : undefined
+    };
+  },
+
+  toSDK(message: GrantAuthorization): GrantAuthorizationSDKType {
+    const obj: any = {};
+    obj.granter = message.granter;
+    obj.grantee = message.grantee;
+    message.authorization !== undefined && (obj.authorization = message.authorization ? Any.toSDK(message.authorization) : undefined);
+    message.expiration !== undefined && (obj.expiration = message.expiration ? Timestamp.toSDK(message.expiration) : undefined);
+    return obj;
   }
 
 };
@@ -324,6 +401,24 @@ export const GrantQueueItem = {
     const message = createBaseGrantQueueItem();
     message.msgTypeUrls = object.msgTypeUrls?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: GrantQueueItemSDKType): GrantQueueItem {
+    return {
+      msgTypeUrls: Array.isArray(object?.msg_type_urls) ? object.msg_type_urls.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: GrantQueueItem): GrantQueueItemSDKType {
+    const obj: any = {};
+
+    if (message.msgTypeUrls) {
+      obj.msg_type_urls = message.msgTypeUrls.map(e => e);
+    } else {
+      obj.msg_type_urls = [];
+    }
+
+    return obj;
   }
 
 };

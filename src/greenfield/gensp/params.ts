@@ -5,6 +5,9 @@ export const protobufPackage = "bnbchain.greenfield.gensp";
 /** Params defines the parameters for the module. */
 
 export interface Params {}
+/** Params defines the parameters for the module. */
+
+export interface ParamsSDKType {}
 
 function createBaseParams(): Params {
   return {};
@@ -45,6 +48,15 @@ export const Params = {
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(_: I): Params {
     const message = createBaseParams();
     return message;
+  },
+
+  fromSDK(_: ParamsSDKType): Params {
+    return {};
+  },
+
+  toSDK(_: Params): ParamsSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

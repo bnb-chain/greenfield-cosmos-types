@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { ParamChange } from "./params";
+import { ParamChange, ParamChangeSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.params.v1beta1";
@@ -12,11 +12,22 @@ export interface QueryParamsRequest {
 
   key: string;
 }
+/** QueryParamsRequest is request type for the Query/Params RPC method. */
+
+export interface QueryParamsRequestSDKType {
+  subspace: string;
+  key: string;
+}
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 
 export interface QueryParamsResponse {
   /** param defines the queried parameter. */
   param?: ParamChange;
+}
+/** QueryParamsResponse is response type for the Query/Params RPC method. */
+
+export interface QueryParamsResponseSDKType {
+  param?: ParamChangeSDKType;
 }
 /**
  * QuerySubspacesRequest defines a request type for querying for all registered
@@ -26,6 +37,14 @@ export interface QueryParamsResponse {
  */
 
 export interface QuerySubspacesRequest {}
+/**
+ * QuerySubspacesRequest defines a request type for querying for all registered
+ * subspaces and all keys for a subspace.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface QuerySubspacesRequestSDKType {}
 /**
  * QuerySubspacesResponse defines the response types for querying for all
  * registered subspaces and all keys for a subspace.
@@ -37,6 +56,16 @@ export interface QuerySubspacesResponse {
   subspaces: Subspace[];
 }
 /**
+ * QuerySubspacesResponse defines the response types for querying for all
+ * registered subspaces and all keys for a subspace.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface QuerySubspacesResponseSDKType {
+  subspaces: SubspaceSDKType[];
+}
+/**
  * Subspace defines a parameter subspace name and all the keys that exist for
  * the subspace.
  * 
@@ -44,6 +73,17 @@ export interface QuerySubspacesResponse {
  */
 
 export interface Subspace {
+  subspace: string;
+  keys: string[];
+}
+/**
+ * Subspace defines a parameter subspace name and all the keys that exist for
+ * the subspace.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface SubspaceSDKType {
   subspace: string;
   keys: string[];
 }
@@ -113,6 +153,20 @@ export const QueryParamsRequest = {
     message.subspace = object.subspace ?? "";
     message.key = object.key ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryParamsRequestSDKType): QueryParamsRequest {
+    return {
+      subspace: object?.subspace,
+      key: object?.key
+    };
+  },
+
+  toSDK(message: QueryParamsRequest): QueryParamsRequestSDKType {
+    const obj: any = {};
+    obj.subspace = message.subspace;
+    obj.key = message.key;
+    return obj;
   }
 
 };
@@ -170,6 +224,18 @@ export const QueryParamsResponse = {
     const message = createBaseQueryParamsResponse();
     message.param = object.param !== undefined && object.param !== null ? ParamChange.fromPartial(object.param) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryParamsResponseSDKType): QueryParamsResponse {
+    return {
+      param: object.param ? ParamChange.fromSDK(object.param) : undefined
+    };
+  },
+
+  toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
+    const obj: any = {};
+    message.param !== undefined && (obj.param = message.param ? ParamChange.toSDK(message.param) : undefined);
+    return obj;
   }
 
 };
@@ -213,6 +279,15 @@ export const QuerySubspacesRequest = {
   fromPartial<I extends Exact<DeepPartial<QuerySubspacesRequest>, I>>(_: I): QuerySubspacesRequest {
     const message = createBaseQuerySubspacesRequest();
     return message;
+  },
+
+  fromSDK(_: QuerySubspacesRequestSDKType): QuerySubspacesRequest {
+    return {};
+  },
+
+  toSDK(_: QuerySubspacesRequest): QuerySubspacesRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -276,6 +351,24 @@ export const QuerySubspacesResponse = {
     const message = createBaseQuerySubspacesResponse();
     message.subspaces = object.subspaces?.map(e => Subspace.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: QuerySubspacesResponseSDKType): QuerySubspacesResponse {
+    return {
+      subspaces: Array.isArray(object?.subspaces) ? object.subspaces.map((e: any) => Subspace.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: QuerySubspacesResponse): QuerySubspacesResponseSDKType {
+    const obj: any = {};
+
+    if (message.subspaces) {
+      obj.subspaces = message.subspaces.map(e => e ? Subspace.toSDK(e) : undefined);
+    } else {
+      obj.subspaces = [];
+    }
+
+    return obj;
   }
 
 };
@@ -351,6 +444,26 @@ export const Subspace = {
     message.subspace = object.subspace ?? "";
     message.keys = object.keys?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: SubspaceSDKType): Subspace {
+    return {
+      subspace: object?.subspace,
+      keys: Array.isArray(object?.keys) ? object.keys.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: Subspace): SubspaceSDKType {
+    const obj: any = {};
+    obj.subspace = message.subspace;
+
+    if (message.keys) {
+      obj.keys = message.keys.map(e => e);
+    } else {
+      obj.keys = [];
+    }
+
+    return obj;
   }
 
 };

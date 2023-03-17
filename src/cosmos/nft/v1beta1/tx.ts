@@ -17,9 +17,20 @@ export interface MsgSend {
 
   receiver: string;
 }
+/** MsgSend represents a message to send a nft from one account to another account. */
+
+export interface MsgSendSDKType {
+  class_id: string;
+  id: string;
+  sender: string;
+  receiver: string;
+}
 /** MsgSendResponse defines the Msg/Send response type. */
 
 export interface MsgSendResponse {}
+/** MsgSendResponse defines the Msg/Send response type. */
+
+export interface MsgSendResponseSDKType {}
 
 function createBaseMsgSend(): MsgSend {
   return {
@@ -110,6 +121,24 @@ export const MsgSend = {
     message.sender = object.sender ?? "";
     message.receiver = object.receiver ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgSendSDKType): MsgSend {
+    return {
+      classId: object?.class_id,
+      id: object?.id,
+      sender: object?.sender,
+      receiver: object?.receiver
+    };
+  },
+
+  toSDK(message: MsgSend): MsgSendSDKType {
+    const obj: any = {};
+    obj.class_id = message.classId;
+    obj.id = message.id;
+    obj.sender = message.sender;
+    obj.receiver = message.receiver;
+    return obj;
   }
 
 };
@@ -153,6 +182,15 @@ export const MsgSendResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgSendResponse>, I>>(_: I): MsgSendResponse {
     const message = createBaseMsgSendResponse();
     return message;
+  },
+
+  fromSDK(_: MsgSendResponseSDKType): MsgSendResponse {
+    return {};
+  },
+
+  toSDK(_: MsgSendResponse): MsgSendResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
