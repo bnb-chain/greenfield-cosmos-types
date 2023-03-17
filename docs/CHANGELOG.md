@@ -1,3 +1,10 @@
+# [0.3.0-alpha.7](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.3.0-alpha.6...v0.3.0-alpha.7) (2023-03-17)
+
+
+### Features
+
+* Add SDK Type ([d089f82](https://github.com/bnb-chain/gnfd-cosmos-types/commit/d089f8233f54e10d3df64339454acefe5aaec630))
+
 # [0.3.0-alpha.6](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.3.0-alpha.5...v0.3.0-alpha.6) (2023-03-16)
 
 
