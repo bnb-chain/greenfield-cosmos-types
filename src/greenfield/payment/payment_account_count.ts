@@ -11,6 +11,12 @@ export interface PaymentAccountCount {
 
   count: Long;
 }
+/** PaymentAccountCount defines the state struct which stores the number of payment accounts for an account */
+
+export interface PaymentAccountCountSDKType {
+  owner: string;
+  count: Long;
+}
 
 function createBasePaymentAccountCount(): PaymentAccountCount {
   return {
@@ -77,6 +83,20 @@ export const PaymentAccountCount = {
     message.owner = object.owner ?? "";
     message.count = object.count !== undefined && object.count !== null ? Long.fromValue(object.count) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: PaymentAccountCountSDKType): PaymentAccountCount {
+    return {
+      owner: object?.owner,
+      count: object?.count
+    };
+  },
+
+  toSDK(message: PaymentAccountCount): PaymentAccountCountSDKType {
+    const obj: any = {};
+    obj.owner = message.owner;
+    obj.count = message.count;
+    return obj;
   }
 
 };

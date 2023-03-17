@@ -18,6 +18,13 @@ export interface TableDescriptor {
 
   id: number;
 }
+/** TableDescriptor describes an ORM table. */
+
+export interface TableDescriptorSDKType {
+  primary_key?: PrimaryKeyDescriptorSDKType;
+  index: SecondaryIndexDescriptorSDKType[];
+  id: number;
+}
 /** PrimaryKeyDescriptor describes a table primary key. */
 
 export interface PrimaryKeyDescriptor {
@@ -62,6 +69,12 @@ export interface PrimaryKeyDescriptor {
 
   autoIncrement: boolean;
 }
+/** PrimaryKeyDescriptor describes a table primary key. */
+
+export interface PrimaryKeyDescriptorSDKType {
+  fields: string;
+  auto_increment: boolean;
+}
 /** PrimaryKeyDescriptor describes a table secondary index. */
 
 export interface SecondaryIndexDescriptor {
@@ -88,6 +101,13 @@ export interface SecondaryIndexDescriptor {
 
   unique: boolean;
 }
+/** PrimaryKeyDescriptor describes a table secondary index. */
+
+export interface SecondaryIndexDescriptorSDKType {
+  fields: string;
+  id: number;
+  unique: boolean;
+}
 /** TableDescriptor describes an ORM singleton table which has at most one instance. */
 
 export interface SingletonDescriptor {
@@ -96,6 +116,11 @@ export interface SingletonDescriptor {
    * tables and singletons in this file. It may be deprecated in the future when this
    * can be auto-generated.
    */
+  id: number;
+}
+/** TableDescriptor describes an ORM singleton table which has at most one instance. */
+
+export interface SingletonDescriptorSDKType {
   id: number;
 }
 
@@ -182,6 +207,28 @@ export const TableDescriptor = {
     message.index = object.index?.map(e => SecondaryIndexDescriptor.fromPartial(e)) || [];
     message.id = object.id ?? 0;
     return message;
+  },
+
+  fromSDK(object: TableDescriptorSDKType): TableDescriptor {
+    return {
+      primaryKey: object.primary_key ? PrimaryKeyDescriptor.fromSDK(object.primary_key) : undefined,
+      index: Array.isArray(object?.index) ? object.index.map((e: any) => SecondaryIndexDescriptor.fromSDK(e)) : [],
+      id: object?.id
+    };
+  },
+
+  toSDK(message: TableDescriptor): TableDescriptorSDKType {
+    const obj: any = {};
+    message.primaryKey !== undefined && (obj.primary_key = message.primaryKey ? PrimaryKeyDescriptor.toSDK(message.primaryKey) : undefined);
+
+    if (message.index) {
+      obj.index = message.index.map(e => e ? SecondaryIndexDescriptor.toSDK(e) : undefined);
+    } else {
+      obj.index = [];
+    }
+
+    obj.id = message.id;
+    return obj;
   }
 
 };
@@ -251,6 +298,20 @@ export const PrimaryKeyDescriptor = {
     message.fields = object.fields ?? "";
     message.autoIncrement = object.autoIncrement ?? false;
     return message;
+  },
+
+  fromSDK(object: PrimaryKeyDescriptorSDKType): PrimaryKeyDescriptor {
+    return {
+      fields: object?.fields,
+      autoIncrement: object?.auto_increment
+    };
+  },
+
+  toSDK(message: PrimaryKeyDescriptor): PrimaryKeyDescriptorSDKType {
+    const obj: any = {};
+    obj.fields = message.fields;
+    obj.auto_increment = message.autoIncrement;
+    return obj;
   }
 
 };
@@ -332,6 +393,22 @@ export const SecondaryIndexDescriptor = {
     message.id = object.id ?? 0;
     message.unique = object.unique ?? false;
     return message;
+  },
+
+  fromSDK(object: SecondaryIndexDescriptorSDKType): SecondaryIndexDescriptor {
+    return {
+      fields: object?.fields,
+      id: object?.id,
+      unique: object?.unique
+    };
+  },
+
+  toSDK(message: SecondaryIndexDescriptor): SecondaryIndexDescriptorSDKType {
+    const obj: any = {};
+    obj.fields = message.fields;
+    obj.id = message.id;
+    obj.unique = message.unique;
+    return obj;
   }
 
 };
@@ -389,6 +466,18 @@ export const SingletonDescriptor = {
     const message = createBaseSingletonDescriptor();
     message.id = object.id ?? 0;
     return message;
+  },
+
+  fromSDK(object: SingletonDescriptorSDKType): SingletonDescriptor {
+    return {
+      id: object?.id
+    };
+  },
+
+  toSDK(message: SingletonDescriptor): SingletonDescriptorSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    return obj;
   }
 
 };

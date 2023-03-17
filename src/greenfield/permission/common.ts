@@ -19,6 +19,7 @@ export enum ActionType {
   ACTION_TYPE_ALL = 99,
   UNRECOGNIZED = -1,
 }
+export const ActionTypeSDKType = ActionType;
 export function actionTypeFromJSON(object: any): ActionType {
   switch (object) {
     case 0:
@@ -128,6 +129,7 @@ export enum Effect {
   EFFECT_PASS = 2,
   UNRECOGNIZED = -1,
 }
+export const EffectSDKType = Effect;
 export function effectFromJSON(object: any): Effect {
   switch (object) {
     case 0:
@@ -170,6 +172,7 @@ export enum PrincipalType {
   TYPE_GNFD_GROUP = 1,
   UNRECOGNIZED = -1,
 }
+export const PrincipalTypeSDKType = PrincipalType;
 export function principalTypeFromJSON(object: any): PrincipalType {
   switch (object) {
     case 0:
@@ -217,9 +220,22 @@ export interface Statement {
 
   resources: string[];
 }
+/** TODO: add expiration time. */
+
+export interface StatementSDKType {
+  effect: Effect;
+  actions: ActionType[];
+  resources: string[];
+}
 /** Principal define the roles that can grant permissions. Currently, it can be account or group. */
 
 export interface Principal {
+  type: PrincipalType;
+  value: string;
+}
+/** Principal define the roles that can grant permissions. Currently, it can be account or group. */
+
+export interface PrincipalSDKType {
   type: PrincipalType;
   value: string;
 }
@@ -325,6 +341,33 @@ export const Statement = {
     message.actions = object.actions?.map(e => e) || [];
     message.resources = object.resources?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: StatementSDKType): Statement {
+    return {
+      effect: isSet(object.effect) ? effectFromJSON(object.effect) : 0,
+      actions: Array.isArray(object?.actions) ? object.actions.map((e: any) => actionTypeFromJSON(e)) : [],
+      resources: Array.isArray(object?.resources) ? object.resources.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: Statement): StatementSDKType {
+    const obj: any = {};
+    message.effect !== undefined && (obj.effect = effectToJSON(message.effect));
+
+    if (message.actions) {
+      obj.actions = message.actions.map(e => actionTypeToJSON(e));
+    } else {
+      obj.actions = [];
+    }
+
+    if (message.resources) {
+      obj.resources = message.resources.map(e => e);
+    } else {
+      obj.resources = [];
+    }
+
+    return obj;
   }
 
 };
@@ -394,6 +437,20 @@ export const Principal = {
     message.type = object.type ?? 0;
     message.value = object.value ?? "";
     return message;
+  },
+
+  fromSDK(object: PrincipalSDKType): Principal {
+    return {
+      type: isSet(object.type) ? principalTypeFromJSON(object.type) : 0,
+      value: object?.value
+    };
+  },
+
+  toSDK(message: Principal): PrincipalSDKType {
+    const obj: any = {};
+    message.type !== undefined && (obj.type = principalTypeToJSON(message.type));
+    obj.value = message.value;
+    return obj;
   }
 
 };

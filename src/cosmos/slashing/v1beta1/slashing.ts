@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { Timestamp } from "../../../google/protobuf/timestamp";
-import { Duration } from "../../../google/protobuf/duration";
+import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
+import { Duration, DurationSDKType } from "../../../google/protobuf/duration";
 import { Long, isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.slashing.v1beta1";
@@ -37,6 +37,19 @@ export interface ValidatorSigningInfo {
 
   missedBlocksCounter: Long;
 }
+/**
+ * ValidatorSigningInfo defines a validator's signing info for monitoring their
+ * liveness activity.
+ */
+
+export interface ValidatorSigningInfoSDKType {
+  address: string;
+  start_height: Long;
+  index_offset: Long;
+  jailed_until?: TimestampSDKType;
+  tombstoned: boolean;
+  missed_blocks_counter: Long;
+}
 /** Params represents the parameters used for by the slashing module. */
 
 export interface Params {
@@ -45,6 +58,15 @@ export interface Params {
   downtimeJailDuration?: Duration;
   slashFractionDoubleSign: Uint8Array;
   slashFractionDowntime: Uint8Array;
+}
+/** Params represents the parameters used for by the slashing module. */
+
+export interface ParamsSDKType {
+  signed_blocks_window: Long;
+  min_signed_per_window: Uint8Array;
+  downtime_jail_duration?: DurationSDKType;
+  slash_fraction_double_sign: Uint8Array;
+  slash_fraction_downtime: Uint8Array;
 }
 
 function createBaseValidatorSigningInfo(): ValidatorSigningInfo {
@@ -160,6 +182,28 @@ export const ValidatorSigningInfo = {
     message.tombstoned = object.tombstoned ?? false;
     message.missedBlocksCounter = object.missedBlocksCounter !== undefined && object.missedBlocksCounter !== null ? Long.fromValue(object.missedBlocksCounter) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: ValidatorSigningInfoSDKType): ValidatorSigningInfo {
+    return {
+      address: object?.address,
+      startHeight: object?.start_height,
+      indexOffset: object?.index_offset,
+      jailedUntil: object.jailed_until ? Timestamp.fromSDK(object.jailed_until) : undefined,
+      tombstoned: object?.tombstoned,
+      missedBlocksCounter: object?.missed_blocks_counter
+    };
+  },
+
+  toSDK(message: ValidatorSigningInfo): ValidatorSigningInfoSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    obj.start_height = message.startHeight;
+    obj.index_offset = message.indexOffset;
+    message.jailedUntil !== undefined && (obj.jailed_until = message.jailedUntil ? Timestamp.toSDK(message.jailedUntil) : undefined);
+    obj.tombstoned = message.tombstoned;
+    obj.missed_blocks_counter = message.missedBlocksCounter;
+    return obj;
   }
 
 };
@@ -265,6 +309,26 @@ export const Params = {
     message.slashFractionDoubleSign = object.slashFractionDoubleSign ?? new Uint8Array();
     message.slashFractionDowntime = object.slashFractionDowntime ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      signedBlocksWindow: object?.signed_blocks_window,
+      minSignedPerWindow: object?.min_signed_per_window,
+      downtimeJailDuration: object.downtime_jail_duration ? Duration.fromSDK(object.downtime_jail_duration) : undefined,
+      slashFractionDoubleSign: object?.slash_fraction_double_sign,
+      slashFractionDowntime: object?.slash_fraction_downtime
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+    obj.signed_blocks_window = message.signedBlocksWindow;
+    obj.min_signed_per_window = message.minSignedPerWindow;
+    message.downtimeJailDuration !== undefined && (obj.downtime_jail_duration = message.downtimeJailDuration ? Duration.toSDK(message.downtimeJailDuration) : undefined);
+    obj.slash_fraction_double_sign = message.slashFractionDoubleSign;
+    obj.slash_fraction_downtime = message.slashFractionDowntime;
+    return obj;
   }
 
 };

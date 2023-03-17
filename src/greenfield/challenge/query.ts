@@ -1,19 +1,31 @@
 /* eslint-disable */
-import { Params } from "./params";
+import { Params, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Long, Rpc } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.challenge";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
+/** QueryParamsRequest is request type for the Query/Params RPC method. */
+
+export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 
 export interface QueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: Params;
 }
+/** QueryParamsResponse is response type for the Query/Params RPC method. */
+
+export interface QueryParamsResponseSDKType {
+  params?: ParamsSDKType;
+}
 export interface QueryLatestAttestedChallengeRequest {}
+export interface QueryLatestAttestedChallengeRequestSDKType {}
 export interface QueryLatestAttestedChallengeResponse {
+  challengeId: Long;
+}
+export interface QueryLatestAttestedChallengeResponseSDKType {
   challengeId: Long;
 }
 
@@ -56,6 +68,15 @@ export const QueryParamsRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(_: I): QueryParamsRequest {
     const message = createBaseQueryParamsRequest();
     return message;
+  },
+
+  fromSDK(_: QueryParamsRequestSDKType): QueryParamsRequest {
+    return {};
+  },
+
+  toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -113,6 +134,18 @@ export const QueryParamsResponse = {
     const message = createBaseQueryParamsResponse();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryParamsResponseSDKType): QueryParamsResponse {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
   }
 
 };
@@ -156,6 +189,15 @@ export const QueryLatestAttestedChallengeRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryLatestAttestedChallengeRequest>, I>>(_: I): QueryLatestAttestedChallengeRequest {
     const message = createBaseQueryLatestAttestedChallengeRequest();
     return message;
+  },
+
+  fromSDK(_: QueryLatestAttestedChallengeRequestSDKType): QueryLatestAttestedChallengeRequest {
+    return {};
+  },
+
+  toSDK(_: QueryLatestAttestedChallengeRequest): QueryLatestAttestedChallengeRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -213,6 +255,18 @@ export const QueryLatestAttestedChallengeResponse = {
     const message = createBaseQueryLatestAttestedChallengeResponse();
     message.challengeId = object.challengeId !== undefined && object.challengeId !== null ? Long.fromValue(object.challengeId) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: QueryLatestAttestedChallengeResponseSDKType): QueryLatestAttestedChallengeResponse {
+    return {
+      challengeId: object?.challengeId
+    };
+  },
+
+  toSDK(message: QueryLatestAttestedChallengeResponse): QueryLatestAttestedChallengeResponseSDKType {
+    const obj: any = {};
+    obj.challengeId = message.challengeId;
+    return obj;
   }
 
 };

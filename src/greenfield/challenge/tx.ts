@@ -22,7 +22,16 @@ export interface MsgSubmit {
 
   randomIndex: boolean;
 }
+export interface MsgSubmitSDKType {
+  challenger: string;
+  sp_operator_address: string;
+  bucket_name: string;
+  object_name: string;
+  segment_index: number;
+  random_index: boolean;
+}
 export interface MsgSubmitResponse {}
+export interface MsgSubmitResponseSDKType {}
 export interface MsgAttest {
   /** The submitter address. */
   submitter: string;
@@ -48,7 +57,18 @@ export interface MsgAttest {
 
   voteAggSignature: Uint8Array;
 }
+export interface MsgAttestSDKType {
+  submitter: string;
+  challenge_id: Long;
+  object_id: string;
+  sp_operator_address: string;
+  vote_result: VoteResult;
+  challenger_address: string;
+  vote_validator_set: Long[];
+  vote_agg_signature: Uint8Array;
+}
 export interface MsgAttestResponse {}
+export interface MsgAttestResponseSDKType {}
 
 function createBaseMsgSubmit(): MsgSubmit {
   return {
@@ -163,6 +183,28 @@ export const MsgSubmit = {
     message.segmentIndex = object.segmentIndex ?? 0;
     message.randomIndex = object.randomIndex ?? false;
     return message;
+  },
+
+  fromSDK(object: MsgSubmitSDKType): MsgSubmit {
+    return {
+      challenger: object?.challenger,
+      spOperatorAddress: object?.sp_operator_address,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name,
+      segmentIndex: object?.segment_index,
+      randomIndex: object?.random_index
+    };
+  },
+
+  toSDK(message: MsgSubmit): MsgSubmitSDKType {
+    const obj: any = {};
+    obj.challenger = message.challenger;
+    obj.sp_operator_address = message.spOperatorAddress;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.segment_index = message.segmentIndex;
+    obj.random_index = message.randomIndex;
+    return obj;
   }
 
 };
@@ -206,6 +248,15 @@ export const MsgSubmitResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgSubmitResponse>, I>>(_: I): MsgSubmitResponse {
     const message = createBaseMsgSubmitResponse();
     return message;
+  },
+
+  fromSDK(_: MsgSubmitResponseSDKType): MsgSubmitResponse {
+    return {};
+  },
+
+  toSDK(_: MsgSubmitResponse): MsgSubmitResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -366,6 +417,38 @@ export const MsgAttest = {
     message.voteValidatorSet = object.voteValidatorSet?.map(e => Long.fromValue(e)) || [];
     message.voteAggSignature = object.voteAggSignature ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: MsgAttestSDKType): MsgAttest {
+    return {
+      submitter: object?.submitter,
+      challengeId: object?.challenge_id,
+      objectId: object?.object_id,
+      spOperatorAddress: object?.sp_operator_address,
+      voteResult: isSet(object.vote_result) ? voteResultFromJSON(object.vote_result) : 0,
+      challengerAddress: object?.challenger_address,
+      voteValidatorSet: Array.isArray(object?.vote_validator_set) ? object.vote_validator_set.map((e: any) => e) : [],
+      voteAggSignature: object?.vote_agg_signature
+    };
+  },
+
+  toSDK(message: MsgAttest): MsgAttestSDKType {
+    const obj: any = {};
+    obj.submitter = message.submitter;
+    obj.challenge_id = message.challengeId;
+    obj.object_id = message.objectId;
+    obj.sp_operator_address = message.spOperatorAddress;
+    message.voteResult !== undefined && (obj.vote_result = voteResultToJSON(message.voteResult));
+    obj.challenger_address = message.challengerAddress;
+
+    if (message.voteValidatorSet) {
+      obj.vote_validator_set = message.voteValidatorSet.map(e => e);
+    } else {
+      obj.vote_validator_set = [];
+    }
+
+    obj.vote_agg_signature = message.voteAggSignature;
+    return obj;
   }
 
 };
@@ -409,6 +492,15 @@ export const MsgAttestResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgAttestResponse>, I>>(_: I): MsgAttestResponse {
     const message = createBaseMsgAttestResponse();
     return message;
+  },
+
+  fromSDK(_: MsgAttestResponseSDKType): MsgAttestResponse {
+    return {};
+  },
+
+  toSDK(_: MsgAttestResponse): MsgAttestResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

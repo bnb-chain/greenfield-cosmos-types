@@ -1,9 +1,9 @@
 /* eslint-disable */
-import { Params } from "./params";
-import { StreamRecord } from "./stream_record";
-import { PaymentAccountCount } from "./payment_account_count";
-import { PaymentAccount } from "./payment_account";
-import { AutoSettleRecord } from "./auto_settle_record";
+import { Params, ParamsSDKType } from "./params";
+import { StreamRecord, StreamRecordSDKType } from "./stream_record";
+import { PaymentAccountCount, PaymentAccountCountSDKType } from "./payment_account_count";
+import { PaymentAccount, PaymentAccountSDKType } from "./payment_account";
+import { AutoSettleRecord, AutoSettleRecordSDKType } from "./auto_settle_record";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.payment";
@@ -15,6 +15,15 @@ export interface GenesisState {
   paymentAccountCountList: PaymentAccountCount[];
   paymentAccountList: PaymentAccount[];
   autoSettleRecordList: AutoSettleRecord[];
+}
+/** GenesisState defines the payment module's genesis state. */
+
+export interface GenesisStateSDKType {
+  params?: ParamsSDKType;
+  stream_record_list: StreamRecordSDKType[];
+  payment_account_count_list: PaymentAccountCountSDKType[];
+  payment_account_list: PaymentAccountSDKType[];
+  auto_settle_record_list: AutoSettleRecordSDKType[];
 }
 
 function createBaseGenesisState(): GenesisState {
@@ -139,6 +148,47 @@ export const GenesisState = {
     message.paymentAccountList = object.paymentAccountList?.map(e => PaymentAccount.fromPartial(e)) || [];
     message.autoSettleRecordList = object.autoSettleRecordList?.map(e => AutoSettleRecord.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: GenesisStateSDKType): GenesisState {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined,
+      streamRecordList: Array.isArray(object?.stream_record_list) ? object.stream_record_list.map((e: any) => StreamRecord.fromSDK(e)) : [],
+      paymentAccountCountList: Array.isArray(object?.payment_account_count_list) ? object.payment_account_count_list.map((e: any) => PaymentAccountCount.fromSDK(e)) : [],
+      paymentAccountList: Array.isArray(object?.payment_account_list) ? object.payment_account_list.map((e: any) => PaymentAccount.fromSDK(e)) : [],
+      autoSettleRecordList: Array.isArray(object?.auto_settle_record_list) ? object.auto_settle_record_list.map((e: any) => AutoSettleRecord.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: GenesisState): GenesisStateSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+
+    if (message.streamRecordList) {
+      obj.stream_record_list = message.streamRecordList.map(e => e ? StreamRecord.toSDK(e) : undefined);
+    } else {
+      obj.stream_record_list = [];
+    }
+
+    if (message.paymentAccountCountList) {
+      obj.payment_account_count_list = message.paymentAccountCountList.map(e => e ? PaymentAccountCount.toSDK(e) : undefined);
+    } else {
+      obj.payment_account_count_list = [];
+    }
+
+    if (message.paymentAccountList) {
+      obj.payment_account_list = message.paymentAccountList.map(e => e ? PaymentAccount.toSDK(e) : undefined);
+    } else {
+      obj.payment_account_list = [];
+    }
+
+    if (message.autoSettleRecordList) {
+      obj.auto_settle_record_list = message.autoSettleRecordList.map(e => e ? AutoSettleRecord.toSDK(e) : undefined);
+    } else {
+      obj.auto_settle_record_list = [];
+    }
+
+    return obj;
   }
 
 };

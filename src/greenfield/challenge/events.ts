@@ -22,6 +22,14 @@ export interface EventStartChallenge {
 
   challengerAddress: string;
 }
+export interface EventStartChallengeSDKType {
+  challenge_id: Long;
+  object_id: string;
+  segment_index: number;
+  sp_operator_address: string;
+  redundancy_index: number;
+  challenger_address: string;
+}
 export interface EventAttestChallenge {
   /** The id of challenge. */
   challengeId: Long;
@@ -49,6 +57,17 @@ export interface EventAttestChallenge {
   /** The reward amount to all validators. */
 
   validatorRewardAmount: string;
+}
+export interface EventAttestChallengeSDKType {
+  challenge_id: Long;
+  result: VoteResult;
+  sp_operator_address: string;
+  slash_amount: string;
+  challenger_address: string;
+  challenger_reward_amount: string;
+  submitter_address: string;
+  submitter_reward_amount: string;
+  validator_reward_amount: string;
 }
 
 function createBaseEventStartChallenge(): EventStartChallenge {
@@ -164,6 +183,28 @@ export const EventStartChallenge = {
     message.redundancyIndex = object.redundancyIndex ?? 0;
     message.challengerAddress = object.challengerAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: EventStartChallengeSDKType): EventStartChallenge {
+    return {
+      challengeId: object?.challenge_id,
+      objectId: object?.object_id,
+      segmentIndex: object?.segment_index,
+      spOperatorAddress: object?.sp_operator_address,
+      redundancyIndex: object?.redundancy_index,
+      challengerAddress: object?.challenger_address
+    };
+  },
+
+  toSDK(message: EventStartChallenge): EventStartChallengeSDKType {
+    const obj: any = {};
+    obj.challenge_id = message.challengeId;
+    obj.object_id = message.objectId;
+    obj.segment_index = message.segmentIndex;
+    obj.sp_operator_address = message.spOperatorAddress;
+    obj.redundancy_index = message.redundancyIndex;
+    obj.challenger_address = message.challengerAddress;
+    return obj;
   }
 
 };
@@ -317,6 +358,34 @@ export const EventAttestChallenge = {
     message.submitterRewardAmount = object.submitterRewardAmount ?? "";
     message.validatorRewardAmount = object.validatorRewardAmount ?? "";
     return message;
+  },
+
+  fromSDK(object: EventAttestChallengeSDKType): EventAttestChallenge {
+    return {
+      challengeId: object?.challenge_id,
+      result: isSet(object.result) ? voteResultFromJSON(object.result) : 0,
+      spOperatorAddress: object?.sp_operator_address,
+      slashAmount: object?.slash_amount,
+      challengerAddress: object?.challenger_address,
+      challengerRewardAmount: object?.challenger_reward_amount,
+      submitterAddress: object?.submitter_address,
+      submitterRewardAmount: object?.submitter_reward_amount,
+      validatorRewardAmount: object?.validator_reward_amount
+    };
+  },
+
+  toSDK(message: EventAttestChallenge): EventAttestChallengeSDKType {
+    const obj: any = {};
+    obj.challenge_id = message.challengeId;
+    message.result !== undefined && (obj.result = voteResultToJSON(message.result));
+    obj.sp_operator_address = message.spOperatorAddress;
+    obj.slash_amount = message.slashAmount;
+    obj.challenger_address = message.challengerAddress;
+    obj.challenger_reward_amount = message.challengerRewardAmount;
+    obj.submitter_address = message.submitterAddress;
+    obj.submitter_reward_amount = message.submitterRewardAmount;
+    obj.validator_reward_amount = message.validatorRewardAmount;
+    return obj;
   }
 
 };

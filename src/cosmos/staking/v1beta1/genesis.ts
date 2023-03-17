@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Params, Validator, Delegation, UnbondingDelegation, Redelegation } from "./staking";
+import { Params, ParamsSDKType, Validator, ValidatorSDKType, Delegation, DelegationSDKType, UnbondingDelegation, UnbondingDelegationSDKType, Redelegation, RedelegationSDKType } from "./staking";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact, Long } from "../../../helpers";
 export const protobufPackage = "cosmos.staking.v1beta1";
@@ -34,6 +34,18 @@ export interface GenesisState {
   redelegations: Redelegation[];
   exported: boolean;
 }
+/** GenesisState defines the staking module's genesis state. */
+
+export interface GenesisStateSDKType {
+  params?: ParamsSDKType;
+  last_total_power: Uint8Array;
+  last_validator_powers: LastValidatorPowerSDKType[];
+  validators: ValidatorSDKType[];
+  delegations: DelegationSDKType[];
+  unbonding_delegations: UnbondingDelegationSDKType[];
+  redelegations: RedelegationSDKType[];
+  exported: boolean;
+}
 /** LastValidatorPower required for validator set update logic. */
 
 export interface LastValidatorPower {
@@ -41,6 +53,12 @@ export interface LastValidatorPower {
   address: string;
   /** power defines the power of the validator. */
 
+  power: Long;
+}
+/** LastValidatorPower required for validator set update logic. */
+
+export interface LastValidatorPowerSDKType {
+  address: string;
   power: Long;
 }
 
@@ -207,6 +225,58 @@ export const GenesisState = {
     message.redelegations = object.redelegations?.map(e => Redelegation.fromPartial(e)) || [];
     message.exported = object.exported ?? false;
     return message;
+  },
+
+  fromSDK(object: GenesisStateSDKType): GenesisState {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined,
+      lastTotalPower: object?.last_total_power,
+      lastValidatorPowers: Array.isArray(object?.last_validator_powers) ? object.last_validator_powers.map((e: any) => LastValidatorPower.fromSDK(e)) : [],
+      validators: Array.isArray(object?.validators) ? object.validators.map((e: any) => Validator.fromSDK(e)) : [],
+      delegations: Array.isArray(object?.delegations) ? object.delegations.map((e: any) => Delegation.fromSDK(e)) : [],
+      unbondingDelegations: Array.isArray(object?.unbonding_delegations) ? object.unbonding_delegations.map((e: any) => UnbondingDelegation.fromSDK(e)) : [],
+      redelegations: Array.isArray(object?.redelegations) ? object.redelegations.map((e: any) => Redelegation.fromSDK(e)) : [],
+      exported: object?.exported
+    };
+  },
+
+  toSDK(message: GenesisState): GenesisStateSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    obj.last_total_power = message.lastTotalPower;
+
+    if (message.lastValidatorPowers) {
+      obj.last_validator_powers = message.lastValidatorPowers.map(e => e ? LastValidatorPower.toSDK(e) : undefined);
+    } else {
+      obj.last_validator_powers = [];
+    }
+
+    if (message.validators) {
+      obj.validators = message.validators.map(e => e ? Validator.toSDK(e) : undefined);
+    } else {
+      obj.validators = [];
+    }
+
+    if (message.delegations) {
+      obj.delegations = message.delegations.map(e => e ? Delegation.toSDK(e) : undefined);
+    } else {
+      obj.delegations = [];
+    }
+
+    if (message.unbondingDelegations) {
+      obj.unbonding_delegations = message.unbondingDelegations.map(e => e ? UnbondingDelegation.toSDK(e) : undefined);
+    } else {
+      obj.unbonding_delegations = [];
+    }
+
+    if (message.redelegations) {
+      obj.redelegations = message.redelegations.map(e => e ? Redelegation.toSDK(e) : undefined);
+    } else {
+      obj.redelegations = [];
+    }
+
+    obj.exported = message.exported;
+    return obj;
   }
 
 };
@@ -276,6 +346,20 @@ export const LastValidatorPower = {
     message.address = object.address ?? "";
     message.power = object.power !== undefined && object.power !== null ? Long.fromValue(object.power) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: LastValidatorPowerSDKType): LastValidatorPower {
+    return {
+      address: object?.address,
+      power: object?.power
+    };
+  },
+
+  toSDK(message: LastValidatorPower): LastValidatorPowerSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    obj.power = message.power;
+    return obj;
   }
 
 };

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Duration } from "../../google/protobuf/duration";
+import { Duration, DurationSDKType } from "../../google/protobuf/duration";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long } from "../../helpers";
 export const protobufPackage = "tendermint.types";
@@ -13,6 +13,17 @@ export interface ConsensusParams {
   evidence?: EvidenceParams;
   validator?: ValidatorParams;
   version?: VersionParams;
+}
+/**
+ * ConsensusParams contains consensus critical parameters that determine the
+ * validity of blocks.
+ */
+
+export interface ConsensusParamsSDKType {
+  block?: BlockParamsSDKType;
+  evidence?: EvidenceParamsSDKType;
+  validator?: ValidatorParamsSDKType;
+  version?: VersionParamsSDKType;
 }
 /** BlockParams contains limits on the block size. */
 
@@ -36,6 +47,13 @@ export interface BlockParams {
    */
 
   timeIotaMs: Long;
+}
+/** BlockParams contains limits on the block size. */
+
+export interface BlockParamsSDKType {
+  max_bytes: Long;
+  max_gas: Long;
+  time_iota_ms: Long;
 }
 /** EvidenceParams determine how we handle evidence of malfeasance. */
 
@@ -64,6 +82,13 @@ export interface EvidenceParams {
 
   maxBytes: Long;
 }
+/** EvidenceParams determine how we handle evidence of malfeasance. */
+
+export interface EvidenceParamsSDKType {
+  max_age_num_blocks: Long;
+  max_age_duration?: DurationSDKType;
+  max_bytes: Long;
+}
 /**
  * ValidatorParams restrict the public key types validators can use.
  * NOTE: uses ABCI pubkey naming, not Amino names.
@@ -72,10 +97,23 @@ export interface EvidenceParams {
 export interface ValidatorParams {
   pubKeyTypes: string[];
 }
+/**
+ * ValidatorParams restrict the public key types validators can use.
+ * NOTE: uses ABCI pubkey naming, not Amino names.
+ */
+
+export interface ValidatorParamsSDKType {
+  pub_key_types: string[];
+}
 /** VersionParams contains the ABCI application version. */
 
 export interface VersionParams {
   appVersion: Long;
+}
+/** VersionParams contains the ABCI application version. */
+
+export interface VersionParamsSDKType {
+  app_version: Long;
 }
 /**
  * HashedParams is a subset of ConsensusParams.
@@ -86,6 +124,16 @@ export interface VersionParams {
 export interface HashedParams {
   blockMaxBytes: Long;
   blockMaxGas: Long;
+}
+/**
+ * HashedParams is a subset of ConsensusParams.
+ * 
+ * It is hashed into the Header.ConsensusHash.
+ */
+
+export interface HashedParamsSDKType {
+  block_max_bytes: Long;
+  block_max_gas: Long;
 }
 
 function createBaseConsensusParams(): ConsensusParams {
@@ -177,6 +225,24 @@ export const ConsensusParams = {
     message.validator = object.validator !== undefined && object.validator !== null ? ValidatorParams.fromPartial(object.validator) : undefined;
     message.version = object.version !== undefined && object.version !== null ? VersionParams.fromPartial(object.version) : undefined;
     return message;
+  },
+
+  fromSDK(object: ConsensusParamsSDKType): ConsensusParams {
+    return {
+      block: object.block ? BlockParams.fromSDK(object.block) : undefined,
+      evidence: object.evidence ? EvidenceParams.fromSDK(object.evidence) : undefined,
+      validator: object.validator ? ValidatorParams.fromSDK(object.validator) : undefined,
+      version: object.version ? VersionParams.fromSDK(object.version) : undefined
+    };
+  },
+
+  toSDK(message: ConsensusParams): ConsensusParamsSDKType {
+    const obj: any = {};
+    message.block !== undefined && (obj.block = message.block ? BlockParams.toSDK(message.block) : undefined);
+    message.evidence !== undefined && (obj.evidence = message.evidence ? EvidenceParams.toSDK(message.evidence) : undefined);
+    message.validator !== undefined && (obj.validator = message.validator ? ValidatorParams.toSDK(message.validator) : undefined);
+    message.version !== undefined && (obj.version = message.version ? VersionParams.toSDK(message.version) : undefined);
+    return obj;
   }
 
 };
@@ -258,6 +324,22 @@ export const BlockParams = {
     message.maxGas = object.maxGas !== undefined && object.maxGas !== null ? Long.fromValue(object.maxGas) : Long.ZERO;
     message.timeIotaMs = object.timeIotaMs !== undefined && object.timeIotaMs !== null ? Long.fromValue(object.timeIotaMs) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: BlockParamsSDKType): BlockParams {
+    return {
+      maxBytes: object?.max_bytes,
+      maxGas: object?.max_gas,
+      timeIotaMs: object?.time_iota_ms
+    };
+  },
+
+  toSDK(message: BlockParams): BlockParamsSDKType {
+    const obj: any = {};
+    obj.max_bytes = message.maxBytes;
+    obj.max_gas = message.maxGas;
+    obj.time_iota_ms = message.timeIotaMs;
+    return obj;
   }
 
 };
@@ -339,6 +421,22 @@ export const EvidenceParams = {
     message.maxAgeDuration = object.maxAgeDuration !== undefined && object.maxAgeDuration !== null ? Duration.fromPartial(object.maxAgeDuration) : undefined;
     message.maxBytes = object.maxBytes !== undefined && object.maxBytes !== null ? Long.fromValue(object.maxBytes) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: EvidenceParamsSDKType): EvidenceParams {
+    return {
+      maxAgeNumBlocks: object?.max_age_num_blocks,
+      maxAgeDuration: object.max_age_duration ? Duration.fromSDK(object.max_age_duration) : undefined,
+      maxBytes: object?.max_bytes
+    };
+  },
+
+  toSDK(message: EvidenceParams): EvidenceParamsSDKType {
+    const obj: any = {};
+    obj.max_age_num_blocks = message.maxAgeNumBlocks;
+    message.maxAgeDuration !== undefined && (obj.max_age_duration = message.maxAgeDuration ? Duration.toSDK(message.maxAgeDuration) : undefined);
+    obj.max_bytes = message.maxBytes;
+    return obj;
   }
 
 };
@@ -402,6 +500,24 @@ export const ValidatorParams = {
     const message = createBaseValidatorParams();
     message.pubKeyTypes = object.pubKeyTypes?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: ValidatorParamsSDKType): ValidatorParams {
+    return {
+      pubKeyTypes: Array.isArray(object?.pub_key_types) ? object.pub_key_types.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: ValidatorParams): ValidatorParamsSDKType {
+    const obj: any = {};
+
+    if (message.pubKeyTypes) {
+      obj.pub_key_types = message.pubKeyTypes.map(e => e);
+    } else {
+      obj.pub_key_types = [];
+    }
+
+    return obj;
   }
 
 };
@@ -459,6 +575,18 @@ export const VersionParams = {
     const message = createBaseVersionParams();
     message.appVersion = object.appVersion !== undefined && object.appVersion !== null ? Long.fromValue(object.appVersion) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: VersionParamsSDKType): VersionParams {
+    return {
+      appVersion: object?.app_version
+    };
+  },
+
+  toSDK(message: VersionParams): VersionParamsSDKType {
+    const obj: any = {};
+    obj.app_version = message.appVersion;
+    return obj;
   }
 
 };
@@ -528,6 +656,20 @@ export const HashedParams = {
     message.blockMaxBytes = object.blockMaxBytes !== undefined && object.blockMaxBytes !== null ? Long.fromValue(object.blockMaxBytes) : Long.ZERO;
     message.blockMaxGas = object.blockMaxGas !== undefined && object.blockMaxGas !== null ? Long.fromValue(object.blockMaxGas) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: HashedParamsSDKType): HashedParams {
+    return {
+      blockMaxBytes: object?.block_max_bytes,
+      blockMaxGas: object?.block_max_gas
+    };
+  },
+
+  toSDK(message: HashedParams): HashedParamsSDKType {
+    const obj: any = {};
+    obj.block_max_bytes = message.blockMaxBytes;
+    obj.block_max_gas = message.blockMaxGas;
+    return obj;
   }
 
 };

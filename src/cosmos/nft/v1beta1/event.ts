@@ -10,6 +10,14 @@ export interface EventSend {
   sender: string;
   receiver: string;
 }
+/** EventSend is emitted on Msg/Send */
+
+export interface EventSendSDKType {
+  class_id: string;
+  id: string;
+  sender: string;
+  receiver: string;
+}
 /** EventMint is emitted on Mint */
 
 export interface EventMint {
@@ -17,10 +25,24 @@ export interface EventMint {
   id: string;
   owner: string;
 }
+/** EventMint is emitted on Mint */
+
+export interface EventMintSDKType {
+  class_id: string;
+  id: string;
+  owner: string;
+}
 /** EventBurn is emitted on Burn */
 
 export interface EventBurn {
   classId: string;
+  id: string;
+  owner: string;
+}
+/** EventBurn is emitted on Burn */
+
+export interface EventBurnSDKType {
+  class_id: string;
   id: string;
   owner: string;
 }
@@ -114,6 +136,24 @@ export const EventSend = {
     message.sender = object.sender ?? "";
     message.receiver = object.receiver ?? "";
     return message;
+  },
+
+  fromSDK(object: EventSendSDKType): EventSend {
+    return {
+      classId: object?.class_id,
+      id: object?.id,
+      sender: object?.sender,
+      receiver: object?.receiver
+    };
+  },
+
+  toSDK(message: EventSend): EventSendSDKType {
+    const obj: any = {};
+    obj.class_id = message.classId;
+    obj.id = message.id;
+    obj.sender = message.sender;
+    obj.receiver = message.receiver;
+    return obj;
   }
 
 };
@@ -195,6 +235,22 @@ export const EventMint = {
     message.id = object.id ?? "";
     message.owner = object.owner ?? "";
     return message;
+  },
+
+  fromSDK(object: EventMintSDKType): EventMint {
+    return {
+      classId: object?.class_id,
+      id: object?.id,
+      owner: object?.owner
+    };
+  },
+
+  toSDK(message: EventMint): EventMintSDKType {
+    const obj: any = {};
+    obj.class_id = message.classId;
+    obj.id = message.id;
+    obj.owner = message.owner;
+    return obj;
   }
 
 };
@@ -276,6 +332,22 @@ export const EventBurn = {
     message.id = object.id ?? "";
     message.owner = object.owner ?? "";
     return message;
+  },
+
+  fromSDK(object: EventBurnSDKType): EventBurn {
+    return {
+      classId: object?.class_id,
+      id: object?.id,
+      owner: object?.owner
+    };
+  },
+
+  toSDK(message: EventBurn): EventBurnSDKType {
+    const obj: any = {};
+    obj.class_id = message.classId;
+    obj.id = message.id;
+    obj.owner = message.owner;
+    return obj;
   }
 
 };

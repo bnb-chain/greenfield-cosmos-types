@@ -9,6 +9,13 @@ export interface Params {
   minGasPerByte: Long;
   msgGasParamsSet: MsgGasParams[];
 }
+/** Params defines the parameters for the gashub module. */
+
+export interface ParamsSDKType {
+  max_tx_size: Long;
+  min_gas_per_byte: Long;
+  msg_gas_params_set: MsgGasParamsSDKType[];
+}
 /** MsgGasParams defines gas for a msg type */
 
 export interface MsgGasParams {
@@ -26,16 +33,36 @@ export interface MsgGasParams {
 
   grantAllowanceType?: MsgGasParams_DynamicGasParams;
 }
+/** MsgGasParams defines gas for a msg type */
+
+export interface MsgGasParamsSDKType {
+  msg_type_url: string;
+  fixed_type?: MsgGasParams_FixedGasParamsSDKType;
+  grant_type?: MsgGasParams_DynamicGasParamsSDKType;
+  multi_send_type?: MsgGasParams_DynamicGasParamsSDKType;
+  grant_allowance_type?: MsgGasParams_DynamicGasParamsSDKType;
+}
 /** FixedGasParams defines the parameters for fixed gas type. */
 
 export interface MsgGasParams_FixedGasParams {
   fixedGas: Long;
+}
+/** FixedGasParams defines the parameters for fixed gas type. */
+
+export interface MsgGasParams_FixedGasParamsSDKType {
+  fixed_gas: Long;
 }
 /** DynamicGasParams defines the parameters for dynamic gas type. */
 
 export interface MsgGasParams_DynamicGasParams {
   fixedGas: Long;
   gasPerItem: Long;
+}
+/** DynamicGasParams defines the parameters for dynamic gas type. */
+
+export interface MsgGasParams_DynamicGasParamsSDKType {
+  fixed_gas: Long;
+  gas_per_item: Long;
 }
 
 function createBaseParams(): Params {
@@ -121,6 +148,28 @@ export const Params = {
     message.minGasPerByte = object.minGasPerByte !== undefined && object.minGasPerByte !== null ? Long.fromValue(object.minGasPerByte) : Long.UZERO;
     message.msgGasParamsSet = object.msgGasParamsSet?.map(e => MsgGasParams.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      maxTxSize: object?.max_tx_size,
+      minGasPerByte: object?.min_gas_per_byte,
+      msgGasParamsSet: Array.isArray(object?.msg_gas_params_set) ? object.msg_gas_params_set.map((e: any) => MsgGasParams.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+    obj.max_tx_size = message.maxTxSize;
+    obj.min_gas_per_byte = message.minGasPerByte;
+
+    if (message.msgGasParamsSet) {
+      obj.msg_gas_params_set = message.msgGasParamsSet.map(e => e ? MsgGasParams.toSDK(e) : undefined);
+    } else {
+      obj.msg_gas_params_set = [];
+    }
+
+    return obj;
   }
 
 };
@@ -226,6 +275,26 @@ export const MsgGasParams = {
     message.multiSendType = object.multiSendType !== undefined && object.multiSendType !== null ? MsgGasParams_DynamicGasParams.fromPartial(object.multiSendType) : undefined;
     message.grantAllowanceType = object.grantAllowanceType !== undefined && object.grantAllowanceType !== null ? MsgGasParams_DynamicGasParams.fromPartial(object.grantAllowanceType) : undefined;
     return message;
+  },
+
+  fromSDK(object: MsgGasParamsSDKType): MsgGasParams {
+    return {
+      msgTypeUrl: object?.msg_type_url,
+      fixedType: object.fixed_type ? MsgGasParams_FixedGasParams.fromSDK(object.fixed_type) : undefined,
+      grantType: object.grant_type ? MsgGasParams_DynamicGasParams.fromSDK(object.grant_type) : undefined,
+      multiSendType: object.multi_send_type ? MsgGasParams_DynamicGasParams.fromSDK(object.multi_send_type) : undefined,
+      grantAllowanceType: object.grant_allowance_type ? MsgGasParams_DynamicGasParams.fromSDK(object.grant_allowance_type) : undefined
+    };
+  },
+
+  toSDK(message: MsgGasParams): MsgGasParamsSDKType {
+    const obj: any = {};
+    obj.msg_type_url = message.msgTypeUrl;
+    message.fixedType !== undefined && (obj.fixed_type = message.fixedType ? MsgGasParams_FixedGasParams.toSDK(message.fixedType) : undefined);
+    message.grantType !== undefined && (obj.grant_type = message.grantType ? MsgGasParams_DynamicGasParams.toSDK(message.grantType) : undefined);
+    message.multiSendType !== undefined && (obj.multi_send_type = message.multiSendType ? MsgGasParams_DynamicGasParams.toSDK(message.multiSendType) : undefined);
+    message.grantAllowanceType !== undefined && (obj.grant_allowance_type = message.grantAllowanceType ? MsgGasParams_DynamicGasParams.toSDK(message.grantAllowanceType) : undefined);
+    return obj;
   }
 
 };
@@ -283,6 +352,18 @@ export const MsgGasParams_FixedGasParams = {
     const message = createBaseMsgGasParams_FixedGasParams();
     message.fixedGas = object.fixedGas !== undefined && object.fixedGas !== null ? Long.fromValue(object.fixedGas) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: MsgGasParams_FixedGasParamsSDKType): MsgGasParams_FixedGasParams {
+    return {
+      fixedGas: object?.fixed_gas
+    };
+  },
+
+  toSDK(message: MsgGasParams_FixedGasParams): MsgGasParams_FixedGasParamsSDKType {
+    const obj: any = {};
+    obj.fixed_gas = message.fixedGas;
+    return obj;
   }
 
 };
@@ -352,6 +433,20 @@ export const MsgGasParams_DynamicGasParams = {
     message.fixedGas = object.fixedGas !== undefined && object.fixedGas !== null ? Long.fromValue(object.fixedGas) : Long.UZERO;
     message.gasPerItem = object.gasPerItem !== undefined && object.gasPerItem !== null ? Long.fromValue(object.gasPerItem) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: MsgGasParams_DynamicGasParamsSDKType): MsgGasParams_DynamicGasParams {
+    return {
+      fixedGas: object?.fixed_gas,
+      gasPerItem: object?.gas_per_item
+    };
+  },
+
+  toSDK(message: MsgGasParams_DynamicGasParams): MsgGasParams_DynamicGasParamsSDKType {
+    const obj: any = {};
+    obj.fixed_gas = message.fixedGas;
+    obj.gas_per_item = message.gasPerItem;
+    return obj;
   }
 
 };

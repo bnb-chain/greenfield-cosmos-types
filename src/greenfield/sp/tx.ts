@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { Description } from "./types";
-import { Coin } from "../../cosmos/base/v1beta1/coin";
+import { Description, DescriptionSDKType } from "./types";
+import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Long, isSet, DeepPartial, Exact, Rpc } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.sp";
@@ -25,9 +25,27 @@ export interface MsgCreateStorageProvider {
 
   storePrice: string;
 }
+/** MsgCreateStorageProvider defines message for creating a new storage provider. */
+
+export interface MsgCreateStorageProviderSDKType {
+  creator: string;
+  description?: DescriptionSDKType;
+  sp_address: string;
+  funding_address: string;
+  seal_address: string;
+  approval_address: string;
+  endpoint: string;
+  deposit?: CoinSDKType;
+  read_price: string;
+  free_read_quota: Long;
+  store_price: string;
+}
 /** MsgCreateStorageProviderResponse defines the Msg/CreateStorageProvider response type. */
 
 export interface MsgCreateStorageProviderResponse {}
+/** MsgCreateStorageProviderResponse defines the Msg/CreateStorageProvider response type. */
+
+export interface MsgCreateStorageProviderResponseSDKType {}
 /** MsgDeposit defines a SDK message for deposit token for sp. */
 
 export interface MsgDeposit {
@@ -40,9 +58,19 @@ export interface MsgDeposit {
 
   deposit?: Coin;
 }
+/** MsgDeposit defines a SDK message for deposit token for sp. */
+
+export interface MsgDepositSDKType {
+  creator: string;
+  sp_address: string;
+  deposit?: CoinSDKType;
+}
 /** MsgDepositResponse defines the Msg/Deposit response type. */
 
 export interface MsgDepositResponse {}
+/** MsgDepositResponse defines the Msg/Deposit response type. */
+
+export interface MsgDepositResponseSDKType {}
 /** MsgEditStorageProvider defines a SDK message for editing an existing sp. */
 
 export interface MsgEditStorageProvider {
@@ -50,9 +78,19 @@ export interface MsgEditStorageProvider {
   endpoint: string;
   description?: Description;
 }
+/** MsgEditStorageProvider defines a SDK message for editing an existing sp. */
+
+export interface MsgEditStorageProviderSDKType {
+  sp_address: string;
+  endpoint: string;
+  description?: DescriptionSDKType;
+}
 /** MsgEditStorageProviderResponse defines the Msg/EditStorageProvider response type. */
 
 export interface MsgEditStorageProviderResponse {}
+/** MsgEditStorageProviderResponse defines the Msg/EditStorageProvider response type. */
+
+export interface MsgEditStorageProviderResponseSDKType {}
 export interface MsgUpdateSpStoragePrice {
   /** sp address */
   spAddress: string;
@@ -66,7 +104,14 @@ export interface MsgUpdateSpStoragePrice {
 
   storePrice: string;
 }
+export interface MsgUpdateSpStoragePriceSDKType {
+  sp_address: string;
+  read_price: string;
+  free_read_quota: Long;
+  store_price: string;
+}
 export interface MsgUpdateSpStoragePriceResponse {}
+export interface MsgUpdateSpStoragePriceResponseSDKType {}
 
 function createBaseMsgCreateStorageProvider(): MsgCreateStorageProvider {
   return {
@@ -241,6 +286,38 @@ export const MsgCreateStorageProvider = {
     message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
     message.storePrice = object.storePrice ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgCreateStorageProviderSDKType): MsgCreateStorageProvider {
+    return {
+      creator: object?.creator,
+      description: object.description ? Description.fromSDK(object.description) : undefined,
+      spAddress: object?.sp_address,
+      fundingAddress: object?.funding_address,
+      sealAddress: object?.seal_address,
+      approvalAddress: object?.approval_address,
+      endpoint: object?.endpoint,
+      deposit: object.deposit ? Coin.fromSDK(object.deposit) : undefined,
+      readPrice: object?.read_price,
+      freeReadQuota: object?.free_read_quota,
+      storePrice: object?.store_price
+    };
+  },
+
+  toSDK(message: MsgCreateStorageProvider): MsgCreateStorageProviderSDKType {
+    const obj: any = {};
+    obj.creator = message.creator;
+    message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
+    obj.sp_address = message.spAddress;
+    obj.funding_address = message.fundingAddress;
+    obj.seal_address = message.sealAddress;
+    obj.approval_address = message.approvalAddress;
+    obj.endpoint = message.endpoint;
+    message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toSDK(message.deposit) : undefined);
+    obj.read_price = message.readPrice;
+    obj.free_read_quota = message.freeReadQuota;
+    obj.store_price = message.storePrice;
+    return obj;
   }
 
 };
@@ -284,6 +361,15 @@ export const MsgCreateStorageProviderResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgCreateStorageProviderResponse>, I>>(_: I): MsgCreateStorageProviderResponse {
     const message = createBaseMsgCreateStorageProviderResponse();
     return message;
+  },
+
+  fromSDK(_: MsgCreateStorageProviderResponseSDKType): MsgCreateStorageProviderResponse {
+    return {};
+  },
+
+  toSDK(_: MsgCreateStorageProviderResponse): MsgCreateStorageProviderResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -365,6 +451,22 @@ export const MsgDeposit = {
     message.spAddress = object.spAddress ?? "";
     message.deposit = object.deposit !== undefined && object.deposit !== null ? Coin.fromPartial(object.deposit) : undefined;
     return message;
+  },
+
+  fromSDK(object: MsgDepositSDKType): MsgDeposit {
+    return {
+      creator: object?.creator,
+      spAddress: object?.sp_address,
+      deposit: object.deposit ? Coin.fromSDK(object.deposit) : undefined
+    };
+  },
+
+  toSDK(message: MsgDeposit): MsgDepositSDKType {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.sp_address = message.spAddress;
+    message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toSDK(message.deposit) : undefined);
+    return obj;
   }
 
 };
@@ -408,6 +510,15 @@ export const MsgDepositResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgDepositResponse>, I>>(_: I): MsgDepositResponse {
     const message = createBaseMsgDepositResponse();
     return message;
+  },
+
+  fromSDK(_: MsgDepositResponseSDKType): MsgDepositResponse {
+    return {};
+  },
+
+  toSDK(_: MsgDepositResponse): MsgDepositResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -489,6 +600,22 @@ export const MsgEditStorageProvider = {
     message.endpoint = object.endpoint ?? "";
     message.description = object.description !== undefined && object.description !== null ? Description.fromPartial(object.description) : undefined;
     return message;
+  },
+
+  fromSDK(object: MsgEditStorageProviderSDKType): MsgEditStorageProvider {
+    return {
+      spAddress: object?.sp_address,
+      endpoint: object?.endpoint,
+      description: object.description ? Description.fromSDK(object.description) : undefined
+    };
+  },
+
+  toSDK(message: MsgEditStorageProvider): MsgEditStorageProviderSDKType {
+    const obj: any = {};
+    obj.sp_address = message.spAddress;
+    obj.endpoint = message.endpoint;
+    message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
+    return obj;
   }
 
 };
@@ -532,6 +659,15 @@ export const MsgEditStorageProviderResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgEditStorageProviderResponse>, I>>(_: I): MsgEditStorageProviderResponse {
     const message = createBaseMsgEditStorageProviderResponse();
     return message;
+  },
+
+  fromSDK(_: MsgEditStorageProviderResponseSDKType): MsgEditStorageProviderResponse {
+    return {};
+  },
+
+  toSDK(_: MsgEditStorageProviderResponse): MsgEditStorageProviderResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -625,6 +761,24 @@ export const MsgUpdateSpStoragePrice = {
     message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
     message.storePrice = object.storePrice ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgUpdateSpStoragePriceSDKType): MsgUpdateSpStoragePrice {
+    return {
+      spAddress: object?.sp_address,
+      readPrice: object?.read_price,
+      freeReadQuota: object?.free_read_quota,
+      storePrice: object?.store_price
+    };
+  },
+
+  toSDK(message: MsgUpdateSpStoragePrice): MsgUpdateSpStoragePriceSDKType {
+    const obj: any = {};
+    obj.sp_address = message.spAddress;
+    obj.read_price = message.readPrice;
+    obj.free_read_quota = message.freeReadQuota;
+    obj.store_price = message.storePrice;
+    return obj;
   }
 
 };
@@ -668,6 +822,15 @@ export const MsgUpdateSpStoragePriceResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateSpStoragePriceResponse>, I>>(_: I): MsgUpdateSpStoragePriceResponse {
     const message = createBaseMsgUpdateSpStoragePriceResponse();
     return message;
+  },
+
+  fromSDK(_: MsgUpdateSpStoragePriceResponseSDKType): MsgUpdateSpStoragePriceResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateSpStoragePriceResponse): MsgUpdateSpStoragePriceResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

@@ -8,6 +8,12 @@ export interface Params {
   maximumStatementsNum: Long;
   maximumGroupNum: Long;
 }
+/** Params defines the parameters for the module. */
+
+export interface ParamsSDKType {
+  maximum_statements_num: Long;
+  maximum_group_num: Long;
+}
 
 function createBaseParams(): Params {
   return {
@@ -74,6 +80,20 @@ export const Params = {
     message.maximumStatementsNum = object.maximumStatementsNum !== undefined && object.maximumStatementsNum !== null ? Long.fromValue(object.maximumStatementsNum) : Long.UZERO;
     message.maximumGroupNum = object.maximumGroupNum !== undefined && object.maximumGroupNum !== null ? Long.fromValue(object.maximumGroupNum) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      maximumStatementsNum: object?.maximum_statements_num,
+      maximumGroupNum: object?.maximum_group_num
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+    obj.maximum_statements_num = message.maximumStatementsNum;
+    obj.maximum_group_num = message.maximumGroupNum;
+    return obj;
   }
 
 };

@@ -15,12 +15,31 @@ export interface ParameterChangeProposal {
 
   addresses: string[];
 }
+/** ParameterChangeProposal defines a proposal to change one or more parameters. */
+
+export interface ParameterChangeProposalSDKType {
+  title: string;
+  description: string;
+  changes: ParamChangeSDKType[];
+  cross_chain: boolean;
+  addresses: string[];
+}
 /**
  * ParamChange defines an individual parameter change, for use in
  * ParameterChangeProposal.
  */
 
 export interface ParamChange {
+  subspace: string;
+  key: string;
+  value: string;
+}
+/**
+ * ParamChange defines an individual parameter change, for use in
+ * ParameterChangeProposal.
+ */
+
+export interface ParamChangeSDKType {
   subspace: string;
   key: string;
   value: string;
@@ -139,6 +158,38 @@ export const ParameterChangeProposal = {
     message.crossChain = object.crossChain ?? false;
     message.addresses = object.addresses?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: ParameterChangeProposalSDKType): ParameterChangeProposal {
+    return {
+      title: object?.title,
+      description: object?.description,
+      changes: Array.isArray(object?.changes) ? object.changes.map((e: any) => ParamChange.fromSDK(e)) : [],
+      crossChain: object?.cross_chain,
+      addresses: Array.isArray(object?.addresses) ? object.addresses.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: ParameterChangeProposal): ParameterChangeProposalSDKType {
+    const obj: any = {};
+    obj.title = message.title;
+    obj.description = message.description;
+
+    if (message.changes) {
+      obj.changes = message.changes.map(e => e ? ParamChange.toSDK(e) : undefined);
+    } else {
+      obj.changes = [];
+    }
+
+    obj.cross_chain = message.crossChain;
+
+    if (message.addresses) {
+      obj.addresses = message.addresses.map(e => e);
+    } else {
+      obj.addresses = [];
+    }
+
+    return obj;
   }
 
 };
@@ -220,6 +271,22 @@ export const ParamChange = {
     message.key = object.key ?? "";
     message.value = object.value ?? "";
     return message;
+  },
+
+  fromSDK(object: ParamChangeSDKType): ParamChange {
+    return {
+      subspace: object?.subspace,
+      key: object?.key,
+      value: object?.value
+    };
+  },
+
+  toSDK(message: ParamChange): ParamChangeSDKType {
+    const obj: any = {};
+    obj.subspace = message.subspace;
+    obj.key = message.key;
+    obj.value = message.value;
+    return obj;
   }
 
 };

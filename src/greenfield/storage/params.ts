@@ -20,6 +20,15 @@ export interface Params {
 
   minChargeSize: Long;
 }
+/** Params defines the parameters for the module. */
+
+export interface ParamsSDKType {
+  max_segment_size: Long;
+  redundant_data_chunk_num: number;
+  redundant_parity_chunk_num: number;
+  max_payload_size: Long;
+  min_charge_size: Long;
+}
 
 function createBaseParams(): Params {
   return {
@@ -122,6 +131,26 @@ export const Params = {
     message.maxPayloadSize = object.maxPayloadSize !== undefined && object.maxPayloadSize !== null ? Long.fromValue(object.maxPayloadSize) : Long.UZERO;
     message.minChargeSize = object.minChargeSize !== undefined && object.minChargeSize !== null ? Long.fromValue(object.minChargeSize) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      maxSegmentSize: object?.max_segment_size,
+      redundantDataChunkNum: object?.redundant_data_chunk_num,
+      redundantParityChunkNum: object?.redundant_parity_chunk_num,
+      maxPayloadSize: object?.max_payload_size,
+      minChargeSize: object?.min_charge_size
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+    obj.max_segment_size = message.maxSegmentSize;
+    obj.redundant_data_chunk_num = message.redundantDataChunkNum;
+    obj.redundant_parity_chunk_num = message.redundantParityChunkNum;
+    obj.max_payload_size = message.maxPayloadSize;
+    obj.min_charge_size = message.minChargeSize;
+    return obj;
   }
 
 };

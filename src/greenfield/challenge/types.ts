@@ -10,6 +10,7 @@ export enum VoteResult {
   CHALLENGE_SUCCEED = 1,
   UNRECOGNIZED = -1,
 }
+export const VoteResultSDKType = VoteResult;
 export function voteResultFromJSON(object: any): VoteResult {
   switch (object) {
     case 0:
@@ -42,6 +43,11 @@ export function voteResultToJSON(object: VoteResult): string {
 export interface Slash {
   spOperatorAddress: Uint8Array;
   objectId: string;
+  height: Long;
+}
+export interface SlashSDKType {
+  sp_operator_address: Uint8Array;
+  object_id: string;
   height: Long;
 }
 
@@ -122,6 +128,22 @@ export const Slash = {
     message.objectId = object.objectId ?? "";
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: SlashSDKType): Slash {
+    return {
+      spOperatorAddress: object?.sp_operator_address,
+      objectId: object?.object_id,
+      height: object?.height
+    };
+  },
+
+  toSDK(message: Slash): SlashSDKType {
+    const obj: any = {};
+    obj.sp_operator_address = message.spOperatorAddress;
+    obj.object_id = message.objectId;
+    obj.height = message.height;
+    return obj;
   }
 
 };

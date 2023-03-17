@@ -1,78 +1,144 @@
 /* eslint-disable */
-import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
+import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
 import { ActionType, Effect, actionTypeFromJSON, actionTypeToJSON, effectFromJSON, effectToJSON } from "../permission/common";
-import { Params } from "./params";
-import { BucketInfo, ObjectInfo, BucketMetaData, ObjectMetaData, GroupMetaData } from "./types";
-import { Policy } from "../permission/types";
+import { Params, ParamsSDKType } from "./params";
+import { BucketInfo, BucketInfoSDKType, ObjectInfo, ObjectInfoSDKType, BucketMetaData, BucketMetaDataSDKType, ObjectMetaData, ObjectMetaDataSDKType, GroupMetaData, GroupMetaDataSDKType } from "./types";
+import { Policy, PolicySDKType } from "../permission/types";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.storage";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
+/** QueryParamsRequest is request type for the Query/Params RPC method. */
+
+export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 
 export interface QueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: Params;
 }
+/** QueryParamsResponse is response type for the Query/Params RPC method. */
+
+export interface QueryParamsResponseSDKType {
+  params?: ParamsSDKType;
+}
 /** this line is used by starport scaffolding # 3 */
 
 export interface QueryHeadBucketRequest {
   bucketName: string;
 }
+/** this line is used by starport scaffolding # 3 */
+
+export interface QueryHeadBucketRequestSDKType {
+  bucket_name: string;
+}
 export interface QueryHeadBucketByIdRequest {
   bucketId: string;
 }
+export interface QueryHeadBucketByIdRequestSDKType {
+  bucket_id: string;
+}
 export interface QueryHeadBucketResponse {
   bucketInfo?: BucketInfo;
+}
+export interface QueryHeadBucketResponseSDKType {
+  bucket_info?: BucketInfoSDKType;
 }
 export interface QueryHeadObjectRequest {
   bucketName: string;
   objectName: string;
 }
+export interface QueryHeadObjectRequestSDKType {
+  bucket_name: string;
+  object_name: string;
+}
 export interface QueryHeadObjectByIdRequest {
   objectId: string;
+}
+export interface QueryHeadObjectByIdRequestSDKType {
+  object_id: string;
 }
 export interface QueryHeadObjectResponse {
   objectInfo?: ObjectInfo;
 }
+export interface QueryHeadObjectResponseSDKType {
+  object_info?: ObjectInfoSDKType;
+}
 export interface QueryListBucketsRequest {
   pagination?: PageRequest;
+}
+export interface QueryListBucketsRequestSDKType {
+  pagination?: PageRequestSDKType;
 }
 export interface QueryListBucketsResponse {
   bucketInfos: BucketInfo[];
   pagination?: PageResponse;
 }
+export interface QueryListBucketsResponseSDKType {
+  bucket_infos: BucketInfoSDKType[];
+  pagination?: PageResponseSDKType;
+}
 export interface QueryListObjectsRequest {
   pagination?: PageRequest;
   bucketName: string;
+}
+export interface QueryListObjectsRequestSDKType {
+  pagination?: PageRequestSDKType;
+  bucket_name: string;
 }
 export interface QueryListObjectsByBucketIdRequest {
   pagination?: PageRequest;
   bucketId: string;
 }
+export interface QueryListObjectsByBucketIdRequestSDKType {
+  pagination?: PageRequestSDKType;
+  bucket_id: string;
+}
 export interface QueryListObjectsResponse {
   objectInfos: ObjectInfo[];
   pagination?: PageResponse;
 }
+export interface QueryListObjectsResponseSDKType {
+  object_infos: ObjectInfoSDKType[];
+  pagination?: PageResponseSDKType;
+}
 export interface QueryNFTRequest {
   tokenId: string;
+}
+export interface QueryNFTRequestSDKType {
+  token_id: string;
 }
 export interface QueryBucketNFTResponse {
   metaData?: BucketMetaData;
 }
+export interface QueryBucketNFTResponseSDKType {
+  meta_data?: BucketMetaDataSDKType;
+}
 export interface QueryObjectNFTResponse {
   metaData?: ObjectMetaData;
+}
+export interface QueryObjectNFTResponseSDKType {
+  meta_data?: ObjectMetaDataSDKType;
 }
 export interface QueryGroupNFTResponse {
   metaData?: GroupMetaData;
 }
+export interface QueryGroupNFTResponseSDKType {
+  meta_data?: GroupMetaDataSDKType;
+}
 export interface QueryGetPolicyRequest {
   policyId: string;
 }
+export interface QueryGetPolicyRequestSDKType {
+  policy_id: string;
+}
 export interface QueryGetPolicyResponse {
   policy?: Policy;
+}
+export interface QueryGetPolicyResponseSDKType {
+  policy?: PolicySDKType;
 }
 export interface QueryVerifyPermissionRequest {
   operator: string;
@@ -80,7 +146,16 @@ export interface QueryVerifyPermissionRequest {
   objectName: string;
   actionType: ActionType;
 }
+export interface QueryVerifyPermissionRequestSDKType {
+  operator: string;
+  bucket_name: string;
+  object_name: string;
+  action_type: ActionType;
+}
 export interface QueryVerifyPermissionResponse {
+  effect: Effect;
+}
+export interface QueryVerifyPermissionResponseSDKType {
   effect: Effect;
 }
 
@@ -123,6 +198,15 @@ export const QueryParamsRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(_: I): QueryParamsRequest {
     const message = createBaseQueryParamsRequest();
     return message;
+  },
+
+  fromSDK(_: QueryParamsRequestSDKType): QueryParamsRequest {
+    return {};
+  },
+
+  toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -180,6 +264,18 @@ export const QueryParamsResponse = {
     const message = createBaseQueryParamsResponse();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryParamsResponseSDKType): QueryParamsResponse {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
   }
 
 };
@@ -237,6 +333,18 @@ export const QueryHeadBucketRequest = {
     const message = createBaseQueryHeadBucketRequest();
     message.bucketName = object.bucketName ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryHeadBucketRequestSDKType): QueryHeadBucketRequest {
+    return {
+      bucketName: object?.bucket_name
+    };
+  },
+
+  toSDK(message: QueryHeadBucketRequest): QueryHeadBucketRequestSDKType {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    return obj;
   }
 
 };
@@ -294,6 +402,18 @@ export const QueryHeadBucketByIdRequest = {
     const message = createBaseQueryHeadBucketByIdRequest();
     message.bucketId = object.bucketId ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryHeadBucketByIdRequestSDKType): QueryHeadBucketByIdRequest {
+    return {
+      bucketId: object?.bucket_id
+    };
+  },
+
+  toSDK(message: QueryHeadBucketByIdRequest): QueryHeadBucketByIdRequestSDKType {
+    const obj: any = {};
+    obj.bucket_id = message.bucketId;
+    return obj;
   }
 
 };
@@ -351,6 +471,18 @@ export const QueryHeadBucketResponse = {
     const message = createBaseQueryHeadBucketResponse();
     message.bucketInfo = object.bucketInfo !== undefined && object.bucketInfo !== null ? BucketInfo.fromPartial(object.bucketInfo) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryHeadBucketResponseSDKType): QueryHeadBucketResponse {
+    return {
+      bucketInfo: object.bucket_info ? BucketInfo.fromSDK(object.bucket_info) : undefined
+    };
+  },
+
+  toSDK(message: QueryHeadBucketResponse): QueryHeadBucketResponseSDKType {
+    const obj: any = {};
+    message.bucketInfo !== undefined && (obj.bucket_info = message.bucketInfo ? BucketInfo.toSDK(message.bucketInfo) : undefined);
+    return obj;
   }
 
 };
@@ -420,6 +552,20 @@ export const QueryHeadObjectRequest = {
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryHeadObjectRequestSDKType): QueryHeadObjectRequest {
+    return {
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name
+    };
+  },
+
+  toSDK(message: QueryHeadObjectRequest): QueryHeadObjectRequestSDKType {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    return obj;
   }
 
 };
@@ -477,6 +623,18 @@ export const QueryHeadObjectByIdRequest = {
     const message = createBaseQueryHeadObjectByIdRequest();
     message.objectId = object.objectId ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryHeadObjectByIdRequestSDKType): QueryHeadObjectByIdRequest {
+    return {
+      objectId: object?.object_id
+    };
+  },
+
+  toSDK(message: QueryHeadObjectByIdRequest): QueryHeadObjectByIdRequestSDKType {
+    const obj: any = {};
+    obj.object_id = message.objectId;
+    return obj;
   }
 
 };
@@ -534,6 +692,18 @@ export const QueryHeadObjectResponse = {
     const message = createBaseQueryHeadObjectResponse();
     message.objectInfo = object.objectInfo !== undefined && object.objectInfo !== null ? ObjectInfo.fromPartial(object.objectInfo) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryHeadObjectResponseSDKType): QueryHeadObjectResponse {
+    return {
+      objectInfo: object.object_info ? ObjectInfo.fromSDK(object.object_info) : undefined
+    };
+  },
+
+  toSDK(message: QueryHeadObjectResponse): QueryHeadObjectResponseSDKType {
+    const obj: any = {};
+    message.objectInfo !== undefined && (obj.object_info = message.objectInfo ? ObjectInfo.toSDK(message.objectInfo) : undefined);
+    return obj;
   }
 
 };
@@ -591,6 +761,18 @@ export const QueryListBucketsRequest = {
     const message = createBaseQueryListBucketsRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryListBucketsRequestSDKType): QueryListBucketsRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryListBucketsRequest): QueryListBucketsRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -666,6 +848,26 @@ export const QueryListBucketsResponse = {
     message.bucketInfos = object.bucketInfos?.map(e => BucketInfo.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryListBucketsResponseSDKType): QueryListBucketsResponse {
+    return {
+      bucketInfos: Array.isArray(object?.bucket_infos) ? object.bucket_infos.map((e: any) => BucketInfo.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryListBucketsResponse): QueryListBucketsResponseSDKType {
+    const obj: any = {};
+
+    if (message.bucketInfos) {
+      obj.bucket_infos = message.bucketInfos.map(e => e ? BucketInfo.toSDK(e) : undefined);
+    } else {
+      obj.bucket_infos = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -735,6 +937,20 @@ export const QueryListObjectsRequest = {
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.bucketName = object.bucketName ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryListObjectsRequestSDKType): QueryListObjectsRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined,
+      bucketName: object?.bucket_name
+    };
+  },
+
+  toSDK(message: QueryListObjectsRequest): QueryListObjectsRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    obj.bucket_name = message.bucketName;
+    return obj;
   }
 
 };
@@ -804,6 +1020,20 @@ export const QueryListObjectsByBucketIdRequest = {
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.bucketId = object.bucketId ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryListObjectsByBucketIdRequestSDKType): QueryListObjectsByBucketIdRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined,
+      bucketId: object?.bucket_id
+    };
+  },
+
+  toSDK(message: QueryListObjectsByBucketIdRequest): QueryListObjectsByBucketIdRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    obj.bucket_id = message.bucketId;
+    return obj;
   }
 
 };
@@ -879,6 +1109,26 @@ export const QueryListObjectsResponse = {
     message.objectInfos = object.objectInfos?.map(e => ObjectInfo.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryListObjectsResponseSDKType): QueryListObjectsResponse {
+    return {
+      objectInfos: Array.isArray(object?.object_infos) ? object.object_infos.map((e: any) => ObjectInfo.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryListObjectsResponse): QueryListObjectsResponseSDKType {
+    const obj: any = {};
+
+    if (message.objectInfos) {
+      obj.object_infos = message.objectInfos.map(e => e ? ObjectInfo.toSDK(e) : undefined);
+    } else {
+      obj.object_infos = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -936,6 +1186,18 @@ export const QueryNFTRequest = {
     const message = createBaseQueryNFTRequest();
     message.tokenId = object.tokenId ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryNFTRequestSDKType): QueryNFTRequest {
+    return {
+      tokenId: object?.token_id
+    };
+  },
+
+  toSDK(message: QueryNFTRequest): QueryNFTRequestSDKType {
+    const obj: any = {};
+    obj.token_id = message.tokenId;
+    return obj;
   }
 
 };
@@ -993,6 +1255,18 @@ export const QueryBucketNFTResponse = {
     const message = createBaseQueryBucketNFTResponse();
     message.metaData = object.metaData !== undefined && object.metaData !== null ? BucketMetaData.fromPartial(object.metaData) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryBucketNFTResponseSDKType): QueryBucketNFTResponse {
+    return {
+      metaData: object.meta_data ? BucketMetaData.fromSDK(object.meta_data) : undefined
+    };
+  },
+
+  toSDK(message: QueryBucketNFTResponse): QueryBucketNFTResponseSDKType {
+    const obj: any = {};
+    message.metaData !== undefined && (obj.meta_data = message.metaData ? BucketMetaData.toSDK(message.metaData) : undefined);
+    return obj;
   }
 
 };
@@ -1050,6 +1324,18 @@ export const QueryObjectNFTResponse = {
     const message = createBaseQueryObjectNFTResponse();
     message.metaData = object.metaData !== undefined && object.metaData !== null ? ObjectMetaData.fromPartial(object.metaData) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryObjectNFTResponseSDKType): QueryObjectNFTResponse {
+    return {
+      metaData: object.meta_data ? ObjectMetaData.fromSDK(object.meta_data) : undefined
+    };
+  },
+
+  toSDK(message: QueryObjectNFTResponse): QueryObjectNFTResponseSDKType {
+    const obj: any = {};
+    message.metaData !== undefined && (obj.meta_data = message.metaData ? ObjectMetaData.toSDK(message.metaData) : undefined);
+    return obj;
   }
 
 };
@@ -1107,6 +1393,18 @@ export const QueryGroupNFTResponse = {
     const message = createBaseQueryGroupNFTResponse();
     message.metaData = object.metaData !== undefined && object.metaData !== null ? GroupMetaData.fromPartial(object.metaData) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryGroupNFTResponseSDKType): QueryGroupNFTResponse {
+    return {
+      metaData: object.meta_data ? GroupMetaData.fromSDK(object.meta_data) : undefined
+    };
+  },
+
+  toSDK(message: QueryGroupNFTResponse): QueryGroupNFTResponseSDKType {
+    const obj: any = {};
+    message.metaData !== undefined && (obj.meta_data = message.metaData ? GroupMetaData.toSDK(message.metaData) : undefined);
+    return obj;
   }
 
 };
@@ -1164,6 +1462,18 @@ export const QueryGetPolicyRequest = {
     const message = createBaseQueryGetPolicyRequest();
     message.policyId = object.policyId ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryGetPolicyRequestSDKType): QueryGetPolicyRequest {
+    return {
+      policyId: object?.policy_id
+    };
+  },
+
+  toSDK(message: QueryGetPolicyRequest): QueryGetPolicyRequestSDKType {
+    const obj: any = {};
+    obj.policy_id = message.policyId;
+    return obj;
   }
 
 };
@@ -1221,6 +1531,18 @@ export const QueryGetPolicyResponse = {
     const message = createBaseQueryGetPolicyResponse();
     message.policy = object.policy !== undefined && object.policy !== null ? Policy.fromPartial(object.policy) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryGetPolicyResponseSDKType): QueryGetPolicyResponse {
+    return {
+      policy: object.policy ? Policy.fromSDK(object.policy) : undefined
+    };
+  },
+
+  toSDK(message: QueryGetPolicyResponse): QueryGetPolicyResponseSDKType {
+    const obj: any = {};
+    message.policy !== undefined && (obj.policy = message.policy ? Policy.toSDK(message.policy) : undefined);
+    return obj;
   }
 
 };
@@ -1314,6 +1636,24 @@ export const QueryVerifyPermissionRequest = {
     message.objectName = object.objectName ?? "";
     message.actionType = object.actionType ?? 0;
     return message;
+  },
+
+  fromSDK(object: QueryVerifyPermissionRequestSDKType): QueryVerifyPermissionRequest {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name,
+      actionType: isSet(object.action_type) ? actionTypeFromJSON(object.action_type) : 0
+    };
+  },
+
+  toSDK(message: QueryVerifyPermissionRequest): QueryVerifyPermissionRequestSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    message.actionType !== undefined && (obj.action_type = actionTypeToJSON(message.actionType));
+    return obj;
   }
 
 };
@@ -1371,6 +1711,18 @@ export const QueryVerifyPermissionResponse = {
     const message = createBaseQueryVerifyPermissionResponse();
     message.effect = object.effect ?? 0;
     return message;
+  },
+
+  fromSDK(object: QueryVerifyPermissionResponseSDKType): QueryVerifyPermissionResponse {
+    return {
+      effect: isSet(object.effect) ? effectFromJSON(object.effect) : 0
+    };
+  },
+
+  toSDK(message: QueryVerifyPermissionResponse): QueryVerifyPermissionResponseSDKType {
+    const obj: any = {};
+    message.effect !== undefined && (obj.effect = effectToJSON(message.effect));
+    return obj;
   }
 
 };

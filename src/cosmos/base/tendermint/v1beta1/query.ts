@@ -1,10 +1,12 @@
 /* eslint-disable */
-import { PageRequest, PageResponse } from "../../query/v1beta1/pagination";
-import { Any } from "../../../../google/protobuf/any";
-import { BlockID } from "../../../../tendermint/types/types";
+import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../query/v1beta1/pagination";
+import { Any, AnySDKType } from "../../../../google/protobuf/any";
+import { BlockID, BlockIDSDKType } from "../../../../tendermint/types/types";
 import { Block as Block1 } from "../../../../tendermint/types/block";
+import { BlockSDKType as Block1SDKType } from "../../../../tendermint/types/block";
 import { Block as Block2 } from "./types";
-import { DefaultNodeInfo } from "../../../../tendermint/p2p/types";
+import { BlockSDKType as Block2SDKType } from "./types";
+import { DefaultNodeInfo, DefaultNodeInfoSDKType } from "../../../../tendermint/p2p/types";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, Rpc } from "../../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.base.tendermint.v1beta1";
@@ -20,6 +22,15 @@ export interface GetValidatorSetByHeightRequest {
   pagination?: PageRequest;
 }
 /**
+ * GetValidatorSetByHeightRequest is the request type for the
+ * Query/GetValidatorSetByHeight RPC method.
+ */
+
+export interface GetValidatorSetByHeightRequestSDKType {
+  height: Long;
+  pagination?: PageRequestSDKType;
+}
+/**
  * GetValidatorSetByHeightResponse is the response type for the
  * Query/GetValidatorSetByHeight RPC method.
  */
@@ -32,6 +43,16 @@ export interface GetValidatorSetByHeightResponse {
   pagination?: PageResponse;
 }
 /**
+ * GetValidatorSetByHeightResponse is the response type for the
+ * Query/GetValidatorSetByHeight RPC method.
+ */
+
+export interface GetValidatorSetByHeightResponseSDKType {
+  block_height: Long;
+  validators: ValidatorSDKType[];
+  pagination?: PageResponseSDKType;
+}
+/**
  * GetLatestValidatorSetRequest is the request type for the
  * Query/GetValidatorSetByHeight RPC method.
  */
@@ -39,6 +60,14 @@ export interface GetValidatorSetByHeightResponse {
 export interface GetLatestValidatorSetRequest {
   /** pagination defines an pagination for the request. */
   pagination?: PageRequest;
+}
+/**
+ * GetLatestValidatorSetRequest is the request type for the
+ * Query/GetValidatorSetByHeight RPC method.
+ */
+
+export interface GetLatestValidatorSetRequestSDKType {
+  pagination?: PageRequestSDKType;
 }
 /**
  * GetLatestValidatorSetResponse is the response type for the
@@ -52,6 +81,16 @@ export interface GetLatestValidatorSetResponse {
 
   pagination?: PageResponse;
 }
+/**
+ * GetLatestValidatorSetResponse is the response type for the
+ * Query/GetValidatorSetByHeight RPC method.
+ */
+
+export interface GetLatestValidatorSetResponseSDKType {
+  block_height: Long;
+  validators: ValidatorSDKType[];
+  pagination?: PageResponseSDKType;
+}
 /** Validator is the type for the validator-set. */
 
 export interface Validator {
@@ -60,12 +99,28 @@ export interface Validator {
   votingPower: Long;
   proposerPriority: Long;
 }
+/** Validator is the type for the validator-set. */
+
+export interface ValidatorSDKType {
+  address: string;
+  pub_key?: AnySDKType;
+  voting_power: Long;
+  proposer_priority: Long;
+}
 /**
  * GetBlockByHeightRequest is the request type for the Query/GetBlockByHeight
  * RPC method.
  */
 
 export interface GetBlockByHeightRequest {
+  height: Long;
+}
+/**
+ * GetBlockByHeightRequest is the request type for the Query/GetBlockByHeight
+ * RPC method.
+ */
+
+export interface GetBlockByHeightRequestSDKType {
   height: Long;
 }
 /**
@@ -83,11 +138,27 @@ export interface GetBlockByHeightResponse {
   sdkBlock?: Block2;
 }
 /**
+ * GetBlockByHeightResponse is the response type for the Query/GetBlockByHeight
+ * RPC method.
+ */
+
+export interface GetBlockByHeightResponseSDKType {
+  block_id?: BlockIDSDKType;
+  block?: Block1SDKType;
+  sdk_block?: Block2SDKType;
+}
+/**
  * GetLatestBlockRequest is the request type for the Query/GetLatestBlock RPC
  * method.
  */
 
 export interface GetLatestBlockRequest {}
+/**
+ * GetLatestBlockRequest is the request type for the Query/GetLatestBlock RPC
+ * method.
+ */
+
+export interface GetLatestBlockRequestSDKType {}
 /**
  * GetLatestBlockResponse is the response type for the Query/GetLatestBlock RPC
  * method.
@@ -102,17 +173,38 @@ export interface GetLatestBlockResponse {
 
   sdkBlock?: Block2;
 }
+/**
+ * GetLatestBlockResponse is the response type for the Query/GetLatestBlock RPC
+ * method.
+ */
+
+export interface GetLatestBlockResponseSDKType {
+  block_id?: BlockIDSDKType;
+  block?: Block1SDKType;
+  sdk_block?: Block2SDKType;
+}
 /** GetSyncingRequest is the request type for the Query/GetSyncing RPC method. */
 
 export interface GetSyncingRequest {}
+/** GetSyncingRequest is the request type for the Query/GetSyncing RPC method. */
+
+export interface GetSyncingRequestSDKType {}
 /** GetSyncingResponse is the response type for the Query/GetSyncing RPC method. */
 
 export interface GetSyncingResponse {
   syncing: boolean;
 }
+/** GetSyncingResponse is the response type for the Query/GetSyncing RPC method. */
+
+export interface GetSyncingResponseSDKType {
+  syncing: boolean;
+}
 /** GetNodeInfoRequest is the request type for the Query/GetNodeInfo RPC method. */
 
 export interface GetNodeInfoRequest {}
+/** GetNodeInfoRequest is the request type for the Query/GetNodeInfo RPC method. */
+
+export interface GetNodeInfoRequestSDKType {}
 /**
  * GetNodeInfoResponse is the response type for the Query/GetNodeInfo RPC
  * method.
@@ -121,6 +213,15 @@ export interface GetNodeInfoRequest {}
 export interface GetNodeInfoResponse {
   defaultNodeInfo?: DefaultNodeInfo;
   applicationVersion?: VersionInfo;
+}
+/**
+ * GetNodeInfoResponse is the response type for the Query/GetNodeInfo RPC
+ * method.
+ */
+
+export interface GetNodeInfoResponseSDKType {
+  default_node_info?: DefaultNodeInfoSDKType;
+  application_version?: VersionInfoSDKType;
 }
 /** VersionInfo is the type for the GetNodeInfoResponse message. */
 
@@ -136,6 +237,18 @@ export interface VersionInfo {
 
   cosmosSdkVersion: string;
 }
+/** VersionInfo is the type for the GetNodeInfoResponse message. */
+
+export interface VersionInfoSDKType {
+  name: string;
+  app_name: string;
+  version: string;
+  git_commit: string;
+  build_tags: string;
+  go_version: string;
+  build_deps: ModuleSDKType[];
+  cosmos_sdk_version: string;
+}
 /** Module is the type for VersionInfo */
 
 export interface Module {
@@ -148,9 +261,24 @@ export interface Module {
 
   sum: string;
 }
+/** Module is the type for VersionInfo */
+
+export interface ModuleSDKType {
+  path: string;
+  version: string;
+  sum: string;
+}
 /** ABCIQueryRequest defines the request structure for the ABCIQuery gRPC query. */
 
 export interface ABCIQueryRequest {
+  data: Uint8Array;
+  path: string;
+  height: Long;
+  prove: boolean;
+}
+/** ABCIQueryRequest defines the request structure for the ABCIQuery gRPC query. */
+
+export interface ABCIQueryRequestSDKType {
   data: Uint8Array;
   path: string;
   height: Long;
@@ -180,6 +308,25 @@ export interface ABCIQueryResponse {
   codespace: string;
 }
 /**
+ * ABCIQueryResponse defines the response structure for the ABCIQuery gRPC
+ * query.
+ * 
+ * Note: This type is a duplicate of the ResponseQuery proto type defined in
+ * Tendermint.
+ */
+
+export interface ABCIQueryResponseSDKType {
+  code: number;
+  log: string;
+  info: string;
+  index: Long;
+  key: Uint8Array;
+  value: Uint8Array;
+  proof_ops?: ProofOpsSDKType;
+  height: Long;
+  codespace: string;
+}
+/**
  * ProofOp defines an operation used for calculating Merkle root. The data could
  * be arbitrary format, providing nessecary data for example neighbouring node
  * hash.
@@ -194,6 +341,20 @@ export interface ProofOp {
   data: Uint8Array;
 }
 /**
+ * ProofOp defines an operation used for calculating Merkle root. The data could
+ * be arbitrary format, providing nessecary data for example neighbouring node
+ * hash.
+ * 
+ * Note: This type is a duplicate of the ProofOp proto type defined in
+ * Tendermint.
+ */
+
+export interface ProofOpSDKType {
+  type: string;
+  key: Uint8Array;
+  data: Uint8Array;
+}
+/**
  * ProofOps is Merkle proof defined by the list of ProofOps.
  * 
  * Note: This type is a duplicate of the ProofOps proto type defined in
@@ -202,6 +363,16 @@ export interface ProofOp {
 
 export interface ProofOps {
   ops: ProofOp[];
+}
+/**
+ * ProofOps is Merkle proof defined by the list of ProofOps.
+ * 
+ * Note: This type is a duplicate of the ProofOps proto type defined in
+ * Tendermint.
+ */
+
+export interface ProofOpsSDKType {
+  ops: ProofOpSDKType[];
 }
 
 function createBaseGetValidatorSetByHeightRequest(): GetValidatorSetByHeightRequest {
@@ -269,6 +440,20 @@ export const GetValidatorSetByHeightRequest = {
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: GetValidatorSetByHeightRequestSDKType): GetValidatorSetByHeightRequest {
+    return {
+      height: object?.height,
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: GetValidatorSetByHeightRequest): GetValidatorSetByHeightRequestSDKType {
+    const obj: any = {};
+    obj.height = message.height;
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -356,6 +541,28 @@ export const GetValidatorSetByHeightResponse = {
     message.validators = object.validators?.map(e => Validator.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: GetValidatorSetByHeightResponseSDKType): GetValidatorSetByHeightResponse {
+    return {
+      blockHeight: object?.block_height,
+      validators: Array.isArray(object?.validators) ? object.validators.map((e: any) => Validator.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: GetValidatorSetByHeightResponse): GetValidatorSetByHeightResponseSDKType {
+    const obj: any = {};
+    obj.block_height = message.blockHeight;
+
+    if (message.validators) {
+      obj.validators = message.validators.map(e => e ? Validator.toSDK(e) : undefined);
+    } else {
+      obj.validators = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -413,6 +620,18 @@ export const GetLatestValidatorSetRequest = {
     const message = createBaseGetLatestValidatorSetRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: GetLatestValidatorSetRequestSDKType): GetLatestValidatorSetRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: GetLatestValidatorSetRequest): GetLatestValidatorSetRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -500,6 +719,28 @@ export const GetLatestValidatorSetResponse = {
     message.validators = object.validators?.map(e => Validator.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: GetLatestValidatorSetResponseSDKType): GetLatestValidatorSetResponse {
+    return {
+      blockHeight: object?.block_height,
+      validators: Array.isArray(object?.validators) ? object.validators.map((e: any) => Validator.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: GetLatestValidatorSetResponse): GetLatestValidatorSetResponseSDKType {
+    const obj: any = {};
+    obj.block_height = message.blockHeight;
+
+    if (message.validators) {
+      obj.validators = message.validators.map(e => e ? Validator.toSDK(e) : undefined);
+    } else {
+      obj.validators = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -593,6 +834,24 @@ export const Validator = {
     message.votingPower = object.votingPower !== undefined && object.votingPower !== null ? Long.fromValue(object.votingPower) : Long.ZERO;
     message.proposerPriority = object.proposerPriority !== undefined && object.proposerPriority !== null ? Long.fromValue(object.proposerPriority) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: ValidatorSDKType): Validator {
+    return {
+      address: object?.address,
+      pubKey: object.pub_key ? Any.fromSDK(object.pub_key) : undefined,
+      votingPower: object?.voting_power,
+      proposerPriority: object?.proposer_priority
+    };
+  },
+
+  toSDK(message: Validator): ValidatorSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    message.pubKey !== undefined && (obj.pub_key = message.pubKey ? Any.toSDK(message.pubKey) : undefined);
+    obj.voting_power = message.votingPower;
+    obj.proposer_priority = message.proposerPriority;
+    return obj;
   }
 
 };
@@ -650,6 +909,18 @@ export const GetBlockByHeightRequest = {
     const message = createBaseGetBlockByHeightRequest();
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: GetBlockByHeightRequestSDKType): GetBlockByHeightRequest {
+    return {
+      height: object?.height
+    };
+  },
+
+  toSDK(message: GetBlockByHeightRequest): GetBlockByHeightRequestSDKType {
+    const obj: any = {};
+    obj.height = message.height;
+    return obj;
   }
 
 };
@@ -731,6 +1002,22 @@ export const GetBlockByHeightResponse = {
     message.block = object.block !== undefined && object.block !== null ? Block1.fromPartial(object.block) : undefined;
     message.sdkBlock = object.sdkBlock !== undefined && object.sdkBlock !== null ? Block2.fromPartial(object.sdkBlock) : undefined;
     return message;
+  },
+
+  fromSDK(object: GetBlockByHeightResponseSDKType): GetBlockByHeightResponse {
+    return {
+      blockId: object.block_id ? BlockID.fromSDK(object.block_id) : undefined,
+      block: object.block ? Block1.fromSDK(object.block) : undefined,
+      sdkBlock: object.sdk_block ? Block2.fromSDK(object.sdk_block) : undefined
+    };
+  },
+
+  toSDK(message: GetBlockByHeightResponse): GetBlockByHeightResponseSDKType {
+    const obj: any = {};
+    message.blockId !== undefined && (obj.block_id = message.blockId ? BlockID.toSDK(message.blockId) : undefined);
+    message.block !== undefined && (obj.block = message.block ? Block1.toSDK(message.block) : undefined);
+    message.sdkBlock !== undefined && (obj.sdk_block = message.sdkBlock ? Block2.toSDK(message.sdkBlock) : undefined);
+    return obj;
   }
 
 };
@@ -774,6 +1061,15 @@ export const GetLatestBlockRequest = {
   fromPartial<I extends Exact<DeepPartial<GetLatestBlockRequest>, I>>(_: I): GetLatestBlockRequest {
     const message = createBaseGetLatestBlockRequest();
     return message;
+  },
+
+  fromSDK(_: GetLatestBlockRequestSDKType): GetLatestBlockRequest {
+    return {};
+  },
+
+  toSDK(_: GetLatestBlockRequest): GetLatestBlockRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -855,6 +1151,22 @@ export const GetLatestBlockResponse = {
     message.block = object.block !== undefined && object.block !== null ? Block1.fromPartial(object.block) : undefined;
     message.sdkBlock = object.sdkBlock !== undefined && object.sdkBlock !== null ? Block2.fromPartial(object.sdkBlock) : undefined;
     return message;
+  },
+
+  fromSDK(object: GetLatestBlockResponseSDKType): GetLatestBlockResponse {
+    return {
+      blockId: object.block_id ? BlockID.fromSDK(object.block_id) : undefined,
+      block: object.block ? Block1.fromSDK(object.block) : undefined,
+      sdkBlock: object.sdk_block ? Block2.fromSDK(object.sdk_block) : undefined
+    };
+  },
+
+  toSDK(message: GetLatestBlockResponse): GetLatestBlockResponseSDKType {
+    const obj: any = {};
+    message.blockId !== undefined && (obj.block_id = message.blockId ? BlockID.toSDK(message.blockId) : undefined);
+    message.block !== undefined && (obj.block = message.block ? Block1.toSDK(message.block) : undefined);
+    message.sdkBlock !== undefined && (obj.sdk_block = message.sdkBlock ? Block2.toSDK(message.sdkBlock) : undefined);
+    return obj;
   }
 
 };
@@ -898,6 +1210,15 @@ export const GetSyncingRequest = {
   fromPartial<I extends Exact<DeepPartial<GetSyncingRequest>, I>>(_: I): GetSyncingRequest {
     const message = createBaseGetSyncingRequest();
     return message;
+  },
+
+  fromSDK(_: GetSyncingRequestSDKType): GetSyncingRequest {
+    return {};
+  },
+
+  toSDK(_: GetSyncingRequest): GetSyncingRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -955,6 +1276,18 @@ export const GetSyncingResponse = {
     const message = createBaseGetSyncingResponse();
     message.syncing = object.syncing ?? false;
     return message;
+  },
+
+  fromSDK(object: GetSyncingResponseSDKType): GetSyncingResponse {
+    return {
+      syncing: object?.syncing
+    };
+  },
+
+  toSDK(message: GetSyncingResponse): GetSyncingResponseSDKType {
+    const obj: any = {};
+    obj.syncing = message.syncing;
+    return obj;
   }
 
 };
@@ -998,6 +1331,15 @@ export const GetNodeInfoRequest = {
   fromPartial<I extends Exact<DeepPartial<GetNodeInfoRequest>, I>>(_: I): GetNodeInfoRequest {
     const message = createBaseGetNodeInfoRequest();
     return message;
+  },
+
+  fromSDK(_: GetNodeInfoRequestSDKType): GetNodeInfoRequest {
+    return {};
+  },
+
+  toSDK(_: GetNodeInfoRequest): GetNodeInfoRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -1067,6 +1409,20 @@ export const GetNodeInfoResponse = {
     message.defaultNodeInfo = object.defaultNodeInfo !== undefined && object.defaultNodeInfo !== null ? DefaultNodeInfo.fromPartial(object.defaultNodeInfo) : undefined;
     message.applicationVersion = object.applicationVersion !== undefined && object.applicationVersion !== null ? VersionInfo.fromPartial(object.applicationVersion) : undefined;
     return message;
+  },
+
+  fromSDK(object: GetNodeInfoResponseSDKType): GetNodeInfoResponse {
+    return {
+      defaultNodeInfo: object.default_node_info ? DefaultNodeInfo.fromSDK(object.default_node_info) : undefined,
+      applicationVersion: object.application_version ? VersionInfo.fromSDK(object.application_version) : undefined
+    };
+  },
+
+  toSDK(message: GetNodeInfoResponse): GetNodeInfoResponseSDKType {
+    const obj: any = {};
+    message.defaultNodeInfo !== undefined && (obj.default_node_info = message.defaultNodeInfo ? DefaultNodeInfo.toSDK(message.defaultNodeInfo) : undefined);
+    message.applicationVersion !== undefined && (obj.application_version = message.applicationVersion ? VersionInfo.toSDK(message.applicationVersion) : undefined);
+    return obj;
   }
 
 };
@@ -1214,6 +1570,38 @@ export const VersionInfo = {
     message.buildDeps = object.buildDeps?.map(e => Module.fromPartial(e)) || [];
     message.cosmosSdkVersion = object.cosmosSdkVersion ?? "";
     return message;
+  },
+
+  fromSDK(object: VersionInfoSDKType): VersionInfo {
+    return {
+      name: object?.name,
+      appName: object?.app_name,
+      version: object?.version,
+      gitCommit: object?.git_commit,
+      buildTags: object?.build_tags,
+      goVersion: object?.go_version,
+      buildDeps: Array.isArray(object?.build_deps) ? object.build_deps.map((e: any) => Module.fromSDK(e)) : [],
+      cosmosSdkVersion: object?.cosmos_sdk_version
+    };
+  },
+
+  toSDK(message: VersionInfo): VersionInfoSDKType {
+    const obj: any = {};
+    obj.name = message.name;
+    obj.app_name = message.appName;
+    obj.version = message.version;
+    obj.git_commit = message.gitCommit;
+    obj.build_tags = message.buildTags;
+    obj.go_version = message.goVersion;
+
+    if (message.buildDeps) {
+      obj.build_deps = message.buildDeps.map(e => e ? Module.toSDK(e) : undefined);
+    } else {
+      obj.build_deps = [];
+    }
+
+    obj.cosmos_sdk_version = message.cosmosSdkVersion;
+    return obj;
   }
 
 };
@@ -1295,6 +1683,22 @@ export const Module = {
     message.version = object.version ?? "";
     message.sum = object.sum ?? "";
     return message;
+  },
+
+  fromSDK(object: ModuleSDKType): Module {
+    return {
+      path: object?.path,
+      version: object?.version,
+      sum: object?.sum
+    };
+  },
+
+  toSDK(message: Module): ModuleSDKType {
+    const obj: any = {};
+    obj.path = message.path;
+    obj.version = message.version;
+    obj.sum = message.sum;
+    return obj;
   }
 
 };
@@ -1388,6 +1792,24 @@ export const ABCIQueryRequest = {
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
     message.prove = object.prove ?? false;
     return message;
+  },
+
+  fromSDK(object: ABCIQueryRequestSDKType): ABCIQueryRequest {
+    return {
+      data: object?.data,
+      path: object?.path,
+      height: object?.height,
+      prove: object?.prove
+    };
+  },
+
+  toSDK(message: ABCIQueryRequest): ABCIQueryRequestSDKType {
+    const obj: any = {};
+    obj.data = message.data;
+    obj.path = message.path;
+    obj.height = message.height;
+    obj.prove = message.prove;
+    return obj;
   }
 
 };
@@ -1541,6 +1963,34 @@ export const ABCIQueryResponse = {
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
     message.codespace = object.codespace ?? "";
     return message;
+  },
+
+  fromSDK(object: ABCIQueryResponseSDKType): ABCIQueryResponse {
+    return {
+      code: object?.code,
+      log: object?.log,
+      info: object?.info,
+      index: object?.index,
+      key: object?.key,
+      value: object?.value,
+      proofOps: object.proof_ops ? ProofOps.fromSDK(object.proof_ops) : undefined,
+      height: object?.height,
+      codespace: object?.codespace
+    };
+  },
+
+  toSDK(message: ABCIQueryResponse): ABCIQueryResponseSDKType {
+    const obj: any = {};
+    obj.code = message.code;
+    obj.log = message.log;
+    obj.info = message.info;
+    obj.index = message.index;
+    obj.key = message.key;
+    obj.value = message.value;
+    message.proofOps !== undefined && (obj.proof_ops = message.proofOps ? ProofOps.toSDK(message.proofOps) : undefined);
+    obj.height = message.height;
+    obj.codespace = message.codespace;
+    return obj;
   }
 
 };
@@ -1622,6 +2072,22 @@ export const ProofOp = {
     message.key = object.key ?? new Uint8Array();
     message.data = object.data ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: ProofOpSDKType): ProofOp {
+    return {
+      type: object?.type,
+      key: object?.key,
+      data: object?.data
+    };
+  },
+
+  toSDK(message: ProofOp): ProofOpSDKType {
+    const obj: any = {};
+    obj.type = message.type;
+    obj.key = message.key;
+    obj.data = message.data;
+    return obj;
   }
 
 };
@@ -1685,6 +2151,24 @@ export const ProofOps = {
     const message = createBaseProofOps();
     message.ops = object.ops?.map(e => ProofOp.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: ProofOpsSDKType): ProofOps {
+    return {
+      ops: Array.isArray(object?.ops) ? object.ops.map((e: any) => ProofOp.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: ProofOps): ProofOpsSDKType {
+    const obj: any = {};
+
+    if (message.ops) {
+      obj.ops = message.ops.map(e => e ? ProofOp.toSDK(e) : undefined);
+    } else {
+      obj.ops = [];
+    }
+
+    return obj;
   }
 
 };

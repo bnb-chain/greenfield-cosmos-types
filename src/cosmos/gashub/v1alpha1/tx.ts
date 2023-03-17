@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { MsgGasParams } from "./gashub";
+import { MsgGasParams, MsgGasParamsSDKType } from "./gashub";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.gashub.v1alpha1";
@@ -9,9 +9,18 @@ export interface MsgUpdateMsgGasParams {
   from: string;
   newParamsSet: MsgGasParams[];
 }
+/** MsgUpdateMsgGasParams represents a message to update msg gas params. */
+
+export interface MsgUpdateMsgGasParamsSDKType {
+  from: string;
+  new_params_set: MsgGasParamsSDKType[];
+}
 /** MsgUpdateMsgGasParamsResponse defines the Msg/UpdateMsgGasParams response type. */
 
 export interface MsgUpdateMsgGasParamsResponse {}
+/** MsgUpdateMsgGasParamsResponse defines the Msg/UpdateMsgGasParams response type. */
+
+export interface MsgUpdateMsgGasParamsResponseSDKType {}
 
 function createBaseMsgUpdateMsgGasParams(): MsgUpdateMsgGasParams {
   return {
@@ -84,6 +93,26 @@ export const MsgUpdateMsgGasParams = {
     message.from = object.from ?? "";
     message.newParamsSet = object.newParamsSet?.map(e => MsgGasParams.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: MsgUpdateMsgGasParamsSDKType): MsgUpdateMsgGasParams {
+    return {
+      from: object?.from,
+      newParamsSet: Array.isArray(object?.new_params_set) ? object.new_params_set.map((e: any) => MsgGasParams.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: MsgUpdateMsgGasParams): MsgUpdateMsgGasParamsSDKType {
+    const obj: any = {};
+    obj.from = message.from;
+
+    if (message.newParamsSet) {
+      obj.new_params_set = message.newParamsSet.map(e => e ? MsgGasParams.toSDK(e) : undefined);
+    } else {
+      obj.new_params_set = [];
+    }
+
+    return obj;
   }
 
 };
@@ -127,6 +156,15 @@ export const MsgUpdateMsgGasParamsResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateMsgGasParamsResponse>, I>>(_: I): MsgUpdateMsgGasParamsResponse {
     const message = createBaseMsgUpdateMsgGasParamsResponse();
     return message;
+  },
+
+  fromSDK(_: MsgUpdateMsgGasParamsResponseSDKType): MsgUpdateMsgGasParamsResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateMsgGasParamsResponse): MsgUpdateMsgGasParamsResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

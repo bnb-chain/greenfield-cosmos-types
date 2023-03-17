@@ -11,6 +11,12 @@ export interface Params {
 
   minDeposit: string;
 }
+/** Params defines the parameters for the module. */
+
+export interface ParamsSDKType {
+  deposit_denom: string;
+  min_deposit: string;
+}
 
 function createBaseParams(): Params {
   return {
@@ -77,6 +83,20 @@ export const Params = {
     message.depositDenom = object.depositDenom ?? "";
     message.minDeposit = object.minDeposit ?? "";
     return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      depositDenom: object?.deposit_denom,
+      minDeposit: object?.min_deposit
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+    obj.deposit_denom = message.depositDenom;
+    obj.min_deposit = message.minDeposit;
+    return obj;
   }
 
 };

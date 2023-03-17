@@ -18,6 +18,13 @@ export interface Params {
 
   relayerRewardShare: number;
 }
+/** Params holds parameters for the oracle module. */
+
+export interface ParamsSDKType {
+  relayer_timeout: Long;
+  relayer_backoff_time: Long;
+  relayer_reward_share: number;
+}
 
 function createBaseParams(): Params {
   return {
@@ -96,6 +103,22 @@ export const Params = {
     message.relayerBackoffTime = object.relayerBackoffTime !== undefined && object.relayerBackoffTime !== null ? Long.fromValue(object.relayerBackoffTime) : Long.UZERO;
     message.relayerRewardShare = object.relayerRewardShare ?? 0;
     return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      relayerTimeout: object?.relayer_timeout,
+      relayerBackoffTime: object?.relayer_backoff_time,
+      relayerRewardShare: object?.relayer_reward_share
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+    obj.relayer_timeout = message.relayerTimeout;
+    obj.relayer_backoff_time = message.relayerBackoffTime;
+    obj.relayer_reward_share = message.relayerRewardShare;
+    return obj;
   }
 
 };

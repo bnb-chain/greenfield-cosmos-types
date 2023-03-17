@@ -14,6 +14,7 @@ export enum HashOp {
   BITCOIN = 5,
   UNRECOGNIZED = -1,
 }
+export const HashOpSDKType = HashOp;
 export function hashOpFromJSON(object: any): HashOp {
   switch (object) {
     case 0:
@@ -107,6 +108,7 @@ export enum LengthOp {
   REQUIRE_64_BYTES = 8,
   UNRECOGNIZED = -1,
 }
+export const LengthOpSDKType = LengthOp;
 export function lengthOpFromJSON(object: any): LengthOp {
   switch (object) {
     case 0:
@@ -214,6 +216,34 @@ export interface ExistenceProof {
   path: InnerOp[];
 }
 /**
+ * ExistenceProof takes a key and a value and a set of steps to perform on it.
+ * The result of peforming all these steps will provide a "root hash", which can
+ * be compared to the value in a header.
+ * 
+ * Since it is computationally infeasible to produce a hash collission for any of the used
+ * cryptographic hash functions, if someone can provide a series of operations to transform
+ * a given key and value into a root hash that matches some trusted root, these key and values
+ * must be in the referenced merkle tree.
+ * 
+ * The only possible issue is maliablity in LeafOp, such as providing extra prefix data,
+ * which should be controlled by a spec. Eg. with lengthOp as NONE,
+ * prefix = FOO, key = BAR, value = CHOICE
+ * and
+ * prefix = F, key = OOBAR, value = CHOICE
+ * would produce the same value.
+ * 
+ * With LengthOp this is tricker but not impossible. Which is why the "leafPrefixEqual" field
+ * in the ProofSpec is valuable to prevent this mutability. And why all trees should
+ * length-prefix the data before hashing it.
+ */
+
+export interface ExistenceProofSDKType {
+  key: Uint8Array;
+  value: Uint8Array;
+  leaf?: LeafOpSDKType;
+  path: InnerOpSDKType[];
+}
+/**
  * NonExistenceProof takes a proof of two neighbors, one left of the desired key,
  * one right of the desired key. If both proofs are valid AND they are neighbors,
  * then there is no valid proof for the given key.
@@ -225,6 +255,17 @@ export interface NonExistenceProof {
   left?: ExistenceProof;
   right?: ExistenceProof;
 }
+/**
+ * NonExistenceProof takes a proof of two neighbors, one left of the desired key,
+ * one right of the desired key. If both proofs are valid AND they are neighbors,
+ * then there is no valid proof for the given key.
+ */
+
+export interface NonExistenceProofSDKType {
+  key: Uint8Array;
+  left?: ExistenceProofSDKType;
+  right?: ExistenceProofSDKType;
+}
 /** CommitmentProof is either an ExistenceProof or a NonExistenceProof, or a Batch of such messages */
 
 export interface CommitmentProof {
@@ -232,6 +273,14 @@ export interface CommitmentProof {
   nonexist?: NonExistenceProof;
   batch?: BatchProof;
   compressed?: CompressedBatchProof;
+}
+/** CommitmentProof is either an ExistenceProof or a NonExistenceProof, or a Batch of such messages */
+
+export interface CommitmentProofSDKType {
+  exist?: ExistenceProofSDKType;
+  nonexist?: NonExistenceProofSDKType;
+  batch?: BatchProofSDKType;
+  compressed?: CompressedBatchProofSDKType;
 }
 /**
  * LeafOp represents the raw key-value data we wish to prove, and
@@ -263,6 +312,30 @@ export interface LeafOp {
   prefix: Uint8Array;
 }
 /**
+ * LeafOp represents the raw key-value data we wish to prove, and
+ * must be flexible to represent the internal transformation from
+ * the original key-value pairs into the basis hash, for many existing
+ * merkle trees.
+ * 
+ * key and value are passed in. So that the signature of this operation is:
+ * leafOp(key, value) -> output
+ * 
+ * To process this, first prehash the keys and values if needed (ANY means no hash in this case):
+ * hkey = prehashKey(key)
+ * hvalue = prehashValue(value)
+ * 
+ * Then combine the bytes, and hash it
+ * output = hash(prefix || length(hkey) || hkey || length(hvalue) || hvalue)
+ */
+
+export interface LeafOpSDKType {
+  hash: HashOp;
+  prehash_key: HashOp;
+  prehash_value: HashOp;
+  length: LengthOp;
+  prefix: Uint8Array;
+}
+/**
  * InnerOp represents a merkle-proof step that is not a leaf.
  * It represents concatenating two children and hashing them to provide the next result.
  * 
@@ -281,6 +354,29 @@ export interface LeafOp {
  */
 
 export interface InnerOp {
+  hash: HashOp;
+  prefix: Uint8Array;
+  suffix: Uint8Array;
+}
+/**
+ * InnerOp represents a merkle-proof step that is not a leaf.
+ * It represents concatenating two children and hashing them to provide the next result.
+ * 
+ * The result of the previous step is passed in, so the signature of this op is:
+ * innerOp(child) -> output
+ * 
+ * The result of applying InnerOp should be:
+ * output = op.hash(op.prefix || child || op.suffix)
+ * 
+ * where the || operator is concatenation of binary data,
+ * and child is the result of hashing all the tree below this step.
+ * 
+ * Any special data, like prepending child with the length, or prepending the entire operation with
+ * some value to differentiate from leaf nodes, should be included in prefix and suffix.
+ * If either of prefix or suffix is empty, we just treat it as an empty string
+ */
+
+export interface InnerOpSDKType {
   hash: HashOp;
   prefix: Uint8Array;
   suffix: Uint8Array;
@@ -313,6 +409,25 @@ export interface ProofSpec {
   minDepth: number;
 }
 /**
+ * ProofSpec defines what the expected parameters are for a given proof type.
+ * This can be stored in the client and used to validate any incoming proofs.
+ * 
+ * verify(ProofSpec, Proof) -> Proof | Error
+ * 
+ * As demonstrated in tests, if we don't fix the algorithm used to calculate the
+ * LeafHash for a given tree, there are many possible key-value pairs that can
+ * generate a given hash (by interpretting the preimage differently).
+ * We need this for proper security, requires client knows a priori what
+ * tree format server uses. But not in code, rather a configuration object.
+ */
+
+export interface ProofSpecSDKType {
+  leaf_spec?: LeafOpSDKType;
+  inner_spec?: InnerSpecSDKType;
+  max_depth: number;
+  min_depth: number;
+}
+/**
  * InnerSpec contains all store-specific structure info to determine if two proofs from a
  * given store are neighbors.
  * 
@@ -340,10 +455,34 @@ export interface InnerSpec {
 
   hash: HashOp;
 }
+/**
+ * InnerSpec contains all store-specific structure info to determine if two proofs from a
+ * given store are neighbors.
+ * 
+ * This enables:
+ * 
+ * isLeftMost(spec: InnerSpec, op: InnerOp)
+ * isRightMost(spec: InnerSpec, op: InnerOp)
+ * isLeftNeighbor(spec: InnerSpec, left: InnerOp, right: InnerOp)
+ */
+
+export interface InnerSpecSDKType {
+  child_order: number[];
+  child_size: number;
+  min_prefix_length: number;
+  max_prefix_length: number;
+  empty_child: Uint8Array;
+  hash: HashOp;
+}
 /** BatchProof is a group of multiple proof types than can be compressed */
 
 export interface BatchProof {
   entries: BatchEntry[];
+}
+/** BatchProof is a group of multiple proof types than can be compressed */
+
+export interface BatchProofSDKType {
+  entries: BatchEntrySDKType[];
 }
 /** Use BatchEntry not CommitmentProof, to avoid recursion */
 
@@ -351,15 +490,31 @@ export interface BatchEntry {
   exist?: ExistenceProof;
   nonexist?: NonExistenceProof;
 }
+/** Use BatchEntry not CommitmentProof, to avoid recursion */
+
+export interface BatchEntrySDKType {
+  exist?: ExistenceProofSDKType;
+  nonexist?: NonExistenceProofSDKType;
+}
 export interface CompressedBatchProof {
   entries: CompressedBatchEntry[];
   lookupInners: InnerOp[];
+}
+export interface CompressedBatchProofSDKType {
+  entries: CompressedBatchEntrySDKType[];
+  lookup_inners: InnerOpSDKType[];
 }
 /** Use BatchEntry not CommitmentProof, to avoid recursion */
 
 export interface CompressedBatchEntry {
   exist?: CompressedExistenceProof;
   nonexist?: CompressedNonExistenceProof;
+}
+/** Use BatchEntry not CommitmentProof, to avoid recursion */
+
+export interface CompressedBatchEntrySDKType {
+  exist?: CompressedExistenceProofSDKType;
+  nonexist?: CompressedNonExistenceProofSDKType;
 }
 export interface CompressedExistenceProof {
   key: Uint8Array;
@@ -369,11 +524,22 @@ export interface CompressedExistenceProof {
 
   path: number[];
 }
+export interface CompressedExistenceProofSDKType {
+  key: Uint8Array;
+  value: Uint8Array;
+  leaf?: LeafOpSDKType;
+  path: number[];
+}
 export interface CompressedNonExistenceProof {
   /** TODO: remove this as unnecessary??? we prove a range */
   key: Uint8Array;
   left?: CompressedExistenceProof;
   right?: CompressedExistenceProof;
+}
+export interface CompressedNonExistenceProofSDKType {
+  key: Uint8Array;
+  left?: CompressedExistenceProofSDKType;
+  right?: CompressedExistenceProofSDKType;
 }
 
 function createBaseExistenceProof(): ExistenceProof {
@@ -471,6 +637,30 @@ export const ExistenceProof = {
     message.leaf = object.leaf !== undefined && object.leaf !== null ? LeafOp.fromPartial(object.leaf) : undefined;
     message.path = object.path?.map(e => InnerOp.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: ExistenceProofSDKType): ExistenceProof {
+    return {
+      key: object?.key,
+      value: object?.value,
+      leaf: object.leaf ? LeafOp.fromSDK(object.leaf) : undefined,
+      path: Array.isArray(object?.path) ? object.path.map((e: any) => InnerOp.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: ExistenceProof): ExistenceProofSDKType {
+    const obj: any = {};
+    obj.key = message.key;
+    obj.value = message.value;
+    message.leaf !== undefined && (obj.leaf = message.leaf ? LeafOp.toSDK(message.leaf) : undefined);
+
+    if (message.path) {
+      obj.path = message.path.map(e => e ? InnerOp.toSDK(e) : undefined);
+    } else {
+      obj.path = [];
+    }
+
+    return obj;
   }
 
 };
@@ -552,6 +742,22 @@ export const NonExistenceProof = {
     message.left = object.left !== undefined && object.left !== null ? ExistenceProof.fromPartial(object.left) : undefined;
     message.right = object.right !== undefined && object.right !== null ? ExistenceProof.fromPartial(object.right) : undefined;
     return message;
+  },
+
+  fromSDK(object: NonExistenceProofSDKType): NonExistenceProof {
+    return {
+      key: object?.key,
+      left: object.left ? ExistenceProof.fromSDK(object.left) : undefined,
+      right: object.right ? ExistenceProof.fromSDK(object.right) : undefined
+    };
+  },
+
+  toSDK(message: NonExistenceProof): NonExistenceProofSDKType {
+    const obj: any = {};
+    obj.key = message.key;
+    message.left !== undefined && (obj.left = message.left ? ExistenceProof.toSDK(message.left) : undefined);
+    message.right !== undefined && (obj.right = message.right ? ExistenceProof.toSDK(message.right) : undefined);
+    return obj;
   }
 
 };
@@ -645,6 +851,24 @@ export const CommitmentProof = {
     message.batch = object.batch !== undefined && object.batch !== null ? BatchProof.fromPartial(object.batch) : undefined;
     message.compressed = object.compressed !== undefined && object.compressed !== null ? CompressedBatchProof.fromPartial(object.compressed) : undefined;
     return message;
+  },
+
+  fromSDK(object: CommitmentProofSDKType): CommitmentProof {
+    return {
+      exist: object.exist ? ExistenceProof.fromSDK(object.exist) : undefined,
+      nonexist: object.nonexist ? NonExistenceProof.fromSDK(object.nonexist) : undefined,
+      batch: object.batch ? BatchProof.fromSDK(object.batch) : undefined,
+      compressed: object.compressed ? CompressedBatchProof.fromSDK(object.compressed) : undefined
+    };
+  },
+
+  toSDK(message: CommitmentProof): CommitmentProofSDKType {
+    const obj: any = {};
+    message.exist !== undefined && (obj.exist = message.exist ? ExistenceProof.toSDK(message.exist) : undefined);
+    message.nonexist !== undefined && (obj.nonexist = message.nonexist ? NonExistenceProof.toSDK(message.nonexist) : undefined);
+    message.batch !== undefined && (obj.batch = message.batch ? BatchProof.toSDK(message.batch) : undefined);
+    message.compressed !== undefined && (obj.compressed = message.compressed ? CompressedBatchProof.toSDK(message.compressed) : undefined);
+    return obj;
   }
 
 };
@@ -750,6 +974,26 @@ export const LeafOp = {
     message.length = object.length ?? 0;
     message.prefix = object.prefix ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: LeafOpSDKType): LeafOp {
+    return {
+      hash: isSet(object.hash) ? hashOpFromJSON(object.hash) : 0,
+      prehashKey: isSet(object.prehash_key) ? hashOpFromJSON(object.prehash_key) : 0,
+      prehashValue: isSet(object.prehash_value) ? hashOpFromJSON(object.prehash_value) : 0,
+      length: isSet(object.length) ? lengthOpFromJSON(object.length) : 0,
+      prefix: object?.prefix
+    };
+  },
+
+  toSDK(message: LeafOp): LeafOpSDKType {
+    const obj: any = {};
+    message.hash !== undefined && (obj.hash = hashOpToJSON(message.hash));
+    message.prehashKey !== undefined && (obj.prehash_key = hashOpToJSON(message.prehashKey));
+    message.prehashValue !== undefined && (obj.prehash_value = hashOpToJSON(message.prehashValue));
+    message.length !== undefined && (obj.length = lengthOpToJSON(message.length));
+    obj.prefix = message.prefix;
+    return obj;
   }
 
 };
@@ -831,6 +1075,22 @@ export const InnerOp = {
     message.prefix = object.prefix ?? new Uint8Array();
     message.suffix = object.suffix ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: InnerOpSDKType): InnerOp {
+    return {
+      hash: isSet(object.hash) ? hashOpFromJSON(object.hash) : 0,
+      prefix: object?.prefix,
+      suffix: object?.suffix
+    };
+  },
+
+  toSDK(message: InnerOp): InnerOpSDKType {
+    const obj: any = {};
+    message.hash !== undefined && (obj.hash = hashOpToJSON(message.hash));
+    obj.prefix = message.prefix;
+    obj.suffix = message.suffix;
+    return obj;
   }
 
 };
@@ -924,6 +1184,24 @@ export const ProofSpec = {
     message.maxDepth = object.maxDepth ?? 0;
     message.minDepth = object.minDepth ?? 0;
     return message;
+  },
+
+  fromSDK(object: ProofSpecSDKType): ProofSpec {
+    return {
+      leafSpec: object.leaf_spec ? LeafOp.fromSDK(object.leaf_spec) : undefined,
+      innerSpec: object.inner_spec ? InnerSpec.fromSDK(object.inner_spec) : undefined,
+      maxDepth: object?.max_depth,
+      minDepth: object?.min_depth
+    };
+  },
+
+  toSDK(message: ProofSpec): ProofSpecSDKType {
+    const obj: any = {};
+    message.leafSpec !== undefined && (obj.leaf_spec = message.leafSpec ? LeafOp.toSDK(message.leafSpec) : undefined);
+    message.innerSpec !== undefined && (obj.inner_spec = message.innerSpec ? InnerSpec.toSDK(message.innerSpec) : undefined);
+    obj.max_depth = message.maxDepth;
+    obj.min_depth = message.minDepth;
+    return obj;
   }
 
 };
@@ -1060,6 +1338,34 @@ export const InnerSpec = {
     message.emptyChild = object.emptyChild ?? new Uint8Array();
     message.hash = object.hash ?? 0;
     return message;
+  },
+
+  fromSDK(object: InnerSpecSDKType): InnerSpec {
+    return {
+      childOrder: Array.isArray(object?.child_order) ? object.child_order.map((e: any) => e) : [],
+      childSize: object?.child_size,
+      minPrefixLength: object?.min_prefix_length,
+      maxPrefixLength: object?.max_prefix_length,
+      emptyChild: object?.empty_child,
+      hash: isSet(object.hash) ? hashOpFromJSON(object.hash) : 0
+    };
+  },
+
+  toSDK(message: InnerSpec): InnerSpecSDKType {
+    const obj: any = {};
+
+    if (message.childOrder) {
+      obj.child_order = message.childOrder.map(e => e);
+    } else {
+      obj.child_order = [];
+    }
+
+    obj.child_size = message.childSize;
+    obj.min_prefix_length = message.minPrefixLength;
+    obj.max_prefix_length = message.maxPrefixLength;
+    obj.empty_child = message.emptyChild;
+    message.hash !== undefined && (obj.hash = hashOpToJSON(message.hash));
+    return obj;
   }
 
 };
@@ -1123,6 +1429,24 @@ export const BatchProof = {
     const message = createBaseBatchProof();
     message.entries = object.entries?.map(e => BatchEntry.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: BatchProofSDKType): BatchProof {
+    return {
+      entries: Array.isArray(object?.entries) ? object.entries.map((e: any) => BatchEntry.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: BatchProof): BatchProofSDKType {
+    const obj: any = {};
+
+    if (message.entries) {
+      obj.entries = message.entries.map(e => e ? BatchEntry.toSDK(e) : undefined);
+    } else {
+      obj.entries = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1192,6 +1516,20 @@ export const BatchEntry = {
     message.exist = object.exist !== undefined && object.exist !== null ? ExistenceProof.fromPartial(object.exist) : undefined;
     message.nonexist = object.nonexist !== undefined && object.nonexist !== null ? NonExistenceProof.fromPartial(object.nonexist) : undefined;
     return message;
+  },
+
+  fromSDK(object: BatchEntrySDKType): BatchEntry {
+    return {
+      exist: object.exist ? ExistenceProof.fromSDK(object.exist) : undefined,
+      nonexist: object.nonexist ? NonExistenceProof.fromSDK(object.nonexist) : undefined
+    };
+  },
+
+  toSDK(message: BatchEntry): BatchEntrySDKType {
+    const obj: any = {};
+    message.exist !== undefined && (obj.exist = message.exist ? ExistenceProof.toSDK(message.exist) : undefined);
+    message.nonexist !== undefined && (obj.nonexist = message.nonexist ? NonExistenceProof.toSDK(message.nonexist) : undefined);
+    return obj;
   }
 
 };
@@ -1272,6 +1610,31 @@ export const CompressedBatchProof = {
     message.entries = object.entries?.map(e => CompressedBatchEntry.fromPartial(e)) || [];
     message.lookupInners = object.lookupInners?.map(e => InnerOp.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: CompressedBatchProofSDKType): CompressedBatchProof {
+    return {
+      entries: Array.isArray(object?.entries) ? object.entries.map((e: any) => CompressedBatchEntry.fromSDK(e)) : [],
+      lookupInners: Array.isArray(object?.lookup_inners) ? object.lookup_inners.map((e: any) => InnerOp.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: CompressedBatchProof): CompressedBatchProofSDKType {
+    const obj: any = {};
+
+    if (message.entries) {
+      obj.entries = message.entries.map(e => e ? CompressedBatchEntry.toSDK(e) : undefined);
+    } else {
+      obj.entries = [];
+    }
+
+    if (message.lookupInners) {
+      obj.lookup_inners = message.lookupInners.map(e => e ? InnerOp.toSDK(e) : undefined);
+    } else {
+      obj.lookup_inners = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1341,6 +1704,20 @@ export const CompressedBatchEntry = {
     message.exist = object.exist !== undefined && object.exist !== null ? CompressedExistenceProof.fromPartial(object.exist) : undefined;
     message.nonexist = object.nonexist !== undefined && object.nonexist !== null ? CompressedNonExistenceProof.fromPartial(object.nonexist) : undefined;
     return message;
+  },
+
+  fromSDK(object: CompressedBatchEntrySDKType): CompressedBatchEntry {
+    return {
+      exist: object.exist ? CompressedExistenceProof.fromSDK(object.exist) : undefined,
+      nonexist: object.nonexist ? CompressedNonExistenceProof.fromSDK(object.nonexist) : undefined
+    };
+  },
+
+  toSDK(message: CompressedBatchEntry): CompressedBatchEntrySDKType {
+    const obj: any = {};
+    message.exist !== undefined && (obj.exist = message.exist ? CompressedExistenceProof.toSDK(message.exist) : undefined);
+    message.nonexist !== undefined && (obj.nonexist = message.nonexist ? CompressedNonExistenceProof.toSDK(message.nonexist) : undefined);
+    return obj;
   }
 
 };
@@ -1452,6 +1829,30 @@ export const CompressedExistenceProof = {
     message.leaf = object.leaf !== undefined && object.leaf !== null ? LeafOp.fromPartial(object.leaf) : undefined;
     message.path = object.path?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: CompressedExistenceProofSDKType): CompressedExistenceProof {
+    return {
+      key: object?.key,
+      value: object?.value,
+      leaf: object.leaf ? LeafOp.fromSDK(object.leaf) : undefined,
+      path: Array.isArray(object?.path) ? object.path.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: CompressedExistenceProof): CompressedExistenceProofSDKType {
+    const obj: any = {};
+    obj.key = message.key;
+    obj.value = message.value;
+    message.leaf !== undefined && (obj.leaf = message.leaf ? LeafOp.toSDK(message.leaf) : undefined);
+
+    if (message.path) {
+      obj.path = message.path.map(e => e);
+    } else {
+      obj.path = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1533,6 +1934,22 @@ export const CompressedNonExistenceProof = {
     message.left = object.left !== undefined && object.left !== null ? CompressedExistenceProof.fromPartial(object.left) : undefined;
     message.right = object.right !== undefined && object.right !== null ? CompressedExistenceProof.fromPartial(object.right) : undefined;
     return message;
+  },
+
+  fromSDK(object: CompressedNonExistenceProofSDKType): CompressedNonExistenceProof {
+    return {
+      key: object?.key,
+      left: object.left ? CompressedExistenceProof.fromSDK(object.left) : undefined,
+      right: object.right ? CompressedExistenceProof.fromSDK(object.right) : undefined
+    };
+  },
+
+  toSDK(message: CompressedNonExistenceProof): CompressedNonExistenceProofSDKType {
+    const obj: any = {};
+    obj.key = message.key;
+    message.left !== undefined && (obj.left = message.left ? CompressedExistenceProof.toSDK(message.left) : undefined);
+    message.right !== undefined && (obj.right = message.right ? CompressedExistenceProof.toSDK(message.right) : undefined);
+    return obj;
   }
 
 };

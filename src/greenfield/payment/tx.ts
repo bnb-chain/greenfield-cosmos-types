@@ -6,7 +6,11 @@ export interface MsgCreatePaymentAccount {
   /** creator is the address of the stream account that created the payment account */
   creator: string;
 }
+export interface MsgCreatePaymentAccountSDKType {
+  creator: string;
+}
 export interface MsgCreatePaymentAccountResponse {}
+export interface MsgCreatePaymentAccountResponseSDKType {}
 export interface MsgDeposit {
   /** creator is the message signer for MsgDeposit and the address of the account to deposit from */
   creator: string;
@@ -17,7 +21,13 @@ export interface MsgDeposit {
 
   amount: string;
 }
+export interface MsgDepositSDKType {
+  creator: string;
+  to: string;
+  amount: string;
+}
 export interface MsgDepositResponse {}
+export interface MsgDepositResponseSDKType {}
 export interface MsgWithdraw {
   /** creator is the message signer for MsgWithdraw and the address of the receive account */
   creator: string;
@@ -28,7 +38,13 @@ export interface MsgWithdraw {
 
   amount: string;
 }
+export interface MsgWithdrawSDKType {
+  creator: string;
+  from: string;
+  amount: string;
+}
 export interface MsgWithdrawResponse {}
+export interface MsgWithdrawResponseSDKType {}
 export interface MsgDisableRefund {
   /** owner is the message signer for MsgDisableRefund and the address of the payment account owner */
   owner: string;
@@ -36,7 +52,12 @@ export interface MsgDisableRefund {
 
   addr: string;
 }
+export interface MsgDisableRefundSDKType {
+  owner: string;
+  addr: string;
+}
 export interface MsgDisableRefundResponse {}
+export interface MsgDisableRefundResponseSDKType {}
 
 function createBaseMsgCreatePaymentAccount(): MsgCreatePaymentAccount {
   return {
@@ -91,6 +112,18 @@ export const MsgCreatePaymentAccount = {
     const message = createBaseMsgCreatePaymentAccount();
     message.creator = object.creator ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgCreatePaymentAccountSDKType): MsgCreatePaymentAccount {
+    return {
+      creator: object?.creator
+    };
+  },
+
+  toSDK(message: MsgCreatePaymentAccount): MsgCreatePaymentAccountSDKType {
+    const obj: any = {};
+    obj.creator = message.creator;
+    return obj;
   }
 
 };
@@ -134,6 +167,15 @@ export const MsgCreatePaymentAccountResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgCreatePaymentAccountResponse>, I>>(_: I): MsgCreatePaymentAccountResponse {
     const message = createBaseMsgCreatePaymentAccountResponse();
     return message;
+  },
+
+  fromSDK(_: MsgCreatePaymentAccountResponseSDKType): MsgCreatePaymentAccountResponse {
+    return {};
+  },
+
+  toSDK(_: MsgCreatePaymentAccountResponse): MsgCreatePaymentAccountResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -215,6 +257,22 @@ export const MsgDeposit = {
     message.to = object.to ?? "";
     message.amount = object.amount ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgDepositSDKType): MsgDeposit {
+    return {
+      creator: object?.creator,
+      to: object?.to,
+      amount: object?.amount
+    };
+  },
+
+  toSDK(message: MsgDeposit): MsgDepositSDKType {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.to = message.to;
+    obj.amount = message.amount;
+    return obj;
   }
 
 };
@@ -258,6 +316,15 @@ export const MsgDepositResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgDepositResponse>, I>>(_: I): MsgDepositResponse {
     const message = createBaseMsgDepositResponse();
     return message;
+  },
+
+  fromSDK(_: MsgDepositResponseSDKType): MsgDepositResponse {
+    return {};
+  },
+
+  toSDK(_: MsgDepositResponse): MsgDepositResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -339,6 +406,22 @@ export const MsgWithdraw = {
     message.from = object.from ?? "";
     message.amount = object.amount ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgWithdrawSDKType): MsgWithdraw {
+    return {
+      creator: object?.creator,
+      from: object?.from,
+      amount: object?.amount
+    };
+  },
+
+  toSDK(message: MsgWithdraw): MsgWithdrawSDKType {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.from = message.from;
+    obj.amount = message.amount;
+    return obj;
   }
 
 };
@@ -382,6 +465,15 @@ export const MsgWithdrawResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgWithdrawResponse>, I>>(_: I): MsgWithdrawResponse {
     const message = createBaseMsgWithdrawResponse();
     return message;
+  },
+
+  fromSDK(_: MsgWithdrawResponseSDKType): MsgWithdrawResponse {
+    return {};
+  },
+
+  toSDK(_: MsgWithdrawResponse): MsgWithdrawResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -451,6 +543,20 @@ export const MsgDisableRefund = {
     message.owner = object.owner ?? "";
     message.addr = object.addr ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgDisableRefundSDKType): MsgDisableRefund {
+    return {
+      owner: object?.owner,
+      addr: object?.addr
+    };
+  },
+
+  toSDK(message: MsgDisableRefund): MsgDisableRefundSDKType {
+    const obj: any = {};
+    obj.owner = message.owner;
+    obj.addr = message.addr;
+    return obj;
   }
 
 };
@@ -494,6 +600,15 @@ export const MsgDisableRefundResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgDisableRefundResponse>, I>>(_: I): MsgDisableRefundResponse {
     const message = createBaseMsgDisableRefundResponse();
     return message;
+  },
+
+  fromSDK(_: MsgDisableRefundResponseSDKType): MsgDisableRefundResponse {
+    return {};
+  },
+
+  toSDK(_: MsgDisableRefundResponse): MsgDisableRefundResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

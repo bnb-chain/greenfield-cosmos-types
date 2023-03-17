@@ -50,6 +50,7 @@ export enum StorageType {
   STORAGE_TYPE_COMMITMENT = 4,
   UNRECOGNIZED = -1,
 }
+export const StorageTypeSDKType = StorageType;
 export function storageTypeFromJSON(object: any): StorageType {
   switch (object) {
     case 0:
@@ -111,6 +112,12 @@ export interface ModuleSchemaDescriptor {
 
   prefix: Uint8Array;
 }
+/** ModuleSchemaDescriptor describe's a module's ORM schema. */
+
+export interface ModuleSchemaDescriptorSDKType {
+  schema_file: ModuleSchemaDescriptor_FileEntrySDKType[];
+  prefix: Uint8Array;
+}
 /** FileEntry describes an ORM file used in a module. */
 
 export interface ModuleSchemaDescriptor_FileEntry {
@@ -133,6 +140,13 @@ export interface ModuleSchemaDescriptor_FileEntry {
    */
 
   storageType: StorageType;
+}
+/** FileEntry describes an ORM file used in a module. */
+
+export interface ModuleSchemaDescriptor_FileEntrySDKType {
+  id: number;
+  proto_file_name: string;
+  storage_type: StorageType;
 }
 
 function createBaseModuleSchemaDescriptor(): ModuleSchemaDescriptor {
@@ -206,6 +220,26 @@ export const ModuleSchemaDescriptor = {
     message.schemaFile = object.schemaFile?.map(e => ModuleSchemaDescriptor_FileEntry.fromPartial(e)) || [];
     message.prefix = object.prefix ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: ModuleSchemaDescriptorSDKType): ModuleSchemaDescriptor {
+    return {
+      schemaFile: Array.isArray(object?.schema_file) ? object.schema_file.map((e: any) => ModuleSchemaDescriptor_FileEntry.fromSDK(e)) : [],
+      prefix: object?.prefix
+    };
+  },
+
+  toSDK(message: ModuleSchemaDescriptor): ModuleSchemaDescriptorSDKType {
+    const obj: any = {};
+
+    if (message.schemaFile) {
+      obj.schema_file = message.schemaFile.map(e => e ? ModuleSchemaDescriptor_FileEntry.toSDK(e) : undefined);
+    } else {
+      obj.schema_file = [];
+    }
+
+    obj.prefix = message.prefix;
+    return obj;
   }
 
 };
@@ -287,6 +321,22 @@ export const ModuleSchemaDescriptor_FileEntry = {
     message.protoFileName = object.protoFileName ?? "";
     message.storageType = object.storageType ?? 0;
     return message;
+  },
+
+  fromSDK(object: ModuleSchemaDescriptor_FileEntrySDKType): ModuleSchemaDescriptor_FileEntry {
+    return {
+      id: object?.id,
+      protoFileName: object?.proto_file_name,
+      storageType: isSet(object.storage_type) ? storageTypeFromJSON(object.storage_type) : 0
+    };
+  },
+
+  toSDK(message: ModuleSchemaDescriptor_FileEntry): ModuleSchemaDescriptor_FileEntrySDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.proto_file_name = message.protoFileName;
+    message.storageType !== undefined && (obj.storage_type = storageTypeToJSON(message.storageType));
+    return obj;
   }
 
 };

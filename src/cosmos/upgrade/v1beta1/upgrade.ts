@@ -28,6 +28,13 @@ export interface Plan {
 
   info: string;
 }
+/** Plan specifies information about a planned upgrade and when it should occur. */
+
+export interface PlanSDKType {
+  name: string;
+  height: Long;
+  info: string;
+}
 /**
  * ModuleVersion specifies a module and its consensus version.
  * 
@@ -39,6 +46,16 @@ export interface ModuleVersion {
   name: string;
   /** consensus version of the app module */
 
+  version: Long;
+}
+/**
+ * ModuleVersion specifies a module and its consensus version.
+ * 
+ * Since: cosmos-sdk 0.43
+ */
+
+export interface ModuleVersionSDKType {
+  name: string;
   version: Long;
 }
 
@@ -119,6 +136,22 @@ export const Plan = {
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
     message.info = object.info ?? "";
     return message;
+  },
+
+  fromSDK(object: PlanSDKType): Plan {
+    return {
+      name: object?.name,
+      height: object?.height,
+      info: object?.info
+    };
+  },
+
+  toSDK(message: Plan): PlanSDKType {
+    const obj: any = {};
+    obj.name = message.name;
+    obj.height = message.height;
+    obj.info = message.info;
+    return obj;
   }
 
 };
@@ -188,6 +221,20 @@ export const ModuleVersion = {
     message.name = object.name ?? "";
     message.version = object.version !== undefined && object.version !== null ? Long.fromValue(object.version) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: ModuleVersionSDKType): ModuleVersion {
+    return {
+      name: object?.name,
+      version: object?.version
+    };
+  },
+
+  toSDK(message: ModuleVersion): ModuleVersionSDKType {
+    const obj: any = {};
+    obj.name = message.name;
+    obj.version = message.version;
+    return obj;
   }
 
 };

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { StreamAccountStatus, OutFlow, streamAccountStatusFromJSON, streamAccountStatusToJSON } from "./base";
+import { StreamAccountStatus, OutFlow, OutFlowSDKType, streamAccountStatusFromJSON, streamAccountStatusToJSON } from "./base";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.payment";
@@ -11,6 +11,11 @@ export interface EventPaymentAccountUpdate {
   owner: string;
   /** whether the payment account is refundable */
 
+  refundable: boolean;
+}
+export interface EventPaymentAccountUpdateSDKType {
+  addr: string;
+  owner: string;
   refundable: boolean;
 }
 /** Stream Payment Record of a stream account */
@@ -49,6 +54,19 @@ export interface EventStreamRecordUpdate {
 
   outFlows: OutFlow[];
 }
+/** Stream Payment Record of a stream account */
+
+export interface EventStreamRecordUpdateSDKType {
+  account: string;
+  crud_timestamp: Long;
+  netflow_rate: string;
+  static_balance: string;
+  buffer_balance: string;
+  lock_balance: string;
+  status: StreamAccountStatus;
+  settle_timestamp: Long;
+  out_flows: OutFlowSDKType[];
+}
 /**
  * EventForceSettle may be emitted on all Msgs and EndBlocker when a payment account's
  * balance or net outflow rate is changed
@@ -65,6 +83,15 @@ export interface EventForceSettle {
 
   settledBalance: string;
 }
+/**
+ * EventForceSettle may be emitted on all Msgs and EndBlocker when a payment account's
+ * balance or net outflow rate is changed
+ */
+
+export interface EventForceSettleSDKType {
+  addr: string;
+  settled_balance: string;
+}
 export interface EventDeposit {
   /** from is the the address of the account to deposit from */
   from: string;
@@ -75,6 +102,11 @@ export interface EventDeposit {
 
   amount: string;
 }
+export interface EventDepositSDKType {
+  from: string;
+  to: string;
+  amount: string;
+}
 export interface EventWithdraw {
   /** to the address of the receive account */
   to: string;
@@ -83,6 +115,11 @@ export interface EventWithdraw {
   from: string;
   /** amount is the amount to withdraw */
 
+  amount: string;
+}
+export interface EventWithdrawSDKType {
+  to: string;
+  from: string;
   amount: string;
 }
 
@@ -163,6 +200,22 @@ export const EventPaymentAccountUpdate = {
     message.owner = object.owner ?? "";
     message.refundable = object.refundable ?? false;
     return message;
+  },
+
+  fromSDK(object: EventPaymentAccountUpdateSDKType): EventPaymentAccountUpdate {
+    return {
+      addr: object?.addr,
+      owner: object?.owner,
+      refundable: object?.refundable
+    };
+  },
+
+  toSDK(message: EventPaymentAccountUpdate): EventPaymentAccountUpdateSDKType {
+    const obj: any = {};
+    obj.addr = message.addr;
+    obj.owner = message.owner;
+    obj.refundable = message.refundable;
+    return obj;
   }
 
 };
@@ -322,6 +375,40 @@ export const EventStreamRecordUpdate = {
     message.settleTimestamp = object.settleTimestamp !== undefined && object.settleTimestamp !== null ? Long.fromValue(object.settleTimestamp) : Long.ZERO;
     message.outFlows = object.outFlows?.map(e => OutFlow.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: EventStreamRecordUpdateSDKType): EventStreamRecordUpdate {
+    return {
+      account: object?.account,
+      crudTimestamp: object?.crud_timestamp,
+      netflowRate: object?.netflow_rate,
+      staticBalance: object?.static_balance,
+      bufferBalance: object?.buffer_balance,
+      lockBalance: object?.lock_balance,
+      status: isSet(object.status) ? streamAccountStatusFromJSON(object.status) : 0,
+      settleTimestamp: object?.settle_timestamp,
+      outFlows: Array.isArray(object?.out_flows) ? object.out_flows.map((e: any) => OutFlow.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: EventStreamRecordUpdate): EventStreamRecordUpdateSDKType {
+    const obj: any = {};
+    obj.account = message.account;
+    obj.crud_timestamp = message.crudTimestamp;
+    obj.netflow_rate = message.netflowRate;
+    obj.static_balance = message.staticBalance;
+    obj.buffer_balance = message.bufferBalance;
+    obj.lock_balance = message.lockBalance;
+    message.status !== undefined && (obj.status = streamAccountStatusToJSON(message.status));
+    obj.settle_timestamp = message.settleTimestamp;
+
+    if (message.outFlows) {
+      obj.out_flows = message.outFlows.map(e => e ? OutFlow.toSDK(e) : undefined);
+    } else {
+      obj.out_flows = [];
+    }
+
+    return obj;
   }
 
 };
@@ -391,6 +478,20 @@ export const EventForceSettle = {
     message.addr = object.addr ?? "";
     message.settledBalance = object.settledBalance ?? "";
     return message;
+  },
+
+  fromSDK(object: EventForceSettleSDKType): EventForceSettle {
+    return {
+      addr: object?.addr,
+      settledBalance: object?.settled_balance
+    };
+  },
+
+  toSDK(message: EventForceSettle): EventForceSettleSDKType {
+    const obj: any = {};
+    obj.addr = message.addr;
+    obj.settled_balance = message.settledBalance;
+    return obj;
   }
 
 };
@@ -472,6 +573,22 @@ export const EventDeposit = {
     message.to = object.to ?? "";
     message.amount = object.amount ?? "";
     return message;
+  },
+
+  fromSDK(object: EventDepositSDKType): EventDeposit {
+    return {
+      from: object?.from,
+      to: object?.to,
+      amount: object?.amount
+    };
+  },
+
+  toSDK(message: EventDeposit): EventDepositSDKType {
+    const obj: any = {};
+    obj.from = message.from;
+    obj.to = message.to;
+    obj.amount = message.amount;
+    return obj;
   }
 
 };
@@ -553,6 +670,22 @@ export const EventWithdraw = {
     message.from = object.from ?? "";
     message.amount = object.amount ?? "";
     return message;
+  },
+
+  fromSDK(object: EventWithdrawSDKType): EventWithdraw {
+    return {
+      to: object?.to,
+      from: object?.from,
+      amount: object?.amount
+    };
+  },
+
+  toSDK(message: EventWithdraw): EventWithdrawSDKType {
+    const obj: any = {};
+    obj.to = message.to;
+    obj.from = message.from;
+    obj.amount = message.amount;
+    return obj;
   }
 
 };

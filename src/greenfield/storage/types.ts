@@ -37,6 +37,18 @@ export interface BucketInfo {
 
   billingInfo?: BillingInfo;
 }
+export interface BucketInfoSDKType {
+  owner: string;
+  bucket_name: string;
+  is_public: boolean;
+  id: string;
+  source_type: SourceType;
+  create_at: Long;
+  payment_address: string;
+  primary_sp_address: string;
+  read_quota: Long;
+  billing_info?: BillingInfoSDKType;
+}
 /** BillingInfo is the billing information of the bucket */
 
 export interface BillingInfo {
@@ -49,6 +61,13 @@ export interface BillingInfo {
 
   secondarySpObjectsSize: SecondarySpObjectsSize[];
 }
+/** BillingInfo is the billing information of the bucket */
+
+export interface BillingInfoSDKType {
+  price_time: Long;
+  total_charge_size: Long;
+  secondary_sp_objects_size: SecondarySpObjectsSizeSDKType[];
+}
 /** secondary sp objects size statistics */
 
 export interface SecondarySpObjectsSize {
@@ -57,6 +76,12 @@ export interface SecondarySpObjectsSize {
   /** size is the total size of the objects in the secondary sp */
 
   totalChargeSize: Long;
+}
+/** secondary sp objects size statistics */
+
+export interface SecondarySpObjectsSizeSDKType {
+  sp_address: string;
+  total_charge_size: Long;
 }
 export interface ObjectInfo {
   owner: string;
@@ -97,6 +122,21 @@ export interface ObjectInfo {
 
   secondarySpAddresses: string[];
 }
+export interface ObjectInfoSDKType {
+  owner: string;
+  bucket_name: string;
+  object_name: string;
+  id: string;
+  payload_size: Long;
+  is_public: boolean;
+  content_type: string;
+  create_at: Long;
+  object_status: ObjectStatus;
+  redundancy_type: RedundancyType;
+  source_type: SourceType;
+  checksums: Uint8Array[];
+  secondary_sp_addresses: string[];
+}
 export interface GroupInfo {
   /** owner is the owner of the group. It can not changed once it created. */
   owner: string;
@@ -110,8 +150,18 @@ export interface GroupInfo {
 
   id: string;
 }
+export interface GroupInfoSDKType {
+  owner: string;
+  group_name: string;
+  source_type: SourceType;
+  id: string;
+}
 export interface Trait {
   traitType: string;
+  value: string;
+}
+export interface TraitSDKType {
+  trait_type: string;
   value: string;
 }
 export interface BucketMetaData {
@@ -130,6 +180,13 @@ export interface BucketMetaData {
 
   attributes: Trait[];
 }
+export interface BucketMetaDataSDKType {
+  description: string;
+  external_url: string;
+  bucket_name: string;
+  image: string;
+  attributes: TraitSDKType[];
+}
 export interface ObjectMetaData {
   /** description */
   description: string;
@@ -146,6 +203,13 @@ export interface ObjectMetaData {
 
   attributes: Trait[];
 }
+export interface ObjectMetaDataSDKType {
+  description: string;
+  external_url: string;
+  object_name: string;
+  image: string;
+  attributes: TraitSDKType[];
+}
 export interface GroupMetaData {
   /** description */
   description: string;
@@ -161,6 +225,13 @@ export interface GroupMetaData {
   /** attributes */
 
   attributes: Trait[];
+}
+export interface GroupMetaDataSDKType {
+  description: string;
+  external_url: string;
+  group_name: string;
+  image: string;
+  attributes: TraitSDKType[];
 }
 
 function createBaseBucketInfo(): BucketInfo {
@@ -324,6 +395,36 @@ export const BucketInfo = {
     message.readQuota = object.readQuota !== undefined && object.readQuota !== null ? Long.fromValue(object.readQuota) : Long.UZERO;
     message.billingInfo = object.billingInfo !== undefined && object.billingInfo !== null ? BillingInfo.fromPartial(object.billingInfo) : undefined;
     return message;
+  },
+
+  fromSDK(object: BucketInfoSDKType): BucketInfo {
+    return {
+      owner: object?.owner,
+      bucketName: object?.bucket_name,
+      isPublic: object?.is_public,
+      id: object?.id,
+      sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
+      createAt: object?.create_at,
+      paymentAddress: object?.payment_address,
+      primarySpAddress: object?.primary_sp_address,
+      readQuota: object?.read_quota,
+      billingInfo: object.billing_info ? BillingInfo.fromSDK(object.billing_info) : undefined
+    };
+  },
+
+  toSDK(message: BucketInfo): BucketInfoSDKType {
+    const obj: any = {};
+    obj.owner = message.owner;
+    obj.bucket_name = message.bucketName;
+    obj.is_public = message.isPublic;
+    obj.id = message.id;
+    message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
+    obj.create_at = message.createAt;
+    obj.payment_address = message.paymentAddress;
+    obj.primary_sp_address = message.primarySpAddress;
+    obj.read_quota = message.readQuota;
+    message.billingInfo !== undefined && (obj.billing_info = message.billingInfo ? BillingInfo.toSDK(message.billingInfo) : undefined);
+    return obj;
   }
 
 };
@@ -411,6 +512,28 @@ export const BillingInfo = {
     message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? Long.fromValue(object.totalChargeSize) : Long.UZERO;
     message.secondarySpObjectsSize = object.secondarySpObjectsSize?.map(e => SecondarySpObjectsSize.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: BillingInfoSDKType): BillingInfo {
+    return {
+      priceTime: object?.price_time,
+      totalChargeSize: object?.total_charge_size,
+      secondarySpObjectsSize: Array.isArray(object?.secondary_sp_objects_size) ? object.secondary_sp_objects_size.map((e: any) => SecondarySpObjectsSize.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: BillingInfo): BillingInfoSDKType {
+    const obj: any = {};
+    obj.price_time = message.priceTime;
+    obj.total_charge_size = message.totalChargeSize;
+
+    if (message.secondarySpObjectsSize) {
+      obj.secondary_sp_objects_size = message.secondarySpObjectsSize.map(e => e ? SecondarySpObjectsSize.toSDK(e) : undefined);
+    } else {
+      obj.secondary_sp_objects_size = [];
+    }
+
+    return obj;
   }
 
 };
@@ -480,6 +603,20 @@ export const SecondarySpObjectsSize = {
     message.spAddress = object.spAddress ?? "";
     message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? Long.fromValue(object.totalChargeSize) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: SecondarySpObjectsSizeSDKType): SecondarySpObjectsSize {
+    return {
+      spAddress: object?.sp_address,
+      totalChargeSize: object?.total_charge_size
+    };
+  },
+
+  toSDK(message: SecondarySpObjectsSize): SecondarySpObjectsSizeSDKType {
+    const obj: any = {};
+    obj.sp_address = message.spAddress;
+    obj.total_charge_size = message.totalChargeSize;
+    return obj;
   }
 
 };
@@ -692,6 +829,53 @@ export const ObjectInfo = {
     message.checksums = object.checksums?.map(e => e) || [];
     message.secondarySpAddresses = object.secondarySpAddresses?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: ObjectInfoSDKType): ObjectInfo {
+    return {
+      owner: object?.owner,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name,
+      id: object?.id,
+      payloadSize: object?.payload_size,
+      isPublic: object?.is_public,
+      contentType: object?.content_type,
+      createAt: object?.create_at,
+      objectStatus: isSet(object.object_status) ? objectStatusFromJSON(object.object_status) : 0,
+      redundancyType: isSet(object.redundancy_type) ? redundancyTypeFromJSON(object.redundancy_type) : 0,
+      sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
+      checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => e) : [],
+      secondarySpAddresses: Array.isArray(object?.secondary_sp_addresses) ? object.secondary_sp_addresses.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: ObjectInfo): ObjectInfoSDKType {
+    const obj: any = {};
+    obj.owner = message.owner;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.id = message.id;
+    obj.payload_size = message.payloadSize;
+    obj.is_public = message.isPublic;
+    obj.content_type = message.contentType;
+    obj.create_at = message.createAt;
+    message.objectStatus !== undefined && (obj.object_status = objectStatusToJSON(message.objectStatus));
+    message.redundancyType !== undefined && (obj.redundancy_type = redundancyTypeToJSON(message.redundancyType));
+    message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
+
+    if (message.checksums) {
+      obj.checksums = message.checksums.map(e => e);
+    } else {
+      obj.checksums = [];
+    }
+
+    if (message.secondarySpAddresses) {
+      obj.secondary_sp_addresses = message.secondarySpAddresses.map(e => e);
+    } else {
+      obj.secondary_sp_addresses = [];
+    }
+
+    return obj;
   }
 
 };
@@ -785,6 +969,24 @@ export const GroupInfo = {
     message.sourceType = object.sourceType ?? 0;
     message.id = object.id ?? "";
     return message;
+  },
+
+  fromSDK(object: GroupInfoSDKType): GroupInfo {
+    return {
+      owner: object?.owner,
+      groupName: object?.group_name,
+      sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
+      id: object?.id
+    };
+  },
+
+  toSDK(message: GroupInfo): GroupInfoSDKType {
+    const obj: any = {};
+    obj.owner = message.owner;
+    obj.group_name = message.groupName;
+    message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
+    obj.id = message.id;
+    return obj;
   }
 
 };
@@ -854,6 +1056,20 @@ export const Trait = {
     message.traitType = object.traitType ?? "";
     message.value = object.value ?? "";
     return message;
+  },
+
+  fromSDK(object: TraitSDKType): Trait {
+    return {
+      traitType: object?.trait_type,
+      value: object?.value
+    };
+  },
+
+  toSDK(message: Trait): TraitSDKType {
+    const obj: any = {};
+    obj.trait_type = message.traitType;
+    obj.value = message.value;
+    return obj;
   }
 
 };
@@ -965,6 +1181,32 @@ export const BucketMetaData = {
     message.image = object.image ?? "";
     message.attributes = object.attributes?.map(e => Trait.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: BucketMetaDataSDKType): BucketMetaData {
+    return {
+      description: object?.description,
+      externalUrl: object?.external_url,
+      bucketName: object?.bucket_name,
+      image: object?.image,
+      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Trait.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: BucketMetaData): BucketMetaDataSDKType {
+    const obj: any = {};
+    obj.description = message.description;
+    obj.external_url = message.externalUrl;
+    obj.bucket_name = message.bucketName;
+    obj.image = message.image;
+
+    if (message.attributes) {
+      obj.attributes = message.attributes.map(e => e ? Trait.toSDK(e) : undefined);
+    } else {
+      obj.attributes = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1076,6 +1318,32 @@ export const ObjectMetaData = {
     message.image = object.image ?? "";
     message.attributes = object.attributes?.map(e => Trait.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: ObjectMetaDataSDKType): ObjectMetaData {
+    return {
+      description: object?.description,
+      externalUrl: object?.external_url,
+      objectName: object?.object_name,
+      image: object?.image,
+      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Trait.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: ObjectMetaData): ObjectMetaDataSDKType {
+    const obj: any = {};
+    obj.description = message.description;
+    obj.external_url = message.externalUrl;
+    obj.object_name = message.objectName;
+    obj.image = message.image;
+
+    if (message.attributes) {
+      obj.attributes = message.attributes.map(e => e ? Trait.toSDK(e) : undefined);
+    } else {
+      obj.attributes = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1187,6 +1455,32 @@ export const GroupMetaData = {
     message.image = object.image ?? "";
     message.attributes = object.attributes?.map(e => Trait.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: GroupMetaDataSDKType): GroupMetaData {
+    return {
+      description: object?.description,
+      externalUrl: object?.external_url,
+      groupName: object?.group_name,
+      image: object?.image,
+      attributes: Array.isArray(object?.attributes) ? object.attributes.map((e: any) => Trait.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: GroupMetaData): GroupMetaDataSDKType {
+    const obj: any = {};
+    obj.description = message.description;
+    obj.external_url = message.externalUrl;
+    obj.group_name = message.groupName;
+    obj.image = message.image;
+
+    if (message.attributes) {
+      obj.attributes = message.attributes.map(e => e ? Trait.toSDK(e) : undefined);
+    } else {
+      obj.attributes = [];
+    }
+
+    return obj;
   }
 
 };

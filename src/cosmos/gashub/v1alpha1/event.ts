@@ -9,6 +9,13 @@ export interface EventUpdateMsgGasParams {
   fromValue: string;
   toValue: string;
 }
+/** EventUpdateMsgGasParams is emitted when update a msg's gas params */
+
+export interface EventUpdateMsgGasParamsSDKType {
+  msg_type_url: string;
+  from_value: string;
+  to_value: string;
+}
 
 function createBaseEventUpdateMsgGasParams(): EventUpdateMsgGasParams {
   return {
@@ -87,6 +94,22 @@ export const EventUpdateMsgGasParams = {
     message.fromValue = object.fromValue ?? "";
     message.toValue = object.toValue ?? "";
     return message;
+  },
+
+  fromSDK(object: EventUpdateMsgGasParamsSDKType): EventUpdateMsgGasParams {
+    return {
+      msgTypeUrl: object?.msg_type_url,
+      fromValue: object?.from_value,
+      toValue: object?.to_value
+    };
+  },
+
+  toSDK(message: EventUpdateMsgGasParams): EventUpdateMsgGasParamsSDKType {
+    const obj: any = {};
+    obj.msg_type_url = message.msgTypeUrl;
+    obj.from_value = message.fromValue;
+    obj.to_value = message.toValue;
+    return obj;
   }
 
 };

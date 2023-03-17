@@ -1,16 +1,24 @@
 /* eslint-disable */
-import { PageRequest, PageResponse } from "../../base/query/v1beta1/pagination";
-import { Params, ValidatorSigningInfo } from "./slashing";
+import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../base/query/v1beta1/pagination";
+import { Params, ParamsSDKType, ValidatorSigningInfo, ValidatorSigningInfoSDKType } from "./slashing";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.slashing.v1beta1";
 /** QueryParamsRequest is the request type for the Query/Params RPC method */
 
 export interface QueryParamsRequest {}
+/** QueryParamsRequest is the request type for the Query/Params RPC method */
+
+export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is the response type for the Query/Params RPC method */
 
 export interface QueryParamsResponse {
   params?: Params;
+}
+/** QueryParamsResponse is the response type for the Query/Params RPC method */
+
+export interface QueryParamsResponseSDKType {
+  params?: ParamsSDKType;
 }
 /**
  * QuerySigningInfoRequest is the request type for the Query/SigningInfo RPC
@@ -22,6 +30,14 @@ export interface QuerySigningInfoRequest {
   consAddress: string;
 }
 /**
+ * QuerySigningInfoRequest is the request type for the Query/SigningInfo RPC
+ * method
+ */
+
+export interface QuerySigningInfoRequestSDKType {
+  cons_address: string;
+}
+/**
  * QuerySigningInfoResponse is the response type for the Query/SigningInfo RPC
  * method
  */
@@ -29,6 +45,14 @@ export interface QuerySigningInfoRequest {
 export interface QuerySigningInfoResponse {
   /** val_signing_info is the signing info of requested val cons address */
   valSigningInfo?: ValidatorSigningInfo;
+}
+/**
+ * QuerySigningInfoResponse is the response type for the Query/SigningInfo RPC
+ * method
+ */
+
+export interface QuerySigningInfoResponseSDKType {
+  val_signing_info?: ValidatorSigningInfoSDKType;
 }
 /**
  * QuerySigningInfosRequest is the request type for the Query/SigningInfos RPC
@@ -39,6 +63,14 @@ export interface QuerySigningInfosRequest {
   pagination?: PageRequest;
 }
 /**
+ * QuerySigningInfosRequest is the request type for the Query/SigningInfos RPC
+ * method
+ */
+
+export interface QuerySigningInfosRequestSDKType {
+  pagination?: PageRequestSDKType;
+}
+/**
  * QuerySigningInfosResponse is the response type for the Query/SigningInfos RPC
  * method
  */
@@ -47,6 +79,15 @@ export interface QuerySigningInfosResponse {
   /** info is the signing info of all validators */
   info: ValidatorSigningInfo[];
   pagination?: PageResponse;
+}
+/**
+ * QuerySigningInfosResponse is the response type for the Query/SigningInfos RPC
+ * method
+ */
+
+export interface QuerySigningInfosResponseSDKType {
+  info: ValidatorSigningInfoSDKType[];
+  pagination?: PageResponseSDKType;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -88,6 +129,15 @@ export const QueryParamsRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(_: I): QueryParamsRequest {
     const message = createBaseQueryParamsRequest();
     return message;
+  },
+
+  fromSDK(_: QueryParamsRequestSDKType): QueryParamsRequest {
+    return {};
+  },
+
+  toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -145,6 +195,18 @@ export const QueryParamsResponse = {
     const message = createBaseQueryParamsResponse();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryParamsResponseSDKType): QueryParamsResponse {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
   }
 
 };
@@ -202,6 +264,18 @@ export const QuerySigningInfoRequest = {
     const message = createBaseQuerySigningInfoRequest();
     message.consAddress = object.consAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: QuerySigningInfoRequestSDKType): QuerySigningInfoRequest {
+    return {
+      consAddress: object?.cons_address
+    };
+  },
+
+  toSDK(message: QuerySigningInfoRequest): QuerySigningInfoRequestSDKType {
+    const obj: any = {};
+    obj.cons_address = message.consAddress;
+    return obj;
   }
 
 };
@@ -259,6 +333,18 @@ export const QuerySigningInfoResponse = {
     const message = createBaseQuerySigningInfoResponse();
     message.valSigningInfo = object.valSigningInfo !== undefined && object.valSigningInfo !== null ? ValidatorSigningInfo.fromPartial(object.valSigningInfo) : undefined;
     return message;
+  },
+
+  fromSDK(object: QuerySigningInfoResponseSDKType): QuerySigningInfoResponse {
+    return {
+      valSigningInfo: object.val_signing_info ? ValidatorSigningInfo.fromSDK(object.val_signing_info) : undefined
+    };
+  },
+
+  toSDK(message: QuerySigningInfoResponse): QuerySigningInfoResponseSDKType {
+    const obj: any = {};
+    message.valSigningInfo !== undefined && (obj.val_signing_info = message.valSigningInfo ? ValidatorSigningInfo.toSDK(message.valSigningInfo) : undefined);
+    return obj;
   }
 
 };
@@ -316,6 +402,18 @@ export const QuerySigningInfosRequest = {
     const message = createBaseQuerySigningInfosRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QuerySigningInfosRequestSDKType): QuerySigningInfosRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QuerySigningInfosRequest): QuerySigningInfosRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -391,6 +489,26 @@ export const QuerySigningInfosResponse = {
     message.info = object.info?.map(e => ValidatorSigningInfo.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QuerySigningInfosResponseSDKType): QuerySigningInfosResponse {
+    return {
+      info: Array.isArray(object?.info) ? object.info.map((e: any) => ValidatorSigningInfo.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QuerySigningInfosResponse): QuerySigningInfosResponseSDKType {
+    const obj: any = {};
+
+    if (message.info) {
+      obj.info = message.info.map(e => e ? ValidatorSigningInfo.toSDK(e) : undefined);
+    } else {
+      obj.info = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };

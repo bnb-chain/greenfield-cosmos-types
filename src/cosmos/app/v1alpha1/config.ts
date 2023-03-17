@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Any } from "../../../google/protobuf/any";
+import { Any, AnySDKType } from "../../../google/protobuf/any";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet } from "../../../helpers";
 export const protobufPackage = "cosmos.app.v1alpha1";
@@ -16,6 +16,19 @@ export const protobufPackage = "cosmos.app.v1alpha1";
 export interface Config {
   /** modules are the module configurations for the app. */
   modules: ModuleConfig[];
+}
+/**
+ * Config represents the configuration for a Cosmos SDK ABCI app.
+ * It is intended that all state machine logic including the version of
+ * baseapp and tx handlers (and possibly even Tendermint) that an app needs
+ * can be described in a config object. For compatibility, the framework should
+ * allow a mixture of declarative and imperative app wiring, however, apps
+ * that strive for the maximum ease of maintainability should be able to describe
+ * their state machine with a config object alone.
+ */
+
+export interface ConfigSDKType {
+  modules: ModuleConfigSDKType[];
 }
 /** ModuleConfig is a module configuration for an app. */
 
@@ -39,6 +52,12 @@ export interface ModuleConfig {
    */
 
   config?: Any;
+}
+/** ModuleConfig is a module configuration for an app. */
+
+export interface ModuleConfigSDKType {
+  name: string;
+  config?: AnySDKType;
 }
 
 function createBaseConfig(): Config {
@@ -100,6 +119,24 @@ export const Config = {
     const message = createBaseConfig();
     message.modules = object.modules?.map(e => ModuleConfig.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: ConfigSDKType): Config {
+    return {
+      modules: Array.isArray(object?.modules) ? object.modules.map((e: any) => ModuleConfig.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: Config): ConfigSDKType {
+    const obj: any = {};
+
+    if (message.modules) {
+      obj.modules = message.modules.map(e => e ? ModuleConfig.toSDK(e) : undefined);
+    } else {
+      obj.modules = [];
+    }
+
+    return obj;
   }
 
 };
@@ -169,6 +206,20 @@ export const ModuleConfig = {
     message.name = object.name ?? "";
     message.config = object.config !== undefined && object.config !== null ? Any.fromPartial(object.config) : undefined;
     return message;
+  },
+
+  fromSDK(object: ModuleConfigSDKType): ModuleConfig {
+    return {
+      name: object?.name,
+      config: object.config ? Any.fromSDK(object.config) : undefined
+    };
+  },
+
+  toSDK(message: ModuleConfig): ModuleConfigSDKType {
+    const obj: any = {};
+    obj.name = message.name;
+    message.config !== undefined && (obj.config = message.config ? Any.toSDK(message.config) : undefined);
+    return obj;
   }
 
 };

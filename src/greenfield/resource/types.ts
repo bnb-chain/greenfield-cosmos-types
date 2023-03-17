@@ -6,6 +6,7 @@ export enum ResourceType {
   RESOURCE_TYPE_GROUP = 2,
   UNRECOGNIZED = -1,
 }
+export const ResourceTypeSDKType = ResourceType;
 export function resourceTypeFromJSON(object: any): ResourceType {
   switch (object) {
     case 0:

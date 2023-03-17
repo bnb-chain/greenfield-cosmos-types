@@ -1,8 +1,8 @@
 /* eslint-disable */
-import { Description, CommissionRates } from "./staking";
-import { Any } from "../../../google/protobuf/any";
-import { Coin } from "../../base/v1beta1/coin";
-import { Timestamp } from "../../../google/protobuf/timestamp";
+import { Description, DescriptionSDKType, CommissionRates, CommissionRatesSDKType } from "./staking";
+import { Any, AnySDKType } from "../../../google/protobuf/any";
+import { Coin, CoinSDKType } from "../../base/v1beta1/coin";
+import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, fromJsonTimestamp, fromTimestamp, Long, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.staking.v1beta1";
@@ -20,9 +20,26 @@ export interface MsgCreateValidator {
   relayerAddress: string;
   relayerBlsKey: string;
 }
+/** MsgCreateValidator defines a SDK message for creating a new validator. */
+
+export interface MsgCreateValidatorSDKType {
+  description?: DescriptionSDKType;
+  commission?: CommissionRatesSDKType;
+  min_self_delegation: string;
+  delegator_address: string;
+  validator_address: string;
+  pubkey?: AnySDKType;
+  value?: CoinSDKType;
+  from: string;
+  relayer_address: string;
+  relayer_bls_key: string;
+}
 /** MsgCreateValidatorResponse defines the Msg/CreateValidator response type. */
 
 export interface MsgCreateValidatorResponse {}
+/** MsgCreateValidatorResponse defines the Msg/CreateValidator response type. */
+
+export interface MsgCreateValidatorResponseSDKType {}
 /** MsgEditValidator defines a SDK message for editing an existing validator. */
 
 export interface MsgEditValidator {
@@ -42,9 +59,22 @@ export interface MsgEditValidator {
 
   relayerBlsKey: string;
 }
+/** MsgEditValidator defines a SDK message for editing an existing validator. */
+
+export interface MsgEditValidatorSDKType {
+  description?: DescriptionSDKType;
+  validator_address: string;
+  commission_rate: string;
+  min_self_delegation: string;
+  relayer_address: string;
+  relayer_bls_key: string;
+}
 /** MsgEditValidatorResponse defines the Msg/EditValidator response type. */
 
 export interface MsgEditValidatorResponse {}
+/** MsgEditValidatorResponse defines the Msg/EditValidator response type. */
+
+export interface MsgEditValidatorResponseSDKType {}
 /**
  * MsgDelegate defines a SDK message for performing a delegation of coins
  * from a delegator to a validator.
@@ -55,9 +85,22 @@ export interface MsgDelegate {
   validatorAddress: string;
   amount?: Coin;
 }
+/**
+ * MsgDelegate defines a SDK message for performing a delegation of coins
+ * from a delegator to a validator.
+ */
+
+export interface MsgDelegateSDKType {
+  delegator_address: string;
+  validator_address: string;
+  amount?: CoinSDKType;
+}
 /** MsgDelegateResponse defines the Msg/Delegate response type. */
 
 export interface MsgDelegateResponse {}
+/** MsgDelegateResponse defines the Msg/Delegate response type. */
+
+export interface MsgDelegateResponseSDKType {}
 /**
  * MsgBeginRedelegate defines a SDK message for performing a redelegation
  * of coins from a delegator and source validator to a destination validator.
@@ -69,10 +112,26 @@ export interface MsgBeginRedelegate {
   validatorDstAddress: string;
   amount?: Coin;
 }
+/**
+ * MsgBeginRedelegate defines a SDK message for performing a redelegation
+ * of coins from a delegator and source validator to a destination validator.
+ */
+
+export interface MsgBeginRedelegateSDKType {
+  delegator_address: string;
+  validator_src_address: string;
+  validator_dst_address: string;
+  amount?: CoinSDKType;
+}
 /** MsgBeginRedelegateResponse defines the Msg/BeginRedelegate response type. */
 
 export interface MsgBeginRedelegateResponse {
   completionTime?: Timestamp;
+}
+/** MsgBeginRedelegateResponse defines the Msg/BeginRedelegate response type. */
+
+export interface MsgBeginRedelegateResponseSDKType {
+  completion_time?: TimestampSDKType;
 }
 /**
  * MsgUndelegate defines a SDK message for performing an undelegation from a
@@ -84,10 +143,25 @@ export interface MsgUndelegate {
   validatorAddress: string;
   amount?: Coin;
 }
+/**
+ * MsgUndelegate defines a SDK message for performing an undelegation from a
+ * delegate and a validator.
+ */
+
+export interface MsgUndelegateSDKType {
+  delegator_address: string;
+  validator_address: string;
+  amount?: CoinSDKType;
+}
 /** MsgUndelegateResponse defines the Msg/Undelegate response type. */
 
 export interface MsgUndelegateResponse {
   completionTime?: Timestamp;
+}
+/** MsgUndelegateResponse defines the Msg/Undelegate response type. */
+
+export interface MsgUndelegateResponseSDKType {
+  completion_time?: TimestampSDKType;
 }
 /**
  * MsgCancelUnbondingDelegation defines the SDK message for performing a cancel unbonding delegation for delegator
@@ -106,12 +180,31 @@ export interface MsgCancelUnbondingDelegation {
   creationHeight: Long;
 }
 /**
+ * MsgCancelUnbondingDelegation defines the SDK message for performing a cancel unbonding delegation for delegator
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface MsgCancelUnbondingDelegationSDKType {
+  delegator_address: string;
+  validator_address: string;
+  amount?: CoinSDKType;
+  creation_height: Long;
+}
+/**
  * MsgCancelUnbondingDelegationResponse
  * 
  * Since: cosmos-sdk 0.46
  */
 
 export interface MsgCancelUnbondingDelegationResponse {}
+/**
+ * MsgCancelUnbondingDelegationResponse
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface MsgCancelUnbondingDelegationResponseSDKType {}
 
 function createBaseMsgCreateValidator(): MsgCreateValidator {
   return {
@@ -274,6 +367,36 @@ export const MsgCreateValidator = {
     message.relayerAddress = object.relayerAddress ?? "";
     message.relayerBlsKey = object.relayerBlsKey ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgCreateValidatorSDKType): MsgCreateValidator {
+    return {
+      description: object.description ? Description.fromSDK(object.description) : undefined,
+      commission: object.commission ? CommissionRates.fromSDK(object.commission) : undefined,
+      minSelfDelegation: object?.min_self_delegation,
+      delegatorAddress: object?.delegator_address,
+      validatorAddress: object?.validator_address,
+      pubkey: object.pubkey ? Any.fromSDK(object.pubkey) : undefined,
+      value: object.value ? Coin.fromSDK(object.value) : undefined,
+      from: object?.from,
+      relayerAddress: object?.relayer_address,
+      relayerBlsKey: object?.relayer_bls_key
+    };
+  },
+
+  toSDK(message: MsgCreateValidator): MsgCreateValidatorSDKType {
+    const obj: any = {};
+    message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
+    message.commission !== undefined && (obj.commission = message.commission ? CommissionRates.toSDK(message.commission) : undefined);
+    obj.min_self_delegation = message.minSelfDelegation;
+    obj.delegator_address = message.delegatorAddress;
+    obj.validator_address = message.validatorAddress;
+    message.pubkey !== undefined && (obj.pubkey = message.pubkey ? Any.toSDK(message.pubkey) : undefined);
+    message.value !== undefined && (obj.value = message.value ? Coin.toSDK(message.value) : undefined);
+    obj.from = message.from;
+    obj.relayer_address = message.relayerAddress;
+    obj.relayer_bls_key = message.relayerBlsKey;
+    return obj;
   }
 
 };
@@ -317,6 +440,15 @@ export const MsgCreateValidatorResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgCreateValidatorResponse>, I>>(_: I): MsgCreateValidatorResponse {
     const message = createBaseMsgCreateValidatorResponse();
     return message;
+  },
+
+  fromSDK(_: MsgCreateValidatorResponseSDKType): MsgCreateValidatorResponse {
+    return {};
+  },
+
+  toSDK(_: MsgCreateValidatorResponse): MsgCreateValidatorResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -434,6 +566,28 @@ export const MsgEditValidator = {
     message.relayerAddress = object.relayerAddress ?? "";
     message.relayerBlsKey = object.relayerBlsKey ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgEditValidatorSDKType): MsgEditValidator {
+    return {
+      description: object.description ? Description.fromSDK(object.description) : undefined,
+      validatorAddress: object?.validator_address,
+      commissionRate: object?.commission_rate,
+      minSelfDelegation: object?.min_self_delegation,
+      relayerAddress: object?.relayer_address,
+      relayerBlsKey: object?.relayer_bls_key
+    };
+  },
+
+  toSDK(message: MsgEditValidator): MsgEditValidatorSDKType {
+    const obj: any = {};
+    message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
+    obj.validator_address = message.validatorAddress;
+    obj.commission_rate = message.commissionRate;
+    obj.min_self_delegation = message.minSelfDelegation;
+    obj.relayer_address = message.relayerAddress;
+    obj.relayer_bls_key = message.relayerBlsKey;
+    return obj;
   }
 
 };
@@ -477,6 +631,15 @@ export const MsgEditValidatorResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgEditValidatorResponse>, I>>(_: I): MsgEditValidatorResponse {
     const message = createBaseMsgEditValidatorResponse();
     return message;
+  },
+
+  fromSDK(_: MsgEditValidatorResponseSDKType): MsgEditValidatorResponse {
+    return {};
+  },
+
+  toSDK(_: MsgEditValidatorResponse): MsgEditValidatorResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -558,6 +721,22 @@ export const MsgDelegate = {
     message.validatorAddress = object.validatorAddress ?? "";
     message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
     return message;
+  },
+
+  fromSDK(object: MsgDelegateSDKType): MsgDelegate {
+    return {
+      delegatorAddress: object?.delegator_address,
+      validatorAddress: object?.validator_address,
+      amount: object.amount ? Coin.fromSDK(object.amount) : undefined
+    };
+  },
+
+  toSDK(message: MsgDelegate): MsgDelegateSDKType {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    obj.validator_address = message.validatorAddress;
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
+    return obj;
   }
 
 };
@@ -601,6 +780,15 @@ export const MsgDelegateResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgDelegateResponse>, I>>(_: I): MsgDelegateResponse {
     const message = createBaseMsgDelegateResponse();
     return message;
+  },
+
+  fromSDK(_: MsgDelegateResponseSDKType): MsgDelegateResponse {
+    return {};
+  },
+
+  toSDK(_: MsgDelegateResponse): MsgDelegateResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -694,6 +882,24 @@ export const MsgBeginRedelegate = {
     message.validatorDstAddress = object.validatorDstAddress ?? "";
     message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
     return message;
+  },
+
+  fromSDK(object: MsgBeginRedelegateSDKType): MsgBeginRedelegate {
+    return {
+      delegatorAddress: object?.delegator_address,
+      validatorSrcAddress: object?.validator_src_address,
+      validatorDstAddress: object?.validator_dst_address,
+      amount: object.amount ? Coin.fromSDK(object.amount) : undefined
+    };
+  },
+
+  toSDK(message: MsgBeginRedelegate): MsgBeginRedelegateSDKType {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    obj.validator_src_address = message.validatorSrcAddress;
+    obj.validator_dst_address = message.validatorDstAddress;
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
+    return obj;
   }
 
 };
@@ -751,6 +957,18 @@ export const MsgBeginRedelegateResponse = {
     const message = createBaseMsgBeginRedelegateResponse();
     message.completionTime = object.completionTime !== undefined && object.completionTime !== null ? Timestamp.fromPartial(object.completionTime) : undefined;
     return message;
+  },
+
+  fromSDK(object: MsgBeginRedelegateResponseSDKType): MsgBeginRedelegateResponse {
+    return {
+      completionTime: object.completion_time ? Timestamp.fromSDK(object.completion_time) : undefined
+    };
+  },
+
+  toSDK(message: MsgBeginRedelegateResponse): MsgBeginRedelegateResponseSDKType {
+    const obj: any = {};
+    message.completionTime !== undefined && (obj.completion_time = message.completionTime ? Timestamp.toSDK(message.completionTime) : undefined);
+    return obj;
   }
 
 };
@@ -832,6 +1050,22 @@ export const MsgUndelegate = {
     message.validatorAddress = object.validatorAddress ?? "";
     message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
     return message;
+  },
+
+  fromSDK(object: MsgUndelegateSDKType): MsgUndelegate {
+    return {
+      delegatorAddress: object?.delegator_address,
+      validatorAddress: object?.validator_address,
+      amount: object.amount ? Coin.fromSDK(object.amount) : undefined
+    };
+  },
+
+  toSDK(message: MsgUndelegate): MsgUndelegateSDKType {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    obj.validator_address = message.validatorAddress;
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
+    return obj;
   }
 
 };
@@ -889,6 +1123,18 @@ export const MsgUndelegateResponse = {
     const message = createBaseMsgUndelegateResponse();
     message.completionTime = object.completionTime !== undefined && object.completionTime !== null ? Timestamp.fromPartial(object.completionTime) : undefined;
     return message;
+  },
+
+  fromSDK(object: MsgUndelegateResponseSDKType): MsgUndelegateResponse {
+    return {
+      completionTime: object.completion_time ? Timestamp.fromSDK(object.completion_time) : undefined
+    };
+  },
+
+  toSDK(message: MsgUndelegateResponse): MsgUndelegateResponseSDKType {
+    const obj: any = {};
+    message.completionTime !== undefined && (obj.completion_time = message.completionTime ? Timestamp.toSDK(message.completionTime) : undefined);
+    return obj;
   }
 
 };
@@ -982,6 +1228,24 @@ export const MsgCancelUnbondingDelegation = {
     message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
     message.creationHeight = object.creationHeight !== undefined && object.creationHeight !== null ? Long.fromValue(object.creationHeight) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: MsgCancelUnbondingDelegationSDKType): MsgCancelUnbondingDelegation {
+    return {
+      delegatorAddress: object?.delegator_address,
+      validatorAddress: object?.validator_address,
+      amount: object.amount ? Coin.fromSDK(object.amount) : undefined,
+      creationHeight: object?.creation_height
+    };
+  },
+
+  toSDK(message: MsgCancelUnbondingDelegation): MsgCancelUnbondingDelegationSDKType {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    obj.validator_address = message.validatorAddress;
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
+    obj.creation_height = message.creationHeight;
+    return obj;
   }
 
 };
@@ -1025,6 +1289,15 @@ export const MsgCancelUnbondingDelegationResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgCancelUnbondingDelegationResponse>, I>>(_: I): MsgCancelUnbondingDelegationResponse {
     const message = createBaseMsgCancelUnbondingDelegationResponse();
     return message;
+  },
+
+  fromSDK(_: MsgCancelUnbondingDelegationResponseSDKType): MsgCancelUnbondingDelegationResponse {
+    return {};
+  },
+
+  toSDK(_: MsgCancelUnbondingDelegationResponse): MsgCancelUnbondingDelegationResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
