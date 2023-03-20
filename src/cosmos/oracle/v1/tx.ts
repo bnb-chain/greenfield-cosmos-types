@@ -5,13 +5,28 @@ export const protobufPackage = "cosmos.oracle.v1";
 /** MsgClaim defines the Msg/Claim request type */
 
 export interface MsgClaim {
+  /** sender address of the msg */
   fromAddress: string;
+  /** source chain id */
+
   srcChainId: number;
+  /** destination chain id */
+
   destChainId: number;
+  /** sequence of the oracle channel */
+
   sequence: Long;
+  /** timestamp of the claim */
+
   timestamp: Long;
+  /** payload of the claim */
+
   payload: Uint8Array;
+  /** bit map of the voted validators */
+
   voteAddressSet: Long[];
+  /** bls signature of the claim */
+
   aggSignature: Uint8Array;
 }
 /** MsgClaim defines the Msg/Claim request type */

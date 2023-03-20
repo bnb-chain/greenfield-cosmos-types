@@ -3,11 +3,18 @@
   "version": "0.3.0-alpha.7",
   "description": "greenfield cosmos types",
   "scripts": {
+    "codegen": "rimraf ./src && node ./scripts/codegen.js",
     "clean": "rimraf confio cosmos cosmos_proto gogoproto google greenfield tendermint index.* helpers.*",
     "prepare-publishing": "cp -r dist/* .",
     "build": "tsc"
   },
-  "keywords": [],
+  "keywords": [
+    "cosmos",
+    "greenfield",
+    "types",
+    "typescript",
+    "gRPC"
+  ],
   "author": "",
   "license": "MIT",
   "files": [

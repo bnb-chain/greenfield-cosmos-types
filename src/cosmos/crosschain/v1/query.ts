@@ -23,7 +23,10 @@ export interface QueryParamsResponseSDKType {
 /** QueryCrossChainPackageRequest is the request type for the Query/CrossChainPackage RPC method. */
 
 export interface QueryCrossChainPackageRequest {
+  /** channel id of the cross chain package */
   channelId: number;
+  /** sequence of the cross chain package */
+
   sequence: Long;
 }
 /** QueryCrossChainPackageRequest is the request type for the Query/CrossChainPackage RPC method. */
@@ -35,6 +38,7 @@ export interface QueryCrossChainPackageRequestSDKType {
 /** QueryCrossChainPackageResponse is the response type for the Query/CrossChainPackage RPC method. */
 
 export interface QueryCrossChainPackageResponse {
+  /** content of the cross chain package */
   package: Uint8Array;
 }
 /** QueryCrossChainPackageResponse is the response type for the Query/CrossChainPackage RPC method. */
@@ -45,6 +49,7 @@ export interface QueryCrossChainPackageResponseSDKType {
 /** QuerySendSequenceRequest is the request type for the Query/SendSequence RPC method. */
 
 export interface QuerySendSequenceRequest {
+  /** channel id of the cross chain package */
   channelId: number;
 }
 /** QuerySendSequenceRequest is the request type for the Query/SendSequence RPC method. */
@@ -55,6 +60,7 @@ export interface QuerySendSequenceRequestSDKType {
 /** QuerySendSequenceResponse is the response type for the Query/SendSequence RPC method. */
 
 export interface QuerySendSequenceResponse {
+  /** sequence of the cross chain package */
   sequence: Long;
 }
 /** QuerySendSequenceResponse is the response type for the Query/SendSequence RPC method. */
@@ -65,6 +71,7 @@ export interface QuerySendSequenceResponseSDKType {
 /** QuerySendSequenceRequest is the request type for the Query/ReceiveSequence RPC method. */
 
 export interface QueryReceiveSequenceRequest {
+  /** channel id of the cross chain package */
   channelId: number;
 }
 /** QuerySendSequenceRequest is the request type for the Query/ReceiveSequence RPC method. */
@@ -75,6 +82,7 @@ export interface QueryReceiveSequenceRequestSDKType {
 /** QuerySendSequenceResponse is the response type for the Query/ReceiveSequence RPC method. */
 
 export interface QueryReceiveSequenceResponse {
+  /** sequence of the cross chain package */
   sequence: Long;
 }
 /** QuerySendSequenceResponse is the response type for the Query/ReceiveSequence RPC method. */

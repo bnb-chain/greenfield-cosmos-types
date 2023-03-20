@@ -5,6 +5,7 @@ export const protobufPackage = "bnbchain.greenfield.storage";
 export enum SourceType {
   SOURCE_TYPE_ORIGIN = 0,
   SOURCE_TYPE_BSC_CROSS_CHAIN = 1,
+  SOURCE_TYPE_MIRROR_PENDING = 2,
   UNRECOGNIZED = -1,
 }
 export const SourceTypeSDKType = SourceType;
@@ -17,6 +18,10 @@ export function sourceTypeFromJSON(object: any): SourceType {
     case 1:
     case "SOURCE_TYPE_BSC_CROSS_CHAIN":
       return SourceType.SOURCE_TYPE_BSC_CROSS_CHAIN;
+
+    case 2:
+    case "SOURCE_TYPE_MIRROR_PENDING":
+      return SourceType.SOURCE_TYPE_MIRROR_PENDING;
 
     case -1:
     case "UNRECOGNIZED":
@@ -31,6 +36,9 @@ export function sourceTypeToJSON(object: SourceType): string {
 
     case SourceType.SOURCE_TYPE_BSC_CROSS_CHAIN:
       return "SOURCE_TYPE_BSC_CROSS_CHAIN";
+
+    case SourceType.SOURCE_TYPE_MIRROR_PENDING:
+      return "SOURCE_TYPE_MIRROR_PENDING";
 
     case SourceType.UNRECOGNIZED:
     default:
@@ -119,12 +127,14 @@ export interface ApprovalSDKType {
 
 export interface SecondarySpSignDoc {
   spAddress: string;
+  objectId: string;
   checksum: Uint8Array;
 }
 /** SecondarySpSignDoc used to generate seal signature of secondary SP */
 
 export interface SecondarySpSignDocSDKType {
   sp_address: string;
+  object_id: string;
   checksum: Uint8Array;
 }
 
@@ -214,6 +224,7 @@ export const Approval = {
 function createBaseSecondarySpSignDoc(): SecondarySpSignDoc {
   return {
     spAddress: "",
+    objectId: "",
     checksum: new Uint8Array()
   };
 }
@@ -224,8 +235,12 @@ export const SecondarySpSignDoc = {
       writer.uint32(10).string(message.spAddress);
     }
 
+    if (message.objectId !== "") {
+      writer.uint32(18).string(message.objectId);
+    }
+
     if (message.checksum.length !== 0) {
-      writer.uint32(18).bytes(message.checksum);
+      writer.uint32(26).bytes(message.checksum);
     }
 
     return writer;
@@ -245,6 +260,10 @@ export const SecondarySpSignDoc = {
           break;
 
         case 2:
+          message.objectId = reader.string();
+          break;
+
+        case 3:
           message.checksum = reader.bytes();
           break;
 
@@ -260,6 +279,7 @@ export const SecondarySpSignDoc = {
   fromJSON(object: any): SecondarySpSignDoc {
     return {
       spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      objectId: isSet(object.objectId) ? String(object.objectId) : "",
       checksum: isSet(object.checksum) ? bytesFromBase64(object.checksum) : new Uint8Array()
     };
   },
@@ -267,6 +287,7 @@ export const SecondarySpSignDoc = {
   toJSON(message: SecondarySpSignDoc): unknown {
     const obj: any = {};
     message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.objectId !== undefined && (obj.objectId = message.objectId);
     message.checksum !== undefined && (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
     return obj;
   },
@@ -274,6 +295,7 @@ export const SecondarySpSignDoc = {
   fromPartial<I extends Exact<DeepPartial<SecondarySpSignDoc>, I>>(object: I): SecondarySpSignDoc {
     const message = createBaseSecondarySpSignDoc();
     message.spAddress = object.spAddress ?? "";
+    message.objectId = object.objectId ?? "";
     message.checksum = object.checksum ?? new Uint8Array();
     return message;
   },
@@ -281,6 +303,7 @@ export const SecondarySpSignDoc = {
   fromSDK(object: SecondarySpSignDocSDKType): SecondarySpSignDoc {
     return {
       spAddress: object?.sp_address,
+      objectId: object?.object_id,
       checksum: object?.checksum
     };
   },
@@ -288,6 +311,7 @@ export const SecondarySpSignDoc = {
   toSDK(message: SecondarySpSignDoc): SecondarySpSignDocSDKType {
     const obj: any = {};
     obj.sp_address = message.spAddress;
+    obj.object_id = message.objectId;
     obj.checksum = message.checksum;
     return obj;
   }

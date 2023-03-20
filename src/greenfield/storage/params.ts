@@ -19,6 +19,24 @@ export interface Params {
   /** min_charge_size is the minimum charge size of the payload, objects smaller than this size will be charged as this size */
 
   minChargeSize: Long;
+  /** relayer fee for the mirror bucket tx */
+
+  mirrorBucketRelayerFee: string;
+  /** relayer fee for the ACK or FAIL_ACK package of the mirror bucket tx */
+
+  mirrorBucketAckRelayerFee: string;
+  /** relayer fee for the mirror object tx */
+
+  mirrorObjectRelayerFee: string;
+  /** Relayer fee for the ACK or FAIL_ACK package of the mirror object tx */
+
+  mirrorObjectAckRelayerFee: string;
+  /** relayer fee for the mirror object tx */
+
+  mirrorGroupRelayerFee: string;
+  /** Relayer fee for the ACK or FAIL_ACK package of the mirror object tx */
+
+  mirrorGroupAckRelayerFee: string;
 }
 /** Params defines the parameters for the module. */
 
@@ -28,6 +46,12 @@ export interface ParamsSDKType {
   redundant_parity_chunk_num: number;
   max_payload_size: Long;
   min_charge_size: Long;
+  mirror_bucket_relayer_fee: string;
+  mirror_bucket_ack_relayer_fee: string;
+  mirror_object_relayer_fee: string;
+  mirror_object_ack_relayer_fee: string;
+  mirror_group_relayer_fee: string;
+  mirror_group_ack_relayer_fee: string;
 }
 
 function createBaseParams(): Params {
@@ -36,7 +60,13 @@ function createBaseParams(): Params {
     redundantDataChunkNum: 0,
     redundantParityChunkNum: 0,
     maxPayloadSize: Long.UZERO,
-    minChargeSize: Long.UZERO
+    minChargeSize: Long.UZERO,
+    mirrorBucketRelayerFee: "",
+    mirrorBucketAckRelayerFee: "",
+    mirrorObjectRelayerFee: "",
+    mirrorObjectAckRelayerFee: "",
+    mirrorGroupRelayerFee: "",
+    mirrorGroupAckRelayerFee: ""
   };
 }
 
@@ -60,6 +90,30 @@ export const Params = {
 
     if (!message.minChargeSize.isZero()) {
       writer.uint32(40).uint64(message.minChargeSize);
+    }
+
+    if (message.mirrorBucketRelayerFee !== "") {
+      writer.uint32(50).string(message.mirrorBucketRelayerFee);
+    }
+
+    if (message.mirrorBucketAckRelayerFee !== "") {
+      writer.uint32(58).string(message.mirrorBucketAckRelayerFee);
+    }
+
+    if (message.mirrorObjectRelayerFee !== "") {
+      writer.uint32(66).string(message.mirrorObjectRelayerFee);
+    }
+
+    if (message.mirrorObjectAckRelayerFee !== "") {
+      writer.uint32(74).string(message.mirrorObjectAckRelayerFee);
+    }
+
+    if (message.mirrorGroupRelayerFee !== "") {
+      writer.uint32(82).string(message.mirrorGroupRelayerFee);
+    }
+
+    if (message.mirrorGroupAckRelayerFee !== "") {
+      writer.uint32(90).string(message.mirrorGroupAckRelayerFee);
     }
 
     return writer;
@@ -94,6 +148,30 @@ export const Params = {
           message.minChargeSize = (reader.uint64() as Long);
           break;
 
+        case 6:
+          message.mirrorBucketRelayerFee = reader.string();
+          break;
+
+        case 7:
+          message.mirrorBucketAckRelayerFee = reader.string();
+          break;
+
+        case 8:
+          message.mirrorObjectRelayerFee = reader.string();
+          break;
+
+        case 9:
+          message.mirrorObjectAckRelayerFee = reader.string();
+          break;
+
+        case 10:
+          message.mirrorGroupRelayerFee = reader.string();
+          break;
+
+        case 11:
+          message.mirrorGroupAckRelayerFee = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -109,7 +187,13 @@ export const Params = {
       redundantDataChunkNum: isSet(object.redundantDataChunkNum) ? Number(object.redundantDataChunkNum) : 0,
       redundantParityChunkNum: isSet(object.redundantParityChunkNum) ? Number(object.redundantParityChunkNum) : 0,
       maxPayloadSize: isSet(object.maxPayloadSize) ? Long.fromValue(object.maxPayloadSize) : Long.UZERO,
-      minChargeSize: isSet(object.minChargeSize) ? Long.fromValue(object.minChargeSize) : Long.UZERO
+      minChargeSize: isSet(object.minChargeSize) ? Long.fromValue(object.minChargeSize) : Long.UZERO,
+      mirrorBucketRelayerFee: isSet(object.mirrorBucketRelayerFee) ? String(object.mirrorBucketRelayerFee) : "",
+      mirrorBucketAckRelayerFee: isSet(object.mirrorBucketAckRelayerFee) ? String(object.mirrorBucketAckRelayerFee) : "",
+      mirrorObjectRelayerFee: isSet(object.mirrorObjectRelayerFee) ? String(object.mirrorObjectRelayerFee) : "",
+      mirrorObjectAckRelayerFee: isSet(object.mirrorObjectAckRelayerFee) ? String(object.mirrorObjectAckRelayerFee) : "",
+      mirrorGroupRelayerFee: isSet(object.mirrorGroupRelayerFee) ? String(object.mirrorGroupRelayerFee) : "",
+      mirrorGroupAckRelayerFee: isSet(object.mirrorGroupAckRelayerFee) ? String(object.mirrorGroupAckRelayerFee) : ""
     };
   },
 
@@ -120,6 +204,12 @@ export const Params = {
     message.redundantParityChunkNum !== undefined && (obj.redundantParityChunkNum = Math.round(message.redundantParityChunkNum));
     message.maxPayloadSize !== undefined && (obj.maxPayloadSize = (message.maxPayloadSize || Long.UZERO).toString());
     message.minChargeSize !== undefined && (obj.minChargeSize = (message.minChargeSize || Long.UZERO).toString());
+    message.mirrorBucketRelayerFee !== undefined && (obj.mirrorBucketRelayerFee = message.mirrorBucketRelayerFee);
+    message.mirrorBucketAckRelayerFee !== undefined && (obj.mirrorBucketAckRelayerFee = message.mirrorBucketAckRelayerFee);
+    message.mirrorObjectRelayerFee !== undefined && (obj.mirrorObjectRelayerFee = message.mirrorObjectRelayerFee);
+    message.mirrorObjectAckRelayerFee !== undefined && (obj.mirrorObjectAckRelayerFee = message.mirrorObjectAckRelayerFee);
+    message.mirrorGroupRelayerFee !== undefined && (obj.mirrorGroupRelayerFee = message.mirrorGroupRelayerFee);
+    message.mirrorGroupAckRelayerFee !== undefined && (obj.mirrorGroupAckRelayerFee = message.mirrorGroupAckRelayerFee);
     return obj;
   },
 
@@ -130,6 +220,12 @@ export const Params = {
     message.redundantParityChunkNum = object.redundantParityChunkNum ?? 0;
     message.maxPayloadSize = object.maxPayloadSize !== undefined && object.maxPayloadSize !== null ? Long.fromValue(object.maxPayloadSize) : Long.UZERO;
     message.minChargeSize = object.minChargeSize !== undefined && object.minChargeSize !== null ? Long.fromValue(object.minChargeSize) : Long.UZERO;
+    message.mirrorBucketRelayerFee = object.mirrorBucketRelayerFee ?? "";
+    message.mirrorBucketAckRelayerFee = object.mirrorBucketAckRelayerFee ?? "";
+    message.mirrorObjectRelayerFee = object.mirrorObjectRelayerFee ?? "";
+    message.mirrorObjectAckRelayerFee = object.mirrorObjectAckRelayerFee ?? "";
+    message.mirrorGroupRelayerFee = object.mirrorGroupRelayerFee ?? "";
+    message.mirrorGroupAckRelayerFee = object.mirrorGroupAckRelayerFee ?? "";
     return message;
   },
 
@@ -139,7 +235,13 @@ export const Params = {
       redundantDataChunkNum: object?.redundant_data_chunk_num,
       redundantParityChunkNum: object?.redundant_parity_chunk_num,
       maxPayloadSize: object?.max_payload_size,
-      minChargeSize: object?.min_charge_size
+      minChargeSize: object?.min_charge_size,
+      mirrorBucketRelayerFee: object?.mirror_bucket_relayer_fee,
+      mirrorBucketAckRelayerFee: object?.mirror_bucket_ack_relayer_fee,
+      mirrorObjectRelayerFee: object?.mirror_object_relayer_fee,
+      mirrorObjectAckRelayerFee: object?.mirror_object_ack_relayer_fee,
+      mirrorGroupRelayerFee: object?.mirror_group_relayer_fee,
+      mirrorGroupAckRelayerFee: object?.mirror_group_ack_relayer_fee
     };
   },
 
@@ -150,6 +252,12 @@ export const Params = {
     obj.redundant_parity_chunk_num = message.redundantParityChunkNum;
     obj.max_payload_size = message.maxPayloadSize;
     obj.min_charge_size = message.minChargeSize;
+    obj.mirror_bucket_relayer_fee = message.mirrorBucketRelayerFee;
+    obj.mirror_bucket_ack_relayer_fee = message.mirrorBucketAckRelayerFee;
+    obj.mirror_object_relayer_fee = message.mirrorObjectRelayerFee;
+    obj.mirror_object_ack_relayer_fee = message.mirrorObjectAckRelayerFee;
+    obj.mirror_group_relayer_fee = message.mirrorGroupRelayerFee;
+    obj.mirror_group_ack_relayer_fee = message.mirrorGroupAckRelayerFee;
     return obj;
   }
 

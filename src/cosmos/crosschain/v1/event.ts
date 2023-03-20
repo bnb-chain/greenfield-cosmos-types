@@ -31,9 +31,6 @@ export interface EventCrossChain {
   /** Relayer fee for the ACK or FAIL_ACK package of this cross chain package */
 
   ackRelayerFee: string;
-  /** Callback gas price the ACK or FAIL_ACK package */
-
-  callbackGasPrice: string;
 }
 /** EventCrossChain is emitted when there is a cross chain package created */
 
@@ -47,7 +44,6 @@ export interface EventCrossChainSDKType {
   package_load: string;
   relayer_fee: string;
   ack_relayer_fee: string;
-  callback_gas_price: string;
 }
 
 function createBaseEventCrossChain(): EventCrossChain {
@@ -60,8 +56,7 @@ function createBaseEventCrossChain(): EventCrossChain {
     timestamp: Long.UZERO,
     packageLoad: "",
     relayerFee: "",
-    ackRelayerFee: "",
-    callbackGasPrice: ""
+    ackRelayerFee: ""
   };
 }
 
@@ -101,10 +96,6 @@ export const EventCrossChain = {
 
     if (message.ackRelayerFee !== "") {
       writer.uint32(74).string(message.ackRelayerFee);
-    }
-
-    if (message.callbackGasPrice !== "") {
-      writer.uint32(82).string(message.callbackGasPrice);
     }
 
     return writer;
@@ -155,10 +146,6 @@ export const EventCrossChain = {
           message.ackRelayerFee = reader.string();
           break;
 
-        case 10:
-          message.callbackGasPrice = reader.string();
-          break;
-
         default:
           reader.skipType(tag & 7);
           break;
@@ -178,8 +165,7 @@ export const EventCrossChain = {
       timestamp: isSet(object.timestamp) ? Long.fromValue(object.timestamp) : Long.UZERO,
       packageLoad: isSet(object.packageLoad) ? String(object.packageLoad) : "",
       relayerFee: isSet(object.relayerFee) ? String(object.relayerFee) : "",
-      ackRelayerFee: isSet(object.ackRelayerFee) ? String(object.ackRelayerFee) : "",
-      callbackGasPrice: isSet(object.callbackGasPrice) ? String(object.callbackGasPrice) : ""
+      ackRelayerFee: isSet(object.ackRelayerFee) ? String(object.ackRelayerFee) : ""
     };
   },
 
@@ -194,7 +180,6 @@ export const EventCrossChain = {
     message.packageLoad !== undefined && (obj.packageLoad = message.packageLoad);
     message.relayerFee !== undefined && (obj.relayerFee = message.relayerFee);
     message.ackRelayerFee !== undefined && (obj.ackRelayerFee = message.ackRelayerFee);
-    message.callbackGasPrice !== undefined && (obj.callbackGasPrice = message.callbackGasPrice);
     return obj;
   },
 
@@ -209,7 +194,6 @@ export const EventCrossChain = {
     message.packageLoad = object.packageLoad ?? "";
     message.relayerFee = object.relayerFee ?? "";
     message.ackRelayerFee = object.ackRelayerFee ?? "";
-    message.callbackGasPrice = object.callbackGasPrice ?? "";
     return message;
   },
 
@@ -223,8 +207,7 @@ export const EventCrossChain = {
       timestamp: object?.timestamp,
       packageLoad: object?.package_load,
       relayerFee: object?.relayer_fee,
-      ackRelayerFee: object?.ack_relayer_fee,
-      callbackGasPrice: object?.callback_gas_price
+      ackRelayerFee: object?.ack_relayer_fee
     };
   },
 
@@ -239,7 +222,6 @@ export const EventCrossChain = {
     obj.package_load = message.packageLoad;
     obj.relayer_fee = message.relayerFee;
     obj.ack_relayer_fee = message.ackRelayerFee;
-    obj.callback_gas_price = message.callbackGasPrice;
     return obj;
   }
 

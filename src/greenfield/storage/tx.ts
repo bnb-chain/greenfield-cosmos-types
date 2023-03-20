@@ -360,6 +360,45 @@ export interface MsgDeletePolicyResponse {
 export interface MsgDeletePolicyResponseSDKType {
   id: string;
 }
+export interface MsgMirrorObject {
+  /** operator is the account address of the operator who has the DeleteObject permission of the object to be deleted. */
+  operator: string;
+  /** id is the unique u256 for object. */
+
+  id: string;
+}
+export interface MsgMirrorObjectSDKType {
+  operator: string;
+  id: string;
+}
+export interface MsgMirrorObjectResponse {}
+export interface MsgMirrorObjectResponseSDKType {}
+export interface MsgMirrorBucket {
+  /** creator is the account address of the grantee who has the DeleteBucket permission of the bucket to be deleted. */
+  operator: string;
+  /** id is the unique u256 for bucket. */
+
+  id: string;
+}
+export interface MsgMirrorBucketSDKType {
+  operator: string;
+  id: string;
+}
+export interface MsgMirrorBucketResponse {}
+export interface MsgMirrorBucketResponseSDKType {}
+export interface MsgMirrorGroup {
+  /** operator is the account address of the operator who has the DeleteGroup permission of the group to be deleted. */
+  operator: string;
+  /** id is the unique u256 for group. */
+
+  id: string;
+}
+export interface MsgMirrorGroupSDKType {
+  operator: string;
+  id: string;
+}
+export interface MsgMirrorGroupResponse {}
+export interface MsgMirrorGroupResponseSDKType {}
 
 function createBaseMsgCreateBucket(): MsgCreateBucket {
   return {
@@ -3027,6 +3066,411 @@ export const MsgDeletePolicyResponse = {
   }
 
 };
+
+function createBaseMsgMirrorObject(): MsgMirrorObject {
+  return {
+    operator: "",
+    id: ""
+  };
+}
+
+export const MsgMirrorObject = {
+  encode(message: MsgMirrorObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.id !== "") {
+      writer.uint32(18).string(message.id);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMirrorObject {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgMirrorObject();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.id = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgMirrorObject {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      id: isSet(object.id) ? String(object.id) : ""
+    };
+  },
+
+  toJSON(message: MsgMirrorObject): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgMirrorObject>, I>>(object: I): MsgMirrorObject {
+    const message = createBaseMsgMirrorObject();
+    message.operator = object.operator ?? "";
+    message.id = object.id ?? "";
+    return message;
+  },
+
+  fromSDK(object: MsgMirrorObjectSDKType): MsgMirrorObject {
+    return {
+      operator: object?.operator,
+      id: object?.id
+    };
+  },
+
+  toSDK(message: MsgMirrorObject): MsgMirrorObjectSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.id = message.id;
+    return obj;
+  }
+
+};
+
+function createBaseMsgMirrorObjectResponse(): MsgMirrorObjectResponse {
+  return {};
+}
+
+export const MsgMirrorObjectResponse = {
+  encode(_: MsgMirrorObjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMirrorObjectResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgMirrorObjectResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgMirrorObjectResponse {
+    return {};
+  },
+
+  toJSON(_: MsgMirrorObjectResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgMirrorObjectResponse>, I>>(_: I): MsgMirrorObjectResponse {
+    const message = createBaseMsgMirrorObjectResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgMirrorObjectResponseSDKType): MsgMirrorObjectResponse {
+    return {};
+  },
+
+  toSDK(_: MsgMirrorObjectResponse): MsgMirrorObjectResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
+
+function createBaseMsgMirrorBucket(): MsgMirrorBucket {
+  return {
+    operator: "",
+    id: ""
+  };
+}
+
+export const MsgMirrorBucket = {
+  encode(message: MsgMirrorBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.id !== "") {
+      writer.uint32(18).string(message.id);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMirrorBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgMirrorBucket();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.id = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgMirrorBucket {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      id: isSet(object.id) ? String(object.id) : ""
+    };
+  },
+
+  toJSON(message: MsgMirrorBucket): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgMirrorBucket>, I>>(object: I): MsgMirrorBucket {
+    const message = createBaseMsgMirrorBucket();
+    message.operator = object.operator ?? "";
+    message.id = object.id ?? "";
+    return message;
+  },
+
+  fromSDK(object: MsgMirrorBucketSDKType): MsgMirrorBucket {
+    return {
+      operator: object?.operator,
+      id: object?.id
+    };
+  },
+
+  toSDK(message: MsgMirrorBucket): MsgMirrorBucketSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.id = message.id;
+    return obj;
+  }
+
+};
+
+function createBaseMsgMirrorBucketResponse(): MsgMirrorBucketResponse {
+  return {};
+}
+
+export const MsgMirrorBucketResponse = {
+  encode(_: MsgMirrorBucketResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMirrorBucketResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgMirrorBucketResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgMirrorBucketResponse {
+    return {};
+  },
+
+  toJSON(_: MsgMirrorBucketResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgMirrorBucketResponse>, I>>(_: I): MsgMirrorBucketResponse {
+    const message = createBaseMsgMirrorBucketResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgMirrorBucketResponseSDKType): MsgMirrorBucketResponse {
+    return {};
+  },
+
+  toSDK(_: MsgMirrorBucketResponse): MsgMirrorBucketResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
+
+function createBaseMsgMirrorGroup(): MsgMirrorGroup {
+  return {
+    operator: "",
+    id: ""
+  };
+}
+
+export const MsgMirrorGroup = {
+  encode(message: MsgMirrorGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.id !== "") {
+      writer.uint32(18).string(message.id);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMirrorGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgMirrorGroup();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.id = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgMirrorGroup {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      id: isSet(object.id) ? String(object.id) : ""
+    };
+  },
+
+  toJSON(message: MsgMirrorGroup): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.id !== undefined && (obj.id = message.id);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgMirrorGroup>, I>>(object: I): MsgMirrorGroup {
+    const message = createBaseMsgMirrorGroup();
+    message.operator = object.operator ?? "";
+    message.id = object.id ?? "";
+    return message;
+  },
+
+  fromSDK(object: MsgMirrorGroupSDKType): MsgMirrorGroup {
+    return {
+      operator: object?.operator,
+      id: object?.id
+    };
+  },
+
+  toSDK(message: MsgMirrorGroup): MsgMirrorGroupSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.id = message.id;
+    return obj;
+  }
+
+};
+
+function createBaseMsgMirrorGroupResponse(): MsgMirrorGroupResponse {
+  return {};
+}
+
+export const MsgMirrorGroupResponse = {
+  encode(_: MsgMirrorGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMirrorGroupResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgMirrorGroupResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgMirrorGroupResponse {
+    return {};
+  },
+
+  toJSON(_: MsgMirrorGroupResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgMirrorGroupResponse>, I>>(_: I): MsgMirrorGroupResponse {
+    const message = createBaseMsgMirrorGroupResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgMirrorGroupResponseSDKType): MsgMirrorGroupResponse {
+    return {};
+  },
+
+  toSDK(_: MsgMirrorGroupResponse): MsgMirrorGroupResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
 /** Msg defines the Msg service. */
 
 export interface Msg {
@@ -3034,6 +3478,7 @@ export interface Msg {
   CreateBucket(request: MsgCreateBucket): Promise<MsgCreateBucketResponse>;
   DeleteBucket(request: MsgDeleteBucket): Promise<MsgDeleteBucketResponse>;
   UpdateBucketInfo(request: MsgUpdateBucketInfo): Promise<MsgUpdateBucketInfoResponse>;
+  MirrorBucket(request: MsgMirrorBucket): Promise<MsgMirrorBucketResponse>;
   /** basic operation of object */
 
   CreateObject(request: MsgCreateObject): Promise<MsgCreateObjectResponse>;
@@ -3042,12 +3487,14 @@ export interface Msg {
   CopyObject(request: MsgCopyObject): Promise<MsgCopyObjectResponse>;
   DeleteObject(request: MsgDeleteObject): Promise<MsgDeleteObjectResponse>;
   CancelCreateObject(request: MsgCancelCreateObject): Promise<MsgCancelCreateObjectResponse>;
+  MirrorObject(request: MsgMirrorObject): Promise<MsgMirrorObjectResponse>;
   /** basic operation of group */
 
   CreateGroup(request: MsgCreateGroup): Promise<MsgCreateGroupResponse>;
   DeleteGroup(request: MsgDeleteGroup): Promise<MsgDeleteGroupResponse>;
   UpdateGroupMember(request: MsgUpdateGroupMember): Promise<MsgUpdateGroupMemberResponse>;
   LeaveGroup(request: MsgLeaveGroup): Promise<MsgLeaveGroupResponse>;
+  MirrorGroup(request: MsgMirrorGroup): Promise<MsgMirrorGroupResponse>;
   /** basic operation of policy */
 
   PutPolicy(request: MsgPutPolicy): Promise<MsgPutPolicyResponse>;
@@ -3063,16 +3510,19 @@ export class MsgClientImpl implements Msg {
     this.CreateBucket = this.CreateBucket.bind(this);
     this.DeleteBucket = this.DeleteBucket.bind(this);
     this.UpdateBucketInfo = this.UpdateBucketInfo.bind(this);
+    this.MirrorBucket = this.MirrorBucket.bind(this);
     this.CreateObject = this.CreateObject.bind(this);
     this.SealObject = this.SealObject.bind(this);
     this.RejectSealObject = this.RejectSealObject.bind(this);
     this.CopyObject = this.CopyObject.bind(this);
     this.DeleteObject = this.DeleteObject.bind(this);
     this.CancelCreateObject = this.CancelCreateObject.bind(this);
+    this.MirrorObject = this.MirrorObject.bind(this);
     this.CreateGroup = this.CreateGroup.bind(this);
     this.DeleteGroup = this.DeleteGroup.bind(this);
     this.UpdateGroupMember = this.UpdateGroupMember.bind(this);
     this.LeaveGroup = this.LeaveGroup.bind(this);
+    this.MirrorGroup = this.MirrorGroup.bind(this);
     this.PutPolicy = this.PutPolicy.bind(this);
     this.DeletePolicy = this.DeletePolicy.bind(this);
   }
@@ -3093,6 +3543,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgUpdateBucketInfo.encode(request).finish();
     const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "UpdateBucketInfo", data);
     return promise.then(data => MsgUpdateBucketInfoResponse.decode(new _m0.Reader(data)));
+  }
+
+  MirrorBucket(request: MsgMirrorBucket): Promise<MsgMirrorBucketResponse> {
+    const data = MsgMirrorBucket.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "MirrorBucket", data);
+    return promise.then(data => MsgMirrorBucketResponse.decode(new _m0.Reader(data)));
   }
 
   CreateObject(request: MsgCreateObject): Promise<MsgCreateObjectResponse> {
@@ -3131,6 +3587,12 @@ export class MsgClientImpl implements Msg {
     return promise.then(data => MsgCancelCreateObjectResponse.decode(new _m0.Reader(data)));
   }
 
+  MirrorObject(request: MsgMirrorObject): Promise<MsgMirrorObjectResponse> {
+    const data = MsgMirrorObject.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "MirrorObject", data);
+    return promise.then(data => MsgMirrorObjectResponse.decode(new _m0.Reader(data)));
+  }
+
   CreateGroup(request: MsgCreateGroup): Promise<MsgCreateGroupResponse> {
     const data = MsgCreateGroup.encode(request).finish();
     const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "CreateGroup", data);
@@ -3153,6 +3615,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgLeaveGroup.encode(request).finish();
     const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "LeaveGroup", data);
     return promise.then(data => MsgLeaveGroupResponse.decode(new _m0.Reader(data)));
+  }
+
+  MirrorGroup(request: MsgMirrorGroup): Promise<MsgMirrorGroupResponse> {
+    const data = MsgMirrorGroup.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "MirrorGroup", data);
+    return promise.then(data => MsgMirrorGroupResponse.decode(new _m0.Reader(data)));
   }
 
   PutPolicy(request: MsgPutPolicy): Promise<MsgPutPolicyResponse> {

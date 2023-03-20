@@ -34,9 +34,6 @@ export interface EventPackageClaim {
   /** Relayer fee paid for the ACK or FAIL_ACK package */
 
   ackRelayerFee: string;
-  /** Callback gas price the ACK or FAIL_ACK package */
-
-  callbackGasPrice: string;
 }
 /** EventPackageClaim is emitted when a cross chain package is processed */
 
@@ -51,7 +48,6 @@ export interface EventPackageClaimSDKType {
   error_msg: string;
   relayer_fee: string;
   ack_relayer_fee: string;
-  callback_gas_price: string;
 }
 
 function createBaseEventPackageClaim(): EventPackageClaim {
@@ -65,8 +61,7 @@ function createBaseEventPackageClaim(): EventPackageClaim {
     crash: false,
     errorMsg: "",
     relayerFee: "",
-    ackRelayerFee: "",
-    callbackGasPrice: ""
+    ackRelayerFee: ""
   };
 }
 
@@ -110,10 +105,6 @@ export const EventPackageClaim = {
 
     if (message.ackRelayerFee !== "") {
       writer.uint32(82).string(message.ackRelayerFee);
-    }
-
-    if (message.callbackGasPrice !== "") {
-      writer.uint32(90).string(message.callbackGasPrice);
     }
 
     return writer;
@@ -168,10 +159,6 @@ export const EventPackageClaim = {
           message.ackRelayerFee = reader.string();
           break;
 
-        case 11:
-          message.callbackGasPrice = reader.string();
-          break;
-
         default:
           reader.skipType(tag & 7);
           break;
@@ -192,8 +179,7 @@ export const EventPackageClaim = {
       crash: isSet(object.crash) ? Boolean(object.crash) : false,
       errorMsg: isSet(object.errorMsg) ? String(object.errorMsg) : "",
       relayerFee: isSet(object.relayerFee) ? String(object.relayerFee) : "",
-      ackRelayerFee: isSet(object.ackRelayerFee) ? String(object.ackRelayerFee) : "",
-      callbackGasPrice: isSet(object.callbackGasPrice) ? String(object.callbackGasPrice) : ""
+      ackRelayerFee: isSet(object.ackRelayerFee) ? String(object.ackRelayerFee) : ""
     };
   },
 
@@ -209,7 +195,6 @@ export const EventPackageClaim = {
     message.errorMsg !== undefined && (obj.errorMsg = message.errorMsg);
     message.relayerFee !== undefined && (obj.relayerFee = message.relayerFee);
     message.ackRelayerFee !== undefined && (obj.ackRelayerFee = message.ackRelayerFee);
-    message.callbackGasPrice !== undefined && (obj.callbackGasPrice = message.callbackGasPrice);
     return obj;
   },
 
@@ -225,7 +210,6 @@ export const EventPackageClaim = {
     message.errorMsg = object.errorMsg ?? "";
     message.relayerFee = object.relayerFee ?? "";
     message.ackRelayerFee = object.ackRelayerFee ?? "";
-    message.callbackGasPrice = object.callbackGasPrice ?? "";
     return message;
   },
 
@@ -240,8 +224,7 @@ export const EventPackageClaim = {
       crash: object?.crash,
       errorMsg: object?.error_msg,
       relayerFee: object?.relayer_fee,
-      ackRelayerFee: object?.ack_relayer_fee,
-      callbackGasPrice: object?.callback_gas_price
+      ackRelayerFee: object?.ack_relayer_fee
     };
   },
 
@@ -257,7 +240,6 @@ export const EventPackageClaim = {
     obj.error_msg = message.errorMsg;
     obj.relayer_fee = message.relayerFee;
     obj.ack_relayer_fee = message.ackRelayerFee;
-    obj.callback_gas_price = message.callbackGasPrice;
     return obj;
   }
 
