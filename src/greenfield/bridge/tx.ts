@@ -6,8 +6,13 @@ export const protobufPackage = "bnbchain.greenfield.bridge";
 /** MsgTransferOut is the Msg/TransferOut request type. */
 
 export interface MsgTransferOut {
+  /** from address */
   from: string;
+  /** to address */
+
   to: string;
+  /** transfer token amount */
+
   amount?: Coin;
 }
 /** MsgTransferOut is the Msg/TransferOut request type. */

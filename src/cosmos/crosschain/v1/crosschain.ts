@@ -5,6 +5,7 @@ export const protobufPackage = "cosmos.crosschain.v1";
 /** Params holds parameters for the cross chain module. */
 
 export interface Params {
+  /** initial balance to mint for crosschain module when the chain starts */
   initModuleBalance: string;
 }
 /** Params holds parameters for the cross chain module. */

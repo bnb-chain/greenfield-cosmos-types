@@ -2,7 +2,7 @@
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
 import { ActionType, Effect, actionTypeFromJSON, actionTypeToJSON, effectFromJSON, effectToJSON } from "../permission/common";
 import { Params, ParamsSDKType } from "./params";
-import { BucketInfo, BucketInfoSDKType, ObjectInfo, ObjectInfoSDKType, BucketMetaData, BucketMetaDataSDKType, ObjectMetaData, ObjectMetaDataSDKType, GroupMetaData, GroupMetaDataSDKType } from "./types";
+import { BucketInfo, BucketInfoSDKType, ObjectInfo, ObjectInfoSDKType, BucketMetaData, BucketMetaDataSDKType, ObjectMetaData, ObjectMetaDataSDKType, GroupMetaData, GroupMetaDataSDKType, GroupInfo, GroupInfoSDKType } from "./types";
 import { Policy, PolicySDKType } from "../permission/types";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
@@ -128,16 +128,18 @@ export interface QueryGroupNFTResponse {
 export interface QueryGroupNFTResponseSDKType {
   meta_data?: GroupMetaDataSDKType;
 }
-export interface QueryGetPolicyRequest {
-  policyId: string;
+export interface QueryPolicyForAccountRequest {
+  resource: string;
+  principalAddress: string;
 }
-export interface QueryGetPolicyRequestSDKType {
-  policy_id: string;
+export interface QueryPolicyForAccountRequestSDKType {
+  resource: string;
+  principal_address: string;
 }
-export interface QueryGetPolicyResponse {
+export interface QueryPolicyForAccountResponse {
   policy?: Policy;
 }
-export interface QueryGetPolicyResponseSDKType {
+export interface QueryPolicyForAccountResponseSDKType {
   policy?: PolicySDKType;
 }
 export interface QueryVerifyPermissionRequest {
@@ -157,6 +159,66 @@ export interface QueryVerifyPermissionResponse {
 }
 export interface QueryVerifyPermissionResponseSDKType {
   effect: Effect;
+}
+export interface QueryHeadGroupRequest {
+  groupOwner: string;
+  groupName: string;
+}
+export interface QueryHeadGroupRequestSDKType {
+  group_owner: string;
+  group_name: string;
+}
+export interface QueryHeadGroupResponse {
+  groupInfo?: GroupInfo;
+}
+export interface QueryHeadGroupResponseSDKType {
+  group_info?: GroupInfoSDKType;
+}
+export interface QueryListGroupRequest {
+  pagination?: PageRequest;
+  groupOwner: string;
+}
+export interface QueryListGroupRequestSDKType {
+  pagination?: PageRequestSDKType;
+  group_owner: string;
+}
+export interface QueryListGroupResponse {
+  pagination?: PageResponse;
+  groupInfos: GroupInfo[];
+}
+export interface QueryListGroupResponseSDKType {
+  pagination?: PageResponseSDKType;
+  group_infos: GroupInfoSDKType[];
+}
+export interface QueryHeadGroupMemberRequest {
+  member: string;
+  groupOwner: string;
+  groupName: string;
+}
+export interface QueryHeadGroupMemberRequestSDKType {
+  member: string;
+  group_owner: string;
+  group_name: string;
+}
+export interface QueryHeadGroupMemberResponse {
+  groupInfo?: GroupInfo;
+}
+export interface QueryHeadGroupMemberResponseSDKType {
+  group_info?: GroupInfoSDKType;
+}
+export interface QueryPolicyForGroupRequest {
+  resource: string;
+  principalGroupId: string;
+}
+export interface QueryPolicyForGroupRequestSDKType {
+  resource: string;
+  principal_group_id: string;
+}
+export interface QueryPolicyForGroupResponse {
+  policy?: Policy;
+}
+export interface QueryPolicyForGroupResponseSDKType {
+  policy?: PolicySDKType;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -1409,32 +1471,41 @@ export const QueryGroupNFTResponse = {
 
 };
 
-function createBaseQueryGetPolicyRequest(): QueryGetPolicyRequest {
+function createBaseQueryPolicyForAccountRequest(): QueryPolicyForAccountRequest {
   return {
-    policyId: ""
+    resource: "",
+    principalAddress: ""
   };
 }
 
-export const QueryGetPolicyRequest = {
-  encode(message: QueryGetPolicyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.policyId !== "") {
-      writer.uint32(10).string(message.policyId);
+export const QueryPolicyForAccountRequest = {
+  encode(message: QueryPolicyForAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.resource !== "") {
+      writer.uint32(10).string(message.resource);
+    }
+
+    if (message.principalAddress !== "") {
+      writer.uint32(18).string(message.principalAddress);
     }
 
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPolicyRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPolicyForAccountRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetPolicyRequest();
+    const message = createBaseQueryPolicyForAccountRequest();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
 
       switch (tag >>> 3) {
         case 1:
-          message.policyId = reader.string();
+          message.resource = reader.string();
+          break;
+
+        case 2:
+          message.principalAddress = reader.string();
           break;
 
         default:
@@ -1446,46 +1517,51 @@ export const QueryGetPolicyRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetPolicyRequest {
+  fromJSON(object: any): QueryPolicyForAccountRequest {
     return {
-      policyId: isSet(object.policyId) ? String(object.policyId) : ""
+      resource: isSet(object.resource) ? String(object.resource) : "",
+      principalAddress: isSet(object.principalAddress) ? String(object.principalAddress) : ""
     };
   },
 
-  toJSON(message: QueryGetPolicyRequest): unknown {
+  toJSON(message: QueryPolicyForAccountRequest): unknown {
     const obj: any = {};
-    message.policyId !== undefined && (obj.policyId = message.policyId);
+    message.resource !== undefined && (obj.resource = message.resource);
+    message.principalAddress !== undefined && (obj.principalAddress = message.principalAddress);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryGetPolicyRequest>, I>>(object: I): QueryGetPolicyRequest {
-    const message = createBaseQueryGetPolicyRequest();
-    message.policyId = object.policyId ?? "";
+  fromPartial<I extends Exact<DeepPartial<QueryPolicyForAccountRequest>, I>>(object: I): QueryPolicyForAccountRequest {
+    const message = createBaseQueryPolicyForAccountRequest();
+    message.resource = object.resource ?? "";
+    message.principalAddress = object.principalAddress ?? "";
     return message;
   },
 
-  fromSDK(object: QueryGetPolicyRequestSDKType): QueryGetPolicyRequest {
+  fromSDK(object: QueryPolicyForAccountRequestSDKType): QueryPolicyForAccountRequest {
     return {
-      policyId: object?.policy_id
+      resource: object?.resource,
+      principalAddress: object?.principal_address
     };
   },
 
-  toSDK(message: QueryGetPolicyRequest): QueryGetPolicyRequestSDKType {
+  toSDK(message: QueryPolicyForAccountRequest): QueryPolicyForAccountRequestSDKType {
     const obj: any = {};
-    obj.policy_id = message.policyId;
+    obj.resource = message.resource;
+    obj.principal_address = message.principalAddress;
     return obj;
   }
 
 };
 
-function createBaseQueryGetPolicyResponse(): QueryGetPolicyResponse {
+function createBaseQueryPolicyForAccountResponse(): QueryPolicyForAccountResponse {
   return {
     policy: undefined
   };
 }
 
-export const QueryGetPolicyResponse = {
-  encode(message: QueryGetPolicyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryPolicyForAccountResponse = {
+  encode(message: QueryPolicyForAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.policy !== undefined) {
       Policy.encode(message.policy, writer.uint32(10).fork()).ldelim();
     }
@@ -1493,10 +1569,10 @@ export const QueryGetPolicyResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPolicyResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPolicyForAccountResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetPolicyResponse();
+    const message = createBaseQueryPolicyForAccountResponse();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -1515,31 +1591,31 @@ export const QueryGetPolicyResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetPolicyResponse {
+  fromJSON(object: any): QueryPolicyForAccountResponse {
     return {
       policy: isSet(object.policy) ? Policy.fromJSON(object.policy) : undefined
     };
   },
 
-  toJSON(message: QueryGetPolicyResponse): unknown {
+  toJSON(message: QueryPolicyForAccountResponse): unknown {
     const obj: any = {};
     message.policy !== undefined && (obj.policy = message.policy ? Policy.toJSON(message.policy) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryGetPolicyResponse>, I>>(object: I): QueryGetPolicyResponse {
-    const message = createBaseQueryGetPolicyResponse();
+  fromPartial<I extends Exact<DeepPartial<QueryPolicyForAccountResponse>, I>>(object: I): QueryPolicyForAccountResponse {
+    const message = createBaseQueryPolicyForAccountResponse();
     message.policy = object.policy !== undefined && object.policy !== null ? Policy.fromPartial(object.policy) : undefined;
     return message;
   },
 
-  fromSDK(object: QueryGetPolicyResponseSDKType): QueryGetPolicyResponse {
+  fromSDK(object: QueryPolicyForAccountResponseSDKType): QueryPolicyForAccountResponse {
     return {
       policy: object.policy ? Policy.fromSDK(object.policy) : undefined
     };
   },
 
-  toSDK(message: QueryGetPolicyResponse): QueryGetPolicyResponseSDKType {
+  toSDK(message: QueryPolicyForAccountResponse): QueryPolicyForAccountResponseSDKType {
     const obj: any = {};
     message.policy !== undefined && (obj.policy = message.policy ? Policy.toSDK(message.policy) : undefined);
     return obj;
@@ -1726,6 +1802,654 @@ export const QueryVerifyPermissionResponse = {
   }
 
 };
+
+function createBaseQueryHeadGroupRequest(): QueryHeadGroupRequest {
+  return {
+    groupOwner: "",
+    groupName: ""
+  };
+}
+
+export const QueryHeadGroupRequest = {
+  encode(message: QueryHeadGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.groupOwner !== "") {
+      writer.uint32(10).string(message.groupOwner);
+    }
+
+    if (message.groupName !== "") {
+      writer.uint32(18).string(message.groupName);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadGroupRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryHeadGroupRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.groupOwner = reader.string();
+          break;
+
+        case 2:
+          message.groupName = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryHeadGroupRequest {
+    return {
+      groupOwner: isSet(object.groupOwner) ? String(object.groupOwner) : "",
+      groupName: isSet(object.groupName) ? String(object.groupName) : ""
+    };
+  },
+
+  toJSON(message: QueryHeadGroupRequest): unknown {
+    const obj: any = {};
+    message.groupOwner !== undefined && (obj.groupOwner = message.groupOwner);
+    message.groupName !== undefined && (obj.groupName = message.groupName);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryHeadGroupRequest>, I>>(object: I): QueryHeadGroupRequest {
+    const message = createBaseQueryHeadGroupRequest();
+    message.groupOwner = object.groupOwner ?? "";
+    message.groupName = object.groupName ?? "";
+    return message;
+  },
+
+  fromSDK(object: QueryHeadGroupRequestSDKType): QueryHeadGroupRequest {
+    return {
+      groupOwner: object?.group_owner,
+      groupName: object?.group_name
+    };
+  },
+
+  toSDK(message: QueryHeadGroupRequest): QueryHeadGroupRequestSDKType {
+    const obj: any = {};
+    obj.group_owner = message.groupOwner;
+    obj.group_name = message.groupName;
+    return obj;
+  }
+
+};
+
+function createBaseQueryHeadGroupResponse(): QueryHeadGroupResponse {
+  return {
+    groupInfo: undefined
+  };
+}
+
+export const QueryHeadGroupResponse = {
+  encode(message: QueryHeadGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.groupInfo !== undefined) {
+      GroupInfo.encode(message.groupInfo, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadGroupResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryHeadGroupResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.groupInfo = GroupInfo.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryHeadGroupResponse {
+    return {
+      groupInfo: isSet(object.groupInfo) ? GroupInfo.fromJSON(object.groupInfo) : undefined
+    };
+  },
+
+  toJSON(message: QueryHeadGroupResponse): unknown {
+    const obj: any = {};
+    message.groupInfo !== undefined && (obj.groupInfo = message.groupInfo ? GroupInfo.toJSON(message.groupInfo) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryHeadGroupResponse>, I>>(object: I): QueryHeadGroupResponse {
+    const message = createBaseQueryHeadGroupResponse();
+    message.groupInfo = object.groupInfo !== undefined && object.groupInfo !== null ? GroupInfo.fromPartial(object.groupInfo) : undefined;
+    return message;
+  },
+
+  fromSDK(object: QueryHeadGroupResponseSDKType): QueryHeadGroupResponse {
+    return {
+      groupInfo: object.group_info ? GroupInfo.fromSDK(object.group_info) : undefined
+    };
+  },
+
+  toSDK(message: QueryHeadGroupResponse): QueryHeadGroupResponseSDKType {
+    const obj: any = {};
+    message.groupInfo !== undefined && (obj.group_info = message.groupInfo ? GroupInfo.toSDK(message.groupInfo) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseQueryListGroupRequest(): QueryListGroupRequest {
+  return {
+    pagination: undefined,
+    groupOwner: ""
+  };
+}
+
+export const QueryListGroupRequest = {
+  encode(message: QueryListGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+
+    if (message.groupOwner !== "") {
+      writer.uint32(18).string(message.groupOwner);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListGroupRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryListGroupRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+
+        case 2:
+          message.groupOwner = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryListGroupRequest {
+    return {
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
+      groupOwner: isSet(object.groupOwner) ? String(object.groupOwner) : ""
+    };
+  },
+
+  toJSON(message: QueryListGroupRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    message.groupOwner !== undefined && (obj.groupOwner = message.groupOwner);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryListGroupRequest>, I>>(object: I): QueryListGroupRequest {
+    const message = createBaseQueryListGroupRequest();
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
+    message.groupOwner = object.groupOwner ?? "";
+    return message;
+  },
+
+  fromSDK(object: QueryListGroupRequestSDKType): QueryListGroupRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined,
+      groupOwner: object?.group_owner
+    };
+  },
+
+  toSDK(message: QueryListGroupRequest): QueryListGroupRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    obj.group_owner = message.groupOwner;
+    return obj;
+  }
+
+};
+
+function createBaseQueryListGroupResponse(): QueryListGroupResponse {
+  return {
+    pagination: undefined,
+    groupInfos: []
+  };
+}
+
+export const QueryListGroupResponse = {
+  encode(message: QueryListGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+
+    for (const v of message.groupInfos) {
+      GroupInfo.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListGroupResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryListGroupResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+
+        case 2:
+          message.groupInfos.push(GroupInfo.decode(reader, reader.uint32()));
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryListGroupResponse {
+    return {
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+      groupInfos: Array.isArray(object?.groupInfos) ? object.groupInfos.map((e: any) => GroupInfo.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: QueryListGroupResponse): unknown {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+
+    if (message.groupInfos) {
+      obj.groupInfos = message.groupInfos.map(e => e ? GroupInfo.toJSON(e) : undefined);
+    } else {
+      obj.groupInfos = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryListGroupResponse>, I>>(object: I): QueryListGroupResponse {
+    const message = createBaseQueryListGroupResponse();
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
+    message.groupInfos = object.groupInfos?.map(e => GroupInfo.fromPartial(e)) || [];
+    return message;
+  },
+
+  fromSDK(object: QueryListGroupResponseSDKType): QueryListGroupResponse {
+    return {
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined,
+      groupInfos: Array.isArray(object?.group_infos) ? object.group_infos.map((e: any) => GroupInfo.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: QueryListGroupResponse): QueryListGroupResponseSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+
+    if (message.groupInfos) {
+      obj.group_infos = message.groupInfos.map(e => e ? GroupInfo.toSDK(e) : undefined);
+    } else {
+      obj.group_infos = [];
+    }
+
+    return obj;
+  }
+
+};
+
+function createBaseQueryHeadGroupMemberRequest(): QueryHeadGroupMemberRequest {
+  return {
+    member: "",
+    groupOwner: "",
+    groupName: ""
+  };
+}
+
+export const QueryHeadGroupMemberRequest = {
+  encode(message: QueryHeadGroupMemberRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.member !== "") {
+      writer.uint32(10).string(message.member);
+    }
+
+    if (message.groupOwner !== "") {
+      writer.uint32(18).string(message.groupOwner);
+    }
+
+    if (message.groupName !== "") {
+      writer.uint32(26).string(message.groupName);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadGroupMemberRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryHeadGroupMemberRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.member = reader.string();
+          break;
+
+        case 2:
+          message.groupOwner = reader.string();
+          break;
+
+        case 3:
+          message.groupName = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryHeadGroupMemberRequest {
+    return {
+      member: isSet(object.member) ? String(object.member) : "",
+      groupOwner: isSet(object.groupOwner) ? String(object.groupOwner) : "",
+      groupName: isSet(object.groupName) ? String(object.groupName) : ""
+    };
+  },
+
+  toJSON(message: QueryHeadGroupMemberRequest): unknown {
+    const obj: any = {};
+    message.member !== undefined && (obj.member = message.member);
+    message.groupOwner !== undefined && (obj.groupOwner = message.groupOwner);
+    message.groupName !== undefined && (obj.groupName = message.groupName);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryHeadGroupMemberRequest>, I>>(object: I): QueryHeadGroupMemberRequest {
+    const message = createBaseQueryHeadGroupMemberRequest();
+    message.member = object.member ?? "";
+    message.groupOwner = object.groupOwner ?? "";
+    message.groupName = object.groupName ?? "";
+    return message;
+  },
+
+  fromSDK(object: QueryHeadGroupMemberRequestSDKType): QueryHeadGroupMemberRequest {
+    return {
+      member: object?.member,
+      groupOwner: object?.group_owner,
+      groupName: object?.group_name
+    };
+  },
+
+  toSDK(message: QueryHeadGroupMemberRequest): QueryHeadGroupMemberRequestSDKType {
+    const obj: any = {};
+    obj.member = message.member;
+    obj.group_owner = message.groupOwner;
+    obj.group_name = message.groupName;
+    return obj;
+  }
+
+};
+
+function createBaseQueryHeadGroupMemberResponse(): QueryHeadGroupMemberResponse {
+  return {
+    groupInfo: undefined
+  };
+}
+
+export const QueryHeadGroupMemberResponse = {
+  encode(message: QueryHeadGroupMemberResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.groupInfo !== undefined) {
+      GroupInfo.encode(message.groupInfo, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadGroupMemberResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryHeadGroupMemberResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.groupInfo = GroupInfo.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryHeadGroupMemberResponse {
+    return {
+      groupInfo: isSet(object.groupInfo) ? GroupInfo.fromJSON(object.groupInfo) : undefined
+    };
+  },
+
+  toJSON(message: QueryHeadGroupMemberResponse): unknown {
+    const obj: any = {};
+    message.groupInfo !== undefined && (obj.groupInfo = message.groupInfo ? GroupInfo.toJSON(message.groupInfo) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryHeadGroupMemberResponse>, I>>(object: I): QueryHeadGroupMemberResponse {
+    const message = createBaseQueryHeadGroupMemberResponse();
+    message.groupInfo = object.groupInfo !== undefined && object.groupInfo !== null ? GroupInfo.fromPartial(object.groupInfo) : undefined;
+    return message;
+  },
+
+  fromSDK(object: QueryHeadGroupMemberResponseSDKType): QueryHeadGroupMemberResponse {
+    return {
+      groupInfo: object.group_info ? GroupInfo.fromSDK(object.group_info) : undefined
+    };
+  },
+
+  toSDK(message: QueryHeadGroupMemberResponse): QueryHeadGroupMemberResponseSDKType {
+    const obj: any = {};
+    message.groupInfo !== undefined && (obj.group_info = message.groupInfo ? GroupInfo.toSDK(message.groupInfo) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseQueryPolicyForGroupRequest(): QueryPolicyForGroupRequest {
+  return {
+    resource: "",
+    principalGroupId: ""
+  };
+}
+
+export const QueryPolicyForGroupRequest = {
+  encode(message: QueryPolicyForGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.resource !== "") {
+      writer.uint32(10).string(message.resource);
+    }
+
+    if (message.principalGroupId !== "") {
+      writer.uint32(18).string(message.principalGroupId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPolicyForGroupRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryPolicyForGroupRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.resource = reader.string();
+          break;
+
+        case 2:
+          message.principalGroupId = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryPolicyForGroupRequest {
+    return {
+      resource: isSet(object.resource) ? String(object.resource) : "",
+      principalGroupId: isSet(object.principalGroupId) ? String(object.principalGroupId) : ""
+    };
+  },
+
+  toJSON(message: QueryPolicyForGroupRequest): unknown {
+    const obj: any = {};
+    message.resource !== undefined && (obj.resource = message.resource);
+    message.principalGroupId !== undefined && (obj.principalGroupId = message.principalGroupId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryPolicyForGroupRequest>, I>>(object: I): QueryPolicyForGroupRequest {
+    const message = createBaseQueryPolicyForGroupRequest();
+    message.resource = object.resource ?? "";
+    message.principalGroupId = object.principalGroupId ?? "";
+    return message;
+  },
+
+  fromSDK(object: QueryPolicyForGroupRequestSDKType): QueryPolicyForGroupRequest {
+    return {
+      resource: object?.resource,
+      principalGroupId: object?.principal_group_id
+    };
+  },
+
+  toSDK(message: QueryPolicyForGroupRequest): QueryPolicyForGroupRequestSDKType {
+    const obj: any = {};
+    obj.resource = message.resource;
+    obj.principal_group_id = message.principalGroupId;
+    return obj;
+  }
+
+};
+
+function createBaseQueryPolicyForGroupResponse(): QueryPolicyForGroupResponse {
+  return {
+    policy: undefined
+  };
+}
+
+export const QueryPolicyForGroupResponse = {
+  encode(message: QueryPolicyForGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.policy !== undefined) {
+      Policy.encode(message.policy, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPolicyForGroupResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryPolicyForGroupResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.policy = Policy.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryPolicyForGroupResponse {
+    return {
+      policy: isSet(object.policy) ? Policy.fromJSON(object.policy) : undefined
+    };
+  },
+
+  toJSON(message: QueryPolicyForGroupResponse): unknown {
+    const obj: any = {};
+    message.policy !== undefined && (obj.policy = message.policy ? Policy.toJSON(message.policy) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryPolicyForGroupResponse>, I>>(object: I): QueryPolicyForGroupResponse {
+    const message = createBaseQueryPolicyForGroupResponse();
+    message.policy = object.policy !== undefined && object.policy !== null ? Policy.fromPartial(object.policy) : undefined;
+    return message;
+  },
+
+  fromSDK(object: QueryPolicyForGroupResponseSDKType): QueryPolicyForGroupResponse {
+    return {
+      policy: object.policy ? Policy.fromSDK(object.policy) : undefined
+    };
+  },
+
+  toSDK(message: QueryPolicyForGroupResponse): QueryPolicyForGroupResponseSDKType {
+    const obj: any = {};
+    message.policy !== undefined && (obj.policy = message.policy ? Policy.toSDK(message.policy) : undefined);
+    return obj;
+  }
+
+};
 /** Query defines the gRPC querier service. */
 
 export interface Query {
@@ -1743,7 +2467,7 @@ export interface Query {
   /** Queries a object with specify name. */
 
   HeadObject(request: QueryHeadObjectRequest): Promise<QueryHeadObjectResponse>;
-  /** Queries a object by id */
+  /** Queries an object by id */
 
   HeadObjectById(request: QueryHeadObjectByIdRequest): Promise<QueryHeadObjectResponse>;
   /** Queries a object with EIP712 standard metadata info */
@@ -1761,12 +2485,24 @@ export interface Query {
   /** Queries a group with EIP712 standard metadata info */
 
   HeadGroupNFT(request: QueryNFTRequest): Promise<QueryGroupNFTResponse>;
-  /** Queries policy by policyID */
+  /** Queries a policy which grants permission to account */
 
-  GetPolicy(request: QueryGetPolicyRequest): Promise<QueryGetPolicyResponse>;
+  QueryPolicyForAccount(request: QueryPolicyForAccountRequest): Promise<QueryPolicyForAccountResponse>;
   /** Queries a list of VerifyPermission items. */
 
   VerifyPermission(request: QueryVerifyPermissionRequest): Promise<QueryVerifyPermissionResponse>;
+  /** Queries a group with specify owner and name . */
+
+  HeadGroup(request: QueryHeadGroupRequest): Promise<QueryHeadGroupResponse>;
+  /** Queries a list of ListGroup items. */
+
+  ListGroup(request: QueryListGroupRequest): Promise<QueryListGroupResponse>;
+  /** Queries a list of HeadGroupMember items. */
+
+  HeadGroupMember(request: QueryHeadGroupMemberRequest): Promise<QueryHeadGroupMemberResponse>;
+  /** Queries a policy that grants permission to a group */
+
+  QueryPolicyForGroup(request: QueryPolicyForGroupRequest): Promise<QueryPolicyForGroupResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -1784,8 +2520,12 @@ export class QueryClientImpl implements Query {
     this.ListObjects = this.ListObjects.bind(this);
     this.ListObjectsByBucketId = this.ListObjectsByBucketId.bind(this);
     this.HeadGroupNFT = this.HeadGroupNFT.bind(this);
-    this.GetPolicy = this.GetPolicy.bind(this);
+    this.QueryPolicyForAccount = this.QueryPolicyForAccount.bind(this);
     this.VerifyPermission = this.VerifyPermission.bind(this);
+    this.HeadGroup = this.HeadGroup.bind(this);
+    this.ListGroup = this.ListGroup.bind(this);
+    this.HeadGroupMember = this.HeadGroupMember.bind(this);
+    this.QueryPolicyForGroup = this.QueryPolicyForGroup.bind(this);
   }
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
@@ -1856,16 +2596,40 @@ export class QueryClientImpl implements Query {
     return promise.then(data => QueryGroupNFTResponse.decode(new _m0.Reader(data)));
   }
 
-  GetPolicy(request: QueryGetPolicyRequest): Promise<QueryGetPolicyResponse> {
-    const data = QueryGetPolicyRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "GetPolicy", data);
-    return promise.then(data => QueryGetPolicyResponse.decode(new _m0.Reader(data)));
+  QueryPolicyForAccount(request: QueryPolicyForAccountRequest): Promise<QueryPolicyForAccountResponse> {
+    const data = QueryPolicyForAccountRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "QueryPolicyForAccount", data);
+    return promise.then(data => QueryPolicyForAccountResponse.decode(new _m0.Reader(data)));
   }
 
   VerifyPermission(request: QueryVerifyPermissionRequest): Promise<QueryVerifyPermissionResponse> {
     const data = QueryVerifyPermissionRequest.encode(request).finish();
     const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "VerifyPermission", data);
     return promise.then(data => QueryVerifyPermissionResponse.decode(new _m0.Reader(data)));
+  }
+
+  HeadGroup(request: QueryHeadGroupRequest): Promise<QueryHeadGroupResponse> {
+    const data = QueryHeadGroupRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadGroup", data);
+    return promise.then(data => QueryHeadGroupResponse.decode(new _m0.Reader(data)));
+  }
+
+  ListGroup(request: QueryListGroupRequest): Promise<QueryListGroupResponse> {
+    const data = QueryListGroupRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "ListGroup", data);
+    return promise.then(data => QueryListGroupResponse.decode(new _m0.Reader(data)));
+  }
+
+  HeadGroupMember(request: QueryHeadGroupMemberRequest): Promise<QueryHeadGroupMemberResponse> {
+    const data = QueryHeadGroupMemberRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadGroupMember", data);
+    return promise.then(data => QueryHeadGroupMemberResponse.decode(new _m0.Reader(data)));
+  }
+
+  QueryPolicyForGroup(request: QueryPolicyForGroupRequest): Promise<QueryPolicyForGroupResponse> {
+    const data = QueryPolicyForGroupRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "QueryPolicyForGroup", data);
+    return promise.then(data => QueryPolicyForGroupResponse.decode(new _m0.Reader(data)));
   }
 
 }
