@@ -1,6 +1,6 @@
 {
   "name": "@bnb-chain/greenfield-cosmos-types",
-  "version": "0.3.0-alpha.7",
+  "version": "0.3.0-alpha.8",
   "description": "greenfield cosmos types",
   "scripts": {
     "codegen": "rimraf ./src && node ./scripts/codegen.js",

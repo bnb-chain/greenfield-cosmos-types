@@ -1,3 +1,10 @@
+# [0.3.0-alpha.8](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.3.0-alpha.7...v0.3.0-alpha.8) (2023-03-27)
+
+
+### Features
+
+* Quota Type ([9ed1f2b](https://github.com/bnb-chain/gnfd-cosmos-types/commit/9ed1f2b9545f06cd726da38f9cfc44d7e6bf92e9))
+
 # [0.3.0-alpha.7](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.3.0-alpha.6...v0.3.0-alpha.7) (2023-03-17)
 
 
