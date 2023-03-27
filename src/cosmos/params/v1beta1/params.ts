@@ -8,10 +8,10 @@ export interface ParameterChangeProposal {
   title: string;
   description: string;
   changes: ParamChange[];
-  /** flag for cross chain proposal */
+  /** cross_chain is a flag to indicate whether it is a cross-chain proposal */
 
   crossChain: boolean;
-  /** used with cross_chain field to specify destination smart contract address(es) */
+  /** addresses is destination smart contract address(es), only used when it is a cross-chain proposal */
 
   addresses: string[];
 }

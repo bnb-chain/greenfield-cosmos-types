@@ -3,11 +3,7 @@ import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.sp";
-/**
- * DepositAuthorization defines authorization for sp deposit.
- * 
- * Since: cosmos-sdk 0.43
- */
+/** DepositAuthorization defines authorization for sp deposit. */
 
 export interface DepositAuthorization {
   /**
@@ -19,11 +15,7 @@ export interface DepositAuthorization {
 
   spAddress: string;
 }
-/**
- * DepositAuthorization defines authorization for sp deposit.
- * 
- * Since: cosmos-sdk 0.43
- */
+/** DepositAuthorization defines authorization for sp deposit. */
 
 export interface DepositAuthorizationSDKType {
   max_deposit?: CoinSDKType;

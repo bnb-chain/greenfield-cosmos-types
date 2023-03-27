@@ -37,6 +37,9 @@ export interface Params {
   /** Relayer fee for the ACK or FAIL_ACK package of the mirror object tx */
 
   mirrorGroupAckRelayerFee: string;
+  /** The maximum number of buckets that can be created per account */
+
+  maxBucketsPerAccount: number;
 }
 /** Params defines the parameters for the module. */
 
@@ -52,6 +55,7 @@ export interface ParamsSDKType {
   mirror_object_ack_relayer_fee: string;
   mirror_group_relayer_fee: string;
   mirror_group_ack_relayer_fee: string;
+  max_buckets_per_account: number;
 }
 
 function createBaseParams(): Params {
@@ -66,7 +70,8 @@ function createBaseParams(): Params {
     mirrorObjectRelayerFee: "",
     mirrorObjectAckRelayerFee: "",
     mirrorGroupRelayerFee: "",
-    mirrorGroupAckRelayerFee: ""
+    mirrorGroupAckRelayerFee: "",
+    maxBucketsPerAccount: 0
   };
 }
 
@@ -114,6 +119,10 @@ export const Params = {
 
     if (message.mirrorGroupAckRelayerFee !== "") {
       writer.uint32(90).string(message.mirrorGroupAckRelayerFee);
+    }
+
+    if (message.maxBucketsPerAccount !== 0) {
+      writer.uint32(96).uint32(message.maxBucketsPerAccount);
     }
 
     return writer;
@@ -172,6 +181,10 @@ export const Params = {
           message.mirrorGroupAckRelayerFee = reader.string();
           break;
 
+        case 12:
+          message.maxBucketsPerAccount = reader.uint32();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -193,7 +206,8 @@ export const Params = {
       mirrorObjectRelayerFee: isSet(object.mirrorObjectRelayerFee) ? String(object.mirrorObjectRelayerFee) : "",
       mirrorObjectAckRelayerFee: isSet(object.mirrorObjectAckRelayerFee) ? String(object.mirrorObjectAckRelayerFee) : "",
       mirrorGroupRelayerFee: isSet(object.mirrorGroupRelayerFee) ? String(object.mirrorGroupRelayerFee) : "",
-      mirrorGroupAckRelayerFee: isSet(object.mirrorGroupAckRelayerFee) ? String(object.mirrorGroupAckRelayerFee) : ""
+      mirrorGroupAckRelayerFee: isSet(object.mirrorGroupAckRelayerFee) ? String(object.mirrorGroupAckRelayerFee) : "",
+      maxBucketsPerAccount: isSet(object.maxBucketsPerAccount) ? Number(object.maxBucketsPerAccount) : 0
     };
   },
 
@@ -210,6 +224,7 @@ export const Params = {
     message.mirrorObjectAckRelayerFee !== undefined && (obj.mirrorObjectAckRelayerFee = message.mirrorObjectAckRelayerFee);
     message.mirrorGroupRelayerFee !== undefined && (obj.mirrorGroupRelayerFee = message.mirrorGroupRelayerFee);
     message.mirrorGroupAckRelayerFee !== undefined && (obj.mirrorGroupAckRelayerFee = message.mirrorGroupAckRelayerFee);
+    message.maxBucketsPerAccount !== undefined && (obj.maxBucketsPerAccount = Math.round(message.maxBucketsPerAccount));
     return obj;
   },
 
@@ -226,6 +241,7 @@ export const Params = {
     message.mirrorObjectAckRelayerFee = object.mirrorObjectAckRelayerFee ?? "";
     message.mirrorGroupRelayerFee = object.mirrorGroupRelayerFee ?? "";
     message.mirrorGroupAckRelayerFee = object.mirrorGroupAckRelayerFee ?? "";
+    message.maxBucketsPerAccount = object.maxBucketsPerAccount ?? 0;
     return message;
   },
 
@@ -241,7 +257,8 @@ export const Params = {
       mirrorObjectRelayerFee: object?.mirror_object_relayer_fee,
       mirrorObjectAckRelayerFee: object?.mirror_object_ack_relayer_fee,
       mirrorGroupRelayerFee: object?.mirror_group_relayer_fee,
-      mirrorGroupAckRelayerFee: object?.mirror_group_ack_relayer_fee
+      mirrorGroupAckRelayerFee: object?.mirror_group_ack_relayer_fee,
+      maxBucketsPerAccount: object?.max_buckets_per_account
     };
   },
 
@@ -258,6 +275,7 @@ export const Params = {
     obj.mirror_object_ack_relayer_fee = message.mirrorObjectAckRelayerFee;
     obj.mirror_group_relayer_fee = message.mirrorGroupRelayerFee;
     obj.mirror_group_ack_relayer_fee = message.mirrorGroupAckRelayerFee;
+    obj.max_buckets_per_account = message.maxBucketsPerAccount;
     return obj;
   }
 

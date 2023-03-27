@@ -7,13 +7,28 @@ export const protobufPackage = "bnbchain.greenfield.sp";
 /** MsgCreateStorageProvider defines message for creating a new storage provider. */
 
 export interface MsgCreateStorageProvider {
+  /** creator is the msg signer */
   creator: string;
+  /** description defines the description terms for the validator. */
+
   description?: Description;
+  /** sp_address defines the address of the sp's operator; It also is the unqiue index key of sp. */
+
   spAddress: string;
+  /** fund_address is the account address of the storage provider for deposit, remuneration. */
+
   fundingAddress: string;
+  /** seal_address is the account address of the storage provider for sealObject */
+
   sealAddress: string;
+  /** approval_address is the account address of the storage provider for ack CreateBuclet/Object. */
+
   approvalAddress: string;
+  /** endpoint is the service address of the storage provider */
+
   endpoint: string;
+  /** deposit define the deposit token */
+
   deposit?: Coin;
   /** read price, in bnb wei per charge byte */
 
@@ -49,7 +64,7 @@ export interface MsgCreateStorageProviderResponseSDKType {}
 /** MsgDeposit defines a SDK message for deposit token for sp. */
 
 export interface MsgDeposit {
-  /** creator is the msg signer, it should be sp address or sp's fund address */
+  /** creator is the msg signer, it should be sp's fund address */
   creator: string;
   /** sp_address is the operator address of sp */
 

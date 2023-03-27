@@ -1,21 +1,23 @@
 /* eslint-disable */
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
+import { UInt64Value, UInt64ValueSDKType } from "../common/wrapper";
 import * as _m0 from "protobufjs/minimal";
-import { isSet, DeepPartial, Exact } from "../../helpers";
+import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.permission";
 /** ActionType defines the operations you can execute in greenfield storage network */
 
 export enum ActionType {
-  ACTION_UPDATE_BUCKET_INFO = 0,
-  ACTION_DELETE_BUCKET = 1,
-  ACTION_CREATE_OBJECT = 2,
-  ACTION_DELETE_OBJECT = 3,
-  ACTION_COPY_OBJECT = 4,
-  ACTION_GET_OBJECT = 5,
-  ACTION_EXECUTE_OBJECT = 6,
-  ACTION_LIST_OBJECT = 7,
-  ACTION_UPDATE_GROUP_MEMBER = 8,
-  ACTION_DELETE_GROUP = 9,
-  ACTION_GROUP_MEMBER = 10,
+  ACTION_UNSPECIFIED = 0,
+  ACTION_UPDATE_BUCKET_INFO = 1,
+  ACTION_DELETE_BUCKET = 2,
+  ACTION_CREATE_OBJECT = 3,
+  ACTION_DELETE_OBJECT = 4,
+  ACTION_COPY_OBJECT = 5,
+  ACTION_GET_OBJECT = 6,
+  ACTION_EXECUTE_OBJECT = 7,
+  ACTION_LIST_OBJECT = 8,
+  ACTION_UPDATE_GROUP_MEMBER = 9,
+  ACTION_DELETE_GROUP = 10,
   ACTION_TYPE_ALL = 99,
   UNRECOGNIZED = -1,
 }
@@ -23,48 +25,48 @@ export const ActionTypeSDKType = ActionType;
 export function actionTypeFromJSON(object: any): ActionType {
   switch (object) {
     case 0:
+    case "ACTION_UNSPECIFIED":
+      return ActionType.ACTION_UNSPECIFIED;
+
+    case 1:
     case "ACTION_UPDATE_BUCKET_INFO":
       return ActionType.ACTION_UPDATE_BUCKET_INFO;
 
-    case 1:
+    case 2:
     case "ACTION_DELETE_BUCKET":
       return ActionType.ACTION_DELETE_BUCKET;
 
-    case 2:
+    case 3:
     case "ACTION_CREATE_OBJECT":
       return ActionType.ACTION_CREATE_OBJECT;
 
-    case 3:
+    case 4:
     case "ACTION_DELETE_OBJECT":
       return ActionType.ACTION_DELETE_OBJECT;
 
-    case 4:
+    case 5:
     case "ACTION_COPY_OBJECT":
       return ActionType.ACTION_COPY_OBJECT;
 
-    case 5:
+    case 6:
     case "ACTION_GET_OBJECT":
       return ActionType.ACTION_GET_OBJECT;
 
-    case 6:
+    case 7:
     case "ACTION_EXECUTE_OBJECT":
       return ActionType.ACTION_EXECUTE_OBJECT;
 
-    case 7:
+    case 8:
     case "ACTION_LIST_OBJECT":
       return ActionType.ACTION_LIST_OBJECT;
 
-    case 8:
+    case 9:
     case "ACTION_UPDATE_GROUP_MEMBER":
       return ActionType.ACTION_UPDATE_GROUP_MEMBER;
 
-    case 9:
+    case 10:
     case "ACTION_DELETE_GROUP":
       return ActionType.ACTION_DELETE_GROUP;
-
-    case 10:
-    case "ACTION_GROUP_MEMBER":
-      return ActionType.ACTION_GROUP_MEMBER;
 
     case 99:
     case "ACTION_TYPE_ALL":
@@ -78,6 +80,9 @@ export function actionTypeFromJSON(object: any): ActionType {
 }
 export function actionTypeToJSON(object: ActionType): string {
   switch (object) {
+    case ActionType.ACTION_UNSPECIFIED:
+      return "ACTION_UNSPECIFIED";
+
     case ActionType.ACTION_UPDATE_BUCKET_INFO:
       return "ACTION_UPDATE_BUCKET_INFO";
 
@@ -108,9 +113,6 @@ export function actionTypeToJSON(object: ActionType): string {
     case ActionType.ACTION_DELETE_GROUP:
       return "ACTION_DELETE_GROUP";
 
-    case ActionType.ACTION_GROUP_MEMBER:
-      return "ACTION_GROUP_MEMBER";
-
     case ActionType.ACTION_TYPE_ALL:
       return "ACTION_TYPE_ALL";
 
@@ -122,27 +124,25 @@ export function actionTypeToJSON(object: ActionType): string {
 /** Effect define the effect of the operation permission, include Allow or deny */
 
 export enum Effect {
-  EFFECT_ALLOW = 0,
-  EFFECT_DENY = 1,
-
-  /** EFFECT_PASS - Use internally, means skipped. there is no explicit ALLOW or DENY, and further permission checks are required. */
-  EFFECT_PASS = 2,
+  EFFECT_UNSPECIFIED = 0,
+  EFFECT_ALLOW = 1,
+  EFFECT_DENY = 2,
   UNRECOGNIZED = -1,
 }
 export const EffectSDKType = Effect;
 export function effectFromJSON(object: any): Effect {
   switch (object) {
     case 0:
+    case "EFFECT_UNSPECIFIED":
+      return Effect.EFFECT_UNSPECIFIED;
+
+    case 1:
     case "EFFECT_ALLOW":
       return Effect.EFFECT_ALLOW;
 
-    case 1:
+    case 2:
     case "EFFECT_DENY":
       return Effect.EFFECT_DENY;
-
-    case 2:
-    case "EFFECT_PASS":
-      return Effect.EFFECT_PASS;
 
     case -1:
     case "UNRECOGNIZED":
@@ -152,36 +152,45 @@ export function effectFromJSON(object: any): Effect {
 }
 export function effectToJSON(object: Effect): string {
   switch (object) {
+    case Effect.EFFECT_UNSPECIFIED:
+      return "EFFECT_UNSPECIFIED";
+
     case Effect.EFFECT_ALLOW:
       return "EFFECT_ALLOW";
 
     case Effect.EFFECT_DENY:
       return "EFFECT_DENY";
 
-    case Effect.EFFECT_PASS:
-      return "EFFECT_PASS";
-
     case Effect.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
 }
+/**
+ * PrincipalType refers to the identity type of system users or entities.
+ * In Greenfield, it usually refers to accounts or groups.
+ */
+
 export enum PrincipalType {
-  /** TYPE_GNFD_ACCOUNT - Reserved for extended use */
-  TYPE_GNFD_ACCOUNT = 0,
-  TYPE_GNFD_GROUP = 1,
+  PRINCIPAL_TYPE_UNSPECIFIED = 0,
+  PRINCIPAL_TYPE_GNFD_ACCOUNT = 1,
+  PRINCIPAL_TYPE_GNFD_GROUP = 2,
   UNRECOGNIZED = -1,
 }
 export const PrincipalTypeSDKType = PrincipalType;
 export function principalTypeFromJSON(object: any): PrincipalType {
   switch (object) {
     case 0:
-    case "TYPE_GNFD_ACCOUNT":
-      return PrincipalType.TYPE_GNFD_ACCOUNT;
+    case "PRINCIPAL_TYPE_UNSPECIFIED":
+      return PrincipalType.PRINCIPAL_TYPE_UNSPECIFIED;
 
     case 1:
-    case "TYPE_GNFD_GROUP":
-      return PrincipalType.TYPE_GNFD_GROUP;
+    case "PRINCIPAL_TYPE_GNFD_ACCOUNT":
+      return PrincipalType.PRINCIPAL_TYPE_GNFD_ACCOUNT;
+
+    case 2:
+    case "PRINCIPAL_TYPE_GNFD_GROUP":
+      return PrincipalType.PRINCIPAL_TYPE_GNFD_GROUP;
 
     case -1:
     case "UNRECOGNIZED":
@@ -191,19 +200,20 @@ export function principalTypeFromJSON(object: any): PrincipalType {
 }
 export function principalTypeToJSON(object: PrincipalType): string {
   switch (object) {
-    case PrincipalType.TYPE_GNFD_ACCOUNT:
-      return "TYPE_GNFD_ACCOUNT";
+    case PrincipalType.PRINCIPAL_TYPE_UNSPECIFIED:
+      return "PRINCIPAL_TYPE_UNSPECIFIED";
 
-    case PrincipalType.TYPE_GNFD_GROUP:
-      return "TYPE_GNFD_GROUP";
+    case PrincipalType.PRINCIPAL_TYPE_GNFD_ACCOUNT:
+      return "PRINCIPAL_TYPE_GNFD_ACCOUNT";
+
+    case PrincipalType.PRINCIPAL_TYPE_GNFD_GROUP:
+      return "PRINCIPAL_TYPE_GNFD_GROUP";
 
     case PrincipalType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
 }
-/** TODO: add expiration time. */
-
 export interface Statement {
   /** effect define the impact of permissions, which can be Allow/Deny */
   effect: Effect;
@@ -214,23 +224,36 @@ export interface Statement {
 
   actions: ActionType[];
   /**
-   * resources define the resource list you can operate.
    * CAN ONLY USED IN bucket level. Support fuzzy match and limit to 5
+   * If no sub-resource is specified in a statement, then all objects in the bucket are accessible by the principal.
+   * However, if the sub-resource is defined as 'bucket/test_*,' in the statement, then only objects with a 'test_'
+   * prefix can be accessed by the principal.
    */
 
   resources: string[];
-}
-/** TODO: add expiration time. */
+  /** expiration_time defines how long the permission is valid. If not explicitly specified, it means it will not expire. */
 
+  expirationTime?: Timestamp;
+  /** limit_size defines the total data size that is allowed to operate. If not explicitly specified, it means it will not limit. */
+
+  limitSize?: UInt64Value;
+}
 export interface StatementSDKType {
   effect: Effect;
   actions: ActionType[];
   resources: string[];
+  expiration_time?: TimestampSDKType;
+  limit_size?: UInt64ValueSDKType;
 }
 /** Principal define the roles that can grant permissions. Currently, it can be account or group. */
 
 export interface Principal {
   type: PrincipalType;
+  /**
+   * When the type is an account, its value is sdk.AccAddress().String();
+   * when the type is a group, its value is math.Uint().String()
+   */
+
   value: string;
 }
 /** Principal define the roles that can grant permissions. Currently, it can be account or group. */
@@ -244,7 +267,9 @@ function createBaseStatement(): Statement {
   return {
     effect: 0,
     actions: [],
-    resources: []
+    resources: [],
+    expirationTime: undefined,
+    limitSize: undefined
   };
 }
 
@@ -264,6 +289,14 @@ export const Statement = {
 
     for (const v of message.resources) {
       writer.uint32(26).string(v!);
+    }
+
+    if (message.expirationTime !== undefined) {
+      Timestamp.encode(message.expirationTime, writer.uint32(34).fork()).ldelim();
+    }
+
+    if (message.limitSize !== undefined) {
+      UInt64Value.encode(message.limitSize, writer.uint32(42).fork()).ldelim();
     }
 
     return writer;
@@ -299,6 +332,14 @@ export const Statement = {
           message.resources.push(reader.string());
           break;
 
+        case 4:
+          message.expirationTime = Timestamp.decode(reader, reader.uint32());
+          break;
+
+        case 5:
+          message.limitSize = UInt64Value.decode(reader, reader.uint32());
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -312,7 +353,9 @@ export const Statement = {
     return {
       effect: isSet(object.effect) ? effectFromJSON(object.effect) : 0,
       actions: Array.isArray(object?.actions) ? object.actions.map((e: any) => actionTypeFromJSON(e)) : [],
-      resources: Array.isArray(object?.resources) ? object.resources.map((e: any) => String(e)) : []
+      resources: Array.isArray(object?.resources) ? object.resources.map((e: any) => String(e)) : [],
+      expirationTime: isSet(object.expirationTime) ? fromJsonTimestamp(object.expirationTime) : undefined,
+      limitSize: isSet(object.limitSize) ? UInt64Value.fromJSON(object.limitSize) : undefined
     };
   },
 
@@ -332,6 +375,8 @@ export const Statement = {
       obj.resources = [];
     }
 
+    message.expirationTime !== undefined && (obj.expirationTime = fromTimestamp(message.expirationTime).toISOString());
+    message.limitSize !== undefined && (obj.limitSize = message.limitSize ? UInt64Value.toJSON(message.limitSize) : undefined);
     return obj;
   },
 
@@ -340,6 +385,8 @@ export const Statement = {
     message.effect = object.effect ?? 0;
     message.actions = object.actions?.map(e => e) || [];
     message.resources = object.resources?.map(e => e) || [];
+    message.expirationTime = object.expirationTime !== undefined && object.expirationTime !== null ? Timestamp.fromPartial(object.expirationTime) : undefined;
+    message.limitSize = object.limitSize !== undefined && object.limitSize !== null ? UInt64Value.fromPartial(object.limitSize) : undefined;
     return message;
   },
 
@@ -347,7 +394,9 @@ export const Statement = {
     return {
       effect: isSet(object.effect) ? effectFromJSON(object.effect) : 0,
       actions: Array.isArray(object?.actions) ? object.actions.map((e: any) => actionTypeFromJSON(e)) : [],
-      resources: Array.isArray(object?.resources) ? object.resources.map((e: any) => e) : []
+      resources: Array.isArray(object?.resources) ? object.resources.map((e: any) => e) : [],
+      expirationTime: object.expiration_time ? Timestamp.fromSDK(object.expiration_time) : undefined,
+      limitSize: object.limit_size ? UInt64Value.fromSDK(object.limit_size) : undefined
     };
   },
 
@@ -367,6 +416,8 @@ export const Statement = {
       obj.resources = [];
     }
 
+    message.expirationTime !== undefined && (obj.expiration_time = message.expirationTime ? Timestamp.toSDK(message.expirationTime) : undefined);
+    message.limitSize !== undefined && (obj.limit_size = message.limitSize ? UInt64Value.toSDK(message.limitSize) : undefined);
     return obj;
   }
 

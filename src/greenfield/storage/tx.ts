@@ -1,42 +1,48 @@
 /* eslint-disable */
-import { Approval, ApprovalSDKType, RedundancyType, redundancyTypeFromJSON, redundancyTypeToJSON } from "./common";
+import { VisibilityType, Approval, ApprovalSDKType, RedundancyType, visibilityTypeFromJSON, visibilityTypeToJSON, redundancyTypeFromJSON, redundancyTypeToJSON } from "./common";
+import { UInt64Value, UInt64ValueSDKType } from "../common/wrapper";
 import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "../permission/common";
-import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, Rpc } from "../../helpers";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
+import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp, Rpc } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.storage";
 export interface MsgCreateBucket {
-  /** creator is the account address of bucket creator, it is also the bucket owner. */
+  /** creator defines the account address of bucket creator, it is also the bucket owner. */
   creator: string;
-  /** bucket_name is a globally unique name of bucket */
+  /** bucket_name defines a globally unique name of bucket */
 
   bucketName: string;
   /**
-   * is_public means the bucket is private or public. if private, only bucket owner or grantee can read it,
+   * visibility means the bucket is private or public. if private, only bucket owner or grantee can read it,
    * otherwise every greenfield user can read it.
    */
 
-  isPublic: boolean;
-  /** payment_address is an account address specified by bucket owner to pay the read fee. Default: creator */
+  visibility: VisibilityType;
+  /** payment_address defines an account address specified by bucket owner to pay the read fee. Default: creator */
 
   paymentAddress: string;
-  /** primary_sp_address is the address of primary sp. */
+  /** primary_sp_address defines the address of primary sp. */
 
   primarySpAddress: string;
-  /** primary_sp_approval is the approval info of the primary SP which indicates that primary sp confirm the user's request. */
+  /** primary_sp_approval defines the approval info of the primary SP which indicates that primary sp confirm the user's request. */
 
   primarySpApproval?: Approval;
-  /** read_quota */
+  /**
+   * charged_read_quota defines the read data that users are charged for, measured in bytes.
+   * The available read data for each user is the sum of the free read data provided by SP and
+   * the ChargeReadQuota specified here.
+   */
 
-  readQuota: Long;
+  chargedReadQuota: Long;
 }
 export interface MsgCreateBucketSDKType {
   creator: string;
   bucket_name: string;
-  is_public: boolean;
+  visibility: VisibilityType;
   payment_address: string;
   primary_sp_address: string;
   primary_sp_approval?: ApprovalSDKType;
-  read_quota: Long;
+  charged_read_quota: Long;
 }
 export interface MsgCreateBucketResponse {
   bucketId: string;
@@ -45,9 +51,9 @@ export interface MsgCreateBucketResponseSDKType {
   bucket_id: string;
 }
 export interface MsgDeleteBucket {
-  /** creator is the account address of the grantee who has the DeleteBucket permission of the bucket to be deleted. */
+  /** creator defines the account address of the grantee who has the DeleteBucket permission of the bucket to be deleted. */
   operator: string;
-  /** bucket_name is the name of the bucket to be deleted. */
+  /** bucket_name defines the name of the bucket to be deleted. */
 
   bucketName: string;
 }
@@ -58,36 +64,36 @@ export interface MsgDeleteBucketSDKType {
 export interface MsgDeleteBucketResponse {}
 export interface MsgDeleteBucketResponseSDKType {}
 export interface MsgCreateObject {
-  /** creator is the account address of object uploader */
+  /** creator defines the account address of object uploader */
   creator: string;
-  /** bucket_name is the name of the bucket where the object is stored. */
+  /** bucket_name defines the name of the bucket where the object is stored. */
 
   bucketName: string;
-  /** object_name is the name of object */
+  /** object_name defines the name of object */
 
   objectName: string;
-  /** payload_size is size of the object's payload */
+  /** payload_size defines size of the object's payload */
 
   payloadSize: Long;
   /**
-   * is_public means the bucket is private or public. if private, only bucket owner or grantee can access it,
+   * visibility means the object is private or public. if private, only object owner or grantee can access it,
    * otherwise every greenfield user can access it.
    */
 
-  isPublic: boolean;
-  /** content_type is a standard MIME type describing the format of the object. */
+  visibility: VisibilityType;
+  /** content_type defines a standard MIME type describing the format of the object. */
 
   contentType: string;
-  /** primary_sp_approval is the approval info of the primary SP which indicates that primary sp confirm the user's request. */
+  /** primary_sp_approval defines the approval info of the primary SP which indicates that primary sp confirm the user's request. */
 
   primarySpApproval?: Approval;
-  /** expect_checksums is a list of hashes which was generate by redundancy algorithm. */
+  /** expect_checksums defines a list of hashes which was generate by redundancy algorithm. */
 
   expectChecksums: Uint8Array[];
   /** redundancy_type can be ec or replica */
 
   redundancyType: RedundancyType;
-  /** expect_secondarySPs is a list of StorageProvider address, which is optional */
+  /** expect_secondarySPs defines a list of StorageProvider address, which is optional */
 
   expectSecondarySpAddresses: string[];
 }
@@ -96,7 +102,7 @@ export interface MsgCreateObjectSDKType {
   bucket_name: string;
   object_name: string;
   payload_size: Long;
-  is_public: boolean;
+  visibility: VisibilityType;
   content_type: string;
   primary_sp_approval?: ApprovalSDKType;
   expect_checksums: Uint8Array[];
@@ -110,19 +116,19 @@ export interface MsgCreateObjectResponseSDKType {
   object_id: string;
 }
 export interface MsgSealObject {
-  /** operator is the account address of primary SP */
+  /** operator defines the account address of primary SP */
   operator: string;
-  /** bucket_name is the name of the bucket where the object is stored. */
+  /** bucket_name defines the name of the bucket where the object is stored. */
 
   bucketName: string;
-  /** object_name is the name of object to be sealed. */
+  /** object_name defines the name of object to be sealed. */
 
   objectName: string;
-  /** secondary_sp_addresses is a list of storage provider which store the redundant data. */
+  /** secondary_sp_addresses defines a list of storage provider which store the redundant data. */
 
   secondarySpAddresses: string[];
   /**
-   * secondary_sp_signatures is the signature of the secondary sp that can
+   * secondary_sp_signatures defines the signature of the secondary sp that can
    * acknowledge that the payload data has received and stored.
    */
 
@@ -138,12 +144,12 @@ export interface MsgSealObjectSDKType {
 export interface MsgSealObjectResponse {}
 export interface MsgSealObjectResponseSDKType {}
 export interface MsgRejectSealObject {
-  /** operator is the account address of the object owner */
+  /** operator defines the account address of the object owner */
   operator: string;
-  /** bucket_name is the name of the bucket where the object is stored. */
+  /** bucket_name defines the name of the bucket where the object is stored. */
 
   bucketName: string;
-  /** object_name is the name of unsealed object to be reject. */
+  /** object_name defines the name of unsealed object to be reject. */
 
   objectName: string;
 }
@@ -155,21 +161,21 @@ export interface MsgRejectSealObjectSDKType {
 export interface MsgRejectSealObjectResponse {}
 export interface MsgRejectSealObjectResponseSDKType {}
 export interface MsgCopyObject {
-  /** operator is the account address of the operator who has the CopyObject permission of the object to be deleted. */
+  /** operator defines the account address of the operator who has the CopyObject permission of the object to be deleted. */
   operator: string;
-  /** src_bucket_name is the name of the bucket where the object to be copied is located */
+  /** src_bucket_name defines the name of the bucket where the object to be copied is located */
 
   srcBucketName: string;
-  /** dst_bucket_name is the name of the bucket where the object is copied to. */
+  /** dst_bucket_name defines the name of the bucket where the object is copied to. */
 
   dstBucketName: string;
-  /** src_object_name is the name of the object which to be copied */
+  /** src_object_name defines the name of the object which to be copied */
 
   srcObjectName: string;
-  /** dst_object_name is the name of the object which is copied to */
+  /** dst_object_name defines the name of the object which is copied to */
 
   dstObjectName: string;
-  /** primary_sp_approval is the approval info of the primary SP which indicates that primary sp confirm the user's request. */
+  /** primary_sp_approval defines the approval info of the primary SP which indicates that primary sp confirm the user's request. */
 
   dstPrimarySpApproval?: Approval;
 }
@@ -188,12 +194,12 @@ export interface MsgCopyObjectResponseSDKType {
   object_id: string;
 }
 export interface MsgDeleteObject {
-  /** operator is the account address of the operator who has the DeleteObject permission of the object to be deleted. */
+  /** operator defines the account address of the operator who has the DeleteObject permission of the object to be deleted. */
   operator: string;
-  /** bucket_name is the name of the bucket where the object which to be deleted is stored. */
+  /** bucket_name defines the name of the bucket where the object which to be deleted is stored. */
 
   bucketName: string;
-  /** object_name is the name of the object which to be deleted. */
+  /** object_name defines the name of the object which to be deleted. */
 
   objectName: string;
 }
@@ -205,12 +211,12 @@ export interface MsgDeleteObjectSDKType {
 export interface MsgDeleteObjectResponse {}
 export interface MsgDeleteObjectResponseSDKType {}
 export interface MsgCreateGroup {
-  /** owner is the account address of group owner who create the group */
+  /** owner defines the account address of group owner who create the group */
   creator: string;
-  /** group_name is the name of the group. it's not globally unique. */
+  /** group_name defines the name of the group. it's not globally unique. */
 
   groupName: string;
-  /** member_request is a list of member which to be add or remove */
+  /** member_request defines a list of member which to be add or remove */
 
   members: string[];
 }
@@ -226,9 +232,9 @@ export interface MsgCreateGroupResponseSDKType {
   group_id: string;
 }
 export interface MsgDeleteGroup {
-  /** operator is the account address of the operator who has the DeleteGroup permission of the group to be deleted. */
+  /** operator defines the account address of the operator who has the DeleteGroup permission of the group to be deleted. */
   operator: string;
-  /** group_name is the name of the group which to be deleted */
+  /** group_name defines the name of the group which to be deleted */
 
   groupName: string;
 }
@@ -239,20 +245,24 @@ export interface MsgDeleteGroupSDKType {
 export interface MsgDeleteGroupResponse {}
 export interface MsgDeleteGroupResponseSDKType {}
 export interface MsgUpdateGroupMember {
-  /** operator is the account address of the operator who has the UpdateGroupMember permission of the group. */
+  /** operator defines the account address of the operator who has the UpdateGroupMember permission of the group. */
   operator: string;
-  /** group_name is the name of the group which to be updated */
+  /** group_owner defines the account address of the group owner */
+
+  groupOwner: string;
+  /** group_name defines the name of the group which to be updated */
 
   groupName: string;
-  /** members_to_add is a list of members account address which will be add to the group */
+  /** members_to_add defines a list of members account address which will be add to the group */
 
   membersToAdd: string[];
-  /** members_to_delete is a list of members account address which will be remove from the group */
+  /** members_to_delete defines a list of members account address which will be remove from the group */
 
   membersToDelete: string[];
 }
 export interface MsgUpdateGroupMemberSDKType {
   operator: string;
+  group_owner: string;
   group_name: string;
   members_to_add: string[];
   members_to_delete: string[];
@@ -260,12 +270,12 @@ export interface MsgUpdateGroupMemberSDKType {
 export interface MsgUpdateGroupMemberResponse {}
 export interface MsgUpdateGroupMemberResponseSDKType {}
 export interface MsgLeaveGroup {
-  /** member is the account address of the member who want to leave the group */
+  /** member defines the account address of the member who want to leave the group */
   member: string;
-  /** group_owner is the owner of the group you want to leave */
+  /** group_owner defines the owner of the group you want to leave */
 
   groupOwner: string;
-  /** group_name is the name of the group you want to leave */
+  /** group_name defines the name of the group you want to leave */
 
   groupName: string;
 }
@@ -277,33 +287,46 @@ export interface MsgLeaveGroupSDKType {
 export interface MsgLeaveGroupResponse {}
 export interface MsgLeaveGroupResponseSDKType {}
 export interface MsgUpdateBucketInfo {
-  /** operator is the account address of the operator */
+  /** operator defines the account address of the operator */
   operator: string;
-  /** bucket_name is the name of bucket which you'll update */
+  /** bucket_name defines the name of bucket which you'll update */
 
   bucketName: string;
-  /** read_quota is the traffic quota that you read from primary sp */
+  /**
+   * charged_read_quota defines the traffic quota that you read from primary sp
+   * if read_quota is nil, it means don't change the read_quota
+   */
 
-  readQuota: Long;
-  /** payment_address is the account address of the payment account */
+  chargedReadQuota?: UInt64Value;
+  /**
+   * payment_address defines the account address of the payment account
+   * if payment_address is empty, it means don't change the payment_address
+   */
 
   paymentAddress: string;
+  /**
+   * visibility means the bucket is private or public. if private, only bucket owner or grantee can read it,
+   * otherwise every greenfield user can read it.
+   */
+
+  visibility: VisibilityType;
 }
 export interface MsgUpdateBucketInfoSDKType {
   operator: string;
   bucket_name: string;
-  read_quota: Long;
+  charged_read_quota?: UInt64ValueSDKType;
   payment_address: string;
+  visibility: VisibilityType;
 }
 export interface MsgUpdateBucketInfoResponse {}
 export interface MsgUpdateBucketInfoResponseSDKType {}
 export interface MsgCancelCreateObject {
-  /** operator is the account address of the operator */
+  /** operator defines the account address of the operator */
   operator: string;
-  /** bucket_name is the name of the bucket */
+  /** bucket_name defines the name of the bucket */
 
   bucketName: string;
-  /** object_name is the name of the object */
+  /** object_name defines the name of the object */
 
   objectName: string;
 }
@@ -317,35 +340,42 @@ export interface MsgCancelCreateObjectResponseSDKType {}
 export interface MsgPutPolicy {
   /** operator defines the granter who grant the permission to another principal */
   operator: string;
-  /** Principal define the roles that can grant permissions. Currently, it can be account or group. */
+  /** Principal defines the roles that can grant permissions. Currently, it can be account or group. */
 
   principal?: Principal;
-  /** resource define a greenfield standard resource name that can be generated by GRN structure */
+  /** resource defines a greenfield standard resource name that can be generated by GRN structure */
 
   resource: string;
-  /** statements define a list of individual statement which describe the detail rules of policy */
+  /** statements defines a list of individual statement which describe the detail rules of policy */
 
   statements: Statement[];
+  /**
+   * expiration_time defines the whole expiration time of all the statements.
+   * Notices: Its priority is higher than the expiration time inside the Statement
+   */
+
+  expirationTime?: Timestamp;
 }
 export interface MsgPutPolicySDKType {
   operator: string;
   principal?: PrincipalSDKType;
   resource: string;
   statements: StatementSDKType[];
+  expiration_time?: TimestampSDKType;
 }
 export interface MsgPutPolicyResponse {
-  id: string;
+  policyId: string;
 }
 export interface MsgPutPolicyResponseSDKType {
-  id: string;
+  policy_id: string;
 }
 export interface MsgDeletePolicy {
   /** operator defines the granter who grant the permission to another principal */
   operator: string;
-  /** Principal define the roles that can grant permissions. Currently, it can be account or group. */
+  /** Principal defines the roles that can grant permissions. Currently, it can be account or group. */
 
   principal?: Principal;
-  /** resource define a greenfield standard resource name that can be generated by GRN structure */
+  /** resource defines a greenfield standard resource name that can be generated by GRN structure */
 
   resource: string;
 }
@@ -355,15 +385,15 @@ export interface MsgDeletePolicySDKType {
   resource: string;
 }
 export interface MsgDeletePolicyResponse {
-  id: string;
+  policyId: string;
 }
 export interface MsgDeletePolicyResponseSDKType {
-  id: string;
+  policy_id: string;
 }
 export interface MsgMirrorObject {
-  /** operator is the account address of the operator who has the DeleteObject permission of the object to be deleted. */
+  /** operator defines the account address of the operator who has the DeleteObject permission of the object to be deleted. */
   operator: string;
-  /** id is the unique u256 for object. */
+  /** id defines the unique u256 for object. */
 
   id: string;
 }
@@ -374,9 +404,9 @@ export interface MsgMirrorObjectSDKType {
 export interface MsgMirrorObjectResponse {}
 export interface MsgMirrorObjectResponseSDKType {}
 export interface MsgMirrorBucket {
-  /** creator is the account address of the grantee who has the DeleteBucket permission of the bucket to be deleted. */
+  /** creator defines the account address of the grantee who has the DeleteBucket permission of the bucket to be deleted. */
   operator: string;
-  /** id is the unique u256 for bucket. */
+  /** id defines the unique u256 for bucket. */
 
   id: string;
 }
@@ -387,9 +417,9 @@ export interface MsgMirrorBucketSDKType {
 export interface MsgMirrorBucketResponse {}
 export interface MsgMirrorBucketResponseSDKType {}
 export interface MsgMirrorGroup {
-  /** operator is the account address of the operator who has the DeleteGroup permission of the group to be deleted. */
+  /** operator defines the account address of the operator who has the DeleteGroup permission of the group to be deleted. */
   operator: string;
-  /** id is the unique u256 for group. */
+  /** id defines the unique u256 for group. */
 
   id: string;
 }
@@ -404,11 +434,11 @@ function createBaseMsgCreateBucket(): MsgCreateBucket {
   return {
     creator: "",
     bucketName: "",
-    isPublic: false,
+    visibility: 0,
     paymentAddress: "",
     primarySpAddress: "",
     primarySpApproval: undefined,
-    readQuota: Long.UZERO
+    chargedReadQuota: Long.UZERO
   };
 }
 
@@ -422,8 +452,8 @@ export const MsgCreateBucket = {
       writer.uint32(18).string(message.bucketName);
     }
 
-    if (message.isPublic === true) {
-      writer.uint32(24).bool(message.isPublic);
+    if (message.visibility !== 0) {
+      writer.uint32(24).int32(message.visibility);
     }
 
     if (message.paymentAddress !== "") {
@@ -438,8 +468,8 @@ export const MsgCreateBucket = {
       Approval.encode(message.primarySpApproval, writer.uint32(58).fork()).ldelim();
     }
 
-    if (!message.readQuota.isZero()) {
-      writer.uint32(64).uint64(message.readQuota);
+    if (!message.chargedReadQuota.isZero()) {
+      writer.uint32(64).uint64(message.chargedReadQuota);
     }
 
     return writer;
@@ -463,7 +493,7 @@ export const MsgCreateBucket = {
           break;
 
         case 3:
-          message.isPublic = reader.bool();
+          message.visibility = (reader.int32() as any);
           break;
 
         case 4:
@@ -479,7 +509,7 @@ export const MsgCreateBucket = {
           break;
 
         case 8:
-          message.readQuota = (reader.uint64() as Long);
+          message.chargedReadQuota = (reader.uint64() as Long);
           break;
 
         default:
@@ -495,11 +525,11 @@ export const MsgCreateBucket = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
-      isPublic: isSet(object.isPublic) ? Boolean(object.isPublic) : false,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
       primarySpApproval: isSet(object.primarySpApproval) ? Approval.fromJSON(object.primarySpApproval) : undefined,
-      readQuota: isSet(object.readQuota) ? Long.fromValue(object.readQuota) : Long.UZERO
+      chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO
     };
   },
 
@@ -507,11 +537,11 @@ export const MsgCreateBucket = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
-    message.isPublic !== undefined && (obj.isPublic = message.isPublic);
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
     message.primarySpApproval !== undefined && (obj.primarySpApproval = message.primarySpApproval ? Approval.toJSON(message.primarySpApproval) : undefined);
-    message.readQuota !== undefined && (obj.readQuota = (message.readQuota || Long.UZERO).toString());
+    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
     return obj;
   },
 
@@ -519,11 +549,11 @@ export const MsgCreateBucket = {
     const message = createBaseMsgCreateBucket();
     message.creator = object.creator ?? "";
     message.bucketName = object.bucketName ?? "";
-    message.isPublic = object.isPublic ?? false;
+    message.visibility = object.visibility ?? 0;
     message.paymentAddress = object.paymentAddress ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
     message.primarySpApproval = object.primarySpApproval !== undefined && object.primarySpApproval !== null ? Approval.fromPartial(object.primarySpApproval) : undefined;
-    message.readQuota = object.readQuota !== undefined && object.readQuota !== null ? Long.fromValue(object.readQuota) : Long.UZERO;
+    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
     return message;
   },
 
@@ -531,11 +561,11 @@ export const MsgCreateBucket = {
     return {
       creator: object?.creator,
       bucketName: object?.bucket_name,
-      isPublic: object?.is_public,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       paymentAddress: object?.payment_address,
       primarySpAddress: object?.primary_sp_address,
       primarySpApproval: object.primary_sp_approval ? Approval.fromSDK(object.primary_sp_approval) : undefined,
-      readQuota: object?.read_quota
+      chargedReadQuota: object?.charged_read_quota
     };
   },
 
@@ -543,11 +573,11 @@ export const MsgCreateBucket = {
     const obj: any = {};
     obj.creator = message.creator;
     obj.bucket_name = message.bucketName;
-    obj.is_public = message.isPublic;
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     obj.payment_address = message.paymentAddress;
     obj.primary_sp_address = message.primarySpAddress;
     message.primarySpApproval !== undefined && (obj.primary_sp_approval = message.primarySpApproval ? Approval.toSDK(message.primarySpApproval) : undefined);
-    obj.read_quota = message.readQuota;
+    obj.charged_read_quota = message.chargedReadQuota;
     return obj;
   }
 
@@ -763,7 +793,7 @@ function createBaseMsgCreateObject(): MsgCreateObject {
     bucketName: "",
     objectName: "",
     payloadSize: Long.UZERO,
-    isPublic: false,
+    visibility: 0,
     contentType: "",
     primarySpApproval: undefined,
     expectChecksums: [],
@@ -790,8 +820,8 @@ export const MsgCreateObject = {
       writer.uint32(32).uint64(message.payloadSize);
     }
 
-    if (message.isPublic === true) {
-      writer.uint32(40).bool(message.isPublic);
+    if (message.visibility !== 0) {
+      writer.uint32(40).int32(message.visibility);
     }
 
     if (message.contentType !== "") {
@@ -843,7 +873,7 @@ export const MsgCreateObject = {
           break;
 
         case 5:
-          message.isPublic = reader.bool();
+          message.visibility = (reader.int32() as any);
           break;
 
         case 6:
@@ -881,7 +911,7 @@ export const MsgCreateObject = {
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO,
-      isPublic: isSet(object.isPublic) ? Boolean(object.isPublic) : false,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       contentType: isSet(object.contentType) ? String(object.contentType) : "",
       primarySpApproval: isSet(object.primarySpApproval) ? Approval.fromJSON(object.primarySpApproval) : undefined,
       expectChecksums: Array.isArray(object?.expectChecksums) ? object.expectChecksums.map((e: any) => bytesFromBase64(e)) : [],
@@ -896,7 +926,7 @@ export const MsgCreateObject = {
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
-    message.isPublic !== undefined && (obj.isPublic = message.isPublic);
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.contentType !== undefined && (obj.contentType = message.contentType);
     message.primarySpApproval !== undefined && (obj.primarySpApproval = message.primarySpApproval ? Approval.toJSON(message.primarySpApproval) : undefined);
 
@@ -923,7 +953,7 @@ export const MsgCreateObject = {
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
-    message.isPublic = object.isPublic ?? false;
+    message.visibility = object.visibility ?? 0;
     message.contentType = object.contentType ?? "";
     message.primarySpApproval = object.primarySpApproval !== undefined && object.primarySpApproval !== null ? Approval.fromPartial(object.primarySpApproval) : undefined;
     message.expectChecksums = object.expectChecksums?.map(e => e) || [];
@@ -938,7 +968,7 @@ export const MsgCreateObject = {
       bucketName: object?.bucket_name,
       objectName: object?.object_name,
       payloadSize: object?.payload_size,
-      isPublic: object?.is_public,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       contentType: object?.content_type,
       primarySpApproval: object.primary_sp_approval ? Approval.fromSDK(object.primary_sp_approval) : undefined,
       expectChecksums: Array.isArray(object?.expect_checksums) ? object.expect_checksums.map((e: any) => e) : [],
@@ -953,7 +983,7 @@ export const MsgCreateObject = {
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
     obj.payload_size = message.payloadSize;
-    obj.is_public = message.isPublic;
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     obj.content_type = message.contentType;
     message.primarySpApproval !== undefined && (obj.primary_sp_approval = message.primarySpApproval ? Approval.toSDK(message.primarySpApproval) : undefined);
 
@@ -2066,6 +2096,7 @@ export const MsgDeleteGroupResponse = {
 function createBaseMsgUpdateGroupMember(): MsgUpdateGroupMember {
   return {
     operator: "",
+    groupOwner: "",
     groupName: "",
     membersToAdd: [],
     membersToDelete: []
@@ -2078,16 +2109,20 @@ export const MsgUpdateGroupMember = {
       writer.uint32(10).string(message.operator);
     }
 
+    if (message.groupOwner !== "") {
+      writer.uint32(18).string(message.groupOwner);
+    }
+
     if (message.groupName !== "") {
-      writer.uint32(18).string(message.groupName);
+      writer.uint32(26).string(message.groupName);
     }
 
     for (const v of message.membersToAdd) {
-      writer.uint32(26).string(v!);
+      writer.uint32(34).string(v!);
     }
 
     for (const v of message.membersToDelete) {
-      writer.uint32(34).string(v!);
+      writer.uint32(42).string(v!);
     }
 
     return writer;
@@ -2107,14 +2142,18 @@ export const MsgUpdateGroupMember = {
           break;
 
         case 2:
-          message.groupName = reader.string();
+          message.groupOwner = reader.string();
           break;
 
         case 3:
-          message.membersToAdd.push(reader.string());
+          message.groupName = reader.string();
           break;
 
         case 4:
+          message.membersToAdd.push(reader.string());
+          break;
+
+        case 5:
           message.membersToDelete.push(reader.string());
           break;
 
@@ -2130,6 +2169,7 @@ export const MsgUpdateGroupMember = {
   fromJSON(object: any): MsgUpdateGroupMember {
     return {
       operator: isSet(object.operator) ? String(object.operator) : "",
+      groupOwner: isSet(object.groupOwner) ? String(object.groupOwner) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
       membersToAdd: Array.isArray(object?.membersToAdd) ? object.membersToAdd.map((e: any) => String(e)) : [],
       membersToDelete: Array.isArray(object?.membersToDelete) ? object.membersToDelete.map((e: any) => String(e)) : []
@@ -2139,6 +2179,7 @@ export const MsgUpdateGroupMember = {
   toJSON(message: MsgUpdateGroupMember): unknown {
     const obj: any = {};
     message.operator !== undefined && (obj.operator = message.operator);
+    message.groupOwner !== undefined && (obj.groupOwner = message.groupOwner);
     message.groupName !== undefined && (obj.groupName = message.groupName);
 
     if (message.membersToAdd) {
@@ -2159,6 +2200,7 @@ export const MsgUpdateGroupMember = {
   fromPartial<I extends Exact<DeepPartial<MsgUpdateGroupMember>, I>>(object: I): MsgUpdateGroupMember {
     const message = createBaseMsgUpdateGroupMember();
     message.operator = object.operator ?? "";
+    message.groupOwner = object.groupOwner ?? "";
     message.groupName = object.groupName ?? "";
     message.membersToAdd = object.membersToAdd?.map(e => e) || [];
     message.membersToDelete = object.membersToDelete?.map(e => e) || [];
@@ -2168,6 +2210,7 @@ export const MsgUpdateGroupMember = {
   fromSDK(object: MsgUpdateGroupMemberSDKType): MsgUpdateGroupMember {
     return {
       operator: object?.operator,
+      groupOwner: object?.group_owner,
       groupName: object?.group_name,
       membersToAdd: Array.isArray(object?.members_to_add) ? object.members_to_add.map((e: any) => e) : [],
       membersToDelete: Array.isArray(object?.members_to_delete) ? object.members_to_delete.map((e: any) => e) : []
@@ -2177,6 +2220,7 @@ export const MsgUpdateGroupMember = {
   toSDK(message: MsgUpdateGroupMember): MsgUpdateGroupMemberSDKType {
     const obj: any = {};
     obj.operator = message.operator;
+    obj.group_owner = message.groupOwner;
     obj.group_name = message.groupName;
 
     if (message.membersToAdd) {
@@ -2401,8 +2445,9 @@ function createBaseMsgUpdateBucketInfo(): MsgUpdateBucketInfo {
   return {
     operator: "",
     bucketName: "",
-    readQuota: Long.UZERO,
-    paymentAddress: ""
+    chargedReadQuota: undefined,
+    paymentAddress: "",
+    visibility: 0
   };
 }
 
@@ -2416,12 +2461,16 @@ export const MsgUpdateBucketInfo = {
       writer.uint32(18).string(message.bucketName);
     }
 
-    if (!message.readQuota.isZero()) {
-      writer.uint32(24).uint64(message.readQuota);
+    if (message.chargedReadQuota !== undefined) {
+      UInt64Value.encode(message.chargedReadQuota, writer.uint32(26).fork()).ldelim();
     }
 
     if (message.paymentAddress !== "") {
       writer.uint32(34).string(message.paymentAddress);
+    }
+
+    if (message.visibility !== 0) {
+      writer.uint32(40).int32(message.visibility);
     }
 
     return writer;
@@ -2445,11 +2494,15 @@ export const MsgUpdateBucketInfo = {
           break;
 
         case 3:
-          message.readQuota = (reader.uint64() as Long);
+          message.chargedReadQuota = UInt64Value.decode(reader, reader.uint32());
           break;
 
         case 4:
           message.paymentAddress = reader.string();
+          break;
+
+        case 5:
+          message.visibility = (reader.int32() as any);
           break;
 
         default:
@@ -2465,8 +2518,9 @@ export const MsgUpdateBucketInfo = {
     return {
       operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
-      readQuota: isSet(object.readQuota) ? Long.fromValue(object.readQuota) : Long.UZERO,
-      paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : ""
+      chargedReadQuota: isSet(object.chargedReadQuota) ? UInt64Value.fromJSON(object.chargedReadQuota) : undefined,
+      paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0
     };
   },
 
@@ -2474,8 +2528,9 @@ export const MsgUpdateBucketInfo = {
     const obj: any = {};
     message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
-    message.readQuota !== undefined && (obj.readQuota = (message.readQuota || Long.UZERO).toString());
+    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = message.chargedReadQuota ? UInt64Value.toJSON(message.chargedReadQuota) : undefined);
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     return obj;
   },
 
@@ -2483,8 +2538,9 @@ export const MsgUpdateBucketInfo = {
     const message = createBaseMsgUpdateBucketInfo();
     message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
-    message.readQuota = object.readQuota !== undefined && object.readQuota !== null ? Long.fromValue(object.readQuota) : Long.UZERO;
+    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? UInt64Value.fromPartial(object.chargedReadQuota) : undefined;
     message.paymentAddress = object.paymentAddress ?? "";
+    message.visibility = object.visibility ?? 0;
     return message;
   },
 
@@ -2492,8 +2548,9 @@ export const MsgUpdateBucketInfo = {
     return {
       operator: object?.operator,
       bucketName: object?.bucket_name,
-      readQuota: object?.read_quota,
-      paymentAddress: object?.payment_address
+      chargedReadQuota: object.charged_read_quota ? UInt64Value.fromSDK(object.charged_read_quota) : undefined,
+      paymentAddress: object?.payment_address,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0
     };
   },
 
@@ -2501,8 +2558,9 @@ export const MsgUpdateBucketInfo = {
     const obj: any = {};
     obj.operator = message.operator;
     obj.bucket_name = message.bucketName;
-    obj.read_quota = message.readQuota;
+    message.chargedReadQuota !== undefined && (obj.charged_read_quota = message.chargedReadQuota ? UInt64Value.toSDK(message.chargedReadQuota) : undefined);
     obj.payment_address = message.paymentAddress;
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     return obj;
   }
 
@@ -2714,7 +2772,8 @@ function createBaseMsgPutPolicy(): MsgPutPolicy {
     operator: "",
     principal: undefined,
     resource: "",
-    statements: []
+    statements: [],
+    expirationTime: undefined
   };
 }
 
@@ -2734,6 +2793,10 @@ export const MsgPutPolicy = {
 
     for (const v of message.statements) {
       Statement.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+
+    if (message.expirationTime !== undefined) {
+      Timestamp.encode(message.expirationTime, writer.uint32(58).fork()).ldelim();
     }
 
     return writer;
@@ -2764,6 +2827,10 @@ export const MsgPutPolicy = {
           message.statements.push(Statement.decode(reader, reader.uint32()));
           break;
 
+        case 7:
+          message.expirationTime = Timestamp.decode(reader, reader.uint32());
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -2778,7 +2845,8 @@ export const MsgPutPolicy = {
       operator: isSet(object.operator) ? String(object.operator) : "",
       principal: isSet(object.principal) ? Principal.fromJSON(object.principal) : undefined,
       resource: isSet(object.resource) ? String(object.resource) : "",
-      statements: Array.isArray(object?.statements) ? object.statements.map((e: any) => Statement.fromJSON(e)) : []
+      statements: Array.isArray(object?.statements) ? object.statements.map((e: any) => Statement.fromJSON(e)) : [],
+      expirationTime: isSet(object.expirationTime) ? fromJsonTimestamp(object.expirationTime) : undefined
     };
   },
 
@@ -2794,6 +2862,7 @@ export const MsgPutPolicy = {
       obj.statements = [];
     }
 
+    message.expirationTime !== undefined && (obj.expirationTime = fromTimestamp(message.expirationTime).toISOString());
     return obj;
   },
 
@@ -2803,6 +2872,7 @@ export const MsgPutPolicy = {
     message.principal = object.principal !== undefined && object.principal !== null ? Principal.fromPartial(object.principal) : undefined;
     message.resource = object.resource ?? "";
     message.statements = object.statements?.map(e => Statement.fromPartial(e)) || [];
+    message.expirationTime = object.expirationTime !== undefined && object.expirationTime !== null ? Timestamp.fromPartial(object.expirationTime) : undefined;
     return message;
   },
 
@@ -2811,7 +2881,8 @@ export const MsgPutPolicy = {
       operator: object?.operator,
       principal: object.principal ? Principal.fromSDK(object.principal) : undefined,
       resource: object?.resource,
-      statements: Array.isArray(object?.statements) ? object.statements.map((e: any) => Statement.fromSDK(e)) : []
+      statements: Array.isArray(object?.statements) ? object.statements.map((e: any) => Statement.fromSDK(e)) : [],
+      expirationTime: object.expiration_time ? Timestamp.fromSDK(object.expiration_time) : undefined
     };
   },
 
@@ -2827,6 +2898,7 @@ export const MsgPutPolicy = {
       obj.statements = [];
     }
 
+    message.expirationTime !== undefined && (obj.expiration_time = message.expirationTime ? Timestamp.toSDK(message.expirationTime) : undefined);
     return obj;
   }
 
@@ -2834,14 +2906,14 @@ export const MsgPutPolicy = {
 
 function createBaseMsgPutPolicyResponse(): MsgPutPolicyResponse {
   return {
-    id: ""
+    policyId: ""
   };
 }
 
 export const MsgPutPolicyResponse = {
   encode(message: MsgPutPolicyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(34).string(message.id);
+    if (message.policyId !== "") {
+      writer.uint32(34).string(message.policyId);
     }
 
     return writer;
@@ -2857,7 +2929,7 @@ export const MsgPutPolicyResponse = {
 
       switch (tag >>> 3) {
         case 4:
-          message.id = reader.string();
+          message.policyId = reader.string();
           break;
 
         default:
@@ -2871,31 +2943,31 @@ export const MsgPutPolicyResponse = {
 
   fromJSON(object: any): MsgPutPolicyResponse {
     return {
-      id: isSet(object.id) ? String(object.id) : ""
+      policyId: isSet(object.policyId) ? String(object.policyId) : ""
     };
   },
 
   toJSON(message: MsgPutPolicyResponse): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.policyId !== undefined && (obj.policyId = message.policyId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgPutPolicyResponse>, I>>(object: I): MsgPutPolicyResponse {
     const message = createBaseMsgPutPolicyResponse();
-    message.id = object.id ?? "";
+    message.policyId = object.policyId ?? "";
     return message;
   },
 
   fromSDK(object: MsgPutPolicyResponseSDKType): MsgPutPolicyResponse {
     return {
-      id: object?.id
+      policyId: object?.policy_id
     };
   },
 
   toSDK(message: MsgPutPolicyResponse): MsgPutPolicyResponseSDKType {
     const obj: any = {};
-    obj.id = message.id;
+    obj.policy_id = message.policyId;
     return obj;
   }
 
@@ -3000,14 +3072,14 @@ export const MsgDeletePolicy = {
 
 function createBaseMsgDeletePolicyResponse(): MsgDeletePolicyResponse {
   return {
-    id: ""
+    policyId: ""
   };
 }
 
 export const MsgDeletePolicyResponse = {
   encode(message: MsgDeletePolicyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(34).string(message.id);
+    if (message.policyId !== "") {
+      writer.uint32(34).string(message.policyId);
     }
 
     return writer;
@@ -3023,7 +3095,7 @@ export const MsgDeletePolicyResponse = {
 
       switch (tag >>> 3) {
         case 4:
-          message.id = reader.string();
+          message.policyId = reader.string();
           break;
 
         default:
@@ -3037,31 +3109,31 @@ export const MsgDeletePolicyResponse = {
 
   fromJSON(object: any): MsgDeletePolicyResponse {
     return {
-      id: isSet(object.id) ? String(object.id) : ""
+      policyId: isSet(object.policyId) ? String(object.policyId) : ""
     };
   },
 
   toJSON(message: MsgDeletePolicyResponse): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.policyId !== undefined && (obj.policyId = message.policyId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<MsgDeletePolicyResponse>, I>>(object: I): MsgDeletePolicyResponse {
     const message = createBaseMsgDeletePolicyResponse();
-    message.id = object.id ?? "";
+    message.policyId = object.policyId ?? "";
     return message;
   },
 
   fromSDK(object: MsgDeletePolicyResponseSDKType): MsgDeletePolicyResponse {
     return {
-      id: object?.id
+      policyId: object?.policy_id
     };
   },
 
   toSDK(message: MsgDeletePolicyResponse): MsgDeletePolicyResponseSDKType {
     const obj: any = {};
-    obj.id = message.id;
+    obj.policy_id = message.policyId;
     return obj;
   }
 
@@ -3498,8 +3570,6 @@ export interface Msg {
   /** basic operation of policy */
 
   PutPolicy(request: MsgPutPolicy): Promise<MsgPutPolicyResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
-
   DeletePolicy(request: MsgDeletePolicy): Promise<MsgDeletePolicyResponse>;
 }
 export class MsgClientImpl implements Msg {

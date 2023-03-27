@@ -5,8 +5,13 @@ export const protobufPackage = "cosmos.gashub.v1alpha1";
 /** Params defines the parameters for the gashub module. */
 
 export interface Params {
+  /** max_tx_size is the maximum size of a transaction's bytes. */
   maxTxSize: Long;
+  /** min_gas_per_byte is the minimum gas to be paid per byte of a transaction's */
+
   minGasPerByte: Long;
+  /** msg_gas_params is the list of gas params for each msg type */
+
   msgGasParamsSet: MsgGasParams[];
 }
 /** Params defines the parameters for the gashub module. */
@@ -45,6 +50,7 @@ export interface MsgGasParamsSDKType {
 /** FixedGasParams defines the parameters for fixed gas type. */
 
 export interface MsgGasParams_FixedGasParams {
+  /** fixed_gas is the gas cost for a fixed type msg */
   fixedGas: Long;
 }
 /** FixedGasParams defines the parameters for fixed gas type. */
@@ -55,7 +61,10 @@ export interface MsgGasParams_FixedGasParamsSDKType {
 /** DynamicGasParams defines the parameters for dynamic gas type. */
 
 export interface MsgGasParams_DynamicGasParams {
+  /** fixed_gas is the base gas cost for a dynamic type msg */
   fixedGas: Long;
+  /** gas_per_item is the gas cost for a dynamic type msg per item */
+
   gasPerItem: Long;
 }
 /** DynamicGasParams defines the parameters for dynamic gas type. */

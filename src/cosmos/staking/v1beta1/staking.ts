@@ -207,12 +207,15 @@ export interface Validator {
   /** self_del_address defines the address of the validator for self delegation. */
 
   selfDelAddress: string;
-  /** relayer_address defines the address of the validator's authorized relayer/operator;. */
+  /** relayer_address defines the address of the validator's authorized relayer;. */
 
   relayerAddress: string;
-  /** relayer_bls_key defines the bls pubkey of the validator's authorized relayer/operator; */
+  /** challenger_address defines the address of the validator's authorized challenger;. */
 
-  relayerBlsKey: Uint8Array;
+  challengerAddress: string;
+  /** bls_key defines the bls pubkey of the validator's authorized relayer/challenger/operator; */
+
+  blsKey: Uint8Array;
 }
 /**
  * Validator defines a validator, together with the total amount of the
@@ -239,7 +242,8 @@ export interface ValidatorSDKType {
   min_self_delegation: string;
   self_del_address: string;
   relayer_address: string;
-  relayer_bls_key: Uint8Array;
+  challenger_address: string;
+  bls_key: Uint8Array;
 }
 /** ValAddresses defines a repeated set of validator addresses. */
 
@@ -969,7 +973,8 @@ function createBaseValidator(): Validator {
     minSelfDelegation: "",
     selfDelAddress: "",
     relayerAddress: "",
-    relayerBlsKey: new Uint8Array()
+    challengerAddress: "",
+    blsKey: new Uint8Array()
   };
 }
 
@@ -1027,8 +1032,12 @@ export const Validator = {
       writer.uint32(106).string(message.relayerAddress);
     }
 
-    if (message.relayerBlsKey.length !== 0) {
-      writer.uint32(114).bytes(message.relayerBlsKey);
+    if (message.challengerAddress !== "") {
+      writer.uint32(114).string(message.challengerAddress);
+    }
+
+    if (message.blsKey.length !== 0) {
+      writer.uint32(122).bytes(message.blsKey);
     }
 
     return writer;
@@ -1096,7 +1105,11 @@ export const Validator = {
           break;
 
         case 14:
-          message.relayerBlsKey = reader.bytes();
+          message.challengerAddress = reader.string();
+          break;
+
+        case 15:
+          message.blsKey = reader.bytes();
           break;
 
         default:
@@ -1123,7 +1136,8 @@ export const Validator = {
       minSelfDelegation: isSet(object.minSelfDelegation) ? String(object.minSelfDelegation) : "",
       selfDelAddress: isSet(object.selfDelAddress) ? String(object.selfDelAddress) : "",
       relayerAddress: isSet(object.relayerAddress) ? String(object.relayerAddress) : "",
-      relayerBlsKey: isSet(object.relayerBlsKey) ? bytesFromBase64(object.relayerBlsKey) : new Uint8Array()
+      challengerAddress: isSet(object.challengerAddress) ? String(object.challengerAddress) : "",
+      blsKey: isSet(object.blsKey) ? bytesFromBase64(object.blsKey) : new Uint8Array()
     };
   },
 
@@ -1142,7 +1156,8 @@ export const Validator = {
     message.minSelfDelegation !== undefined && (obj.minSelfDelegation = message.minSelfDelegation);
     message.selfDelAddress !== undefined && (obj.selfDelAddress = message.selfDelAddress);
     message.relayerAddress !== undefined && (obj.relayerAddress = message.relayerAddress);
-    message.relayerBlsKey !== undefined && (obj.relayerBlsKey = base64FromBytes(message.relayerBlsKey !== undefined ? message.relayerBlsKey : new Uint8Array()));
+    message.challengerAddress !== undefined && (obj.challengerAddress = message.challengerAddress);
+    message.blsKey !== undefined && (obj.blsKey = base64FromBytes(message.blsKey !== undefined ? message.blsKey : new Uint8Array()));
     return obj;
   },
 
@@ -1161,7 +1176,8 @@ export const Validator = {
     message.minSelfDelegation = object.minSelfDelegation ?? "";
     message.selfDelAddress = object.selfDelAddress ?? "";
     message.relayerAddress = object.relayerAddress ?? "";
-    message.relayerBlsKey = object.relayerBlsKey ?? new Uint8Array();
+    message.challengerAddress = object.challengerAddress ?? "";
+    message.blsKey = object.blsKey ?? new Uint8Array();
     return message;
   },
 
@@ -1180,7 +1196,8 @@ export const Validator = {
       minSelfDelegation: object?.min_self_delegation,
       selfDelAddress: object?.self_del_address,
       relayerAddress: object?.relayer_address,
-      relayerBlsKey: object?.relayer_bls_key
+      challengerAddress: object?.challenger_address,
+      blsKey: object?.bls_key
     };
   },
 
@@ -1199,7 +1216,8 @@ export const Validator = {
     obj.min_self_delegation = message.minSelfDelegation;
     obj.self_del_address = message.selfDelAddress;
     obj.relayer_address = message.relayerAddress;
-    obj.relayer_bls_key = message.relayerBlsKey;
+    obj.challenger_address = message.challengerAddress;
+    obj.bls_key = message.blsKey;
     return obj;
   }
 

@@ -83,11 +83,7 @@ export interface DescriptionSDKType {
   security_contact: string;
   details: string;
 }
-/**
- * StorageProvider defines the meta info of storage provider
- * TODO: add endpoint for RPC/HTTP/Websocket and p2p identity
- * TODO: add more account address for different role.
- */
+/** StorageProvider defines the meta info of storage provider */
 
 export interface StorageProvider {
   /** operator_address defines the account address of the storage provider's operator; It also is the unique index key of sp. */
@@ -114,11 +110,7 @@ export interface StorageProvider {
 
   description?: Description;
 }
-/**
- * StorageProvider defines the meta info of storage provider
- * TODO: add endpoint for RPC/HTTP/Websocket and p2p identity
- * TODO: add more account address for different role.
- */
+/** StorageProvider defines the meta info of storage provider */
 
 export interface StorageProviderSDKType {
   operator_address: string;
@@ -143,9 +135,9 @@ export interface RewardInfoSDKType {
 export interface SpStoragePrice {
   /** sp address */
   spAddress: string;
-  /** update time, in unix timestamp */
+  /** update time, unix timestamp in seconds */
 
-  updateTime: Long;
+  updateTimeSec: Long;
   /** read price, in bnb wei per charge byte */
 
   readPrice: string;
@@ -160,30 +152,24 @@ export interface SpStoragePrice {
 
 export interface SpStoragePriceSDKType {
   sp_address: string;
-  update_time: Long;
+  update_time_sec: Long;
   read_price: string;
   free_read_quota: Long;
   store_price: string;
 }
-/**
- * global secondary sp store price
- * this is the price for all secondary sps
- */
+/** global secondary sp store price, the price for all secondary sps */
 
 export interface SecondarySpStorePrice {
-  /** update time, in unix timestamp */
-  updateTime: Long;
+  /** update time, unix timestamp in seconds */
+  updateTimeSec: Long;
   /** store price, in bnb wei per charge byte */
 
   storePrice: string;
 }
-/**
- * global secondary sp store price
- * this is the price for all secondary sps
- */
+/** global secondary sp store price, the price for all secondary sps */
 
 export interface SecondarySpStorePriceSDKType {
-  update_time: Long;
+  update_time_sec: Long;
   store_price: string;
 }
 
@@ -565,7 +551,7 @@ export const RewardInfo = {
 function createBaseSpStoragePrice(): SpStoragePrice {
   return {
     spAddress: "",
-    updateTime: Long.ZERO,
+    updateTimeSec: Long.ZERO,
     readPrice: "",
     freeReadQuota: Long.UZERO,
     storePrice: ""
@@ -578,8 +564,8 @@ export const SpStoragePrice = {
       writer.uint32(10).string(message.spAddress);
     }
 
-    if (!message.updateTime.isZero()) {
-      writer.uint32(16).int64(message.updateTime);
+    if (!message.updateTimeSec.isZero()) {
+      writer.uint32(16).int64(message.updateTimeSec);
     }
 
     if (message.readPrice !== "") {
@@ -611,7 +597,7 @@ export const SpStoragePrice = {
           break;
 
         case 2:
-          message.updateTime = (reader.int64() as Long);
+          message.updateTimeSec = (reader.int64() as Long);
           break;
 
         case 3:
@@ -638,7 +624,7 @@ export const SpStoragePrice = {
   fromJSON(object: any): SpStoragePrice {
     return {
       spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
-      updateTime: isSet(object.updateTime) ? Long.fromValue(object.updateTime) : Long.ZERO,
+      updateTimeSec: isSet(object.updateTimeSec) ? Long.fromValue(object.updateTimeSec) : Long.ZERO,
       readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
       freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
       storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
@@ -648,7 +634,7 @@ export const SpStoragePrice = {
   toJSON(message: SpStoragePrice): unknown {
     const obj: any = {};
     message.spAddress !== undefined && (obj.spAddress = message.spAddress);
-    message.updateTime !== undefined && (obj.updateTime = (message.updateTime || Long.ZERO).toString());
+    message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || Long.ZERO).toString());
     message.readPrice !== undefined && (obj.readPrice = message.readPrice);
     message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
     message.storePrice !== undefined && (obj.storePrice = message.storePrice);
@@ -658,7 +644,7 @@ export const SpStoragePrice = {
   fromPartial<I extends Exact<DeepPartial<SpStoragePrice>, I>>(object: I): SpStoragePrice {
     const message = createBaseSpStoragePrice();
     message.spAddress = object.spAddress ?? "";
-    message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Long.fromValue(object.updateTime) : Long.ZERO;
+    message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? Long.fromValue(object.updateTimeSec) : Long.ZERO;
     message.readPrice = object.readPrice ?? "";
     message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
     message.storePrice = object.storePrice ?? "";
@@ -668,7 +654,7 @@ export const SpStoragePrice = {
   fromSDK(object: SpStoragePriceSDKType): SpStoragePrice {
     return {
       spAddress: object?.sp_address,
-      updateTime: object?.update_time,
+      updateTimeSec: object?.update_time_sec,
       readPrice: object?.read_price,
       freeReadQuota: object?.free_read_quota,
       storePrice: object?.store_price
@@ -678,7 +664,7 @@ export const SpStoragePrice = {
   toSDK(message: SpStoragePrice): SpStoragePriceSDKType {
     const obj: any = {};
     obj.sp_address = message.spAddress;
-    obj.update_time = message.updateTime;
+    obj.update_time_sec = message.updateTimeSec;
     obj.read_price = message.readPrice;
     obj.free_read_quota = message.freeReadQuota;
     obj.store_price = message.storePrice;
@@ -689,15 +675,15 @@ export const SpStoragePrice = {
 
 function createBaseSecondarySpStorePrice(): SecondarySpStorePrice {
   return {
-    updateTime: Long.ZERO,
+    updateTimeSec: Long.ZERO,
     storePrice: ""
   };
 }
 
 export const SecondarySpStorePrice = {
   encode(message: SecondarySpStorePrice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.updateTime.isZero()) {
-      writer.uint32(8).int64(message.updateTime);
+    if (!message.updateTimeSec.isZero()) {
+      writer.uint32(8).int64(message.updateTimeSec);
     }
 
     if (message.storePrice !== "") {
@@ -717,7 +703,7 @@ export const SecondarySpStorePrice = {
 
       switch (tag >>> 3) {
         case 1:
-          message.updateTime = (reader.int64() as Long);
+          message.updateTimeSec = (reader.int64() as Long);
           break;
 
         case 2:
@@ -735,35 +721,35 @@ export const SecondarySpStorePrice = {
 
   fromJSON(object: any): SecondarySpStorePrice {
     return {
-      updateTime: isSet(object.updateTime) ? Long.fromValue(object.updateTime) : Long.ZERO,
+      updateTimeSec: isSet(object.updateTimeSec) ? Long.fromValue(object.updateTimeSec) : Long.ZERO,
       storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
     };
   },
 
   toJSON(message: SecondarySpStorePrice): unknown {
     const obj: any = {};
-    message.updateTime !== undefined && (obj.updateTime = (message.updateTime || Long.ZERO).toString());
+    message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || Long.ZERO).toString());
     message.storePrice !== undefined && (obj.storePrice = message.storePrice);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<SecondarySpStorePrice>, I>>(object: I): SecondarySpStorePrice {
     const message = createBaseSecondarySpStorePrice();
-    message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Long.fromValue(object.updateTime) : Long.ZERO;
+    message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? Long.fromValue(object.updateTimeSec) : Long.ZERO;
     message.storePrice = object.storePrice ?? "";
     return message;
   },
 
   fromSDK(object: SecondarySpStorePriceSDKType): SecondarySpStorePrice {
     return {
-      updateTime: object?.update_time,
+      updateTimeSec: object?.update_time_sec,
       storePrice: object?.store_price
     };
   },
 
   toSDK(message: SecondarySpStorePrice): SecondarySpStorePriceSDKType {
     const obj: any = {};
-    obj.update_time = message.updateTime;
+    obj.update_time_sec = message.updateTimeSec;
     obj.store_price = message.storePrice;
     return obj;
   }

@@ -5,8 +5,11 @@ export const protobufPackage = "bnbchain.greenfield.challenge";
 /** Params defines the parameters for the module. */
 
 export interface Params {
-  /** Challenges which will be emitted in each block, including user triggered or randomly triggered. */
+  /** Challenges which will be emitted in each block, including user submitted or randomly triggered. */
   challengeCountPerBlock: Long;
+  /** Challenges will be expired after the period, including user submitted or randomly triggered. */
+
+  challengeKeepAlivePeriod: Long;
   /** The count of blocks to stand for the period in which the same storage and object info cannot be slashed again. */
 
   slashCoolingOffPeriod: Long;
@@ -19,16 +22,16 @@ export interface Params {
   /** The maximum slash amount. */
 
   slashAmountMax: string;
-  /** The ratio of slash amount for all validator rewards. */
+  /** The ratio of slash amount to reward all current validators. */
 
   rewardValidatorRatio: string;
-  /** The ratio of reward amount for submitter rewards. */
+  /** The ratio of reward amount to reward attestation submitter. */
 
   rewardSubmitterRatio: string;
   /** The reward amount to submitter will be adjusted by the threshold. */
 
   rewardSubmitterThreshold: string;
-  /** Heartbeat interval defines the frequency of heartbeat based on challenges. */
+  /** Heartbeat interval, based on challenge id, defines the frequency of heartbeat attestation. */
 
   heartbeatInterval: Long;
 }
@@ -36,6 +39,7 @@ export interface Params {
 
 export interface ParamsSDKType {
   challenge_count_per_block: Long;
+  challenge_keep_alive_period: Long;
   slash_cooling_off_period: Long;
   slash_amount_size_rate: string;
   slash_amount_min: string;
@@ -49,6 +53,7 @@ export interface ParamsSDKType {
 function createBaseParams(): Params {
   return {
     challengeCountPerBlock: Long.UZERO,
+    challengeKeepAlivePeriod: Long.UZERO,
     slashCoolingOffPeriod: Long.UZERO,
     slashAmountSizeRate: "",
     slashAmountMin: "",
@@ -66,36 +71,40 @@ export const Params = {
       writer.uint32(8).uint64(message.challengeCountPerBlock);
     }
 
+    if (!message.challengeKeepAlivePeriod.isZero()) {
+      writer.uint32(16).uint64(message.challengeKeepAlivePeriod);
+    }
+
     if (!message.slashCoolingOffPeriod.isZero()) {
-      writer.uint32(16).uint64(message.slashCoolingOffPeriod);
+      writer.uint32(24).uint64(message.slashCoolingOffPeriod);
     }
 
     if (message.slashAmountSizeRate !== "") {
-      writer.uint32(26).string(message.slashAmountSizeRate);
+      writer.uint32(34).string(message.slashAmountSizeRate);
     }
 
     if (message.slashAmountMin !== "") {
-      writer.uint32(34).string(message.slashAmountMin);
+      writer.uint32(42).string(message.slashAmountMin);
     }
 
     if (message.slashAmountMax !== "") {
-      writer.uint32(42).string(message.slashAmountMax);
+      writer.uint32(50).string(message.slashAmountMax);
     }
 
     if (message.rewardValidatorRatio !== "") {
-      writer.uint32(50).string(message.rewardValidatorRatio);
+      writer.uint32(58).string(message.rewardValidatorRatio);
     }
 
     if (message.rewardSubmitterRatio !== "") {
-      writer.uint32(58).string(message.rewardSubmitterRatio);
+      writer.uint32(66).string(message.rewardSubmitterRatio);
     }
 
     if (message.rewardSubmitterThreshold !== "") {
-      writer.uint32(66).string(message.rewardSubmitterThreshold);
+      writer.uint32(74).string(message.rewardSubmitterThreshold);
     }
 
     if (!message.heartbeatInterval.isZero()) {
-      writer.uint32(72).uint64(message.heartbeatInterval);
+      writer.uint32(80).uint64(message.heartbeatInterval);
     }
 
     return writer;
@@ -115,34 +124,38 @@ export const Params = {
           break;
 
         case 2:
-          message.slashCoolingOffPeriod = (reader.uint64() as Long);
+          message.challengeKeepAlivePeriod = (reader.uint64() as Long);
           break;
 
         case 3:
-          message.slashAmountSizeRate = reader.string();
+          message.slashCoolingOffPeriod = (reader.uint64() as Long);
           break;
 
         case 4:
-          message.slashAmountMin = reader.string();
+          message.slashAmountSizeRate = reader.string();
           break;
 
         case 5:
-          message.slashAmountMax = reader.string();
+          message.slashAmountMin = reader.string();
           break;
 
         case 6:
-          message.rewardValidatorRatio = reader.string();
+          message.slashAmountMax = reader.string();
           break;
 
         case 7:
-          message.rewardSubmitterRatio = reader.string();
+          message.rewardValidatorRatio = reader.string();
           break;
 
         case 8:
-          message.rewardSubmitterThreshold = reader.string();
+          message.rewardSubmitterRatio = reader.string();
           break;
 
         case 9:
+          message.rewardSubmitterThreshold = reader.string();
+          break;
+
+        case 10:
           message.heartbeatInterval = (reader.uint64() as Long);
           break;
 
@@ -158,6 +171,7 @@ export const Params = {
   fromJSON(object: any): Params {
     return {
       challengeCountPerBlock: isSet(object.challengeCountPerBlock) ? Long.fromValue(object.challengeCountPerBlock) : Long.UZERO,
+      challengeKeepAlivePeriod: isSet(object.challengeKeepAlivePeriod) ? Long.fromValue(object.challengeKeepAlivePeriod) : Long.UZERO,
       slashCoolingOffPeriod: isSet(object.slashCoolingOffPeriod) ? Long.fromValue(object.slashCoolingOffPeriod) : Long.UZERO,
       slashAmountSizeRate: isSet(object.slashAmountSizeRate) ? String(object.slashAmountSizeRate) : "",
       slashAmountMin: isSet(object.slashAmountMin) ? String(object.slashAmountMin) : "",
@@ -172,6 +186,7 @@ export const Params = {
   toJSON(message: Params): unknown {
     const obj: any = {};
     message.challengeCountPerBlock !== undefined && (obj.challengeCountPerBlock = (message.challengeCountPerBlock || Long.UZERO).toString());
+    message.challengeKeepAlivePeriod !== undefined && (obj.challengeKeepAlivePeriod = (message.challengeKeepAlivePeriod || Long.UZERO).toString());
     message.slashCoolingOffPeriod !== undefined && (obj.slashCoolingOffPeriod = (message.slashCoolingOffPeriod || Long.UZERO).toString());
     message.slashAmountSizeRate !== undefined && (obj.slashAmountSizeRate = message.slashAmountSizeRate);
     message.slashAmountMin !== undefined && (obj.slashAmountMin = message.slashAmountMin);
@@ -186,6 +201,7 @@ export const Params = {
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
     message.challengeCountPerBlock = object.challengeCountPerBlock !== undefined && object.challengeCountPerBlock !== null ? Long.fromValue(object.challengeCountPerBlock) : Long.UZERO;
+    message.challengeKeepAlivePeriod = object.challengeKeepAlivePeriod !== undefined && object.challengeKeepAlivePeriod !== null ? Long.fromValue(object.challengeKeepAlivePeriod) : Long.UZERO;
     message.slashCoolingOffPeriod = object.slashCoolingOffPeriod !== undefined && object.slashCoolingOffPeriod !== null ? Long.fromValue(object.slashCoolingOffPeriod) : Long.UZERO;
     message.slashAmountSizeRate = object.slashAmountSizeRate ?? "";
     message.slashAmountMin = object.slashAmountMin ?? "";
@@ -200,6 +216,7 @@ export const Params = {
   fromSDK(object: ParamsSDKType): Params {
     return {
       challengeCountPerBlock: object?.challenge_count_per_block,
+      challengeKeepAlivePeriod: object?.challenge_keep_alive_period,
       slashCoolingOffPeriod: object?.slash_cooling_off_period,
       slashAmountSizeRate: object?.slash_amount_size_rate,
       slashAmountMin: object?.slash_amount_min,
@@ -214,6 +231,7 @@ export const Params = {
   toSDK(message: Params): ParamsSDKType {
     const obj: any = {};
     obj.challenge_count_per_block = message.challengeCountPerBlock;
+    obj.challenge_keep_alive_period = message.challengeKeepAlivePeriod;
     obj.slash_cooling_off_period = message.slashCoolingOffPeriod;
     obj.slash_amount_size_rate = message.slashAmountSizeRate;
     obj.slash_amount_min = message.slashAmountMin;

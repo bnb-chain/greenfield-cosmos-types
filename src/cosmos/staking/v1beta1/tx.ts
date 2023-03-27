@@ -18,7 +18,8 @@ export interface MsgCreateValidator {
   value?: Coin;
   from: string;
   relayerAddress: string;
-  relayerBlsKey: string;
+  challengerAddress: string;
+  blsKey: string;
 }
 /** MsgCreateValidator defines a SDK message for creating a new validator. */
 
@@ -32,7 +33,8 @@ export interface MsgCreateValidatorSDKType {
   value?: CoinSDKType;
   from: string;
   relayer_address: string;
-  relayer_bls_key: string;
+  challenger_address: string;
+  bls_key: string;
 }
 /** MsgCreateValidatorResponse defines the Msg/CreateValidator response type. */
 
@@ -55,9 +57,10 @@ export interface MsgEditValidator {
   commissionRate: string;
   minSelfDelegation: string;
   relayerAddress: string;
-  /** The BLS pubkey for the authorized relayer */
+  challengerAddress: string;
+  /** The BLS pubkey for the authorized relayer/challenger */
 
-  relayerBlsKey: string;
+  blsKey: string;
 }
 /** MsgEditValidator defines a SDK message for editing an existing validator. */
 
@@ -67,7 +70,8 @@ export interface MsgEditValidatorSDKType {
   commission_rate: string;
   min_self_delegation: string;
   relayer_address: string;
-  relayer_bls_key: string;
+  challenger_address: string;
+  bls_key: string;
 }
 /** MsgEditValidatorResponse defines the Msg/EditValidator response type. */
 
@@ -217,7 +221,8 @@ function createBaseMsgCreateValidator(): MsgCreateValidator {
     value: undefined,
     from: "",
     relayerAddress: "",
-    relayerBlsKey: ""
+    challengerAddress: "",
+    blsKey: ""
   };
 }
 
@@ -259,8 +264,12 @@ export const MsgCreateValidator = {
       writer.uint32(74).string(message.relayerAddress);
     }
 
-    if (message.relayerBlsKey !== "") {
-      writer.uint32(82).string(message.relayerBlsKey);
+    if (message.challengerAddress !== "") {
+      writer.uint32(82).string(message.challengerAddress);
+    }
+
+    if (message.blsKey !== "") {
+      writer.uint32(90).string(message.blsKey);
     }
 
     return writer;
@@ -312,7 +321,11 @@ export const MsgCreateValidator = {
           break;
 
         case 10:
-          message.relayerBlsKey = reader.string();
+          message.challengerAddress = reader.string();
+          break;
+
+        case 11:
+          message.blsKey = reader.string();
           break;
 
         default:
@@ -335,7 +348,8 @@ export const MsgCreateValidator = {
       value: isSet(object.value) ? Coin.fromJSON(object.value) : undefined,
       from: isSet(object.from) ? String(object.from) : "",
       relayerAddress: isSet(object.relayerAddress) ? String(object.relayerAddress) : "",
-      relayerBlsKey: isSet(object.relayerBlsKey) ? String(object.relayerBlsKey) : ""
+      challengerAddress: isSet(object.challengerAddress) ? String(object.challengerAddress) : "",
+      blsKey: isSet(object.blsKey) ? String(object.blsKey) : ""
     };
   },
 
@@ -350,7 +364,8 @@ export const MsgCreateValidator = {
     message.value !== undefined && (obj.value = message.value ? Coin.toJSON(message.value) : undefined);
     message.from !== undefined && (obj.from = message.from);
     message.relayerAddress !== undefined && (obj.relayerAddress = message.relayerAddress);
-    message.relayerBlsKey !== undefined && (obj.relayerBlsKey = message.relayerBlsKey);
+    message.challengerAddress !== undefined && (obj.challengerAddress = message.challengerAddress);
+    message.blsKey !== undefined && (obj.blsKey = message.blsKey);
     return obj;
   },
 
@@ -365,7 +380,8 @@ export const MsgCreateValidator = {
     message.value = object.value !== undefined && object.value !== null ? Coin.fromPartial(object.value) : undefined;
     message.from = object.from ?? "";
     message.relayerAddress = object.relayerAddress ?? "";
-    message.relayerBlsKey = object.relayerBlsKey ?? "";
+    message.challengerAddress = object.challengerAddress ?? "";
+    message.blsKey = object.blsKey ?? "";
     return message;
   },
 
@@ -380,7 +396,8 @@ export const MsgCreateValidator = {
       value: object.value ? Coin.fromSDK(object.value) : undefined,
       from: object?.from,
       relayerAddress: object?.relayer_address,
-      relayerBlsKey: object?.relayer_bls_key
+      challengerAddress: object?.challenger_address,
+      blsKey: object?.bls_key
     };
   },
 
@@ -395,7 +412,8 @@ export const MsgCreateValidator = {
     message.value !== undefined && (obj.value = message.value ? Coin.toSDK(message.value) : undefined);
     obj.from = message.from;
     obj.relayer_address = message.relayerAddress;
-    obj.relayer_bls_key = message.relayerBlsKey;
+    obj.challenger_address = message.challengerAddress;
+    obj.bls_key = message.blsKey;
     return obj;
   }
 
@@ -460,7 +478,8 @@ function createBaseMsgEditValidator(): MsgEditValidator {
     commissionRate: "",
     minSelfDelegation: "",
     relayerAddress: "",
-    relayerBlsKey: ""
+    challengerAddress: "",
+    blsKey: ""
   };
 }
 
@@ -486,8 +505,12 @@ export const MsgEditValidator = {
       writer.uint32(42).string(message.relayerAddress);
     }
 
-    if (message.relayerBlsKey !== "") {
-      writer.uint32(50).string(message.relayerBlsKey);
+    if (message.challengerAddress !== "") {
+      writer.uint32(50).string(message.challengerAddress);
+    }
+
+    if (message.blsKey !== "") {
+      writer.uint32(58).string(message.blsKey);
     }
 
     return writer;
@@ -523,7 +546,11 @@ export const MsgEditValidator = {
           break;
 
         case 6:
-          message.relayerBlsKey = reader.string();
+          message.challengerAddress = reader.string();
+          break;
+
+        case 7:
+          message.blsKey = reader.string();
           break;
 
         default:
@@ -542,7 +569,8 @@ export const MsgEditValidator = {
       commissionRate: isSet(object.commissionRate) ? String(object.commissionRate) : "",
       minSelfDelegation: isSet(object.minSelfDelegation) ? String(object.minSelfDelegation) : "",
       relayerAddress: isSet(object.relayerAddress) ? String(object.relayerAddress) : "",
-      relayerBlsKey: isSet(object.relayerBlsKey) ? String(object.relayerBlsKey) : ""
+      challengerAddress: isSet(object.challengerAddress) ? String(object.challengerAddress) : "",
+      blsKey: isSet(object.blsKey) ? String(object.blsKey) : ""
     };
   },
 
@@ -553,7 +581,8 @@ export const MsgEditValidator = {
     message.commissionRate !== undefined && (obj.commissionRate = message.commissionRate);
     message.minSelfDelegation !== undefined && (obj.minSelfDelegation = message.minSelfDelegation);
     message.relayerAddress !== undefined && (obj.relayerAddress = message.relayerAddress);
-    message.relayerBlsKey !== undefined && (obj.relayerBlsKey = message.relayerBlsKey);
+    message.challengerAddress !== undefined && (obj.challengerAddress = message.challengerAddress);
+    message.blsKey !== undefined && (obj.blsKey = message.blsKey);
     return obj;
   },
 
@@ -564,7 +593,8 @@ export const MsgEditValidator = {
     message.commissionRate = object.commissionRate ?? "";
     message.minSelfDelegation = object.minSelfDelegation ?? "";
     message.relayerAddress = object.relayerAddress ?? "";
-    message.relayerBlsKey = object.relayerBlsKey ?? "";
+    message.challengerAddress = object.challengerAddress ?? "";
+    message.blsKey = object.blsKey ?? "";
     return message;
   },
 
@@ -575,7 +605,8 @@ export const MsgEditValidator = {
       commissionRate: object?.commission_rate,
       minSelfDelegation: object?.min_self_delegation,
       relayerAddress: object?.relayer_address,
-      relayerBlsKey: object?.relayer_bls_key
+      challengerAddress: object?.challenger_address,
+      blsKey: object?.bls_key
     };
   },
 
@@ -586,7 +617,8 @@ export const MsgEditValidator = {
     obj.commission_rate = message.commissionRate;
     obj.min_self_delegation = message.minSelfDelegation;
     obj.relayer_address = message.relayerAddress;
-    obj.relayer_bls_key = message.relayerBlsKey;
+    obj.challenger_address = message.challengerAddress;
+    obj.bls_key = message.blsKey;
     return obj;
   }
 
