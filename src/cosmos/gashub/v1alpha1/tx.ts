@@ -6,7 +6,10 @@ export const protobufPackage = "cosmos.gashub.v1alpha1";
 /** MsgUpdateMsgGasParams represents a message to update msg gas params. */
 
 export interface MsgUpdateMsgGasParams {
+  /** from is the message signer for MsgUpdateMsgGasParams */
   from: string;
+  /** new_params_set is the new set of msg gas params to be updated. */
+
   newParamsSet: MsgGasParams[];
 }
 /** MsgUpdateMsgGasParams represents a message to update msg gas params. */

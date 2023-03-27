@@ -2,8 +2,10 @@
 import { Long, isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.challenge";
+/** VoteResult defines the result attestation for a challenge. */
+
 export enum VoteResult {
-  /** CHALLENGE_FAILED - The challenge failed, for further extension. */
+  /** CHALLENGE_FAILED - The challenge failed. */
   CHALLENGE_FAILED = 0,
 
   /** CHALLENGE_SUCCEED - The challenge succeed. */
@@ -40,15 +42,39 @@ export function voteResultToJSON(object: VoteResult): string {
       return "UNRECOGNIZED";
   }
 }
+/** Slash records the storage provider slashes, which will be pruned periodically. */
+
 export interface Slash {
+  /** The slashed storage provider. */
   spOperatorAddress: Uint8Array;
+  /** The slashed object info. */
+
   objectId: string;
+  /** The height when the slash happened, which is used for prune purpose. */
+
   height: Long;
 }
+/** Slash records the storage provider slashes, which will be pruned periodically. */
+
 export interface SlashSDKType {
   sp_operator_address: Uint8Array;
   object_id: string;
   height: Long;
+}
+/** Challenge records the challenge which are not expired yet. */
+
+export interface Challenge {
+  /** The id of the challenge. */
+  id: Long;
+  /** The height at which the challenge will be expired. */
+
+  expiredHeight: Long;
+}
+/** Challenge records the challenge which are not expired yet. */
+
+export interface ChallengeSDKType {
+  id: Long;
+  expired_height: Long;
 }
 
 function createBaseSlash(): Slash {
@@ -143,6 +169,89 @@ export const Slash = {
     obj.sp_operator_address = message.spOperatorAddress;
     obj.object_id = message.objectId;
     obj.height = message.height;
+    return obj;
+  }
+
+};
+
+function createBaseChallenge(): Challenge {
+  return {
+    id: Long.UZERO,
+    expiredHeight: Long.UZERO
+  };
+}
+
+export const Challenge = {
+  encode(message: Challenge, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.id.isZero()) {
+      writer.uint32(8).uint64(message.id);
+    }
+
+    if (!message.expiredHeight.isZero()) {
+      writer.uint32(16).uint64(message.expiredHeight);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Challenge {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseChallenge();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.id = (reader.uint64() as Long);
+          break;
+
+        case 2:
+          message.expiredHeight = (reader.uint64() as Long);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): Challenge {
+    return {
+      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO,
+      expiredHeight: isSet(object.expiredHeight) ? Long.fromValue(object.expiredHeight) : Long.UZERO
+    };
+  },
+
+  toJSON(message: Challenge): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.expiredHeight !== undefined && (obj.expiredHeight = (message.expiredHeight || Long.UZERO).toString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Challenge>, I>>(object: I): Challenge {
+    const message = createBaseChallenge();
+    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.expiredHeight = object.expiredHeight !== undefined && object.expiredHeight !== null ? Long.fromValue(object.expiredHeight) : Long.UZERO;
+    return message;
+  },
+
+  fromSDK(object: ChallengeSDKType): Challenge {
+    return {
+      id: object?.id,
+      expiredHeight: object?.expired_height
+    };
+  },
+
+  toSDK(message: Challenge): ChallengeSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.expired_height = message.expiredHeight;
     return obj;
   }
 

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { SourceType, ObjectStatus, RedundancyType, sourceTypeFromJSON, sourceTypeToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
+import { VisibilityType, SourceType, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, visibilityTypeToJSON, sourceTypeToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.storage";
@@ -11,9 +11,9 @@ export interface EventCreateBucket {
   /** bucket_name is a globally unique name of bucket */
 
   bucketName: string;
-  /** is_public define the highest permissions for bucket. When the bucket is public, everyone can get the object in it. */
+  /** visibility defines the highest permissions for bucket. When a bucket is public, everyone can get the object under it. */
 
-  isPublic: boolean;
+  visibility: VisibilityType;
   /** create_at define the block number when the bucket has been created */
 
   createAt: Long;
@@ -23,9 +23,9 @@ export interface EventCreateBucket {
   /** source_type define the source of the bucket. CrossChain or Greenfield origin */
 
   sourceType: SourceType;
-  /** read_quota defines the traffic quota for read */
+  /** read_quota defines the charged traffic quota for read, not include free quota which provided by each storage provider */
 
-  readQuota: Long;
+  chargedReadQuota: Long;
   /** payment_address is the address of the payment account */
 
   paymentAddress: string;
@@ -38,11 +38,11 @@ export interface EventCreateBucket {
 export interface EventCreateBucketSDKType {
   owner_address: string;
   bucket_name: string;
-  is_public: boolean;
+  visibility: VisibilityType;
   create_at: Long;
   bucket_id: string;
   source_type: SourceType;
-  read_quota: Long;
+  charged_read_quota: Long;
   payment_address: string;
   primary_sp_address: string;
 }
@@ -84,18 +84,21 @@ export interface EventUpdateBucketInfo {
   /** bucket_id define an u256 id for bucket */
 
   bucketId: string;
-  /** read_quota_before define the read quota before updated */
+  /** charged_read_quota_before define the read quota before updated */
 
-  readQuotaBefore: Long;
-  /** read_quota_after define the read quota after updated */
+  chargedReadQuotaBefore: Long;
+  /** charged_read_quota_after define the read quota after updated */
 
-  readQuotaAfter: Long;
+  chargedReadQuotaAfter: Long;
   /** payment_address_before define the payment address before updated */
 
   paymentAddressBefore: string;
   /** payment_address_after define the payment address after updated */
 
   paymentAddressAfter: string;
+  /** visibility defines the highest permission of object. */
+
+  visibility: VisibilityType;
 }
 /** EventUpdateBucketInfo is emitted on MsgUpdateBucketInfo */
 
@@ -103,10 +106,11 @@ export interface EventUpdateBucketInfoSDKType {
   operator_address: string;
   bucket_name: string;
   bucket_id: string;
-  read_quota_before: Long;
-  read_quota_after: Long;
+  charged_read_quota_before: Long;
+  charged_read_quota_after: Long;
   payment_address_before: string;
   payment_address_after: string;
+  visibility: VisibilityType;
 }
 /** EventCreateObject is emitted on MsgCreateObject */
 
@@ -134,9 +138,9 @@ export interface EventCreateObject {
   /** payload_size define the size of payload data which you want upload */
 
   payloadSize: Long;
-  /** is_public define the highest permission of object. */
+  /** visibility defines the highest permission of object. */
 
-  isPublic: boolean;
+  visibility: VisibilityType;
   /** content_type define the content type of the payload data */
 
   contentType: string;
@@ -167,7 +171,7 @@ export interface EventCreateObjectSDKType {
   object_id: string;
   primary_sp_address: string;
   payload_size: Long;
-  is_public: boolean;
+  visibility: VisibilityType;
   content_type: string;
   create_at: Long;
   status: ObjectStatus;
@@ -549,11 +553,11 @@ function createBaseEventCreateBucket(): EventCreateBucket {
   return {
     ownerAddress: "",
     bucketName: "",
-    isPublic: false,
+    visibility: 0,
     createAt: Long.ZERO,
     bucketId: "",
     sourceType: 0,
-    readQuota: Long.UZERO,
+    chargedReadQuota: Long.UZERO,
     paymentAddress: "",
     primarySpAddress: ""
   };
@@ -569,8 +573,8 @@ export const EventCreateBucket = {
       writer.uint32(18).string(message.bucketName);
     }
 
-    if (message.isPublic === true) {
-      writer.uint32(24).bool(message.isPublic);
+    if (message.visibility !== 0) {
+      writer.uint32(24).int32(message.visibility);
     }
 
     if (!message.createAt.isZero()) {
@@ -585,8 +589,8 @@ export const EventCreateBucket = {
       writer.uint32(48).int32(message.sourceType);
     }
 
-    if (!message.readQuota.isZero()) {
-      writer.uint32(56).uint64(message.readQuota);
+    if (!message.chargedReadQuota.isZero()) {
+      writer.uint32(56).uint64(message.chargedReadQuota);
     }
 
     if (message.paymentAddress !== "") {
@@ -618,7 +622,7 @@ export const EventCreateBucket = {
           break;
 
         case 3:
-          message.isPublic = reader.bool();
+          message.visibility = (reader.int32() as any);
           break;
 
         case 4:
@@ -634,7 +638,7 @@ export const EventCreateBucket = {
           break;
 
         case 7:
-          message.readQuota = (reader.uint64() as Long);
+          message.chargedReadQuota = (reader.uint64() as Long);
           break;
 
         case 8:
@@ -658,11 +662,11 @@ export const EventCreateBucket = {
     return {
       ownerAddress: isSet(object.ownerAddress) ? String(object.ownerAddress) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
-      isPublic: isSet(object.isPublic) ? Boolean(object.isPublic) : false,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
-      readQuota: isSet(object.readQuota) ? Long.fromValue(object.readQuota) : Long.UZERO,
+      chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : ""
     };
@@ -672,11 +676,11 @@ export const EventCreateBucket = {
     const obj: any = {};
     message.ownerAddress !== undefined && (obj.ownerAddress = message.ownerAddress);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
-    message.isPublic !== undefined && (obj.isPublic = message.isPublic);
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
-    message.readQuota !== undefined && (obj.readQuota = (message.readQuota || Long.UZERO).toString());
+    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
     return obj;
@@ -686,11 +690,11 @@ export const EventCreateBucket = {
     const message = createBaseEventCreateBucket();
     message.ownerAddress = object.ownerAddress ?? "";
     message.bucketName = object.bucketName ?? "";
-    message.isPublic = object.isPublic ?? false;
+    message.visibility = object.visibility ?? 0;
     message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
     message.bucketId = object.bucketId ?? "";
     message.sourceType = object.sourceType ?? 0;
-    message.readQuota = object.readQuota !== undefined && object.readQuota !== null ? Long.fromValue(object.readQuota) : Long.UZERO;
+    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
     message.paymentAddress = object.paymentAddress ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
     return message;
@@ -700,11 +704,11 @@ export const EventCreateBucket = {
     return {
       ownerAddress: object?.owner_address,
       bucketName: object?.bucket_name,
-      isPublic: object?.is_public,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       createAt: object?.create_at,
       bucketId: object?.bucket_id,
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
-      readQuota: object?.read_quota,
+      chargedReadQuota: object?.charged_read_quota,
       paymentAddress: object?.payment_address,
       primarySpAddress: object?.primary_sp_address
     };
@@ -714,11 +718,11 @@ export const EventCreateBucket = {
     const obj: any = {};
     obj.owner_address = message.ownerAddress;
     obj.bucket_name = message.bucketName;
-    obj.is_public = message.isPublic;
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     obj.create_at = message.createAt;
     obj.bucket_id = message.bucketId;
     message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
-    obj.read_quota = message.readQuota;
+    obj.charged_read_quota = message.chargedReadQuota;
     obj.payment_address = message.paymentAddress;
     obj.primary_sp_address = message.primarySpAddress;
     return obj;
@@ -856,10 +860,11 @@ function createBaseEventUpdateBucketInfo(): EventUpdateBucketInfo {
     operatorAddress: "",
     bucketName: "",
     bucketId: "",
-    readQuotaBefore: Long.UZERO,
-    readQuotaAfter: Long.UZERO,
+    chargedReadQuotaBefore: Long.UZERO,
+    chargedReadQuotaAfter: Long.UZERO,
     paymentAddressBefore: "",
-    paymentAddressAfter: ""
+    paymentAddressAfter: "",
+    visibility: 0
   };
 }
 
@@ -877,12 +882,12 @@ export const EventUpdateBucketInfo = {
       writer.uint32(26).string(message.bucketId);
     }
 
-    if (!message.readQuotaBefore.isZero()) {
-      writer.uint32(32).uint64(message.readQuotaBefore);
+    if (!message.chargedReadQuotaBefore.isZero()) {
+      writer.uint32(32).uint64(message.chargedReadQuotaBefore);
     }
 
-    if (!message.readQuotaAfter.isZero()) {
-      writer.uint32(40).uint64(message.readQuotaAfter);
+    if (!message.chargedReadQuotaAfter.isZero()) {
+      writer.uint32(40).uint64(message.chargedReadQuotaAfter);
     }
 
     if (message.paymentAddressBefore !== "") {
@@ -891,6 +896,10 @@ export const EventUpdateBucketInfo = {
 
     if (message.paymentAddressAfter !== "") {
       writer.uint32(58).string(message.paymentAddressAfter);
+    }
+
+    if (message.visibility !== 0) {
+      writer.uint32(64).int32(message.visibility);
     }
 
     return writer;
@@ -918,11 +927,11 @@ export const EventUpdateBucketInfo = {
           break;
 
         case 4:
-          message.readQuotaBefore = (reader.uint64() as Long);
+          message.chargedReadQuotaBefore = (reader.uint64() as Long);
           break;
 
         case 5:
-          message.readQuotaAfter = (reader.uint64() as Long);
+          message.chargedReadQuotaAfter = (reader.uint64() as Long);
           break;
 
         case 6:
@@ -931,6 +940,10 @@ export const EventUpdateBucketInfo = {
 
         case 7:
           message.paymentAddressAfter = reader.string();
+          break;
+
+        case 8:
+          message.visibility = (reader.int32() as any);
           break;
 
         default:
@@ -947,10 +960,11 @@ export const EventUpdateBucketInfo = {
       operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
-      readQuotaBefore: isSet(object.readQuotaBefore) ? Long.fromValue(object.readQuotaBefore) : Long.UZERO,
-      readQuotaAfter: isSet(object.readQuotaAfter) ? Long.fromValue(object.readQuotaAfter) : Long.UZERO,
+      chargedReadQuotaBefore: isSet(object.chargedReadQuotaBefore) ? Long.fromValue(object.chargedReadQuotaBefore) : Long.UZERO,
+      chargedReadQuotaAfter: isSet(object.chargedReadQuotaAfter) ? Long.fromValue(object.chargedReadQuotaAfter) : Long.UZERO,
       paymentAddressBefore: isSet(object.paymentAddressBefore) ? String(object.paymentAddressBefore) : "",
-      paymentAddressAfter: isSet(object.paymentAddressAfter) ? String(object.paymentAddressAfter) : ""
+      paymentAddressAfter: isSet(object.paymentAddressAfter) ? String(object.paymentAddressAfter) : "",
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0
     };
   },
 
@@ -959,10 +973,11 @@ export const EventUpdateBucketInfo = {
     message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
-    message.readQuotaBefore !== undefined && (obj.readQuotaBefore = (message.readQuotaBefore || Long.UZERO).toString());
-    message.readQuotaAfter !== undefined && (obj.readQuotaAfter = (message.readQuotaAfter || Long.UZERO).toString());
+    message.chargedReadQuotaBefore !== undefined && (obj.chargedReadQuotaBefore = (message.chargedReadQuotaBefore || Long.UZERO).toString());
+    message.chargedReadQuotaAfter !== undefined && (obj.chargedReadQuotaAfter = (message.chargedReadQuotaAfter || Long.UZERO).toString());
     message.paymentAddressBefore !== undefined && (obj.paymentAddressBefore = message.paymentAddressBefore);
     message.paymentAddressAfter !== undefined && (obj.paymentAddressAfter = message.paymentAddressAfter);
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     return obj;
   },
 
@@ -971,10 +986,11 @@ export const EventUpdateBucketInfo = {
     message.operatorAddress = object.operatorAddress ?? "";
     message.bucketName = object.bucketName ?? "";
     message.bucketId = object.bucketId ?? "";
-    message.readQuotaBefore = object.readQuotaBefore !== undefined && object.readQuotaBefore !== null ? Long.fromValue(object.readQuotaBefore) : Long.UZERO;
-    message.readQuotaAfter = object.readQuotaAfter !== undefined && object.readQuotaAfter !== null ? Long.fromValue(object.readQuotaAfter) : Long.UZERO;
+    message.chargedReadQuotaBefore = object.chargedReadQuotaBefore !== undefined && object.chargedReadQuotaBefore !== null ? Long.fromValue(object.chargedReadQuotaBefore) : Long.UZERO;
+    message.chargedReadQuotaAfter = object.chargedReadQuotaAfter !== undefined && object.chargedReadQuotaAfter !== null ? Long.fromValue(object.chargedReadQuotaAfter) : Long.UZERO;
     message.paymentAddressBefore = object.paymentAddressBefore ?? "";
     message.paymentAddressAfter = object.paymentAddressAfter ?? "";
+    message.visibility = object.visibility ?? 0;
     return message;
   },
 
@@ -983,10 +999,11 @@ export const EventUpdateBucketInfo = {
       operatorAddress: object?.operator_address,
       bucketName: object?.bucket_name,
       bucketId: object?.bucket_id,
-      readQuotaBefore: object?.read_quota_before,
-      readQuotaAfter: object?.read_quota_after,
+      chargedReadQuotaBefore: object?.charged_read_quota_before,
+      chargedReadQuotaAfter: object?.charged_read_quota_after,
       paymentAddressBefore: object?.payment_address_before,
-      paymentAddressAfter: object?.payment_address_after
+      paymentAddressAfter: object?.payment_address_after,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0
     };
   },
 
@@ -995,10 +1012,11 @@ export const EventUpdateBucketInfo = {
     obj.operator_address = message.operatorAddress;
     obj.bucket_name = message.bucketName;
     obj.bucket_id = message.bucketId;
-    obj.read_quota_before = message.readQuotaBefore;
-    obj.read_quota_after = message.readQuotaAfter;
+    obj.charged_read_quota_before = message.chargedReadQuotaBefore;
+    obj.charged_read_quota_after = message.chargedReadQuotaAfter;
     obj.payment_address_before = message.paymentAddressBefore;
     obj.payment_address_after = message.paymentAddressAfter;
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     return obj;
   }
 
@@ -1014,7 +1032,7 @@ function createBaseEventCreateObject(): EventCreateObject {
     objectId: "",
     primarySpAddress: "",
     payloadSize: Long.UZERO,
-    isPublic: false,
+    visibility: 0,
     contentType: "",
     createAt: Long.ZERO,
     status: 0,
@@ -1058,8 +1076,8 @@ export const EventCreateObject = {
       writer.uint32(72).uint64(message.payloadSize);
     }
 
-    if (message.isPublic === true) {
-      writer.uint32(80).bool(message.isPublic);
+    if (message.visibility !== 0) {
+      writer.uint32(80).int32(message.visibility);
     }
 
     if (message.contentType !== "") {
@@ -1131,7 +1149,7 @@ export const EventCreateObject = {
           break;
 
         case 10:
-          message.isPublic = reader.bool();
+          message.visibility = (reader.int32() as any);
           break;
 
         case 11:
@@ -1177,7 +1195,7 @@ export const EventCreateObject = {
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
       payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO,
-      isPublic: isSet(object.isPublic) ? Boolean(object.isPublic) : false,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       contentType: isSet(object.contentType) ? String(object.contentType) : "",
       createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
       status: isSet(object.status) ? objectStatusFromJSON(object.status) : 0,
@@ -1197,7 +1215,7 @@ export const EventCreateObject = {
     message.objectId !== undefined && (obj.objectId = message.objectId);
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
     message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
-    message.isPublic !== undefined && (obj.isPublic = message.isPublic);
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.contentType !== undefined && (obj.contentType = message.contentType);
     message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
     message.status !== undefined && (obj.status = objectStatusToJSON(message.status));
@@ -1223,7 +1241,7 @@ export const EventCreateObject = {
     message.objectId = object.objectId ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
     message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
-    message.isPublic = object.isPublic ?? false;
+    message.visibility = object.visibility ?? 0;
     message.contentType = object.contentType ?? "";
     message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
     message.status = object.status ?? 0;
@@ -1243,7 +1261,7 @@ export const EventCreateObject = {
       objectId: object?.object_id,
       primarySpAddress: object?.primary_sp_address,
       payloadSize: object?.payload_size,
-      isPublic: object?.is_public,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       contentType: object?.content_type,
       createAt: object?.create_at,
       status: isSet(object.status) ? objectStatusFromJSON(object.status) : 0,
@@ -1263,7 +1281,7 @@ export const EventCreateObject = {
     obj.object_id = message.objectId;
     obj.primary_sp_address = message.primarySpAddress;
     obj.payload_size = message.payloadSize;
-    obj.is_public = message.isPublic;
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     obj.content_type = message.contentType;
     obj.create_at = message.createAt;
     message.status !== undefined && (obj.status = objectStatusToJSON(message.status));

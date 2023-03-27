@@ -2,8 +2,17 @@
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.payment";
+/** StreamAccountStatus defines the status of a stream account */
+
 export enum StreamAccountStatus {
+  /** STREAM_ACCOUNT_STATUS_ACTIVE - STREAM_ACCOUNT_STATUS_ACTIVE defines the active status of a stream account. */
   STREAM_ACCOUNT_STATUS_ACTIVE = 0,
+
+  /**
+   * STREAM_ACCOUNT_STATUS_FROZEN - STREAM_ACCOUNT_STATUS_FROZEN defines the frozen status of a stream account.
+   * A frozen stream account cannot be used as payment address for buckets.
+   * It can be unfrozen by depositing more BNB to the stream account.
+   */
   STREAM_ACCOUNT_STATUS_FROZEN = 1,
   UNRECOGNIZED = -1,
 }
@@ -39,7 +48,7 @@ export function streamAccountStatusToJSON(object: StreamAccountStatus): string {
 }
 /**
  * OutFlow defines the accumulative outflow stream rate in BNB
- * from a stream account or a bucket to a SP
+ * from a stream account to a Storage Provider
  */
 
 export interface OutFlow {
@@ -51,7 +60,7 @@ export interface OutFlow {
 }
 /**
  * OutFlow defines the accumulative outflow stream rate in BNB
- * from a stream account or a bucket to a SP
+ * from a stream account to a Storage Provider
  */
 
 export interface OutFlowSDKType {

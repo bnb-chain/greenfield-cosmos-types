@@ -3,6 +3,49 @@ import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.bridge";
+export enum RefundReason {
+  REFUND_REASON_UNKNOWN = 0,
+  REFUND_REASON_INSUFFICIENT_BALANCE = 1,
+  REFUND_REASON_FAIL_ACK = 2,
+  UNRECOGNIZED = -1,
+}
+export const RefundReasonSDKType = RefundReason;
+export function refundReasonFromJSON(object: any): RefundReason {
+  switch (object) {
+    case 0:
+    case "REFUND_REASON_UNKNOWN":
+      return RefundReason.REFUND_REASON_UNKNOWN;
+
+    case 1:
+    case "REFUND_REASON_INSUFFICIENT_BALANCE":
+      return RefundReason.REFUND_REASON_INSUFFICIENT_BALANCE;
+
+    case 2:
+    case "REFUND_REASON_FAIL_ACK":
+      return RefundReason.REFUND_REASON_FAIL_ACK;
+
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return RefundReason.UNRECOGNIZED;
+  }
+}
+export function refundReasonToJSON(object: RefundReason): string {
+  switch (object) {
+    case RefundReason.REFUND_REASON_UNKNOWN:
+      return "REFUND_REASON_UNKNOWN";
+
+    case RefundReason.REFUND_REASON_INSUFFICIENT_BALANCE:
+      return "REFUND_REASON_INSUFFICIENT_BALANCE";
+
+    case RefundReason.REFUND_REASON_FAIL_ACK:
+      return "REFUND_REASON_FAIL_ACK";
+
+    case RefundReason.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
 /** EventCrossTransferOut is emitted when a cross chain transfer out tx created */
 
 export interface EventCrossTransferOut {
@@ -40,7 +83,7 @@ export interface EventCrossTransferOutRefund {
   amount?: Coin;
   /** Refund reason of the failed cross chain transfer tx */
 
-  refundReason: number;
+  refundReason: RefundReason;
   /** Sequence of the corresponding cross chain package */
 
   sequence: Long;
@@ -50,7 +93,7 @@ export interface EventCrossTransferOutRefund {
 export interface EventCrossTransferOutRefundSDKType {
   refund_address: string;
   amount?: CoinSDKType;
-  refund_reason: number;
+  refund_reason: RefundReason;
   sequence: Long;
 }
 /** EventCrossTransferIn is emitted when a cross chain transfer in tx happened */
@@ -222,7 +265,7 @@ export const EventCrossTransferOutRefund = {
     }
 
     if (message.refundReason !== 0) {
-      writer.uint32(24).uint32(message.refundReason);
+      writer.uint32(24).int32(message.refundReason);
     }
 
     if (!message.sequence.isZero()) {
@@ -250,7 +293,7 @@ export const EventCrossTransferOutRefund = {
           break;
 
         case 3:
-          message.refundReason = reader.uint32();
+          message.refundReason = (reader.int32() as any);
           break;
 
         case 4:
@@ -270,7 +313,7 @@ export const EventCrossTransferOutRefund = {
     return {
       refundAddress: isSet(object.refundAddress) ? String(object.refundAddress) : "",
       amount: isSet(object.amount) ? Coin.fromJSON(object.amount) : undefined,
-      refundReason: isSet(object.refundReason) ? Number(object.refundReason) : 0,
+      refundReason: isSet(object.refundReason) ? refundReasonFromJSON(object.refundReason) : 0,
       sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO
     };
   },
@@ -279,7 +322,7 @@ export const EventCrossTransferOutRefund = {
     const obj: any = {};
     message.refundAddress !== undefined && (obj.refundAddress = message.refundAddress);
     message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
-    message.refundReason !== undefined && (obj.refundReason = Math.round(message.refundReason));
+    message.refundReason !== undefined && (obj.refundReason = refundReasonToJSON(message.refundReason));
     message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
     return obj;
   },
@@ -297,7 +340,7 @@ export const EventCrossTransferOutRefund = {
     return {
       refundAddress: object?.refund_address,
       amount: object.amount ? Coin.fromSDK(object.amount) : undefined,
-      refundReason: object?.refund_reason,
+      refundReason: isSet(object.refund_reason) ? refundReasonFromJSON(object.refund_reason) : 0,
       sequence: object?.sequence
     };
   },
@@ -306,7 +349,7 @@ export const EventCrossTransferOutRefund = {
     const obj: any = {};
     obj.refund_address = message.refundAddress;
     message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
-    obj.refund_reason = message.refundReason;
+    message.refundReason !== undefined && (obj.refund_reason = refundReasonToJSON(message.refundReason));
     obj.sequence = message.sequence;
     return obj;
   }

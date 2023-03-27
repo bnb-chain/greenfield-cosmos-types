@@ -6,7 +6,7 @@ export const protobufPackage = "cosmos.gashub.v1alpha1";
 /** GenesisState defines the gashub module's genesis state. */
 
 export interface GenesisState {
-  /** params defines all the paramaters of the module. */
+  /** params defines all the parameters of the module. */
   params?: Params;
 }
 /** GenesisState defines the gashub module's genesis state. */

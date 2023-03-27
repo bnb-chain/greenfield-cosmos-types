@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { SourceType, ObjectStatus, RedundancyType, sourceTypeFromJSON, sourceTypeToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
+import { VisibilityType, SourceType, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, visibilityTypeToJSON, sourceTypeToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.storage";
@@ -9,16 +9,16 @@ export interface BucketInfo {
   /** bucket_name is a globally unique name of bucket */
 
   bucketName: string;
-  /** is_public define the highest permissions for bucket. When the bucket is public, everyone can get storage objects in it. */
+  /** visibility defines the highest permissions for bucket. When a bucket is public, everyone can get storage objects in it. */
 
-  isPublic: boolean;
+  visibility: VisibilityType;
   /** id is the unique identification for bucket. */
 
   id: string;
   /** source_type defines which chain the user should send the bucket management transactions to */
 
   sourceType: SourceType;
-  /** create_at define the block number when the bucket created. */
+  /** create_at define the block timestamp when the bucket created. */
 
   createAt: Long;
   /** payment_address is the address of the payment account */
@@ -30,9 +30,13 @@ export interface BucketInfo {
    */
 
   primarySpAddress: string;
-  /** read_quota defines the traffic quota for read in bytes per month */
+  /**
+   * charged_read_quota defines the traffic quota for read in bytes per month.
+   * The available read data for each user is the sum of the free read data provided by SP and
+   * the ChargeReadQuota specified here.
+   */
 
-  readQuota: Long;
+  chargedReadQuota: Long;
   /** billing info of the bucket */
 
   billingInfo?: BillingInfo;
@@ -40,13 +44,13 @@ export interface BucketInfo {
 export interface BucketInfoSDKType {
   owner: string;
   bucket_name: string;
-  is_public: boolean;
+  visibility: VisibilityType;
   id: string;
   source_type: SourceType;
   create_at: Long;
   payment_address: string;
   primary_sp_address: string;
-  read_quota: Long;
+  charged_read_quota: Long;
   billing_info?: BillingInfoSDKType;
 }
 /** BillingInfo is the billing information of the bucket */
@@ -97,13 +101,13 @@ export interface ObjectInfo {
   /** payloadSize is the total size of the object payload */
 
   payloadSize: Long;
-  /** is_public define the highest permissions for object. When the object is public, everyone can access it. */
+  /** visibility defines the highest permissions for object. When an object is public, everyone can access it. */
 
-  isPublic: boolean;
+  visibility: VisibilityType;
   /** content_type define the format of the object which should be a standard MIME type. */
 
   contentType: string;
-  /** create_at define the block number when the object created */
+  /** create_at define the block timestamp when the object is created */
 
   createAt: Long;
   /** object_status define the upload status of the object. */
@@ -115,7 +119,10 @@ export interface ObjectInfo {
   /** source_type define the source of the object. */
 
   sourceType: SourceType;
-  /** checksums define the root hash of the pieces which stored in a SP. */
+  /**
+   * checksums define the root hash of the pieces which stored in a SP.
+   * add omit tag to omit the field when converting to NFT metadata
+   */
 
   checksums: Uint8Array[];
   /** secondary_sp_addresses define the addresses of secondary_sps */
@@ -128,7 +135,7 @@ export interface ObjectInfoSDKType {
   object_name: string;
   id: string;
   payload_size: Long;
-  is_public: boolean;
+  visibility: VisibilityType;
   content_type: string;
   create_at: Long;
   object_status: ObjectStatus;
@@ -238,13 +245,13 @@ function createBaseBucketInfo(): BucketInfo {
   return {
     owner: "",
     bucketName: "",
-    isPublic: false,
+    visibility: 0,
     id: "",
     sourceType: 0,
     createAt: Long.ZERO,
     paymentAddress: "",
     primarySpAddress: "",
-    readQuota: Long.UZERO,
+    chargedReadQuota: Long.UZERO,
     billingInfo: undefined
   };
 }
@@ -259,8 +266,8 @@ export const BucketInfo = {
       writer.uint32(18).string(message.bucketName);
     }
 
-    if (message.isPublic === true) {
-      writer.uint32(24).bool(message.isPublic);
+    if (message.visibility !== 0) {
+      writer.uint32(24).int32(message.visibility);
     }
 
     if (message.id !== "") {
@@ -283,8 +290,8 @@ export const BucketInfo = {
       writer.uint32(66).string(message.primarySpAddress);
     }
 
-    if (!message.readQuota.isZero()) {
-      writer.uint32(72).uint64(message.readQuota);
+    if (!message.chargedReadQuota.isZero()) {
+      writer.uint32(72).uint64(message.chargedReadQuota);
     }
 
     if (message.billingInfo !== undefined) {
@@ -312,7 +319,7 @@ export const BucketInfo = {
           break;
 
         case 3:
-          message.isPublic = reader.bool();
+          message.visibility = (reader.int32() as any);
           break;
 
         case 4:
@@ -336,7 +343,7 @@ export const BucketInfo = {
           break;
 
         case 9:
-          message.readQuota = (reader.uint64() as Long);
+          message.chargedReadQuota = (reader.uint64() as Long);
           break;
 
         case 10:
@@ -356,13 +363,13 @@ export const BucketInfo = {
     return {
       owner: isSet(object.owner) ? String(object.owner) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
-      isPublic: isSet(object.isPublic) ? Boolean(object.isPublic) : false,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       id: isSet(object.id) ? String(object.id) : "",
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
       createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
-      readQuota: isSet(object.readQuota) ? Long.fromValue(object.readQuota) : Long.UZERO,
+      chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
       billingInfo: isSet(object.billingInfo) ? BillingInfo.fromJSON(object.billingInfo) : undefined
     };
   },
@@ -371,13 +378,13 @@ export const BucketInfo = {
     const obj: any = {};
     message.owner !== undefined && (obj.owner = message.owner);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
-    message.isPublic !== undefined && (obj.isPublic = message.isPublic);
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.id !== undefined && (obj.id = message.id);
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
     message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
-    message.readQuota !== undefined && (obj.readQuota = (message.readQuota || Long.UZERO).toString());
+    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
     message.billingInfo !== undefined && (obj.billingInfo = message.billingInfo ? BillingInfo.toJSON(message.billingInfo) : undefined);
     return obj;
   },
@@ -386,13 +393,13 @@ export const BucketInfo = {
     const message = createBaseBucketInfo();
     message.owner = object.owner ?? "";
     message.bucketName = object.bucketName ?? "";
-    message.isPublic = object.isPublic ?? false;
+    message.visibility = object.visibility ?? 0;
     message.id = object.id ?? "";
     message.sourceType = object.sourceType ?? 0;
     message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
     message.paymentAddress = object.paymentAddress ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
-    message.readQuota = object.readQuota !== undefined && object.readQuota !== null ? Long.fromValue(object.readQuota) : Long.UZERO;
+    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
     message.billingInfo = object.billingInfo !== undefined && object.billingInfo !== null ? BillingInfo.fromPartial(object.billingInfo) : undefined;
     return message;
   },
@@ -401,13 +408,13 @@ export const BucketInfo = {
     return {
       owner: object?.owner,
       bucketName: object?.bucket_name,
-      isPublic: object?.is_public,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       id: object?.id,
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
       createAt: object?.create_at,
       paymentAddress: object?.payment_address,
       primarySpAddress: object?.primary_sp_address,
-      readQuota: object?.read_quota,
+      chargedReadQuota: object?.charged_read_quota,
       billingInfo: object.billing_info ? BillingInfo.fromSDK(object.billing_info) : undefined
     };
   },
@@ -416,13 +423,13 @@ export const BucketInfo = {
     const obj: any = {};
     obj.owner = message.owner;
     obj.bucket_name = message.bucketName;
-    obj.is_public = message.isPublic;
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     obj.id = message.id;
     message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
     obj.create_at = message.createAt;
     obj.payment_address = message.paymentAddress;
     obj.primary_sp_address = message.primarySpAddress;
-    obj.read_quota = message.readQuota;
+    obj.charged_read_quota = message.chargedReadQuota;
     message.billingInfo !== undefined && (obj.billing_info = message.billingInfo ? BillingInfo.toSDK(message.billingInfo) : undefined);
     return obj;
   }
@@ -628,7 +635,7 @@ function createBaseObjectInfo(): ObjectInfo {
     objectName: "",
     id: "",
     payloadSize: Long.UZERO,
-    isPublic: false,
+    visibility: 0,
     contentType: "",
     createAt: Long.ZERO,
     objectStatus: 0,
@@ -661,8 +668,8 @@ export const ObjectInfo = {
       writer.uint32(40).uint64(message.payloadSize);
     }
 
-    if (message.isPublic === true) {
-      writer.uint32(48).bool(message.isPublic);
+    if (message.visibility !== 0) {
+      writer.uint32(48).int32(message.visibility);
     }
 
     if (message.contentType !== "") {
@@ -726,7 +733,7 @@ export const ObjectInfo = {
           break;
 
         case 6:
-          message.isPublic = reader.bool();
+          message.visibility = (reader.int32() as any);
           break;
 
         case 7:
@@ -773,7 +780,7 @@ export const ObjectInfo = {
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       id: isSet(object.id) ? String(object.id) : "",
       payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO,
-      isPublic: isSet(object.isPublic) ? Boolean(object.isPublic) : false,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       contentType: isSet(object.contentType) ? String(object.contentType) : "",
       createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
       objectStatus: isSet(object.objectStatus) ? objectStatusFromJSON(object.objectStatus) : 0,
@@ -791,7 +798,7 @@ export const ObjectInfo = {
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.id !== undefined && (obj.id = message.id);
     message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
-    message.isPublic !== undefined && (obj.isPublic = message.isPublic);
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.contentType !== undefined && (obj.contentType = message.contentType);
     message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
     message.objectStatus !== undefined && (obj.objectStatus = objectStatusToJSON(message.objectStatus));
@@ -820,7 +827,7 @@ export const ObjectInfo = {
     message.objectName = object.objectName ?? "";
     message.id = object.id ?? "";
     message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
-    message.isPublic = object.isPublic ?? false;
+    message.visibility = object.visibility ?? 0;
     message.contentType = object.contentType ?? "";
     message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
     message.objectStatus = object.objectStatus ?? 0;
@@ -838,7 +845,7 @@ export const ObjectInfo = {
       objectName: object?.object_name,
       id: object?.id,
       payloadSize: object?.payload_size,
-      isPublic: object?.is_public,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       contentType: object?.content_type,
       createAt: object?.create_at,
       objectStatus: isSet(object.object_status) ? objectStatusFromJSON(object.object_status) : 0,
@@ -856,7 +863,7 @@ export const ObjectInfo = {
     obj.object_name = message.objectName;
     obj.id = message.id;
     obj.payload_size = message.payloadSize;
-    obj.is_public = message.isPublic;
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     obj.content_type = message.contentType;
     obj.create_at = message.createAt;
     message.objectStatus !== undefined && (obj.object_status = objectStatusToJSON(message.objectStatus));

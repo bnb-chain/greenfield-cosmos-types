@@ -3,6 +3,8 @@ import { VoteResult, voteResultFromJSON, voteResultToJSON } from "./types";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long, bytesFromBase64, base64FromBytes, Rpc } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.challenge";
+/** MsgSubmit defines the message for submitting challenges. */
+
 export interface MsgSubmit {
   /** The challenger address. */
   challenger: string;
@@ -22,6 +24,8 @@ export interface MsgSubmit {
 
   randomIndex: boolean;
 }
+/** MsgSubmit defines the message for submitting challenges. */
+
 export interface MsgSubmitSDKType {
   challenger: string;
   sp_operator_address: string;
@@ -30,8 +34,14 @@ export interface MsgSubmitSDKType {
   segment_index: number;
   random_index: boolean;
 }
+/** MsgSubmitResponse defines the response of MsgSubmit. */
+
 export interface MsgSubmitResponse {}
+/** MsgSubmitResponse defines the response of MsgSubmit. */
+
 export interface MsgSubmitResponseSDKType {}
+/** MsgSubmit defines the message for attesting challenges. */
+
 export interface MsgAttest {
   /** The submitter address. */
   submitter: string;
@@ -57,6 +67,8 @@ export interface MsgAttest {
 
   voteAggSignature: Uint8Array;
 }
+/** MsgSubmit defines the message for attesting challenges. */
+
 export interface MsgAttestSDKType {
   submitter: string;
   challenge_id: Long;
@@ -67,7 +79,11 @@ export interface MsgAttestSDKType {
   vote_validator_set: Long[];
   vote_agg_signature: Uint8Array;
 }
+/** MsgAttest defines the response of MsgAttestResponse. */
+
 export interface MsgAttestResponse {}
+/** MsgAttest defines the response of MsgAttestResponse. */
+
 export interface MsgAttestResponseSDKType {}
 
 function createBaseMsgSubmit(): MsgSubmit {

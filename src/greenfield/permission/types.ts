@@ -1,16 +1,31 @@
 /* eslint-disable */
 import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "./common";
 import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from "../resource/types";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import * as _m0 from "protobufjs/minimal";
-import { isSet, DeepPartial, Exact } from "../../helpers";
+import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.permission";
 export interface Policy {
+  /** id is an unique u256 sequence for each policy. It also be used as NFT tokenID */
   id: string;
+  /** principal defines the accounts/group which the permission grants to */
+
   principal?: Principal;
+  /** resource_type defines the type of resource that grants permission for */
+
   resourceType: ResourceType;
+  /** resource_id defines the bucket/object/group id of the resource that grants permission for */
+
   resourceId: string;
+  /** statements defines the details content of the permission, including effect/actions/sub-resources */
+
   statements: Statement[];
-  memberStatement?: Statement;
+  /**
+   * expiration_time defines the whole expiration time of all the statements.
+   * Notices: Its priority is higher than the expiration time inside the Statement
+   */
+
+  expirationTime?: Timestamp;
 }
 export interface PolicySDKType {
   id: string;
@@ -18,11 +33,24 @@ export interface PolicySDKType {
   resource_type: ResourceType;
   resource_id: string;
   statements: StatementSDKType[];
-  member_statement?: StatementSDKType;
+  expiration_time?: TimestampSDKType;
 }
+/**
+ * PolicyGroup refers to a group of policies which grant permission to Group, which is limited to MaxGroupNum (default 10).
+ * This means that a single resource can only grant permission to 10 groups. The reason for
+ * this is to enable on-chain determination of whether an operator has permission within a limited time.
+ */
+
 export interface PolicyGroup {
+  /** items define a pair of policy_id and group_id. Each resource can only grant its own permissions to a limited number of groups */
   items: PolicyGroup_Item[];
 }
+/**
+ * PolicyGroup refers to a group of policies which grant permission to Group, which is limited to MaxGroupNum (default 10).
+ * This means that a single resource can only grant permission to 10 groups. The reason for
+ * this is to enable on-chain determination of whether an operator has permission within a limited time.
+ */
+
 export interface PolicyGroupSDKType {
   items: PolicyGroup_ItemSDKType[];
 }
@@ -34,6 +62,21 @@ export interface PolicyGroup_ItemSDKType {
   policy_id: string;
   group_id: string;
 }
+export interface GroupMember {
+  /** id is an unique u256 sequence for each group member. It also be used as NFT tokenID */
+  id: string;
+  /** group_id is the unique id of the group */
+
+  groupId: string;
+  /** member is the account address of the member */
+
+  member: string;
+}
+export interface GroupMemberSDKType {
+  id: string;
+  group_id: string;
+  member: string;
+}
 
 function createBasePolicy(): Policy {
   return {
@@ -42,7 +85,7 @@ function createBasePolicy(): Policy {
     resourceType: 0,
     resourceId: "",
     statements: [],
-    memberStatement: undefined
+    expirationTime: undefined
   };
 }
 
@@ -68,8 +111,8 @@ export const Policy = {
       Statement.encode(v!, writer.uint32(42).fork()).ldelim();
     }
 
-    if (message.memberStatement !== undefined) {
-      Statement.encode(message.memberStatement, writer.uint32(50).fork()).ldelim();
+    if (message.expirationTime !== undefined) {
+      Timestamp.encode(message.expirationTime, writer.uint32(50).fork()).ldelim();
     }
 
     return writer;
@@ -105,7 +148,7 @@ export const Policy = {
           break;
 
         case 6:
-          message.memberStatement = Statement.decode(reader, reader.uint32());
+          message.expirationTime = Timestamp.decode(reader, reader.uint32());
           break;
 
         default:
@@ -124,7 +167,7 @@ export const Policy = {
       resourceType: isSet(object.resourceType) ? resourceTypeFromJSON(object.resourceType) : 0,
       resourceId: isSet(object.resourceId) ? String(object.resourceId) : "",
       statements: Array.isArray(object?.statements) ? object.statements.map((e: any) => Statement.fromJSON(e)) : [],
-      memberStatement: isSet(object.memberStatement) ? Statement.fromJSON(object.memberStatement) : undefined
+      expirationTime: isSet(object.expirationTime) ? fromJsonTimestamp(object.expirationTime) : undefined
     };
   },
 
@@ -141,7 +184,7 @@ export const Policy = {
       obj.statements = [];
     }
 
-    message.memberStatement !== undefined && (obj.memberStatement = message.memberStatement ? Statement.toJSON(message.memberStatement) : undefined);
+    message.expirationTime !== undefined && (obj.expirationTime = fromTimestamp(message.expirationTime).toISOString());
     return obj;
   },
 
@@ -152,7 +195,7 @@ export const Policy = {
     message.resourceType = object.resourceType ?? 0;
     message.resourceId = object.resourceId ?? "";
     message.statements = object.statements?.map(e => Statement.fromPartial(e)) || [];
-    message.memberStatement = object.memberStatement !== undefined && object.memberStatement !== null ? Statement.fromPartial(object.memberStatement) : undefined;
+    message.expirationTime = object.expirationTime !== undefined && object.expirationTime !== null ? Timestamp.fromPartial(object.expirationTime) : undefined;
     return message;
   },
 
@@ -163,7 +206,7 @@ export const Policy = {
       resourceType: isSet(object.resource_type) ? resourceTypeFromJSON(object.resource_type) : 0,
       resourceId: object?.resource_id,
       statements: Array.isArray(object?.statements) ? object.statements.map((e: any) => Statement.fromSDK(e)) : [],
-      memberStatement: object.member_statement ? Statement.fromSDK(object.member_statement) : undefined
+      expirationTime: object.expiration_time ? Timestamp.fromSDK(object.expiration_time) : undefined
     };
   },
 
@@ -180,7 +223,7 @@ export const Policy = {
       obj.statements = [];
     }
 
-    message.memberStatement !== undefined && (obj.member_statement = message.memberStatement ? Statement.toSDK(message.memberStatement) : undefined);
+    message.expirationTime !== undefined && (obj.expiration_time = message.expirationTime ? Timestamp.toSDK(message.expirationTime) : undefined);
     return obj;
   }
 
@@ -345,6 +388,103 @@ export const PolicyGroup_Item = {
     const obj: any = {};
     obj.policy_id = message.policyId;
     obj.group_id = message.groupId;
+    return obj;
+  }
+
+};
+
+function createBaseGroupMember(): GroupMember {
+  return {
+    id: "",
+    groupId: "",
+    member: ""
+  };
+}
+
+export const GroupMember = {
+  encode(message: GroupMember, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+
+    if (message.groupId !== "") {
+      writer.uint32(18).string(message.groupId);
+    }
+
+    if (message.member !== "") {
+      writer.uint32(26).string(message.member);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GroupMember {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGroupMember();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.string();
+          break;
+
+        case 2:
+          message.groupId = reader.string();
+          break;
+
+        case 3:
+          message.member = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): GroupMember {
+    return {
+      id: isSet(object.id) ? String(object.id) : "",
+      groupId: isSet(object.groupId) ? String(object.groupId) : "",
+      member: isSet(object.member) ? String(object.member) : ""
+    };
+  },
+
+  toJSON(message: GroupMember): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = message.id);
+    message.groupId !== undefined && (obj.groupId = message.groupId);
+    message.member !== undefined && (obj.member = message.member);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GroupMember>, I>>(object: I): GroupMember {
+    const message = createBaseGroupMember();
+    message.id = object.id ?? "";
+    message.groupId = object.groupId ?? "";
+    message.member = object.member ?? "";
+    return message;
+  },
+
+  fromSDK(object: GroupMemberSDKType): GroupMember {
+    return {
+      id: object?.id,
+      groupId: object?.group_id,
+      member: object?.member
+    };
+  },
+
+  toSDK(message: GroupMember): GroupMemberSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.group_id = message.groupId;
+    obj.member = message.member;
     return obj;
   }
 

@@ -5,7 +5,14 @@ export const protobufPackage = "bnbchain.greenfield.permission";
 /** Params defines the parameters for the module. */
 
 export interface Params {
+  /** maximum_statements_num defines the maximum number of statements allowed in a policy */
   maximumStatementsNum: Long;
+  /**
+   * maximum_group_num used to set the upper limit on the number of groups to which a resource can grant access permissions.
+   * By placing a cap on the number of group permissions, permission control policies can be made more robust and better
+   * enforced, thereby reducing the chances of DDos and other security incidents.
+   */
+
   maximumGroupNum: Long;
 }
 /** Params defines the parameters for the module. */

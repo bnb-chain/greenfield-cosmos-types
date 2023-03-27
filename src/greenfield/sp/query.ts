@@ -44,7 +44,10 @@ export interface QueryStorageProvidersResponseSDKType {
   pagination?: PageResponseSDKType;
 }
 export interface QueryGetSpStoragePriceByTimeRequest {
+  /** operator address of sp */
   spAddr: string;
+  /** unix timestamp in seconds. If it's 0, it will return the latest price. */
+
   timestamp: Long;
 }
 export interface QueryGetSpStoragePriceByTimeRequestSDKType {
@@ -58,6 +61,7 @@ export interface QueryGetSpStoragePriceByTimeResponseSDKType {
   sp_storage_price?: SpStoragePriceSDKType;
 }
 export interface QueryGetSecondarySpStorePriceByTimeRequest {
+  /** unix timestamp in seconds. If it's 0, it will return the latest price. */
   timestamp: Long;
 }
 export interface QueryGetSecondarySpStorePriceByTimeRequestSDKType {
@@ -802,7 +806,11 @@ export interface Query {
   /** Queries a list of GetStorageProviders items. */
 
   StorageProviders(request?: QueryStorageProvidersRequest): Promise<QueryStorageProvidersResponse>;
+  /** get storage price of specific sp and time */
+
   QueryGetSpStoragePriceByTime(request: QueryGetSpStoragePriceByTimeRequest): Promise<QueryGetSpStoragePriceByTimeResponse>;
+  /** get secondary store price by time */
+
   QueryGetSecondarySpStorePriceByTime(request: QueryGetSecondarySpStorePriceByTimeRequest): Promise<QueryGetSecondarySpStorePriceByTimeResponse>;
   /** Queries a storage provider with specify address */
 

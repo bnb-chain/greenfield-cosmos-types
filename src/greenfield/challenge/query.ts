@@ -20,11 +20,19 @@ export interface QueryParamsResponse {
 export interface QueryParamsResponseSDKType {
   params?: ParamsSDKType;
 }
+/** QueryParamsRequest is request type for the Query/LatestAttestedChallenge RPC method. */
+
 export interface QueryLatestAttestedChallengeRequest {}
+/** QueryParamsRequest is request type for the Query/LatestAttestedChallenge RPC method. */
+
 export interface QueryLatestAttestedChallengeRequestSDKType {}
+/** QueryParamsResponse is response type for the Query/LatestAttestedChallenge RPC method. */
+
 export interface QueryLatestAttestedChallengeResponse {
   challengeId: Long;
 }
+/** QueryParamsResponse is response type for the Query/LatestAttestedChallenge RPC method. */
+
 export interface QueryLatestAttestedChallengeResponseSDKType {
   challengeId: Long;
 }
@@ -275,7 +283,7 @@ export const QueryLatestAttestedChallengeResponse = {
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
-  /** Queries a list of LatestAttestedChallenge items. */
+  /** Queries the latest attested challenge id. */
 
   LatestAttestedChallenge(request?: QueryLatestAttestedChallengeRequest): Promise<QueryLatestAttestedChallengeResponse>;
 }

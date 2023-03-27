@@ -5,16 +5,15 @@ export const protobufPackage = "cosmos.oracle.v1";
 /** Params holds parameters for the oracle module. */
 
 export interface Params {
-  /** Timeout for the in turn relayer */
+  /** Timeout for the in turn relayer in seconds */
   relayerTimeout: Long;
+  /** RelayInterval is for in-turn relayer in seconds */
+
+  relayerInterval: Long;
   /**
-   * in s
    * Reward share for the relayer sends the claim message,
    * the other relayers signed the bls message will share the reward evenly.
    */
-
-  relayerInterval: Long;
-  /** in percentage */
 
   relayerRewardShare: number;
 }

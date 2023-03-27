@@ -3,7 +3,7 @@ import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } fr
 import { ActionType, Effect, actionTypeFromJSON, actionTypeToJSON, effectFromJSON, effectToJSON } from "../permission/common";
 import { Params, ParamsSDKType } from "./params";
 import { BucketInfo, BucketInfoSDKType, ObjectInfo, ObjectInfoSDKType, BucketMetaData, BucketMetaDataSDKType, ObjectMetaData, ObjectMetaDataSDKType, GroupMetaData, GroupMetaDataSDKType, GroupInfo, GroupInfoSDKType } from "./types";
-import { Policy, PolicySDKType } from "../permission/types";
+import { Policy, PolicySDKType, GroupMember, GroupMemberSDKType } from "../permission/types";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.storage";
@@ -24,13 +24,9 @@ export interface QueryParamsResponse {
 export interface QueryParamsResponseSDKType {
   params?: ParamsSDKType;
 }
-/** this line is used by starport scaffolding # 3 */
-
 export interface QueryHeadBucketRequest {
   bucketName: string;
 }
-/** this line is used by starport scaffolding # 3 */
-
 export interface QueryHeadBucketRequestSDKType {
   bucket_name: string;
 }
@@ -201,10 +197,10 @@ export interface QueryHeadGroupMemberRequestSDKType {
   group_name: string;
 }
 export interface QueryHeadGroupMemberResponse {
-  groupInfo?: GroupInfo;
+  groupMember?: GroupMember;
 }
 export interface QueryHeadGroupMemberResponseSDKType {
-  group_info?: GroupInfoSDKType;
+  group_member?: GroupMemberSDKType;
 }
 export interface QueryPolicyForGroupRequest {
   resource: string;
@@ -2232,14 +2228,14 @@ export const QueryHeadGroupMemberRequest = {
 
 function createBaseQueryHeadGroupMemberResponse(): QueryHeadGroupMemberResponse {
   return {
-    groupInfo: undefined
+    groupMember: undefined
   };
 }
 
 export const QueryHeadGroupMemberResponse = {
   encode(message: QueryHeadGroupMemberResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.groupInfo !== undefined) {
-      GroupInfo.encode(message.groupInfo, writer.uint32(10).fork()).ldelim();
+    if (message.groupMember !== undefined) {
+      GroupMember.encode(message.groupMember, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -2255,7 +2251,7 @@ export const QueryHeadGroupMemberResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.groupInfo = GroupInfo.decode(reader, reader.uint32());
+          message.groupMember = GroupMember.decode(reader, reader.uint32());
           break;
 
         default:
@@ -2269,31 +2265,31 @@ export const QueryHeadGroupMemberResponse = {
 
   fromJSON(object: any): QueryHeadGroupMemberResponse {
     return {
-      groupInfo: isSet(object.groupInfo) ? GroupInfo.fromJSON(object.groupInfo) : undefined
+      groupMember: isSet(object.groupMember) ? GroupMember.fromJSON(object.groupMember) : undefined
     };
   },
 
   toJSON(message: QueryHeadGroupMemberResponse): unknown {
     const obj: any = {};
-    message.groupInfo !== undefined && (obj.groupInfo = message.groupInfo ? GroupInfo.toJSON(message.groupInfo) : undefined);
+    message.groupMember !== undefined && (obj.groupMember = message.groupMember ? GroupMember.toJSON(message.groupMember) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryHeadGroupMemberResponse>, I>>(object: I): QueryHeadGroupMemberResponse {
     const message = createBaseQueryHeadGroupMemberResponse();
-    message.groupInfo = object.groupInfo !== undefined && object.groupInfo !== null ? GroupInfo.fromPartial(object.groupInfo) : undefined;
+    message.groupMember = object.groupMember !== undefined && object.groupMember !== null ? GroupMember.fromPartial(object.groupMember) : undefined;
     return message;
   },
 
   fromSDK(object: QueryHeadGroupMemberResponseSDKType): QueryHeadGroupMemberResponse {
     return {
-      groupInfo: object.group_info ? GroupInfo.fromSDK(object.group_info) : undefined
+      groupMember: object.group_member ? GroupMember.fromSDK(object.group_member) : undefined
     };
   },
 
   toSDK(message: QueryHeadGroupMemberResponse): QueryHeadGroupMemberResponseSDKType {
     const obj: any = {};
-    message.groupInfo !== undefined && (obj.group_info = message.groupInfo ? GroupInfo.toSDK(message.groupInfo) : undefined);
+    message.groupMember !== undefined && (obj.group_member = message.groupMember ? GroupMember.toSDK(message.groupMember) : undefined);
     return obj;
   }
 
