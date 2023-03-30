@@ -2,7 +2,7 @@
 
 JavaScript and TypeScript types relating to Protocol Buffers used by Cosmos-SDK and other related projects.
 
-> This section needs to cooperate with [greenfield-js-sdk](https://github.com/bnb-chain/gnfd-js-sdk).
+> This section needs to cooperate with [greenfield-js-sdk](https://github.com/bnb-chain/greenfield-js-sdk).
 
 ## Getting Started
 
