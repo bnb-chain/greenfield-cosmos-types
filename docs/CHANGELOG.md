@@ -1,3 +1,17 @@
+# [0.3.0](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.2.0...v0.3.0) (2023-04-07)
+
+
+### Features
+
+* Add SDK Type ([d089f82](https://github.com/bnb-chain/gnfd-cosmos-types/commit/d089f8233f54e10d3df64339454acefe5aaec630))
+* case camel ([c07bae0](https://github.com/bnb-chain/gnfd-cosmos-types/commit/c07bae07dc28fc84ef889baf02d4bb38b87f55f5))
+* Case Camel ([ddfa8b1](https://github.com/bnb-chain/gnfd-cosmos-types/commit/ddfa8b1e7a37a34e8404f9d962e753ddae6834cd))
+* Commonjs ([cdd3d5c](https://github.com/bnb-chain/gnfd-cosmos-types/commit/cdd3d5cbdc0d60da13ee3edd505c0cb19614c076))
+* Quota Type ([9ed1f2b](https://github.com/bnb-chain/gnfd-cosmos-types/commit/9ed1f2b9545f06cd726da38f9cfc44d7e6bf92e9))
+* sp types ([7e93bdf](https://github.com/bnb-chain/gnfd-cosmos-types/commit/7e93bdffead845905cfc93ec89668eb5571da7a8))
+* Update Struct ([1d12f22](https://github.com/bnb-chain/gnfd-cosmos-types/commit/1d12f22648a9eeeab0a3c3d4cd8faf034686b268))
+* Use ES6 ([2e344b5](https://github.com/bnb-chain/gnfd-cosmos-types/commit/2e344b50d78d015e8d7485cdb1fa64d86b9092b3))
+
 # [0.3.0-alpha.8](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.3.0-alpha.7...v0.3.0-alpha.8) (2023-03-27)
 
 
