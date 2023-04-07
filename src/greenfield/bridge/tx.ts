@@ -1,18 +1,33 @@
 /* eslint-disable */
-import { Coin } from "../../cosmos/base/v1beta1/coin";
+import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.bridge";
 /** MsgTransferOut is the Msg/TransferOut request type. */
 
 export interface MsgTransferOut {
+  /** from address */
+  from: string;
+  /** to address */
+
+  to: string;
+  /** transfer token amount */
+
+  amount?: Coin;
+}
+/** MsgTransferOut is the Msg/TransferOut request type. */
+
+export interface MsgTransferOutSDKType {
   from: string;
   to: string;
-  amount?: Coin;
+  amount?: CoinSDKType;
 }
 /** MsgTransferOutResponse is the Msg/TransferOut response type. */
 
 export interface MsgTransferOutResponse {}
+/** MsgTransferOutResponse is the Msg/TransferOut response type. */
+
+export interface MsgTransferOutResponseSDKType {}
 
 function createBaseMsgTransferOut(): MsgTransferOut {
   return {
@@ -91,6 +106,22 @@ export const MsgTransferOut = {
     message.to = object.to ?? "";
     message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
     return message;
+  },
+
+  fromSDK(object: MsgTransferOutSDKType): MsgTransferOut {
+    return {
+      from: object?.from,
+      to: object?.to,
+      amount: object.amount ? Coin.fromSDK(object.amount) : undefined
+    };
+  },
+
+  toSDK(message: MsgTransferOut): MsgTransferOutSDKType {
+    const obj: any = {};
+    obj.from = message.from;
+    obj.to = message.to;
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
+    return obj;
   }
 
 };
@@ -134,6 +165,15 @@ export const MsgTransferOutResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgTransferOutResponse>, I>>(_: I): MsgTransferOutResponse {
     const message = createBaseMsgTransferOutResponse();
     return message;
+  },
+
+  fromSDK(_: MsgTransferOutResponseSDKType): MsgTransferOutResponse {
+    return {};
+  },
+
+  toSDK(_: MsgTransferOutResponse): MsgTransferOutResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

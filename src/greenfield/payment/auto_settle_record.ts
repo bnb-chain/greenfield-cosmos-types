@@ -15,6 +15,16 @@ export interface AutoSettleRecord {
 
   addr: string;
 }
+/**
+ * AutoSettleRecord is the record keeps the auto settle information.
+ * The EndBlocker of payment module will scan the list of AutoSettleRecord
+ * and settle the stream account if the timestamp is less than the current time.
+ */
+
+export interface AutoSettleRecordSDKType {
+  timestamp: Long;
+  addr: string;
+}
 
 function createBaseAutoSettleRecord(): AutoSettleRecord {
   return {
@@ -81,6 +91,20 @@ export const AutoSettleRecord = {
     message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
     message.addr = object.addr ?? "";
     return message;
+  },
+
+  fromSDK(object: AutoSettleRecordSDKType): AutoSettleRecord {
+    return {
+      timestamp: object?.timestamp,
+      addr: object?.addr
+    };
+  },
+
+  toSDK(message: AutoSettleRecord): AutoSettleRecordSDKType {
+    const obj: any = {};
+    obj.timestamp = message.timestamp;
+    obj.addr = message.addr;
+    return obj;
   }
 
 };

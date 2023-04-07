@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Timestamp } from "../../../google/protobuf/timestamp";
+import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
 import { Long, isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.evidence.v1beta1";
@@ -13,6 +13,17 @@ export interface Equivocation {
   time?: Timestamp;
   power: Long;
   consensusAddress: string;
+}
+/**
+ * Equivocation implements the Evidence interface and defines evidence of double
+ * signing misbehavior.
+ */
+
+export interface EquivocationSDKType {
+  height: Long;
+  time?: TimestampSDKType;
+  power: Long;
+  consensus_address: string;
 }
 
 function createBaseEquivocation(): Equivocation {
@@ -104,6 +115,24 @@ export const Equivocation = {
     message.power = object.power !== undefined && object.power !== null ? Long.fromValue(object.power) : Long.ZERO;
     message.consensusAddress = object.consensusAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: EquivocationSDKType): Equivocation {
+    return {
+      height: object?.height,
+      time: object.time ? Timestamp.fromSDK(object.time) : undefined,
+      power: object?.power,
+      consensusAddress: object?.consensus_address
+    };
+  },
+
+  toSDK(message: Equivocation): EquivocationSDKType {
+    const obj: any = {};
+    obj.height = message.height;
+    message.time !== undefined && (obj.time = message.time ? Timestamp.toSDK(message.time) : undefined);
+    obj.power = message.power;
+    obj.consensus_address = message.consensusAddress;
+    return obj;
   }
 
 };

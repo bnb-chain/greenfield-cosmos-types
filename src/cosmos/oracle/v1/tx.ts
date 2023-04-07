@@ -5,18 +5,48 @@ export const protobufPackage = "cosmos.oracle.v1";
 /** MsgClaim defines the Msg/Claim request type */
 
 export interface MsgClaim {
+  /** sender address of the msg */
   fromAddress: string;
+  /** source chain id */
+
   srcChainId: number;
+  /** destination chain id */
+
   destChainId: number;
+  /** sequence of the oracle channel */
+
+  sequence: Long;
+  /** timestamp of the claim */
+
+  timestamp: Long;
+  /** payload of the claim */
+
+  payload: Uint8Array;
+  /** bit map of the voted validators */
+
+  voteAddressSet: Long[];
+  /** bls signature of the claim */
+
+  aggSignature: Uint8Array;
+}
+/** MsgClaim defines the Msg/Claim request type */
+
+export interface MsgClaimSDKType {
+  from_address: string;
+  src_chain_id: number;
+  dest_chain_id: number;
   sequence: Long;
   timestamp: Long;
   payload: Uint8Array;
-  voteAddressSet: Long[];
-  aggSignature: Uint8Array;
+  vote_address_set: Long[];
+  agg_signature: Uint8Array;
 }
 /** MsgClaimResponse defines the Msg/Claim response type */
 
 export interface MsgClaimResponse {}
+/** MsgClaimResponse defines the Msg/Claim response type */
+
+export interface MsgClaimResponseSDKType {}
 
 function createBaseMsgClaim(): MsgClaim {
   return {
@@ -174,6 +204,38 @@ export const MsgClaim = {
     message.voteAddressSet = object.voteAddressSet?.map(e => Long.fromValue(e)) || [];
     message.aggSignature = object.aggSignature ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: MsgClaimSDKType): MsgClaim {
+    return {
+      fromAddress: object?.from_address,
+      srcChainId: object?.src_chain_id,
+      destChainId: object?.dest_chain_id,
+      sequence: object?.sequence,
+      timestamp: object?.timestamp,
+      payload: object?.payload,
+      voteAddressSet: Array.isArray(object?.vote_address_set) ? object.vote_address_set.map((e: any) => e) : [],
+      aggSignature: object?.agg_signature
+    };
+  },
+
+  toSDK(message: MsgClaim): MsgClaimSDKType {
+    const obj: any = {};
+    obj.from_address = message.fromAddress;
+    obj.src_chain_id = message.srcChainId;
+    obj.dest_chain_id = message.destChainId;
+    obj.sequence = message.sequence;
+    obj.timestamp = message.timestamp;
+    obj.payload = message.payload;
+
+    if (message.voteAddressSet) {
+      obj.vote_address_set = message.voteAddressSet.map(e => e);
+    } else {
+      obj.vote_address_set = [];
+    }
+
+    obj.agg_signature = message.aggSignature;
+    return obj;
   }
 
 };
@@ -217,6 +279,15 @@ export const MsgClaimResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgClaimResponse>, I>>(_: I): MsgClaimResponse {
     const message = createBaseMsgClaimResponse();
     return message;
+  },
+
+  fromSDK(_: MsgClaimResponseSDKType): MsgClaimResponse {
+    return {};
+  },
+
+  toSDK(_: MsgClaimResponse): MsgClaimResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

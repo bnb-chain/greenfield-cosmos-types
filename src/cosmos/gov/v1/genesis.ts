@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Deposit, Vote, Proposal, DepositParams, VotingParams, TallyParams } from "./gov";
+import { Deposit, DepositSDKType, Vote, VoteSDKType, Proposal, ProposalSDKType, DepositParams, DepositParamsSDKType, VotingParams, VotingParamsSDKType, TallyParams, TallyParamsSDKType } from "./gov";
 import { Long, isSet, DeepPartial, Exact } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.gov.v1";
@@ -26,6 +26,17 @@ export interface GenesisState {
   /** params defines all the paramaters of related to tally. */
 
   tallyParams?: TallyParams;
+}
+/** GenesisState defines the gov module's genesis state. */
+
+export interface GenesisStateSDKType {
+  starting_proposal_id: Long;
+  deposits: DepositSDKType[];
+  votes: VoteSDKType[];
+  proposals: ProposalSDKType[];
+  deposit_params?: DepositParamsSDKType;
+  voting_params?: VotingParamsSDKType;
+  tally_params?: TallyParamsSDKType;
 }
 
 function createBaseGenesisState(): GenesisState {
@@ -169,6 +180,46 @@ export const GenesisState = {
     message.votingParams = object.votingParams !== undefined && object.votingParams !== null ? VotingParams.fromPartial(object.votingParams) : undefined;
     message.tallyParams = object.tallyParams !== undefined && object.tallyParams !== null ? TallyParams.fromPartial(object.tallyParams) : undefined;
     return message;
+  },
+
+  fromSDK(object: GenesisStateSDKType): GenesisState {
+    return {
+      startingProposalId: object?.starting_proposal_id,
+      deposits: Array.isArray(object?.deposits) ? object.deposits.map((e: any) => Deposit.fromSDK(e)) : [],
+      votes: Array.isArray(object?.votes) ? object.votes.map((e: any) => Vote.fromSDK(e)) : [],
+      proposals: Array.isArray(object?.proposals) ? object.proposals.map((e: any) => Proposal.fromSDK(e)) : [],
+      depositParams: object.deposit_params ? DepositParams.fromSDK(object.deposit_params) : undefined,
+      votingParams: object.voting_params ? VotingParams.fromSDK(object.voting_params) : undefined,
+      tallyParams: object.tally_params ? TallyParams.fromSDK(object.tally_params) : undefined
+    };
+  },
+
+  toSDK(message: GenesisState): GenesisStateSDKType {
+    const obj: any = {};
+    obj.starting_proposal_id = message.startingProposalId;
+
+    if (message.deposits) {
+      obj.deposits = message.deposits.map(e => e ? Deposit.toSDK(e) : undefined);
+    } else {
+      obj.deposits = [];
+    }
+
+    if (message.votes) {
+      obj.votes = message.votes.map(e => e ? Vote.toSDK(e) : undefined);
+    } else {
+      obj.votes = [];
+    }
+
+    if (message.proposals) {
+      obj.proposals = message.proposals.map(e => e ? Proposal.toSDK(e) : undefined);
+    } else {
+      obj.proposals = [];
+    }
+
+    message.depositParams !== undefined && (obj.deposit_params = message.depositParams ? DepositParams.toSDK(message.depositParams) : undefined);
+    message.votingParams !== undefined && (obj.voting_params = message.votingParams ? VotingParams.toSDK(message.votingParams) : undefined);
+    message.tallyParams !== undefined && (obj.tally_params = message.tallyParams ? TallyParams.toSDK(message.tallyParams) : undefined);
+    return obj;
   }
 
 };

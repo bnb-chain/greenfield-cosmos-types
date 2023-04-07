@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Params } from "./crosschain";
+import { Params, ParamsSDKType } from "./crosschain";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.crosschain.v1";
@@ -8,6 +8,11 @@ export const protobufPackage = "cosmos.crosschain.v1";
 export interface GenesisState {
   /** params defines all the parameters of related to oracle module. */
   params?: Params;
+}
+/** GenesisState defines the oracle module's genesis state. */
+
+export interface GenesisStateSDKType {
+  params?: ParamsSDKType;
 }
 
 function createBaseGenesisState(): GenesisState {
@@ -63,6 +68,18 @@ export const GenesisState = {
     const message = createBaseGenesisState();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     return message;
+  },
+
+  fromSDK(object: GenesisStateSDKType): GenesisState {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: GenesisState): GenesisStateSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
   }
 
 };

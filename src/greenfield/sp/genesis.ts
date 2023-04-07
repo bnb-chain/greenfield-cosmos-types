@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { Params } from "./params";
-import { StorageProvider } from "./types";
+import { Params, ParamsSDKType } from "./params";
+import { StorageProvider, StorageProviderSDKType, SpStoragePrice, SpStoragePriceSDKType } from "./types";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.sp";
@@ -11,12 +11,21 @@ export interface GenesisState {
   /** this used by starport scaffolding # genesis/proto/state */
 
   storageProviders: StorageProvider[];
+  spStoragePriceList: SpStoragePrice[];
+}
+/** GenesisState defines the sp module's genesis state. */
+
+export interface GenesisStateSDKType {
+  params?: ParamsSDKType;
+  storage_providers: StorageProviderSDKType[];
+  sp_storage_price_list: SpStoragePriceSDKType[];
 }
 
 function createBaseGenesisState(): GenesisState {
   return {
     params: undefined,
-    storageProviders: []
+    storageProviders: [],
+    spStoragePriceList: []
   };
 }
 
@@ -28,6 +37,10 @@ export const GenesisState = {
 
     for (const v of message.storageProviders) {
       StorageProvider.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+
+    for (const v of message.spStoragePriceList) {
+      SpStoragePrice.encode(v!, writer.uint32(26).fork()).ldelim();
     }
 
     return writer;
@@ -50,6 +63,10 @@ export const GenesisState = {
           message.storageProviders.push(StorageProvider.decode(reader, reader.uint32()));
           break;
 
+        case 3:
+          message.spStoragePriceList.push(SpStoragePrice.decode(reader, reader.uint32()));
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -62,7 +79,8 @@ export const GenesisState = {
   fromJSON(object: any): GenesisState {
     return {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
-      storageProviders: Array.isArray(object?.storageProviders) ? object.storageProviders.map((e: any) => StorageProvider.fromJSON(e)) : []
+      storageProviders: Array.isArray(object?.storageProviders) ? object.storageProviders.map((e: any) => StorageProvider.fromJSON(e)) : [],
+      spStoragePriceList: Array.isArray(object?.spStoragePriceList) ? object.spStoragePriceList.map((e: any) => SpStoragePrice.fromJSON(e)) : []
     };
   },
 
@@ -76,6 +94,12 @@ export const GenesisState = {
       obj.storageProviders = [];
     }
 
+    if (message.spStoragePriceList) {
+      obj.spStoragePriceList = message.spStoragePriceList.map(e => e ? SpStoragePrice.toJSON(e) : undefined);
+    } else {
+      obj.spStoragePriceList = [];
+    }
+
     return obj;
   },
 
@@ -83,7 +107,35 @@ export const GenesisState = {
     const message = createBaseGenesisState();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     message.storageProviders = object.storageProviders?.map(e => StorageProvider.fromPartial(e)) || [];
+    message.spStoragePriceList = object.spStoragePriceList?.map(e => SpStoragePrice.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: GenesisStateSDKType): GenesisState {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined,
+      storageProviders: Array.isArray(object?.storage_providers) ? object.storage_providers.map((e: any) => StorageProvider.fromSDK(e)) : [],
+      spStoragePriceList: Array.isArray(object?.sp_storage_price_list) ? object.sp_storage_price_list.map((e: any) => SpStoragePrice.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: GenesisState): GenesisStateSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+
+    if (message.storageProviders) {
+      obj.storage_providers = message.storageProviders.map(e => e ? StorageProvider.toSDK(e) : undefined);
+    } else {
+      obj.storage_providers = [];
+    }
+
+    if (message.spStoragePriceList) {
+      obj.sp_storage_price_list = message.spStoragePriceList.map(e => e ? SpStoragePrice.toSDK(e) : undefined);
+    } else {
+      obj.sp_storage_price_list = [];
+    }
+
+    return obj;
   }
 
 };

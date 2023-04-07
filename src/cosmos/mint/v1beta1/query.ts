@@ -1,20 +1,31 @@
 /* eslint-disable */
-import { Params } from "./mint";
+import { Params, ParamsSDKType } from "./mint";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, bytesFromBase64, base64FromBytes, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.mint.v1beta1";
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
+/** QueryParamsRequest is the request type for the Query/Params RPC method. */
+
+export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 
 export interface QueryParamsResponse {
   /** params defines the parameters of the module. */
   params?: Params;
 }
+/** QueryParamsResponse is the response type for the Query/Params RPC method. */
+
+export interface QueryParamsResponseSDKType {
+  params?: ParamsSDKType;
+}
 /** QueryInflationRequest is the request type for the Query/Inflation RPC method. */
 
 export interface QueryInflationRequest {}
+/** QueryInflationRequest is the request type for the Query/Inflation RPC method. */
+
+export interface QueryInflationRequestSDKType {}
 /**
  * QueryInflationResponse is the response type for the Query/Inflation RPC
  * method.
@@ -25,11 +36,25 @@ export interface QueryInflationResponse {
   inflation: Uint8Array;
 }
 /**
+ * QueryInflationResponse is the response type for the Query/Inflation RPC
+ * method.
+ */
+
+export interface QueryInflationResponseSDKType {
+  inflation: Uint8Array;
+}
+/**
  * QueryAnnualProvisionsRequest is the request type for the
  * Query/AnnualProvisions RPC method.
  */
 
 export interface QueryAnnualProvisionsRequest {}
+/**
+ * QueryAnnualProvisionsRequest is the request type for the
+ * Query/AnnualProvisions RPC method.
+ */
+
+export interface QueryAnnualProvisionsRequestSDKType {}
 /**
  * QueryAnnualProvisionsResponse is the response type for the
  * Query/AnnualProvisions RPC method.
@@ -38,6 +63,14 @@ export interface QueryAnnualProvisionsRequest {}
 export interface QueryAnnualProvisionsResponse {
   /** annual_provisions is the current minting annual provisions value. */
   annualProvisions: Uint8Array;
+}
+/**
+ * QueryAnnualProvisionsResponse is the response type for the
+ * Query/AnnualProvisions RPC method.
+ */
+
+export interface QueryAnnualProvisionsResponseSDKType {
+  annual_provisions: Uint8Array;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -79,6 +112,15 @@ export const QueryParamsRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(_: I): QueryParamsRequest {
     const message = createBaseQueryParamsRequest();
     return message;
+  },
+
+  fromSDK(_: QueryParamsRequestSDKType): QueryParamsRequest {
+    return {};
+  },
+
+  toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -136,6 +178,18 @@ export const QueryParamsResponse = {
     const message = createBaseQueryParamsResponse();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryParamsResponseSDKType): QueryParamsResponse {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
   }
 
 };
@@ -179,6 +233,15 @@ export const QueryInflationRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryInflationRequest>, I>>(_: I): QueryInflationRequest {
     const message = createBaseQueryInflationRequest();
     return message;
+  },
+
+  fromSDK(_: QueryInflationRequestSDKType): QueryInflationRequest {
+    return {};
+  },
+
+  toSDK(_: QueryInflationRequest): QueryInflationRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -236,6 +299,18 @@ export const QueryInflationResponse = {
     const message = createBaseQueryInflationResponse();
     message.inflation = object.inflation ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: QueryInflationResponseSDKType): QueryInflationResponse {
+    return {
+      inflation: object?.inflation
+    };
+  },
+
+  toSDK(message: QueryInflationResponse): QueryInflationResponseSDKType {
+    const obj: any = {};
+    obj.inflation = message.inflation;
+    return obj;
   }
 
 };
@@ -279,6 +354,15 @@ export const QueryAnnualProvisionsRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryAnnualProvisionsRequest>, I>>(_: I): QueryAnnualProvisionsRequest {
     const message = createBaseQueryAnnualProvisionsRequest();
     return message;
+  },
+
+  fromSDK(_: QueryAnnualProvisionsRequestSDKType): QueryAnnualProvisionsRequest {
+    return {};
+  },
+
+  toSDK(_: QueryAnnualProvisionsRequest): QueryAnnualProvisionsRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -336,6 +420,18 @@ export const QueryAnnualProvisionsResponse = {
     const message = createBaseQueryAnnualProvisionsResponse();
     message.annualProvisions = object.annualProvisions ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: QueryAnnualProvisionsResponseSDKType): QueryAnnualProvisionsResponse {
+    return {
+      annualProvisions: object?.annual_provisions
+    };
+  },
+
+  toSDK(message: QueryAnnualProvisionsResponse): QueryAnnualProvisionsResponseSDKType {
+    const obj: any = {};
+    obj.annual_provisions = message.annualProvisions;
+    return obj;
   }
 
 };

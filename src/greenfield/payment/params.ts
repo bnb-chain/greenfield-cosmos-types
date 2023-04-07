@@ -22,6 +22,19 @@ export interface Params {
   /** The denom of fee charged in payment module */
 
   feeDenom: string;
+  /** The tax rate to pay for validators in storage payment. The default value is 1%(0.01) */
+
+  validatorTaxRate: string;
+}
+/** Params defines the parameters for the module. */
+
+export interface ParamsSDKType {
+  reserve_time: Long;
+  payment_account_count_limit: Long;
+  forced_settle_time: Long;
+  max_auto_force_settle_num: Long;
+  fee_denom: string;
+  validator_tax_rate: string;
 }
 
 function createBaseParams(): Params {
@@ -30,7 +43,8 @@ function createBaseParams(): Params {
     paymentAccountCountLimit: Long.UZERO,
     forcedSettleTime: Long.UZERO,
     maxAutoForceSettleNum: Long.UZERO,
-    feeDenom: ""
+    feeDenom: "",
+    validatorTaxRate: ""
   };
 }
 
@@ -54,6 +68,10 @@ export const Params = {
 
     if (message.feeDenom !== "") {
       writer.uint32(42).string(message.feeDenom);
+    }
+
+    if (message.validatorTaxRate !== "") {
+      writer.uint32(50).string(message.validatorTaxRate);
     }
 
     return writer;
@@ -88,6 +106,10 @@ export const Params = {
           message.feeDenom = reader.string();
           break;
 
+        case 6:
+          message.validatorTaxRate = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -103,7 +125,8 @@ export const Params = {
       paymentAccountCountLimit: isSet(object.paymentAccountCountLimit) ? Long.fromValue(object.paymentAccountCountLimit) : Long.UZERO,
       forcedSettleTime: isSet(object.forcedSettleTime) ? Long.fromValue(object.forcedSettleTime) : Long.UZERO,
       maxAutoForceSettleNum: isSet(object.maxAutoForceSettleNum) ? Long.fromValue(object.maxAutoForceSettleNum) : Long.UZERO,
-      feeDenom: isSet(object.feeDenom) ? String(object.feeDenom) : ""
+      feeDenom: isSet(object.feeDenom) ? String(object.feeDenom) : "",
+      validatorTaxRate: isSet(object.validatorTaxRate) ? String(object.validatorTaxRate) : ""
     };
   },
 
@@ -114,6 +137,7 @@ export const Params = {
     message.forcedSettleTime !== undefined && (obj.forcedSettleTime = (message.forcedSettleTime || Long.UZERO).toString());
     message.maxAutoForceSettleNum !== undefined && (obj.maxAutoForceSettleNum = (message.maxAutoForceSettleNum || Long.UZERO).toString());
     message.feeDenom !== undefined && (obj.feeDenom = message.feeDenom);
+    message.validatorTaxRate !== undefined && (obj.validatorTaxRate = message.validatorTaxRate);
     return obj;
   },
 
@@ -124,7 +148,30 @@ export const Params = {
     message.forcedSettleTime = object.forcedSettleTime !== undefined && object.forcedSettleTime !== null ? Long.fromValue(object.forcedSettleTime) : Long.UZERO;
     message.maxAutoForceSettleNum = object.maxAutoForceSettleNum !== undefined && object.maxAutoForceSettleNum !== null ? Long.fromValue(object.maxAutoForceSettleNum) : Long.UZERO;
     message.feeDenom = object.feeDenom ?? "";
+    message.validatorTaxRate = object.validatorTaxRate ?? "";
     return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      reserveTime: object?.reserve_time,
+      paymentAccountCountLimit: object?.payment_account_count_limit,
+      forcedSettleTime: object?.forced_settle_time,
+      maxAutoForceSettleNum: object?.max_auto_force_settle_num,
+      feeDenom: object?.fee_denom,
+      validatorTaxRate: object?.validator_tax_rate
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+    obj.reserve_time = message.reserveTime;
+    obj.payment_account_count_limit = message.paymentAccountCountLimit;
+    obj.forced_settle_time = message.forcedSettleTime;
+    obj.max_auto_force_settle_num = message.maxAutoForceSettleNum;
+    obj.fee_denom = message.feeDenom;
+    obj.validator_tax_rate = message.validatorTaxRate;
+    return obj;
   }
 
 };

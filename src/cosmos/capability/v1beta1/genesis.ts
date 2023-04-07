@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { CapabilityOwners } from "./capability";
+import { CapabilityOwners, CapabilityOwnersSDKType } from "./capability";
 import { Long, isSet, DeepPartial, Exact } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.capability.v1beta1";
@@ -12,6 +12,12 @@ export interface GenesisOwners {
 
   indexOwners?: CapabilityOwners;
 }
+/** GenesisOwners defines the capability owners with their corresponding index. */
+
+export interface GenesisOwnersSDKType {
+  index: Long;
+  index_owners?: CapabilityOwnersSDKType;
+}
 /** GenesisState defines the capability module's genesis state. */
 
 export interface GenesisState {
@@ -23,6 +29,12 @@ export interface GenesisState {
    */
 
   owners: GenesisOwners[];
+}
+/** GenesisState defines the capability module's genesis state. */
+
+export interface GenesisStateSDKType {
+  index: Long;
+  owners: GenesisOwnersSDKType[];
 }
 
 function createBaseGenesisOwners(): GenesisOwners {
@@ -90,6 +102,20 @@ export const GenesisOwners = {
     message.index = object.index !== undefined && object.index !== null ? Long.fromValue(object.index) : Long.UZERO;
     message.indexOwners = object.indexOwners !== undefined && object.indexOwners !== null ? CapabilityOwners.fromPartial(object.indexOwners) : undefined;
     return message;
+  },
+
+  fromSDK(object: GenesisOwnersSDKType): GenesisOwners {
+    return {
+      index: object?.index,
+      indexOwners: object.index_owners ? CapabilityOwners.fromSDK(object.index_owners) : undefined
+    };
+  },
+
+  toSDK(message: GenesisOwners): GenesisOwnersSDKType {
+    const obj: any = {};
+    obj.index = message.index;
+    message.indexOwners !== undefined && (obj.index_owners = message.indexOwners ? CapabilityOwners.toSDK(message.indexOwners) : undefined);
+    return obj;
   }
 
 };
@@ -165,6 +191,26 @@ export const GenesisState = {
     message.index = object.index !== undefined && object.index !== null ? Long.fromValue(object.index) : Long.UZERO;
     message.owners = object.owners?.map(e => GenesisOwners.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: GenesisStateSDKType): GenesisState {
+    return {
+      index: object?.index,
+      owners: Array.isArray(object?.owners) ? object.owners.map((e: any) => GenesisOwners.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: GenesisState): GenesisStateSDKType {
+    const obj: any = {};
+    obj.index = message.index;
+
+    if (message.owners) {
+      obj.owners = message.owners.map(e => e ? GenesisOwners.toSDK(e) : undefined);
+    } else {
+      obj.owners = [];
+    }
+
+    return obj;
   }
 
 };

@@ -9,9 +9,19 @@ export interface MsgVerifyInvariant {
   invariantModuleName: string;
   invariantRoute: string;
 }
+/** MsgVerifyInvariant represents a message to verify a particular invariance. */
+
+export interface MsgVerifyInvariantSDKType {
+  sender: string;
+  invariant_module_name: string;
+  invariant_route: string;
+}
 /** MsgVerifyInvariantResponse defines the Msg/VerifyInvariant response type. */
 
 export interface MsgVerifyInvariantResponse {}
+/** MsgVerifyInvariantResponse defines the Msg/VerifyInvariant response type. */
+
+export interface MsgVerifyInvariantResponseSDKType {}
 
 function createBaseMsgVerifyInvariant(): MsgVerifyInvariant {
   return {
@@ -90,6 +100,22 @@ export const MsgVerifyInvariant = {
     message.invariantModuleName = object.invariantModuleName ?? "";
     message.invariantRoute = object.invariantRoute ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgVerifyInvariantSDKType): MsgVerifyInvariant {
+    return {
+      sender: object?.sender,
+      invariantModuleName: object?.invariant_module_name,
+      invariantRoute: object?.invariant_route
+    };
+  },
+
+  toSDK(message: MsgVerifyInvariant): MsgVerifyInvariantSDKType {
+    const obj: any = {};
+    obj.sender = message.sender;
+    obj.invariant_module_name = message.invariantModuleName;
+    obj.invariant_route = message.invariantRoute;
+    return obj;
   }
 
 };
@@ -133,6 +159,15 @@ export const MsgVerifyInvariantResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgVerifyInvariantResponse>, I>>(_: I): MsgVerifyInvariantResponse {
     const message = createBaseMsgVerifyInvariantResponse();
     return message;
+  },
+
+  fromSDK(_: MsgVerifyInvariantResponseSDKType): MsgVerifyInvariantResponse {
+    return {};
+  },
+
+  toSDK(_: MsgVerifyInvariantResponse): MsgVerifyInvariantResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

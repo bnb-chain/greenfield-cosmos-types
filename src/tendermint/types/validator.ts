@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { PublicKey } from "../crypto/keys";
+import { PublicKey, PublicKeySDKType } from "../crypto/keys";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "tendermint.types";
@@ -8,15 +8,30 @@ export interface ValidatorSet {
   proposer?: Validator;
   totalVotingPower: Long;
 }
+export interface ValidatorSetSDKType {
+  validators: ValidatorSDKType[];
+  proposer?: ValidatorSDKType;
+  total_voting_power: Long;
+}
 export interface Validator {
   address: Uint8Array;
   pubKey?: PublicKey;
   votingPower: Long;
   proposerPriority: Long;
 }
+export interface ValidatorSDKType {
+  address: Uint8Array;
+  pub_key?: PublicKeySDKType;
+  voting_power: Long;
+  proposer_priority: Long;
+}
 export interface SimpleValidator {
   pubKey?: PublicKey;
   votingPower: Long;
+}
+export interface SimpleValidatorSDKType {
+  pub_key?: PublicKeySDKType;
+  voting_power: Long;
 }
 
 function createBaseValidatorSet(): ValidatorSet {
@@ -102,6 +117,28 @@ export const ValidatorSet = {
     message.proposer = object.proposer !== undefined && object.proposer !== null ? Validator.fromPartial(object.proposer) : undefined;
     message.totalVotingPower = object.totalVotingPower !== undefined && object.totalVotingPower !== null ? Long.fromValue(object.totalVotingPower) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: ValidatorSetSDKType): ValidatorSet {
+    return {
+      validators: Array.isArray(object?.validators) ? object.validators.map((e: any) => Validator.fromSDK(e)) : [],
+      proposer: object.proposer ? Validator.fromSDK(object.proposer) : undefined,
+      totalVotingPower: object?.total_voting_power
+    };
+  },
+
+  toSDK(message: ValidatorSet): ValidatorSetSDKType {
+    const obj: any = {};
+
+    if (message.validators) {
+      obj.validators = message.validators.map(e => e ? Validator.toSDK(e) : undefined);
+    } else {
+      obj.validators = [];
+    }
+
+    message.proposer !== undefined && (obj.proposer = message.proposer ? Validator.toSDK(message.proposer) : undefined);
+    obj.total_voting_power = message.totalVotingPower;
+    return obj;
   }
 
 };
@@ -195,6 +232,24 @@ export const Validator = {
     message.votingPower = object.votingPower !== undefined && object.votingPower !== null ? Long.fromValue(object.votingPower) : Long.ZERO;
     message.proposerPriority = object.proposerPriority !== undefined && object.proposerPriority !== null ? Long.fromValue(object.proposerPriority) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: ValidatorSDKType): Validator {
+    return {
+      address: object?.address,
+      pubKey: object.pub_key ? PublicKey.fromSDK(object.pub_key) : undefined,
+      votingPower: object?.voting_power,
+      proposerPriority: object?.proposer_priority
+    };
+  },
+
+  toSDK(message: Validator): ValidatorSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    message.pubKey !== undefined && (obj.pub_key = message.pubKey ? PublicKey.toSDK(message.pubKey) : undefined);
+    obj.voting_power = message.votingPower;
+    obj.proposer_priority = message.proposerPriority;
+    return obj;
   }
 
 };
@@ -264,6 +319,20 @@ export const SimpleValidator = {
     message.pubKey = object.pubKey !== undefined && object.pubKey !== null ? PublicKey.fromPartial(object.pubKey) : undefined;
     message.votingPower = object.votingPower !== undefined && object.votingPower !== null ? Long.fromValue(object.votingPower) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: SimpleValidatorSDKType): SimpleValidator {
+    return {
+      pubKey: object.pub_key ? PublicKey.fromSDK(object.pub_key) : undefined,
+      votingPower: object?.voting_power
+    };
+  },
+
+  toSDK(message: SimpleValidator): SimpleValidatorSDKType {
+    const obj: any = {};
+    message.pubKey !== undefined && (obj.pub_key = message.pubKey ? PublicKey.toSDK(message.pubKey) : undefined);
+    obj.voting_power = message.votingPower;
+    return obj;
   }
 
 };

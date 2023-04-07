@@ -1,9 +1,9 @@
 /* eslint-disable */
-import { Header } from "../../../tendermint/types/types";
-import { Timestamp } from "../../../google/protobuf/timestamp";
-import { Any } from "../../../google/protobuf/any";
-import { Duration } from "../../../google/protobuf/duration";
-import { Coin } from "../../base/v1beta1/coin";
+import { Header, HeaderSDKType } from "../../../tendermint/types/types";
+import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
+import { Any, AnySDKType } from "../../../google/protobuf/any";
+import { Duration, DurationSDKType } from "../../../google/protobuf/duration";
+import { Coin, CoinSDKType } from "../../base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, fromJsonTimestamp, fromTimestamp, Long, bytesFromBase64, base64FromBytes } from "../../../helpers";
 export const protobufPackage = "cosmos.staking.v1beta1";
@@ -23,6 +23,7 @@ export enum BondStatus {
   BOND_STATUS_BONDED = 3,
   UNRECOGNIZED = -1,
 }
+export const BondStatusSDKType = BondStatus;
 export function bondStatusFromJSON(object: any): BondStatus {
   switch (object) {
     case 0:
@@ -78,6 +79,17 @@ export interface HistoricalInfo {
   valset: Validator[];
 }
 /**
+ * HistoricalInfo contains header and validator information for a given block.
+ * It is stored as part of staking module's state, which persists the `n` most
+ * recent HistoricalInfo
+ * (`n` is set by the staking module's `historical_entries` parameter).
+ */
+
+export interface HistoricalInfoSDKType {
+  header?: HeaderSDKType;
+  valset: ValidatorSDKType[];
+}
+/**
  * CommissionRates defines the initial commission rates to be used for creating
  * a validator.
  */
@@ -92,6 +104,16 @@ export interface CommissionRates {
 
   maxChangeRate: string;
 }
+/**
+ * CommissionRates defines the initial commission rates to be used for creating
+ * a validator.
+ */
+
+export interface CommissionRatesSDKType {
+  rate: string;
+  max_rate: string;
+  max_change_rate: string;
+}
 /** Commission defines commission parameters for a given validator. */
 
 export interface Commission {
@@ -100,6 +122,12 @@ export interface Commission {
   /** update_time is the last time the commission rate was changed. */
 
   updateTime?: Timestamp;
+}
+/** Commission defines commission parameters for a given validator. */
+
+export interface CommissionSDKType {
+  commission_rates?: CommissionRatesSDKType;
+  update_time?: TimestampSDKType;
 }
 /** Description defines a validator description. */
 
@@ -117,6 +145,15 @@ export interface Description {
   securityContact: string;
   /** details define other optional details. */
 
+  details: string;
+}
+/** Description defines a validator description. */
+
+export interface DescriptionSDKType {
+  moniker: string;
+  identity: string;
+  website: string;
+  security_contact: string;
   details: string;
 }
 /**
@@ -170,16 +207,52 @@ export interface Validator {
   /** self_del_address defines the address of the validator for self delegation. */
 
   selfDelAddress: string;
-  /** relayer_address defines the address of the validator's authorized relayer/operator;. */
+  /** relayer_address defines the address of the validator's authorized relayer;. */
 
   relayerAddress: string;
-  /** relayer_bls_key defines the bls pubkey of the validator's authorized relayer/operator; */
+  /** challenger_address defines the address of the validator's authorized challenger;. */
 
-  relayerBlsKey: Uint8Array;
+  challengerAddress: string;
+  /** bls_key defines the bls pubkey of the validator's authorized relayer/challenger/operator; */
+
+  blsKey: Uint8Array;
+}
+/**
+ * Validator defines a validator, together with the total amount of the
+ * Validator's bond shares and their exchange rate to coins. Slashing results in
+ * a decrease in the exchange rate, allowing correct calculation of future
+ * undelegations without iterating over delegators. When coins are delegated to
+ * this validator, the validator is credited with a delegation whose number of
+ * bond shares is based on the amount of coins delegated divided by the current
+ * exchange rate. Voting power can be calculated as total bonded shares
+ * multiplied by exchange rate.
+ */
+
+export interface ValidatorSDKType {
+  operator_address: string;
+  consensus_pubkey?: AnySDKType;
+  jailed: boolean;
+  status: BondStatus;
+  tokens: string;
+  delegator_shares: string;
+  description?: DescriptionSDKType;
+  unbonding_height: Long;
+  unbonding_time?: TimestampSDKType;
+  commission?: CommissionSDKType;
+  min_self_delegation: string;
+  self_del_address: string;
+  relayer_address: string;
+  challenger_address: string;
+  bls_key: Uint8Array;
 }
 /** ValAddresses defines a repeated set of validator addresses. */
 
 export interface ValAddresses {
+  addresses: string[];
+}
+/** ValAddresses defines a repeated set of validator addresses. */
+
+export interface ValAddressesSDKType {
   addresses: string[];
 }
 /**
@@ -192,10 +265,25 @@ export interface DVPair {
   delegatorAddress: string;
   validatorAddress: string;
 }
+/**
+ * DVPair is struct that just has a delegator-validator pair with no other data.
+ * It is intended to be used as a marshalable pointer. For example, a DVPair can
+ * be used to construct the key to getting an UnbondingDelegation from state.
+ */
+
+export interface DVPairSDKType {
+  delegator_address: string;
+  validator_address: string;
+}
 /** DVPairs defines an array of DVPair objects. */
 
 export interface DVPairs {
   pairs: DVPair[];
+}
+/** DVPairs defines an array of DVPair objects. */
+
+export interface DVPairsSDKType {
+  pairs: DVPairSDKType[];
 }
 /**
  * DVVTriplet is struct that just has a delegator-validator-validator triplet
@@ -209,10 +297,27 @@ export interface DVVTriplet {
   validatorSrcAddress: string;
   validatorDstAddress: string;
 }
+/**
+ * DVVTriplet is struct that just has a delegator-validator-validator triplet
+ * with no other data. It is intended to be used as a marshalable pointer. For
+ * example, a DVVTriplet can be used to construct the key to getting a
+ * Redelegation from state.
+ */
+
+export interface DVVTripletSDKType {
+  delegator_address: string;
+  validator_src_address: string;
+  validator_dst_address: string;
+}
 /** DVVTriplets defines an array of DVVTriplet objects. */
 
 export interface DVVTriplets {
   triplets: DVVTriplet[];
+}
+/** DVVTriplets defines an array of DVVTriplet objects. */
+
+export interface DVVTripletsSDKType {
+  triplets: DVVTripletSDKType[];
 }
 /**
  * Delegation represents the bond with tokens held by an account. It is
@@ -231,6 +336,17 @@ export interface Delegation {
   shares: string;
 }
 /**
+ * Delegation represents the bond with tokens held by an account. It is
+ * owned by one delegator, and is associated with the voting power of one
+ * validator.
+ */
+
+export interface DelegationSDKType {
+  delegator_address: string;
+  validator_address: string;
+  shares: string;
+}
+/**
  * UnbondingDelegation stores all of a single delegator's unbonding bonds
  * for a single validator in an time-ordered list.
  */
@@ -244,6 +360,16 @@ export interface UnbondingDelegation {
   /** entries are the unbonding delegation entries. */
 
   entries: UnbondingDelegationEntry[];
+}
+/**
+ * UnbondingDelegation stores all of a single delegator's unbonding bonds
+ * for a single validator in an time-ordered list.
+ */
+
+export interface UnbondingDelegationSDKType {
+  delegator_address: string;
+  validator_address: string;
+  entries: UnbondingDelegationEntrySDKType[];
 }
 /** UnbondingDelegationEntry defines an unbonding object with relevant metadata. */
 
@@ -260,6 +386,14 @@ export interface UnbondingDelegationEntry {
 
   balance: string;
 }
+/** UnbondingDelegationEntry defines an unbonding object with relevant metadata. */
+
+export interface UnbondingDelegationEntrySDKType {
+  creation_height: Long;
+  completion_time?: TimestampSDKType;
+  initial_balance: string;
+  balance: string;
+}
 /** RedelegationEntry defines a redelegation object with relevant metadata. */
 
 export interface RedelegationEntry {
@@ -274,6 +408,14 @@ export interface RedelegationEntry {
   /** shares_dst is the amount of destination-validator shares created by redelegation. */
 
   sharesDst: string;
+}
+/** RedelegationEntry defines a redelegation object with relevant metadata. */
+
+export interface RedelegationEntrySDKType {
+  creation_height: Long;
+  completion_time?: TimestampSDKType;
+  initial_balance: string;
+  shares_dst: string;
 }
 /**
  * Redelegation contains the list of a particular delegator's redelegating bonds
@@ -292,6 +434,17 @@ export interface Redelegation {
   /** entries are the redelegation entries. */
 
   entries: RedelegationEntry[];
+}
+/**
+ * Redelegation contains the list of a particular delegator's redelegating bonds
+ * from a particular source validator to a particular destination validator.
+ */
+
+export interface RedelegationSDKType {
+  delegator_address: string;
+  validator_src_address: string;
+  validator_dst_address: string;
+  entries: RedelegationEntrySDKType[];
 }
 /** Params defines the parameters for the staking module. */
 
@@ -317,6 +470,17 @@ export interface Params {
 
   minSelfDelegation: string;
 }
+/** Params defines the parameters for the staking module. */
+
+export interface ParamsSDKType {
+  unbonding_time?: DurationSDKType;
+  max_validators: number;
+  max_entries: number;
+  historical_entries: number;
+  bond_denom: string;
+  min_commission_rate: string;
+  min_self_delegation: string;
+}
 /**
  * DelegationResponse is equivalent to Delegation except that it contains a
  * balance in addition to shares which is more suitable for client responses.
@@ -327,6 +491,15 @@ export interface DelegationResponse {
   balance?: Coin;
 }
 /**
+ * DelegationResponse is equivalent to Delegation except that it contains a
+ * balance in addition to shares which is more suitable for client responses.
+ */
+
+export interface DelegationResponseSDKType {
+  delegation?: DelegationSDKType;
+  balance?: CoinSDKType;
+}
+/**
  * RedelegationEntryResponse is equivalent to a RedelegationEntry except that it
  * contains a balance in addition to shares which is more suitable for client
  * responses.
@@ -334,6 +507,16 @@ export interface DelegationResponse {
 
 export interface RedelegationEntryResponse {
   redelegationEntry?: RedelegationEntry;
+  balance: string;
+}
+/**
+ * RedelegationEntryResponse is equivalent to a RedelegationEntry except that it
+ * contains a balance in addition to shares which is more suitable for client
+ * responses.
+ */
+
+export interface RedelegationEntryResponseSDKType {
+  redelegation_entry?: RedelegationEntrySDKType;
   balance: string;
 }
 /**
@@ -347,6 +530,16 @@ export interface RedelegationResponse {
   entries: RedelegationEntryResponse[];
 }
 /**
+ * RedelegationResponse is equivalent to a Redelegation except that its entries
+ * contain a balance in addition to shares which is more suitable for client
+ * responses.
+ */
+
+export interface RedelegationResponseSDKType {
+  redelegation?: RedelegationSDKType;
+  entries: RedelegationEntryResponseSDKType[];
+}
+/**
  * Pool is used for tracking bonded and not-bonded token supply of the bond
  * denomination.
  */
@@ -354,6 +547,15 @@ export interface RedelegationResponse {
 export interface Pool {
   notBondedTokens: string;
   bondedTokens: string;
+}
+/**
+ * Pool is used for tracking bonded and not-bonded token supply of the bond
+ * denomination.
+ */
+
+export interface PoolSDKType {
+  not_bonded_tokens: string;
+  bonded_tokens: string;
 }
 
 function createBaseHistoricalInfo(): HistoricalInfo {
@@ -427,6 +629,26 @@ export const HistoricalInfo = {
     message.header = object.header !== undefined && object.header !== null ? Header.fromPartial(object.header) : undefined;
     message.valset = object.valset?.map(e => Validator.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: HistoricalInfoSDKType): HistoricalInfo {
+    return {
+      header: object.header ? Header.fromSDK(object.header) : undefined,
+      valset: Array.isArray(object?.valset) ? object.valset.map((e: any) => Validator.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: HistoricalInfo): HistoricalInfoSDKType {
+    const obj: any = {};
+    message.header !== undefined && (obj.header = message.header ? Header.toSDK(message.header) : undefined);
+
+    if (message.valset) {
+      obj.valset = message.valset.map(e => e ? Validator.toSDK(e) : undefined);
+    } else {
+      obj.valset = [];
+    }
+
+    return obj;
   }
 
 };
@@ -508,6 +730,22 @@ export const CommissionRates = {
     message.maxRate = object.maxRate ?? "";
     message.maxChangeRate = object.maxChangeRate ?? "";
     return message;
+  },
+
+  fromSDK(object: CommissionRatesSDKType): CommissionRates {
+    return {
+      rate: object?.rate,
+      maxRate: object?.max_rate,
+      maxChangeRate: object?.max_change_rate
+    };
+  },
+
+  toSDK(message: CommissionRates): CommissionRatesSDKType {
+    const obj: any = {};
+    obj.rate = message.rate;
+    obj.max_rate = message.maxRate;
+    obj.max_change_rate = message.maxChangeRate;
+    return obj;
   }
 
 };
@@ -577,6 +815,20 @@ export const Commission = {
     message.commissionRates = object.commissionRates !== undefined && object.commissionRates !== null ? CommissionRates.fromPartial(object.commissionRates) : undefined;
     message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Timestamp.fromPartial(object.updateTime) : undefined;
     return message;
+  },
+
+  fromSDK(object: CommissionSDKType): Commission {
+    return {
+      commissionRates: object.commission_rates ? CommissionRates.fromSDK(object.commission_rates) : undefined,
+      updateTime: object.update_time ? Timestamp.fromSDK(object.update_time) : undefined
+    };
+  },
+
+  toSDK(message: Commission): CommissionSDKType {
+    const obj: any = {};
+    message.commissionRates !== undefined && (obj.commission_rates = message.commissionRates ? CommissionRates.toSDK(message.commissionRates) : undefined);
+    message.updateTime !== undefined && (obj.update_time = message.updateTime ? Timestamp.toSDK(message.updateTime) : undefined);
+    return obj;
   }
 
 };
@@ -682,6 +934,26 @@ export const Description = {
     message.securityContact = object.securityContact ?? "";
     message.details = object.details ?? "";
     return message;
+  },
+
+  fromSDK(object: DescriptionSDKType): Description {
+    return {
+      moniker: object?.moniker,
+      identity: object?.identity,
+      website: object?.website,
+      securityContact: object?.security_contact,
+      details: object?.details
+    };
+  },
+
+  toSDK(message: Description): DescriptionSDKType {
+    const obj: any = {};
+    obj.moniker = message.moniker;
+    obj.identity = message.identity;
+    obj.website = message.website;
+    obj.security_contact = message.securityContact;
+    obj.details = message.details;
+    return obj;
   }
 
 };
@@ -701,7 +973,8 @@ function createBaseValidator(): Validator {
     minSelfDelegation: "",
     selfDelAddress: "",
     relayerAddress: "",
-    relayerBlsKey: new Uint8Array()
+    challengerAddress: "",
+    blsKey: new Uint8Array()
   };
 }
 
@@ -759,8 +1032,12 @@ export const Validator = {
       writer.uint32(106).string(message.relayerAddress);
     }
 
-    if (message.relayerBlsKey.length !== 0) {
-      writer.uint32(114).bytes(message.relayerBlsKey);
+    if (message.challengerAddress !== "") {
+      writer.uint32(114).string(message.challengerAddress);
+    }
+
+    if (message.blsKey.length !== 0) {
+      writer.uint32(122).bytes(message.blsKey);
     }
 
     return writer;
@@ -828,7 +1105,11 @@ export const Validator = {
           break;
 
         case 14:
-          message.relayerBlsKey = reader.bytes();
+          message.challengerAddress = reader.string();
+          break;
+
+        case 15:
+          message.blsKey = reader.bytes();
           break;
 
         default:
@@ -855,7 +1136,8 @@ export const Validator = {
       minSelfDelegation: isSet(object.minSelfDelegation) ? String(object.minSelfDelegation) : "",
       selfDelAddress: isSet(object.selfDelAddress) ? String(object.selfDelAddress) : "",
       relayerAddress: isSet(object.relayerAddress) ? String(object.relayerAddress) : "",
-      relayerBlsKey: isSet(object.relayerBlsKey) ? bytesFromBase64(object.relayerBlsKey) : new Uint8Array()
+      challengerAddress: isSet(object.challengerAddress) ? String(object.challengerAddress) : "",
+      blsKey: isSet(object.blsKey) ? bytesFromBase64(object.blsKey) : new Uint8Array()
     };
   },
 
@@ -874,7 +1156,8 @@ export const Validator = {
     message.minSelfDelegation !== undefined && (obj.minSelfDelegation = message.minSelfDelegation);
     message.selfDelAddress !== undefined && (obj.selfDelAddress = message.selfDelAddress);
     message.relayerAddress !== undefined && (obj.relayerAddress = message.relayerAddress);
-    message.relayerBlsKey !== undefined && (obj.relayerBlsKey = base64FromBytes(message.relayerBlsKey !== undefined ? message.relayerBlsKey : new Uint8Array()));
+    message.challengerAddress !== undefined && (obj.challengerAddress = message.challengerAddress);
+    message.blsKey !== undefined && (obj.blsKey = base64FromBytes(message.blsKey !== undefined ? message.blsKey : new Uint8Array()));
     return obj;
   },
 
@@ -893,8 +1176,49 @@ export const Validator = {
     message.minSelfDelegation = object.minSelfDelegation ?? "";
     message.selfDelAddress = object.selfDelAddress ?? "";
     message.relayerAddress = object.relayerAddress ?? "";
-    message.relayerBlsKey = object.relayerBlsKey ?? new Uint8Array();
+    message.challengerAddress = object.challengerAddress ?? "";
+    message.blsKey = object.blsKey ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: ValidatorSDKType): Validator {
+    return {
+      operatorAddress: object?.operator_address,
+      consensusPubkey: object.consensus_pubkey ? Any.fromSDK(object.consensus_pubkey) : undefined,
+      jailed: object?.jailed,
+      status: isSet(object.status) ? bondStatusFromJSON(object.status) : 0,
+      tokens: object?.tokens,
+      delegatorShares: object?.delegator_shares,
+      description: object.description ? Description.fromSDK(object.description) : undefined,
+      unbondingHeight: object?.unbonding_height,
+      unbondingTime: object.unbonding_time ? Timestamp.fromSDK(object.unbonding_time) : undefined,
+      commission: object.commission ? Commission.fromSDK(object.commission) : undefined,
+      minSelfDelegation: object?.min_self_delegation,
+      selfDelAddress: object?.self_del_address,
+      relayerAddress: object?.relayer_address,
+      challengerAddress: object?.challenger_address,
+      blsKey: object?.bls_key
+    };
+  },
+
+  toSDK(message: Validator): ValidatorSDKType {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    message.consensusPubkey !== undefined && (obj.consensus_pubkey = message.consensusPubkey ? Any.toSDK(message.consensusPubkey) : undefined);
+    obj.jailed = message.jailed;
+    message.status !== undefined && (obj.status = bondStatusToJSON(message.status));
+    obj.tokens = message.tokens;
+    obj.delegator_shares = message.delegatorShares;
+    message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
+    obj.unbonding_height = message.unbondingHeight;
+    message.unbondingTime !== undefined && (obj.unbonding_time = message.unbondingTime ? Timestamp.toSDK(message.unbondingTime) : undefined);
+    message.commission !== undefined && (obj.commission = message.commission ? Commission.toSDK(message.commission) : undefined);
+    obj.min_self_delegation = message.minSelfDelegation;
+    obj.self_del_address = message.selfDelAddress;
+    obj.relayer_address = message.relayerAddress;
+    obj.challenger_address = message.challengerAddress;
+    obj.bls_key = message.blsKey;
+    return obj;
   }
 
 };
@@ -958,6 +1282,24 @@ export const ValAddresses = {
     const message = createBaseValAddresses();
     message.addresses = object.addresses?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: ValAddressesSDKType): ValAddresses {
+    return {
+      addresses: Array.isArray(object?.addresses) ? object.addresses.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: ValAddresses): ValAddressesSDKType {
+    const obj: any = {};
+
+    if (message.addresses) {
+      obj.addresses = message.addresses.map(e => e);
+    } else {
+      obj.addresses = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1027,6 +1369,20 @@ export const DVPair = {
     message.delegatorAddress = object.delegatorAddress ?? "";
     message.validatorAddress = object.validatorAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: DVPairSDKType): DVPair {
+    return {
+      delegatorAddress: object?.delegator_address,
+      validatorAddress: object?.validator_address
+    };
+  },
+
+  toSDK(message: DVPair): DVPairSDKType {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    obj.validator_address = message.validatorAddress;
+    return obj;
   }
 
 };
@@ -1090,6 +1446,24 @@ export const DVPairs = {
     const message = createBaseDVPairs();
     message.pairs = object.pairs?.map(e => DVPair.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: DVPairsSDKType): DVPairs {
+    return {
+      pairs: Array.isArray(object?.pairs) ? object.pairs.map((e: any) => DVPair.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: DVPairs): DVPairsSDKType {
+    const obj: any = {};
+
+    if (message.pairs) {
+      obj.pairs = message.pairs.map(e => e ? DVPair.toSDK(e) : undefined);
+    } else {
+      obj.pairs = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1171,6 +1545,22 @@ export const DVVTriplet = {
     message.validatorSrcAddress = object.validatorSrcAddress ?? "";
     message.validatorDstAddress = object.validatorDstAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: DVVTripletSDKType): DVVTriplet {
+    return {
+      delegatorAddress: object?.delegator_address,
+      validatorSrcAddress: object?.validator_src_address,
+      validatorDstAddress: object?.validator_dst_address
+    };
+  },
+
+  toSDK(message: DVVTriplet): DVVTripletSDKType {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    obj.validator_src_address = message.validatorSrcAddress;
+    obj.validator_dst_address = message.validatorDstAddress;
+    return obj;
   }
 
 };
@@ -1234,6 +1624,24 @@ export const DVVTriplets = {
     const message = createBaseDVVTriplets();
     message.triplets = object.triplets?.map(e => DVVTriplet.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: DVVTripletsSDKType): DVVTriplets {
+    return {
+      triplets: Array.isArray(object?.triplets) ? object.triplets.map((e: any) => DVVTriplet.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: DVVTriplets): DVVTripletsSDKType {
+    const obj: any = {};
+
+    if (message.triplets) {
+      obj.triplets = message.triplets.map(e => e ? DVVTriplet.toSDK(e) : undefined);
+    } else {
+      obj.triplets = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1315,6 +1723,22 @@ export const Delegation = {
     message.validatorAddress = object.validatorAddress ?? "";
     message.shares = object.shares ?? "";
     return message;
+  },
+
+  fromSDK(object: DelegationSDKType): Delegation {
+    return {
+      delegatorAddress: object?.delegator_address,
+      validatorAddress: object?.validator_address,
+      shares: object?.shares
+    };
+  },
+
+  toSDK(message: Delegation): DelegationSDKType {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    obj.validator_address = message.validatorAddress;
+    obj.shares = message.shares;
+    return obj;
   }
 
 };
@@ -1402,6 +1826,28 @@ export const UnbondingDelegation = {
     message.validatorAddress = object.validatorAddress ?? "";
     message.entries = object.entries?.map(e => UnbondingDelegationEntry.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: UnbondingDelegationSDKType): UnbondingDelegation {
+    return {
+      delegatorAddress: object?.delegator_address,
+      validatorAddress: object?.validator_address,
+      entries: Array.isArray(object?.entries) ? object.entries.map((e: any) => UnbondingDelegationEntry.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: UnbondingDelegation): UnbondingDelegationSDKType {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    obj.validator_address = message.validatorAddress;
+
+    if (message.entries) {
+      obj.entries = message.entries.map(e => e ? UnbondingDelegationEntry.toSDK(e) : undefined);
+    } else {
+      obj.entries = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1495,6 +1941,24 @@ export const UnbondingDelegationEntry = {
     message.initialBalance = object.initialBalance ?? "";
     message.balance = object.balance ?? "";
     return message;
+  },
+
+  fromSDK(object: UnbondingDelegationEntrySDKType): UnbondingDelegationEntry {
+    return {
+      creationHeight: object?.creation_height,
+      completionTime: object.completion_time ? Timestamp.fromSDK(object.completion_time) : undefined,
+      initialBalance: object?.initial_balance,
+      balance: object?.balance
+    };
+  },
+
+  toSDK(message: UnbondingDelegationEntry): UnbondingDelegationEntrySDKType {
+    const obj: any = {};
+    obj.creation_height = message.creationHeight;
+    message.completionTime !== undefined && (obj.completion_time = message.completionTime ? Timestamp.toSDK(message.completionTime) : undefined);
+    obj.initial_balance = message.initialBalance;
+    obj.balance = message.balance;
+    return obj;
   }
 
 };
@@ -1588,6 +2052,24 @@ export const RedelegationEntry = {
     message.initialBalance = object.initialBalance ?? "";
     message.sharesDst = object.sharesDst ?? "";
     return message;
+  },
+
+  fromSDK(object: RedelegationEntrySDKType): RedelegationEntry {
+    return {
+      creationHeight: object?.creation_height,
+      completionTime: object.completion_time ? Timestamp.fromSDK(object.completion_time) : undefined,
+      initialBalance: object?.initial_balance,
+      sharesDst: object?.shares_dst
+    };
+  },
+
+  toSDK(message: RedelegationEntry): RedelegationEntrySDKType {
+    const obj: any = {};
+    obj.creation_height = message.creationHeight;
+    message.completionTime !== undefined && (obj.completion_time = message.completionTime ? Timestamp.toSDK(message.completionTime) : undefined);
+    obj.initial_balance = message.initialBalance;
+    obj.shares_dst = message.sharesDst;
+    return obj;
   }
 
 };
@@ -1687,6 +2169,30 @@ export const Redelegation = {
     message.validatorDstAddress = object.validatorDstAddress ?? "";
     message.entries = object.entries?.map(e => RedelegationEntry.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: RedelegationSDKType): Redelegation {
+    return {
+      delegatorAddress: object?.delegator_address,
+      validatorSrcAddress: object?.validator_src_address,
+      validatorDstAddress: object?.validator_dst_address,
+      entries: Array.isArray(object?.entries) ? object.entries.map((e: any) => RedelegationEntry.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: Redelegation): RedelegationSDKType {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    obj.validator_src_address = message.validatorSrcAddress;
+    obj.validator_dst_address = message.validatorDstAddress;
+
+    if (message.entries) {
+      obj.entries = message.entries.map(e => e ? RedelegationEntry.toSDK(e) : undefined);
+    } else {
+      obj.entries = [];
+    }
+
+    return obj;
   }
 
 };
@@ -1816,6 +2322,30 @@ export const Params = {
     message.minCommissionRate = object.minCommissionRate ?? "";
     message.minSelfDelegation = object.minSelfDelegation ?? "";
     return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      unbondingTime: object.unbonding_time ? Duration.fromSDK(object.unbonding_time) : undefined,
+      maxValidators: object?.max_validators,
+      maxEntries: object?.max_entries,
+      historicalEntries: object?.historical_entries,
+      bondDenom: object?.bond_denom,
+      minCommissionRate: object?.min_commission_rate,
+      minSelfDelegation: object?.min_self_delegation
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+    message.unbondingTime !== undefined && (obj.unbonding_time = message.unbondingTime ? Duration.toSDK(message.unbondingTime) : undefined);
+    obj.max_validators = message.maxValidators;
+    obj.max_entries = message.maxEntries;
+    obj.historical_entries = message.historicalEntries;
+    obj.bond_denom = message.bondDenom;
+    obj.min_commission_rate = message.minCommissionRate;
+    obj.min_self_delegation = message.minSelfDelegation;
+    return obj;
   }
 
 };
@@ -1885,6 +2415,20 @@ export const DelegationResponse = {
     message.delegation = object.delegation !== undefined && object.delegation !== null ? Delegation.fromPartial(object.delegation) : undefined;
     message.balance = object.balance !== undefined && object.balance !== null ? Coin.fromPartial(object.balance) : undefined;
     return message;
+  },
+
+  fromSDK(object: DelegationResponseSDKType): DelegationResponse {
+    return {
+      delegation: object.delegation ? Delegation.fromSDK(object.delegation) : undefined,
+      balance: object.balance ? Coin.fromSDK(object.balance) : undefined
+    };
+  },
+
+  toSDK(message: DelegationResponse): DelegationResponseSDKType {
+    const obj: any = {};
+    message.delegation !== undefined && (obj.delegation = message.delegation ? Delegation.toSDK(message.delegation) : undefined);
+    message.balance !== undefined && (obj.balance = message.balance ? Coin.toSDK(message.balance) : undefined);
+    return obj;
   }
 
 };
@@ -1954,6 +2498,20 @@ export const RedelegationEntryResponse = {
     message.redelegationEntry = object.redelegationEntry !== undefined && object.redelegationEntry !== null ? RedelegationEntry.fromPartial(object.redelegationEntry) : undefined;
     message.balance = object.balance ?? "";
     return message;
+  },
+
+  fromSDK(object: RedelegationEntryResponseSDKType): RedelegationEntryResponse {
+    return {
+      redelegationEntry: object.redelegation_entry ? RedelegationEntry.fromSDK(object.redelegation_entry) : undefined,
+      balance: object?.balance
+    };
+  },
+
+  toSDK(message: RedelegationEntryResponse): RedelegationEntryResponseSDKType {
+    const obj: any = {};
+    message.redelegationEntry !== undefined && (obj.redelegation_entry = message.redelegationEntry ? RedelegationEntry.toSDK(message.redelegationEntry) : undefined);
+    obj.balance = message.balance;
+    return obj;
   }
 
 };
@@ -2029,6 +2587,26 @@ export const RedelegationResponse = {
     message.redelegation = object.redelegation !== undefined && object.redelegation !== null ? Redelegation.fromPartial(object.redelegation) : undefined;
     message.entries = object.entries?.map(e => RedelegationEntryResponse.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: RedelegationResponseSDKType): RedelegationResponse {
+    return {
+      redelegation: object.redelegation ? Redelegation.fromSDK(object.redelegation) : undefined,
+      entries: Array.isArray(object?.entries) ? object.entries.map((e: any) => RedelegationEntryResponse.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: RedelegationResponse): RedelegationResponseSDKType {
+    const obj: any = {};
+    message.redelegation !== undefined && (obj.redelegation = message.redelegation ? Redelegation.toSDK(message.redelegation) : undefined);
+
+    if (message.entries) {
+      obj.entries = message.entries.map(e => e ? RedelegationEntryResponse.toSDK(e) : undefined);
+    } else {
+      obj.entries = [];
+    }
+
+    return obj;
   }
 
 };
@@ -2098,6 +2676,20 @@ export const Pool = {
     message.notBondedTokens = object.notBondedTokens ?? "";
     message.bondedTokens = object.bondedTokens ?? "";
     return message;
+  },
+
+  fromSDK(object: PoolSDKType): Pool {
+    return {
+      notBondedTokens: object?.not_bonded_tokens,
+      bondedTokens: object?.bonded_tokens
+    };
+  },
+
+  toSDK(message: Pool): PoolSDKType {
+    const obj: any = {};
+    obj.not_bonded_tokens = message.notBondedTokens;
+    obj.bonded_tokens = message.bondedTokens;
+    return obj;
   }
 
 };

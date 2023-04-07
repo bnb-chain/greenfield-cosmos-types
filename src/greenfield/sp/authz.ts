@@ -1,13 +1,9 @@
 /* eslint-disable */
-import { Coin } from "../../cosmos/base/v1beta1/coin";
+import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.sp";
-/**
- * DepositAuthorization defines authorization for sp deposit.
- * 
- * Since: cosmos-sdk 0.43
- */
+/** DepositAuthorization defines authorization for sp deposit. */
 
 export interface DepositAuthorization {
   /**
@@ -18,6 +14,12 @@ export interface DepositAuthorization {
   /** sp_address is the operator address of storage provider. */
 
   spAddress: string;
+}
+/** DepositAuthorization defines authorization for sp deposit. */
+
+export interface DepositAuthorizationSDKType {
+  max_deposit?: CoinSDKType;
+  sp_address: string;
 }
 
 function createBaseDepositAuthorization(): DepositAuthorization {
@@ -85,6 +87,20 @@ export const DepositAuthorization = {
     message.maxDeposit = object.maxDeposit !== undefined && object.maxDeposit !== null ? Coin.fromPartial(object.maxDeposit) : undefined;
     message.spAddress = object.spAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: DepositAuthorizationSDKType): DepositAuthorization {
+    return {
+      maxDeposit: object.max_deposit ? Coin.fromSDK(object.max_deposit) : undefined,
+      spAddress: object?.sp_address
+    };
+  },
+
+  toSDK(message: DepositAuthorization): DepositAuthorizationSDKType {
+    const obj: any = {};
+    message.maxDeposit !== undefined && (obj.max_deposit = message.maxDeposit ? Coin.toSDK(message.maxDeposit) : undefined);
+    obj.sp_address = message.spAddress;
+    return obj;
   }
 
 };

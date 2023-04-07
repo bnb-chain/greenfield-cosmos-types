@@ -5,7 +5,8 @@ on:
   push:
     branches:
       - main
-      - release
+      - alpha
+      - beta
 
 jobs:
   release:
@@ -23,6 +24,7 @@ jobs:
           version: 7
       - run: pnpm install
       - run: npm run build
+      - run: npm run prepare-publishing
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

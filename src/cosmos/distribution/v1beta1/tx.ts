@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Coin } from "../../base/v1beta1/coin";
+import { Coin, CoinSDKType } from "../../base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.distribution.v1beta1";
@@ -12,9 +12,21 @@ export interface MsgSetWithdrawAddress {
   delegatorAddress: string;
   withdrawAddress: string;
 }
+/**
+ * MsgSetWithdrawAddress sets the withdraw address for
+ * a delegator (or validator self-delegation).
+ */
+
+export interface MsgSetWithdrawAddressSDKType {
+  delegator_address: string;
+  withdraw_address: string;
+}
 /** MsgSetWithdrawAddressResponse defines the Msg/SetWithdrawAddress response type. */
 
 export interface MsgSetWithdrawAddressResponse {}
+/** MsgSetWithdrawAddressResponse defines the Msg/SetWithdrawAddress response type. */
+
+export interface MsgSetWithdrawAddressResponseSDKType {}
 /**
  * MsgWithdrawDelegatorReward represents delegation withdrawal to a delegator
  * from a single validator.
@@ -24,11 +36,25 @@ export interface MsgWithdrawDelegatorReward {
   delegatorAddress: string;
   validatorAddress: string;
 }
+/**
+ * MsgWithdrawDelegatorReward represents delegation withdrawal to a delegator
+ * from a single validator.
+ */
+
+export interface MsgWithdrawDelegatorRewardSDKType {
+  delegator_address: string;
+  validator_address: string;
+}
 /** MsgWithdrawDelegatorRewardResponse defines the Msg/WithdrawDelegatorReward response type. */
 
 export interface MsgWithdrawDelegatorRewardResponse {
   /** Since: cosmos-sdk 0.46 */
   amount: Coin[];
+}
+/** MsgWithdrawDelegatorRewardResponse defines the Msg/WithdrawDelegatorReward response type. */
+
+export interface MsgWithdrawDelegatorRewardResponseSDKType {
+  amount: CoinSDKType[];
 }
 /**
  * MsgWithdrawValidatorCommission withdraws the full commission to the validator
@@ -38,11 +64,24 @@ export interface MsgWithdrawDelegatorRewardResponse {
 export interface MsgWithdrawValidatorCommission {
   validatorAddress: string;
 }
+/**
+ * MsgWithdrawValidatorCommission withdraws the full commission to the validator
+ * address.
+ */
+
+export interface MsgWithdrawValidatorCommissionSDKType {
+  validator_address: string;
+}
 /** MsgWithdrawValidatorCommissionResponse defines the Msg/WithdrawValidatorCommission response type. */
 
 export interface MsgWithdrawValidatorCommissionResponse {
   /** Since: cosmos-sdk 0.46 */
   amount: Coin[];
+}
+/** MsgWithdrawValidatorCommissionResponse defines the Msg/WithdrawValidatorCommission response type. */
+
+export interface MsgWithdrawValidatorCommissionResponseSDKType {
+  amount: CoinSDKType[];
 }
 /**
  * MsgFundCommunityPool allows an account to directly
@@ -53,9 +92,21 @@ export interface MsgFundCommunityPool {
   amount: Coin[];
   depositor: string;
 }
+/**
+ * MsgFundCommunityPool allows an account to directly
+ * fund the community pool.
+ */
+
+export interface MsgFundCommunityPoolSDKType {
+  amount: CoinSDKType[];
+  depositor: string;
+}
 /** MsgFundCommunityPoolResponse defines the Msg/FundCommunityPool response type. */
 
 export interface MsgFundCommunityPoolResponse {}
+/** MsgFundCommunityPoolResponse defines the Msg/FundCommunityPool response type. */
+
+export interface MsgFundCommunityPoolResponseSDKType {}
 
 function createBaseMsgSetWithdrawAddress(): MsgSetWithdrawAddress {
   return {
@@ -122,6 +173,20 @@ export const MsgSetWithdrawAddress = {
     message.delegatorAddress = object.delegatorAddress ?? "";
     message.withdrawAddress = object.withdrawAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgSetWithdrawAddressSDKType): MsgSetWithdrawAddress {
+    return {
+      delegatorAddress: object?.delegator_address,
+      withdrawAddress: object?.withdraw_address
+    };
+  },
+
+  toSDK(message: MsgSetWithdrawAddress): MsgSetWithdrawAddressSDKType {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    obj.withdraw_address = message.withdrawAddress;
+    return obj;
   }
 
 };
@@ -165,6 +230,15 @@ export const MsgSetWithdrawAddressResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgSetWithdrawAddressResponse>, I>>(_: I): MsgSetWithdrawAddressResponse {
     const message = createBaseMsgSetWithdrawAddressResponse();
     return message;
+  },
+
+  fromSDK(_: MsgSetWithdrawAddressResponseSDKType): MsgSetWithdrawAddressResponse {
+    return {};
+  },
+
+  toSDK(_: MsgSetWithdrawAddressResponse): MsgSetWithdrawAddressResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -234,6 +308,20 @@ export const MsgWithdrawDelegatorReward = {
     message.delegatorAddress = object.delegatorAddress ?? "";
     message.validatorAddress = object.validatorAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgWithdrawDelegatorRewardSDKType): MsgWithdrawDelegatorReward {
+    return {
+      delegatorAddress: object?.delegator_address,
+      validatorAddress: object?.validator_address
+    };
+  },
+
+  toSDK(message: MsgWithdrawDelegatorReward): MsgWithdrawDelegatorRewardSDKType {
+    const obj: any = {};
+    obj.delegator_address = message.delegatorAddress;
+    obj.validator_address = message.validatorAddress;
+    return obj;
   }
 
 };
@@ -297,6 +385,24 @@ export const MsgWithdrawDelegatorRewardResponse = {
     const message = createBaseMsgWithdrawDelegatorRewardResponse();
     message.amount = object.amount?.map(e => Coin.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: MsgWithdrawDelegatorRewardResponseSDKType): MsgWithdrawDelegatorRewardResponse {
+    return {
+      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: MsgWithdrawDelegatorRewardResponse): MsgWithdrawDelegatorRewardResponseSDKType {
+    const obj: any = {};
+
+    if (message.amount) {
+      obj.amount = message.amount.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.amount = [];
+    }
+
+    return obj;
   }
 
 };
@@ -354,6 +460,18 @@ export const MsgWithdrawValidatorCommission = {
     const message = createBaseMsgWithdrawValidatorCommission();
     message.validatorAddress = object.validatorAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgWithdrawValidatorCommissionSDKType): MsgWithdrawValidatorCommission {
+    return {
+      validatorAddress: object?.validator_address
+    };
+  },
+
+  toSDK(message: MsgWithdrawValidatorCommission): MsgWithdrawValidatorCommissionSDKType {
+    const obj: any = {};
+    obj.validator_address = message.validatorAddress;
+    return obj;
   }
 
 };
@@ -417,6 +535,24 @@ export const MsgWithdrawValidatorCommissionResponse = {
     const message = createBaseMsgWithdrawValidatorCommissionResponse();
     message.amount = object.amount?.map(e => Coin.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: MsgWithdrawValidatorCommissionResponseSDKType): MsgWithdrawValidatorCommissionResponse {
+    return {
+      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: MsgWithdrawValidatorCommissionResponse): MsgWithdrawValidatorCommissionResponseSDKType {
+    const obj: any = {};
+
+    if (message.amount) {
+      obj.amount = message.amount.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.amount = [];
+    }
+
+    return obj;
   }
 
 };
@@ -492,6 +628,26 @@ export const MsgFundCommunityPool = {
     message.amount = object.amount?.map(e => Coin.fromPartial(e)) || [];
     message.depositor = object.depositor ?? "";
     return message;
+  },
+
+  fromSDK(object: MsgFundCommunityPoolSDKType): MsgFundCommunityPool {
+    return {
+      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromSDK(e)) : [],
+      depositor: object?.depositor
+    };
+  },
+
+  toSDK(message: MsgFundCommunityPool): MsgFundCommunityPoolSDKType {
+    const obj: any = {};
+
+    if (message.amount) {
+      obj.amount = message.amount.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.amount = [];
+    }
+
+    obj.depositor = message.depositor;
+    return obj;
   }
 
 };
@@ -535,6 +691,15 @@ export const MsgFundCommunityPoolResponse = {
   fromPartial<I extends Exact<DeepPartial<MsgFundCommunityPoolResponse>, I>>(_: I): MsgFundCommunityPoolResponse {
     const message = createBaseMsgFundCommunityPoolResponse();
     return message;
+  },
+
+  fromSDK(_: MsgFundCommunityPoolResponseSDKType): MsgFundCommunityPoolResponse {
+    return {};
+  },
+
+  toSDK(_: MsgFundCommunityPoolResponse): MsgFundCommunityPoolResponseSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

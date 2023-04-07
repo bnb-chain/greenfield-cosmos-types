@@ -1,12 +1,9 @@
 /* eslint-disable */
-import { Params } from "./params";
-import { StreamRecord } from "./stream_record";
-import { PaymentAccountCount } from "./payment_account_count";
-import { PaymentAccount } from "./payment_account";
-import { AutoSettleRecord } from "./auto_settle_record";
-import { BnbPrice } from "./bnb_price";
-import { MockBucketMeta } from "./mock_bucket_meta";
-import { MockObjectInfo } from "./mock_object_info";
+import { Params, ParamsSDKType } from "./params";
+import { StreamRecord, StreamRecordSDKType } from "./stream_record";
+import { PaymentAccountCount, PaymentAccountCountSDKType } from "./payment_account_count";
+import { PaymentAccount, PaymentAccountSDKType } from "./payment_account";
+import { AutoSettleRecord, AutoSettleRecordSDKType } from "./auto_settle_record";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.payment";
@@ -18,9 +15,15 @@ export interface GenesisState {
   paymentAccountCountList: PaymentAccountCount[];
   paymentAccountList: PaymentAccount[];
   autoSettleRecordList: AutoSettleRecord[];
-  bnbPriceList: BnbPrice[];
-  mockBucketMetaList: MockBucketMeta[];
-  mockObjectInfoList: MockObjectInfo[];
+}
+/** GenesisState defines the payment module's genesis state. */
+
+export interface GenesisStateSDKType {
+  params?: ParamsSDKType;
+  stream_record_list: StreamRecordSDKType[];
+  payment_account_count_list: PaymentAccountCountSDKType[];
+  payment_account_list: PaymentAccountSDKType[];
+  auto_settle_record_list: AutoSettleRecordSDKType[];
 }
 
 function createBaseGenesisState(): GenesisState {
@@ -29,10 +32,7 @@ function createBaseGenesisState(): GenesisState {
     streamRecordList: [],
     paymentAccountCountList: [],
     paymentAccountList: [],
-    autoSettleRecordList: [],
-    bnbPriceList: [],
-    mockBucketMetaList: [],
-    mockObjectInfoList: []
+    autoSettleRecordList: []
   };
 }
 
@@ -56,18 +56,6 @@ export const GenesisState = {
 
     for (const v of message.autoSettleRecordList) {
       AutoSettleRecord.encode(v!, writer.uint32(42).fork()).ldelim();
-    }
-
-    for (const v of message.bnbPriceList) {
-      BnbPrice.encode(v!, writer.uint32(50).fork()).ldelim();
-    }
-
-    for (const v of message.mockBucketMetaList) {
-      MockBucketMeta.encode(v!, writer.uint32(58).fork()).ldelim();
-    }
-
-    for (const v of message.mockObjectInfoList) {
-      MockObjectInfo.encode(v!, writer.uint32(66).fork()).ldelim();
     }
 
     return writer;
@@ -102,18 +90,6 @@ export const GenesisState = {
           message.autoSettleRecordList.push(AutoSettleRecord.decode(reader, reader.uint32()));
           break;
 
-        case 6:
-          message.bnbPriceList.push(BnbPrice.decode(reader, reader.uint32()));
-          break;
-
-        case 7:
-          message.mockBucketMetaList.push(MockBucketMeta.decode(reader, reader.uint32()));
-          break;
-
-        case 8:
-          message.mockObjectInfoList.push(MockObjectInfo.decode(reader, reader.uint32()));
-          break;
-
         default:
           reader.skipType(tag & 7);
           break;
@@ -129,10 +105,7 @@ export const GenesisState = {
       streamRecordList: Array.isArray(object?.streamRecordList) ? object.streamRecordList.map((e: any) => StreamRecord.fromJSON(e)) : [],
       paymentAccountCountList: Array.isArray(object?.paymentAccountCountList) ? object.paymentAccountCountList.map((e: any) => PaymentAccountCount.fromJSON(e)) : [],
       paymentAccountList: Array.isArray(object?.paymentAccountList) ? object.paymentAccountList.map((e: any) => PaymentAccount.fromJSON(e)) : [],
-      autoSettleRecordList: Array.isArray(object?.autoSettleRecordList) ? object.autoSettleRecordList.map((e: any) => AutoSettleRecord.fromJSON(e)) : [],
-      bnbPriceList: Array.isArray(object?.bnbPriceList) ? object.bnbPriceList.map((e: any) => BnbPrice.fromJSON(e)) : [],
-      mockBucketMetaList: Array.isArray(object?.mockBucketMetaList) ? object.mockBucketMetaList.map((e: any) => MockBucketMeta.fromJSON(e)) : [],
-      mockObjectInfoList: Array.isArray(object?.mockObjectInfoList) ? object.mockObjectInfoList.map((e: any) => MockObjectInfo.fromJSON(e)) : []
+      autoSettleRecordList: Array.isArray(object?.autoSettleRecordList) ? object.autoSettleRecordList.map((e: any) => AutoSettleRecord.fromJSON(e)) : []
     };
   },
 
@@ -164,24 +137,6 @@ export const GenesisState = {
       obj.autoSettleRecordList = [];
     }
 
-    if (message.bnbPriceList) {
-      obj.bnbPriceList = message.bnbPriceList.map(e => e ? BnbPrice.toJSON(e) : undefined);
-    } else {
-      obj.bnbPriceList = [];
-    }
-
-    if (message.mockBucketMetaList) {
-      obj.mockBucketMetaList = message.mockBucketMetaList.map(e => e ? MockBucketMeta.toJSON(e) : undefined);
-    } else {
-      obj.mockBucketMetaList = [];
-    }
-
-    if (message.mockObjectInfoList) {
-      obj.mockObjectInfoList = message.mockObjectInfoList.map(e => e ? MockObjectInfo.toJSON(e) : undefined);
-    } else {
-      obj.mockObjectInfoList = [];
-    }
-
     return obj;
   },
 
@@ -192,10 +147,48 @@ export const GenesisState = {
     message.paymentAccountCountList = object.paymentAccountCountList?.map(e => PaymentAccountCount.fromPartial(e)) || [];
     message.paymentAccountList = object.paymentAccountList?.map(e => PaymentAccount.fromPartial(e)) || [];
     message.autoSettleRecordList = object.autoSettleRecordList?.map(e => AutoSettleRecord.fromPartial(e)) || [];
-    message.bnbPriceList = object.bnbPriceList?.map(e => BnbPrice.fromPartial(e)) || [];
-    message.mockBucketMetaList = object.mockBucketMetaList?.map(e => MockBucketMeta.fromPartial(e)) || [];
-    message.mockObjectInfoList = object.mockObjectInfoList?.map(e => MockObjectInfo.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: GenesisStateSDKType): GenesisState {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined,
+      streamRecordList: Array.isArray(object?.stream_record_list) ? object.stream_record_list.map((e: any) => StreamRecord.fromSDK(e)) : [],
+      paymentAccountCountList: Array.isArray(object?.payment_account_count_list) ? object.payment_account_count_list.map((e: any) => PaymentAccountCount.fromSDK(e)) : [],
+      paymentAccountList: Array.isArray(object?.payment_account_list) ? object.payment_account_list.map((e: any) => PaymentAccount.fromSDK(e)) : [],
+      autoSettleRecordList: Array.isArray(object?.auto_settle_record_list) ? object.auto_settle_record_list.map((e: any) => AutoSettleRecord.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: GenesisState): GenesisStateSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+
+    if (message.streamRecordList) {
+      obj.stream_record_list = message.streamRecordList.map(e => e ? StreamRecord.toSDK(e) : undefined);
+    } else {
+      obj.stream_record_list = [];
+    }
+
+    if (message.paymentAccountCountList) {
+      obj.payment_account_count_list = message.paymentAccountCountList.map(e => e ? PaymentAccountCount.toSDK(e) : undefined);
+    } else {
+      obj.payment_account_count_list = [];
+    }
+
+    if (message.paymentAccountList) {
+      obj.payment_account_list = message.paymentAccountList.map(e => e ? PaymentAccount.toSDK(e) : undefined);
+    } else {
+      obj.payment_account_list = [];
+    }
+
+    if (message.autoSettleRecordList) {
+      obj.auto_settle_record_list = message.autoSettleRecordList.map(e => e ? AutoSettleRecord.toSDK(e) : undefined);
+    } else {
+      obj.auto_settle_record_list = [];
+    }
+
+    return obj;
   }
 
 };

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Coin } from "../../base/v1beta1/coin";
+import { Coin, CoinSDKType } from "../../base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.bank.v1beta1";
@@ -8,6 +8,12 @@ export const protobufPackage = "cosmos.bank.v1beta1";
 export interface Params {
   sendEnabled: SendEnabled[];
   defaultSendEnabled: boolean;
+}
+/** Params defines the parameters for the bank module. */
+
+export interface ParamsSDKType {
+  send_enabled: SendEnabledSDKType[];
+  default_send_enabled: boolean;
 }
 /**
  * SendEnabled maps coin denom to a send_enabled status (whether a denom is
@@ -18,17 +24,38 @@ export interface SendEnabled {
   denom: string;
   enabled: boolean;
 }
+/**
+ * SendEnabled maps coin denom to a send_enabled status (whether a denom is
+ * sendable).
+ */
+
+export interface SendEnabledSDKType {
+  denom: string;
+  enabled: boolean;
+}
 /** Input models transaction input. */
 
 export interface Input {
   address: string;
   coins: Coin[];
 }
+/** Input models transaction input. */
+
+export interface InputSDKType {
+  address: string;
+  coins: CoinSDKType[];
+}
 /** Output models transaction outputs. */
 
 export interface Output {
   address: string;
   coins: Coin[];
+}
+/** Output models transaction outputs. */
+
+export interface OutputSDKType {
+  address: string;
+  coins: CoinSDKType[];
 }
 /**
  * Supply represents a struct that passively keeps track of the total supply
@@ -40,6 +67,17 @@ export interface Output {
 
 export interface Supply {
   total: Coin[];
+}
+/**
+ * Supply represents a struct that passively keeps track of the total supply
+ * amounts in the network.
+ * This message is deprecated now that supply is indexed by denom.
+ */
+
+/** @deprecated */
+
+export interface SupplySDKType {
+  total: CoinSDKType[];
 }
 /**
  * DenomUnit represents a struct that describes a given
@@ -60,6 +98,16 @@ export interface DenomUnit {
   exponent: number;
   /** aliases is a list of string aliases for the given denom */
 
+  aliases: string[];
+}
+/**
+ * DenomUnit represents a struct that describes a given
+ * denomination unit of the basic token.
+ */
+
+export interface DenomUnitSDKType {
+  denom: string;
+  exponent: number;
   aliases: string[];
 }
 /**
@@ -111,6 +159,21 @@ export interface Metadata {
    */
 
   uriHash: string;
+}
+/**
+ * Metadata represents a struct that describes
+ * a basic token.
+ */
+
+export interface MetadataSDKType {
+  description: string;
+  denom_units: DenomUnitSDKType[];
+  base: string;
+  display: string;
+  name: string;
+  symbol: string;
+  uri: string;
+  uri_hash: string;
 }
 
 function createBaseParams(): Params {
@@ -184,6 +247,26 @@ export const Params = {
     message.sendEnabled = object.sendEnabled?.map(e => SendEnabled.fromPartial(e)) || [];
     message.defaultSendEnabled = object.defaultSendEnabled ?? false;
     return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      sendEnabled: Array.isArray(object?.send_enabled) ? object.send_enabled.map((e: any) => SendEnabled.fromSDK(e)) : [],
+      defaultSendEnabled: object?.default_send_enabled
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+
+    if (message.sendEnabled) {
+      obj.send_enabled = message.sendEnabled.map(e => e ? SendEnabled.toSDK(e) : undefined);
+    } else {
+      obj.send_enabled = [];
+    }
+
+    obj.default_send_enabled = message.defaultSendEnabled;
+    return obj;
   }
 
 };
@@ -253,6 +336,20 @@ export const SendEnabled = {
     message.denom = object.denom ?? "";
     message.enabled = object.enabled ?? false;
     return message;
+  },
+
+  fromSDK(object: SendEnabledSDKType): SendEnabled {
+    return {
+      denom: object?.denom,
+      enabled: object?.enabled
+    };
+  },
+
+  toSDK(message: SendEnabled): SendEnabledSDKType {
+    const obj: any = {};
+    obj.denom = message.denom;
+    obj.enabled = message.enabled;
+    return obj;
   }
 
 };
@@ -328,6 +425,26 @@ export const Input = {
     message.address = object.address ?? "";
     message.coins = object.coins?.map(e => Coin.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: InputSDKType): Input {
+    return {
+      address: object?.address,
+      coins: Array.isArray(object?.coins) ? object.coins.map((e: any) => Coin.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: Input): InputSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+
+    if (message.coins) {
+      obj.coins = message.coins.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.coins = [];
+    }
+
+    return obj;
   }
 
 };
@@ -403,6 +520,26 @@ export const Output = {
     message.address = object.address ?? "";
     message.coins = object.coins?.map(e => Coin.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: OutputSDKType): Output {
+    return {
+      address: object?.address,
+      coins: Array.isArray(object?.coins) ? object.coins.map((e: any) => Coin.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: Output): OutputSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+
+    if (message.coins) {
+      obj.coins = message.coins.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.coins = [];
+    }
+
+    return obj;
   }
 
 };
@@ -466,6 +603,24 @@ export const Supply = {
     const message = createBaseSupply();
     message.total = object.total?.map(e => Coin.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: SupplySDKType): Supply {
+    return {
+      total: Array.isArray(object?.total) ? object.total.map((e: any) => Coin.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: Supply): SupplySDKType {
+    const obj: any = {};
+
+    if (message.total) {
+      obj.total = message.total.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.total = [];
+    }
+
+    return obj;
   }
 
 };
@@ -553,6 +708,28 @@ export const DenomUnit = {
     message.exponent = object.exponent ?? 0;
     message.aliases = object.aliases?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: DenomUnitSDKType): DenomUnit {
+    return {
+      denom: object?.denom,
+      exponent: object?.exponent,
+      aliases: Array.isArray(object?.aliases) ? object.aliases.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: DenomUnit): DenomUnitSDKType {
+    const obj: any = {};
+    obj.denom = message.denom;
+    obj.exponent = message.exponent;
+
+    if (message.aliases) {
+      obj.aliases = message.aliases.map(e => e);
+    } else {
+      obj.aliases = [];
+    }
+
+    return obj;
   }
 
 };
@@ -700,6 +877,38 @@ export const Metadata = {
     message.uri = object.uri ?? "";
     message.uriHash = object.uriHash ?? "";
     return message;
+  },
+
+  fromSDK(object: MetadataSDKType): Metadata {
+    return {
+      description: object?.description,
+      denomUnits: Array.isArray(object?.denom_units) ? object.denom_units.map((e: any) => DenomUnit.fromSDK(e)) : [],
+      base: object?.base,
+      display: object?.display,
+      name: object?.name,
+      symbol: object?.symbol,
+      uri: object?.uri,
+      uriHash: object?.uri_hash
+    };
+  },
+
+  toSDK(message: Metadata): MetadataSDKType {
+    const obj: any = {};
+    obj.description = message.description;
+
+    if (message.denomUnits) {
+      obj.denom_units = message.denomUnits.map(e => e ? DenomUnit.toSDK(e) : undefined);
+    } else {
+      obj.denom_units = [];
+    }
+
+    obj.base = message.base;
+    obj.display = message.display;
+    obj.name = message.name;
+    obj.symbol = message.symbol;
+    obj.uri = message.uri;
+    obj.uri_hash = message.uriHash;
+    return obj;
   }
 
 };

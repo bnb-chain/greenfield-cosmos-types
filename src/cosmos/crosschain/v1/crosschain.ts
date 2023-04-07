@@ -5,7 +5,13 @@ export const protobufPackage = "cosmos.crosschain.v1";
 /** Params holds parameters for the cross chain module. */
 
 export interface Params {
+  /** initial balance to mint for crosschain module when the chain starts */
   initModuleBalance: string;
+}
+/** Params holds parameters for the cross chain module. */
+
+export interface ParamsSDKType {
+  init_module_balance: string;
 }
 
 function createBaseParams(): Params {
@@ -61,6 +67,18 @@ export const Params = {
     const message = createBaseParams();
     message.initModuleBalance = object.initModuleBalance ?? "";
     return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      initModuleBalance: object?.init_module_balance
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+    obj.init_module_balance = message.initModuleBalance;
+    return obj;
   }
 
 };

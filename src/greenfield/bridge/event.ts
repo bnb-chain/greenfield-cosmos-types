@@ -1,8 +1,51 @@
 /* eslint-disable */
-import { Coin } from "../../cosmos/base/v1beta1/coin";
+import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.bridge";
+export enum RefundReason {
+  REFUND_REASON_UNKNOWN = 0,
+  REFUND_REASON_INSUFFICIENT_BALANCE = 1,
+  REFUND_REASON_FAIL_ACK = 2,
+  UNRECOGNIZED = -1,
+}
+export const RefundReasonSDKType = RefundReason;
+export function refundReasonFromJSON(object: any): RefundReason {
+  switch (object) {
+    case 0:
+    case "REFUND_REASON_UNKNOWN":
+      return RefundReason.REFUND_REASON_UNKNOWN;
+
+    case 1:
+    case "REFUND_REASON_INSUFFICIENT_BALANCE":
+      return RefundReason.REFUND_REASON_INSUFFICIENT_BALANCE;
+
+    case 2:
+    case "REFUND_REASON_FAIL_ACK":
+      return RefundReason.REFUND_REASON_FAIL_ACK;
+
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return RefundReason.UNRECOGNIZED;
+  }
+}
+export function refundReasonToJSON(object: RefundReason): string {
+  switch (object) {
+    case RefundReason.REFUND_REASON_UNKNOWN:
+      return "REFUND_REASON_UNKNOWN";
+
+    case RefundReason.REFUND_REASON_INSUFFICIENT_BALANCE:
+      return "REFUND_REASON_INSUFFICIENT_BALANCE";
+
+    case RefundReason.REFUND_REASON_FAIL_ACK:
+      return "REFUND_REASON_FAIL_ACK";
+
+    case RefundReason.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
 /** EventCrossTransferOut is emitted when a cross chain transfer out tx created */
 
 export interface EventCrossTransferOut {
@@ -21,6 +64,15 @@ export interface EventCrossTransferOut {
 
   sequence: Long;
 }
+/** EventCrossTransferOut is emitted when a cross chain transfer out tx created */
+
+export interface EventCrossTransferOutSDKType {
+  from: string;
+  to: string;
+  amount?: CoinSDKType;
+  relayer_fee?: CoinSDKType;
+  sequence: Long;
+}
 /** EventCrossTransferOutRefund is emitted when a cross chain transfer out tx failed */
 
 export interface EventCrossTransferOutRefund {
@@ -31,9 +83,17 @@ export interface EventCrossTransferOutRefund {
   amount?: Coin;
   /** Refund reason of the failed cross chain transfer tx */
 
-  refundReason: number;
+  refundReason: RefundReason;
   /** Sequence of the corresponding cross chain package */
 
+  sequence: Long;
+}
+/** EventCrossTransferOutRefund is emitted when a cross chain transfer out tx failed */
+
+export interface EventCrossTransferOutRefundSDKType {
+  refund_address: string;
+  amount?: CoinSDKType;
+  refund_reason: RefundReason;
   sequence: Long;
 }
 /** EventCrossTransferIn is emitted when a cross chain transfer in tx happened */
@@ -49,6 +109,14 @@ export interface EventCrossTransferIn {
   refundAddress: string;
   /** Sequence of the corresponding cross chain package */
 
+  sequence: Long;
+}
+/** EventCrossTransferIn is emitted when a cross chain transfer in tx happened */
+
+export interface EventCrossTransferInSDKType {
+  amount?: CoinSDKType;
+  receiver_address: string;
+  refund_address: string;
   sequence: Long;
 }
 
@@ -153,6 +221,26 @@ export const EventCrossTransferOut = {
     message.relayerFee = object.relayerFee !== undefined && object.relayerFee !== null ? Coin.fromPartial(object.relayerFee) : undefined;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: EventCrossTransferOutSDKType): EventCrossTransferOut {
+    return {
+      from: object?.from,
+      to: object?.to,
+      amount: object.amount ? Coin.fromSDK(object.amount) : undefined,
+      relayerFee: object.relayer_fee ? Coin.fromSDK(object.relayer_fee) : undefined,
+      sequence: object?.sequence
+    };
+  },
+
+  toSDK(message: EventCrossTransferOut): EventCrossTransferOutSDKType {
+    const obj: any = {};
+    obj.from = message.from;
+    obj.to = message.to;
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
+    message.relayerFee !== undefined && (obj.relayer_fee = message.relayerFee ? Coin.toSDK(message.relayerFee) : undefined);
+    obj.sequence = message.sequence;
+    return obj;
   }
 
 };
@@ -177,7 +265,7 @@ export const EventCrossTransferOutRefund = {
     }
 
     if (message.refundReason !== 0) {
-      writer.uint32(24).uint32(message.refundReason);
+      writer.uint32(24).int32(message.refundReason);
     }
 
     if (!message.sequence.isZero()) {
@@ -205,7 +293,7 @@ export const EventCrossTransferOutRefund = {
           break;
 
         case 3:
-          message.refundReason = reader.uint32();
+          message.refundReason = (reader.int32() as any);
           break;
 
         case 4:
@@ -225,7 +313,7 @@ export const EventCrossTransferOutRefund = {
     return {
       refundAddress: isSet(object.refundAddress) ? String(object.refundAddress) : "",
       amount: isSet(object.amount) ? Coin.fromJSON(object.amount) : undefined,
-      refundReason: isSet(object.refundReason) ? Number(object.refundReason) : 0,
+      refundReason: isSet(object.refundReason) ? refundReasonFromJSON(object.refundReason) : 0,
       sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO
     };
   },
@@ -234,7 +322,7 @@ export const EventCrossTransferOutRefund = {
     const obj: any = {};
     message.refundAddress !== undefined && (obj.refundAddress = message.refundAddress);
     message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
-    message.refundReason !== undefined && (obj.refundReason = Math.round(message.refundReason));
+    message.refundReason !== undefined && (obj.refundReason = refundReasonToJSON(message.refundReason));
     message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
     return obj;
   },
@@ -246,6 +334,24 @@ export const EventCrossTransferOutRefund = {
     message.refundReason = object.refundReason ?? 0;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: EventCrossTransferOutRefundSDKType): EventCrossTransferOutRefund {
+    return {
+      refundAddress: object?.refund_address,
+      amount: object.amount ? Coin.fromSDK(object.amount) : undefined,
+      refundReason: isSet(object.refund_reason) ? refundReasonFromJSON(object.refund_reason) : 0,
+      sequence: object?.sequence
+    };
+  },
+
+  toSDK(message: EventCrossTransferOutRefund): EventCrossTransferOutRefundSDKType {
+    const obj: any = {};
+    obj.refund_address = message.refundAddress;
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
+    message.refundReason !== undefined && (obj.refund_reason = refundReasonToJSON(message.refundReason));
+    obj.sequence = message.sequence;
+    return obj;
   }
 
 };
@@ -339,6 +445,24 @@ export const EventCrossTransferIn = {
     message.refundAddress = object.refundAddress ?? "";
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: EventCrossTransferInSDKType): EventCrossTransferIn {
+    return {
+      amount: object.amount ? Coin.fromSDK(object.amount) : undefined,
+      receiverAddress: object?.receiver_address,
+      refundAddress: object?.refund_address,
+      sequence: object?.sequence
+    };
+  },
+
+  toSDK(message: EventCrossTransferIn): EventCrossTransferInSDKType {
+    const obj: any = {};
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
+    obj.receiver_address = message.receiverAddress;
+    obj.refund_address = message.refundAddress;
+    obj.sequence = message.sequence;
+    return obj;
   }
 
 };

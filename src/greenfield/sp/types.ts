@@ -1,7 +1,7 @@
 /* eslint-disable */
-import { Coin } from "../../cosmos/base/v1beta1/coin";
+import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
-import { isSet, DeepPartial, Exact } from "../../helpers";
+import { isSet, DeepPartial, Exact, Long } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.sp";
 /** Status is the status of a storage provider. */
 
@@ -12,6 +12,7 @@ export enum Status {
   STATUS_OUT_OF_SERVICE = 3,
   UNRECOGNIZED = -1,
 }
+export const StatusSDKType = Status;
 export function statusFromJSON(object: any): Status {
   switch (object) {
     case 0:
@@ -73,40 +74,103 @@ export interface Description {
 
   details: string;
 }
-/**
- * StorageProvider defines the meta info of storage provider
- * TODO: add endpoint for RPC/HTTP/Websocket and p2p identity
- * TODO: add more account address for different role.
- */
+/** Description defines a storage provider description. */
+
+export interface DescriptionSDKType {
+  moniker: string;
+  identity: string;
+  website: string;
+  security_contact: string;
+  details: string;
+}
+/** StorageProvider defines the meta info of storage provider */
 
 export interface StorageProvider {
-  /** operator_address defines the address of the sp's operator; It also is the unqiue index key of sp. */
+  /** operator_address defines the account address of the storage provider's operator; It also is the unique index key of sp. */
   operatorAddress: string;
-  /** fund_address is the account address of the storage provider for deposit, remuneration. */
+  /** funding_address defines one of the storage provider's accounts which is used to deposit and reward. */
 
   fundingAddress: string;
-  /** seal_address is the account address of the storage provider for sealObject */
+  /** seal_address defines one of the storage provider's accounts which is used to SealObject */
 
   sealAddress: string;
-  /** approval_address is the account address of the storage provider for ack CreateBuclet/Object. */
+  /** approval_address defines one of the storage provider's accounts which is used to approve use's createBucket/createObject request */
 
   approvalAddress: string;
-  /** total_deposit define the deposit token */
+  /** total_deposit defines the number of tokens deposited by this storage provider for staking. */
 
   totalDeposit: string;
-  /** status is the status of sp, which can be (in_service/read_only_service/graceful_exiting/out_of_service) */
+  /** status defines the current service status of this storage provider */
 
   status: Status;
-  /** endpoint is the service address of the storage provider */
+  /** endpoint define the storage provider's network service address */
 
   endpoint: string;
-  /** description defines the description terms for the validator. */
+  /** description defines the description terms for the storage provider. */
 
   description?: Description;
+}
+/** StorageProvider defines the meta info of storage provider */
+
+export interface StorageProviderSDKType {
+  operator_address: string;
+  funding_address: string;
+  seal_address: string;
+  approval_address: string;
+  total_deposit: string;
+  status: Status;
+  endpoint: string;
+  description?: DescriptionSDKType;
 }
 export interface RewardInfo {
   address: string;
   amount?: Coin;
+}
+export interface RewardInfoSDKType {
+  address: string;
+  amount?: CoinSDKType;
+}
+/** storage price of a specific sp */
+
+export interface SpStoragePrice {
+  /** sp address */
+  spAddress: string;
+  /** update time, unix timestamp in seconds */
+
+  updateTimeSec: Long;
+  /** read price, in bnb wei per charge byte */
+
+  readPrice: string;
+  /** free read quota, in byte */
+
+  freeReadQuota: Long;
+  /** store price, in bnb wei per charge byte */
+
+  storePrice: string;
+}
+/** storage price of a specific sp */
+
+export interface SpStoragePriceSDKType {
+  sp_address: string;
+  update_time_sec: Long;
+  read_price: string;
+  free_read_quota: Long;
+  store_price: string;
+}
+/** global secondary sp store price, the price for all secondary sps */
+
+export interface SecondarySpStorePrice {
+  /** update time, unix timestamp in seconds */
+  updateTimeSec: Long;
+  /** store price, in bnb wei per charge byte */
+
+  storePrice: string;
+}
+/** global secondary sp store price, the price for all secondary sps */
+
+export interface SecondarySpStorePriceSDKType {
+  update_time_sec: Long;
+  store_price: string;
 }
 
 function createBaseDescription(): Description {
@@ -210,6 +274,26 @@ export const Description = {
     message.securityContact = object.securityContact ?? "";
     message.details = object.details ?? "";
     return message;
+  },
+
+  fromSDK(object: DescriptionSDKType): Description {
+    return {
+      moniker: object?.moniker,
+      identity: object?.identity,
+      website: object?.website,
+      securityContact: object?.security_contact,
+      details: object?.details
+    };
+  },
+
+  toSDK(message: Description): DescriptionSDKType {
+    const obj: any = {};
+    obj.moniker = message.moniker;
+    obj.identity = message.identity;
+    obj.website = message.website;
+    obj.security_contact = message.securityContact;
+    obj.details = message.details;
+    return obj;
   }
 
 };
@@ -351,6 +435,32 @@ export const StorageProvider = {
     message.endpoint = object.endpoint ?? "";
     message.description = object.description !== undefined && object.description !== null ? Description.fromPartial(object.description) : undefined;
     return message;
+  },
+
+  fromSDK(object: StorageProviderSDKType): StorageProvider {
+    return {
+      operatorAddress: object?.operator_address,
+      fundingAddress: object?.funding_address,
+      sealAddress: object?.seal_address,
+      approvalAddress: object?.approval_address,
+      totalDeposit: object?.total_deposit,
+      status: isSet(object.status) ? statusFromJSON(object.status) : 0,
+      endpoint: object?.endpoint,
+      description: object.description ? Description.fromSDK(object.description) : undefined
+    };
+  },
+
+  toSDK(message: StorageProvider): StorageProviderSDKType {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    obj.funding_address = message.fundingAddress;
+    obj.seal_address = message.sealAddress;
+    obj.approval_address = message.approvalAddress;
+    obj.total_deposit = message.totalDeposit;
+    message.status !== undefined && (obj.status = statusToJSON(message.status));
+    obj.endpoint = message.endpoint;
+    message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
+    return obj;
   }
 
 };
@@ -420,6 +530,228 @@ export const RewardInfo = {
     message.address = object.address ?? "";
     message.amount = object.amount !== undefined && object.amount !== null ? Coin.fromPartial(object.amount) : undefined;
     return message;
+  },
+
+  fromSDK(object: RewardInfoSDKType): RewardInfo {
+    return {
+      address: object?.address,
+      amount: object.amount ? Coin.fromSDK(object.amount) : undefined
+    };
+  },
+
+  toSDK(message: RewardInfo): RewardInfoSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseSpStoragePrice(): SpStoragePrice {
+  return {
+    spAddress: "",
+    updateTimeSec: Long.ZERO,
+    readPrice: "",
+    freeReadQuota: Long.UZERO,
+    storePrice: ""
+  };
+}
+
+export const SpStoragePrice = {
+  encode(message: SpStoragePrice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.spAddress !== "") {
+      writer.uint32(10).string(message.spAddress);
+    }
+
+    if (!message.updateTimeSec.isZero()) {
+      writer.uint32(16).int64(message.updateTimeSec);
+    }
+
+    if (message.readPrice !== "") {
+      writer.uint32(26).string(message.readPrice);
+    }
+
+    if (!message.freeReadQuota.isZero()) {
+      writer.uint32(32).uint64(message.freeReadQuota);
+    }
+
+    if (message.storePrice !== "") {
+      writer.uint32(42).string(message.storePrice);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SpStoragePrice {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSpStoragePrice();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.spAddress = reader.string();
+          break;
+
+        case 2:
+          message.updateTimeSec = (reader.int64() as Long);
+          break;
+
+        case 3:
+          message.readPrice = reader.string();
+          break;
+
+        case 4:
+          message.freeReadQuota = (reader.uint64() as Long);
+          break;
+
+        case 5:
+          message.storePrice = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): SpStoragePrice {
+    return {
+      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      updateTimeSec: isSet(object.updateTimeSec) ? Long.fromValue(object.updateTimeSec) : Long.ZERO,
+      readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
+      freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
+      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+    };
+  },
+
+  toJSON(message: SpStoragePrice): unknown {
+    const obj: any = {};
+    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || Long.ZERO).toString());
+    message.readPrice !== undefined && (obj.readPrice = message.readPrice);
+    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
+    message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SpStoragePrice>, I>>(object: I): SpStoragePrice {
+    const message = createBaseSpStoragePrice();
+    message.spAddress = object.spAddress ?? "";
+    message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? Long.fromValue(object.updateTimeSec) : Long.ZERO;
+    message.readPrice = object.readPrice ?? "";
+    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
+    message.storePrice = object.storePrice ?? "";
+    return message;
+  },
+
+  fromSDK(object: SpStoragePriceSDKType): SpStoragePrice {
+    return {
+      spAddress: object?.sp_address,
+      updateTimeSec: object?.update_time_sec,
+      readPrice: object?.read_price,
+      freeReadQuota: object?.free_read_quota,
+      storePrice: object?.store_price
+    };
+  },
+
+  toSDK(message: SpStoragePrice): SpStoragePriceSDKType {
+    const obj: any = {};
+    obj.sp_address = message.spAddress;
+    obj.update_time_sec = message.updateTimeSec;
+    obj.read_price = message.readPrice;
+    obj.free_read_quota = message.freeReadQuota;
+    obj.store_price = message.storePrice;
+    return obj;
+  }
+
+};
+
+function createBaseSecondarySpStorePrice(): SecondarySpStorePrice {
+  return {
+    updateTimeSec: Long.ZERO,
+    storePrice: ""
+  };
+}
+
+export const SecondarySpStorePrice = {
+  encode(message: SecondarySpStorePrice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.updateTimeSec.isZero()) {
+      writer.uint32(8).int64(message.updateTimeSec);
+    }
+
+    if (message.storePrice !== "") {
+      writer.uint32(18).string(message.storePrice);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SecondarySpStorePrice {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSecondarySpStorePrice();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.updateTimeSec = (reader.int64() as Long);
+          break;
+
+        case 2:
+          message.storePrice = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): SecondarySpStorePrice {
+    return {
+      updateTimeSec: isSet(object.updateTimeSec) ? Long.fromValue(object.updateTimeSec) : Long.ZERO,
+      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+    };
+  },
+
+  toJSON(message: SecondarySpStorePrice): unknown {
+    const obj: any = {};
+    message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || Long.ZERO).toString());
+    message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SecondarySpStorePrice>, I>>(object: I): SecondarySpStorePrice {
+    const message = createBaseSecondarySpStorePrice();
+    message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? Long.fromValue(object.updateTimeSec) : Long.ZERO;
+    message.storePrice = object.storePrice ?? "";
+    return message;
+  },
+
+  fromSDK(object: SecondarySpStorePriceSDKType): SecondarySpStorePrice {
+    return {
+      updateTimeSec: object?.update_time_sec,
+      storePrice: object?.store_price
+    };
+  },
+
+  toSDK(message: SecondarySpStorePrice): SecondarySpStorePriceSDKType {
+    const obj: any = {};
+    obj.update_time_sec = message.updateTimeSec;
+    obj.store_price = message.storePrice;
+    return obj;
   }
 
 };

@@ -1,8 +1,8 @@
 /* eslint-disable */
-import { Coin } from "../../base/v1beta1/coin";
-import { Any } from "../../../google/protobuf/any";
-import { Timestamp } from "../../../google/protobuf/timestamp";
-import { Duration } from "../../../google/protobuf/duration";
+import { Coin, CoinSDKType } from "../../base/v1beta1/coin";
+import { Any, AnySDKType } from "../../../google/protobuf/any";
+import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
+import { Duration, DurationSDKType } from "../../../google/protobuf/duration";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
 export const protobufPackage = "cosmos.gov.v1";
@@ -25,6 +25,7 @@ export enum VoteOption {
   VOTE_OPTION_NO_WITH_VETO = 4,
   UNRECOGNIZED = -1,
 }
+export const VoteOptionSDKType = VoteOption;
 export function voteOptionFromJSON(object: any): VoteOption {
   switch (object) {
     case 0:
@@ -112,6 +113,7 @@ export enum ProposalStatus {
   PROPOSAL_STATUS_FAILED = 5,
   UNRECOGNIZED = -1,
 }
+export const ProposalStatusSDKType = ProposalStatus;
 export function proposalStatusFromJSON(object: any): ProposalStatus {
   switch (object) {
     case 0:
@@ -175,6 +177,12 @@ export interface WeightedVoteOption {
   option: VoteOption;
   weight: string;
 }
+/** WeightedVoteOption defines a unit of vote for vote split. */
+
+export interface WeightedVoteOptionSDKType {
+  option: VoteOption;
+  weight: string;
+}
 /**
  * Deposit defines an amount deposited by an account address to an active
  * proposal.
@@ -184,6 +192,16 @@ export interface Deposit {
   proposalId: Long;
   depositor: string;
   amount: Coin[];
+}
+/**
+ * Deposit defines an amount deposited by an account address to an active
+ * proposal.
+ */
+
+export interface DepositSDKType {
+  proposal_id: Long;
+  depositor: string;
+  amount: CoinSDKType[];
 }
 /** Proposal defines the core field members of a governance proposal. */
 
@@ -207,6 +225,20 @@ export interface Proposal {
 
   metadata: string;
 }
+/** Proposal defines the core field members of a governance proposal. */
+
+export interface ProposalSDKType {
+  id: Long;
+  messages: AnySDKType[];
+  status: ProposalStatus;
+  final_tally_result?: TallyResultSDKType;
+  submit_time?: TimestampSDKType;
+  deposit_end_time?: TimestampSDKType;
+  total_deposit: CoinSDKType[];
+  voting_start_time?: TimestampSDKType;
+  voting_end_time?: TimestampSDKType;
+  metadata: string;
+}
 /** TallyResult defines a standard tally for a governance proposal. */
 
 export interface TallyResult {
@@ -214,6 +246,14 @@ export interface TallyResult {
   abstainCount: string;
   noCount: string;
   noWithVetoCount: string;
+}
+/** TallyResult defines a standard tally for a governance proposal. */
+
+export interface TallyResultSDKType {
+  yes_count: string;
+  abstain_count: string;
+  no_count: string;
+  no_with_veto_count: string;
 }
 /**
  * Vote defines a vote on a governance proposal.
@@ -228,6 +268,17 @@ export interface Vote {
 
   metadata: string;
 }
+/**
+ * Vote defines a vote on a governance proposal.
+ * A Vote consists of a proposal ID, the voter, and the vote option.
+ */
+
+export interface VoteSDKType {
+  proposal_id: Long;
+  voter: string;
+  options: WeightedVoteOptionSDKType[];
+  metadata: string;
+}
 /** DepositParams defines the params for deposits on governance proposals. */
 
 export interface DepositParams {
@@ -240,11 +291,22 @@ export interface DepositParams {
 
   maxDepositPeriod?: Duration;
 }
+/** DepositParams defines the params for deposits on governance proposals. */
+
+export interface DepositParamsSDKType {
+  min_deposit: CoinSDKType[];
+  max_deposit_period?: DurationSDKType;
+}
 /** VotingParams defines the params for voting on governance proposals. */
 
 export interface VotingParams {
   /** Length of the voting period. */
   votingPeriod?: Duration;
+}
+/** VotingParams defines the params for voting on governance proposals. */
+
+export interface VotingParamsSDKType {
+  voting_period?: DurationSDKType;
 }
 /** TallyParams defines the params for tallying votes on governance proposals. */
 
@@ -263,6 +325,13 @@ export interface TallyParams {
    */
 
   vetoThreshold: string;
+}
+/** TallyParams defines the params for tallying votes on governance proposals. */
+
+export interface TallyParamsSDKType {
+  quorum: string;
+  threshold: string;
+  veto_threshold: string;
 }
 
 function createBaseWeightedVoteOption(): WeightedVoteOption {
@@ -330,6 +399,20 @@ export const WeightedVoteOption = {
     message.option = object.option ?? 0;
     message.weight = object.weight ?? "";
     return message;
+  },
+
+  fromSDK(object: WeightedVoteOptionSDKType): WeightedVoteOption {
+    return {
+      option: isSet(object.option) ? voteOptionFromJSON(object.option) : 0,
+      weight: object?.weight
+    };
+  },
+
+  toSDK(message: WeightedVoteOption): WeightedVoteOptionSDKType {
+    const obj: any = {};
+    message.option !== undefined && (obj.option = voteOptionToJSON(message.option));
+    obj.weight = message.weight;
+    return obj;
   }
 
 };
@@ -417,6 +500,28 @@ export const Deposit = {
     message.depositor = object.depositor ?? "";
     message.amount = object.amount?.map(e => Coin.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: DepositSDKType): Deposit {
+    return {
+      proposalId: object?.proposal_id,
+      depositor: object?.depositor,
+      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: Deposit): DepositSDKType {
+    const obj: any = {};
+    obj.proposal_id = message.proposalId;
+    obj.depositor = message.depositor;
+
+    if (message.amount) {
+      obj.amount = message.amount.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.amount = [];
+    }
+
+    return obj;
   }
 
 };
@@ -594,6 +699,48 @@ export const Proposal = {
     message.votingEndTime = object.votingEndTime !== undefined && object.votingEndTime !== null ? Timestamp.fromPartial(object.votingEndTime) : undefined;
     message.metadata = object.metadata ?? "";
     return message;
+  },
+
+  fromSDK(object: ProposalSDKType): Proposal {
+    return {
+      id: object?.id,
+      messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Any.fromSDK(e)) : [],
+      status: isSet(object.status) ? proposalStatusFromJSON(object.status) : 0,
+      finalTallyResult: object.final_tally_result ? TallyResult.fromSDK(object.final_tally_result) : undefined,
+      submitTime: object.submit_time ? Timestamp.fromSDK(object.submit_time) : undefined,
+      depositEndTime: object.deposit_end_time ? Timestamp.fromSDK(object.deposit_end_time) : undefined,
+      totalDeposit: Array.isArray(object?.total_deposit) ? object.total_deposit.map((e: any) => Coin.fromSDK(e)) : [],
+      votingStartTime: object.voting_start_time ? Timestamp.fromSDK(object.voting_start_time) : undefined,
+      votingEndTime: object.voting_end_time ? Timestamp.fromSDK(object.voting_end_time) : undefined,
+      metadata: object?.metadata
+    };
+  },
+
+  toSDK(message: Proposal): ProposalSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+
+    if (message.messages) {
+      obj.messages = message.messages.map(e => e ? Any.toSDK(e) : undefined);
+    } else {
+      obj.messages = [];
+    }
+
+    message.status !== undefined && (obj.status = proposalStatusToJSON(message.status));
+    message.finalTallyResult !== undefined && (obj.final_tally_result = message.finalTallyResult ? TallyResult.toSDK(message.finalTallyResult) : undefined);
+    message.submitTime !== undefined && (obj.submit_time = message.submitTime ? Timestamp.toSDK(message.submitTime) : undefined);
+    message.depositEndTime !== undefined && (obj.deposit_end_time = message.depositEndTime ? Timestamp.toSDK(message.depositEndTime) : undefined);
+
+    if (message.totalDeposit) {
+      obj.total_deposit = message.totalDeposit.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.total_deposit = [];
+    }
+
+    message.votingStartTime !== undefined && (obj.voting_start_time = message.votingStartTime ? Timestamp.toSDK(message.votingStartTime) : undefined);
+    message.votingEndTime !== undefined && (obj.voting_end_time = message.votingEndTime ? Timestamp.toSDK(message.votingEndTime) : undefined);
+    obj.metadata = message.metadata;
+    return obj;
   }
 
 };
@@ -687,6 +834,24 @@ export const TallyResult = {
     message.noCount = object.noCount ?? "";
     message.noWithVetoCount = object.noWithVetoCount ?? "";
     return message;
+  },
+
+  fromSDK(object: TallyResultSDKType): TallyResult {
+    return {
+      yesCount: object?.yes_count,
+      abstainCount: object?.abstain_count,
+      noCount: object?.no_count,
+      noWithVetoCount: object?.no_with_veto_count
+    };
+  },
+
+  toSDK(message: TallyResult): TallyResultSDKType {
+    const obj: any = {};
+    obj.yes_count = message.yesCount;
+    obj.abstain_count = message.abstainCount;
+    obj.no_count = message.noCount;
+    obj.no_with_veto_count = message.noWithVetoCount;
+    return obj;
   }
 
 };
@@ -786,6 +951,30 @@ export const Vote = {
     message.options = object.options?.map(e => WeightedVoteOption.fromPartial(e)) || [];
     message.metadata = object.metadata ?? "";
     return message;
+  },
+
+  fromSDK(object: VoteSDKType): Vote {
+    return {
+      proposalId: object?.proposal_id,
+      voter: object?.voter,
+      options: Array.isArray(object?.options) ? object.options.map((e: any) => WeightedVoteOption.fromSDK(e)) : [],
+      metadata: object?.metadata
+    };
+  },
+
+  toSDK(message: Vote): VoteSDKType {
+    const obj: any = {};
+    obj.proposal_id = message.proposalId;
+    obj.voter = message.voter;
+
+    if (message.options) {
+      obj.options = message.options.map(e => e ? WeightedVoteOption.toSDK(e) : undefined);
+    } else {
+      obj.options = [];
+    }
+
+    obj.metadata = message.metadata;
+    return obj;
   }
 
 };
@@ -861,6 +1050,26 @@ export const DepositParams = {
     message.minDeposit = object.minDeposit?.map(e => Coin.fromPartial(e)) || [];
     message.maxDepositPeriod = object.maxDepositPeriod !== undefined && object.maxDepositPeriod !== null ? Duration.fromPartial(object.maxDepositPeriod) : undefined;
     return message;
+  },
+
+  fromSDK(object: DepositParamsSDKType): DepositParams {
+    return {
+      minDeposit: Array.isArray(object?.min_deposit) ? object.min_deposit.map((e: any) => Coin.fromSDK(e)) : [],
+      maxDepositPeriod: object.max_deposit_period ? Duration.fromSDK(object.max_deposit_period) : undefined
+    };
+  },
+
+  toSDK(message: DepositParams): DepositParamsSDKType {
+    const obj: any = {};
+
+    if (message.minDeposit) {
+      obj.min_deposit = message.minDeposit.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.min_deposit = [];
+    }
+
+    message.maxDepositPeriod !== undefined && (obj.max_deposit_period = message.maxDepositPeriod ? Duration.toSDK(message.maxDepositPeriod) : undefined);
+    return obj;
   }
 
 };
@@ -918,6 +1127,18 @@ export const VotingParams = {
     const message = createBaseVotingParams();
     message.votingPeriod = object.votingPeriod !== undefined && object.votingPeriod !== null ? Duration.fromPartial(object.votingPeriod) : undefined;
     return message;
+  },
+
+  fromSDK(object: VotingParamsSDKType): VotingParams {
+    return {
+      votingPeriod: object.voting_period ? Duration.fromSDK(object.voting_period) : undefined
+    };
+  },
+
+  toSDK(message: VotingParams): VotingParamsSDKType {
+    const obj: any = {};
+    message.votingPeriod !== undefined && (obj.voting_period = message.votingPeriod ? Duration.toSDK(message.votingPeriod) : undefined);
+    return obj;
   }
 
 };
@@ -999,6 +1220,22 @@ export const TallyParams = {
     message.threshold = object.threshold ?? "";
     message.vetoThreshold = object.vetoThreshold ?? "";
     return message;
+  },
+
+  fromSDK(object: TallyParamsSDKType): TallyParams {
+    return {
+      quorum: object?.quorum,
+      threshold: object?.threshold,
+      vetoThreshold: object?.veto_threshold
+    };
+  },
+
+  toSDK(message: TallyParams): TallyParamsSDKType {
+    const obj: any = {};
+    obj.quorum = message.quorum;
+    obj.threshold = message.threshold;
+    obj.veto_threshold = message.vetoThreshold;
+    return obj;
   }
 
 };

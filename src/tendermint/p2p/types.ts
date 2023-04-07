@@ -7,7 +7,17 @@ export interface NetAddress {
   ip: string;
   port: number;
 }
+export interface NetAddressSDKType {
+  id: string;
+  ip: string;
+  port: number;
+}
 export interface ProtocolVersion {
+  p2p: Long;
+  block: Long;
+  app: Long;
+}
+export interface ProtocolVersionSDKType {
   p2p: Long;
   block: Long;
   app: Long;
@@ -22,9 +32,23 @@ export interface DefaultNodeInfo {
   moniker: string;
   other?: DefaultNodeInfoOther;
 }
+export interface DefaultNodeInfoSDKType {
+  protocol_version?: ProtocolVersionSDKType;
+  default_node_id: string;
+  listen_addr: string;
+  network: string;
+  version: string;
+  channels: Uint8Array;
+  moniker: string;
+  other?: DefaultNodeInfoOtherSDKType;
+}
 export interface DefaultNodeInfoOther {
   txIndex: string;
   rpcAddress: string;
+}
+export interface DefaultNodeInfoOtherSDKType {
+  tx_index: string;
+  rpc_address: string;
 }
 
 function createBaseNetAddress(): NetAddress {
@@ -104,6 +128,22 @@ export const NetAddress = {
     message.ip = object.ip ?? "";
     message.port = object.port ?? 0;
     return message;
+  },
+
+  fromSDK(object: NetAddressSDKType): NetAddress {
+    return {
+      id: object?.id,
+      ip: object?.ip,
+      port: object?.port
+    };
+  },
+
+  toSDK(message: NetAddress): NetAddressSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.ip = message.ip;
+    obj.port = message.port;
+    return obj;
   }
 
 };
@@ -185,6 +225,22 @@ export const ProtocolVersion = {
     message.block = object.block !== undefined && object.block !== null ? Long.fromValue(object.block) : Long.UZERO;
     message.app = object.app !== undefined && object.app !== null ? Long.fromValue(object.app) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: ProtocolVersionSDKType): ProtocolVersion {
+    return {
+      p2p: object?.p2p,
+      block: object?.block,
+      app: object?.app
+    };
+  },
+
+  toSDK(message: ProtocolVersion): ProtocolVersionSDKType {
+    const obj: any = {};
+    obj.p2p = message.p2p;
+    obj.block = message.block;
+    obj.app = message.app;
+    return obj;
   }
 
 };
@@ -326,6 +382,32 @@ export const DefaultNodeInfo = {
     message.moniker = object.moniker ?? "";
     message.other = object.other !== undefined && object.other !== null ? DefaultNodeInfoOther.fromPartial(object.other) : undefined;
     return message;
+  },
+
+  fromSDK(object: DefaultNodeInfoSDKType): DefaultNodeInfo {
+    return {
+      protocolVersion: object.protocol_version ? ProtocolVersion.fromSDK(object.protocol_version) : undefined,
+      defaultNodeId: object?.default_node_id,
+      listenAddr: object?.listen_addr,
+      network: object?.network,
+      version: object?.version,
+      channels: object?.channels,
+      moniker: object?.moniker,
+      other: object.other ? DefaultNodeInfoOther.fromSDK(object.other) : undefined
+    };
+  },
+
+  toSDK(message: DefaultNodeInfo): DefaultNodeInfoSDKType {
+    const obj: any = {};
+    message.protocolVersion !== undefined && (obj.protocol_version = message.protocolVersion ? ProtocolVersion.toSDK(message.protocolVersion) : undefined);
+    obj.default_node_id = message.defaultNodeId;
+    obj.listen_addr = message.listenAddr;
+    obj.network = message.network;
+    obj.version = message.version;
+    obj.channels = message.channels;
+    obj.moniker = message.moniker;
+    message.other !== undefined && (obj.other = message.other ? DefaultNodeInfoOther.toSDK(message.other) : undefined);
+    return obj;
   }
 
 };
@@ -395,6 +477,20 @@ export const DefaultNodeInfoOther = {
     message.txIndex = object.txIndex ?? "";
     message.rpcAddress = object.rpcAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: DefaultNodeInfoOtherSDKType): DefaultNodeInfoOther {
+    return {
+      txIndex: object?.tx_index,
+      rpcAddress: object?.rpc_address
+    };
+  },
+
+  toSDK(message: DefaultNodeInfoOther): DefaultNodeInfoOtherSDKType {
+    const obj: any = {};
+    obj.tx_index = message.txIndex;
+    obj.rpc_address = message.rpcAddress;
+    return obj;
   }
 
 };

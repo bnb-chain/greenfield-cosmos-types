@@ -7,7 +7,7 @@
     "lib": [
       "es2020"
     ],
-    "module": "commonjs",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "newLine": "LF",
     "noEmitOnError": true,

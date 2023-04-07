@@ -1,8 +1,8 @@
 /* eslint-disable */
-import { Data, Commit, BlockID } from "../../../../tendermint/types/types";
-import { EvidenceList } from "../../../../tendermint/types/evidence";
-import { Consensus } from "../../../../tendermint/version/types";
-import { Timestamp } from "../../../../google/protobuf/timestamp";
+import { Data, DataSDKType, Commit, CommitSDKType, BlockID, BlockIDSDKType } from "../../../../tendermint/types/types";
+import { EvidenceList, EvidenceListSDKType } from "../../../../tendermint/types/evidence";
+import { Consensus, ConsensusSDKType } from "../../../../tendermint/version/types";
+import { Timestamp, TimestampSDKType } from "../../../../google/protobuf/timestamp";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long, fromJsonTimestamp, bytesFromBase64, fromTimestamp, base64FromBytes } from "../../../../helpers";
 export const protobufPackage = "cosmos.base.tendermint.v1beta1";
@@ -16,6 +16,17 @@ export interface Block {
   data?: Data;
   evidence?: EvidenceList;
   lastCommit?: Commit;
+}
+/**
+ * Block is tendermint type Block, with the Header proposer address
+ * field converted to bech32 string.
+ */
+
+export interface BlockSDKType {
+  header?: HeaderSDKType;
+  data?: DataSDKType;
+  evidence?: EvidenceListSDKType;
+  last_commit?: CommitSDKType;
 }
 /** Header defines the structure of a Tendermint block header. */
 
@@ -55,6 +66,24 @@ export interface Header {
    */
 
   proposerAddress: string;
+}
+/** Header defines the structure of a Tendermint block header. */
+
+export interface HeaderSDKType {
+  version?: ConsensusSDKType;
+  chain_id: string;
+  height: Long;
+  time?: TimestampSDKType;
+  last_block_id?: BlockIDSDKType;
+  last_commit_hash: Uint8Array;
+  data_hash: Uint8Array;
+  validators_hash: Uint8Array;
+  next_validators_hash: Uint8Array;
+  consensus_hash: Uint8Array;
+  app_hash: Uint8Array;
+  last_results_hash: Uint8Array;
+  evidence_hash: Uint8Array;
+  proposer_address: string;
 }
 
 function createBaseBlock(): Block {
@@ -146,6 +175,24 @@ export const Block = {
     message.evidence = object.evidence !== undefined && object.evidence !== null ? EvidenceList.fromPartial(object.evidence) : undefined;
     message.lastCommit = object.lastCommit !== undefined && object.lastCommit !== null ? Commit.fromPartial(object.lastCommit) : undefined;
     return message;
+  },
+
+  fromSDK(object: BlockSDKType): Block {
+    return {
+      header: object.header ? Header.fromSDK(object.header) : undefined,
+      data: object.data ? Data.fromSDK(object.data) : undefined,
+      evidence: object.evidence ? EvidenceList.fromSDK(object.evidence) : undefined,
+      lastCommit: object.last_commit ? Commit.fromSDK(object.last_commit) : undefined
+    };
+  },
+
+  toSDK(message: Block): BlockSDKType {
+    const obj: any = {};
+    message.header !== undefined && (obj.header = message.header ? Header.toSDK(message.header) : undefined);
+    message.data !== undefined && (obj.data = message.data ? Data.toSDK(message.data) : undefined);
+    message.evidence !== undefined && (obj.evidence = message.evidence ? EvidenceList.toSDK(message.evidence) : undefined);
+    message.lastCommit !== undefined && (obj.last_commit = message.lastCommit ? Commit.toSDK(message.lastCommit) : undefined);
+    return obj;
   }
 
 };
@@ -359,6 +406,44 @@ export const Header = {
     message.evidenceHash = object.evidenceHash ?? new Uint8Array();
     message.proposerAddress = object.proposerAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: HeaderSDKType): Header {
+    return {
+      version: object.version ? Consensus.fromSDK(object.version) : undefined,
+      chainId: object?.chain_id,
+      height: object?.height,
+      time: object.time ? Timestamp.fromSDK(object.time) : undefined,
+      lastBlockId: object.last_block_id ? BlockID.fromSDK(object.last_block_id) : undefined,
+      lastCommitHash: object?.last_commit_hash,
+      dataHash: object?.data_hash,
+      validatorsHash: object?.validators_hash,
+      nextValidatorsHash: object?.next_validators_hash,
+      consensusHash: object?.consensus_hash,
+      appHash: object?.app_hash,
+      lastResultsHash: object?.last_results_hash,
+      evidenceHash: object?.evidence_hash,
+      proposerAddress: object?.proposer_address
+    };
+  },
+
+  toSDK(message: Header): HeaderSDKType {
+    const obj: any = {};
+    message.version !== undefined && (obj.version = message.version ? Consensus.toSDK(message.version) : undefined);
+    obj.chain_id = message.chainId;
+    obj.height = message.height;
+    message.time !== undefined && (obj.time = message.time ? Timestamp.toSDK(message.time) : undefined);
+    message.lastBlockId !== undefined && (obj.last_block_id = message.lastBlockId ? BlockID.toSDK(message.lastBlockId) : undefined);
+    obj.last_commit_hash = message.lastCommitHash;
+    obj.data_hash = message.dataHash;
+    obj.validators_hash = message.validatorsHash;
+    obj.next_validators_hash = message.nextValidatorsHash;
+    obj.consensus_hash = message.consensusHash;
+    obj.app_hash = message.appHash;
+    obj.last_results_hash = message.lastResultsHash;
+    obj.evidence_hash = message.evidenceHash;
+    obj.proposer_address = message.proposerAddress;
+    return obj;
   }
 
 };

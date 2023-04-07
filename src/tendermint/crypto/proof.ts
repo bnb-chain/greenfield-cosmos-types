@@ -8,6 +8,12 @@ export interface Proof {
   leafHash: Uint8Array;
   aunts: Uint8Array[];
 }
+export interface ProofSDKType {
+  total: Long;
+  index: Long;
+  leaf_hash: Uint8Array;
+  aunts: Uint8Array[];
+}
 export interface ValueOp {
   /** Encoded in ProofOp.Key. */
   key: Uint8Array;
@@ -15,7 +21,16 @@ export interface ValueOp {
 
   proof?: Proof;
 }
+export interface ValueOpSDKType {
+  key: Uint8Array;
+  proof?: ProofSDKType;
+}
 export interface DominoOp {
+  key: string;
+  input: string;
+  output: string;
+}
+export interface DominoOpSDKType {
   key: string;
   input: string;
   output: string;
@@ -31,10 +46,26 @@ export interface ProofOp {
   key: Uint8Array;
   data: Uint8Array;
 }
+/**
+ * ProofOp defines an operation used for calculating Merkle root
+ * The data could be arbitrary format, providing nessecary data
+ * for example neighbouring node hash
+ */
+
+export interface ProofOpSDKType {
+  type: string;
+  key: Uint8Array;
+  data: Uint8Array;
+}
 /** ProofOps is Merkle proof defined by the list of ProofOps */
 
 export interface ProofOps {
   ops: ProofOp[];
+}
+/** ProofOps is Merkle proof defined by the list of ProofOps */
+
+export interface ProofOpsSDKType {
+  ops: ProofOpSDKType[];
 }
 
 function createBaseProof(): Proof {
@@ -132,6 +163,30 @@ export const Proof = {
     message.leafHash = object.leafHash ?? new Uint8Array();
     message.aunts = object.aunts?.map(e => e) || [];
     return message;
+  },
+
+  fromSDK(object: ProofSDKType): Proof {
+    return {
+      total: object?.total,
+      index: object?.index,
+      leafHash: object?.leaf_hash,
+      aunts: Array.isArray(object?.aunts) ? object.aunts.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: Proof): ProofSDKType {
+    const obj: any = {};
+    obj.total = message.total;
+    obj.index = message.index;
+    obj.leaf_hash = message.leafHash;
+
+    if (message.aunts) {
+      obj.aunts = message.aunts.map(e => e);
+    } else {
+      obj.aunts = [];
+    }
+
+    return obj;
   }
 
 };
@@ -201,6 +256,20 @@ export const ValueOp = {
     message.key = object.key ?? new Uint8Array();
     message.proof = object.proof !== undefined && object.proof !== null ? Proof.fromPartial(object.proof) : undefined;
     return message;
+  },
+
+  fromSDK(object: ValueOpSDKType): ValueOp {
+    return {
+      key: object?.key,
+      proof: object.proof ? Proof.fromSDK(object.proof) : undefined
+    };
+  },
+
+  toSDK(message: ValueOp): ValueOpSDKType {
+    const obj: any = {};
+    obj.key = message.key;
+    message.proof !== undefined && (obj.proof = message.proof ? Proof.toSDK(message.proof) : undefined);
+    return obj;
   }
 
 };
@@ -282,6 +351,22 @@ export const DominoOp = {
     message.input = object.input ?? "";
     message.output = object.output ?? "";
     return message;
+  },
+
+  fromSDK(object: DominoOpSDKType): DominoOp {
+    return {
+      key: object?.key,
+      input: object?.input,
+      output: object?.output
+    };
+  },
+
+  toSDK(message: DominoOp): DominoOpSDKType {
+    const obj: any = {};
+    obj.key = message.key;
+    obj.input = message.input;
+    obj.output = message.output;
+    return obj;
   }
 
 };
@@ -363,6 +448,22 @@ export const ProofOp = {
     message.key = object.key ?? new Uint8Array();
     message.data = object.data ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: ProofOpSDKType): ProofOp {
+    return {
+      type: object?.type,
+      key: object?.key,
+      data: object?.data
+    };
+  },
+
+  toSDK(message: ProofOp): ProofOpSDKType {
+    const obj: any = {};
+    obj.type = message.type;
+    obj.key = message.key;
+    obj.data = message.data;
+    return obj;
   }
 
 };
@@ -426,6 +527,24 @@ export const ProofOps = {
     const message = createBaseProofOps();
     message.ops = object.ops?.map(e => ProofOp.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: ProofOpsSDKType): ProofOps {
+    return {
+      ops: Array.isArray(object?.ops) ? object.ops.map((e: any) => ProofOp.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: ProofOps): ProofOpsSDKType {
+    const obj: any = {};
+
+    if (message.ops) {
+      obj.ops = message.ops.map(e => e ? ProofOp.toSDK(e) : undefined);
+    } else {
+      obj.ops = [];
+    }
+
+    return obj;
   }
 
 };

@@ -49,6 +49,23 @@ export interface PageRequest {
   reverse: boolean;
 }
 /**
+ * PageRequest is to be embedded in gRPC request messages for efficient
+ * pagination. Ex:
+ * 
+ *  message SomeRequest {
+ *          Foo some_parameter = 1;
+ *          PageRequest pagination = 2;
+ *  }
+ */
+
+export interface PageRequestSDKType {
+  key: Uint8Array;
+  offset: Long;
+  limit: Long;
+  count_total: boolean;
+  reverse: boolean;
+}
+/**
  * PageResponse is to be embedded in gRPC response messages where the
  * corresponding request message has used PageRequest.
  * 
@@ -70,6 +87,20 @@ export interface PageResponse {
    * was set, its value is undefined otherwise
    */
 
+  total: Long;
+}
+/**
+ * PageResponse is to be embedded in gRPC response messages where the
+ * corresponding request message has used PageRequest.
+ * 
+ *  message SomeResponse {
+ *          repeated Bar results = 1;
+ *          PageResponse page = 2;
+ *  }
+ */
+
+export interface PageResponseSDKType {
+  next_key: Uint8Array;
   total: Long;
 }
 
@@ -174,6 +205,26 @@ export const PageRequest = {
     message.countTotal = object.countTotal ?? false;
     message.reverse = object.reverse ?? false;
     return message;
+  },
+
+  fromSDK(object: PageRequestSDKType): PageRequest {
+    return {
+      key: object?.key,
+      offset: object?.offset,
+      limit: object?.limit,
+      countTotal: object?.count_total,
+      reverse: object?.reverse
+    };
+  },
+
+  toSDK(message: PageRequest): PageRequestSDKType {
+    const obj: any = {};
+    obj.key = message.key;
+    obj.offset = message.offset;
+    obj.limit = message.limit;
+    obj.count_total = message.countTotal;
+    obj.reverse = message.reverse;
+    return obj;
   }
 
 };
@@ -243,6 +294,20 @@ export const PageResponse = {
     message.nextKey = object.nextKey ?? new Uint8Array();
     message.total = object.total !== undefined && object.total !== null ? Long.fromValue(object.total) : Long.UZERO;
     return message;
+  },
+
+  fromSDK(object: PageResponseSDKType): PageResponse {
+    return {
+      nextKey: object?.next_key,
+      total: object?.total
+    };
+  },
+
+  toSDK(message: PageResponse): PageResponseSDKType {
+    const obj: any = {};
+    obj.next_key = message.nextKey;
+    obj.total = message.total;
+    return obj;
   }
 
 };

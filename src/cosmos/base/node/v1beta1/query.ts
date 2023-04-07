@@ -5,10 +5,18 @@ export const protobufPackage = "cosmos.base.node.v1beta1";
 /** ConfigRequest defines the request structure for the Config gRPC query. */
 
 export interface ConfigRequest {}
+/** ConfigRequest defines the request structure for the Config gRPC query. */
+
+export interface ConfigRequestSDKType {}
 /** ConfigResponse defines the response structure for the Config gRPC query. */
 
 export interface ConfigResponse {
   minimumGasPrice: string;
+}
+/** ConfigResponse defines the response structure for the Config gRPC query. */
+
+export interface ConfigResponseSDKType {
+  minimum_gas_price: string;
 }
 
 function createBaseConfigRequest(): ConfigRequest {
@@ -50,6 +58,15 @@ export const ConfigRequest = {
   fromPartial<I extends Exact<DeepPartial<ConfigRequest>, I>>(_: I): ConfigRequest {
     const message = createBaseConfigRequest();
     return message;
+  },
+
+  fromSDK(_: ConfigRequestSDKType): ConfigRequest {
+    return {};
+  },
+
+  toSDK(_: ConfigRequest): ConfigRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -107,6 +124,18 @@ export const ConfigResponse = {
     const message = createBaseConfigResponse();
     message.minimumGasPrice = object.minimumGasPrice ?? "";
     return message;
+  },
+
+  fromSDK(object: ConfigResponseSDKType): ConfigResponse {
+    return {
+      minimumGasPrice: object?.minimum_gas_price
+    };
+  },
+
+  toSDK(message: ConfigResponse): ConfigResponseSDKType {
+    const obj: any = {};
+    obj.minimum_gas_price = message.minimumGasPrice;
+    return obj;
   }
 
 };

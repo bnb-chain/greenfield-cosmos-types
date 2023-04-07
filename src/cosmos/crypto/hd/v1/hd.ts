@@ -23,6 +23,15 @@ export interface BIP44Params {
 
   addressIndex: number;
 }
+/** BIP44Params is used as path field in ledger item in Record. */
+
+export interface BIP44ParamsSDKType {
+  purpose: number;
+  coin_type: number;
+  account: number;
+  change: boolean;
+  address_index: number;
+}
 
 function createBaseBIP44Params(): BIP44Params {
   return {
@@ -125,6 +134,26 @@ export const BIP44Params = {
     message.change = object.change ?? false;
     message.addressIndex = object.addressIndex ?? 0;
     return message;
+  },
+
+  fromSDK(object: BIP44ParamsSDKType): BIP44Params {
+    return {
+      purpose: object?.purpose,
+      coinType: object?.coin_type,
+      account: object?.account,
+      change: object?.change,
+      addressIndex: object?.address_index
+    };
+  },
+
+  toSDK(message: BIP44Params): BIP44ParamsSDKType {
+    const obj: any = {};
+    obj.purpose = message.purpose;
+    obj.coin_type = message.coinType;
+    obj.account = message.account;
+    obj.change = message.change;
+    obj.address_index = message.addressIndex;
+    return obj;
   }
 
 };

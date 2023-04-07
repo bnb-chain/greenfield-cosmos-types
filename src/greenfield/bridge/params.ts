@@ -11,6 +11,12 @@ export interface Params {
 
   transferOutAckRelayerFee: string;
 }
+/** Params defines the parameters for the module. */
+
+export interface ParamsSDKType {
+  transfer_out_relayer_fee: string;
+  transfer_out_ack_relayer_fee: string;
+}
 
 function createBaseParams(): Params {
   return {
@@ -77,6 +83,20 @@ export const Params = {
     message.transferOutRelayerFee = object.transferOutRelayerFee ?? "";
     message.transferOutAckRelayerFee = object.transferOutAckRelayerFee ?? "";
     return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      transferOutRelayerFee: object?.transfer_out_relayer_fee,
+      transferOutAckRelayerFee: object?.transfer_out_ack_relayer_fee
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+    obj.transfer_out_relayer_fee = message.transferOutRelayerFee;
+    obj.transfer_out_ack_relayer_fee = message.transferOutAckRelayerFee;
+    return obj;
   }
 
 };

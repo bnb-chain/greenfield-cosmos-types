@@ -32,6 +32,19 @@ export interface EventCrossChain {
 
   ackRelayerFee: string;
 }
+/** EventCrossChain is emitted when there is a cross chain package created */
+
+export interface EventCrossChainSDKType {
+  src_chain_id: number;
+  dest_chain_id: number;
+  channel_id: number;
+  sequence: Long;
+  package_type: number;
+  timestamp: Long;
+  package_load: string;
+  relayer_fee: string;
+  ack_relayer_fee: string;
+}
 
 function createBaseEventCrossChain(): EventCrossChain {
   return {
@@ -182,6 +195,34 @@ export const EventCrossChain = {
     message.relayerFee = object.relayerFee ?? "";
     message.ackRelayerFee = object.ackRelayerFee ?? "";
     return message;
+  },
+
+  fromSDK(object: EventCrossChainSDKType): EventCrossChain {
+    return {
+      srcChainId: object?.src_chain_id,
+      destChainId: object?.dest_chain_id,
+      channelId: object?.channel_id,
+      sequence: object?.sequence,
+      packageType: object?.package_type,
+      timestamp: object?.timestamp,
+      packageLoad: object?.package_load,
+      relayerFee: object?.relayer_fee,
+      ackRelayerFee: object?.ack_relayer_fee
+    };
+  },
+
+  toSDK(message: EventCrossChain): EventCrossChainSDKType {
+    const obj: any = {};
+    obj.src_chain_id = message.srcChainId;
+    obj.dest_chain_id = message.destChainId;
+    obj.channel_id = message.channelId;
+    obj.sequence = message.sequence;
+    obj.package_type = message.packageType;
+    obj.timestamp = message.timestamp;
+    obj.package_load = message.packageLoad;
+    obj.relayer_fee = message.relayerFee;
+    obj.ack_relayer_fee = message.ackRelayerFee;
+    return obj;
   }
 
 };

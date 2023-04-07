@@ -5,6 +5,9 @@ export const protobufPackage = "cosmos.app.module.v1alpha1";
 /** Module is the module config object for the cosmos.app v1 app module. */
 
 export interface Module {}
+/** Module is the module config object for the cosmos.app v1 app module. */
+
+export interface ModuleSDKType {}
 
 function createBaseModule(): Module {
   return {};
@@ -45,6 +48,15 @@ export const Module = {
   fromPartial<I extends Exact<DeepPartial<Module>, I>>(_: I): Module {
     const message = createBaseModule();
     return message;
+  },
+
+  fromSDK(_: ModuleSDKType): Module {
+    return {};
+  },
+
+  toSDK(_: Module): ModuleSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };

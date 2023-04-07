@@ -1,7 +1,7 @@
 /* eslint-disable */
-import { PageRequest, PageResponse } from "../../base/query/v1beta1/pagination";
-import { Any } from "../../../google/protobuf/any";
-import { Params } from "./auth";
+import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../base/query/v1beta1/pagination";
+import { Any, AnySDKType } from "../../../google/protobuf/any";
+import { Params, ParamsSDKType } from "./auth";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, Long, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.auth.v1beta1";
@@ -16,6 +16,15 @@ export interface QueryAccountsRequest {
   pagination?: PageRequest;
 }
 /**
+ * QueryAccountsRequest is the request type for the Query/Accounts RPC method.
+ * 
+ * Since: cosmos-sdk 0.43
+ */
+
+export interface QueryAccountsRequestSDKType {
+  pagination?: PageRequestSDKType;
+}
+/**
  * QueryAccountsResponse is the response type for the Query/Accounts RPC method.
  * 
  * Since: cosmos-sdk 0.43
@@ -28,10 +37,25 @@ export interface QueryAccountsResponse {
 
   pagination?: PageResponse;
 }
+/**
+ * QueryAccountsResponse is the response type for the Query/Accounts RPC method.
+ * 
+ * Since: cosmos-sdk 0.43
+ */
+
+export interface QueryAccountsResponseSDKType {
+  accounts: AnySDKType[];
+  pagination?: PageResponseSDKType;
+}
 /** QueryAccountRequest is the request type for the Query/Account RPC method. */
 
 export interface QueryAccountRequest {
   /** address defines the address to query for. */
+  address: string;
+}
+/** QueryAccountRequest is the request type for the Query/Account RPC method. */
+
+export interface QueryAccountRequestSDKType {
   address: string;
 }
 /** QueryAccountResponse is the response type for the Query/Account RPC method. */
@@ -40,14 +64,27 @@ export interface QueryAccountResponse {
   /** account defines the account of the corresponding address. */
   account?: Any;
 }
+/** QueryAccountResponse is the response type for the Query/Account RPC method. */
+
+export interface QueryAccountResponseSDKType {
+  account?: AnySDKType;
+}
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
+/** QueryParamsRequest is the request type for the Query/Params RPC method. */
+
+export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 
 export interface QueryParamsResponse {
   /** params defines the parameters of the module. */
   params?: Params;
+}
+/** QueryParamsResponse is the response type for the Query/Params RPC method. */
+
+export interface QueryParamsResponseSDKType {
+  params?: ParamsSDKType;
 }
 /**
  * QueryModuleAccountsRequest is the request type for the Query/ModuleAccounts RPC method.
@@ -57,6 +94,13 @@ export interface QueryParamsResponse {
 
 export interface QueryModuleAccountsRequest {}
 /**
+ * QueryModuleAccountsRequest is the request type for the Query/ModuleAccounts RPC method.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface QueryModuleAccountsRequestSDKType {}
+/**
  * QueryModuleAccountsResponse is the response type for the Query/ModuleAccounts RPC method.
  * 
  * Since: cosmos-sdk 0.46
@@ -65,15 +109,34 @@ export interface QueryModuleAccountsRequest {}
 export interface QueryModuleAccountsResponse {
   accounts: Any[];
 }
+/**
+ * QueryModuleAccountsResponse is the response type for the Query/ModuleAccounts RPC method.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface QueryModuleAccountsResponseSDKType {
+  accounts: AnySDKType[];
+}
 /** QueryModuleAccountByNameRequest is the request type for the Query/ModuleAccountByName RPC method. */
 
 export interface QueryModuleAccountByNameRequest {
+  name: string;
+}
+/** QueryModuleAccountByNameRequest is the request type for the Query/ModuleAccountByName RPC method. */
+
+export interface QueryModuleAccountByNameRequestSDKType {
   name: string;
 }
 /** QueryModuleAccountByNameResponse is the response type for the Query/ModuleAccountByName RPC method. */
 
 export interface QueryModuleAccountByNameResponse {
   account?: Any;
+}
+/** QueryModuleAccountByNameResponse is the response type for the Query/ModuleAccountByName RPC method. */
+
+export interface QueryModuleAccountByNameResponseSDKType {
+  account?: AnySDKType;
 }
 /**
  * AddressBytesToStringRequest is the request type for AddressString rpc method.
@@ -85,6 +148,15 @@ export interface AddressBytesToStringRequest {
   addressBytes: Uint8Array;
 }
 /**
+ * AddressBytesToStringRequest is the request type for AddressString rpc method.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface AddressBytesToStringRequestSDKType {
+  address_bytes: Uint8Array;
+}
+/**
  * AddressBytesToStringResponse is the response type for AddressString rpc method.
  * 
  * Since: cosmos-sdk 0.46
@@ -92,6 +164,15 @@ export interface AddressBytesToStringRequest {
 
 export interface AddressBytesToStringResponse {
   addressString: string;
+}
+/**
+ * AddressBytesToStringResponse is the response type for AddressString rpc method.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface AddressBytesToStringResponseSDKType {
+  address_string: string;
 }
 /**
  * AddressStringToBytesRequest is the request type for AccountBytes rpc method.
@@ -103,6 +184,15 @@ export interface AddressStringToBytesRequest {
   addressString: string;
 }
 /**
+ * AddressStringToBytesRequest is the request type for AccountBytes rpc method.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface AddressStringToBytesRequestSDKType {
+  address_string: string;
+}
+/**
  * AddressStringToBytesResponse is the response type for AddressBytes rpc method.
  * 
  * Since: cosmos-sdk 0.46
@@ -110,6 +200,15 @@ export interface AddressStringToBytesRequest {
 
 export interface AddressStringToBytesResponse {
   addressBytes: Uint8Array;
+}
+/**
+ * AddressStringToBytesResponse is the response type for AddressBytes rpc method.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+
+export interface AddressStringToBytesResponseSDKType {
+  address_bytes: Uint8Array;
 }
 /**
  * QueryAccountAddressByIDRequest is the request type for AccountAddressByID rpc method
@@ -126,6 +225,15 @@ export interface QueryAccountAddressByIDRequest {
   id: Long;
 }
 /**
+ * QueryAccountAddressByIDRequest is the request type for AccountAddressByID rpc method
+ * 
+ * Since: cosmos-sdk 0.46.2
+ */
+
+export interface QueryAccountAddressByIDRequestSDKType {
+  id: Long;
+}
+/**
  * QueryAccountAddressByIDResponse is the response type for AccountAddressByID rpc method
  * 
  * Since: cosmos-sdk 0.46.2
@@ -133,6 +241,15 @@ export interface QueryAccountAddressByIDRequest {
 
 export interface QueryAccountAddressByIDResponse {
   accountAddress: string;
+}
+/**
+ * QueryAccountAddressByIDResponse is the response type for AccountAddressByID rpc method
+ * 
+ * Since: cosmos-sdk 0.46.2
+ */
+
+export interface QueryAccountAddressByIDResponseSDKType {
+  account_address: string;
 }
 
 function createBaseQueryAccountsRequest(): QueryAccountsRequest {
@@ -188,6 +305,18 @@ export const QueryAccountsRequest = {
     const message = createBaseQueryAccountsRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAccountsRequestSDKType): QueryAccountsRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAccountsRequest): QueryAccountsRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -263,6 +392,26 @@ export const QueryAccountsResponse = {
     message.accounts = object.accounts?.map(e => Any.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAccountsResponseSDKType): QueryAccountsResponse {
+    return {
+      accounts: Array.isArray(object?.accounts) ? object.accounts.map((e: any) => Any.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAccountsResponse): QueryAccountsResponseSDKType {
+    const obj: any = {};
+
+    if (message.accounts) {
+      obj.accounts = message.accounts.map(e => e ? Any.toSDK(e) : undefined);
+    } else {
+      obj.accounts = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -320,6 +469,18 @@ export const QueryAccountRequest = {
     const message = createBaseQueryAccountRequest();
     message.address = object.address ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryAccountRequestSDKType): QueryAccountRequest {
+    return {
+      address: object?.address
+    };
+  },
+
+  toSDK(message: QueryAccountRequest): QueryAccountRequestSDKType {
+    const obj: any = {};
+    obj.address = message.address;
+    return obj;
   }
 
 };
@@ -377,6 +538,18 @@ export const QueryAccountResponse = {
     const message = createBaseQueryAccountResponse();
     message.account = object.account !== undefined && object.account !== null ? Any.fromPartial(object.account) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAccountResponseSDKType): QueryAccountResponse {
+    return {
+      account: object.account ? Any.fromSDK(object.account) : undefined
+    };
+  },
+
+  toSDK(message: QueryAccountResponse): QueryAccountResponseSDKType {
+    const obj: any = {};
+    message.account !== undefined && (obj.account = message.account ? Any.toSDK(message.account) : undefined);
+    return obj;
   }
 
 };
@@ -420,6 +593,15 @@ export const QueryParamsRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(_: I): QueryParamsRequest {
     const message = createBaseQueryParamsRequest();
     return message;
+  },
+
+  fromSDK(_: QueryParamsRequestSDKType): QueryParamsRequest {
+    return {};
+  },
+
+  toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -477,6 +659,18 @@ export const QueryParamsResponse = {
     const message = createBaseQueryParamsResponse();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryParamsResponseSDKType): QueryParamsResponse {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
   }
 
 };
@@ -520,6 +714,15 @@ export const QueryModuleAccountsRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryModuleAccountsRequest>, I>>(_: I): QueryModuleAccountsRequest {
     const message = createBaseQueryModuleAccountsRequest();
     return message;
+  },
+
+  fromSDK(_: QueryModuleAccountsRequestSDKType): QueryModuleAccountsRequest {
+    return {};
+  },
+
+  toSDK(_: QueryModuleAccountsRequest): QueryModuleAccountsRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -583,6 +786,24 @@ export const QueryModuleAccountsResponse = {
     const message = createBaseQueryModuleAccountsResponse();
     message.accounts = object.accounts?.map(e => Any.fromPartial(e)) || [];
     return message;
+  },
+
+  fromSDK(object: QueryModuleAccountsResponseSDKType): QueryModuleAccountsResponse {
+    return {
+      accounts: Array.isArray(object?.accounts) ? object.accounts.map((e: any) => Any.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: QueryModuleAccountsResponse): QueryModuleAccountsResponseSDKType {
+    const obj: any = {};
+
+    if (message.accounts) {
+      obj.accounts = message.accounts.map(e => e ? Any.toSDK(e) : undefined);
+    } else {
+      obj.accounts = [];
+    }
+
+    return obj;
   }
 
 };
@@ -640,6 +861,18 @@ export const QueryModuleAccountByNameRequest = {
     const message = createBaseQueryModuleAccountByNameRequest();
     message.name = object.name ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryModuleAccountByNameRequestSDKType): QueryModuleAccountByNameRequest {
+    return {
+      name: object?.name
+    };
+  },
+
+  toSDK(message: QueryModuleAccountByNameRequest): QueryModuleAccountByNameRequestSDKType {
+    const obj: any = {};
+    obj.name = message.name;
+    return obj;
   }
 
 };
@@ -697,6 +930,18 @@ export const QueryModuleAccountByNameResponse = {
     const message = createBaseQueryModuleAccountByNameResponse();
     message.account = object.account !== undefined && object.account !== null ? Any.fromPartial(object.account) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryModuleAccountByNameResponseSDKType): QueryModuleAccountByNameResponse {
+    return {
+      account: object.account ? Any.fromSDK(object.account) : undefined
+    };
+  },
+
+  toSDK(message: QueryModuleAccountByNameResponse): QueryModuleAccountByNameResponseSDKType {
+    const obj: any = {};
+    message.account !== undefined && (obj.account = message.account ? Any.toSDK(message.account) : undefined);
+    return obj;
   }
 
 };
@@ -754,6 +999,18 @@ export const AddressBytesToStringRequest = {
     const message = createBaseAddressBytesToStringRequest();
     message.addressBytes = object.addressBytes ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: AddressBytesToStringRequestSDKType): AddressBytesToStringRequest {
+    return {
+      addressBytes: object?.address_bytes
+    };
+  },
+
+  toSDK(message: AddressBytesToStringRequest): AddressBytesToStringRequestSDKType {
+    const obj: any = {};
+    obj.address_bytes = message.addressBytes;
+    return obj;
   }
 
 };
@@ -811,6 +1068,18 @@ export const AddressBytesToStringResponse = {
     const message = createBaseAddressBytesToStringResponse();
     message.addressString = object.addressString ?? "";
     return message;
+  },
+
+  fromSDK(object: AddressBytesToStringResponseSDKType): AddressBytesToStringResponse {
+    return {
+      addressString: object?.address_string
+    };
+  },
+
+  toSDK(message: AddressBytesToStringResponse): AddressBytesToStringResponseSDKType {
+    const obj: any = {};
+    obj.address_string = message.addressString;
+    return obj;
   }
 
 };
@@ -868,6 +1137,18 @@ export const AddressStringToBytesRequest = {
     const message = createBaseAddressStringToBytesRequest();
     message.addressString = object.addressString ?? "";
     return message;
+  },
+
+  fromSDK(object: AddressStringToBytesRequestSDKType): AddressStringToBytesRequest {
+    return {
+      addressString: object?.address_string
+    };
+  },
+
+  toSDK(message: AddressStringToBytesRequest): AddressStringToBytesRequestSDKType {
+    const obj: any = {};
+    obj.address_string = message.addressString;
+    return obj;
   }
 
 };
@@ -925,6 +1206,18 @@ export const AddressStringToBytesResponse = {
     const message = createBaseAddressStringToBytesResponse();
     message.addressBytes = object.addressBytes ?? new Uint8Array();
     return message;
+  },
+
+  fromSDK(object: AddressStringToBytesResponseSDKType): AddressStringToBytesResponse {
+    return {
+      addressBytes: object?.address_bytes
+    };
+  },
+
+  toSDK(message: AddressStringToBytesResponse): AddressStringToBytesResponseSDKType {
+    const obj: any = {};
+    obj.address_bytes = message.addressBytes;
+    return obj;
   }
 
 };
@@ -982,6 +1275,18 @@ export const QueryAccountAddressByIDRequest = {
     const message = createBaseQueryAccountAddressByIDRequest();
     message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: QueryAccountAddressByIDRequestSDKType): QueryAccountAddressByIDRequest {
+    return {
+      id: object?.id
+    };
+  },
+
+  toSDK(message: QueryAccountAddressByIDRequest): QueryAccountAddressByIDRequestSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    return obj;
   }
 
 };
@@ -1039,6 +1344,18 @@ export const QueryAccountAddressByIDResponse = {
     const message = createBaseQueryAccountAddressByIDResponse();
     message.accountAddress = object.accountAddress ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryAccountAddressByIDResponseSDKType): QueryAccountAddressByIDResponse {
+    return {
+      accountAddress: object?.account_address
+    };
+  },
+
+  toSDK(message: QueryAccountAddressByIDResponse): QueryAccountAddressByIDResponseSDKType {
+    const obj: any = {};
+    obj.account_address = message.accountAddress;
+    return obj;
   }
 
 };

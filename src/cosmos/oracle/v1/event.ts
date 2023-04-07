@@ -35,6 +35,20 @@ export interface EventPackageClaim {
 
   ackRelayerFee: string;
 }
+/** EventPackageClaim is emitted when a cross chain package is processed */
+
+export interface EventPackageClaimSDKType {
+  src_chain_id: number;
+  dest_chain_id: number;
+  channel_id: number;
+  package_type: number;
+  receive_sequence: Long;
+  send_sequence: Long;
+  crash: boolean;
+  error_msg: string;
+  relayer_fee: string;
+  ack_relayer_fee: string;
+}
 
 function createBaseEventPackageClaim(): EventPackageClaim {
   return {
@@ -197,6 +211,36 @@ export const EventPackageClaim = {
     message.relayerFee = object.relayerFee ?? "";
     message.ackRelayerFee = object.ackRelayerFee ?? "";
     return message;
+  },
+
+  fromSDK(object: EventPackageClaimSDKType): EventPackageClaim {
+    return {
+      srcChainId: object?.src_chain_id,
+      destChainId: object?.dest_chain_id,
+      channelId: object?.channel_id,
+      packageType: object?.package_type,
+      receiveSequence: object?.receive_sequence,
+      sendSequence: object?.send_sequence,
+      crash: object?.crash,
+      errorMsg: object?.error_msg,
+      relayerFee: object?.relayer_fee,
+      ackRelayerFee: object?.ack_relayer_fee
+    };
+  },
+
+  toSDK(message: EventPackageClaim): EventPackageClaimSDKType {
+    const obj: any = {};
+    obj.src_chain_id = message.srcChainId;
+    obj.dest_chain_id = message.destChainId;
+    obj.channel_id = message.channelId;
+    obj.package_type = message.packageType;
+    obj.receive_sequence = message.receiveSequence;
+    obj.send_sequence = message.sendSequence;
+    obj.crash = message.crash;
+    obj.error_msg = message.errorMsg;
+    obj.relayer_fee = message.relayerFee;
+    obj.ack_relayer_fee = message.ackRelayerFee;
+    return obj;
   }
 
 };

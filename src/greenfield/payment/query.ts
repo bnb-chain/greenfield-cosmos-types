@@ -1,65 +1,112 @@
 /* eslint-disable */
-import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
-import { Params } from "./params";
-import { StreamRecord } from "./stream_record";
-import { PaymentAccountCount } from "./payment_account_count";
-import { PaymentAccount } from "./payment_account";
-import { MockBucketMeta } from "./mock_bucket_meta";
-import { MockObjectInfo } from "./mock_object_info";
-import { AutoSettleRecord } from "./auto_settle_record";
-import { BnbPrice } from "./bnb_price";
+import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
+import { Params, ParamsSDKType } from "./params";
+import { StreamRecord, StreamRecordSDKType } from "./stream_record";
+import { PaymentAccountCount, PaymentAccountCountSDKType } from "./payment_account_count";
+import { PaymentAccount, PaymentAccountSDKType } from "./payment_account";
+import { AutoSettleRecord, AutoSettleRecordSDKType } from "./auto_settle_record";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Long, Rpc } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.payment";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
+/** QueryParamsRequest is request type for the Query/Params RPC method. */
+
+export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 
 export interface QueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: Params;
 }
+/** QueryParamsResponse is response type for the Query/Params RPC method. */
+
+export interface QueryParamsResponseSDKType {
+  params?: ParamsSDKType;
+}
 export interface QueryGetStreamRecordRequest {
+  account: string;
+}
+export interface QueryGetStreamRecordRequestSDKType {
   account: string;
 }
 export interface QueryGetStreamRecordResponse {
   streamRecord?: StreamRecord;
 }
+export interface QueryGetStreamRecordResponseSDKType {
+  stream_record?: StreamRecordSDKType;
+}
 export interface QueryAllStreamRecordRequest {
   pagination?: PageRequest;
+}
+export interface QueryAllStreamRecordRequestSDKType {
+  pagination?: PageRequestSDKType;
 }
 export interface QueryAllStreamRecordResponse {
   streamRecord: StreamRecord[];
   pagination?: PageResponse;
 }
+export interface QueryAllStreamRecordResponseSDKType {
+  stream_record: StreamRecordSDKType[];
+  pagination?: PageResponseSDKType;
+}
 export interface QueryGetPaymentAccountCountRequest {
+  owner: string;
+}
+export interface QueryGetPaymentAccountCountRequestSDKType {
   owner: string;
 }
 export interface QueryGetPaymentAccountCountResponse {
   paymentAccountCount?: PaymentAccountCount;
 }
+export interface QueryGetPaymentAccountCountResponseSDKType {
+  payment_account_count?: PaymentAccountCountSDKType;
+}
 export interface QueryAllPaymentAccountCountRequest {
   pagination?: PageRequest;
+}
+export interface QueryAllPaymentAccountCountRequestSDKType {
+  pagination?: PageRequestSDKType;
 }
 export interface QueryAllPaymentAccountCountResponse {
   paymentAccountCount: PaymentAccountCount[];
   pagination?: PageResponse;
 }
+export interface QueryAllPaymentAccountCountResponseSDKType {
+  payment_account_count: PaymentAccountCountSDKType[];
+  pagination?: PageResponseSDKType;
+}
 export interface QueryGetPaymentAccountRequest {
+  addr: string;
+}
+export interface QueryGetPaymentAccountRequestSDKType {
   addr: string;
 }
 export interface QueryGetPaymentAccountResponse {
   paymentAccount?: PaymentAccount;
 }
+export interface QueryGetPaymentAccountResponseSDKType {
+  payment_account?: PaymentAccountSDKType;
+}
 export interface QueryAllPaymentAccountRequest {
   pagination?: PageRequest;
+}
+export interface QueryAllPaymentAccountRequestSDKType {
+  pagination?: PageRequestSDKType;
 }
 export interface QueryAllPaymentAccountResponse {
   paymentAccount: PaymentAccount[];
   pagination?: PageResponse;
 }
+export interface QueryAllPaymentAccountResponseSDKType {
+  payment_account: PaymentAccountSDKType[];
+  pagination?: PageResponseSDKType;
+}
 export interface QueryDynamicBalanceRequest {
+  account: string;
+}
+export interface QueryDynamicBalanceRequestSDKType {
   account: string;
 }
 export interface QueryDynamicBalanceResponse {
@@ -67,67 +114,50 @@ export interface QueryDynamicBalanceResponse {
   streamRecord?: StreamRecord;
   currentTimestamp: Long;
 }
+export interface QueryDynamicBalanceResponseSDKType {
+  dynamic_balance: string;
+  stream_record?: StreamRecordSDKType;
+  current_timestamp: Long;
+}
 export interface QueryGetPaymentAccountsByOwnerRequest {
+  owner: string;
+}
+export interface QueryGetPaymentAccountsByOwnerRequestSDKType {
   owner: string;
 }
 export interface QueryGetPaymentAccountsByOwnerResponse {
   paymentAccounts: string[];
 }
-/** this line is used by starport scaffolding # 3 */
-
-export interface QueryGetMockBucketMetaRequest {
-  bucketName: string;
-}
-export interface QueryGetMockBucketMetaResponse {
-  mockBucketMeta?: MockBucketMeta;
-}
-export interface QueryAllMockBucketMetaRequest {
-  pagination?: PageRequest;
-}
-export interface QueryAllMockBucketMetaResponse {
-  mockBucketMeta: MockBucketMeta[];
-  pagination?: PageResponse;
-}
-export interface QueryGetMockObjectInfoRequest {
-  bucketName: string;
-  objectName: string;
-}
-export interface QueryGetMockObjectInfoResponse {
-  mockObjectInfo?: MockObjectInfo;
-}
-export interface QueryAllMockObjectInfoRequest {
-  pagination?: PageRequest;
-}
-export interface QueryAllMockObjectInfoResponse {
-  mockObjectInfo: MockObjectInfo[];
-  pagination?: PageResponse;
+export interface QueryGetPaymentAccountsByOwnerResponseSDKType {
+  paymentAccounts: string[];
 }
 export interface QueryGetAutoSettleRecordRequest {
+  timestamp: Long;
+  addr: string;
+}
+export interface QueryGetAutoSettleRecordRequestSDKType {
   timestamp: Long;
   addr: string;
 }
 export interface QueryGetAutoSettleRecordResponse {
   autoSettleRecord?: AutoSettleRecord;
 }
+export interface QueryGetAutoSettleRecordResponseSDKType {
+  auto_settle_record?: AutoSettleRecordSDKType;
+}
 export interface QueryAllAutoSettleRecordRequest {
   pagination?: PageRequest;
+}
+export interface QueryAllAutoSettleRecordRequestSDKType {
+  pagination?: PageRequestSDKType;
 }
 export interface QueryAllAutoSettleRecordResponse {
   autoSettleRecord: AutoSettleRecord[];
   pagination?: PageResponse;
 }
-export interface QueryGetBnbPriceRequest {
-  time: Long;
-}
-export interface QueryGetBnbPriceResponse {
-  BnbPrice?: BnbPrice;
-}
-export interface QueryAllBnbPriceRequest {
-  pagination?: PageRequest;
-}
-export interface QueryAllBnbPriceResponse {
-  BnbPrice: BnbPrice[];
-  pagination?: PageResponse;
+export interface QueryAllAutoSettleRecordResponseSDKType {
+  auto_settle_record: AutoSettleRecordSDKType[];
+  pagination?: PageResponseSDKType;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -169,6 +199,15 @@ export const QueryParamsRequest = {
   fromPartial<I extends Exact<DeepPartial<QueryParamsRequest>, I>>(_: I): QueryParamsRequest {
     const message = createBaseQueryParamsRequest();
     return message;
+  },
+
+  fromSDK(_: QueryParamsRequestSDKType): QueryParamsRequest {
+    return {};
+  },
+
+  toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
+    const obj: any = {};
+    return obj;
   }
 
 };
@@ -226,6 +265,18 @@ export const QueryParamsResponse = {
     const message = createBaseQueryParamsResponse();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryParamsResponseSDKType): QueryParamsResponse {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
   }
 
 };
@@ -283,6 +334,18 @@ export const QueryGetStreamRecordRequest = {
     const message = createBaseQueryGetStreamRecordRequest();
     message.account = object.account ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryGetStreamRecordRequestSDKType): QueryGetStreamRecordRequest {
+    return {
+      account: object?.account
+    };
+  },
+
+  toSDK(message: QueryGetStreamRecordRequest): QueryGetStreamRecordRequestSDKType {
+    const obj: any = {};
+    obj.account = message.account;
+    return obj;
   }
 
 };
@@ -340,6 +403,18 @@ export const QueryGetStreamRecordResponse = {
     const message = createBaseQueryGetStreamRecordResponse();
     message.streamRecord = object.streamRecord !== undefined && object.streamRecord !== null ? StreamRecord.fromPartial(object.streamRecord) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryGetStreamRecordResponseSDKType): QueryGetStreamRecordResponse {
+    return {
+      streamRecord: object.stream_record ? StreamRecord.fromSDK(object.stream_record) : undefined
+    };
+  },
+
+  toSDK(message: QueryGetStreamRecordResponse): QueryGetStreamRecordResponseSDKType {
+    const obj: any = {};
+    message.streamRecord !== undefined && (obj.stream_record = message.streamRecord ? StreamRecord.toSDK(message.streamRecord) : undefined);
+    return obj;
   }
 
 };
@@ -397,6 +472,18 @@ export const QueryAllStreamRecordRequest = {
     const message = createBaseQueryAllStreamRecordRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllStreamRecordRequestSDKType): QueryAllStreamRecordRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllStreamRecordRequest): QueryAllStreamRecordRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -472,6 +559,26 @@ export const QueryAllStreamRecordResponse = {
     message.streamRecord = object.streamRecord?.map(e => StreamRecord.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllStreamRecordResponseSDKType): QueryAllStreamRecordResponse {
+    return {
+      streamRecord: Array.isArray(object?.stream_record) ? object.stream_record.map((e: any) => StreamRecord.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllStreamRecordResponse): QueryAllStreamRecordResponseSDKType {
+    const obj: any = {};
+
+    if (message.streamRecord) {
+      obj.stream_record = message.streamRecord.map(e => e ? StreamRecord.toSDK(e) : undefined);
+    } else {
+      obj.stream_record = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -529,6 +636,18 @@ export const QueryGetPaymentAccountCountRequest = {
     const message = createBaseQueryGetPaymentAccountCountRequest();
     message.owner = object.owner ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryGetPaymentAccountCountRequestSDKType): QueryGetPaymentAccountCountRequest {
+    return {
+      owner: object?.owner
+    };
+  },
+
+  toSDK(message: QueryGetPaymentAccountCountRequest): QueryGetPaymentAccountCountRequestSDKType {
+    const obj: any = {};
+    obj.owner = message.owner;
+    return obj;
   }
 
 };
@@ -586,6 +705,18 @@ export const QueryGetPaymentAccountCountResponse = {
     const message = createBaseQueryGetPaymentAccountCountResponse();
     message.paymentAccountCount = object.paymentAccountCount !== undefined && object.paymentAccountCount !== null ? PaymentAccountCount.fromPartial(object.paymentAccountCount) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryGetPaymentAccountCountResponseSDKType): QueryGetPaymentAccountCountResponse {
+    return {
+      paymentAccountCount: object.payment_account_count ? PaymentAccountCount.fromSDK(object.payment_account_count) : undefined
+    };
+  },
+
+  toSDK(message: QueryGetPaymentAccountCountResponse): QueryGetPaymentAccountCountResponseSDKType {
+    const obj: any = {};
+    message.paymentAccountCount !== undefined && (obj.payment_account_count = message.paymentAccountCount ? PaymentAccountCount.toSDK(message.paymentAccountCount) : undefined);
+    return obj;
   }
 
 };
@@ -643,6 +774,18 @@ export const QueryAllPaymentAccountCountRequest = {
     const message = createBaseQueryAllPaymentAccountCountRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllPaymentAccountCountRequestSDKType): QueryAllPaymentAccountCountRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllPaymentAccountCountRequest): QueryAllPaymentAccountCountRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -718,6 +861,26 @@ export const QueryAllPaymentAccountCountResponse = {
     message.paymentAccountCount = object.paymentAccountCount?.map(e => PaymentAccountCount.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllPaymentAccountCountResponseSDKType): QueryAllPaymentAccountCountResponse {
+    return {
+      paymentAccountCount: Array.isArray(object?.payment_account_count) ? object.payment_account_count.map((e: any) => PaymentAccountCount.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllPaymentAccountCountResponse): QueryAllPaymentAccountCountResponseSDKType {
+    const obj: any = {};
+
+    if (message.paymentAccountCount) {
+      obj.payment_account_count = message.paymentAccountCount.map(e => e ? PaymentAccountCount.toSDK(e) : undefined);
+    } else {
+      obj.payment_account_count = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -775,6 +938,18 @@ export const QueryGetPaymentAccountRequest = {
     const message = createBaseQueryGetPaymentAccountRequest();
     message.addr = object.addr ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryGetPaymentAccountRequestSDKType): QueryGetPaymentAccountRequest {
+    return {
+      addr: object?.addr
+    };
+  },
+
+  toSDK(message: QueryGetPaymentAccountRequest): QueryGetPaymentAccountRequestSDKType {
+    const obj: any = {};
+    obj.addr = message.addr;
+    return obj;
   }
 
 };
@@ -832,6 +1007,18 @@ export const QueryGetPaymentAccountResponse = {
     const message = createBaseQueryGetPaymentAccountResponse();
     message.paymentAccount = object.paymentAccount !== undefined && object.paymentAccount !== null ? PaymentAccount.fromPartial(object.paymentAccount) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryGetPaymentAccountResponseSDKType): QueryGetPaymentAccountResponse {
+    return {
+      paymentAccount: object.payment_account ? PaymentAccount.fromSDK(object.payment_account) : undefined
+    };
+  },
+
+  toSDK(message: QueryGetPaymentAccountResponse): QueryGetPaymentAccountResponseSDKType {
+    const obj: any = {};
+    message.paymentAccount !== undefined && (obj.payment_account = message.paymentAccount ? PaymentAccount.toSDK(message.paymentAccount) : undefined);
+    return obj;
   }
 
 };
@@ -889,6 +1076,18 @@ export const QueryAllPaymentAccountRequest = {
     const message = createBaseQueryAllPaymentAccountRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllPaymentAccountRequestSDKType): QueryAllPaymentAccountRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllPaymentAccountRequest): QueryAllPaymentAccountRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -964,6 +1163,26 @@ export const QueryAllPaymentAccountResponse = {
     message.paymentAccount = object.paymentAccount?.map(e => PaymentAccount.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllPaymentAccountResponseSDKType): QueryAllPaymentAccountResponse {
+    return {
+      paymentAccount: Array.isArray(object?.payment_account) ? object.payment_account.map((e: any) => PaymentAccount.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllPaymentAccountResponse): QueryAllPaymentAccountResponseSDKType {
+    const obj: any = {};
+
+    if (message.paymentAccount) {
+      obj.payment_account = message.paymentAccount.map(e => e ? PaymentAccount.toSDK(e) : undefined);
+    } else {
+      obj.payment_account = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -1021,6 +1240,18 @@ export const QueryDynamicBalanceRequest = {
     const message = createBaseQueryDynamicBalanceRequest();
     message.account = object.account ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryDynamicBalanceRequestSDKType): QueryDynamicBalanceRequest {
+    return {
+      account: object?.account
+    };
+  },
+
+  toSDK(message: QueryDynamicBalanceRequest): QueryDynamicBalanceRequestSDKType {
+    const obj: any = {};
+    obj.account = message.account;
+    return obj;
   }
 
 };
@@ -1102,6 +1333,22 @@ export const QueryDynamicBalanceResponse = {
     message.streamRecord = object.streamRecord !== undefined && object.streamRecord !== null ? StreamRecord.fromPartial(object.streamRecord) : undefined;
     message.currentTimestamp = object.currentTimestamp !== undefined && object.currentTimestamp !== null ? Long.fromValue(object.currentTimestamp) : Long.ZERO;
     return message;
+  },
+
+  fromSDK(object: QueryDynamicBalanceResponseSDKType): QueryDynamicBalanceResponse {
+    return {
+      dynamicBalance: object?.dynamic_balance,
+      streamRecord: object.stream_record ? StreamRecord.fromSDK(object.stream_record) : undefined,
+      currentTimestamp: object?.current_timestamp
+    };
+  },
+
+  toSDK(message: QueryDynamicBalanceResponse): QueryDynamicBalanceResponseSDKType {
+    const obj: any = {};
+    obj.dynamic_balance = message.dynamicBalance;
+    message.streamRecord !== undefined && (obj.stream_record = message.streamRecord ? StreamRecord.toSDK(message.streamRecord) : undefined);
+    obj.current_timestamp = message.currentTimestamp;
+    return obj;
   }
 
 };
@@ -1159,6 +1406,18 @@ export const QueryGetPaymentAccountsByOwnerRequest = {
     const message = createBaseQueryGetPaymentAccountsByOwnerRequest();
     message.owner = object.owner ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryGetPaymentAccountsByOwnerRequestSDKType): QueryGetPaymentAccountsByOwnerRequest {
+    return {
+      owner: object?.owner
+    };
+  },
+
+  toSDK(message: QueryGetPaymentAccountsByOwnerRequest): QueryGetPaymentAccountsByOwnerRequestSDKType {
+    const obj: any = {};
+    obj.owner = message.owner;
+    return obj;
   }
 
 };
@@ -1222,510 +1481,24 @@ export const QueryGetPaymentAccountsByOwnerResponse = {
     const message = createBaseQueryGetPaymentAccountsByOwnerResponse();
     message.paymentAccounts = object.paymentAccounts?.map(e => e) || [];
     return message;
-  }
-
-};
-
-function createBaseQueryGetMockBucketMetaRequest(): QueryGetMockBucketMetaRequest {
-  return {
-    bucketName: ""
-  };
-}
-
-export const QueryGetMockBucketMetaRequest = {
-  encode(message: QueryGetMockBucketMetaRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.bucketName !== "") {
-      writer.uint32(10).string(message.bucketName);
-    }
-
-    return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetMockBucketMetaRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetMockBucketMetaRequest();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.bucketName = reader.string();
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryGetMockBucketMetaRequest {
+  fromSDK(object: QueryGetPaymentAccountsByOwnerResponseSDKType): QueryGetPaymentAccountsByOwnerResponse {
     return {
-      bucketName: isSet(object.bucketName) ? String(object.bucketName) : ""
+      paymentAccounts: Array.isArray(object?.paymentAccounts) ? object.paymentAccounts.map((e: any) => e) : []
     };
   },
 
-  toJSON(message: QueryGetMockBucketMetaRequest): unknown {
-    const obj: any = {};
-    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryGetMockBucketMetaRequest>, I>>(object: I): QueryGetMockBucketMetaRequest {
-    const message = createBaseQueryGetMockBucketMetaRequest();
-    message.bucketName = object.bucketName ?? "";
-    return message;
-  }
-
-};
-
-function createBaseQueryGetMockBucketMetaResponse(): QueryGetMockBucketMetaResponse {
-  return {
-    mockBucketMeta: undefined
-  };
-}
-
-export const QueryGetMockBucketMetaResponse = {
-  encode(message: QueryGetMockBucketMetaResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.mockBucketMeta !== undefined) {
-      MockBucketMeta.encode(message.mockBucketMeta, writer.uint32(10).fork()).ldelim();
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetMockBucketMetaResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetMockBucketMetaResponse();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.mockBucketMeta = MockBucketMeta.decode(reader, reader.uint32());
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryGetMockBucketMetaResponse {
-    return {
-      mockBucketMeta: isSet(object.mockBucketMeta) ? MockBucketMeta.fromJSON(object.mockBucketMeta) : undefined
-    };
-  },
-
-  toJSON(message: QueryGetMockBucketMetaResponse): unknown {
-    const obj: any = {};
-    message.mockBucketMeta !== undefined && (obj.mockBucketMeta = message.mockBucketMeta ? MockBucketMeta.toJSON(message.mockBucketMeta) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryGetMockBucketMetaResponse>, I>>(object: I): QueryGetMockBucketMetaResponse {
-    const message = createBaseQueryGetMockBucketMetaResponse();
-    message.mockBucketMeta = object.mockBucketMeta !== undefined && object.mockBucketMeta !== null ? MockBucketMeta.fromPartial(object.mockBucketMeta) : undefined;
-    return message;
-  }
-
-};
-
-function createBaseQueryAllMockBucketMetaRequest(): QueryAllMockBucketMetaRequest {
-  return {
-    pagination: undefined
-  };
-}
-
-export const QueryAllMockBucketMetaRequest = {
-  encode(message: QueryAllMockBucketMetaRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.pagination !== undefined) {
-      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllMockBucketMetaRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllMockBucketMetaRequest();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.pagination = PageRequest.decode(reader, reader.uint32());
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryAllMockBucketMetaRequest {
-    return {
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-
-  toJSON(message: QueryAllMockBucketMetaRequest): unknown {
-    const obj: any = {};
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryAllMockBucketMetaRequest>, I>>(object: I): QueryAllMockBucketMetaRequest {
-    const message = createBaseQueryAllMockBucketMetaRequest();
-    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
-    return message;
-  }
-
-};
-
-function createBaseQueryAllMockBucketMetaResponse(): QueryAllMockBucketMetaResponse {
-  return {
-    mockBucketMeta: [],
-    pagination: undefined
-  };
-}
-
-export const QueryAllMockBucketMetaResponse = {
-  encode(message: QueryAllMockBucketMetaResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.mockBucketMeta) {
-      MockBucketMeta.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-
-    if (message.pagination !== undefined) {
-      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllMockBucketMetaResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllMockBucketMetaResponse();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.mockBucketMeta.push(MockBucketMeta.decode(reader, reader.uint32()));
-          break;
-
-        case 2:
-          message.pagination = PageResponse.decode(reader, reader.uint32());
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryAllMockBucketMetaResponse {
-    return {
-      mockBucketMeta: Array.isArray(object?.mockBucketMeta) ? object.mockBucketMeta.map((e: any) => MockBucketMeta.fromJSON(e)) : [],
-      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
-    };
-  },
-
-  toJSON(message: QueryAllMockBucketMetaResponse): unknown {
+  toSDK(message: QueryGetPaymentAccountsByOwnerResponse): QueryGetPaymentAccountsByOwnerResponseSDKType {
     const obj: any = {};
 
-    if (message.mockBucketMeta) {
-      obj.mockBucketMeta = message.mockBucketMeta.map(e => e ? MockBucketMeta.toJSON(e) : undefined);
+    if (message.paymentAccounts) {
+      obj.paymentAccounts = message.paymentAccounts.map(e => e);
     } else {
-      obj.mockBucketMeta = [];
+      obj.paymentAccounts = [];
     }
 
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryAllMockBucketMetaResponse>, I>>(object: I): QueryAllMockBucketMetaResponse {
-    const message = createBaseQueryAllMockBucketMetaResponse();
-    message.mockBucketMeta = object.mockBucketMeta?.map(e => MockBucketMeta.fromPartial(e)) || [];
-    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
-    return message;
-  }
-
-};
-
-function createBaseQueryGetMockObjectInfoRequest(): QueryGetMockObjectInfoRequest {
-  return {
-    bucketName: "",
-    objectName: ""
-  };
-}
-
-export const QueryGetMockObjectInfoRequest = {
-  encode(message: QueryGetMockObjectInfoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.bucketName !== "") {
-      writer.uint32(10).string(message.bucketName);
-    }
-
-    if (message.objectName !== "") {
-      writer.uint32(18).string(message.objectName);
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetMockObjectInfoRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetMockObjectInfoRequest();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.bucketName = reader.string();
-          break;
-
-        case 2:
-          message.objectName = reader.string();
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryGetMockObjectInfoRequest {
-    return {
-      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
-      objectName: isSet(object.objectName) ? String(object.objectName) : ""
-    };
-  },
-
-  toJSON(message: QueryGetMockObjectInfoRequest): unknown {
-    const obj: any = {};
-    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
-    message.objectName !== undefined && (obj.objectName = message.objectName);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryGetMockObjectInfoRequest>, I>>(object: I): QueryGetMockObjectInfoRequest {
-    const message = createBaseQueryGetMockObjectInfoRequest();
-    message.bucketName = object.bucketName ?? "";
-    message.objectName = object.objectName ?? "";
-    return message;
-  }
-
-};
-
-function createBaseQueryGetMockObjectInfoResponse(): QueryGetMockObjectInfoResponse {
-  return {
-    mockObjectInfo: undefined
-  };
-}
-
-export const QueryGetMockObjectInfoResponse = {
-  encode(message: QueryGetMockObjectInfoResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.mockObjectInfo !== undefined) {
-      MockObjectInfo.encode(message.mockObjectInfo, writer.uint32(10).fork()).ldelim();
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetMockObjectInfoResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetMockObjectInfoResponse();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.mockObjectInfo = MockObjectInfo.decode(reader, reader.uint32());
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryGetMockObjectInfoResponse {
-    return {
-      mockObjectInfo: isSet(object.mockObjectInfo) ? MockObjectInfo.fromJSON(object.mockObjectInfo) : undefined
-    };
-  },
-
-  toJSON(message: QueryGetMockObjectInfoResponse): unknown {
-    const obj: any = {};
-    message.mockObjectInfo !== undefined && (obj.mockObjectInfo = message.mockObjectInfo ? MockObjectInfo.toJSON(message.mockObjectInfo) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryGetMockObjectInfoResponse>, I>>(object: I): QueryGetMockObjectInfoResponse {
-    const message = createBaseQueryGetMockObjectInfoResponse();
-    message.mockObjectInfo = object.mockObjectInfo !== undefined && object.mockObjectInfo !== null ? MockObjectInfo.fromPartial(object.mockObjectInfo) : undefined;
-    return message;
-  }
-
-};
-
-function createBaseQueryAllMockObjectInfoRequest(): QueryAllMockObjectInfoRequest {
-  return {
-    pagination: undefined
-  };
-}
-
-export const QueryAllMockObjectInfoRequest = {
-  encode(message: QueryAllMockObjectInfoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.pagination !== undefined) {
-      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllMockObjectInfoRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllMockObjectInfoRequest();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.pagination = PageRequest.decode(reader, reader.uint32());
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryAllMockObjectInfoRequest {
-    return {
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-
-  toJSON(message: QueryAllMockObjectInfoRequest): unknown {
-    const obj: any = {};
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryAllMockObjectInfoRequest>, I>>(object: I): QueryAllMockObjectInfoRequest {
-    const message = createBaseQueryAllMockObjectInfoRequest();
-    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
-    return message;
-  }
-
-};
-
-function createBaseQueryAllMockObjectInfoResponse(): QueryAllMockObjectInfoResponse {
-  return {
-    mockObjectInfo: [],
-    pagination: undefined
-  };
-}
-
-export const QueryAllMockObjectInfoResponse = {
-  encode(message: QueryAllMockObjectInfoResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.mockObjectInfo) {
-      MockObjectInfo.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-
-    if (message.pagination !== undefined) {
-      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllMockObjectInfoResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllMockObjectInfoResponse();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.mockObjectInfo.push(MockObjectInfo.decode(reader, reader.uint32()));
-          break;
-
-        case 2:
-          message.pagination = PageResponse.decode(reader, reader.uint32());
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryAllMockObjectInfoResponse {
-    return {
-      mockObjectInfo: Array.isArray(object?.mockObjectInfo) ? object.mockObjectInfo.map((e: any) => MockObjectInfo.fromJSON(e)) : [],
-      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
-    };
-  },
-
-  toJSON(message: QueryAllMockObjectInfoResponse): unknown {
-    const obj: any = {};
-
-    if (message.mockObjectInfo) {
-      obj.mockObjectInfo = message.mockObjectInfo.map(e => e ? MockObjectInfo.toJSON(e) : undefined);
-    } else {
-      obj.mockObjectInfo = [];
-    }
-
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryAllMockObjectInfoResponse>, I>>(object: I): QueryAllMockObjectInfoResponse {
-    const message = createBaseQueryAllMockObjectInfoResponse();
-    message.mockObjectInfo = object.mockObjectInfo?.map(e => MockObjectInfo.fromPartial(e)) || [];
-    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
-    return message;
   }
 
 };
@@ -1795,6 +1568,20 @@ export const QueryGetAutoSettleRecordRequest = {
     message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
     message.addr = object.addr ?? "";
     return message;
+  },
+
+  fromSDK(object: QueryGetAutoSettleRecordRequestSDKType): QueryGetAutoSettleRecordRequest {
+    return {
+      timestamp: object?.timestamp,
+      addr: object?.addr
+    };
+  },
+
+  toSDK(message: QueryGetAutoSettleRecordRequest): QueryGetAutoSettleRecordRequestSDKType {
+    const obj: any = {};
+    obj.timestamp = message.timestamp;
+    obj.addr = message.addr;
+    return obj;
   }
 
 };
@@ -1852,6 +1639,18 @@ export const QueryGetAutoSettleRecordResponse = {
     const message = createBaseQueryGetAutoSettleRecordResponse();
     message.autoSettleRecord = object.autoSettleRecord !== undefined && object.autoSettleRecord !== null ? AutoSettleRecord.fromPartial(object.autoSettleRecord) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryGetAutoSettleRecordResponseSDKType): QueryGetAutoSettleRecordResponse {
+    return {
+      autoSettleRecord: object.auto_settle_record ? AutoSettleRecord.fromSDK(object.auto_settle_record) : undefined
+    };
+  },
+
+  toSDK(message: QueryGetAutoSettleRecordResponse): QueryGetAutoSettleRecordResponseSDKType {
+    const obj: any = {};
+    message.autoSettleRecord !== undefined && (obj.auto_settle_record = message.autoSettleRecord ? AutoSettleRecord.toSDK(message.autoSettleRecord) : undefined);
+    return obj;
   }
 
 };
@@ -1909,6 +1708,18 @@ export const QueryAllAutoSettleRecordRequest = {
     const message = createBaseQueryAllAutoSettleRecordRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
+  },
+
+  fromSDK(object: QueryAllAutoSettleRecordRequestSDKType): QueryAllAutoSettleRecordRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryAllAutoSettleRecordRequest): QueryAllAutoSettleRecordRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
   }
 
 };
@@ -1984,252 +1795,26 @@ export const QueryAllAutoSettleRecordResponse = {
     message.autoSettleRecord = object.autoSettleRecord?.map(e => AutoSettleRecord.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
-  }
-
-};
-
-function createBaseQueryGetBnbPriceRequest(): QueryGetBnbPriceRequest {
-  return {
-    time: Long.ZERO
-  };
-}
-
-export const QueryGetBnbPriceRequest = {
-  encode(message: QueryGetBnbPriceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.time.isZero()) {
-      writer.uint32(8).int64(message.time);
-    }
-
-    return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetBnbPriceRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetBnbPriceRequest();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.time = (reader.int64() as Long);
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryGetBnbPriceRequest {
+  fromSDK(object: QueryAllAutoSettleRecordResponseSDKType): QueryAllAutoSettleRecordResponse {
     return {
-      time: isSet(object.time) ? Long.fromValue(object.time) : Long.ZERO
+      autoSettleRecord: Array.isArray(object?.auto_settle_record) ? object.auto_settle_record.map((e: any) => AutoSettleRecord.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
     };
   },
 
-  toJSON(message: QueryGetBnbPriceRequest): unknown {
-    const obj: any = {};
-    message.time !== undefined && (obj.time = (message.time || Long.ZERO).toString());
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryGetBnbPriceRequest>, I>>(object: I): QueryGetBnbPriceRequest {
-    const message = createBaseQueryGetBnbPriceRequest();
-    message.time = object.time !== undefined && object.time !== null ? Long.fromValue(object.time) : Long.ZERO;
-    return message;
-  }
-
-};
-
-function createBaseQueryGetBnbPriceResponse(): QueryGetBnbPriceResponse {
-  return {
-    BnbPrice: undefined
-  };
-}
-
-export const QueryGetBnbPriceResponse = {
-  encode(message: QueryGetBnbPriceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.BnbPrice !== undefined) {
-      BnbPrice.encode(message.BnbPrice, writer.uint32(10).fork()).ldelim();
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetBnbPriceResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetBnbPriceResponse();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.BnbPrice = BnbPrice.decode(reader, reader.uint32());
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryGetBnbPriceResponse {
-    return {
-      BnbPrice: isSet(object.BnbPrice) ? BnbPrice.fromJSON(object.BnbPrice) : undefined
-    };
-  },
-
-  toJSON(message: QueryGetBnbPriceResponse): unknown {
-    const obj: any = {};
-    message.BnbPrice !== undefined && (obj.BnbPrice = message.BnbPrice ? BnbPrice.toJSON(message.BnbPrice) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryGetBnbPriceResponse>, I>>(object: I): QueryGetBnbPriceResponse {
-    const message = createBaseQueryGetBnbPriceResponse();
-    message.BnbPrice = object.BnbPrice !== undefined && object.BnbPrice !== null ? BnbPrice.fromPartial(object.BnbPrice) : undefined;
-    return message;
-  }
-
-};
-
-function createBaseQueryAllBnbPriceRequest(): QueryAllBnbPriceRequest {
-  return {
-    pagination: undefined
-  };
-}
-
-export const QueryAllBnbPriceRequest = {
-  encode(message: QueryAllBnbPriceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.pagination !== undefined) {
-      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllBnbPriceRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllBnbPriceRequest();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.pagination = PageRequest.decode(reader, reader.uint32());
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryAllBnbPriceRequest {
-    return {
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-
-  toJSON(message: QueryAllBnbPriceRequest): unknown {
-    const obj: any = {};
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryAllBnbPriceRequest>, I>>(object: I): QueryAllBnbPriceRequest {
-    const message = createBaseQueryAllBnbPriceRequest();
-    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
-    return message;
-  }
-
-};
-
-function createBaseQueryAllBnbPriceResponse(): QueryAllBnbPriceResponse {
-  return {
-    BnbPrice: [],
-    pagination: undefined
-  };
-}
-
-export const QueryAllBnbPriceResponse = {
-  encode(message: QueryAllBnbPriceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.BnbPrice) {
-      BnbPrice.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-
-    if (message.pagination !== undefined) {
-      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllBnbPriceResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllBnbPriceResponse();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.BnbPrice.push(BnbPrice.decode(reader, reader.uint32()));
-          break;
-
-        case 2:
-          message.pagination = PageResponse.decode(reader, reader.uint32());
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryAllBnbPriceResponse {
-    return {
-      BnbPrice: Array.isArray(object?.BnbPrice) ? object.BnbPrice.map((e: any) => BnbPrice.fromJSON(e)) : [],
-      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
-    };
-  },
-
-  toJSON(message: QueryAllBnbPriceResponse): unknown {
+  toSDK(message: QueryAllAutoSettleRecordResponse): QueryAllAutoSettleRecordResponseSDKType {
     const obj: any = {};
 
-    if (message.BnbPrice) {
-      obj.BnbPrice = message.BnbPrice.map(e => e ? BnbPrice.toJSON(e) : undefined);
+    if (message.autoSettleRecord) {
+      obj.auto_settle_record = message.autoSettleRecord.map(e => e ? AutoSettleRecord.toSDK(e) : undefined);
     } else {
-      obj.BnbPrice = [];
+      obj.auto_settle_record = [];
     }
 
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
     return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryAllBnbPriceResponse>, I>>(object: I): QueryAllBnbPriceResponse {
-    const message = createBaseQueryAllBnbPriceResponse();
-    message.BnbPrice = object.BnbPrice?.map(e => BnbPrice.fromPartial(e)) || [];
-    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
-    return message;
   }
 
 };
@@ -2262,22 +1847,10 @@ export interface Query {
   /** Queries a list of GetPaymentAccountsByOwner items. */
 
   GetPaymentAccountsByOwner(request: QueryGetPaymentAccountsByOwnerRequest): Promise<QueryGetPaymentAccountsByOwnerResponse>;
-  /** Queries a list of MockBucketMeta items. */
-
-  MockBucketMeta(request: QueryGetMockBucketMetaRequest): Promise<QueryGetMockBucketMetaResponse>;
-  MockBucketMetaAll(request?: QueryAllMockBucketMetaRequest): Promise<QueryAllMockBucketMetaResponse>;
-  /** Queries a list of MockObjectInfo items. */
-
-  MockObjectInfo(request: QueryGetMockObjectInfoRequest): Promise<QueryGetMockObjectInfoResponse>;
-  MockObjectInfoAll(request?: QueryAllMockObjectInfoRequest): Promise<QueryAllMockObjectInfoResponse>;
   /** Queries a list of AutoSettleRecord items. */
 
   AutoSettleRecord(request: QueryGetAutoSettleRecordRequest): Promise<QueryGetAutoSettleRecordResponse>;
   AutoSettleRecordAll(request?: QueryAllAutoSettleRecordRequest): Promise<QueryAllAutoSettleRecordResponse>;
-  /** Queries a list of BnbPrice items. */
-
-  BnbPrice(request: QueryGetBnbPriceRequest): Promise<QueryGetBnbPriceResponse>;
-  BnbPriceAll(request?: QueryAllBnbPriceRequest): Promise<QueryAllBnbPriceResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -2293,14 +1866,8 @@ export class QueryClientImpl implements Query {
     this.PaymentAccountAll = this.PaymentAccountAll.bind(this);
     this.DynamicBalance = this.DynamicBalance.bind(this);
     this.GetPaymentAccountsByOwner = this.GetPaymentAccountsByOwner.bind(this);
-    this.MockBucketMeta = this.MockBucketMeta.bind(this);
-    this.MockBucketMetaAll = this.MockBucketMetaAll.bind(this);
-    this.MockObjectInfo = this.MockObjectInfo.bind(this);
-    this.MockObjectInfoAll = this.MockObjectInfoAll.bind(this);
     this.AutoSettleRecord = this.AutoSettleRecord.bind(this);
     this.AutoSettleRecordAll = this.AutoSettleRecordAll.bind(this);
-    this.BnbPrice = this.BnbPrice.bind(this);
-    this.BnbPriceAll = this.BnbPriceAll.bind(this);
   }
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
@@ -2363,34 +1930,6 @@ export class QueryClientImpl implements Query {
     return promise.then(data => QueryGetPaymentAccountsByOwnerResponse.decode(new _m0.Reader(data)));
   }
 
-  MockBucketMeta(request: QueryGetMockBucketMetaRequest): Promise<QueryGetMockBucketMetaResponse> {
-    const data = QueryGetMockBucketMetaRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "MockBucketMeta", data);
-    return promise.then(data => QueryGetMockBucketMetaResponse.decode(new _m0.Reader(data)));
-  }
-
-  MockBucketMetaAll(request: QueryAllMockBucketMetaRequest = {
-    pagination: undefined
-  }): Promise<QueryAllMockBucketMetaResponse> {
-    const data = QueryAllMockBucketMetaRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "MockBucketMetaAll", data);
-    return promise.then(data => QueryAllMockBucketMetaResponse.decode(new _m0.Reader(data)));
-  }
-
-  MockObjectInfo(request: QueryGetMockObjectInfoRequest): Promise<QueryGetMockObjectInfoResponse> {
-    const data = QueryGetMockObjectInfoRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "MockObjectInfo", data);
-    return promise.then(data => QueryGetMockObjectInfoResponse.decode(new _m0.Reader(data)));
-  }
-
-  MockObjectInfoAll(request: QueryAllMockObjectInfoRequest = {
-    pagination: undefined
-  }): Promise<QueryAllMockObjectInfoResponse> {
-    const data = QueryAllMockObjectInfoRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "MockObjectInfoAll", data);
-    return promise.then(data => QueryAllMockObjectInfoResponse.decode(new _m0.Reader(data)));
-  }
-
   AutoSettleRecord(request: QueryGetAutoSettleRecordRequest): Promise<QueryGetAutoSettleRecordResponse> {
     const data = QueryGetAutoSettleRecordRequest.encode(request).finish();
     const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "AutoSettleRecord", data);
@@ -2403,20 +1942,6 @@ export class QueryClientImpl implements Query {
     const data = QueryAllAutoSettleRecordRequest.encode(request).finish();
     const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "AutoSettleRecordAll", data);
     return promise.then(data => QueryAllAutoSettleRecordResponse.decode(new _m0.Reader(data)));
-  }
-
-  BnbPrice(request: QueryGetBnbPriceRequest): Promise<QueryGetBnbPriceResponse> {
-    const data = QueryGetBnbPriceRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "BnbPrice", data);
-    return promise.then(data => QueryGetBnbPriceResponse.decode(new _m0.Reader(data)));
-  }
-
-  BnbPriceAll(request: QueryAllBnbPriceRequest = {
-    pagination: undefined
-  }): Promise<QueryAllBnbPriceResponse> {
-    const data = QueryAllBnbPriceRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "BnbPriceAll", data);
-    return promise.then(data => QueryAllBnbPriceResponse.decode(new _m0.Reader(data)));
   }
 
 }
