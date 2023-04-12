@@ -1,3 +1,10 @@
+# [0.4.0-alpha.1](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.3.0...v0.4.0-alpha.1) (2023-04-12)
+
+
+### Features
+
+* Update README ([acf85fa](https://github.com/bnb-chain/greenfield-cosmos-types/commit/acf85facb96fbd9abe29a323304261c186807c97))
+
 # [0.3.0](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.2.0...v0.3.0) (2023-04-07)
 
 
