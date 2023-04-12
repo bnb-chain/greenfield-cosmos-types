@@ -1,6 +1,6 @@
-# GreenField Cosmos Types
+# Greenfield Cosmos Types
 
-JavaScript and TypeScript types relating to Protocol Buffers used by Cosmos-SDK and other related projects.
+JavaScript and TypeScript types relating to Protocol Buffers used by [Greenfield JS SDK](https://github.com/bnb-chain/greenfield-js-sdk/) and Cosmos-SDK and other related projects.
 
 > This section needs to cooperate with [greenfield-js-sdk](https://github.com/bnb-chain/greenfield-js-sdk).
 
