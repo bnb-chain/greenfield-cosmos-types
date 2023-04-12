@@ -12,6 +12,13 @@
 * Update Struct ([1d12f22](https://github.com/bnb-chain/gnfd-cosmos-types/commit/1d12f22648a9eeeab0a3c3d4cd8faf034686b268))
 * Use ES6 ([2e344b5](https://github.com/bnb-chain/gnfd-cosmos-types/commit/2e344b50d78d015e8d7485cdb1fa64d86b9092b3))
 
+# [0.3.0-alpha.9](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.3.0-alpha.8...v0.3.0-alpha.9) (2023-04-12)
+
+
+### Features
+
+* Update README ([acf85fa](https://github.com/bnb-chain/greenfield-cosmos-types/commit/acf85facb96fbd9abe29a323304261c186807c97))
+
 # [0.3.0-alpha.8](https://github.com/bnb-chain/gnfd-cosmos-types/compare/v0.3.0-alpha.7...v0.3.0-alpha.8) (2023-03-27)
 
 
