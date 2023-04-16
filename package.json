@@ -4,6 +4,7 @@
   "description": "greenfield cosmos types",
   "scripts": {
     "codegen": "rimraf ./src && node ./scripts/codegen.js",
+    "convert": "rimraf ./eip712 && node scripts/convert.js",
     "clean": "rimraf confio cosmos cosmos_proto gogoproto google greenfield tendermint index.* helpers.*",
     "prepare-publishing": "cp -r dist/* .",
     "build": "tsc"
@@ -25,6 +26,7 @@
     "google/",
     "greenfield/",
     "tendermint/",
+    "eip712/",
     "/index.*",
     "/helpers.*"
   ],
@@ -40,6 +42,7 @@
     "@types/node": "^15.6.2",
     "rimraf": "^4.4.0",
     "semantic-release": "^19.0.3",
+    "ts-morph": "^18.0.0",
     "typescript": "^4.7.4"
   },
   "dependencies": {
