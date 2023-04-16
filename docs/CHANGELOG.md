@@ -6,6 +6,14 @@
 * Convert Interface Msg to EIP712 ([7295845](https://github.com/bnb-chain/greenfield-cosmos-types/commit/7295845b410fb44ab10fba852dbf1b14edcfa2ef))
 * Update README ([acf85fa](https://github.com/bnb-chain/greenfield-cosmos-types/commit/acf85facb96fbd9abe29a323304261c186807c97))
 
+# [0.4.0-alpha.1](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.3.0...v0.4.0-alpha.1) (2023-04-16)
+
+
+### Features
+
+* Convert Interface Msg to EIP712 ([7295845](https://github.com/bnb-chain/greenfield-cosmos-types/commit/7295845b410fb44ab10fba852dbf1b14edcfa2ef))
+* Update README ([acf85fa](https://github.com/bnb-chain/greenfield-cosmos-types/commit/acf85facb96fbd9abe29a323304261c186807c97))
+
 # [0.4.0-alpha.1](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.3.0...v0.4.0-alpha.1) (2023-04-12)
 
 
