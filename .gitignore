@@ -120,5 +120,6 @@ dist
 
 # Vscode
 .vscode
+.idea
 
 cosmos-types
