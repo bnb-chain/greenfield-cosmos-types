@@ -1,3 +1,10 @@
+# [0.4.0-alpha.2](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.1...v0.4.0-alpha.2) (2023-04-18)
+
+
+### Bug Fixes
+
+* Support boolean and number type ([aae9d13](https://github.com/bnb-chain/greenfield-cosmos-types/commit/aae9d13f1ac7ead7c858934b1e2ce03d8d323132))
+
 # [0.4.0-alpha.1](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.3.0...v0.4.0-alpha.1) (2023-04-16)
 
 
