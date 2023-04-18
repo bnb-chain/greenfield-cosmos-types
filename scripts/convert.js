@@ -1,9 +1,11 @@
-const {Project, SyntaxKind, Node, PropertySignature} = require('ts-morph');
+const {Project, SyntaxKind} = require('ts-morph');
 const {resolve, dirname} = require('path');
 
 const BASIC_MSG_EIP712_TYPES = {
     "string": "string",
     "Long": "uint64",
+    "number": "uint64",
+    "boolean": "bool",
     "Uint8Array": "bytes",
 }
 
@@ -15,9 +17,9 @@ const msgFiles = [
     'cosmos/evidence/v1beta1/tx.ts',
     'cosmos/feegrant/v1beta1/tx.ts',
     'cosmos/gashub/v1alpha1/tx.ts',
-    // 'cosmos/group/v1/tx.ts',
+    'cosmos/group/v1/tx.ts',
     'greenfield/bridge/tx.ts',
-    // 'greenfield/challenge/tx.ts',
+    'greenfield/challenge/tx.ts',
     'greenfield/payment/tx.ts',
     'greenfield/permission/tx.ts',
     'greenfield/sp/tx.ts',
@@ -89,6 +91,7 @@ function msgInterfaceConvertEIP712(filePath) {
                 })
                 continue
             }
+
 
             if (property.getType().getSymbol().getDeclarations()[0].getKind() === SyntaxKind.InterfaceDeclaration) {
                 type = "Type" + upperCaseFirst(snakeToCamel(name))
