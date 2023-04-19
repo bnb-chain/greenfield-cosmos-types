@@ -24,3 +24,9 @@ npm run codegen
 # Build .js/.d.js files
 npm run build
 ```
+
+## Build EIP712 domain structor
+
+```bash
+npm run convert
+```
