@@ -63,6 +63,23 @@ export interface MsgDeleteBucketSDKType {
 }
 export interface MsgDeleteBucketResponse {}
 export interface MsgDeleteBucketResponseSDKType {}
+export interface MsgDiscontinueBucket {
+  /** operator is the sp who wants to stop serving the bucket. */
+  operator: string;
+  /** bucket_name defines the name of the bucket where the object which to be discontinued is stored. */
+
+  bucketName: string;
+  /** the reason for the request. */
+
+  reason: string;
+}
+export interface MsgDiscontinueBucketSDKType {
+  operator: string;
+  bucket_name: string;
+  reason: string;
+}
+export interface MsgDiscontinueBucketResponse {}
+export interface MsgDiscontinueBucketResponseSDKType {}
 export interface MsgCreateObject {
   /** creator defines the account address of object uploader */
   creator: string;
@@ -210,6 +227,27 @@ export interface MsgDeleteObjectSDKType {
 }
 export interface MsgDeleteObjectResponse {}
 export interface MsgDeleteObjectResponseSDKType {}
+export interface MsgDiscontinueObject {
+  /** operator is the sp who wants to stop serving the objects. */
+  operator: string;
+  /** bucket_name defines the name of the bucket where the object which to be discontinued is stored. */
+
+  bucketName: string;
+  /** object_ids are the ids of object info. */
+
+  objectIds: string[];
+  /** the reason for the request. */
+
+  reason: string;
+}
+export interface MsgDiscontinueObjectSDKType {
+  operator: string;
+  bucket_name: string;
+  object_ids: string[];
+  reason: string;
+}
+export interface MsgDiscontinueObjectResponse {}
+export interface MsgDiscontinueObjectResponseSDKType {}
 export interface MsgCreateGroup {
   /** owner defines the account address of group owner who create the group */
   creator: string;
@@ -413,6 +451,30 @@ export interface MsgMirrorBucket {
 export interface MsgMirrorBucketSDKType {
   operator: string;
   id: string;
+}
+export interface MsgUpdateObjectInfoResponse {}
+export interface MsgUpdateObjectInfoResponseSDKType {}
+export interface MsgUpdateObjectInfo {
+  /** operator defines the account address of the operator */
+  operator: string;
+  /** bucket_name is the name of the bucket */
+
+  bucketName: string;
+  /** object_name defines the name of bucket which you'll update */
+
+  objectName: string;
+  /**
+   * visibility means the object is private or public. if private, only bucket owner or grantee can read it,
+   * otherwise every greenfield user can read it.
+   */
+
+  visibility: VisibilityType;
+}
+export interface MsgUpdateObjectInfoSDKType {
+  operator: string;
+  bucket_name: string;
+  object_name: string;
+  visibility: VisibilityType;
 }
 export interface MsgMirrorBucketResponse {}
 export interface MsgMirrorBucketResponseSDKType {}
@@ -781,6 +843,155 @@ export const MsgDeleteBucketResponse = {
   },
 
   toSDK(_: MsgDeleteBucketResponse): MsgDeleteBucketResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
+
+function createBaseMsgDiscontinueBucket(): MsgDiscontinueBucket {
+  return {
+    operator: "",
+    bucketName: "",
+    reason: ""
+  };
+}
+
+export const MsgDiscontinueBucket = {
+  encode(message: MsgDiscontinueBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    if (message.reason !== "") {
+      writer.uint32(26).string(message.reason);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDiscontinueBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDiscontinueBucket();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        case 3:
+          message.reason = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgDiscontinueBucket {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      reason: isSet(object.reason) ? String(object.reason) : ""
+    };
+  },
+
+  toJSON(message: MsgDiscontinueBucket): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.reason !== undefined && (obj.reason = message.reason);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgDiscontinueBucket>, I>>(object: I): MsgDiscontinueBucket {
+    const message = createBaseMsgDiscontinueBucket();
+    message.operator = object.operator ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.reason = object.reason ?? "";
+    return message;
+  },
+
+  fromSDK(object: MsgDiscontinueBucketSDKType): MsgDiscontinueBucket {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      reason: object?.reason
+    };
+  },
+
+  toSDK(message: MsgDiscontinueBucket): MsgDiscontinueBucketSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.reason = message.reason;
+    return obj;
+  }
+
+};
+
+function createBaseMsgDiscontinueBucketResponse(): MsgDiscontinueBucketResponse {
+  return {};
+}
+
+export const MsgDiscontinueBucketResponse = {
+  encode(_: MsgDiscontinueBucketResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDiscontinueBucketResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDiscontinueBucketResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgDiscontinueBucketResponse {
+    return {};
+  },
+
+  toJSON(_: MsgDiscontinueBucketResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgDiscontinueBucketResponse>, I>>(_: I): MsgDiscontinueBucketResponse {
+    const message = createBaseMsgDiscontinueBucketResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgDiscontinueBucketResponseSDKType): MsgDiscontinueBucketResponse {
+    return {};
+  },
+
+  toSDK(_: MsgDiscontinueBucketResponse): MsgDiscontinueBucketResponseSDKType {
     const obj: any = {};
     return obj;
   }
@@ -1774,6 +1985,181 @@ export const MsgDeleteObjectResponse = {
   },
 
   toSDK(_: MsgDeleteObjectResponse): MsgDeleteObjectResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
+
+function createBaseMsgDiscontinueObject(): MsgDiscontinueObject {
+  return {
+    operator: "",
+    bucketName: "",
+    objectIds: [],
+    reason: ""
+  };
+}
+
+export const MsgDiscontinueObject = {
+  encode(message: MsgDiscontinueObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    for (const v of message.objectIds) {
+      writer.uint32(26).string(v!);
+    }
+
+    if (message.reason !== "") {
+      writer.uint32(34).string(message.reason);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDiscontinueObject {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDiscontinueObject();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        case 3:
+          message.objectIds.push(reader.string());
+          break;
+
+        case 4:
+          message.reason = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgDiscontinueObject {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      objectIds: Array.isArray(object?.objectIds) ? object.objectIds.map((e: any) => String(e)) : [],
+      reason: isSet(object.reason) ? String(object.reason) : ""
+    };
+  },
+
+  toJSON(message: MsgDiscontinueObject): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+
+    if (message.objectIds) {
+      obj.objectIds = message.objectIds.map(e => e);
+    } else {
+      obj.objectIds = [];
+    }
+
+    message.reason !== undefined && (obj.reason = message.reason);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgDiscontinueObject>, I>>(object: I): MsgDiscontinueObject {
+    const message = createBaseMsgDiscontinueObject();
+    message.operator = object.operator ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.objectIds = object.objectIds?.map(e => e) || [];
+    message.reason = object.reason ?? "";
+    return message;
+  },
+
+  fromSDK(object: MsgDiscontinueObjectSDKType): MsgDiscontinueObject {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      objectIds: Array.isArray(object?.object_ids) ? object.object_ids.map((e: any) => e) : [],
+      reason: object?.reason
+    };
+  },
+
+  toSDK(message: MsgDiscontinueObject): MsgDiscontinueObjectSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+
+    if (message.objectIds) {
+      obj.object_ids = message.objectIds.map(e => e);
+    } else {
+      obj.object_ids = [];
+    }
+
+    obj.reason = message.reason;
+    return obj;
+  }
+
+};
+
+function createBaseMsgDiscontinueObjectResponse(): MsgDiscontinueObjectResponse {
+  return {};
+}
+
+export const MsgDiscontinueObjectResponse = {
+  encode(_: MsgDiscontinueObjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDiscontinueObjectResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDiscontinueObjectResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgDiscontinueObjectResponse {
+    return {};
+  },
+
+  toJSON(_: MsgDiscontinueObjectResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgDiscontinueObjectResponse>, I>>(_: I): MsgDiscontinueObjectResponse {
+    const message = createBaseMsgDiscontinueObjectResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgDiscontinueObjectResponseSDKType): MsgDiscontinueObjectResponse {
+    return {};
+  },
+
+  toSDK(_: MsgDiscontinueObjectResponse): MsgDiscontinueObjectResponseSDKType {
     const obj: any = {};
     return obj;
   }
@@ -3357,6 +3743,169 @@ export const MsgMirrorBucket = {
 
 };
 
+function createBaseMsgUpdateObjectInfoResponse(): MsgUpdateObjectInfoResponse {
+  return {};
+}
+
+export const MsgUpdateObjectInfoResponse = {
+  encode(_: MsgUpdateObjectInfoResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateObjectInfoResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateObjectInfoResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateObjectInfoResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateObjectInfoResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateObjectInfoResponse>, I>>(_: I): MsgUpdateObjectInfoResponse {
+    const message = createBaseMsgUpdateObjectInfoResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgUpdateObjectInfoResponseSDKType): MsgUpdateObjectInfoResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateObjectInfoResponse): MsgUpdateObjectInfoResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
+
+function createBaseMsgUpdateObjectInfo(): MsgUpdateObjectInfo {
+  return {
+    operator: "",
+    bucketName: "",
+    objectName: "",
+    visibility: 0
+  };
+}
+
+export const MsgUpdateObjectInfo = {
+  encode(message: MsgUpdateObjectInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    if (message.objectName !== "") {
+      writer.uint32(26).string(message.objectName);
+    }
+
+    if (message.visibility !== 0) {
+      writer.uint32(32).int32(message.visibility);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateObjectInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateObjectInfo();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        case 3:
+          message.objectName = reader.string();
+          break;
+
+        case 4:
+          message.visibility = (reader.int32() as any);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateObjectInfo {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      objectName: isSet(object.objectName) ? String(object.objectName) : "",
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0
+    };
+  },
+
+  toJSON(message: MsgUpdateObjectInfo): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.objectName !== undefined && (obj.objectName = message.objectName);
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateObjectInfo>, I>>(object: I): MsgUpdateObjectInfo {
+    const message = createBaseMsgUpdateObjectInfo();
+    message.operator = object.operator ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.objectName = object.objectName ?? "";
+    message.visibility = object.visibility ?? 0;
+    return message;
+  },
+
+  fromSDK(object: MsgUpdateObjectInfoSDKType): MsgUpdateObjectInfo {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0
+    };
+  },
+
+  toSDK(message: MsgUpdateObjectInfo): MsgUpdateObjectInfoSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
+    return obj;
+  }
+
+};
+
 function createBaseMsgMirrorBucketResponse(): MsgMirrorBucketResponse {
   return {};
 }
@@ -3551,6 +4100,7 @@ export interface Msg {
   DeleteBucket(request: MsgDeleteBucket): Promise<MsgDeleteBucketResponse>;
   UpdateBucketInfo(request: MsgUpdateBucketInfo): Promise<MsgUpdateBucketInfoResponse>;
   MirrorBucket(request: MsgMirrorBucket): Promise<MsgMirrorBucketResponse>;
+  DiscontinueBucket(request: MsgDiscontinueBucket): Promise<MsgDiscontinueBucketResponse>;
   /** basic operation of object */
 
   CreateObject(request: MsgCreateObject): Promise<MsgCreateObjectResponse>;
@@ -3560,6 +4110,8 @@ export interface Msg {
   DeleteObject(request: MsgDeleteObject): Promise<MsgDeleteObjectResponse>;
   CancelCreateObject(request: MsgCancelCreateObject): Promise<MsgCancelCreateObjectResponse>;
   MirrorObject(request: MsgMirrorObject): Promise<MsgMirrorObjectResponse>;
+  DiscontinueObject(request: MsgDiscontinueObject): Promise<MsgDiscontinueObjectResponse>;
+  UpdateObjectInfo(request: MsgUpdateObjectInfo): Promise<MsgUpdateObjectInfoResponse>;
   /** basic operation of group */
 
   CreateGroup(request: MsgCreateGroup): Promise<MsgCreateGroupResponse>;
@@ -3581,6 +4133,7 @@ export class MsgClientImpl implements Msg {
     this.DeleteBucket = this.DeleteBucket.bind(this);
     this.UpdateBucketInfo = this.UpdateBucketInfo.bind(this);
     this.MirrorBucket = this.MirrorBucket.bind(this);
+    this.DiscontinueBucket = this.DiscontinueBucket.bind(this);
     this.CreateObject = this.CreateObject.bind(this);
     this.SealObject = this.SealObject.bind(this);
     this.RejectSealObject = this.RejectSealObject.bind(this);
@@ -3588,6 +4141,8 @@ export class MsgClientImpl implements Msg {
     this.DeleteObject = this.DeleteObject.bind(this);
     this.CancelCreateObject = this.CancelCreateObject.bind(this);
     this.MirrorObject = this.MirrorObject.bind(this);
+    this.DiscontinueObject = this.DiscontinueObject.bind(this);
+    this.UpdateObjectInfo = this.UpdateObjectInfo.bind(this);
     this.CreateGroup = this.CreateGroup.bind(this);
     this.DeleteGroup = this.DeleteGroup.bind(this);
     this.UpdateGroupMember = this.UpdateGroupMember.bind(this);
@@ -3619,6 +4174,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgMirrorBucket.encode(request).finish();
     const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "MirrorBucket", data);
     return promise.then(data => MsgMirrorBucketResponse.decode(new _m0.Reader(data)));
+  }
+
+  DiscontinueBucket(request: MsgDiscontinueBucket): Promise<MsgDiscontinueBucketResponse> {
+    const data = MsgDiscontinueBucket.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "DiscontinueBucket", data);
+    return promise.then(data => MsgDiscontinueBucketResponse.decode(new _m0.Reader(data)));
   }
 
   CreateObject(request: MsgCreateObject): Promise<MsgCreateObjectResponse> {
@@ -3661,6 +4222,18 @@ export class MsgClientImpl implements Msg {
     const data = MsgMirrorObject.encode(request).finish();
     const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "MirrorObject", data);
     return promise.then(data => MsgMirrorObjectResponse.decode(new _m0.Reader(data)));
+  }
+
+  DiscontinueObject(request: MsgDiscontinueObject): Promise<MsgDiscontinueObjectResponse> {
+    const data = MsgDiscontinueObject.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "DiscontinueObject", data);
+    return promise.then(data => MsgDiscontinueObjectResponse.decode(new _m0.Reader(data)));
+  }
+
+  UpdateObjectInfo(request: MsgUpdateObjectInfo): Promise<MsgUpdateObjectInfoResponse> {
+    const data = MsgUpdateObjectInfo.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "UpdateObjectInfo", data);
+    return promise.then(data => MsgUpdateObjectInfoResponse.decode(new _m0.Reader(data)));
   }
 
   CreateGroup(request: MsgCreateGroup): Promise<MsgCreateGroupResponse> {

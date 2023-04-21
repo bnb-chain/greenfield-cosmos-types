@@ -1,20 +1,20 @@
 /* eslint-disable */
-import { VisibilityType, SourceType, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, visibilityTypeToJSON, sourceTypeToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
+import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.storage";
 /** EventCreateBucket is emitted on MsgCreateBucket */
 
 export interface EventCreateBucket {
-  /** owner_address define the account address of bucket owner */
-  ownerAddress: string;
+  /** owner define the account address of bucket owner */
+  owner: string;
   /** bucket_name is a globally unique name of bucket */
 
   bucketName: string;
   /** visibility defines the highest permissions for bucket. When a bucket is public, everyone can get the object under it. */
 
   visibility: VisibilityType;
-  /** create_at define the block number when the bucket has been created */
+  /** create_at define the block timestamp when the bucket has been created */
 
   createAt: Long;
   /** bucket_id is the unique u256 for bucket. Not global, only unique in buckets. */
@@ -32,11 +32,14 @@ export interface EventCreateBucket {
   /** primary_sp_address is the operator address of the primary sp. */
 
   primarySpAddress: string;
+  /** status define the status of the bucket. */
+
+  status: BucketStatus;
 }
 /** EventCreateBucket is emitted on MsgCreateBucket */
 
 export interface EventCreateBucketSDKType {
-  owner_address: string;
+  owner: string;
   bucket_name: string;
   visibility: VisibilityType;
   create_at: Long;
@@ -45,15 +48,16 @@ export interface EventCreateBucketSDKType {
   charged_read_quota: Long;
   payment_address: string;
   primary_sp_address: string;
+  status: BucketStatus;
 }
 /** EventDeleteBucket is emitted on MsgDeleteBucket */
 
 export interface EventDeleteBucket {
-  /** operator_address define the account address of operator who delete the bucket */
-  operatorAddress: string;
-  /** owner_address define the account address of the bucket owner */
+  /** operator define the account address of operator who delete the bucket */
+  operator: string;
+  /** owner define the account address of the bucket owner */
 
-  ownerAddress: string;
+  owner: string;
   /** bucket_name define the name of the deleted bucket */
 
   bucketName: string;
@@ -67,8 +71,8 @@ export interface EventDeleteBucket {
 /** EventDeleteBucket is emitted on MsgDeleteBucket */
 
 export interface EventDeleteBucketSDKType {
-  operator_address: string;
-  owner_address: string;
+  operator: string;
+  owner: string;
   bucket_name: string;
   bucket_id: string;
   primary_sp_address: string;
@@ -76,8 +80,8 @@ export interface EventDeleteBucketSDKType {
 /** EventUpdateBucketInfo is emitted on MsgUpdateBucketInfo */
 
 export interface EventUpdateBucketInfo {
-  /** operator_address define the account address of operator who update the bucket */
-  operatorAddress: string;
+  /** operator define the account address of operator who update the bucket */
+  operator: string;
   /** bucket_name define the name of the bucket */
 
   bucketName: string;
@@ -103,7 +107,7 @@ export interface EventUpdateBucketInfo {
 /** EventUpdateBucketInfo is emitted on MsgUpdateBucketInfo */
 
 export interface EventUpdateBucketInfoSDKType {
-  operator_address: string;
+  operator: string;
   bucket_name: string;
   bucket_id: string;
   charged_read_quota_before: Long;
@@ -112,14 +116,37 @@ export interface EventUpdateBucketInfoSDKType {
   payment_address_after: string;
   visibility: VisibilityType;
 }
+/** EventDiscontinueBucket is emitted on MsgDiscontinueBucket */
+
+export interface EventDiscontinueBucket {
+  /** bucket_id define id of the bucket */
+  bucketId: string;
+  /** bucket_name define the name of the bucket */
+
+  bucketName: string;
+  /** the reason */
+
+  reason: string;
+  /** the timestamp after which the metadata will be deleted */
+
+  deleteAt: Long;
+}
+/** EventDiscontinueBucket is emitted on MsgDiscontinueBucket */
+
+export interface EventDiscontinueBucketSDKType {
+  bucket_id: string;
+  bucket_name: string;
+  reason: string;
+  delete_at: Long;
+}
 /** EventCreateObject is emitted on MsgCreateObject */
 
 export interface EventCreateObject {
-  /** creator_address define the account address of msg creator */
-  creatorAddress: string;
-  /** owner_address define the account address of object owner */
+  /** creator define the account address of msg creator */
+  creator: string;
+  /** owner define the account address of object owner */
 
-  ownerAddress: string;
+  owner: string;
   /** bucket_name define the name of bucket */
 
   bucketName: string;
@@ -144,7 +171,7 @@ export interface EventCreateObject {
   /** content_type define the content type of the payload data */
 
   contentType: string;
-  /** create_at define the block number when the object created */
+  /** create_at define the block timestamp when the object created */
 
   createAt: Long;
   /** status define the status of the object. INIT or IN_SERVICE or others */
@@ -163,8 +190,8 @@ export interface EventCreateObject {
 /** EventCreateObject is emitted on MsgCreateObject */
 
 export interface EventCreateObjectSDKType {
-  creator_address: string;
-  owner_address: string;
+  creator: string;
+  owner: string;
   bucket_name: string;
   object_name: string;
   bucket_id: string;
@@ -182,8 +209,8 @@ export interface EventCreateObjectSDKType {
 /** EventSealObject is emitted on MsgSealObject */
 
 export interface EventCancelCreateObject {
-  /** operator_address define the account address of operator who cancel create object */
-  operatorAddress: string;
+  /** operator define the account address of operator who cancel create object */
+  operator: string;
   /** bucket_name define the name of the bucket */
 
   bucketName: string;
@@ -200,7 +227,7 @@ export interface EventCancelCreateObject {
 /** EventSealObject is emitted on MsgSealObject */
 
 export interface EventCancelCreateObjectSDKType {
-  operator_address: string;
+  operator: string;
   bucket_name: string;
   object_name: string;
   primary_sp_address: string;
@@ -209,8 +236,8 @@ export interface EventCancelCreateObjectSDKType {
 /** EventSealObject is emitted on MsgSealObject */
 
 export interface EventSealObject {
-  /** operator_address define the account address of operator who seal object */
-  operatorAddress: string;
+  /** operator define the account address of operator who seal object */
+  operator: string;
   /** bucket_name define the name of the bucket */
 
   bucketName: string;
@@ -230,7 +257,7 @@ export interface EventSealObject {
 /** EventSealObject is emitted on MsgSealObject */
 
 export interface EventSealObjectSDKType {
-  operator_address: string;
+  operator: string;
   bucket_name: string;
   object_name: string;
   object_id: string;
@@ -240,8 +267,8 @@ export interface EventSealObjectSDKType {
 /** EventCopyObject is emitted on MsgCopyObject */
 
 export interface EventCopyObject {
-  /** operator_address define the account address of operator who copy the object */
-  operatorAddress: string;
+  /** operator define the account address of operator who copy the object */
+  operator: string;
   /** src_bucket_name define the name of the src bucket */
 
   srcBucketName: string;
@@ -264,7 +291,7 @@ export interface EventCopyObject {
 /** EventCopyObject is emitted on MsgCopyObject */
 
 export interface EventCopyObjectSDKType {
-  operator_address: string;
+  operator: string;
   src_bucket_name: string;
   src_object_name: string;
   dst_bucket_name: string;
@@ -275,8 +302,8 @@ export interface EventCopyObjectSDKType {
 /** EventDeleteObject is emitted on MsgDeleteObject */
 
 export interface EventDeleteObject {
-  /** operator_address define the account address of operator who delete the object */
-  operatorAddress: string;
+  /** operator define the account address of operator who delete the object */
+  operator: string;
   /** bucket_name define the name of the bucket */
 
   bucketName: string;
@@ -296,7 +323,7 @@ export interface EventDeleteObject {
 /** EventDeleteObject is emitted on MsgDeleteObject */
 
 export interface EventDeleteObjectSDKType {
-  operator_address: string;
+  operator: string;
   bucket_name: string;
   object_name: string;
   object_id: string;
@@ -306,8 +333,8 @@ export interface EventDeleteObjectSDKType {
 /** EventRejectSealObject is emitted on MsgRejectSealObject */
 
 export interface EventRejectSealObject {
-  /** operator_address define the account address of operator who reject seal object */
-  operatorAddress: string;
+  /** operator define the account address of operator who reject seal object */
+  operator: string;
   /** bucket_name define the name of the bucket */
 
   bucketName: string;
@@ -321,16 +348,66 @@ export interface EventRejectSealObject {
 /** EventRejectSealObject is emitted on MsgRejectSealObject */
 
 export interface EventRejectSealObjectSDKType {
-  operator_address: string;
+  operator: string;
   bucket_name: string;
   object_name: string;
   object_id: string;
 }
+/** EventDiscontinueObject is emitted on MsgDiscontinueObject */
+
+export interface EventDiscontinueObject {
+  /** bucket_name define the name of the bucket */
+  bucketName: string;
+  /** object_id defines id of the object */
+
+  objectId: string;
+  /** the reason */
+
+  reason: string;
+  /** the timestamp after which the metadata will be deleted */
+
+  deleteAt: Long;
+}
+/** EventDiscontinueObject is emitted on MsgDiscontinueObject */
+
+export interface EventDiscontinueObjectSDKType {
+  bucket_name: string;
+  object_id: string;
+  reason: string;
+  delete_at: Long;
+}
+/** EventUpdateObjectInfo is emitted on MsgUpdateObjectInfo */
+
+export interface EventUpdateObjectInfo {
+  /** operator define the account address of operator who update the bucket */
+  operator: string;
+  /** bucket_name define the name of the bucket */
+
+  bucketName: string;
+  /** object_name define the name of the object */
+
+  objectName: string;
+  /** object_id define an u256 id for object */
+
+  objectId: string;
+  /** visibility defines the highest permission of object. */
+
+  visibility: VisibilityType;
+}
+/** EventUpdateObjectInfo is emitted on MsgUpdateObjectInfo */
+
+export interface EventUpdateObjectInfoSDKType {
+  operator: string;
+  bucket_name: string;
+  object_name: string;
+  object_id: string;
+  visibility: VisibilityType;
+}
 /** EventCreateGroup is emitted on MsgCreateGroup */
 
 export interface EventCreateGroup {
-  /** owner_address define the account address of group owner */
-  ownerAddress: string;
+  /** owner define the account address of group owner */
+  owner: string;
   /** group_name define the name of the group */
 
   groupName: string;
@@ -347,7 +424,7 @@ export interface EventCreateGroup {
 /** EventCreateGroup is emitted on MsgCreateGroup */
 
 export interface EventCreateGroupSDKType {
-  owner_address: string;
+  owner: string;
   group_name: string;
   group_id: string;
   source_type: SourceType;
@@ -356,8 +433,8 @@ export interface EventCreateGroupSDKType {
 /** EventDeleteGroup is emitted on MsgDeleteGroup */
 
 export interface EventDeleteGroup {
-  /** owner_address define the account address of group owner */
-  ownerAddress: string;
+  /** owner define the account address of group owner */
+  owner: string;
   /** group_name define the name of the group */
 
   groupName: string;
@@ -368,7 +445,7 @@ export interface EventDeleteGroup {
 /** EventDeleteGroup is emitted on MsgDeleteGroup */
 
 export interface EventDeleteGroupSDKType {
-  owner_address: string;
+  owner: string;
   group_name: string;
   group_id: string;
 }
@@ -377,9 +454,9 @@ export interface EventDeleteGroupSDKType {
 export interface EventLeaveGroup {
   /** member_address define the address of the member who leave the group */
   memberAddress: string;
-  /** owner_address define the account address of group owner */
+  /** owner define the account address of group owner */
 
-  ownerAddress: string;
+  owner: string;
   /** group_name define the name of the group */
 
   groupName: string;
@@ -391,18 +468,18 @@ export interface EventLeaveGroup {
 
 export interface EventLeaveGroupSDKType {
   member_address: string;
-  owner_address: string;
+  owner: string;
   group_name: string;
   group_id: string;
 }
 /** EventUpdateGroupMember is emitted on MsgUpdateGroupMember */
 
 export interface EventUpdateGroupMember {
-  /** operator_address define the account address of operator who update the group member */
-  operatorAddress: string;
-  /** owner_address define the account address of group owner */
+  /** operator define the account address of operator who update the group member */
+  operator: string;
+  /** owner define the account address of group owner */
 
-  ownerAddress: string;
+  owner: string;
   /** group_name define the name of the group */
 
   groupName: string;
@@ -419,8 +496,8 @@ export interface EventUpdateGroupMember {
 /** EventUpdateGroupMember is emitted on MsgUpdateGroupMember */
 
 export interface EventUpdateGroupMemberSDKType {
-  operator_address: string;
-  owner_address: string;
+  operator: string;
+  owner: string;
   group_name: string;
   group_id: string;
   members_to_add: string[];
@@ -429,8 +506,8 @@ export interface EventUpdateGroupMemberSDKType {
 /** EventMirrorBucket is emitted on MirrorBucket */
 
 export interface EventMirrorBucket {
-  /** operator_address define the account address of operator who mirror the bucket */
-  operatorAddress: string;
+  /** operator define the account address of operator who mirror the bucket */
+  operator: string;
   /** bucket_name defines the name of the bucket */
 
   bucketName: string;
@@ -441,7 +518,7 @@ export interface EventMirrorBucket {
 /** EventMirrorBucket is emitted on MirrorBucket */
 
 export interface EventMirrorBucketSDKType {
-  operator_address: string;
+  operator: string;
   bucket_name: string;
   bucket_id: string;
 }
@@ -467,8 +544,8 @@ export interface EventMirrorBucketResultSDKType {
 /** EventMirrorObject is emitted on MirrorObject */
 
 export interface EventMirrorObject {
-  /** operator_address define the account address of operator who delete the object */
-  operatorAddress: string;
+  /** operator define the account address of operator who delete the object */
+  operator: string;
   /** bucket_name define the name of the bucket */
 
   bucketName: string;
@@ -482,7 +559,7 @@ export interface EventMirrorObject {
 /** EventMirrorObject is emitted on MirrorObject */
 
 export interface EventMirrorObjectSDKType {
-  operator_address: string;
+  operator: string;
   bucket_name: string;
   object_name: string;
   object_id: string;
@@ -513,8 +590,8 @@ export interface EventMirrorObjectResultSDKType {
 /** EventMirrorGroup is emitted on MirrorGroup */
 
 export interface EventMirrorGroup {
-  /** owner_address define the account address of group owner */
-  ownerAddress: string;
+  /** owner define the account address of group owner */
+  owner: string;
   /** group_name define the name of the group */
 
   groupName: string;
@@ -525,7 +602,7 @@ export interface EventMirrorGroup {
 /** EventMirrorGroup is emitted on MirrorGroup */
 
 export interface EventMirrorGroupSDKType {
-  owner_address: string;
+  owner: string;
   group_name: string;
   group_id: string;
 }
@@ -551,7 +628,7 @@ export interface EventMirrorGroupResultSDKType {
 
 function createBaseEventCreateBucket(): EventCreateBucket {
   return {
-    ownerAddress: "",
+    owner: "",
     bucketName: "",
     visibility: 0,
     createAt: Long.ZERO,
@@ -559,14 +636,15 @@ function createBaseEventCreateBucket(): EventCreateBucket {
     sourceType: 0,
     chargedReadQuota: Long.UZERO,
     paymentAddress: "",
-    primarySpAddress: ""
+    primarySpAddress: "",
+    status: 0
   };
 }
 
 export const EventCreateBucket = {
   encode(message: EventCreateBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.ownerAddress !== "") {
-      writer.uint32(10).string(message.ownerAddress);
+    if (message.owner !== "") {
+      writer.uint32(10).string(message.owner);
     }
 
     if (message.bucketName !== "") {
@@ -601,6 +679,10 @@ export const EventCreateBucket = {
       writer.uint32(74).string(message.primarySpAddress);
     }
 
+    if (message.status !== 0) {
+      writer.uint32(80).int32(message.status);
+    }
+
     return writer;
   },
 
@@ -614,7 +696,7 @@ export const EventCreateBucket = {
 
       switch (tag >>> 3) {
         case 1:
-          message.ownerAddress = reader.string();
+          message.owner = reader.string();
           break;
 
         case 2:
@@ -649,6 +731,10 @@ export const EventCreateBucket = {
           message.primarySpAddress = reader.string();
           break;
 
+        case 10:
+          message.status = (reader.int32() as any);
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -660,7 +746,7 @@ export const EventCreateBucket = {
 
   fromJSON(object: any): EventCreateBucket {
     return {
-      ownerAddress: isSet(object.ownerAddress) ? String(object.ownerAddress) : "",
+      owner: isSet(object.owner) ? String(object.owner) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
@@ -668,13 +754,14 @@ export const EventCreateBucket = {
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
       chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
-      primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : ""
+      primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
+      status: isSet(object.status) ? bucketStatusFromJSON(object.status) : 0
     };
   },
 
   toJSON(message: EventCreateBucket): unknown {
     const obj: any = {};
-    message.ownerAddress !== undefined && (obj.ownerAddress = message.ownerAddress);
+    message.owner !== undefined && (obj.owner = message.owner);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
@@ -683,12 +770,13 @@ export const EventCreateBucket = {
     message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
+    message.status !== undefined && (obj.status = bucketStatusToJSON(message.status));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<EventCreateBucket>, I>>(object: I): EventCreateBucket {
     const message = createBaseEventCreateBucket();
-    message.ownerAddress = object.ownerAddress ?? "";
+    message.owner = object.owner ?? "";
     message.bucketName = object.bucketName ?? "";
     message.visibility = object.visibility ?? 0;
     message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
@@ -697,12 +785,13 @@ export const EventCreateBucket = {
     message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
     message.paymentAddress = object.paymentAddress ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
+    message.status = object.status ?? 0;
     return message;
   },
 
   fromSDK(object: EventCreateBucketSDKType): EventCreateBucket {
     return {
-      ownerAddress: object?.owner_address,
+      owner: object?.owner,
       bucketName: object?.bucket_name,
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       createAt: object?.create_at,
@@ -710,13 +799,14 @@ export const EventCreateBucket = {
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
       chargedReadQuota: object?.charged_read_quota,
       paymentAddress: object?.payment_address,
-      primarySpAddress: object?.primary_sp_address
+      primarySpAddress: object?.primary_sp_address,
+      status: isSet(object.status) ? bucketStatusFromJSON(object.status) : 0
     };
   },
 
   toSDK(message: EventCreateBucket): EventCreateBucketSDKType {
     const obj: any = {};
-    obj.owner_address = message.ownerAddress;
+    obj.owner = message.owner;
     obj.bucket_name = message.bucketName;
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     obj.create_at = message.createAt;
@@ -725,6 +815,7 @@ export const EventCreateBucket = {
     obj.charged_read_quota = message.chargedReadQuota;
     obj.payment_address = message.paymentAddress;
     obj.primary_sp_address = message.primarySpAddress;
+    message.status !== undefined && (obj.status = bucketStatusToJSON(message.status));
     return obj;
   }
 
@@ -732,8 +823,8 @@ export const EventCreateBucket = {
 
 function createBaseEventDeleteBucket(): EventDeleteBucket {
   return {
-    operatorAddress: "",
-    ownerAddress: "",
+    operator: "",
+    owner: "",
     bucketName: "",
     bucketId: "",
     primarySpAddress: ""
@@ -742,12 +833,12 @@ function createBaseEventDeleteBucket(): EventDeleteBucket {
 
 export const EventDeleteBucket = {
   encode(message: EventDeleteBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.operatorAddress !== "") {
-      writer.uint32(10).string(message.operatorAddress);
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
     }
 
-    if (message.ownerAddress !== "") {
-      writer.uint32(18).string(message.ownerAddress);
+    if (message.owner !== "") {
+      writer.uint32(18).string(message.owner);
     }
 
     if (message.bucketName !== "") {
@@ -775,11 +866,11 @@ export const EventDeleteBucket = {
 
       switch (tag >>> 3) {
         case 1:
-          message.operatorAddress = reader.string();
+          message.operator = reader.string();
           break;
 
         case 2:
-          message.ownerAddress = reader.string();
+          message.owner = reader.string();
           break;
 
         case 3:
@@ -805,8 +896,8 @@ export const EventDeleteBucket = {
 
   fromJSON(object: any): EventDeleteBucket {
     return {
-      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
-      ownerAddress: isSet(object.ownerAddress) ? String(object.ownerAddress) : "",
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      owner: isSet(object.owner) ? String(object.owner) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : ""
@@ -815,8 +906,8 @@ export const EventDeleteBucket = {
 
   toJSON(message: EventDeleteBucket): unknown {
     const obj: any = {};
-    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
-    message.ownerAddress !== undefined && (obj.ownerAddress = message.ownerAddress);
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.owner !== undefined && (obj.owner = message.owner);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
@@ -825,8 +916,8 @@ export const EventDeleteBucket = {
 
   fromPartial<I extends Exact<DeepPartial<EventDeleteBucket>, I>>(object: I): EventDeleteBucket {
     const message = createBaseEventDeleteBucket();
-    message.operatorAddress = object.operatorAddress ?? "";
-    message.ownerAddress = object.ownerAddress ?? "";
+    message.operator = object.operator ?? "";
+    message.owner = object.owner ?? "";
     message.bucketName = object.bucketName ?? "";
     message.bucketId = object.bucketId ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
@@ -835,8 +926,8 @@ export const EventDeleteBucket = {
 
   fromSDK(object: EventDeleteBucketSDKType): EventDeleteBucket {
     return {
-      operatorAddress: object?.operator_address,
-      ownerAddress: object?.owner_address,
+      operator: object?.operator,
+      owner: object?.owner,
       bucketName: object?.bucket_name,
       bucketId: object?.bucket_id,
       primarySpAddress: object?.primary_sp_address
@@ -845,8 +936,8 @@ export const EventDeleteBucket = {
 
   toSDK(message: EventDeleteBucket): EventDeleteBucketSDKType {
     const obj: any = {};
-    obj.operator_address = message.operatorAddress;
-    obj.owner_address = message.ownerAddress;
+    obj.operator = message.operator;
+    obj.owner = message.owner;
     obj.bucket_name = message.bucketName;
     obj.bucket_id = message.bucketId;
     obj.primary_sp_address = message.primarySpAddress;
@@ -857,7 +948,7 @@ export const EventDeleteBucket = {
 
 function createBaseEventUpdateBucketInfo(): EventUpdateBucketInfo {
   return {
-    operatorAddress: "",
+    operator: "",
     bucketName: "",
     bucketId: "",
     chargedReadQuotaBefore: Long.UZERO,
@@ -870,8 +961,8 @@ function createBaseEventUpdateBucketInfo(): EventUpdateBucketInfo {
 
 export const EventUpdateBucketInfo = {
   encode(message: EventUpdateBucketInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.operatorAddress !== "") {
-      writer.uint32(10).string(message.operatorAddress);
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
     }
 
     if (message.bucketName !== "") {
@@ -915,7 +1006,7 @@ export const EventUpdateBucketInfo = {
 
       switch (tag >>> 3) {
         case 1:
-          message.operatorAddress = reader.string();
+          message.operator = reader.string();
           break;
 
         case 2:
@@ -957,7 +1048,7 @@ export const EventUpdateBucketInfo = {
 
   fromJSON(object: any): EventUpdateBucketInfo {
     return {
-      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
+      operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
       chargedReadQuotaBefore: isSet(object.chargedReadQuotaBefore) ? Long.fromValue(object.chargedReadQuotaBefore) : Long.UZERO,
@@ -970,7 +1061,7 @@ export const EventUpdateBucketInfo = {
 
   toJSON(message: EventUpdateBucketInfo): unknown {
     const obj: any = {};
-    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
+    message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     message.chargedReadQuotaBefore !== undefined && (obj.chargedReadQuotaBefore = (message.chargedReadQuotaBefore || Long.UZERO).toString());
@@ -983,7 +1074,7 @@ export const EventUpdateBucketInfo = {
 
   fromPartial<I extends Exact<DeepPartial<EventUpdateBucketInfo>, I>>(object: I): EventUpdateBucketInfo {
     const message = createBaseEventUpdateBucketInfo();
-    message.operatorAddress = object.operatorAddress ?? "";
+    message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.bucketId = object.bucketId ?? "";
     message.chargedReadQuotaBefore = object.chargedReadQuotaBefore !== undefined && object.chargedReadQuotaBefore !== null ? Long.fromValue(object.chargedReadQuotaBefore) : Long.UZERO;
@@ -996,7 +1087,7 @@ export const EventUpdateBucketInfo = {
 
   fromSDK(object: EventUpdateBucketInfoSDKType): EventUpdateBucketInfo {
     return {
-      operatorAddress: object?.operator_address,
+      operator: object?.operator,
       bucketName: object?.bucket_name,
       bucketId: object?.bucket_id,
       chargedReadQuotaBefore: object?.charged_read_quota_before,
@@ -1009,7 +1100,7 @@ export const EventUpdateBucketInfo = {
 
   toSDK(message: EventUpdateBucketInfo): EventUpdateBucketInfoSDKType {
     const obj: any = {};
-    obj.operator_address = message.operatorAddress;
+    obj.operator = message.operator;
     obj.bucket_name = message.bucketName;
     obj.bucket_id = message.bucketId;
     obj.charged_read_quota_before = message.chargedReadQuotaBefore;
@@ -1022,10 +1113,121 @@ export const EventUpdateBucketInfo = {
 
 };
 
+function createBaseEventDiscontinueBucket(): EventDiscontinueBucket {
+  return {
+    bucketId: "",
+    bucketName: "",
+    reason: "",
+    deleteAt: Long.ZERO
+  };
+}
+
+export const EventDiscontinueBucket = {
+  encode(message: EventDiscontinueBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.bucketId !== "") {
+      writer.uint32(10).string(message.bucketId);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    if (message.reason !== "") {
+      writer.uint32(26).string(message.reason);
+    }
+
+    if (!message.deleteAt.isZero()) {
+      writer.uint32(32).int64(message.deleteAt);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventDiscontinueBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventDiscontinueBucket();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketId = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        case 3:
+          message.reason = reader.string();
+          break;
+
+        case 4:
+          message.deleteAt = (reader.int64() as Long);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventDiscontinueBucket {
+    return {
+      bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      reason: isSet(object.reason) ? String(object.reason) : "",
+      deleteAt: isSet(object.deleteAt) ? Long.fromValue(object.deleteAt) : Long.ZERO
+    };
+  },
+
+  toJSON(message: EventDiscontinueBucket): unknown {
+    const obj: any = {};
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.reason !== undefined && (obj.reason = message.reason);
+    message.deleteAt !== undefined && (obj.deleteAt = (message.deleteAt || Long.ZERO).toString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventDiscontinueBucket>, I>>(object: I): EventDiscontinueBucket {
+    const message = createBaseEventDiscontinueBucket();
+    message.bucketId = object.bucketId ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.reason = object.reason ?? "";
+    message.deleteAt = object.deleteAt !== undefined && object.deleteAt !== null ? Long.fromValue(object.deleteAt) : Long.ZERO;
+    return message;
+  },
+
+  fromSDK(object: EventDiscontinueBucketSDKType): EventDiscontinueBucket {
+    return {
+      bucketId: object?.bucket_id,
+      bucketName: object?.bucket_name,
+      reason: object?.reason,
+      deleteAt: object?.delete_at
+    };
+  },
+
+  toSDK(message: EventDiscontinueBucket): EventDiscontinueBucketSDKType {
+    const obj: any = {};
+    obj.bucket_id = message.bucketId;
+    obj.bucket_name = message.bucketName;
+    obj.reason = message.reason;
+    obj.delete_at = message.deleteAt;
+    return obj;
+  }
+
+};
+
 function createBaseEventCreateObject(): EventCreateObject {
   return {
-    creatorAddress: "",
-    ownerAddress: "",
+    creator: "",
+    owner: "",
     bucketName: "",
     objectName: "",
     bucketId: "",
@@ -1044,12 +1246,12 @@ function createBaseEventCreateObject(): EventCreateObject {
 
 export const EventCreateObject = {
   encode(message: EventCreateObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.creatorAddress !== "") {
-      writer.uint32(10).string(message.creatorAddress);
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
     }
 
-    if (message.ownerAddress !== "") {
-      writer.uint32(18).string(message.ownerAddress);
+    if (message.owner !== "") {
+      writer.uint32(18).string(message.owner);
     }
 
     if (message.bucketName !== "") {
@@ -1117,11 +1319,11 @@ export const EventCreateObject = {
 
       switch (tag >>> 3) {
         case 1:
-          message.creatorAddress = reader.string();
+          message.creator = reader.string();
           break;
 
         case 2:
-          message.ownerAddress = reader.string();
+          message.owner = reader.string();
           break;
 
         case 3:
@@ -1187,8 +1389,8 @@ export const EventCreateObject = {
 
   fromJSON(object: any): EventCreateObject {
     return {
-      creatorAddress: isSet(object.creatorAddress) ? String(object.creatorAddress) : "",
-      ownerAddress: isSet(object.ownerAddress) ? String(object.ownerAddress) : "",
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      owner: isSet(object.owner) ? String(object.owner) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
@@ -1207,8 +1409,8 @@ export const EventCreateObject = {
 
   toJSON(message: EventCreateObject): unknown {
     const obj: any = {};
-    message.creatorAddress !== undefined && (obj.creatorAddress = message.creatorAddress);
-    message.ownerAddress !== undefined && (obj.ownerAddress = message.ownerAddress);
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.owner !== undefined && (obj.owner = message.owner);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
@@ -1233,8 +1435,8 @@ export const EventCreateObject = {
 
   fromPartial<I extends Exact<DeepPartial<EventCreateObject>, I>>(object: I): EventCreateObject {
     const message = createBaseEventCreateObject();
-    message.creatorAddress = object.creatorAddress ?? "";
-    message.ownerAddress = object.ownerAddress ?? "";
+    message.creator = object.creator ?? "";
+    message.owner = object.owner ?? "";
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     message.bucketId = object.bucketId ?? "";
@@ -1253,8 +1455,8 @@ export const EventCreateObject = {
 
   fromSDK(object: EventCreateObjectSDKType): EventCreateObject {
     return {
-      creatorAddress: object?.creator_address,
-      ownerAddress: object?.owner_address,
+      creator: object?.creator,
+      owner: object?.owner,
       bucketName: object?.bucket_name,
       objectName: object?.object_name,
       bucketId: object?.bucket_id,
@@ -1273,8 +1475,8 @@ export const EventCreateObject = {
 
   toSDK(message: EventCreateObject): EventCreateObjectSDKType {
     const obj: any = {};
-    obj.creator_address = message.creatorAddress;
-    obj.owner_address = message.ownerAddress;
+    obj.creator = message.creator;
+    obj.owner = message.owner;
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
     obj.bucket_id = message.bucketId;
@@ -1301,7 +1503,7 @@ export const EventCreateObject = {
 
 function createBaseEventCancelCreateObject(): EventCancelCreateObject {
   return {
-    operatorAddress: "",
+    operator: "",
     bucketName: "",
     objectName: "",
     primarySpAddress: "",
@@ -1311,8 +1513,8 @@ function createBaseEventCancelCreateObject(): EventCancelCreateObject {
 
 export const EventCancelCreateObject = {
   encode(message: EventCancelCreateObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.operatorAddress !== "") {
-      writer.uint32(10).string(message.operatorAddress);
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
     }
 
     if (message.bucketName !== "") {
@@ -1344,7 +1546,7 @@ export const EventCancelCreateObject = {
 
       switch (tag >>> 3) {
         case 1:
-          message.operatorAddress = reader.string();
+          message.operator = reader.string();
           break;
 
         case 2:
@@ -1374,7 +1576,7 @@ export const EventCancelCreateObject = {
 
   fromJSON(object: any): EventCancelCreateObject {
     return {
-      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
+      operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
@@ -1384,7 +1586,7 @@ export const EventCancelCreateObject = {
 
   toJSON(message: EventCancelCreateObject): unknown {
     const obj: any = {};
-    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
+    message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
@@ -1394,7 +1596,7 @@ export const EventCancelCreateObject = {
 
   fromPartial<I extends Exact<DeepPartial<EventCancelCreateObject>, I>>(object: I): EventCancelCreateObject {
     const message = createBaseEventCancelCreateObject();
-    message.operatorAddress = object.operatorAddress ?? "";
+    message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     message.primarySpAddress = object.primarySpAddress ?? "";
@@ -1404,7 +1606,7 @@ export const EventCancelCreateObject = {
 
   fromSDK(object: EventCancelCreateObjectSDKType): EventCancelCreateObject {
     return {
-      operatorAddress: object?.operator_address,
+      operator: object?.operator,
       bucketName: object?.bucket_name,
       objectName: object?.object_name,
       primarySpAddress: object?.primary_sp_address,
@@ -1414,7 +1616,7 @@ export const EventCancelCreateObject = {
 
   toSDK(message: EventCancelCreateObject): EventCancelCreateObjectSDKType {
     const obj: any = {};
-    obj.operator_address = message.operatorAddress;
+    obj.operator = message.operator;
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
     obj.primary_sp_address = message.primarySpAddress;
@@ -1426,7 +1628,7 @@ export const EventCancelCreateObject = {
 
 function createBaseEventSealObject(): EventSealObject {
   return {
-    operatorAddress: "",
+    operator: "",
     bucketName: "",
     objectName: "",
     objectId: "",
@@ -1437,8 +1639,8 @@ function createBaseEventSealObject(): EventSealObject {
 
 export const EventSealObject = {
   encode(message: EventSealObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.operatorAddress !== "") {
-      writer.uint32(10).string(message.operatorAddress);
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
     }
 
     if (message.bucketName !== "") {
@@ -1474,7 +1676,7 @@ export const EventSealObject = {
 
       switch (tag >>> 3) {
         case 1:
-          message.operatorAddress = reader.string();
+          message.operator = reader.string();
           break;
 
         case 2:
@@ -1508,7 +1710,7 @@ export const EventSealObject = {
 
   fromJSON(object: any): EventSealObject {
     return {
-      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
+      operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
@@ -1519,7 +1721,7 @@ export const EventSealObject = {
 
   toJSON(message: EventSealObject): unknown {
     const obj: any = {};
-    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
+    message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.objectId !== undefined && (obj.objectId = message.objectId);
@@ -1536,7 +1738,7 @@ export const EventSealObject = {
 
   fromPartial<I extends Exact<DeepPartial<EventSealObject>, I>>(object: I): EventSealObject {
     const message = createBaseEventSealObject();
-    message.operatorAddress = object.operatorAddress ?? "";
+    message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     message.objectId = object.objectId ?? "";
@@ -1547,7 +1749,7 @@ export const EventSealObject = {
 
   fromSDK(object: EventSealObjectSDKType): EventSealObject {
     return {
-      operatorAddress: object?.operator_address,
+      operator: object?.operator,
       bucketName: object?.bucket_name,
       objectName: object?.object_name,
       objectId: object?.object_id,
@@ -1558,7 +1760,7 @@ export const EventSealObject = {
 
   toSDK(message: EventSealObject): EventSealObjectSDKType {
     const obj: any = {};
-    obj.operator_address = message.operatorAddress;
+    obj.operator = message.operator;
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
     obj.object_id = message.objectId;
@@ -1577,7 +1779,7 @@ export const EventSealObject = {
 
 function createBaseEventCopyObject(): EventCopyObject {
   return {
-    operatorAddress: "",
+    operator: "",
     srcBucketName: "",
     srcObjectName: "",
     dstBucketName: "",
@@ -1589,8 +1791,8 @@ function createBaseEventCopyObject(): EventCopyObject {
 
 export const EventCopyObject = {
   encode(message: EventCopyObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.operatorAddress !== "") {
-      writer.uint32(10).string(message.operatorAddress);
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
     }
 
     if (message.srcBucketName !== "") {
@@ -1630,7 +1832,7 @@ export const EventCopyObject = {
 
       switch (tag >>> 3) {
         case 1:
-          message.operatorAddress = reader.string();
+          message.operator = reader.string();
           break;
 
         case 2:
@@ -1668,7 +1870,7 @@ export const EventCopyObject = {
 
   fromJSON(object: any): EventCopyObject {
     return {
-      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
+      operator: isSet(object.operator) ? String(object.operator) : "",
       srcBucketName: isSet(object.srcBucketName) ? String(object.srcBucketName) : "",
       srcObjectName: isSet(object.srcObjectName) ? String(object.srcObjectName) : "",
       dstBucketName: isSet(object.dstBucketName) ? String(object.dstBucketName) : "",
@@ -1680,7 +1882,7 @@ export const EventCopyObject = {
 
   toJSON(message: EventCopyObject): unknown {
     const obj: any = {};
-    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
+    message.operator !== undefined && (obj.operator = message.operator);
     message.srcBucketName !== undefined && (obj.srcBucketName = message.srcBucketName);
     message.srcObjectName !== undefined && (obj.srcObjectName = message.srcObjectName);
     message.dstBucketName !== undefined && (obj.dstBucketName = message.dstBucketName);
@@ -1692,7 +1894,7 @@ export const EventCopyObject = {
 
   fromPartial<I extends Exact<DeepPartial<EventCopyObject>, I>>(object: I): EventCopyObject {
     const message = createBaseEventCopyObject();
-    message.operatorAddress = object.operatorAddress ?? "";
+    message.operator = object.operator ?? "";
     message.srcBucketName = object.srcBucketName ?? "";
     message.srcObjectName = object.srcObjectName ?? "";
     message.dstBucketName = object.dstBucketName ?? "";
@@ -1704,7 +1906,7 @@ export const EventCopyObject = {
 
   fromSDK(object: EventCopyObjectSDKType): EventCopyObject {
     return {
-      operatorAddress: object?.operator_address,
+      operator: object?.operator,
       srcBucketName: object?.src_bucket_name,
       srcObjectName: object?.src_object_name,
       dstBucketName: object?.dst_bucket_name,
@@ -1716,7 +1918,7 @@ export const EventCopyObject = {
 
   toSDK(message: EventCopyObject): EventCopyObjectSDKType {
     const obj: any = {};
-    obj.operator_address = message.operatorAddress;
+    obj.operator = message.operator;
     obj.src_bucket_name = message.srcBucketName;
     obj.src_object_name = message.srcObjectName;
     obj.dst_bucket_name = message.dstBucketName;
@@ -1730,7 +1932,7 @@ export const EventCopyObject = {
 
 function createBaseEventDeleteObject(): EventDeleteObject {
   return {
-    operatorAddress: "",
+    operator: "",
     bucketName: "",
     objectName: "",
     objectId: "",
@@ -1741,8 +1943,8 @@ function createBaseEventDeleteObject(): EventDeleteObject {
 
 export const EventDeleteObject = {
   encode(message: EventDeleteObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.operatorAddress !== "") {
-      writer.uint32(10).string(message.operatorAddress);
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
     }
 
     if (message.bucketName !== "") {
@@ -1778,7 +1980,7 @@ export const EventDeleteObject = {
 
       switch (tag >>> 3) {
         case 1:
-          message.operatorAddress = reader.string();
+          message.operator = reader.string();
           break;
 
         case 2:
@@ -1812,7 +2014,7 @@ export const EventDeleteObject = {
 
   fromJSON(object: any): EventDeleteObject {
     return {
-      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
+      operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
@@ -1823,7 +2025,7 @@ export const EventDeleteObject = {
 
   toJSON(message: EventDeleteObject): unknown {
     const obj: any = {};
-    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
+    message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.objectId !== undefined && (obj.objectId = message.objectId);
@@ -1840,7 +2042,7 @@ export const EventDeleteObject = {
 
   fromPartial<I extends Exact<DeepPartial<EventDeleteObject>, I>>(object: I): EventDeleteObject {
     const message = createBaseEventDeleteObject();
-    message.operatorAddress = object.operatorAddress ?? "";
+    message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     message.objectId = object.objectId ?? "";
@@ -1851,7 +2053,7 @@ export const EventDeleteObject = {
 
   fromSDK(object: EventDeleteObjectSDKType): EventDeleteObject {
     return {
-      operatorAddress: object?.operator_address,
+      operator: object?.operator,
       bucketName: object?.bucket_name,
       objectName: object?.object_name,
       objectId: object?.object_id,
@@ -1862,7 +2064,7 @@ export const EventDeleteObject = {
 
   toSDK(message: EventDeleteObject): EventDeleteObjectSDKType {
     const obj: any = {};
-    obj.operator_address = message.operatorAddress;
+    obj.operator = message.operator;
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
     obj.object_id = message.objectId;
@@ -1881,7 +2083,7 @@ export const EventDeleteObject = {
 
 function createBaseEventRejectSealObject(): EventRejectSealObject {
   return {
-    operatorAddress: "",
+    operator: "",
     bucketName: "",
     objectName: "",
     objectId: ""
@@ -1890,8 +2092,8 @@ function createBaseEventRejectSealObject(): EventRejectSealObject {
 
 export const EventRejectSealObject = {
   encode(message: EventRejectSealObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.operatorAddress !== "") {
-      writer.uint32(10).string(message.operatorAddress);
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
     }
 
     if (message.bucketName !== "") {
@@ -1919,7 +2121,7 @@ export const EventRejectSealObject = {
 
       switch (tag >>> 3) {
         case 1:
-          message.operatorAddress = reader.string();
+          message.operator = reader.string();
           break;
 
         case 2:
@@ -1945,7 +2147,7 @@ export const EventRejectSealObject = {
 
   fromJSON(object: any): EventRejectSealObject {
     return {
-      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
+      operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       objectId: isSet(object.objectId) ? String(object.objectId) : ""
@@ -1954,7 +2156,7 @@ export const EventRejectSealObject = {
 
   toJSON(message: EventRejectSealObject): unknown {
     const obj: any = {};
-    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
+    message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.objectId !== undefined && (obj.objectId = message.objectId);
@@ -1963,7 +2165,7 @@ export const EventRejectSealObject = {
 
   fromPartial<I extends Exact<DeepPartial<EventRejectSealObject>, I>>(object: I): EventRejectSealObject {
     const message = createBaseEventRejectSealObject();
-    message.operatorAddress = object.operatorAddress ?? "";
+    message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     message.objectId = object.objectId ?? "";
@@ -1972,7 +2174,7 @@ export const EventRejectSealObject = {
 
   fromSDK(object: EventRejectSealObjectSDKType): EventRejectSealObject {
     return {
-      operatorAddress: object?.operator_address,
+      operator: object?.operator,
       bucketName: object?.bucket_name,
       objectName: object?.object_name,
       objectId: object?.object_id
@@ -1981,7 +2183,7 @@ export const EventRejectSealObject = {
 
   toSDK(message: EventRejectSealObject): EventRejectSealObjectSDKType {
     const obj: any = {};
-    obj.operator_address = message.operatorAddress;
+    obj.operator = message.operator;
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
     obj.object_id = message.objectId;
@@ -1990,9 +2192,245 @@ export const EventRejectSealObject = {
 
 };
 
+function createBaseEventDiscontinueObject(): EventDiscontinueObject {
+  return {
+    bucketName: "",
+    objectId: "",
+    reason: "",
+    deleteAt: Long.ZERO
+  };
+}
+
+export const EventDiscontinueObject = {
+  encode(message: EventDiscontinueObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.bucketName !== "") {
+      writer.uint32(10).string(message.bucketName);
+    }
+
+    if (message.objectId !== "") {
+      writer.uint32(18).string(message.objectId);
+    }
+
+    if (message.reason !== "") {
+      writer.uint32(26).string(message.reason);
+    }
+
+    if (!message.deleteAt.isZero()) {
+      writer.uint32(32).int64(message.deleteAt);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventDiscontinueObject {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventDiscontinueObject();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketName = reader.string();
+          break;
+
+        case 2:
+          message.objectId = reader.string();
+          break;
+
+        case 3:
+          message.reason = reader.string();
+          break;
+
+        case 4:
+          message.deleteAt = (reader.int64() as Long);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventDiscontinueObject {
+    return {
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      objectId: isSet(object.objectId) ? String(object.objectId) : "",
+      reason: isSet(object.reason) ? String(object.reason) : "",
+      deleteAt: isSet(object.deleteAt) ? Long.fromValue(object.deleteAt) : Long.ZERO
+    };
+  },
+
+  toJSON(message: EventDiscontinueObject): unknown {
+    const obj: any = {};
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.objectId !== undefined && (obj.objectId = message.objectId);
+    message.reason !== undefined && (obj.reason = message.reason);
+    message.deleteAt !== undefined && (obj.deleteAt = (message.deleteAt || Long.ZERO).toString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventDiscontinueObject>, I>>(object: I): EventDiscontinueObject {
+    const message = createBaseEventDiscontinueObject();
+    message.bucketName = object.bucketName ?? "";
+    message.objectId = object.objectId ?? "";
+    message.reason = object.reason ?? "";
+    message.deleteAt = object.deleteAt !== undefined && object.deleteAt !== null ? Long.fromValue(object.deleteAt) : Long.ZERO;
+    return message;
+  },
+
+  fromSDK(object: EventDiscontinueObjectSDKType): EventDiscontinueObject {
+    return {
+      bucketName: object?.bucket_name,
+      objectId: object?.object_id,
+      reason: object?.reason,
+      deleteAt: object?.delete_at
+    };
+  },
+
+  toSDK(message: EventDiscontinueObject): EventDiscontinueObjectSDKType {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    obj.object_id = message.objectId;
+    obj.reason = message.reason;
+    obj.delete_at = message.deleteAt;
+    return obj;
+  }
+
+};
+
+function createBaseEventUpdateObjectInfo(): EventUpdateObjectInfo {
+  return {
+    operator: "",
+    bucketName: "",
+    objectName: "",
+    objectId: "",
+    visibility: 0
+  };
+}
+
+export const EventUpdateObjectInfo = {
+  encode(message: EventUpdateObjectInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    if (message.objectName !== "") {
+      writer.uint32(26).string(message.objectName);
+    }
+
+    if (message.objectId !== "") {
+      writer.uint32(34).string(message.objectId);
+    }
+
+    if (message.visibility !== 0) {
+      writer.uint32(40).int32(message.visibility);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateObjectInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventUpdateObjectInfo();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        case 3:
+          message.objectName = reader.string();
+          break;
+
+        case 4:
+          message.objectId = reader.string();
+          break;
+
+        case 5:
+          message.visibility = (reader.int32() as any);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventUpdateObjectInfo {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      objectName: isSet(object.objectName) ? String(object.objectName) : "",
+      objectId: isSet(object.objectId) ? String(object.objectId) : "",
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0
+    };
+  },
+
+  toJSON(message: EventUpdateObjectInfo): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.objectName !== undefined && (obj.objectName = message.objectName);
+    message.objectId !== undefined && (obj.objectId = message.objectId);
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventUpdateObjectInfo>, I>>(object: I): EventUpdateObjectInfo {
+    const message = createBaseEventUpdateObjectInfo();
+    message.operator = object.operator ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.objectName = object.objectName ?? "";
+    message.objectId = object.objectId ?? "";
+    message.visibility = object.visibility ?? 0;
+    return message;
+  },
+
+  fromSDK(object: EventUpdateObjectInfoSDKType): EventUpdateObjectInfo {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name,
+      objectId: object?.object_id,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0
+    };
+  },
+
+  toSDK(message: EventUpdateObjectInfo): EventUpdateObjectInfoSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.object_id = message.objectId;
+    message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
+    return obj;
+  }
+
+};
+
 function createBaseEventCreateGroup(): EventCreateGroup {
   return {
-    ownerAddress: "",
+    owner: "",
     groupName: "",
     groupId: "",
     sourceType: 0,
@@ -2002,8 +2440,8 @@ function createBaseEventCreateGroup(): EventCreateGroup {
 
 export const EventCreateGroup = {
   encode(message: EventCreateGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.ownerAddress !== "") {
-      writer.uint32(10).string(message.ownerAddress);
+    if (message.owner !== "") {
+      writer.uint32(10).string(message.owner);
     }
 
     if (message.groupName !== "") {
@@ -2035,7 +2473,7 @@ export const EventCreateGroup = {
 
       switch (tag >>> 3) {
         case 1:
-          message.ownerAddress = reader.string();
+          message.owner = reader.string();
           break;
 
         case 2:
@@ -2065,7 +2503,7 @@ export const EventCreateGroup = {
 
   fromJSON(object: any): EventCreateGroup {
     return {
-      ownerAddress: isSet(object.ownerAddress) ? String(object.ownerAddress) : "",
+      owner: isSet(object.owner) ? String(object.owner) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
       groupId: isSet(object.groupId) ? String(object.groupId) : "",
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
@@ -2075,7 +2513,7 @@ export const EventCreateGroup = {
 
   toJSON(message: EventCreateGroup): unknown {
     const obj: any = {};
-    message.ownerAddress !== undefined && (obj.ownerAddress = message.ownerAddress);
+    message.owner !== undefined && (obj.owner = message.owner);
     message.groupName !== undefined && (obj.groupName = message.groupName);
     message.groupId !== undefined && (obj.groupId = message.groupId);
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
@@ -2091,7 +2529,7 @@ export const EventCreateGroup = {
 
   fromPartial<I extends Exact<DeepPartial<EventCreateGroup>, I>>(object: I): EventCreateGroup {
     const message = createBaseEventCreateGroup();
-    message.ownerAddress = object.ownerAddress ?? "";
+    message.owner = object.owner ?? "";
     message.groupName = object.groupName ?? "";
     message.groupId = object.groupId ?? "";
     message.sourceType = object.sourceType ?? 0;
@@ -2101,7 +2539,7 @@ export const EventCreateGroup = {
 
   fromSDK(object: EventCreateGroupSDKType): EventCreateGroup {
     return {
-      ownerAddress: object?.owner_address,
+      owner: object?.owner,
       groupName: object?.group_name,
       groupId: object?.group_id,
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
@@ -2111,7 +2549,7 @@ export const EventCreateGroup = {
 
   toSDK(message: EventCreateGroup): EventCreateGroupSDKType {
     const obj: any = {};
-    obj.owner_address = message.ownerAddress;
+    obj.owner = message.owner;
     obj.group_name = message.groupName;
     obj.group_id = message.groupId;
     message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
@@ -2129,7 +2567,7 @@ export const EventCreateGroup = {
 
 function createBaseEventDeleteGroup(): EventDeleteGroup {
   return {
-    ownerAddress: "",
+    owner: "",
     groupName: "",
     groupId: ""
   };
@@ -2137,8 +2575,8 @@ function createBaseEventDeleteGroup(): EventDeleteGroup {
 
 export const EventDeleteGroup = {
   encode(message: EventDeleteGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.ownerAddress !== "") {
-      writer.uint32(18).string(message.ownerAddress);
+    if (message.owner !== "") {
+      writer.uint32(18).string(message.owner);
     }
 
     if (message.groupName !== "") {
@@ -2162,7 +2600,7 @@ export const EventDeleteGroup = {
 
       switch (tag >>> 3) {
         case 2:
-          message.ownerAddress = reader.string();
+          message.owner = reader.string();
           break;
 
         case 3:
@@ -2184,7 +2622,7 @@ export const EventDeleteGroup = {
 
   fromJSON(object: any): EventDeleteGroup {
     return {
-      ownerAddress: isSet(object.ownerAddress) ? String(object.ownerAddress) : "",
+      owner: isSet(object.owner) ? String(object.owner) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
       groupId: isSet(object.groupId) ? String(object.groupId) : ""
     };
@@ -2192,7 +2630,7 @@ export const EventDeleteGroup = {
 
   toJSON(message: EventDeleteGroup): unknown {
     const obj: any = {};
-    message.ownerAddress !== undefined && (obj.ownerAddress = message.ownerAddress);
+    message.owner !== undefined && (obj.owner = message.owner);
     message.groupName !== undefined && (obj.groupName = message.groupName);
     message.groupId !== undefined && (obj.groupId = message.groupId);
     return obj;
@@ -2200,7 +2638,7 @@ export const EventDeleteGroup = {
 
   fromPartial<I extends Exact<DeepPartial<EventDeleteGroup>, I>>(object: I): EventDeleteGroup {
     const message = createBaseEventDeleteGroup();
-    message.ownerAddress = object.ownerAddress ?? "";
+    message.owner = object.owner ?? "";
     message.groupName = object.groupName ?? "";
     message.groupId = object.groupId ?? "";
     return message;
@@ -2208,7 +2646,7 @@ export const EventDeleteGroup = {
 
   fromSDK(object: EventDeleteGroupSDKType): EventDeleteGroup {
     return {
-      ownerAddress: object?.owner_address,
+      owner: object?.owner,
       groupName: object?.group_name,
       groupId: object?.group_id
     };
@@ -2216,7 +2654,7 @@ export const EventDeleteGroup = {
 
   toSDK(message: EventDeleteGroup): EventDeleteGroupSDKType {
     const obj: any = {};
-    obj.owner_address = message.ownerAddress;
+    obj.owner = message.owner;
     obj.group_name = message.groupName;
     obj.group_id = message.groupId;
     return obj;
@@ -2227,7 +2665,7 @@ export const EventDeleteGroup = {
 function createBaseEventLeaveGroup(): EventLeaveGroup {
   return {
     memberAddress: "",
-    ownerAddress: "",
+    owner: "",
     groupName: "",
     groupId: ""
   };
@@ -2239,8 +2677,8 @@ export const EventLeaveGroup = {
       writer.uint32(10).string(message.memberAddress);
     }
 
-    if (message.ownerAddress !== "") {
-      writer.uint32(18).string(message.ownerAddress);
+    if (message.owner !== "") {
+      writer.uint32(18).string(message.owner);
     }
 
     if (message.groupName !== "") {
@@ -2268,7 +2706,7 @@ export const EventLeaveGroup = {
           break;
 
         case 2:
-          message.ownerAddress = reader.string();
+          message.owner = reader.string();
           break;
 
         case 3:
@@ -2291,7 +2729,7 @@ export const EventLeaveGroup = {
   fromJSON(object: any): EventLeaveGroup {
     return {
       memberAddress: isSet(object.memberAddress) ? String(object.memberAddress) : "",
-      ownerAddress: isSet(object.ownerAddress) ? String(object.ownerAddress) : "",
+      owner: isSet(object.owner) ? String(object.owner) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
       groupId: isSet(object.groupId) ? String(object.groupId) : ""
     };
@@ -2300,7 +2738,7 @@ export const EventLeaveGroup = {
   toJSON(message: EventLeaveGroup): unknown {
     const obj: any = {};
     message.memberAddress !== undefined && (obj.memberAddress = message.memberAddress);
-    message.ownerAddress !== undefined && (obj.ownerAddress = message.ownerAddress);
+    message.owner !== undefined && (obj.owner = message.owner);
     message.groupName !== undefined && (obj.groupName = message.groupName);
     message.groupId !== undefined && (obj.groupId = message.groupId);
     return obj;
@@ -2309,7 +2747,7 @@ export const EventLeaveGroup = {
   fromPartial<I extends Exact<DeepPartial<EventLeaveGroup>, I>>(object: I): EventLeaveGroup {
     const message = createBaseEventLeaveGroup();
     message.memberAddress = object.memberAddress ?? "";
-    message.ownerAddress = object.ownerAddress ?? "";
+    message.owner = object.owner ?? "";
     message.groupName = object.groupName ?? "";
     message.groupId = object.groupId ?? "";
     return message;
@@ -2318,7 +2756,7 @@ export const EventLeaveGroup = {
   fromSDK(object: EventLeaveGroupSDKType): EventLeaveGroup {
     return {
       memberAddress: object?.member_address,
-      ownerAddress: object?.owner_address,
+      owner: object?.owner,
       groupName: object?.group_name,
       groupId: object?.group_id
     };
@@ -2327,7 +2765,7 @@ export const EventLeaveGroup = {
   toSDK(message: EventLeaveGroup): EventLeaveGroupSDKType {
     const obj: any = {};
     obj.member_address = message.memberAddress;
-    obj.owner_address = message.ownerAddress;
+    obj.owner = message.owner;
     obj.group_name = message.groupName;
     obj.group_id = message.groupId;
     return obj;
@@ -2337,8 +2775,8 @@ export const EventLeaveGroup = {
 
 function createBaseEventUpdateGroupMember(): EventUpdateGroupMember {
   return {
-    operatorAddress: "",
-    ownerAddress: "",
+    operator: "",
+    owner: "",
     groupName: "",
     groupId: "",
     membersToAdd: [],
@@ -2348,12 +2786,12 @@ function createBaseEventUpdateGroupMember(): EventUpdateGroupMember {
 
 export const EventUpdateGroupMember = {
   encode(message: EventUpdateGroupMember, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.operatorAddress !== "") {
-      writer.uint32(10).string(message.operatorAddress);
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
     }
 
-    if (message.ownerAddress !== "") {
-      writer.uint32(18).string(message.ownerAddress);
+    if (message.owner !== "") {
+      writer.uint32(18).string(message.owner);
     }
 
     if (message.groupName !== "") {
@@ -2385,11 +2823,11 @@ export const EventUpdateGroupMember = {
 
       switch (tag >>> 3) {
         case 1:
-          message.operatorAddress = reader.string();
+          message.operator = reader.string();
           break;
 
         case 2:
-          message.ownerAddress = reader.string();
+          message.owner = reader.string();
           break;
 
         case 3:
@@ -2419,8 +2857,8 @@ export const EventUpdateGroupMember = {
 
   fromJSON(object: any): EventUpdateGroupMember {
     return {
-      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
-      ownerAddress: isSet(object.ownerAddress) ? String(object.ownerAddress) : "",
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      owner: isSet(object.owner) ? String(object.owner) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
       groupId: isSet(object.groupId) ? String(object.groupId) : "",
       membersToAdd: Array.isArray(object?.membersToAdd) ? object.membersToAdd.map((e: any) => String(e)) : [],
@@ -2430,8 +2868,8 @@ export const EventUpdateGroupMember = {
 
   toJSON(message: EventUpdateGroupMember): unknown {
     const obj: any = {};
-    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
-    message.ownerAddress !== undefined && (obj.ownerAddress = message.ownerAddress);
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.owner !== undefined && (obj.owner = message.owner);
     message.groupName !== undefined && (obj.groupName = message.groupName);
     message.groupId !== undefined && (obj.groupId = message.groupId);
 
@@ -2452,8 +2890,8 @@ export const EventUpdateGroupMember = {
 
   fromPartial<I extends Exact<DeepPartial<EventUpdateGroupMember>, I>>(object: I): EventUpdateGroupMember {
     const message = createBaseEventUpdateGroupMember();
-    message.operatorAddress = object.operatorAddress ?? "";
-    message.ownerAddress = object.ownerAddress ?? "";
+    message.operator = object.operator ?? "";
+    message.owner = object.owner ?? "";
     message.groupName = object.groupName ?? "";
     message.groupId = object.groupId ?? "";
     message.membersToAdd = object.membersToAdd?.map(e => e) || [];
@@ -2463,8 +2901,8 @@ export const EventUpdateGroupMember = {
 
   fromSDK(object: EventUpdateGroupMemberSDKType): EventUpdateGroupMember {
     return {
-      operatorAddress: object?.operator_address,
-      ownerAddress: object?.owner_address,
+      operator: object?.operator,
+      owner: object?.owner,
       groupName: object?.group_name,
       groupId: object?.group_id,
       membersToAdd: Array.isArray(object?.members_to_add) ? object.members_to_add.map((e: any) => e) : [],
@@ -2474,8 +2912,8 @@ export const EventUpdateGroupMember = {
 
   toSDK(message: EventUpdateGroupMember): EventUpdateGroupMemberSDKType {
     const obj: any = {};
-    obj.operator_address = message.operatorAddress;
-    obj.owner_address = message.ownerAddress;
+    obj.operator = message.operator;
+    obj.owner = message.owner;
     obj.group_name = message.groupName;
     obj.group_id = message.groupId;
 
@@ -2498,7 +2936,7 @@ export const EventUpdateGroupMember = {
 
 function createBaseEventMirrorBucket(): EventMirrorBucket {
   return {
-    operatorAddress: "",
+    operator: "",
     bucketName: "",
     bucketId: ""
   };
@@ -2506,8 +2944,8 @@ function createBaseEventMirrorBucket(): EventMirrorBucket {
 
 export const EventMirrorBucket = {
   encode(message: EventMirrorBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.operatorAddress !== "") {
-      writer.uint32(10).string(message.operatorAddress);
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
     }
 
     if (message.bucketName !== "") {
@@ -2531,7 +2969,7 @@ export const EventMirrorBucket = {
 
       switch (tag >>> 3) {
         case 1:
-          message.operatorAddress = reader.string();
+          message.operator = reader.string();
           break;
 
         case 2:
@@ -2553,7 +2991,7 @@ export const EventMirrorBucket = {
 
   fromJSON(object: any): EventMirrorBucket {
     return {
-      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
+      operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : ""
     };
@@ -2561,7 +2999,7 @@ export const EventMirrorBucket = {
 
   toJSON(message: EventMirrorBucket): unknown {
     const obj: any = {};
-    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
+    message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     return obj;
@@ -2569,7 +3007,7 @@ export const EventMirrorBucket = {
 
   fromPartial<I extends Exact<DeepPartial<EventMirrorBucket>, I>>(object: I): EventMirrorBucket {
     const message = createBaseEventMirrorBucket();
-    message.operatorAddress = object.operatorAddress ?? "";
+    message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.bucketId = object.bucketId ?? "";
     return message;
@@ -2577,7 +3015,7 @@ export const EventMirrorBucket = {
 
   fromSDK(object: EventMirrorBucketSDKType): EventMirrorBucket {
     return {
-      operatorAddress: object?.operator_address,
+      operator: object?.operator,
       bucketName: object?.bucket_name,
       bucketId: object?.bucket_id
     };
@@ -2585,7 +3023,7 @@ export const EventMirrorBucket = {
 
   toSDK(message: EventMirrorBucket): EventMirrorBucketSDKType {
     const obj: any = {};
-    obj.operator_address = message.operatorAddress;
+    obj.operator = message.operator;
     obj.bucket_name = message.bucketName;
     obj.bucket_id = message.bucketId;
     return obj;
@@ -2692,7 +3130,7 @@ export const EventMirrorBucketResult = {
 
 function createBaseEventMirrorObject(): EventMirrorObject {
   return {
-    operatorAddress: "",
+    operator: "",
     bucketName: "",
     objectName: "",
     objectId: ""
@@ -2701,8 +3139,8 @@ function createBaseEventMirrorObject(): EventMirrorObject {
 
 export const EventMirrorObject = {
   encode(message: EventMirrorObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.operatorAddress !== "") {
-      writer.uint32(10).string(message.operatorAddress);
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
     }
 
     if (message.bucketName !== "") {
@@ -2730,7 +3168,7 @@ export const EventMirrorObject = {
 
       switch (tag >>> 3) {
         case 1:
-          message.operatorAddress = reader.string();
+          message.operator = reader.string();
           break;
 
         case 2:
@@ -2756,7 +3194,7 @@ export const EventMirrorObject = {
 
   fromJSON(object: any): EventMirrorObject {
     return {
-      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
+      operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       objectId: isSet(object.objectId) ? String(object.objectId) : ""
@@ -2765,7 +3203,7 @@ export const EventMirrorObject = {
 
   toJSON(message: EventMirrorObject): unknown {
     const obj: any = {};
-    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
+    message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.objectId !== undefined && (obj.objectId = message.objectId);
@@ -2774,7 +3212,7 @@ export const EventMirrorObject = {
 
   fromPartial<I extends Exact<DeepPartial<EventMirrorObject>, I>>(object: I): EventMirrorObject {
     const message = createBaseEventMirrorObject();
-    message.operatorAddress = object.operatorAddress ?? "";
+    message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     message.objectId = object.objectId ?? "";
@@ -2783,7 +3221,7 @@ export const EventMirrorObject = {
 
   fromSDK(object: EventMirrorObjectSDKType): EventMirrorObject {
     return {
-      operatorAddress: object?.operator_address,
+      operator: object?.operator,
       bucketName: object?.bucket_name,
       objectName: object?.object_name,
       objectId: object?.object_id
@@ -2792,7 +3230,7 @@ export const EventMirrorObject = {
 
   toSDK(message: EventMirrorObject): EventMirrorObjectSDKType {
     const obj: any = {};
-    obj.operator_address = message.operatorAddress;
+    obj.operator = message.operator;
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
     obj.object_id = message.objectId;
@@ -2914,7 +3352,7 @@ export const EventMirrorObjectResult = {
 
 function createBaseEventMirrorGroup(): EventMirrorGroup {
   return {
-    ownerAddress: "",
+    owner: "",
     groupName: "",
     groupId: ""
   };
@@ -2922,8 +3360,8 @@ function createBaseEventMirrorGroup(): EventMirrorGroup {
 
 export const EventMirrorGroup = {
   encode(message: EventMirrorGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.ownerAddress !== "") {
-      writer.uint32(10).string(message.ownerAddress);
+    if (message.owner !== "") {
+      writer.uint32(10).string(message.owner);
     }
 
     if (message.groupName !== "") {
@@ -2947,7 +3385,7 @@ export const EventMirrorGroup = {
 
       switch (tag >>> 3) {
         case 1:
-          message.ownerAddress = reader.string();
+          message.owner = reader.string();
           break;
 
         case 2:
@@ -2969,7 +3407,7 @@ export const EventMirrorGroup = {
 
   fromJSON(object: any): EventMirrorGroup {
     return {
-      ownerAddress: isSet(object.ownerAddress) ? String(object.ownerAddress) : "",
+      owner: isSet(object.owner) ? String(object.owner) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
       groupId: isSet(object.groupId) ? String(object.groupId) : ""
     };
@@ -2977,7 +3415,7 @@ export const EventMirrorGroup = {
 
   toJSON(message: EventMirrorGroup): unknown {
     const obj: any = {};
-    message.ownerAddress !== undefined && (obj.ownerAddress = message.ownerAddress);
+    message.owner !== undefined && (obj.owner = message.owner);
     message.groupName !== undefined && (obj.groupName = message.groupName);
     message.groupId !== undefined && (obj.groupId = message.groupId);
     return obj;
@@ -2985,7 +3423,7 @@ export const EventMirrorGroup = {
 
   fromPartial<I extends Exact<DeepPartial<EventMirrorGroup>, I>>(object: I): EventMirrorGroup {
     const message = createBaseEventMirrorGroup();
-    message.ownerAddress = object.ownerAddress ?? "";
+    message.owner = object.owner ?? "";
     message.groupName = object.groupName ?? "";
     message.groupId = object.groupId ?? "";
     return message;
@@ -2993,7 +3431,7 @@ export const EventMirrorGroup = {
 
   fromSDK(object: EventMirrorGroupSDKType): EventMirrorGroup {
     return {
-      ownerAddress: object?.owner_address,
+      owner: object?.owner,
       groupName: object?.group_name,
       groupId: object?.group_id
     };
@@ -3001,7 +3439,7 @@ export const EventMirrorGroup = {
 
   toSDK(message: EventMirrorGroup): EventMirrorGroupSDKType {
     const obj: any = {};
-    obj.owner_address = message.ownerAddress;
+    obj.owner = message.owner;
     obj.group_name = message.groupName;
     obj.group_id = message.groupId;
     return obj;

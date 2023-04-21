@@ -21,9 +21,12 @@ export interface MsgCreateStorageProvider {
   /** seal_address is the account address of the storage provider for sealObject */
 
   sealAddress: string;
-  /** approval_address is the account address of the storage provider for ack CreateBuclet/Object. */
+  /** approval_address is the account address of the storage provider for ack CreateBucket/Object. */
 
   approvalAddress: string;
+  /** gc_address defines one of the storage provider's accounts which is used for gc purpose. */
+
+  gcAddress: string;
   /** endpoint is the service address of the storage provider */
 
   endpoint: string;
@@ -49,6 +52,7 @@ export interface MsgCreateStorageProviderSDKType {
   funding_address: string;
   seal_address: string;
   approval_address: string;
+  gc_address: string;
   endpoint: string;
   deposit?: CoinSDKType;
   read_price: string;
@@ -92,6 +96,15 @@ export interface MsgEditStorageProvider {
   spAddress: string;
   endpoint: string;
   description?: Description;
+  /** seal_address is the account address of the storage provider for sealObject */
+
+  sealAddress: string;
+  /** approval_address is the account address of the storage provider for ack CreateBucket/Object */
+
+  approvalAddress: string;
+  /** gc_address defines one of the storage provider's accounts which is used for gc purpose */
+
+  gcAddress: string;
 }
 /** MsgEditStorageProvider defines a SDK message for editing an existing sp. */
 
@@ -99,6 +112,9 @@ export interface MsgEditStorageProviderSDKType {
   sp_address: string;
   endpoint: string;
   description?: DescriptionSDKType;
+  seal_address: string;
+  approval_address: string;
+  gc_address: string;
 }
 /** MsgEditStorageProviderResponse defines the Msg/EditStorageProvider response type. */
 
@@ -136,6 +152,7 @@ function createBaseMsgCreateStorageProvider(): MsgCreateStorageProvider {
     fundingAddress: "",
     sealAddress: "",
     approvalAddress: "",
+    gcAddress: "",
     endpoint: "",
     deposit: undefined,
     readPrice: "",
@@ -170,24 +187,28 @@ export const MsgCreateStorageProvider = {
       writer.uint32(50).string(message.approvalAddress);
     }
 
+    if (message.gcAddress !== "") {
+      writer.uint32(58).string(message.gcAddress);
+    }
+
     if (message.endpoint !== "") {
-      writer.uint32(58).string(message.endpoint);
+      writer.uint32(66).string(message.endpoint);
     }
 
     if (message.deposit !== undefined) {
-      Coin.encode(message.deposit, writer.uint32(66).fork()).ldelim();
+      Coin.encode(message.deposit, writer.uint32(74).fork()).ldelim();
     }
 
     if (message.readPrice !== "") {
-      writer.uint32(74).string(message.readPrice);
+      writer.uint32(82).string(message.readPrice);
     }
 
     if (!message.freeReadQuota.isZero()) {
-      writer.uint32(80).uint64(message.freeReadQuota);
+      writer.uint32(88).uint64(message.freeReadQuota);
     }
 
     if (message.storePrice !== "") {
-      writer.uint32(90).string(message.storePrice);
+      writer.uint32(98).string(message.storePrice);
     }
 
     return writer;
@@ -227,22 +248,26 @@ export const MsgCreateStorageProvider = {
           break;
 
         case 7:
-          message.endpoint = reader.string();
+          message.gcAddress = reader.string();
           break;
 
         case 8:
-          message.deposit = Coin.decode(reader, reader.uint32());
+          message.endpoint = reader.string();
           break;
 
         case 9:
-          message.readPrice = reader.string();
+          message.deposit = Coin.decode(reader, reader.uint32());
           break;
 
         case 10:
-          message.freeReadQuota = (reader.uint64() as Long);
+          message.readPrice = reader.string();
           break;
 
         case 11:
+          message.freeReadQuota = (reader.uint64() as Long);
+          break;
+
+        case 12:
           message.storePrice = reader.string();
           break;
 
@@ -263,6 +288,7 @@ export const MsgCreateStorageProvider = {
       fundingAddress: isSet(object.fundingAddress) ? String(object.fundingAddress) : "",
       sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
       approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
+      gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : "",
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
       deposit: isSet(object.deposit) ? Coin.fromJSON(object.deposit) : undefined,
       readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
@@ -279,6 +305,7 @@ export const MsgCreateStorageProvider = {
     message.fundingAddress !== undefined && (obj.fundingAddress = message.fundingAddress);
     message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
     message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
+    message.gcAddress !== undefined && (obj.gcAddress = message.gcAddress);
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
     message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toJSON(message.deposit) : undefined);
     message.readPrice !== undefined && (obj.readPrice = message.readPrice);
@@ -295,6 +322,7 @@ export const MsgCreateStorageProvider = {
     message.fundingAddress = object.fundingAddress ?? "";
     message.sealAddress = object.sealAddress ?? "";
     message.approvalAddress = object.approvalAddress ?? "";
+    message.gcAddress = object.gcAddress ?? "";
     message.endpoint = object.endpoint ?? "";
     message.deposit = object.deposit !== undefined && object.deposit !== null ? Coin.fromPartial(object.deposit) : undefined;
     message.readPrice = object.readPrice ?? "";
@@ -311,6 +339,7 @@ export const MsgCreateStorageProvider = {
       fundingAddress: object?.funding_address,
       sealAddress: object?.seal_address,
       approvalAddress: object?.approval_address,
+      gcAddress: object?.gc_address,
       endpoint: object?.endpoint,
       deposit: object.deposit ? Coin.fromSDK(object.deposit) : undefined,
       readPrice: object?.read_price,
@@ -327,6 +356,7 @@ export const MsgCreateStorageProvider = {
     obj.funding_address = message.fundingAddress;
     obj.seal_address = message.sealAddress;
     obj.approval_address = message.approvalAddress;
+    obj.gc_address = message.gcAddress;
     obj.endpoint = message.endpoint;
     message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toSDK(message.deposit) : undefined);
     obj.read_price = message.readPrice;
@@ -542,7 +572,10 @@ function createBaseMsgEditStorageProvider(): MsgEditStorageProvider {
   return {
     spAddress: "",
     endpoint: "",
-    description: undefined
+    description: undefined,
+    sealAddress: "",
+    approvalAddress: "",
+    gcAddress: ""
   };
 }
 
@@ -558,6 +591,18 @@ export const MsgEditStorageProvider = {
 
     if (message.description !== undefined) {
       Description.encode(message.description, writer.uint32(26).fork()).ldelim();
+    }
+
+    if (message.sealAddress !== "") {
+      writer.uint32(34).string(message.sealAddress);
+    }
+
+    if (message.approvalAddress !== "") {
+      writer.uint32(42).string(message.approvalAddress);
+    }
+
+    if (message.gcAddress !== "") {
+      writer.uint32(50).string(message.gcAddress);
     }
 
     return writer;
@@ -584,6 +629,18 @@ export const MsgEditStorageProvider = {
           message.description = Description.decode(reader, reader.uint32());
           break;
 
+        case 4:
+          message.sealAddress = reader.string();
+          break;
+
+        case 5:
+          message.approvalAddress = reader.string();
+          break;
+
+        case 6:
+          message.gcAddress = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -597,7 +654,10 @@ export const MsgEditStorageProvider = {
     return {
       spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
-      description: isSet(object.description) ? Description.fromJSON(object.description) : undefined
+      description: isSet(object.description) ? Description.fromJSON(object.description) : undefined,
+      sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
+      approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
+      gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : ""
     };
   },
 
@@ -606,6 +666,9 @@ export const MsgEditStorageProvider = {
     message.spAddress !== undefined && (obj.spAddress = message.spAddress);
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
     message.description !== undefined && (obj.description = message.description ? Description.toJSON(message.description) : undefined);
+    message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
+    message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
+    message.gcAddress !== undefined && (obj.gcAddress = message.gcAddress);
     return obj;
   },
 
@@ -614,6 +677,9 @@ export const MsgEditStorageProvider = {
     message.spAddress = object.spAddress ?? "";
     message.endpoint = object.endpoint ?? "";
     message.description = object.description !== undefined && object.description !== null ? Description.fromPartial(object.description) : undefined;
+    message.sealAddress = object.sealAddress ?? "";
+    message.approvalAddress = object.approvalAddress ?? "";
+    message.gcAddress = object.gcAddress ?? "";
     return message;
   },
 
@@ -621,7 +687,10 @@ export const MsgEditStorageProvider = {
     return {
       spAddress: object?.sp_address,
       endpoint: object?.endpoint,
-      description: object.description ? Description.fromSDK(object.description) : undefined
+      description: object.description ? Description.fromSDK(object.description) : undefined,
+      sealAddress: object?.seal_address,
+      approvalAddress: object?.approval_address,
+      gcAddress: object?.gc_address
     };
   },
 
@@ -630,6 +699,9 @@ export const MsgEditStorageProvider = {
     obj.sp_address = message.spAddress;
     obj.endpoint = message.endpoint;
     message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
+    obj.seal_address = message.sealAddress;
+    obj.approval_address = message.approvalAddress;
+    obj.gc_address = message.gcAddress;
     return obj;
   }
 

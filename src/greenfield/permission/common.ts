@@ -18,6 +18,7 @@ export enum ActionType {
   ACTION_LIST_OBJECT = 8,
   ACTION_UPDATE_GROUP_MEMBER = 9,
   ACTION_DELETE_GROUP = 10,
+  ACTION_UPDATE_OBJECT_INFO = 11,
   ACTION_TYPE_ALL = 99,
   UNRECOGNIZED = -1,
 }
@@ -68,6 +69,10 @@ export function actionTypeFromJSON(object: any): ActionType {
     case "ACTION_DELETE_GROUP":
       return ActionType.ACTION_DELETE_GROUP;
 
+    case 11:
+    case "ACTION_UPDATE_OBJECT_INFO":
+      return ActionType.ACTION_UPDATE_OBJECT_INFO;
+
     case 99:
     case "ACTION_TYPE_ALL":
       return ActionType.ACTION_TYPE_ALL;
@@ -112,6 +117,9 @@ export function actionTypeToJSON(object: ActionType): string {
 
     case ActionType.ACTION_DELETE_GROUP:
       return "ACTION_DELETE_GROUP";
+
+    case ActionType.ACTION_UPDATE_OBJECT_INFO:
+      return "ACTION_UPDATE_OBJECT_INFO";
 
     case ActionType.ACTION_TYPE_ALL:
       return "ACTION_TYPE_ALL";

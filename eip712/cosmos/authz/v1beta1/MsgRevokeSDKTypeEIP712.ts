@@ -35,11 +35,11 @@ export const MsgRevokeSDKTypeEIP712 = {
   ],
   "TypeGrant": [
     {
-      "type": "import(\"/Users/gaoyibo/bnb/green-cosmos-types/src/google/protobuf/any\").AnySDKType",
+      "type": "import(\"/Users/rqzheng/Documents/work/greenfield-cosmos-types/src/google/protobuf/any\").AnySDKType",
       "name": "authorization"
     },
     {
-      "type": "import(\"/Users/gaoyibo/bnb/green-cosmos-types/src/google/protobuf/timestamp\").TimestampSDKType",
+      "type": "import(\"/Users/rqzheng/Documents/work/greenfield-cosmos-types/src/google/protobuf/timestamp\").TimestampSDKType",
       "name": "expiration"
     }
   ]

@@ -30,6 +30,10 @@ export const MsgDepositSDKTypeEIP712 = {
     },
     {
       "type": "string",
+      "name": "gc_address"
+    },
+    {
+      "type": "string",
       "name": "endpoint"
     },
     {

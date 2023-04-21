@@ -42,6 +42,18 @@ export const MsgDeletePolicySDKTypeEIP712 = {
     },
     {
       "type": "string",
+      "name": "operator"
+    },
+    {
+      "type": "string",
+      "name": "bucket_name"
+    },
+    {
+      "type": "string",
+      "name": "reason"
+    },
+    {
+      "type": "string",
       "name": "creator"
     },
     {
@@ -147,6 +159,22 @@ export const MsgDeletePolicySDKTypeEIP712 = {
     {
       "type": "string",
       "name": "object_name"
+    },
+    {
+      "type": "string",
+      "name": "operator"
+    },
+    {
+      "type": "string",
+      "name": "bucket_name"
+    },
+    {
+      "type": "string[]",
+      "name": "object_ids"
+    },
+    {
+      "type": "string",
+      "name": "reason"
     },
     {
       "type": "string",
@@ -289,7 +317,7 @@ export const MsgDeletePolicySDKTypeEIP712 = {
   ],
   "TypePrincipal": [
     {
-      "type": "import(\"/Users/gaoyibo/bnb/green-cosmos-types/src/greenfield/permission/common\").PrincipalType",
+      "type": "import(\"/Users/rqzheng/Documents/work/greenfield-cosmos-types/src/greenfield/permission/common\").PrincipalType",
       "name": "type"
     },
     {

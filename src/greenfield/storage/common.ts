@@ -51,6 +51,47 @@ export function sourceTypeToJSON(object: SourceType): string {
   }
 }
 /**
+ * BucketStatus represents the status of a bucket. After a user successfully
+ * sends a CreateBucket transaction onto the chain, the status is set to 'Created'.
+ * When a Discontinue Object transaction is received on chain, the status is set to 'Discontinued'.
+ */
+
+export enum BucketStatus {
+  BUCKET_STATUS_CREATED = 0,
+  BUCKET_STATUS_DISCONTINUED = 1,
+  UNRECOGNIZED = -1,
+}
+export const BucketStatusSDKType = BucketStatus;
+export function bucketStatusFromJSON(object: any): BucketStatus {
+  switch (object) {
+    case 0:
+    case "BUCKET_STATUS_CREATED":
+      return BucketStatus.BUCKET_STATUS_CREATED;
+
+    case 1:
+    case "BUCKET_STATUS_DISCONTINUED":
+      return BucketStatus.BUCKET_STATUS_DISCONTINUED;
+
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return BucketStatus.UNRECOGNIZED;
+  }
+}
+export function bucketStatusToJSON(object: BucketStatus): string {
+  switch (object) {
+    case BucketStatus.BUCKET_STATUS_CREATED:
+      return "BUCKET_STATUS_CREATED";
+
+    case BucketStatus.BUCKET_STATUS_DISCONTINUED:
+      return "BUCKET_STATUS_DISCONTINUED";
+
+    case BucketStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+/**
  * RedundancyType represents the redundancy algorithm type for object data,
  * which can be either multi-replica or erasure coding.
  */
@@ -94,12 +135,14 @@ export function redundancyTypeToJSON(object: RedundancyType): string {
  * ObjectStatus represents the creation status of an object. After a user successfully
  * sends a CreateObject transaction onto the chain, the status is set to 'Created'.
  * After the Primary Service Provider successfully sends a Seal Object transaction onto
- * the chain, the status is set to 'Sealed'.
+ * the chain, the status is set to 'Sealed'. When a Discontinue Object transaction is
+ * received on chain, the status is set to 'Discontinued'.
  */
 
 export enum ObjectStatus {
   OBJECT_STATUS_CREATED = 0,
   OBJECT_STATUS_SEALED = 1,
+  OBJECT_STATUS_DISCONTINUED = 2,
   UNRECOGNIZED = -1,
 }
 export const ObjectStatusSDKType = ObjectStatus;
@@ -112,6 +155,10 @@ export function objectStatusFromJSON(object: any): ObjectStatus {
     case 1:
     case "OBJECT_STATUS_SEALED":
       return ObjectStatus.OBJECT_STATUS_SEALED;
+
+    case 2:
+    case "OBJECT_STATUS_DISCONTINUED":
+      return ObjectStatus.OBJECT_STATUS_DISCONTINUED;
 
     case -1:
     case "UNRECOGNIZED":
@@ -126,6 +173,9 @@ export function objectStatusToJSON(object: ObjectStatus): string {
 
     case ObjectStatus.OBJECT_STATUS_SEALED:
       return "OBJECT_STATUS_SEALED";
+
+    case ObjectStatus.OBJECT_STATUS_DISCONTINUED:
+      return "OBJECT_STATUS_DISCONTINUED";
 
     case ObjectStatus.UNRECOGNIZED:
     default:

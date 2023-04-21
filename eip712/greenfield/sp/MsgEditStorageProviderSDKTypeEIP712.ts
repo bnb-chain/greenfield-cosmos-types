@@ -30,6 +30,10 @@ export const MsgEditStorageProviderSDKTypeEIP712 = {
     },
     {
       "type": "string",
+      "name": "gc_address"
+    },
+    {
+      "type": "string",
       "name": "endpoint"
     },
     {
@@ -71,6 +75,18 @@ export const MsgEditStorageProviderSDKTypeEIP712 = {
     {
       "type": "TypeDescription",
       "name": "description"
+    },
+    {
+      "type": "string",
+      "name": "seal_address"
+    },
+    {
+      "type": "string",
+      "name": "approval_address"
+    },
+    {
+      "type": "string",
+      "name": "gc_address"
     }
   ],
   "TypeDescription": [

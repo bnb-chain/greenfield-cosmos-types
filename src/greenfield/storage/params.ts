@@ -40,6 +40,21 @@ export interface Params {
   /** The maximum number of buckets that can be created per account */
 
   maxBucketsPerAccount: number;
+  /** The window to count the discontinued objects or buckets */
+
+  discontinueCountingWindow: Long;
+  /** The max objects can be requested in a window */
+
+  discontinueObjectMax: Long;
+  /** The max buckets can be requested in a window */
+
+  discontinueBucketMax: Long;
+  /** The object will be deleted after the confirm period in seconds */
+
+  discontinueConfirmPeriod: Long;
+  /** The max delete objects in each end block */
+
+  discontinueDeletionMax: Long;
 }
 /** Params defines the parameters for the module. */
 
@@ -56,6 +71,11 @@ export interface ParamsSDKType {
   mirror_group_relayer_fee: string;
   mirror_group_ack_relayer_fee: string;
   max_buckets_per_account: number;
+  discontinue_counting_window: Long;
+  discontinue_object_max: Long;
+  discontinue_bucket_max: Long;
+  discontinue_confirm_period: Long;
+  discontinue_deletion_max: Long;
 }
 
 function createBaseParams(): Params {
@@ -71,7 +91,12 @@ function createBaseParams(): Params {
     mirrorObjectAckRelayerFee: "",
     mirrorGroupRelayerFee: "",
     mirrorGroupAckRelayerFee: "",
-    maxBucketsPerAccount: 0
+    maxBucketsPerAccount: 0,
+    discontinueCountingWindow: Long.UZERO,
+    discontinueObjectMax: Long.UZERO,
+    discontinueBucketMax: Long.UZERO,
+    discontinueConfirmPeriod: Long.ZERO,
+    discontinueDeletionMax: Long.UZERO
   };
 }
 
@@ -123,6 +148,26 @@ export const Params = {
 
     if (message.maxBucketsPerAccount !== 0) {
       writer.uint32(96).uint32(message.maxBucketsPerAccount);
+    }
+
+    if (!message.discontinueCountingWindow.isZero()) {
+      writer.uint32(104).uint64(message.discontinueCountingWindow);
+    }
+
+    if (!message.discontinueObjectMax.isZero()) {
+      writer.uint32(112).uint64(message.discontinueObjectMax);
+    }
+
+    if (!message.discontinueBucketMax.isZero()) {
+      writer.uint32(120).uint64(message.discontinueBucketMax);
+    }
+
+    if (!message.discontinueConfirmPeriod.isZero()) {
+      writer.uint32(128).int64(message.discontinueConfirmPeriod);
+    }
+
+    if (!message.discontinueDeletionMax.isZero()) {
+      writer.uint32(136).uint64(message.discontinueDeletionMax);
     }
 
     return writer;
@@ -185,6 +230,26 @@ export const Params = {
           message.maxBucketsPerAccount = reader.uint32();
           break;
 
+        case 13:
+          message.discontinueCountingWindow = (reader.uint64() as Long);
+          break;
+
+        case 14:
+          message.discontinueObjectMax = (reader.uint64() as Long);
+          break;
+
+        case 15:
+          message.discontinueBucketMax = (reader.uint64() as Long);
+          break;
+
+        case 16:
+          message.discontinueConfirmPeriod = (reader.int64() as Long);
+          break;
+
+        case 17:
+          message.discontinueDeletionMax = (reader.uint64() as Long);
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -207,7 +272,12 @@ export const Params = {
       mirrorObjectAckRelayerFee: isSet(object.mirrorObjectAckRelayerFee) ? String(object.mirrorObjectAckRelayerFee) : "",
       mirrorGroupRelayerFee: isSet(object.mirrorGroupRelayerFee) ? String(object.mirrorGroupRelayerFee) : "",
       mirrorGroupAckRelayerFee: isSet(object.mirrorGroupAckRelayerFee) ? String(object.mirrorGroupAckRelayerFee) : "",
-      maxBucketsPerAccount: isSet(object.maxBucketsPerAccount) ? Number(object.maxBucketsPerAccount) : 0
+      maxBucketsPerAccount: isSet(object.maxBucketsPerAccount) ? Number(object.maxBucketsPerAccount) : 0,
+      discontinueCountingWindow: isSet(object.discontinueCountingWindow) ? Long.fromValue(object.discontinueCountingWindow) : Long.UZERO,
+      discontinueObjectMax: isSet(object.discontinueObjectMax) ? Long.fromValue(object.discontinueObjectMax) : Long.UZERO,
+      discontinueBucketMax: isSet(object.discontinueBucketMax) ? Long.fromValue(object.discontinueBucketMax) : Long.UZERO,
+      discontinueConfirmPeriod: isSet(object.discontinueConfirmPeriod) ? Long.fromValue(object.discontinueConfirmPeriod) : Long.ZERO,
+      discontinueDeletionMax: isSet(object.discontinueDeletionMax) ? Long.fromValue(object.discontinueDeletionMax) : Long.UZERO
     };
   },
 
@@ -225,6 +295,11 @@ export const Params = {
     message.mirrorGroupRelayerFee !== undefined && (obj.mirrorGroupRelayerFee = message.mirrorGroupRelayerFee);
     message.mirrorGroupAckRelayerFee !== undefined && (obj.mirrorGroupAckRelayerFee = message.mirrorGroupAckRelayerFee);
     message.maxBucketsPerAccount !== undefined && (obj.maxBucketsPerAccount = Math.round(message.maxBucketsPerAccount));
+    message.discontinueCountingWindow !== undefined && (obj.discontinueCountingWindow = (message.discontinueCountingWindow || Long.UZERO).toString());
+    message.discontinueObjectMax !== undefined && (obj.discontinueObjectMax = (message.discontinueObjectMax || Long.UZERO).toString());
+    message.discontinueBucketMax !== undefined && (obj.discontinueBucketMax = (message.discontinueBucketMax || Long.UZERO).toString());
+    message.discontinueConfirmPeriod !== undefined && (obj.discontinueConfirmPeriod = (message.discontinueConfirmPeriod || Long.ZERO).toString());
+    message.discontinueDeletionMax !== undefined && (obj.discontinueDeletionMax = (message.discontinueDeletionMax || Long.UZERO).toString());
     return obj;
   },
 
@@ -242,6 +317,11 @@ export const Params = {
     message.mirrorGroupRelayerFee = object.mirrorGroupRelayerFee ?? "";
     message.mirrorGroupAckRelayerFee = object.mirrorGroupAckRelayerFee ?? "";
     message.maxBucketsPerAccount = object.maxBucketsPerAccount ?? 0;
+    message.discontinueCountingWindow = object.discontinueCountingWindow !== undefined && object.discontinueCountingWindow !== null ? Long.fromValue(object.discontinueCountingWindow) : Long.UZERO;
+    message.discontinueObjectMax = object.discontinueObjectMax !== undefined && object.discontinueObjectMax !== null ? Long.fromValue(object.discontinueObjectMax) : Long.UZERO;
+    message.discontinueBucketMax = object.discontinueBucketMax !== undefined && object.discontinueBucketMax !== null ? Long.fromValue(object.discontinueBucketMax) : Long.UZERO;
+    message.discontinueConfirmPeriod = object.discontinueConfirmPeriod !== undefined && object.discontinueConfirmPeriod !== null ? Long.fromValue(object.discontinueConfirmPeriod) : Long.ZERO;
+    message.discontinueDeletionMax = object.discontinueDeletionMax !== undefined && object.discontinueDeletionMax !== null ? Long.fromValue(object.discontinueDeletionMax) : Long.UZERO;
     return message;
   },
 
@@ -258,7 +338,12 @@ export const Params = {
       mirrorObjectAckRelayerFee: object?.mirror_object_ack_relayer_fee,
       mirrorGroupRelayerFee: object?.mirror_group_relayer_fee,
       mirrorGroupAckRelayerFee: object?.mirror_group_ack_relayer_fee,
-      maxBucketsPerAccount: object?.max_buckets_per_account
+      maxBucketsPerAccount: object?.max_buckets_per_account,
+      discontinueCountingWindow: object?.discontinue_counting_window,
+      discontinueObjectMax: object?.discontinue_object_max,
+      discontinueBucketMax: object?.discontinue_bucket_max,
+      discontinueConfirmPeriod: object?.discontinue_confirm_period,
+      discontinueDeletionMax: object?.discontinue_deletion_max
     };
   },
 
@@ -276,6 +361,11 @@ export const Params = {
     obj.mirror_group_relayer_fee = message.mirrorGroupRelayerFee;
     obj.mirror_group_ack_relayer_fee = message.mirrorGroupAckRelayerFee;
     obj.max_buckets_per_account = message.maxBucketsPerAccount;
+    obj.discontinue_counting_window = message.discontinueCountingWindow;
+    obj.discontinue_object_max = message.discontinueObjectMax;
+    obj.discontinue_bucket_max = message.discontinueBucketMax;
+    obj.discontinue_confirm_period = message.discontinueConfirmPeriod;
+    obj.discontinue_deletion_max = message.discontinueDeletionMax;
     return obj;
   }
 
