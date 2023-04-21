@@ -1,4 +1,4 @@
-export const MsgDeleteGroupSDKTypeEIP712 = {
+export const MsgDiscontinueObjectSDKTypeEIP712 = {
   "Msg": [
     {
       "type": "string",
@@ -175,26 +175,6 @@ export const MsgDeleteGroupSDKTypeEIP712 = {
     {
       "type": "string",
       "name": "reason"
-    },
-    {
-      "type": "string",
-      "name": "creator"
-    },
-    {
-      "type": "string",
-      "name": "group_name"
-    },
-    {
-      "type": "string[]",
-      "name": "members"
-    },
-    {
-      "type": "string",
-      "name": "operator"
-    },
-    {
-      "type": "string",
-      "name": "group_name"
     }
   ],
   "TypePrimarySpApproval": [

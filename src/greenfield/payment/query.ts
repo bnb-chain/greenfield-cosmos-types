@@ -110,14 +110,35 @@ export interface QueryDynamicBalanceRequestSDKType {
   account: string;
 }
 export interface QueryDynamicBalanceResponse {
+  /** dynamic balance is static balance + flowDelta */
   dynamicBalance: string;
+  /** the stream record of the given account, if it does not exist, it will be default values */
+
   streamRecord?: StreamRecord;
+  /** the timestamp of the current block */
+
   currentTimestamp: Long;
+  /** bank_balance is the BNB balance of the bank module */
+
+  bankBalance: string;
+  /** available_balance is bank balance + static balance */
+
+  availableBalance: string;
+  /** locked_fee is buffer balance + locked balance */
+
+  lockedFee: string;
+  /** change_rate is the netflow rate of the given account */
+
+  changeRate: string;
 }
 export interface QueryDynamicBalanceResponseSDKType {
   dynamic_balance: string;
   stream_record?: StreamRecordSDKType;
   current_timestamp: Long;
+  bank_balance: string;
+  available_balance: string;
+  locked_fee: string;
+  change_rate: string;
 }
 export interface QueryGetPaymentAccountsByOwnerRequest {
   owner: string;
@@ -130,20 +151,6 @@ export interface QueryGetPaymentAccountsByOwnerResponse {
 }
 export interface QueryGetPaymentAccountsByOwnerResponseSDKType {
   paymentAccounts: string[];
-}
-export interface QueryGetAutoSettleRecordRequest {
-  timestamp: Long;
-  addr: string;
-}
-export interface QueryGetAutoSettleRecordRequestSDKType {
-  timestamp: Long;
-  addr: string;
-}
-export interface QueryGetAutoSettleRecordResponse {
-  autoSettleRecord?: AutoSettleRecord;
-}
-export interface QueryGetAutoSettleRecordResponseSDKType {
-  auto_settle_record?: AutoSettleRecordSDKType;
 }
 export interface QueryAllAutoSettleRecordRequest {
   pagination?: PageRequest;
@@ -1260,7 +1267,11 @@ function createBaseQueryDynamicBalanceResponse(): QueryDynamicBalanceResponse {
   return {
     dynamicBalance: "",
     streamRecord: undefined,
-    currentTimestamp: Long.ZERO
+    currentTimestamp: Long.ZERO,
+    bankBalance: "",
+    availableBalance: "",
+    lockedFee: "",
+    changeRate: ""
   };
 }
 
@@ -1276,6 +1287,22 @@ export const QueryDynamicBalanceResponse = {
 
     if (!message.currentTimestamp.isZero()) {
       writer.uint32(24).int64(message.currentTimestamp);
+    }
+
+    if (message.bankBalance !== "") {
+      writer.uint32(34).string(message.bankBalance);
+    }
+
+    if (message.availableBalance !== "") {
+      writer.uint32(42).string(message.availableBalance);
+    }
+
+    if (message.lockedFee !== "") {
+      writer.uint32(50).string(message.lockedFee);
+    }
+
+    if (message.changeRate !== "") {
+      writer.uint32(58).string(message.changeRate);
     }
 
     return writer;
@@ -1302,6 +1329,22 @@ export const QueryDynamicBalanceResponse = {
           message.currentTimestamp = (reader.int64() as Long);
           break;
 
+        case 4:
+          message.bankBalance = reader.string();
+          break;
+
+        case 5:
+          message.availableBalance = reader.string();
+          break;
+
+        case 6:
+          message.lockedFee = reader.string();
+          break;
+
+        case 7:
+          message.changeRate = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -1315,7 +1358,11 @@ export const QueryDynamicBalanceResponse = {
     return {
       dynamicBalance: isSet(object.dynamicBalance) ? String(object.dynamicBalance) : "",
       streamRecord: isSet(object.streamRecord) ? StreamRecord.fromJSON(object.streamRecord) : undefined,
-      currentTimestamp: isSet(object.currentTimestamp) ? Long.fromValue(object.currentTimestamp) : Long.ZERO
+      currentTimestamp: isSet(object.currentTimestamp) ? Long.fromValue(object.currentTimestamp) : Long.ZERO,
+      bankBalance: isSet(object.bankBalance) ? String(object.bankBalance) : "",
+      availableBalance: isSet(object.availableBalance) ? String(object.availableBalance) : "",
+      lockedFee: isSet(object.lockedFee) ? String(object.lockedFee) : "",
+      changeRate: isSet(object.changeRate) ? String(object.changeRate) : ""
     };
   },
 
@@ -1324,6 +1371,10 @@ export const QueryDynamicBalanceResponse = {
     message.dynamicBalance !== undefined && (obj.dynamicBalance = message.dynamicBalance);
     message.streamRecord !== undefined && (obj.streamRecord = message.streamRecord ? StreamRecord.toJSON(message.streamRecord) : undefined);
     message.currentTimestamp !== undefined && (obj.currentTimestamp = (message.currentTimestamp || Long.ZERO).toString());
+    message.bankBalance !== undefined && (obj.bankBalance = message.bankBalance);
+    message.availableBalance !== undefined && (obj.availableBalance = message.availableBalance);
+    message.lockedFee !== undefined && (obj.lockedFee = message.lockedFee);
+    message.changeRate !== undefined && (obj.changeRate = message.changeRate);
     return obj;
   },
 
@@ -1332,6 +1383,10 @@ export const QueryDynamicBalanceResponse = {
     message.dynamicBalance = object.dynamicBalance ?? "";
     message.streamRecord = object.streamRecord !== undefined && object.streamRecord !== null ? StreamRecord.fromPartial(object.streamRecord) : undefined;
     message.currentTimestamp = object.currentTimestamp !== undefined && object.currentTimestamp !== null ? Long.fromValue(object.currentTimestamp) : Long.ZERO;
+    message.bankBalance = object.bankBalance ?? "";
+    message.availableBalance = object.availableBalance ?? "";
+    message.lockedFee = object.lockedFee ?? "";
+    message.changeRate = object.changeRate ?? "";
     return message;
   },
 
@@ -1339,7 +1394,11 @@ export const QueryDynamicBalanceResponse = {
     return {
       dynamicBalance: object?.dynamic_balance,
       streamRecord: object.stream_record ? StreamRecord.fromSDK(object.stream_record) : undefined,
-      currentTimestamp: object?.current_timestamp
+      currentTimestamp: object?.current_timestamp,
+      bankBalance: object?.bank_balance,
+      availableBalance: object?.available_balance,
+      lockedFee: object?.locked_fee,
+      changeRate: object?.change_rate
     };
   },
 
@@ -1348,6 +1407,10 @@ export const QueryDynamicBalanceResponse = {
     obj.dynamic_balance = message.dynamicBalance;
     message.streamRecord !== undefined && (obj.stream_record = message.streamRecord ? StreamRecord.toSDK(message.streamRecord) : undefined);
     obj.current_timestamp = message.currentTimestamp;
+    obj.bank_balance = message.bankBalance;
+    obj.available_balance = message.availableBalance;
+    obj.locked_fee = message.lockedFee;
+    obj.change_rate = message.changeRate;
     return obj;
   }
 
@@ -1498,158 +1561,6 @@ export const QueryGetPaymentAccountsByOwnerResponse = {
       obj.paymentAccounts = [];
     }
 
-    return obj;
-  }
-
-};
-
-function createBaseQueryGetAutoSettleRecordRequest(): QueryGetAutoSettleRecordRequest {
-  return {
-    timestamp: Long.ZERO,
-    addr: ""
-  };
-}
-
-export const QueryGetAutoSettleRecordRequest = {
-  encode(message: QueryGetAutoSettleRecordRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.timestamp.isZero()) {
-      writer.uint32(8).int64(message.timestamp);
-    }
-
-    if (message.addr !== "") {
-      writer.uint32(18).string(message.addr);
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetAutoSettleRecordRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetAutoSettleRecordRequest();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.timestamp = (reader.int64() as Long);
-          break;
-
-        case 2:
-          message.addr = reader.string();
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryGetAutoSettleRecordRequest {
-    return {
-      timestamp: isSet(object.timestamp) ? Long.fromValue(object.timestamp) : Long.ZERO,
-      addr: isSet(object.addr) ? String(object.addr) : ""
-    };
-  },
-
-  toJSON(message: QueryGetAutoSettleRecordRequest): unknown {
-    const obj: any = {};
-    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || Long.ZERO).toString());
-    message.addr !== undefined && (obj.addr = message.addr);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryGetAutoSettleRecordRequest>, I>>(object: I): QueryGetAutoSettleRecordRequest {
-    const message = createBaseQueryGetAutoSettleRecordRequest();
-    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
-    message.addr = object.addr ?? "";
-    return message;
-  },
-
-  fromSDK(object: QueryGetAutoSettleRecordRequestSDKType): QueryGetAutoSettleRecordRequest {
-    return {
-      timestamp: object?.timestamp,
-      addr: object?.addr
-    };
-  },
-
-  toSDK(message: QueryGetAutoSettleRecordRequest): QueryGetAutoSettleRecordRequestSDKType {
-    const obj: any = {};
-    obj.timestamp = message.timestamp;
-    obj.addr = message.addr;
-    return obj;
-  }
-
-};
-
-function createBaseQueryGetAutoSettleRecordResponse(): QueryGetAutoSettleRecordResponse {
-  return {
-    autoSettleRecord: undefined
-  };
-}
-
-export const QueryGetAutoSettleRecordResponse = {
-  encode(message: QueryGetAutoSettleRecordResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.autoSettleRecord !== undefined) {
-      AutoSettleRecord.encode(message.autoSettleRecord, writer.uint32(10).fork()).ldelim();
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetAutoSettleRecordResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetAutoSettleRecordResponse();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.autoSettleRecord = AutoSettleRecord.decode(reader, reader.uint32());
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryGetAutoSettleRecordResponse {
-    return {
-      autoSettleRecord: isSet(object.autoSettleRecord) ? AutoSettleRecord.fromJSON(object.autoSettleRecord) : undefined
-    };
-  },
-
-  toJSON(message: QueryGetAutoSettleRecordResponse): unknown {
-    const obj: any = {};
-    message.autoSettleRecord !== undefined && (obj.autoSettleRecord = message.autoSettleRecord ? AutoSettleRecord.toJSON(message.autoSettleRecord) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryGetAutoSettleRecordResponse>, I>>(object: I): QueryGetAutoSettleRecordResponse {
-    const message = createBaseQueryGetAutoSettleRecordResponse();
-    message.autoSettleRecord = object.autoSettleRecord !== undefined && object.autoSettleRecord !== null ? AutoSettleRecord.fromPartial(object.autoSettleRecord) : undefined;
-    return message;
-  },
-
-  fromSDK(object: QueryGetAutoSettleRecordResponseSDKType): QueryGetAutoSettleRecordResponse {
-    return {
-      autoSettleRecord: object.auto_settle_record ? AutoSettleRecord.fromSDK(object.auto_settle_record) : undefined
-    };
-  },
-
-  toSDK(message: QueryGetAutoSettleRecordResponse): QueryGetAutoSettleRecordResponseSDKType {
-    const obj: any = {};
-    message.autoSettleRecord !== undefined && (obj.auto_settle_record = message.autoSettleRecord ? AutoSettleRecord.toSDK(message.autoSettleRecord) : undefined);
     return obj;
   }
 
@@ -1849,7 +1760,6 @@ export interface Query {
   GetPaymentAccountsByOwner(request: QueryGetPaymentAccountsByOwnerRequest): Promise<QueryGetPaymentAccountsByOwnerResponse>;
   /** Queries a list of AutoSettleRecord items. */
 
-  AutoSettleRecord(request: QueryGetAutoSettleRecordRequest): Promise<QueryGetAutoSettleRecordResponse>;
   AutoSettleRecordAll(request?: QueryAllAutoSettleRecordRequest): Promise<QueryAllAutoSettleRecordResponse>;
 }
 export class QueryClientImpl implements Query {
@@ -1866,7 +1776,6 @@ export class QueryClientImpl implements Query {
     this.PaymentAccountAll = this.PaymentAccountAll.bind(this);
     this.DynamicBalance = this.DynamicBalance.bind(this);
     this.GetPaymentAccountsByOwner = this.GetPaymentAccountsByOwner.bind(this);
-    this.AutoSettleRecord = this.AutoSettleRecord.bind(this);
     this.AutoSettleRecordAll = this.AutoSettleRecordAll.bind(this);
   }
 
@@ -1928,12 +1837,6 @@ export class QueryClientImpl implements Query {
     const data = QueryGetPaymentAccountsByOwnerRequest.encode(request).finish();
     const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "GetPaymentAccountsByOwner", data);
     return promise.then(data => QueryGetPaymentAccountsByOwnerResponse.decode(new _m0.Reader(data)));
-  }
-
-  AutoSettleRecord(request: QueryGetAutoSettleRecordRequest): Promise<QueryGetAutoSettleRecordResponse> {
-    const data = QueryGetAutoSettleRecordRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "AutoSettleRecord", data);
-    return promise.then(data => QueryGetAutoSettleRecordResponse.decode(new _m0.Reader(data)));
   }
 
   AutoSettleRecordAll(request: QueryAllAutoSettleRecordRequest = {

@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
+import { Status, Description, DescriptionSDKType, statusFromJSON, statusToJSON } from "./types";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.sp";
@@ -17,12 +18,21 @@ export interface EventCreateStorageProvider {
   /** approval_address is the account address for approve create bucket/object signature */
 
   approvalAddress: string;
+  /** gc_address defines one of the storage provider's accounts which is used for gc purpose */
+
+  gcAddress: string;
   /** endpoint is the domain name address used by SP to provide storage services */
 
   endpoint: string;
   /** total_deposit is the token coin that the storage provider deposit to the storage module */
 
   totalDeposit?: Coin;
+  /** status defines the status of the storage provider */
+
+  status: Status;
+  /** description defines the description terms for the storage provider */
+
+  description?: Description;
 }
 /** EventCreateStorageProvider is emitted when there is a storage provider created */
 
@@ -31,23 +41,42 @@ export interface EventCreateStorageProviderSDKType {
   funding_address: string;
   seal_address: string;
   approval_address: string;
+  gc_address: string;
   endpoint: string;
   total_deposit?: CoinSDKType;
+  status: Status;
+  description?: DescriptionSDKType;
 }
 /** EventEditStorageProvider is emitted when SP's metadata is edited. */
 
 export interface EventEditStorageProvider {
-  /** old_endpoint is the service endpoint of the storage provider before edit */
-  oldEndpoint: string;
-  /** new_endpoint is the service endpoint of the storage provider after edit */
+  /** sp_address is the operator address of the storage provider */
+  spAddress: string;
+  /** endpoint is the service endpoint of the storage provider */
 
-  newEndpoint: string;
+  endpoint: string;
+  /** description defines the description terms for the storage provider */
+
+  description?: Description;
+  /** seal_address is the account address for SealObject Tx */
+
+  sealAddress: string;
+  /** approval_address is the account address for approve create bucket/object signature */
+
+  approvalAddress: string;
+  /** gc_address defines one of the storage provider's accounts which is used for gc purpose */
+
+  gcAddress: string;
 }
 /** EventEditStorageProvider is emitted when SP's metadata is edited. */
 
 export interface EventEditStorageProviderSDKType {
-  old_endpoint: string;
-  new_endpoint: string;
+  sp_address: string;
+  endpoint: string;
+  description?: DescriptionSDKType;
+  seal_address: string;
+  approval_address: string;
+  gc_address: string;
 }
 /** EventDeposit is emitted when sp deposit tokens. */
 
@@ -109,8 +138,11 @@ function createBaseEventCreateStorageProvider(): EventCreateStorageProvider {
     fundingAddress: "",
     sealAddress: "",
     approvalAddress: "",
+    gcAddress: "",
     endpoint: "",
-    totalDeposit: undefined
+    totalDeposit: undefined,
+    status: 0,
+    description: undefined
   };
 }
 
@@ -132,12 +164,24 @@ export const EventCreateStorageProvider = {
       writer.uint32(34).string(message.approvalAddress);
     }
 
+    if (message.gcAddress !== "") {
+      writer.uint32(42).string(message.gcAddress);
+    }
+
     if (message.endpoint !== "") {
-      writer.uint32(42).string(message.endpoint);
+      writer.uint32(50).string(message.endpoint);
     }
 
     if (message.totalDeposit !== undefined) {
-      Coin.encode(message.totalDeposit, writer.uint32(50).fork()).ldelim();
+      Coin.encode(message.totalDeposit, writer.uint32(58).fork()).ldelim();
+    }
+
+    if (message.status !== 0) {
+      writer.uint32(64).int32(message.status);
+    }
+
+    if (message.description !== undefined) {
+      Description.encode(message.description, writer.uint32(74).fork()).ldelim();
     }
 
     return writer;
@@ -169,11 +213,23 @@ export const EventCreateStorageProvider = {
           break;
 
         case 5:
-          message.endpoint = reader.string();
+          message.gcAddress = reader.string();
           break;
 
         case 6:
+          message.endpoint = reader.string();
+          break;
+
+        case 7:
           message.totalDeposit = Coin.decode(reader, reader.uint32());
+          break;
+
+        case 8:
+          message.status = (reader.int32() as any);
+          break;
+
+        case 9:
+          message.description = Description.decode(reader, reader.uint32());
           break;
 
         default:
@@ -191,8 +247,11 @@ export const EventCreateStorageProvider = {
       fundingAddress: isSet(object.fundingAddress) ? String(object.fundingAddress) : "",
       sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
       approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
+      gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : "",
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
-      totalDeposit: isSet(object.totalDeposit) ? Coin.fromJSON(object.totalDeposit) : undefined
+      totalDeposit: isSet(object.totalDeposit) ? Coin.fromJSON(object.totalDeposit) : undefined,
+      status: isSet(object.status) ? statusFromJSON(object.status) : 0,
+      description: isSet(object.description) ? Description.fromJSON(object.description) : undefined
     };
   },
 
@@ -202,8 +261,11 @@ export const EventCreateStorageProvider = {
     message.fundingAddress !== undefined && (obj.fundingAddress = message.fundingAddress);
     message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
     message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
+    message.gcAddress !== undefined && (obj.gcAddress = message.gcAddress);
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
     message.totalDeposit !== undefined && (obj.totalDeposit = message.totalDeposit ? Coin.toJSON(message.totalDeposit) : undefined);
+    message.status !== undefined && (obj.status = statusToJSON(message.status));
+    message.description !== undefined && (obj.description = message.description ? Description.toJSON(message.description) : undefined);
     return obj;
   },
 
@@ -213,8 +275,11 @@ export const EventCreateStorageProvider = {
     message.fundingAddress = object.fundingAddress ?? "";
     message.sealAddress = object.sealAddress ?? "";
     message.approvalAddress = object.approvalAddress ?? "";
+    message.gcAddress = object.gcAddress ?? "";
     message.endpoint = object.endpoint ?? "";
     message.totalDeposit = object.totalDeposit !== undefined && object.totalDeposit !== null ? Coin.fromPartial(object.totalDeposit) : undefined;
+    message.status = object.status ?? 0;
+    message.description = object.description !== undefined && object.description !== null ? Description.fromPartial(object.description) : undefined;
     return message;
   },
 
@@ -224,8 +289,11 @@ export const EventCreateStorageProvider = {
       fundingAddress: object?.funding_address,
       sealAddress: object?.seal_address,
       approvalAddress: object?.approval_address,
+      gcAddress: object?.gc_address,
       endpoint: object?.endpoint,
-      totalDeposit: object.total_deposit ? Coin.fromSDK(object.total_deposit) : undefined
+      totalDeposit: object.total_deposit ? Coin.fromSDK(object.total_deposit) : undefined,
+      status: isSet(object.status) ? statusFromJSON(object.status) : 0,
+      description: object.description ? Description.fromSDK(object.description) : undefined
     };
   },
 
@@ -235,8 +303,11 @@ export const EventCreateStorageProvider = {
     obj.funding_address = message.fundingAddress;
     obj.seal_address = message.sealAddress;
     obj.approval_address = message.approvalAddress;
+    obj.gc_address = message.gcAddress;
     obj.endpoint = message.endpoint;
     message.totalDeposit !== undefined && (obj.total_deposit = message.totalDeposit ? Coin.toSDK(message.totalDeposit) : undefined);
+    message.status !== undefined && (obj.status = statusToJSON(message.status));
+    message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
     return obj;
   }
 
@@ -244,19 +315,39 @@ export const EventCreateStorageProvider = {
 
 function createBaseEventEditStorageProvider(): EventEditStorageProvider {
   return {
-    oldEndpoint: "",
-    newEndpoint: ""
+    spAddress: "",
+    endpoint: "",
+    description: undefined,
+    sealAddress: "",
+    approvalAddress: "",
+    gcAddress: ""
   };
 }
 
 export const EventEditStorageProvider = {
   encode(message: EventEditStorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.oldEndpoint !== "") {
-      writer.uint32(10).string(message.oldEndpoint);
+    if (message.spAddress !== "") {
+      writer.uint32(10).string(message.spAddress);
     }
 
-    if (message.newEndpoint !== "") {
-      writer.uint32(18).string(message.newEndpoint);
+    if (message.endpoint !== "") {
+      writer.uint32(18).string(message.endpoint);
+    }
+
+    if (message.description !== undefined) {
+      Description.encode(message.description, writer.uint32(26).fork()).ldelim();
+    }
+
+    if (message.sealAddress !== "") {
+      writer.uint32(34).string(message.sealAddress);
+    }
+
+    if (message.approvalAddress !== "") {
+      writer.uint32(42).string(message.approvalAddress);
+    }
+
+    if (message.gcAddress !== "") {
+      writer.uint32(50).string(message.gcAddress);
     }
 
     return writer;
@@ -272,11 +363,27 @@ export const EventEditStorageProvider = {
 
       switch (tag >>> 3) {
         case 1:
-          message.oldEndpoint = reader.string();
+          message.spAddress = reader.string();
           break;
 
         case 2:
-          message.newEndpoint = reader.string();
+          message.endpoint = reader.string();
+          break;
+
+        case 3:
+          message.description = Description.decode(reader, reader.uint32());
+          break;
+
+        case 4:
+          message.sealAddress = reader.string();
+          break;
+
+        case 5:
+          message.approvalAddress = reader.string();
+          break;
+
+        case 6:
+          message.gcAddress = reader.string();
           break;
 
         default:
@@ -290,36 +397,56 @@ export const EventEditStorageProvider = {
 
   fromJSON(object: any): EventEditStorageProvider {
     return {
-      oldEndpoint: isSet(object.oldEndpoint) ? String(object.oldEndpoint) : "",
-      newEndpoint: isSet(object.newEndpoint) ? String(object.newEndpoint) : ""
+      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
+      description: isSet(object.description) ? Description.fromJSON(object.description) : undefined,
+      sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
+      approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
+      gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : ""
     };
   },
 
   toJSON(message: EventEditStorageProvider): unknown {
     const obj: any = {};
-    message.oldEndpoint !== undefined && (obj.oldEndpoint = message.oldEndpoint);
-    message.newEndpoint !== undefined && (obj.newEndpoint = message.newEndpoint);
+    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.endpoint !== undefined && (obj.endpoint = message.endpoint);
+    message.description !== undefined && (obj.description = message.description ? Description.toJSON(message.description) : undefined);
+    message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
+    message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
+    message.gcAddress !== undefined && (obj.gcAddress = message.gcAddress);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<EventEditStorageProvider>, I>>(object: I): EventEditStorageProvider {
     const message = createBaseEventEditStorageProvider();
-    message.oldEndpoint = object.oldEndpoint ?? "";
-    message.newEndpoint = object.newEndpoint ?? "";
+    message.spAddress = object.spAddress ?? "";
+    message.endpoint = object.endpoint ?? "";
+    message.description = object.description !== undefined && object.description !== null ? Description.fromPartial(object.description) : undefined;
+    message.sealAddress = object.sealAddress ?? "";
+    message.approvalAddress = object.approvalAddress ?? "";
+    message.gcAddress = object.gcAddress ?? "";
     return message;
   },
 
   fromSDK(object: EventEditStorageProviderSDKType): EventEditStorageProvider {
     return {
-      oldEndpoint: object?.old_endpoint,
-      newEndpoint: object?.new_endpoint
+      spAddress: object?.sp_address,
+      endpoint: object?.endpoint,
+      description: object.description ? Description.fromSDK(object.description) : undefined,
+      sealAddress: object?.seal_address,
+      approvalAddress: object?.approval_address,
+      gcAddress: object?.gc_address
     };
   },
 
   toSDK(message: EventEditStorageProvider): EventEditStorageProviderSDKType {
     const obj: any = {};
-    obj.old_endpoint = message.oldEndpoint;
-    obj.new_endpoint = message.newEndpoint;
+    obj.sp_address = message.spAddress;
+    obj.endpoint = message.endpoint;
+    message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
+    obj.seal_address = message.sealAddress;
+    obj.approval_address = message.approvalAddress;
+    obj.gc_address = message.gcAddress;
     return obj;
   }
 

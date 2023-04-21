@@ -20,21 +20,51 @@ export interface QueryParamsResponse {
 export interface QueryParamsResponseSDKType {
   params?: ParamsSDKType;
 }
-/** QueryParamsRequest is request type for the Query/LatestAttestedChallenge RPC method. */
+/** QueryLatestAttestedChallengesRequest is request type for the Query/LatestAttestedChallenges RPC method. */
 
-export interface QueryLatestAttestedChallengeRequest {}
-/** QueryParamsRequest is request type for the Query/LatestAttestedChallenge RPC method. */
+export interface QueryLatestAttestedChallengesRequest {}
+/** QueryLatestAttestedChallengesRequest is request type for the Query/LatestAttestedChallenges RPC method. */
 
-export interface QueryLatestAttestedChallengeRequestSDKType {}
-/** QueryParamsResponse is response type for the Query/LatestAttestedChallenge RPC method. */
+export interface QueryLatestAttestedChallengesRequestSDKType {}
+/** QueryLatestAttestedChallengesResponse is response type for the Query/LatestAttestedChallenges RPC method. */
 
-export interface QueryLatestAttestedChallengeResponse {
-  challengeId: Long;
+export interface QueryLatestAttestedChallengesResponse {
+  challengeIds: Long[];
 }
-/** QueryParamsResponse is response type for the Query/LatestAttestedChallenge RPC method. */
+/** QueryLatestAttestedChallengesResponse is response type for the Query/LatestAttestedChallenges RPC method. */
 
-export interface QueryLatestAttestedChallengeResponseSDKType {
-  challengeId: Long;
+export interface QueryLatestAttestedChallengesResponseSDKType {
+  challengeIds: Long[];
+}
+/** QueryInturnAttestationSubmitterRequest is request type for the Query/InturnAttestationSubmitter RPC method. */
+
+export interface QueryInturnAttestationSubmitterRequest {}
+/** QueryInturnAttestationSubmitterRequest is request type for the Query/InturnAttestationSubmitter RPC method. */
+
+export interface QueryInturnAttestationSubmitterRequestSDKType {}
+/** QueryInturnAttestationSubmitterResponse is response type for the Query/InturnAttestationSubmitter RPC method. */
+
+export interface QueryInturnAttestationSubmitterResponse {
+  blsPubKey: string;
+  submitInterval?: SubmitInterval;
+}
+/** QueryInturnAttestationSubmitterResponse is response type for the Query/InturnAttestationSubmitter RPC method. */
+
+export interface QueryInturnAttestationSubmitterResponseSDKType {
+  bls_pub_key: string;
+  submit_interval?: SubmitIntervalSDKType;
+}
+/** SubmitInterval holds start and end (exclusive) (i.e., [start, end)) time of in turn attestation. */
+
+export interface SubmitInterval {
+  start: Long;
+  end: Long;
+}
+/** SubmitInterval holds start and end (exclusive) (i.e., [start, end)) time of in turn attestation. */
+
+export interface SubmitIntervalSDKType {
+  start: Long;
+  end: Long;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -158,19 +188,19 @@ export const QueryParamsResponse = {
 
 };
 
-function createBaseQueryLatestAttestedChallengeRequest(): QueryLatestAttestedChallengeRequest {
+function createBaseQueryLatestAttestedChallengesRequest(): QueryLatestAttestedChallengesRequest {
   return {};
 }
 
-export const QueryLatestAttestedChallengeRequest = {
-  encode(_: QueryLatestAttestedChallengeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryLatestAttestedChallengesRequest = {
+  encode(_: QueryLatestAttestedChallengesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLatestAttestedChallengeRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLatestAttestedChallengesRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryLatestAttestedChallengeRequest();
+    const message = createBaseQueryLatestAttestedChallengesRequest();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -185,57 +215,69 @@ export const QueryLatestAttestedChallengeRequest = {
     return message;
   },
 
-  fromJSON(_: any): QueryLatestAttestedChallengeRequest {
+  fromJSON(_: any): QueryLatestAttestedChallengesRequest {
     return {};
   },
 
-  toJSON(_: QueryLatestAttestedChallengeRequest): unknown {
+  toJSON(_: QueryLatestAttestedChallengesRequest): unknown {
     const obj: any = {};
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryLatestAttestedChallengeRequest>, I>>(_: I): QueryLatestAttestedChallengeRequest {
-    const message = createBaseQueryLatestAttestedChallengeRequest();
+  fromPartial<I extends Exact<DeepPartial<QueryLatestAttestedChallengesRequest>, I>>(_: I): QueryLatestAttestedChallengesRequest {
+    const message = createBaseQueryLatestAttestedChallengesRequest();
     return message;
   },
 
-  fromSDK(_: QueryLatestAttestedChallengeRequestSDKType): QueryLatestAttestedChallengeRequest {
+  fromSDK(_: QueryLatestAttestedChallengesRequestSDKType): QueryLatestAttestedChallengesRequest {
     return {};
   },
 
-  toSDK(_: QueryLatestAttestedChallengeRequest): QueryLatestAttestedChallengeRequestSDKType {
+  toSDK(_: QueryLatestAttestedChallengesRequest): QueryLatestAttestedChallengesRequestSDKType {
     const obj: any = {};
     return obj;
   }
 
 };
 
-function createBaseQueryLatestAttestedChallengeResponse(): QueryLatestAttestedChallengeResponse {
+function createBaseQueryLatestAttestedChallengesResponse(): QueryLatestAttestedChallengesResponse {
   return {
-    challengeId: Long.UZERO
+    challengeIds: []
   };
 }
 
-export const QueryLatestAttestedChallengeResponse = {
-  encode(message: QueryLatestAttestedChallengeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.challengeId.isZero()) {
-      writer.uint32(8).uint64(message.challengeId);
+export const QueryLatestAttestedChallengesResponse = {
+  encode(message: QueryLatestAttestedChallengesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    writer.uint32(10).fork();
+
+    for (const v of message.challengeIds) {
+      writer.uint64(v);
     }
 
+    writer.ldelim();
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLatestAttestedChallengeResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLatestAttestedChallengesResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryLatestAttestedChallengeResponse();
+    const message = createBaseQueryLatestAttestedChallengesResponse();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
 
       switch (tag >>> 3) {
         case 1:
-          message.challengeId = (reader.uint64() as Long);
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+
+            while (reader.pos < end2) {
+              message.challengeIds.push((reader.uint64() as Long));
+            }
+          } else {
+            message.challengeIds.push((reader.uint64() as Long));
+          }
+
           break;
 
         default:
@@ -247,33 +289,263 @@ export const QueryLatestAttestedChallengeResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryLatestAttestedChallengeResponse {
+  fromJSON(object: any): QueryLatestAttestedChallengesResponse {
     return {
-      challengeId: isSet(object.challengeId) ? Long.fromValue(object.challengeId) : Long.UZERO
+      challengeIds: Array.isArray(object?.challengeIds) ? object.challengeIds.map((e: any) => Long.fromValue(e)) : []
     };
   },
 
-  toJSON(message: QueryLatestAttestedChallengeResponse): unknown {
+  toJSON(message: QueryLatestAttestedChallengesResponse): unknown {
     const obj: any = {};
-    message.challengeId !== undefined && (obj.challengeId = (message.challengeId || Long.UZERO).toString());
+
+    if (message.challengeIds) {
+      obj.challengeIds = message.challengeIds.map(e => (e || Long.UZERO).toString());
+    } else {
+      obj.challengeIds = [];
+    }
+
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryLatestAttestedChallengeResponse>, I>>(object: I): QueryLatestAttestedChallengeResponse {
-    const message = createBaseQueryLatestAttestedChallengeResponse();
-    message.challengeId = object.challengeId !== undefined && object.challengeId !== null ? Long.fromValue(object.challengeId) : Long.UZERO;
+  fromPartial<I extends Exact<DeepPartial<QueryLatestAttestedChallengesResponse>, I>>(object: I): QueryLatestAttestedChallengesResponse {
+    const message = createBaseQueryLatestAttestedChallengesResponse();
+    message.challengeIds = object.challengeIds?.map(e => Long.fromValue(e)) || [];
     return message;
   },
 
-  fromSDK(object: QueryLatestAttestedChallengeResponseSDKType): QueryLatestAttestedChallengeResponse {
+  fromSDK(object: QueryLatestAttestedChallengesResponseSDKType): QueryLatestAttestedChallengesResponse {
     return {
-      challengeId: object?.challengeId
+      challengeIds: Array.isArray(object?.challengeIds) ? object.challengeIds.map((e: any) => e) : []
     };
   },
 
-  toSDK(message: QueryLatestAttestedChallengeResponse): QueryLatestAttestedChallengeResponseSDKType {
+  toSDK(message: QueryLatestAttestedChallengesResponse): QueryLatestAttestedChallengesResponseSDKType {
     const obj: any = {};
-    obj.challengeId = message.challengeId;
+
+    if (message.challengeIds) {
+      obj.challengeIds = message.challengeIds.map(e => e);
+    } else {
+      obj.challengeIds = [];
+    }
+
+    return obj;
+  }
+
+};
+
+function createBaseQueryInturnAttestationSubmitterRequest(): QueryInturnAttestationSubmitterRequest {
+  return {};
+}
+
+export const QueryInturnAttestationSubmitterRequest = {
+  encode(_: QueryInturnAttestationSubmitterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryInturnAttestationSubmitterRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryInturnAttestationSubmitterRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): QueryInturnAttestationSubmitterRequest {
+    return {};
+  },
+
+  toJSON(_: QueryInturnAttestationSubmitterRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryInturnAttestationSubmitterRequest>, I>>(_: I): QueryInturnAttestationSubmitterRequest {
+    const message = createBaseQueryInturnAttestationSubmitterRequest();
+    return message;
+  },
+
+  fromSDK(_: QueryInturnAttestationSubmitterRequestSDKType): QueryInturnAttestationSubmitterRequest {
+    return {};
+  },
+
+  toSDK(_: QueryInturnAttestationSubmitterRequest): QueryInturnAttestationSubmitterRequestSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
+
+function createBaseQueryInturnAttestationSubmitterResponse(): QueryInturnAttestationSubmitterResponse {
+  return {
+    blsPubKey: "",
+    submitInterval: undefined
+  };
+}
+
+export const QueryInturnAttestationSubmitterResponse = {
+  encode(message: QueryInturnAttestationSubmitterResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.blsPubKey !== "") {
+      writer.uint32(10).string(message.blsPubKey);
+    }
+
+    if (message.submitInterval !== undefined) {
+      SubmitInterval.encode(message.submitInterval, writer.uint32(18).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryInturnAttestationSubmitterResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryInturnAttestationSubmitterResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.blsPubKey = reader.string();
+          break;
+
+        case 2:
+          message.submitInterval = SubmitInterval.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryInturnAttestationSubmitterResponse {
+    return {
+      blsPubKey: isSet(object.blsPubKey) ? String(object.blsPubKey) : "",
+      submitInterval: isSet(object.submitInterval) ? SubmitInterval.fromJSON(object.submitInterval) : undefined
+    };
+  },
+
+  toJSON(message: QueryInturnAttestationSubmitterResponse): unknown {
+    const obj: any = {};
+    message.blsPubKey !== undefined && (obj.blsPubKey = message.blsPubKey);
+    message.submitInterval !== undefined && (obj.submitInterval = message.submitInterval ? SubmitInterval.toJSON(message.submitInterval) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryInturnAttestationSubmitterResponse>, I>>(object: I): QueryInturnAttestationSubmitterResponse {
+    const message = createBaseQueryInturnAttestationSubmitterResponse();
+    message.blsPubKey = object.blsPubKey ?? "";
+    message.submitInterval = object.submitInterval !== undefined && object.submitInterval !== null ? SubmitInterval.fromPartial(object.submitInterval) : undefined;
+    return message;
+  },
+
+  fromSDK(object: QueryInturnAttestationSubmitterResponseSDKType): QueryInturnAttestationSubmitterResponse {
+    return {
+      blsPubKey: object?.bls_pub_key,
+      submitInterval: object.submit_interval ? SubmitInterval.fromSDK(object.submit_interval) : undefined
+    };
+  },
+
+  toSDK(message: QueryInturnAttestationSubmitterResponse): QueryInturnAttestationSubmitterResponseSDKType {
+    const obj: any = {};
+    obj.bls_pub_key = message.blsPubKey;
+    message.submitInterval !== undefined && (obj.submit_interval = message.submitInterval ? SubmitInterval.toSDK(message.submitInterval) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseSubmitInterval(): SubmitInterval {
+  return {
+    start: Long.UZERO,
+    end: Long.UZERO
+  };
+}
+
+export const SubmitInterval = {
+  encode(message: SubmitInterval, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.start.isZero()) {
+      writer.uint32(8).uint64(message.start);
+    }
+
+    if (!message.end.isZero()) {
+      writer.uint32(16).uint64(message.end);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SubmitInterval {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSubmitInterval();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.start = (reader.uint64() as Long);
+          break;
+
+        case 2:
+          message.end = (reader.uint64() as Long);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): SubmitInterval {
+    return {
+      start: isSet(object.start) ? Long.fromValue(object.start) : Long.UZERO,
+      end: isSet(object.end) ? Long.fromValue(object.end) : Long.UZERO
+    };
+  },
+
+  toJSON(message: SubmitInterval): unknown {
+    const obj: any = {};
+    message.start !== undefined && (obj.start = (message.start || Long.UZERO).toString());
+    message.end !== undefined && (obj.end = (message.end || Long.UZERO).toString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SubmitInterval>, I>>(object: I): SubmitInterval {
+    const message = createBaseSubmitInterval();
+    message.start = object.start !== undefined && object.start !== null ? Long.fromValue(object.start) : Long.UZERO;
+    message.end = object.end !== undefined && object.end !== null ? Long.fromValue(object.end) : Long.UZERO;
+    return message;
+  },
+
+  fromSDK(object: SubmitIntervalSDKType): SubmitInterval {
+    return {
+      start: object?.start,
+      end: object?.end
+    };
+  },
+
+  toSDK(message: SubmitInterval): SubmitIntervalSDKType {
+    const obj: any = {};
+    obj.start = message.start;
+    obj.end = message.end;
     return obj;
   }
 
@@ -283,9 +555,12 @@ export const QueryLatestAttestedChallengeResponse = {
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
-  /** Queries the latest attested challenge id. */
+  /** Queries the latest attested challenge ids. */
 
-  LatestAttestedChallenge(request?: QueryLatestAttestedChallengeRequest): Promise<QueryLatestAttestedChallengeResponse>;
+  LatestAttestedChallenges(request?: QueryLatestAttestedChallengesRequest): Promise<QueryLatestAttestedChallengesResponse>;
+  /** Queries the inturn challenger. */
+
+  InturnAttestationSubmitter(request?: QueryInturnAttestationSubmitterRequest): Promise<QueryInturnAttestationSubmitterResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -293,7 +568,8 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
-    this.LatestAttestedChallenge = this.LatestAttestedChallenge.bind(this);
+    this.LatestAttestedChallenges = this.LatestAttestedChallenges.bind(this);
+    this.InturnAttestationSubmitter = this.InturnAttestationSubmitter.bind(this);
   }
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
@@ -302,10 +578,16 @@ export class QueryClientImpl implements Query {
     return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
 
-  LatestAttestedChallenge(request: QueryLatestAttestedChallengeRequest = {}): Promise<QueryLatestAttestedChallengeResponse> {
-    const data = QueryLatestAttestedChallengeRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.challenge.Query", "LatestAttestedChallenge", data);
-    return promise.then(data => QueryLatestAttestedChallengeResponse.decode(new _m0.Reader(data)));
+  LatestAttestedChallenges(request: QueryLatestAttestedChallengesRequest = {}): Promise<QueryLatestAttestedChallengesResponse> {
+    const data = QueryLatestAttestedChallengesRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.challenge.Query", "LatestAttestedChallenges", data);
+    return promise.then(data => QueryLatestAttestedChallengesResponse.decode(new _m0.Reader(data)));
+  }
+
+  InturnAttestationSubmitter(request: QueryInturnAttestationSubmitterRequest = {}): Promise<QueryInturnAttestationSubmitterResponse> {
+    const data = QueryInturnAttestationSubmitterRequest.encode(request).finish();
+    const promise = this.rpc.request("bnbchain.greenfield.challenge.Query", "InturnAttestationSubmitter", data);
+    return promise.then(data => QueryInturnAttestationSubmitterResponse.decode(new _m0.Reader(data)));
   }
 
 }

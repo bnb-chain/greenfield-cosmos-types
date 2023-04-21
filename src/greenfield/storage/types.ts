@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { VisibilityType, SourceType, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, visibilityTypeToJSON, sourceTypeToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
+import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "bnbchain.greenfield.storage";
@@ -40,6 +40,9 @@ export interface BucketInfo {
   /** billing info of the bucket */
 
   billingInfo?: BillingInfo;
+  /** bucket_status define the status of the bucket. */
+
+  bucketStatus: BucketStatus;
 }
 export interface BucketInfoSDKType {
   owner: string;
@@ -52,6 +55,7 @@ export interface BucketInfoSDKType {
   primary_sp_address: string;
   charged_read_quota: Long;
   billing_info?: BillingInfoSDKType;
+  bucket_status: BucketStatus;
 }
 /** BillingInfo is the billing information of the bucket */
 
@@ -240,6 +244,13 @@ export interface GroupMetaDataSDKType {
   image: string;
   attributes: TraitSDKType[];
 }
+export interface Ids {
+  /** ids of the objects or buckets */
+  id: string[];
+}
+export interface IdsSDKType {
+  id: string[];
+}
 
 function createBaseBucketInfo(): BucketInfo {
   return {
@@ -252,7 +263,8 @@ function createBaseBucketInfo(): BucketInfo {
     paymentAddress: "",
     primarySpAddress: "",
     chargedReadQuota: Long.UZERO,
-    billingInfo: undefined
+    billingInfo: undefined,
+    bucketStatus: 0
   };
 }
 
@@ -296,6 +308,10 @@ export const BucketInfo = {
 
     if (message.billingInfo !== undefined) {
       BillingInfo.encode(message.billingInfo, writer.uint32(82).fork()).ldelim();
+    }
+
+    if (message.bucketStatus !== 0) {
+      writer.uint32(88).int32(message.bucketStatus);
     }
 
     return writer;
@@ -350,6 +366,10 @@ export const BucketInfo = {
           message.billingInfo = BillingInfo.decode(reader, reader.uint32());
           break;
 
+        case 11:
+          message.bucketStatus = (reader.int32() as any);
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -370,7 +390,8 @@ export const BucketInfo = {
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
       chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
-      billingInfo: isSet(object.billingInfo) ? BillingInfo.fromJSON(object.billingInfo) : undefined
+      billingInfo: isSet(object.billingInfo) ? BillingInfo.fromJSON(object.billingInfo) : undefined,
+      bucketStatus: isSet(object.bucketStatus) ? bucketStatusFromJSON(object.bucketStatus) : 0
     };
   },
 
@@ -386,6 +407,7 @@ export const BucketInfo = {
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
     message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
     message.billingInfo !== undefined && (obj.billingInfo = message.billingInfo ? BillingInfo.toJSON(message.billingInfo) : undefined);
+    message.bucketStatus !== undefined && (obj.bucketStatus = bucketStatusToJSON(message.bucketStatus));
     return obj;
   },
 
@@ -401,6 +423,7 @@ export const BucketInfo = {
     message.primarySpAddress = object.primarySpAddress ?? "";
     message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
     message.billingInfo = object.billingInfo !== undefined && object.billingInfo !== null ? BillingInfo.fromPartial(object.billingInfo) : undefined;
+    message.bucketStatus = object.bucketStatus ?? 0;
     return message;
   },
 
@@ -415,7 +438,8 @@ export const BucketInfo = {
       paymentAddress: object?.payment_address,
       primarySpAddress: object?.primary_sp_address,
       chargedReadQuota: object?.charged_read_quota,
-      billingInfo: object.billing_info ? BillingInfo.fromSDK(object.billing_info) : undefined
+      billingInfo: object.billing_info ? BillingInfo.fromSDK(object.billing_info) : undefined,
+      bucketStatus: isSet(object.bucket_status) ? bucketStatusFromJSON(object.bucket_status) : 0
     };
   },
 
@@ -431,6 +455,7 @@ export const BucketInfo = {
     obj.primary_sp_address = message.primarySpAddress;
     obj.charged_read_quota = message.chargedReadQuota;
     message.billingInfo !== undefined && (obj.billing_info = message.billingInfo ? BillingInfo.toSDK(message.billingInfo) : undefined);
+    message.bucketStatus !== undefined && (obj.bucket_status = bucketStatusToJSON(message.bucketStatus));
     return obj;
   }
 
@@ -1485,6 +1510,87 @@ export const GroupMetaData = {
       obj.attributes = message.attributes.map(e => e ? Trait.toSDK(e) : undefined);
     } else {
       obj.attributes = [];
+    }
+
+    return obj;
+  }
+
+};
+
+function createBaseIds(): Ids {
+  return {
+    id: []
+  };
+}
+
+export const Ids = {
+  encode(message: Ids, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.id) {
+      writer.uint32(10).string(v!);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Ids {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseIds();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.id.push(reader.string());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): Ids {
+    return {
+      id: Array.isArray(object?.id) ? object.id.map((e: any) => String(e)) : []
+    };
+  },
+
+  toJSON(message: Ids): unknown {
+    const obj: any = {};
+
+    if (message.id) {
+      obj.id = message.id.map(e => e);
+    } else {
+      obj.id = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Ids>, I>>(object: I): Ids {
+    const message = createBaseIds();
+    message.id = object.id?.map(e => e) || [];
+    return message;
+  },
+
+  fromSDK(object: IdsSDKType): Ids {
+    return {
+      id: Array.isArray(object?.id) ? object.id.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: Ids): IdsSDKType {
+    const obj: any = {};
+
+    if (message.id) {
+      obj.id = message.id.map(e => e);
+    } else {
+      obj.id = [];
     }
 
     return obj;

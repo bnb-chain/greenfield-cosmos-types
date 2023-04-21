@@ -97,6 +97,9 @@ export interface StorageProvider {
   /** approval_address defines one of the storage provider's accounts which is used to approve use's createBucket/createObject request */
 
   approvalAddress: string;
+  /** gc_address defines one of the storage provider's accounts which is used for gc purpose. */
+
+  gcAddress: string;
   /** total_deposit defines the number of tokens deposited by this storage provider for staking. */
 
   totalDeposit: string;
@@ -117,6 +120,7 @@ export interface StorageProviderSDKType {
   funding_address: string;
   seal_address: string;
   approval_address: string;
+  gc_address: string;
   total_deposit: string;
   status: Status;
   endpoint: string;
@@ -304,6 +308,7 @@ function createBaseStorageProvider(): StorageProvider {
     fundingAddress: "",
     sealAddress: "",
     approvalAddress: "",
+    gcAddress: "",
     totalDeposit: "",
     status: 0,
     endpoint: "",
@@ -329,20 +334,24 @@ export const StorageProvider = {
       writer.uint32(34).string(message.approvalAddress);
     }
 
+    if (message.gcAddress !== "") {
+      writer.uint32(42).string(message.gcAddress);
+    }
+
     if (message.totalDeposit !== "") {
-      writer.uint32(42).string(message.totalDeposit);
+      writer.uint32(50).string(message.totalDeposit);
     }
 
     if (message.status !== 0) {
-      writer.uint32(48).int32(message.status);
+      writer.uint32(56).int32(message.status);
     }
 
     if (message.endpoint !== "") {
-      writer.uint32(58).string(message.endpoint);
+      writer.uint32(66).string(message.endpoint);
     }
 
     if (message.description !== undefined) {
-      Description.encode(message.description, writer.uint32(66).fork()).ldelim();
+      Description.encode(message.description, writer.uint32(74).fork()).ldelim();
     }
 
     return writer;
@@ -374,18 +383,22 @@ export const StorageProvider = {
           break;
 
         case 5:
-          message.totalDeposit = reader.string();
+          message.gcAddress = reader.string();
           break;
 
         case 6:
-          message.status = (reader.int32() as any);
+          message.totalDeposit = reader.string();
           break;
 
         case 7:
-          message.endpoint = reader.string();
+          message.status = (reader.int32() as any);
           break;
 
         case 8:
+          message.endpoint = reader.string();
+          break;
+
+        case 9:
           message.description = Description.decode(reader, reader.uint32());
           break;
 
@@ -404,6 +417,7 @@ export const StorageProvider = {
       fundingAddress: isSet(object.fundingAddress) ? String(object.fundingAddress) : "",
       sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
       approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
+      gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : "",
       totalDeposit: isSet(object.totalDeposit) ? String(object.totalDeposit) : "",
       status: isSet(object.status) ? statusFromJSON(object.status) : 0,
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
@@ -417,6 +431,7 @@ export const StorageProvider = {
     message.fundingAddress !== undefined && (obj.fundingAddress = message.fundingAddress);
     message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
     message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
+    message.gcAddress !== undefined && (obj.gcAddress = message.gcAddress);
     message.totalDeposit !== undefined && (obj.totalDeposit = message.totalDeposit);
     message.status !== undefined && (obj.status = statusToJSON(message.status));
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
@@ -430,6 +445,7 @@ export const StorageProvider = {
     message.fundingAddress = object.fundingAddress ?? "";
     message.sealAddress = object.sealAddress ?? "";
     message.approvalAddress = object.approvalAddress ?? "";
+    message.gcAddress = object.gcAddress ?? "";
     message.totalDeposit = object.totalDeposit ?? "";
     message.status = object.status ?? 0;
     message.endpoint = object.endpoint ?? "";
@@ -443,6 +459,7 @@ export const StorageProvider = {
       fundingAddress: object?.funding_address,
       sealAddress: object?.seal_address,
       approvalAddress: object?.approval_address,
+      gcAddress: object?.gc_address,
       totalDeposit: object?.total_deposit,
       status: isSet(object.status) ? statusFromJSON(object.status) : 0,
       endpoint: object?.endpoint,
@@ -456,6 +473,7 @@ export const StorageProvider = {
     obj.funding_address = message.fundingAddress;
     obj.seal_address = message.sealAddress;
     obj.approval_address = message.approvalAddress;
+    obj.gc_address = message.gcAddress;
     obj.total_deposit = message.totalDeposit;
     message.status !== undefined && (obj.status = statusToJSON(message.status));
     obj.endpoint = message.endpoint;

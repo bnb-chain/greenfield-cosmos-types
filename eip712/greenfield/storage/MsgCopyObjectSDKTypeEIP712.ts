@@ -42,6 +42,18 @@ export const MsgCopyObjectSDKTypeEIP712 = {
     },
     {
       "type": "string",
+      "name": "operator"
+    },
+    {
+      "type": "string",
+      "name": "bucket_name"
+    },
+    {
+      "type": "string",
+      "name": "reason"
+    },
+    {
+      "type": "string",
       "name": "creator"
     },
     {

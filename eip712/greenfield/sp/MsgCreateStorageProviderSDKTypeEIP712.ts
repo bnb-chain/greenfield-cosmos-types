@@ -30,6 +30,10 @@ export const MsgCreateStorageProviderSDKTypeEIP712 = {
     },
     {
       "type": "string",
+      "name": "gc_address"
+    },
+    {
+      "type": "string",
       "name": "endpoint"
     },
     {

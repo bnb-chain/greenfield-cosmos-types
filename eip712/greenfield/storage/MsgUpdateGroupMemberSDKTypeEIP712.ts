@@ -42,6 +42,18 @@ export const MsgUpdateGroupMemberSDKTypeEIP712 = {
     },
     {
       "type": "string",
+      "name": "operator"
+    },
+    {
+      "type": "string",
+      "name": "bucket_name"
+    },
+    {
+      "type": "string",
+      "name": "reason"
+    },
+    {
+      "type": "string",
       "name": "creator"
     },
     {
@@ -147,6 +159,22 @@ export const MsgUpdateGroupMemberSDKTypeEIP712 = {
     {
       "type": "string",
       "name": "object_name"
+    },
+    {
+      "type": "string",
+      "name": "operator"
+    },
+    {
+      "type": "string",
+      "name": "bucket_name"
+    },
+    {
+      "type": "string[]",
+      "name": "object_ids"
+    },
+    {
+      "type": "string",
+      "name": "reason"
     },
     {
       "type": "string",

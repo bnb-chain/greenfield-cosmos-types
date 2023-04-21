@@ -3,6 +3,41 @@ import { StreamAccountStatus, OutFlow, OutFlowSDKType, streamAccountStatusFromJS
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.payment";
+export enum FeePreviewType {
+  FEE_PREVIEW_TYPE_PRELOCKED_FEE = 0,
+  FEE_PREVIEW_TYPE_UNLOCKED_FEE = 1,
+  UNRECOGNIZED = -1,
+}
+export const FeePreviewTypeSDKType = FeePreviewType;
+export function feePreviewTypeFromJSON(object: any): FeePreviewType {
+  switch (object) {
+    case 0:
+    case "FEE_PREVIEW_TYPE_PRELOCKED_FEE":
+      return FeePreviewType.FEE_PREVIEW_TYPE_PRELOCKED_FEE;
+
+    case 1:
+    case "FEE_PREVIEW_TYPE_UNLOCKED_FEE":
+      return FeePreviewType.FEE_PREVIEW_TYPE_UNLOCKED_FEE;
+
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return FeePreviewType.UNRECOGNIZED;
+  }
+}
+export function feePreviewTypeToJSON(object: FeePreviewType): string {
+  switch (object) {
+    case FeePreviewType.FEE_PREVIEW_TYPE_PRELOCKED_FEE:
+      return "FEE_PREVIEW_TYPE_PRELOCKED_FEE";
+
+    case FeePreviewType.FEE_PREVIEW_TYPE_UNLOCKED_FEE:
+      return "FEE_PREVIEW_TYPE_UNLOCKED_FEE";
+
+    case FeePreviewType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
 export interface EventPaymentAccountUpdate {
   /** address of the payment account */
   addr: string;
@@ -120,6 +155,26 @@ export interface EventWithdraw {
 export interface EventWithdrawSDKType {
   to: string;
   from: string;
+  amount: string;
+}
+/**
+ * emit when upload/cancel/delete object, used for frontend to preview the fee changed
+ * only emit in tx simulation
+ */
+
+export interface EventFeePreview {
+  account: string;
+  feePreviewType: FeePreviewType;
+  amount: string;
+}
+/**
+ * emit when upload/cancel/delete object, used for frontend to preview the fee changed
+ * only emit in tx simulation
+ */
+
+export interface EventFeePreviewSDKType {
+  account: string;
+  fee_preview_type: FeePreviewType;
   amount: string;
 }
 
@@ -684,6 +739,103 @@ export const EventWithdraw = {
     const obj: any = {};
     obj.to = message.to;
     obj.from = message.from;
+    obj.amount = message.amount;
+    return obj;
+  }
+
+};
+
+function createBaseEventFeePreview(): EventFeePreview {
+  return {
+    account: "",
+    feePreviewType: 0,
+    amount: ""
+  };
+}
+
+export const EventFeePreview = {
+  encode(message: EventFeePreview, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.account !== "") {
+      writer.uint32(10).string(message.account);
+    }
+
+    if (message.feePreviewType !== 0) {
+      writer.uint32(16).int32(message.feePreviewType);
+    }
+
+    if (message.amount !== "") {
+      writer.uint32(26).string(message.amount);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventFeePreview {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventFeePreview();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.account = reader.string();
+          break;
+
+        case 2:
+          message.feePreviewType = (reader.int32() as any);
+          break;
+
+        case 3:
+          message.amount = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventFeePreview {
+    return {
+      account: isSet(object.account) ? String(object.account) : "",
+      feePreviewType: isSet(object.feePreviewType) ? feePreviewTypeFromJSON(object.feePreviewType) : 0,
+      amount: isSet(object.amount) ? String(object.amount) : ""
+    };
+  },
+
+  toJSON(message: EventFeePreview): unknown {
+    const obj: any = {};
+    message.account !== undefined && (obj.account = message.account);
+    message.feePreviewType !== undefined && (obj.feePreviewType = feePreviewTypeToJSON(message.feePreviewType));
+    message.amount !== undefined && (obj.amount = message.amount);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventFeePreview>, I>>(object: I): EventFeePreview {
+    const message = createBaseEventFeePreview();
+    message.account = object.account ?? "";
+    message.feePreviewType = object.feePreviewType ?? 0;
+    message.amount = object.amount ?? "";
+    return message;
+  },
+
+  fromSDK(object: EventFeePreviewSDKType): EventFeePreview {
+    return {
+      account: object?.account,
+      feePreviewType: isSet(object.fee_preview_type) ? feePreviewTypeFromJSON(object.fee_preview_type) : 0,
+      amount: object?.amount
+    };
+  },
+
+  toSDK(message: EventFeePreview): EventFeePreviewSDKType {
+    const obj: any = {};
+    obj.account = message.account;
+    message.feePreviewType !== undefined && (obj.fee_preview_type = feePreviewTypeToJSON(message.feePreviewType));
     obj.amount = message.amount;
     return obj;
   }

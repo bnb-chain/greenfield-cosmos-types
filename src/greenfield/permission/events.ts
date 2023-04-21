@@ -1,8 +1,9 @@
 /* eslint-disable */
 import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "./common";
 import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from "../resource/types";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import * as _m0 from "protobufjs/minimal";
-import { isSet, DeepPartial, Exact } from "../../helpers";
+import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "bnbchain.greenfield.permission";
 export interface EventPutPolicy {
   /** policy_id is an unique u256 sequence for each policy. It also be used as NFT tokenID */
@@ -19,6 +20,12 @@ export interface EventPutPolicy {
   /** statements defines the details content of the permission, include effect/actions/sub-resources */
 
   statements: Statement[];
+  /**
+   * expiration_time defines the whole expiration time of all the statements.
+   * Notices: Its priority is higher than the expiration time inside the Statement
+   */
+
+  expirationTime?: Timestamp;
 }
 export interface EventPutPolicySDKType {
   policy_id: string;
@@ -26,6 +33,7 @@ export interface EventPutPolicySDKType {
   resource_type: ResourceType;
   resource_id: string;
   statements: StatementSDKType[];
+  expiration_time?: TimestampSDKType;
 }
 export interface EventDeletePolicy {
   /** policy_id is an unique u256 sequence for each policy. It also be used as NFT tokenID */
@@ -41,7 +49,8 @@ function createBaseEventPutPolicy(): EventPutPolicy {
     principal: undefined,
     resourceType: 0,
     resourceId: "",
-    statements: []
+    statements: [],
+    expirationTime: undefined
   };
 }
 
@@ -65,6 +74,10 @@ export const EventPutPolicy = {
 
     for (const v of message.statements) {
       Statement.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+
+    if (message.expirationTime !== undefined) {
+      Timestamp.encode(message.expirationTime, writer.uint32(50).fork()).ldelim();
     }
 
     return writer;
@@ -99,6 +112,10 @@ export const EventPutPolicy = {
           message.statements.push(Statement.decode(reader, reader.uint32()));
           break;
 
+        case 6:
+          message.expirationTime = Timestamp.decode(reader, reader.uint32());
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -114,7 +131,8 @@ export const EventPutPolicy = {
       principal: isSet(object.principal) ? Principal.fromJSON(object.principal) : undefined,
       resourceType: isSet(object.resourceType) ? resourceTypeFromJSON(object.resourceType) : 0,
       resourceId: isSet(object.resourceId) ? String(object.resourceId) : "",
-      statements: Array.isArray(object?.statements) ? object.statements.map((e: any) => Statement.fromJSON(e)) : []
+      statements: Array.isArray(object?.statements) ? object.statements.map((e: any) => Statement.fromJSON(e)) : [],
+      expirationTime: isSet(object.expirationTime) ? fromJsonTimestamp(object.expirationTime) : undefined
     };
   },
 
@@ -131,6 +149,7 @@ export const EventPutPolicy = {
       obj.statements = [];
     }
 
+    message.expirationTime !== undefined && (obj.expirationTime = fromTimestamp(message.expirationTime).toISOString());
     return obj;
   },
 
@@ -141,6 +160,7 @@ export const EventPutPolicy = {
     message.resourceType = object.resourceType ?? 0;
     message.resourceId = object.resourceId ?? "";
     message.statements = object.statements?.map(e => Statement.fromPartial(e)) || [];
+    message.expirationTime = object.expirationTime !== undefined && object.expirationTime !== null ? Timestamp.fromPartial(object.expirationTime) : undefined;
     return message;
   },
 
@@ -150,7 +170,8 @@ export const EventPutPolicy = {
       principal: object.principal ? Principal.fromSDK(object.principal) : undefined,
       resourceType: isSet(object.resource_type) ? resourceTypeFromJSON(object.resource_type) : 0,
       resourceId: object?.resource_id,
-      statements: Array.isArray(object?.statements) ? object.statements.map((e: any) => Statement.fromSDK(e)) : []
+      statements: Array.isArray(object?.statements) ? object.statements.map((e: any) => Statement.fromSDK(e)) : [],
+      expirationTime: object.expiration_time ? Timestamp.fromSDK(object.expiration_time) : undefined
     };
   },
 
@@ -167,6 +188,7 @@ export const EventPutPolicy = {
       obj.statements = [];
     }
 
+    message.expirationTime !== undefined && (obj.expiration_time = message.expirationTime ? Timestamp.toSDK(message.expirationTime) : undefined);
     return obj;
   }
 

@@ -1,4 +1,4 @@
-export const MsgDeleteGroupSDKTypeEIP712 = {
+export const MsgUpdateObjectInfoSDKTypeEIP712 = {
   "Msg": [
     {
       "type": "string",
@@ -195,6 +195,130 @@ export const MsgDeleteGroupSDKTypeEIP712 = {
     {
       "type": "string",
       "name": "group_name"
+    },
+    {
+      "type": "string",
+      "name": "operator"
+    },
+    {
+      "type": "string",
+      "name": "group_owner"
+    },
+    {
+      "type": "string",
+      "name": "group_name"
+    },
+    {
+      "type": "string[]",
+      "name": "members_to_add"
+    },
+    {
+      "type": "string[]",
+      "name": "members_to_delete"
+    },
+    {
+      "type": "string",
+      "name": "member"
+    },
+    {
+      "type": "string",
+      "name": "group_owner"
+    },
+    {
+      "type": "string",
+      "name": "group_name"
+    },
+    {
+      "type": "string",
+      "name": "operator"
+    },
+    {
+      "type": "string",
+      "name": "bucket_name"
+    },
+    {
+      "type": "TypeChargedReadQuota",
+      "name": "charged_read_quota"
+    },
+    {
+      "type": "string",
+      "name": "payment_address"
+    },
+    {
+      "type": "string",
+      "name": "visibility"
+    },
+    {
+      "type": "string",
+      "name": "operator"
+    },
+    {
+      "type": "string",
+      "name": "bucket_name"
+    },
+    {
+      "type": "string",
+      "name": "object_name"
+    },
+    {
+      "type": "string",
+      "name": "operator"
+    },
+    {
+      "type": "TypePrincipal",
+      "name": "principal"
+    },
+    {
+      "type": "string",
+      "name": "resource"
+    },
+    {
+      "type": "TypeExpirationTime",
+      "name": "expiration_time"
+    },
+    {
+      "type": "string",
+      "name": "operator"
+    },
+    {
+      "type": "TypePrincipal",
+      "name": "principal"
+    },
+    {
+      "type": "string",
+      "name": "resource"
+    },
+    {
+      "type": "string",
+      "name": "operator"
+    },
+    {
+      "type": "string",
+      "name": "id"
+    },
+    {
+      "type": "string",
+      "name": "operator"
+    },
+    {
+      "type": "string",
+      "name": "id"
+    },
+    {
+      "type": "string",
+      "name": "operator"
+    },
+    {
+      "type": "string",
+      "name": "bucket_name"
+    },
+    {
+      "type": "string",
+      "name": "object_name"
+    },
+    {
+      "type": "string",
+      "name": "visibility"
     }
   ],
   "TypePrimarySpApproval": [
@@ -215,6 +339,32 @@ export const MsgDeleteGroupSDKTypeEIP712 = {
     {
       "type": "Uint8Array",
       "name": "sig"
+    }
+  ],
+  "TypeChargedReadQuota": [
+    {
+      "type": "Long",
+      "name": "value"
+    }
+  ],
+  "TypePrincipal": [
+    {
+      "type": "import(\"/Users/rqzheng/Documents/work/greenfield-cosmos-types/src/greenfield/permission/common\").PrincipalType",
+      "name": "type"
+    },
+    {
+      "type": "string",
+      "name": "value"
+    }
+  ],
+  "TypeExpirationTime": [
+    {
+      "type": "Long",
+      "name": "seconds"
+    },
+    {
+      "type": "number",
+      "name": "nanos"
     }
   ]
 } 

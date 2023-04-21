@@ -34,6 +34,12 @@ export interface Params {
   /** Heartbeat interval, based on challenge id, defines the frequency of heartbeat attestation. */
 
   heartbeatInterval: Long;
+  /** The time duration for each submitter to submit attestations in turn. */
+
+  attestationInturnInterval: Long;
+  /** The number of kept attested challenge ids, which can be queried by clients. */
+
+  attestationKeptCount: Long;
 }
 /** Params defines the parameters for the module. */
 
@@ -48,6 +54,8 @@ export interface ParamsSDKType {
   reward_submitter_ratio: string;
   reward_submitter_threshold: string;
   heartbeat_interval: Long;
+  attestation_inturn_interval: Long;
+  attestation_kept_count: Long;
 }
 
 function createBaseParams(): Params {
@@ -61,7 +69,9 @@ function createBaseParams(): Params {
     rewardValidatorRatio: "",
     rewardSubmitterRatio: "",
     rewardSubmitterThreshold: "",
-    heartbeatInterval: Long.UZERO
+    heartbeatInterval: Long.UZERO,
+    attestationInturnInterval: Long.UZERO,
+    attestationKeptCount: Long.UZERO
   };
 }
 
@@ -105,6 +115,14 @@ export const Params = {
 
     if (!message.heartbeatInterval.isZero()) {
       writer.uint32(80).uint64(message.heartbeatInterval);
+    }
+
+    if (!message.attestationInturnInterval.isZero()) {
+      writer.uint32(88).uint64(message.attestationInturnInterval);
+    }
+
+    if (!message.attestationKeptCount.isZero()) {
+      writer.uint32(96).uint64(message.attestationKeptCount);
     }
 
     return writer;
@@ -159,6 +177,14 @@ export const Params = {
           message.heartbeatInterval = (reader.uint64() as Long);
           break;
 
+        case 11:
+          message.attestationInturnInterval = (reader.uint64() as Long);
+          break;
+
+        case 12:
+          message.attestationKeptCount = (reader.uint64() as Long);
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -179,7 +205,9 @@ export const Params = {
       rewardValidatorRatio: isSet(object.rewardValidatorRatio) ? String(object.rewardValidatorRatio) : "",
       rewardSubmitterRatio: isSet(object.rewardSubmitterRatio) ? String(object.rewardSubmitterRatio) : "",
       rewardSubmitterThreshold: isSet(object.rewardSubmitterThreshold) ? String(object.rewardSubmitterThreshold) : "",
-      heartbeatInterval: isSet(object.heartbeatInterval) ? Long.fromValue(object.heartbeatInterval) : Long.UZERO
+      heartbeatInterval: isSet(object.heartbeatInterval) ? Long.fromValue(object.heartbeatInterval) : Long.UZERO,
+      attestationInturnInterval: isSet(object.attestationInturnInterval) ? Long.fromValue(object.attestationInturnInterval) : Long.UZERO,
+      attestationKeptCount: isSet(object.attestationKeptCount) ? Long.fromValue(object.attestationKeptCount) : Long.UZERO
     };
   },
 
@@ -195,6 +223,8 @@ export const Params = {
     message.rewardSubmitterRatio !== undefined && (obj.rewardSubmitterRatio = message.rewardSubmitterRatio);
     message.rewardSubmitterThreshold !== undefined && (obj.rewardSubmitterThreshold = message.rewardSubmitterThreshold);
     message.heartbeatInterval !== undefined && (obj.heartbeatInterval = (message.heartbeatInterval || Long.UZERO).toString());
+    message.attestationInturnInterval !== undefined && (obj.attestationInturnInterval = (message.attestationInturnInterval || Long.UZERO).toString());
+    message.attestationKeptCount !== undefined && (obj.attestationKeptCount = (message.attestationKeptCount || Long.UZERO).toString());
     return obj;
   },
 
@@ -210,6 +240,8 @@ export const Params = {
     message.rewardSubmitterRatio = object.rewardSubmitterRatio ?? "";
     message.rewardSubmitterThreshold = object.rewardSubmitterThreshold ?? "";
     message.heartbeatInterval = object.heartbeatInterval !== undefined && object.heartbeatInterval !== null ? Long.fromValue(object.heartbeatInterval) : Long.UZERO;
+    message.attestationInturnInterval = object.attestationInturnInterval !== undefined && object.attestationInturnInterval !== null ? Long.fromValue(object.attestationInturnInterval) : Long.UZERO;
+    message.attestationKeptCount = object.attestationKeptCount !== undefined && object.attestationKeptCount !== null ? Long.fromValue(object.attestationKeptCount) : Long.UZERO;
     return message;
   },
 
@@ -224,7 +256,9 @@ export const Params = {
       rewardValidatorRatio: object?.reward_validator_ratio,
       rewardSubmitterRatio: object?.reward_submitter_ratio,
       rewardSubmitterThreshold: object?.reward_submitter_threshold,
-      heartbeatInterval: object?.heartbeat_interval
+      heartbeatInterval: object?.heartbeat_interval,
+      attestationInturnInterval: object?.attestation_inturn_interval,
+      attestationKeptCount: object?.attestation_kept_count
     };
   },
 
@@ -240,6 +274,8 @@ export const Params = {
     obj.reward_submitter_ratio = message.rewardSubmitterRatio;
     obj.reward_submitter_threshold = message.rewardSubmitterThreshold;
     obj.heartbeat_interval = message.heartbeatInterval;
+    obj.attestation_inturn_interval = message.attestationInturnInterval;
+    obj.attestation_kept_count = message.attestationKeptCount;
     return obj;
   }
 
