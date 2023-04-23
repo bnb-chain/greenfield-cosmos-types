@@ -1,3 +1,10 @@
+# [0.4.0-alpha.4](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.3...v0.4.0-alpha.4) (2023-04-23)
+
+
+### Features
+
+* update submodule ([9d1ca4e](https://github.com/bnb-chain/greenfield-cosmos-types/commit/9d1ca4e0bb36a10932f009efeafddbf208a2f55e))
+
 # [0.4.0-alpha.3](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.2...v0.4.0-alpha.3) (2023-04-21)
 
 
