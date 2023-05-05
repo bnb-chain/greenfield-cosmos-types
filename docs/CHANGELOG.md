@@ -1,3 +1,10 @@
+# [0.4.0-alpha.5](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.4...v0.4.0-alpha.5) (2023-05-05)
+
+
+### Bug Fixes
+
+* Amount Type ([57f607f](https://github.com/bnb-chain/greenfield-cosmos-types/commit/57f607f925018d1ba9bae2278d9366e4fee2fa5e))
+
 # [0.4.0-alpha.4](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.3...v0.4.0-alpha.4) (2023-04-23)
 
 
