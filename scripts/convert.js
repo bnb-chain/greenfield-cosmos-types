@@ -7,6 +7,8 @@ const BASIC_MSG_EIP712_TYPES = {
     "number": "uint64",
     "boolean": "bool",
     "Uint8Array": "bytes",
+    "CoinSDKType": "TypeAmount",
+    "CoinSDKType[]": "TypeAmount[]"
 }
 
 const msgFiles = [
@@ -81,10 +83,6 @@ function msgInterfaceConvertEIP712(filePath) {
             }
 
             if (property.getType().isArray()) {
-                const ele = property.getType().getArrayElementType().getText()
-                if (!Object.keys(BASIC_MSG_EIP712_TYPES).includes(ele)) continue;
-
-                type = BASIC_MSG_EIP712_TYPES[ele] + "[]"
                 res["Msg"].push({
                     type,
                     name
