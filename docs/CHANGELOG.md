@@ -1,3 +1,10 @@
+# [0.4.0-alpha.6](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.5...v0.4.0-alpha.6) (2023-05-09)
+
+
+### Features
+
+* Add oracle ([8000ce3](https://github.com/bnb-chain/greenfield-cosmos-types/commit/8000ce3a63af6cc40d5db736b359242b89eac445))
+
 # [0.4.0-alpha.5](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.4...v0.4.0-alpha.5) (2023-05-05)
 
 
