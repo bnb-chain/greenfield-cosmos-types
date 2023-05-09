@@ -4,6 +4,7 @@ const {resolve, dirname} = require('path');
 const BASIC_MSG_EIP712_TYPES = {
     "string": "string",
     "Long": "uint64",
+    "Long[]": "uint64[]",
     "number": "uint64",
     "boolean": "bool",
     "Uint8Array": "bytes",
@@ -20,6 +21,7 @@ const msgFiles = [
     'cosmos/feegrant/v1beta1/tx.ts',
     'cosmos/gashub/v1alpha1/tx.ts',
     'cosmos/group/v1/tx.ts',
+    'cosmos/oracle/v1/tx.ts',
     'greenfield/bridge/tx.ts',
     'greenfield/challenge/tx.ts',
     'greenfield/payment/tx.ts',
