@@ -102,8 +102,10 @@ function msgInterfaceConvertEIP712(filePath) {
 
                 const pps = property.getType().getProperties()
                 res[type] = pps.map(p => {
+                    const ttype = p.getValueDeclaration().getType().getText();
+
                     return {
-                        type: p.getValueDeclaration().getType().getText(),
+                        type: BASIC_MSG_EIP712_TYPES[ttype],
                         name: p.getName(),
                     }
                 })
