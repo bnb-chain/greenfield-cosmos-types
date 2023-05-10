@@ -1,3 +1,10 @@
+# [0.4.0-alpha.7](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.6...v0.4.0-alpha.7) (2023-05-10)
+
+
+### Bug Fixes
+
+* Convert interface ([7bb4a72](https://github.com/bnb-chain/greenfield-cosmos-types/commit/7bb4a725390b276776b5b0c63c7915053114a97b))
+
 # [0.4.0-alpha.6](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.5...v0.4.0-alpha.6) (2023-05-09)
 
 
