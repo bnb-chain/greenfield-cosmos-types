@@ -19,7 +19,7 @@ const msgFiles = [
     'cosmos/distribution/v1beta1/tx.ts',
     'cosmos/evidence/v1beta1/tx.ts',
     'cosmos/feegrant/v1beta1/tx.ts',
-    'cosmos/gashub/v1alpha1/tx.ts',
+    'cosmos/gashub/v1beta1/tx.ts',
     'cosmos/group/v1/tx.ts',
     'cosmos/oracle/v1/tx.ts',
     'greenfield/bridge/tx.ts',
