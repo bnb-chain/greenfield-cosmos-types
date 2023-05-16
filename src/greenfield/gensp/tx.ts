@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { Rpc } from "../../helpers";
-export const protobufPackage = "bnbchain.greenfield.gensp";
+export const protobufPackage = "greenfield.gensp";
 /** Msg defines the Msg service. */
 
 export interface Msg {}

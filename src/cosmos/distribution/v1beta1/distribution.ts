@@ -7,7 +7,21 @@ export const protobufPackage = "cosmos.distribution.v1beta1";
 
 export interface Params {
   communityTax: string;
+  /**
+   * Deprecated: The base_proposer_reward field is deprecated and is no longer used
+   * in the x/distribution module's reward mechanism.
+   */
+
+  /** @deprecated */
+
   baseProposerReward: string;
+  /**
+   * Deprecated: The bonus_proposer_reward field is deprecated and is no longer used
+   * in the x/distribution module's reward mechanism.
+   */
+
+  /** @deprecated */
+
   bonusProposerReward: string;
   withdrawAddrEnabled: boolean;
 }
@@ -15,7 +29,11 @@ export interface Params {
 
 export interface ParamsSDKType {
   community_tax: string;
+  /** @deprecated */
+
   base_proposer_reward: string;
+  /** @deprecated */
+
   bonus_proposer_reward: string;
   withdraw_addr_enabled: boolean;
 }
@@ -155,7 +173,14 @@ export interface FeePoolSDKType {
  * CommunityPoolSpendProposal details a proposal for use of community funds,
  * together with how many coins are proposed to be spent, and to which
  * recipient account.
+ * 
+ * Deprecated: Do not use. As of the Cosmos SDK release v0.47.x, there is no
+ * longer a need for an explicit CommunityPoolSpendProposal. To spend community
+ * pool funds, a simple MsgCommunityPoolSpend can be invoked from the x/gov
+ * module via a v1 governance proposal.
  */
+
+/** @deprecated */
 
 export interface CommunityPoolSpendProposal {
   title: string;
@@ -167,7 +192,14 @@ export interface CommunityPoolSpendProposal {
  * CommunityPoolSpendProposal details a proposal for use of community funds,
  * together with how many coins are proposed to be spent, and to which
  * recipient account.
+ * 
+ * Deprecated: Do not use. As of the Cosmos SDK release v0.47.x, there is no
+ * longer a need for an explicit CommunityPoolSpendProposal. To spend community
+ * pool funds, a simple MsgCommunityPoolSpend can be invoked from the x/gov
+ * module via a v1 governance proposal.
  */
+
+/** @deprecated */
 
 export interface CommunityPoolSpendProposalSDKType {
   title: string;

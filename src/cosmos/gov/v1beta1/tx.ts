@@ -11,8 +11,13 @@ export const protobufPackage = "cosmos.gov.v1beta1";
  */
 
 export interface MsgSubmitProposal {
+  /** content is the proposal's content. */
   content?: Any;
+  /** initial_deposit is the deposit value that must be paid at proposal submission. */
+
   initialDeposit: Coin[];
+  /** proposer is the account address of the proposer. */
+
   proposer: string;
 }
 /**
@@ -28,6 +33,7 @@ export interface MsgSubmitProposalSDKType {
 /** MsgSubmitProposalResponse defines the Msg/SubmitProposal response type. */
 
 export interface MsgSubmitProposalResponse {
+  /** proposal_id defines the unique id of the proposal. */
   proposalId: Long;
 }
 /** MsgSubmitProposalResponse defines the Msg/SubmitProposal response type. */
@@ -38,8 +44,13 @@ export interface MsgSubmitProposalResponseSDKType {
 /** MsgVote defines a message to cast a vote. */
 
 export interface MsgVote {
+  /** proposal_id defines the unique id of the proposal. */
   proposalId: Long;
+  /** voter is the voter address for the proposal. */
+
   voter: string;
+  /** option defines the vote option. */
+
   option: VoteOption;
 }
 /** MsgVote defines a message to cast a vote. */
@@ -62,8 +73,13 @@ export interface MsgVoteResponseSDKType {}
  */
 
 export interface MsgVoteWeighted {
+  /** proposal_id defines the unique id of the proposal. */
   proposalId: Long;
+  /** voter is the voter address for the proposal. */
+
   voter: string;
+  /** options defines the weighted vote options. */
+
   options: WeightedVoteOption[];
 }
 /**
@@ -94,8 +110,13 @@ export interface MsgVoteWeightedResponseSDKType {}
 /** MsgDeposit defines a message to submit a deposit to an existing proposal. */
 
 export interface MsgDeposit {
+  /** proposal_id defines the unique id of the proposal. */
   proposalId: Long;
+  /** depositor defines the deposit addresses from the proposals. */
+
   depositor: string;
+  /** amount to be deposited by depositor. */
+
   amount: Coin[];
 }
 /** MsgDeposit defines a message to submit a deposit to an existing proposal. */

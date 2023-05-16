@@ -3,7 +3,7 @@ import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import { UInt64Value, UInt64ValueSDKType } from "../common/wrapper";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
-export const protobufPackage = "bnbchain.greenfield.permission";
+export const protobufPackage = "greenfield.permission";
 /** ActionType defines the operations you can execute in greenfield storage network */
 
 export enum ActionType {

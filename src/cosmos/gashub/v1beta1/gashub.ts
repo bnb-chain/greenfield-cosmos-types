@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Long, isSet, DeepPartial, Exact } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
-export const protobufPackage = "cosmos.gashub.v1alpha1";
+export const protobufPackage = "cosmos.gashub.v1beta1";
 /** Params defines the parameters for the gashub module. */
 
 export interface Params {
@@ -10,18 +10,14 @@ export interface Params {
   /** min_gas_per_byte is the minimum gas to be paid per byte of a transaction's */
 
   minGasPerByte: Long;
-  /** msg_gas_params is the list of gas params for each msg type */
-
-  msgGasParamsSet: MsgGasParams[];
 }
 /** Params defines the parameters for the gashub module. */
 
 export interface ParamsSDKType {
   max_tx_size: Long;
   min_gas_per_byte: Long;
-  msg_gas_params_set: MsgGasParamsSDKType[];
 }
-/** MsgGasParams defines gas for a msg type */
+/** MsgGasParams defines gas consumption for a msg type */
 
 export interface MsgGasParams {
   msgTypeUrl: string;
@@ -38,7 +34,7 @@ export interface MsgGasParams {
 
   grantAllowanceType?: MsgGasParams_DynamicGasParams;
 }
-/** MsgGasParams defines gas for a msg type */
+/** MsgGasParams defines gas consumption for a msg type */
 
 export interface MsgGasParamsSDKType {
   msg_type_url: string;
@@ -77,8 +73,7 @@ export interface MsgGasParams_DynamicGasParamsSDKType {
 function createBaseParams(): Params {
   return {
     maxTxSize: Long.UZERO,
-    minGasPerByte: Long.UZERO,
-    msgGasParamsSet: []
+    minGasPerByte: Long.UZERO
   };
 }
 
@@ -90,10 +85,6 @@ export const Params = {
 
     if (!message.minGasPerByte.isZero()) {
       writer.uint32(16).uint64(message.minGasPerByte);
-    }
-
-    for (const v of message.msgGasParamsSet) {
-      MsgGasParams.encode(v!, writer.uint32(26).fork()).ldelim();
     }
 
     return writer;
@@ -116,10 +107,6 @@ export const Params = {
           message.minGasPerByte = (reader.uint64() as Long);
           break;
 
-        case 3:
-          message.msgGasParamsSet.push(MsgGasParams.decode(reader, reader.uint32()));
-          break;
-
         default:
           reader.skipType(tag & 7);
           break;
@@ -132,8 +119,7 @@ export const Params = {
   fromJSON(object: any): Params {
     return {
       maxTxSize: isSet(object.maxTxSize) ? Long.fromValue(object.maxTxSize) : Long.UZERO,
-      minGasPerByte: isSet(object.minGasPerByte) ? Long.fromValue(object.minGasPerByte) : Long.UZERO,
-      msgGasParamsSet: Array.isArray(object?.msgGasParamsSet) ? object.msgGasParamsSet.map((e: any) => MsgGasParams.fromJSON(e)) : []
+      minGasPerByte: isSet(object.minGasPerByte) ? Long.fromValue(object.minGasPerByte) : Long.UZERO
     };
   },
 
@@ -141,13 +127,6 @@ export const Params = {
     const obj: any = {};
     message.maxTxSize !== undefined && (obj.maxTxSize = (message.maxTxSize || Long.UZERO).toString());
     message.minGasPerByte !== undefined && (obj.minGasPerByte = (message.minGasPerByte || Long.UZERO).toString());
-
-    if (message.msgGasParamsSet) {
-      obj.msgGasParamsSet = message.msgGasParamsSet.map(e => e ? MsgGasParams.toJSON(e) : undefined);
-    } else {
-      obj.msgGasParamsSet = [];
-    }
-
     return obj;
   },
 
@@ -155,15 +134,13 @@ export const Params = {
     const message = createBaseParams();
     message.maxTxSize = object.maxTxSize !== undefined && object.maxTxSize !== null ? Long.fromValue(object.maxTxSize) : Long.UZERO;
     message.minGasPerByte = object.minGasPerByte !== undefined && object.minGasPerByte !== null ? Long.fromValue(object.minGasPerByte) : Long.UZERO;
-    message.msgGasParamsSet = object.msgGasParamsSet?.map(e => MsgGasParams.fromPartial(e)) || [];
     return message;
   },
 
   fromSDK(object: ParamsSDKType): Params {
     return {
       maxTxSize: object?.max_tx_size,
-      minGasPerByte: object?.min_gas_per_byte,
-      msgGasParamsSet: Array.isArray(object?.msg_gas_params_set) ? object.msg_gas_params_set.map((e: any) => MsgGasParams.fromSDK(e)) : []
+      minGasPerByte: object?.min_gas_per_byte
     };
   },
 
@@ -171,13 +148,6 @@ export const Params = {
     const obj: any = {};
     obj.max_tx_size = message.maxTxSize;
     obj.min_gas_per_byte = message.minGasPerByte;
-
-    if (message.msgGasParamsSet) {
-      obj.msg_gas_params_set = message.msgGasParamsSet.map(e => e ? MsgGasParams.toSDK(e) : undefined);
-    } else {
-      obj.msg_gas_params_set = [];
-    }
-
     return obj;
   }
 

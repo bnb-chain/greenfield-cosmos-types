@@ -1,11 +1,11 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact } from "../../../../helpers";
-export const protobufPackage = "cosmos.app.module.v1alpha1";
-/** Module is the module config object for the cosmos.app v1 app module. */
+export const protobufPackage = "cosmos.params.module.v1";
+/** Module is the config object of the params module. */
 
 export interface Module {}
-/** Module is the module config object for the cosmos.app v1 app module. */
+/** Module is the config object of the params module. */
 
 export interface ModuleSDKType {}
 

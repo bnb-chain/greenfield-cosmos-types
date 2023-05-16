@@ -2,7 +2,7 @@
 import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long } from "../../helpers";
-export const protobufPackage = "bnbchain.greenfield.sp";
+export const protobufPackage = "greenfield.sp";
 /** Status is the status of a storage provider. */
 
 export enum Status {

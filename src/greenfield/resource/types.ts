@@ -1,5 +1,5 @@
 /* eslint-disable */
-export const protobufPackage = "bnbchain.greenfield.resource";
+export const protobufPackage = "greenfield.resource";
 export enum ResourceType {
   RESOURCE_TYPE_UNSPECIFIED = 0,
   RESOURCE_TYPE_BUCKET = 1,
