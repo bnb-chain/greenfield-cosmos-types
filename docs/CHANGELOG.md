@@ -1,3 +1,12 @@
+# [0.4.0-alpha.8](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.7...v0.4.0-alpha.8) (2023-05-16)
+
+
+### Features
+
+* New Types ([96dd968](https://github.com/bnb-chain/greenfield-cosmos-types/commit/96dd968b5cb0cc3979252129cd33034c8b6f4be8))
+* New Types ([cf198bc](https://github.com/bnb-chain/greenfield-cosmos-types/commit/cf198bcbc4e9ece094da5b7e626e5fd952c9b739))
+* New Types ([1d6d16e](https://github.com/bnb-chain/greenfield-cosmos-types/commit/1d6d16e69e381a0298884c34b4e38580d146cb54))
+
 # [0.4.0-alpha.7](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.6...v0.4.0-alpha.7) (2023-05-10)
 
 
