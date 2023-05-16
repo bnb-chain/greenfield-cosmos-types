@@ -29,6 +29,8 @@ telescope({
             excluded: {
                 protos: [
                     'cosmos/authz/v1beta1/event.proto',
+                    'cosmos/autocli/v1/query.proto',
+                    'cosmos/autocli/v1/options.proto',
                     'cosmos/base/reflection/v2alpha1/reflection.proto',
                     'cosmos/crypto/secp256r1/keys.proto',
                     'ibc/core/port/v1/query.proto',
