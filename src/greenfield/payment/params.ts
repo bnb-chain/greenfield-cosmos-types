@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
-export const protobufPackage = "bnbchain.greenfield.payment";
+export const protobufPackage = "greenfield.payment";
 /** Params defines the parameters for the module. */
 
 export interface Params {

@@ -3,7 +3,7 @@ import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Status, Description, DescriptionSDKType, statusFromJSON, statusToJSON } from "./types";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long } from "../../helpers";
-export const protobufPackage = "bnbchain.greenfield.sp";
+export const protobufPackage = "greenfield.sp";
 /** EventCreateStorageProvider is emitted when there is a storage provider created */
 
 export interface EventCreateStorageProvider {

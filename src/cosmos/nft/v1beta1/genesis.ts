@@ -8,6 +8,8 @@ export const protobufPackage = "cosmos.nft.v1beta1";
 export interface GenesisState {
   /** class defines the class of the nft type. */
   classes: Class[];
+  /** entry defines all nft owned by a person. */
+
   entries: Entry[];
 }
 /** GenesisState defines the nft module's genesis state. */

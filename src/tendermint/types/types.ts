@@ -150,7 +150,7 @@ export interface BlockIDSDKType {
   hash: Uint8Array;
   part_set_header?: PartSetHeaderSDKType;
 }
-/** Header defines the structure of a Tendermint block header. */
+/** Header defines the structure of a block header. */
 
 export interface Header {
   /** basic block info */
@@ -185,7 +185,7 @@ export interface Header {
 
   proposerAddress: Uint8Array;
 }
-/** Header defines the structure of a Tendermint block header. */
+/** Header defines the structure of a block header. */
 
 export interface HeaderSDKType {
   version?: ConsensusSDKType;
@@ -227,8 +227,6 @@ export interface Vote {
   type: SignedMsgType;
   height: Long;
   round: number;
-  /** zero if vote is nil. */
-
   blockId?: BlockID;
   timestamp?: Timestamp;
   validatorAddress: Uint8Array;
@@ -341,6 +339,18 @@ export interface TxProofSDKType {
   root_hash: Uint8Array;
   data: Uint8Array;
   proof?: ProofSDKType;
+}
+/** Reveal represents randao reveal from block proposer. */
+
+export interface Reveal {
+  height: Long;
+  signature: Uint8Array;
+}
+/** Reveal represents randao reveal from block proposer. */
+
+export interface RevealSDKType {
+  height: Long;
+  signature: Uint8Array;
 }
 
 function createBasePartSetHeader(): PartSetHeader {
@@ -1861,6 +1871,89 @@ export const TxProof = {
     obj.root_hash = message.rootHash;
     obj.data = message.data;
     message.proof !== undefined && (obj.proof = message.proof ? Proof.toSDK(message.proof) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseReveal(): Reveal {
+  return {
+    height: Long.ZERO,
+    signature: new Uint8Array()
+  };
+}
+
+export const Reveal = {
+  encode(message: Reveal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.height.isZero()) {
+      writer.uint32(8).int64(message.height);
+    }
+
+    if (message.signature.length !== 0) {
+      writer.uint32(18).bytes(message.signature);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Reveal {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReveal();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.height = (reader.int64() as Long);
+          break;
+
+        case 2:
+          message.signature = reader.bytes();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): Reveal {
+    return {
+      height: isSet(object.height) ? Long.fromValue(object.height) : Long.ZERO,
+      signature: isSet(object.signature) ? bytesFromBase64(object.signature) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: Reveal): unknown {
+    const obj: any = {};
+    message.height !== undefined && (obj.height = (message.height || Long.ZERO).toString());
+    message.signature !== undefined && (obj.signature = base64FromBytes(message.signature !== undefined ? message.signature : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Reveal>, I>>(object: I): Reveal {
+    const message = createBaseReveal();
+    message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
+    message.signature = object.signature ?? new Uint8Array();
+    return message;
+  },
+
+  fromSDK(object: RevealSDKType): Reveal {
+    return {
+      height: object?.height,
+      signature: object?.signature
+    };
+  },
+
+  toSDK(message: Reveal): RevealSDKType {
+    const obj: any = {};
+    obj.height = message.height;
+    obj.signature = message.signature;
     return obj;
   }
 

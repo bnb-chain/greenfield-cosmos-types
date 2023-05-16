@@ -2,7 +2,7 @@
 import { Params, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
-export const protobufPackage = "bnbchain.greenfield.challenge";
+export const protobufPackage = "greenfield.challenge";
 /** GenesisState defines the challenge module's genesis state. */
 
 export interface GenesisState {

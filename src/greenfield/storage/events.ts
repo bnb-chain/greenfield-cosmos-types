@@ -1,8 +1,9 @@
 /* eslint-disable */
 import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
+import { DeleteInfo, DeleteInfoSDKType } from "./types";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
-export const protobufPackage = "bnbchain.greenfield.storage";
+export const protobufPackage = "greenfield.storage";
 /** EventCreateBucket is emitted on MsgCreateBucket */
 
 export interface EventCreateBucket {
@@ -624,6 +625,18 @@ export interface EventMirrorGroupResultSDKType {
   status: number;
   group_name: string;
   group_id: string;
+}
+/** EventStalePolicyCleanup is emitted when specified block height's stale policies need to be Garbage collected */
+
+export interface EventStalePolicyCleanup {
+  blockNum: Long;
+  deleteInfo?: DeleteInfo;
+}
+/** EventStalePolicyCleanup is emitted when specified block height's stale policies need to be Garbage collected */
+
+export interface EventStalePolicyCleanupSDKType {
+  blockNum: Long;
+  delete_info?: DeleteInfoSDKType;
 }
 
 function createBaseEventCreateBucket(): EventCreateBucket {
@@ -3539,6 +3552,89 @@ export const EventMirrorGroupResult = {
     obj.status = message.status;
     obj.group_name = message.groupName;
     obj.group_id = message.groupId;
+    return obj;
+  }
+
+};
+
+function createBaseEventStalePolicyCleanup(): EventStalePolicyCleanup {
+  return {
+    blockNum: Long.ZERO,
+    deleteInfo: undefined
+  };
+}
+
+export const EventStalePolicyCleanup = {
+  encode(message: EventStalePolicyCleanup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.blockNum.isZero()) {
+      writer.uint32(8).int64(message.blockNum);
+    }
+
+    if (message.deleteInfo !== undefined) {
+      DeleteInfo.encode(message.deleteInfo, writer.uint32(18).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventStalePolicyCleanup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventStalePolicyCleanup();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.blockNum = (reader.int64() as Long);
+          break;
+
+        case 2:
+          message.deleteInfo = DeleteInfo.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventStalePolicyCleanup {
+    return {
+      blockNum: isSet(object.blockNum) ? Long.fromValue(object.blockNum) : Long.ZERO,
+      deleteInfo: isSet(object.deleteInfo) ? DeleteInfo.fromJSON(object.deleteInfo) : undefined
+    };
+  },
+
+  toJSON(message: EventStalePolicyCleanup): unknown {
+    const obj: any = {};
+    message.blockNum !== undefined && (obj.blockNum = (message.blockNum || Long.ZERO).toString());
+    message.deleteInfo !== undefined && (obj.deleteInfo = message.deleteInfo ? DeleteInfo.toJSON(message.deleteInfo) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventStalePolicyCleanup>, I>>(object: I): EventStalePolicyCleanup {
+    const message = createBaseEventStalePolicyCleanup();
+    message.blockNum = object.blockNum !== undefined && object.blockNum !== null ? Long.fromValue(object.blockNum) : Long.ZERO;
+    message.deleteInfo = object.deleteInfo !== undefined && object.deleteInfo !== null ? DeleteInfo.fromPartial(object.deleteInfo) : undefined;
+    return message;
+  },
+
+  fromSDK(object: EventStalePolicyCleanupSDKType): EventStalePolicyCleanup {
+    return {
+      blockNum: object?.blockNum,
+      deleteInfo: object.delete_info ? DeleteInfo.fromSDK(object.delete_info) : undefined
+    };
+  },
+
+  toSDK(message: EventStalePolicyCleanup): EventStalePolicyCleanupSDKType {
+    const obj: any = {};
+    obj.blockNum = message.blockNum;
+    message.deleteInfo !== undefined && (obj.delete_info = message.deleteInfo ? DeleteInfo.toSDK(message.deleteInfo) : undefined);
     return obj;
   }
 

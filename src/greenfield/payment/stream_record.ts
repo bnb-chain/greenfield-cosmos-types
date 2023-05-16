@@ -2,7 +2,7 @@
 import { StreamAccountStatus, OutFlow, OutFlowSDKType, streamAccountStatusFromJSON, streamAccountStatusToJSON } from "./base";
 import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
-export const protobufPackage = "bnbchain.greenfield.payment";
+export const protobufPackage = "greenfield.payment";
 /** Stream Payment Record of a stream account */
 
 export interface StreamRecord {

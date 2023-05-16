@@ -7,7 +7,7 @@ import { PaymentAccount, PaymentAccountSDKType } from "./payment_account";
 import { AutoSettleRecord, AutoSettleRecordSDKType } from "./auto_settle_record";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Long, Rpc } from "../../helpers";
-export const protobufPackage = "bnbchain.greenfield.payment";
+export const protobufPackage = "greenfield.payment";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
@@ -1781,13 +1781,13 @@ export class QueryClientImpl implements Query {
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "Params", data);
+    const promise = this.rpc.request("greenfield.payment.Query", "Params", data);
     return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
 
   StreamRecord(request: QueryGetStreamRecordRequest): Promise<QueryGetStreamRecordResponse> {
     const data = QueryGetStreamRecordRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "StreamRecord", data);
+    const promise = this.rpc.request("greenfield.payment.Query", "StreamRecord", data);
     return promise.then(data => QueryGetStreamRecordResponse.decode(new _m0.Reader(data)));
   }
 
@@ -1795,13 +1795,13 @@ export class QueryClientImpl implements Query {
     pagination: undefined
   }): Promise<QueryAllStreamRecordResponse> {
     const data = QueryAllStreamRecordRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "StreamRecordAll", data);
+    const promise = this.rpc.request("greenfield.payment.Query", "StreamRecordAll", data);
     return promise.then(data => QueryAllStreamRecordResponse.decode(new _m0.Reader(data)));
   }
 
   PaymentAccountCount(request: QueryGetPaymentAccountCountRequest): Promise<QueryGetPaymentAccountCountResponse> {
     const data = QueryGetPaymentAccountCountRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "PaymentAccountCount", data);
+    const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccountCount", data);
     return promise.then(data => QueryGetPaymentAccountCountResponse.decode(new _m0.Reader(data)));
   }
 
@@ -1809,13 +1809,13 @@ export class QueryClientImpl implements Query {
     pagination: undefined
   }): Promise<QueryAllPaymentAccountCountResponse> {
     const data = QueryAllPaymentAccountCountRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "PaymentAccountCountAll", data);
+    const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccountCountAll", data);
     return promise.then(data => QueryAllPaymentAccountCountResponse.decode(new _m0.Reader(data)));
   }
 
   PaymentAccount(request: QueryGetPaymentAccountRequest): Promise<QueryGetPaymentAccountResponse> {
     const data = QueryGetPaymentAccountRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "PaymentAccount", data);
+    const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccount", data);
     return promise.then(data => QueryGetPaymentAccountResponse.decode(new _m0.Reader(data)));
   }
 
@@ -1823,19 +1823,19 @@ export class QueryClientImpl implements Query {
     pagination: undefined
   }): Promise<QueryAllPaymentAccountResponse> {
     const data = QueryAllPaymentAccountRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "PaymentAccountAll", data);
+    const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccountAll", data);
     return promise.then(data => QueryAllPaymentAccountResponse.decode(new _m0.Reader(data)));
   }
 
   DynamicBalance(request: QueryDynamicBalanceRequest): Promise<QueryDynamicBalanceResponse> {
     const data = QueryDynamicBalanceRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "DynamicBalance", data);
+    const promise = this.rpc.request("greenfield.payment.Query", "DynamicBalance", data);
     return promise.then(data => QueryDynamicBalanceResponse.decode(new _m0.Reader(data)));
   }
 
   GetPaymentAccountsByOwner(request: QueryGetPaymentAccountsByOwnerRequest): Promise<QueryGetPaymentAccountsByOwnerResponse> {
     const data = QueryGetPaymentAccountsByOwnerRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "GetPaymentAccountsByOwner", data);
+    const promise = this.rpc.request("greenfield.payment.Query", "GetPaymentAccountsByOwner", data);
     return promise.then(data => QueryGetPaymentAccountsByOwnerResponse.decode(new _m0.Reader(data)));
   }
 
@@ -1843,7 +1843,7 @@ export class QueryClientImpl implements Query {
     pagination: undefined
   }): Promise<QueryAllAutoSettleRecordResponse> {
     const data = QueryAllAutoSettleRecordRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.payment.Query", "AutoSettleRecordAll", data);
+    const promise = this.rpc.request("greenfield.payment.Query", "AutoSettleRecordAll", data);
     return promise.then(data => QueryAllAutoSettleRecordResponse.decode(new _m0.Reader(data)));
   }
 

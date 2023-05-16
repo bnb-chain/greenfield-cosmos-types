@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Params, ParamsSDKType, Metadata, MetadataSDKType } from "./bank";
+import { Params, ParamsSDKType, Metadata, MetadataSDKType, SendEnabled, SendEnabledSDKType } from "./bank";
 import { Coin, CoinSDKType } from "../../base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../../helpers";
@@ -7,7 +7,7 @@ export const protobufPackage = "cosmos.bank.v1beta1";
 /** GenesisState defines the bank module's genesis state. */
 
 export interface GenesisState {
-  /** params defines all the paramaters of the module. */
+  /** params defines all the parameters of the module. */
   params?: Params;
   /** balances is an array containing the balances of all the accounts. */
 
@@ -18,9 +18,16 @@ export interface GenesisState {
    */
 
   supply: Coin[];
-  /** denom_metadata defines the metadata of the differents coins. */
+  /** denom_metadata defines the metadata of the different coins. */
 
   denomMetadata: Metadata[];
+  /**
+   * send_enabled defines the denoms where send is enabled or disabled.
+   * 
+   * Since: cosmos-sdk 0.47
+   */
+
+  sendEnabled: SendEnabled[];
 }
 /** GenesisState defines the bank module's genesis state. */
 
@@ -29,6 +36,7 @@ export interface GenesisStateSDKType {
   balances: BalanceSDKType[];
   supply: CoinSDKType[];
   denom_metadata: MetadataSDKType[];
+  send_enabled: SendEnabledSDKType[];
 }
 /**
  * Balance defines an account address and balance pair used in the bank module's
@@ -57,7 +65,8 @@ function createBaseGenesisState(): GenesisState {
     params: undefined,
     balances: [],
     supply: [],
-    denomMetadata: []
+    denomMetadata: [],
+    sendEnabled: []
   };
 }
 
@@ -77,6 +86,10 @@ export const GenesisState = {
 
     for (const v of message.denomMetadata) {
       Metadata.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+
+    for (const v of message.sendEnabled) {
+      SendEnabled.encode(v!, writer.uint32(42).fork()).ldelim();
     }
 
     return writer;
@@ -107,6 +120,10 @@ export const GenesisState = {
           message.denomMetadata.push(Metadata.decode(reader, reader.uint32()));
           break;
 
+        case 5:
+          message.sendEnabled.push(SendEnabled.decode(reader, reader.uint32()));
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -121,7 +138,8 @@ export const GenesisState = {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
       balances: Array.isArray(object?.balances) ? object.balances.map((e: any) => Balance.fromJSON(e)) : [],
       supply: Array.isArray(object?.supply) ? object.supply.map((e: any) => Coin.fromJSON(e)) : [],
-      denomMetadata: Array.isArray(object?.denomMetadata) ? object.denomMetadata.map((e: any) => Metadata.fromJSON(e)) : []
+      denomMetadata: Array.isArray(object?.denomMetadata) ? object.denomMetadata.map((e: any) => Metadata.fromJSON(e)) : [],
+      sendEnabled: Array.isArray(object?.sendEnabled) ? object.sendEnabled.map((e: any) => SendEnabled.fromJSON(e)) : []
     };
   },
 
@@ -147,6 +165,12 @@ export const GenesisState = {
       obj.denomMetadata = [];
     }
 
+    if (message.sendEnabled) {
+      obj.sendEnabled = message.sendEnabled.map(e => e ? SendEnabled.toJSON(e) : undefined);
+    } else {
+      obj.sendEnabled = [];
+    }
+
     return obj;
   },
 
@@ -156,6 +180,7 @@ export const GenesisState = {
     message.balances = object.balances?.map(e => Balance.fromPartial(e)) || [];
     message.supply = object.supply?.map(e => Coin.fromPartial(e)) || [];
     message.denomMetadata = object.denomMetadata?.map(e => Metadata.fromPartial(e)) || [];
+    message.sendEnabled = object.sendEnabled?.map(e => SendEnabled.fromPartial(e)) || [];
     return message;
   },
 
@@ -164,7 +189,8 @@ export const GenesisState = {
       params: object.params ? Params.fromSDK(object.params) : undefined,
       balances: Array.isArray(object?.balances) ? object.balances.map((e: any) => Balance.fromSDK(e)) : [],
       supply: Array.isArray(object?.supply) ? object.supply.map((e: any) => Coin.fromSDK(e)) : [],
-      denomMetadata: Array.isArray(object?.denom_metadata) ? object.denom_metadata.map((e: any) => Metadata.fromSDK(e)) : []
+      denomMetadata: Array.isArray(object?.denom_metadata) ? object.denom_metadata.map((e: any) => Metadata.fromSDK(e)) : [],
+      sendEnabled: Array.isArray(object?.send_enabled) ? object.send_enabled.map((e: any) => SendEnabled.fromSDK(e)) : []
     };
   },
 
@@ -188,6 +214,12 @@ export const GenesisState = {
       obj.denom_metadata = message.denomMetadata.map(e => e ? Metadata.toSDK(e) : undefined);
     } else {
       obj.denom_metadata = [];
+    }
+
+    if (message.sendEnabled) {
+      obj.send_enabled = message.sendEnabled.map(e => e ? SendEnabled.toSDK(e) : undefined);
+    } else {
+      obj.send_enabled = [];
     }
 
     return obj;

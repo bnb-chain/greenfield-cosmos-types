@@ -2,7 +2,7 @@
 import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
-export const protobufPackage = "bnbchain.greenfield.storage";
+export const protobufPackage = "greenfield.storage";
 export interface BucketInfo {
   /** owner is the account address of bucket creator, it is also the bucket owner. */
   owner: string;
@@ -250,6 +250,16 @@ export interface Ids {
 }
 export interface IdsSDKType {
   id: string[];
+}
+export interface DeleteInfo {
+  bucketIds?: Ids;
+  objectIds?: Ids;
+  groupIds?: Ids;
+}
+export interface DeleteInfoSDKType {
+  bucket_ids?: IdsSDKType;
+  object_ids?: IdsSDKType;
+  group_ids?: IdsSDKType;
 }
 
 function createBaseBucketInfo(): BucketInfo {
@@ -1593,6 +1603,103 @@ export const Ids = {
       obj.id = [];
     }
 
+    return obj;
+  }
+
+};
+
+function createBaseDeleteInfo(): DeleteInfo {
+  return {
+    bucketIds: undefined,
+    objectIds: undefined,
+    groupIds: undefined
+  };
+}
+
+export const DeleteInfo = {
+  encode(message: DeleteInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.bucketIds !== undefined) {
+      Ids.encode(message.bucketIds, writer.uint32(10).fork()).ldelim();
+    }
+
+    if (message.objectIds !== undefined) {
+      Ids.encode(message.objectIds, writer.uint32(18).fork()).ldelim();
+    }
+
+    if (message.groupIds !== undefined) {
+      Ids.encode(message.groupIds, writer.uint32(26).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteInfo();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketIds = Ids.decode(reader, reader.uint32());
+          break;
+
+        case 2:
+          message.objectIds = Ids.decode(reader, reader.uint32());
+          break;
+
+        case 3:
+          message.groupIds = Ids.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): DeleteInfo {
+    return {
+      bucketIds: isSet(object.bucketIds) ? Ids.fromJSON(object.bucketIds) : undefined,
+      objectIds: isSet(object.objectIds) ? Ids.fromJSON(object.objectIds) : undefined,
+      groupIds: isSet(object.groupIds) ? Ids.fromJSON(object.groupIds) : undefined
+    };
+  },
+
+  toJSON(message: DeleteInfo): unknown {
+    const obj: any = {};
+    message.bucketIds !== undefined && (obj.bucketIds = message.bucketIds ? Ids.toJSON(message.bucketIds) : undefined);
+    message.objectIds !== undefined && (obj.objectIds = message.objectIds ? Ids.toJSON(message.objectIds) : undefined);
+    message.groupIds !== undefined && (obj.groupIds = message.groupIds ? Ids.toJSON(message.groupIds) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteInfo>, I>>(object: I): DeleteInfo {
+    const message = createBaseDeleteInfo();
+    message.bucketIds = object.bucketIds !== undefined && object.bucketIds !== null ? Ids.fromPartial(object.bucketIds) : undefined;
+    message.objectIds = object.objectIds !== undefined && object.objectIds !== null ? Ids.fromPartial(object.objectIds) : undefined;
+    message.groupIds = object.groupIds !== undefined && object.groupIds !== null ? Ids.fromPartial(object.groupIds) : undefined;
+    return message;
+  },
+
+  fromSDK(object: DeleteInfoSDKType): DeleteInfo {
+    return {
+      bucketIds: object.bucket_ids ? Ids.fromSDK(object.bucket_ids) : undefined,
+      objectIds: object.object_ids ? Ids.fromSDK(object.object_ids) : undefined,
+      groupIds: object.group_ids ? Ids.fromSDK(object.group_ids) : undefined
+    };
+  },
+
+  toSDK(message: DeleteInfo): DeleteInfoSDKType {
+    const obj: any = {};
+    message.bucketIds !== undefined && (obj.bucket_ids = message.bucketIds ? Ids.toSDK(message.bucketIds) : undefined);
+    message.objectIds !== undefined && (obj.object_ids = message.objectIds ? Ids.toSDK(message.objectIds) : undefined);
+    message.groupIds !== undefined && (obj.group_ids = message.groupIds ? Ids.toSDK(message.groupIds) : undefined);
     return obj;
   }
 

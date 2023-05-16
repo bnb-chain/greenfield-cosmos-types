@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Any, AnySDKType } from "../../../google/protobuf/any";
 import { Coin, CoinSDKType } from "../../base/v1beta1/coin";
-import { VoteOption, WeightedVoteOption, WeightedVoteOptionSDKType, voteOptionFromJSON, voteOptionToJSON } from "./gov";
+import { VoteOption, WeightedVoteOption, WeightedVoteOptionSDKType, Params, ParamsSDKType, CrossChainParamsChange, CrossChainParamsChangeSDKType, voteOptionFromJSON, voteOptionToJSON } from "./gov";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.gov.v1";
@@ -11,12 +11,31 @@ export const protobufPackage = "cosmos.gov.v1";
  */
 
 export interface MsgSubmitProposal {
+  /** messages are the arbitrary messages to be executed if proposal passes. */
   messages: Any[];
+  /** initial_deposit is the deposit value that must be paid at proposal submission. */
+
   initialDeposit: Coin[];
+  /** proposer is the account address of the proposer. */
+
   proposer: string;
   /** metadata is any arbitrary metadata attached to the proposal. */
 
   metadata: string;
+  /**
+   * title is the title of the proposal.
+   * 
+   * Since: cosmos-sdk 0.47
+   */
+
+  title: string;
+  /**
+   * summary is the summary of the proposal
+   * 
+   * Since: cosmos-sdk 0.47
+   */
+
+  summary: string;
 }
 /**
  * MsgSubmitProposal defines an sdk.Msg type that supports submitting arbitrary
@@ -28,10 +47,13 @@ export interface MsgSubmitProposalSDKType {
   initial_deposit: CoinSDKType[];
   proposer: string;
   metadata: string;
+  title: string;
+  summary: string;
 }
 /** MsgSubmitProposalResponse defines the Msg/SubmitProposal response type. */
 
 export interface MsgSubmitProposalResponse {
+  /** proposal_id defines the unique id of the proposal. */
   proposalId: Long;
 }
 /** MsgSubmitProposalResponse defines the Msg/SubmitProposal response type. */
@@ -69,9 +91,16 @@ export interface MsgExecLegacyContentResponseSDKType {}
 /** MsgVote defines a message to cast a vote. */
 
 export interface MsgVote {
+  /** proposal_id defines the unique id of the proposal. */
   proposalId: Long;
+  /** voter is the voter address for the proposal. */
+
   voter: string;
+  /** option defines the vote option. */
+
   option: VoteOption;
+  /** metadata is any arbitrary metadata attached to the Vote. */
+
   metadata: string;
 }
 /** MsgVote defines a message to cast a vote. */
@@ -91,9 +120,16 @@ export interface MsgVoteResponseSDKType {}
 /** MsgVoteWeighted defines a message to cast a vote. */
 
 export interface MsgVoteWeighted {
+  /** proposal_id defines the unique id of the proposal. */
   proposalId: Long;
+  /** voter is the voter address for the proposal. */
+
   voter: string;
+  /** options defines the weighted vote options. */
+
   options: WeightedVoteOption[];
+  /** metadata is any arbitrary metadata attached to the VoteWeighted. */
+
   metadata: string;
 }
 /** MsgVoteWeighted defines a message to cast a vote. */
@@ -113,8 +149,13 @@ export interface MsgVoteWeightedResponseSDKType {}
 /** MsgDeposit defines a message to submit a deposit to an existing proposal. */
 
 export interface MsgDeposit {
+  /** proposal_id defines the unique id of the proposal. */
   proposalId: Long;
+  /** depositor defines the deposit addresses from the proposals. */
+
   depositor: string;
+  /** amount to be deposited by depositor. */
+
   amount: Coin[];
 }
 /** MsgDeposit defines a message to submit a deposit to an existing proposal. */
@@ -130,13 +171,79 @@ export interface MsgDepositResponse {}
 /** MsgDepositResponse defines the Msg/Deposit response type. */
 
 export interface MsgDepositResponseSDKType {}
+/**
+ * MsgUpdateParams is the Msg/UpdateParams request type.
+ * 
+ * Since: cosmos-sdk 0.47
+ */
+
+export interface MsgUpdateParams {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority: string;
+  /**
+   * params defines the x/gov parameters to update.
+   * 
+   * NOTE: All parameters must be supplied.
+   */
+
+  params?: Params;
+}
+/**
+ * MsgUpdateParams is the Msg/UpdateParams request type.
+ * 
+ * Since: cosmos-sdk 0.47
+ */
+
+export interface MsgUpdateParamsSDKType {
+  authority: string;
+  params?: ParamsSDKType;
+}
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ * 
+ * Since: cosmos-sdk 0.47
+ */
+
+export interface MsgUpdateParamsResponse {}
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ * 
+ * Since: cosmos-sdk 0.47
+ */
+
+export interface MsgUpdateParamsResponseSDKType {}
+/** MsgUpdateCrossChainParams for cross chain gov */
+
+export interface MsgUpdateCrossChainParams {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority: string;
+  /** for cross chain param change or contract upgrade */
+
+  params?: CrossChainParamsChange;
+}
+/** MsgUpdateCrossChainParams for cross chain gov */
+
+export interface MsgUpdateCrossChainParamsSDKType {
+  authority: string;
+  params?: CrossChainParamsChangeSDKType;
+}
+/** MsgUpdateCrossChainParamsResponse defines the response structure for executing a MsgUpdateCrossChainParams message. */
+
+export interface MsgUpdateCrossChainParamsResponse {}
+/** MsgUpdateCrossChainParamsResponse defines the response structure for executing a MsgUpdateCrossChainParams message. */
+
+export interface MsgUpdateCrossChainParamsResponseSDKType {}
 
 function createBaseMsgSubmitProposal(): MsgSubmitProposal {
   return {
     messages: [],
     initialDeposit: [],
     proposer: "",
-    metadata: ""
+    metadata: "",
+    title: "",
+    summary: ""
   };
 }
 
@@ -156,6 +263,14 @@ export const MsgSubmitProposal = {
 
     if (message.metadata !== "") {
       writer.uint32(34).string(message.metadata);
+    }
+
+    if (message.title !== "") {
+      writer.uint32(42).string(message.title);
+    }
+
+    if (message.summary !== "") {
+      writer.uint32(50).string(message.summary);
     }
 
     return writer;
@@ -186,6 +301,14 @@ export const MsgSubmitProposal = {
           message.metadata = reader.string();
           break;
 
+        case 5:
+          message.title = reader.string();
+          break;
+
+        case 6:
+          message.summary = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -200,7 +323,9 @@ export const MsgSubmitProposal = {
       messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Any.fromJSON(e)) : [],
       initialDeposit: Array.isArray(object?.initialDeposit) ? object.initialDeposit.map((e: any) => Coin.fromJSON(e)) : [],
       proposer: isSet(object.proposer) ? String(object.proposer) : "",
-      metadata: isSet(object.metadata) ? String(object.metadata) : ""
+      metadata: isSet(object.metadata) ? String(object.metadata) : "",
+      title: isSet(object.title) ? String(object.title) : "",
+      summary: isSet(object.summary) ? String(object.summary) : ""
     };
   },
 
@@ -221,6 +346,8 @@ export const MsgSubmitProposal = {
 
     message.proposer !== undefined && (obj.proposer = message.proposer);
     message.metadata !== undefined && (obj.metadata = message.metadata);
+    message.title !== undefined && (obj.title = message.title);
+    message.summary !== undefined && (obj.summary = message.summary);
     return obj;
   },
 
@@ -230,6 +357,8 @@ export const MsgSubmitProposal = {
     message.initialDeposit = object.initialDeposit?.map(e => Coin.fromPartial(e)) || [];
     message.proposer = object.proposer ?? "";
     message.metadata = object.metadata ?? "";
+    message.title = object.title ?? "";
+    message.summary = object.summary ?? "";
     return message;
   },
 
@@ -238,7 +367,9 @@ export const MsgSubmitProposal = {
       messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Any.fromSDK(e)) : [],
       initialDeposit: Array.isArray(object?.initial_deposit) ? object.initial_deposit.map((e: any) => Coin.fromSDK(e)) : [],
       proposer: object?.proposer,
-      metadata: object?.metadata
+      metadata: object?.metadata,
+      title: object?.title,
+      summary: object?.summary
     };
   },
 
@@ -259,6 +390,8 @@ export const MsgSubmitProposal = {
 
     obj.proposer = message.proposer;
     obj.metadata = message.metadata;
+    obj.title = message.title;
+    obj.summary = message.summary;
     return obj;
   }
 
@@ -966,10 +1099,280 @@ export const MsgDepositResponse = {
   }
 
 };
+
+function createBaseMsgUpdateParams(): MsgUpdateParams {
+  return {
+    authority: "",
+    params: undefined
+  };
+}
+
+export const MsgUpdateParams = {
+  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
+    if (message.params !== undefined) {
+      Params.encode(message.params, writer.uint32(18).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateParams();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+
+        case 2:
+          message.params = Params.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateParams {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined
+    };
+  },
+
+  toJSON(message: MsgUpdateParams): unknown {
+    const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
+    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParams>, I>>(object: I): MsgUpdateParams {
+    const message = createBaseMsgUpdateParams();
+    message.authority = object.authority ?? "";
+    message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
+    return message;
+  },
+
+  fromSDK(object: MsgUpdateParamsSDKType): MsgUpdateParams {
+    return {
+      authority: object?.authority,
+      params: object.params ? Params.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: MsgUpdateParams): MsgUpdateParamsSDKType {
+    const obj: any = {};
+    obj.authority = message.authority;
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
+  return {};
+}
+
+export const MsgUpdateParamsResponse = {
+  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateParamsResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateParamsResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateParamsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParamsResponse>, I>>(_: I): MsgUpdateParamsResponse {
+    const message = createBaseMsgUpdateParamsResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgUpdateParamsResponseSDKType): MsgUpdateParamsResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
+
+function createBaseMsgUpdateCrossChainParams(): MsgUpdateCrossChainParams {
+  return {
+    authority: "",
+    params: undefined
+  };
+}
+
+export const MsgUpdateCrossChainParams = {
+  encode(message: MsgUpdateCrossChainParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
+    if (message.params !== undefined) {
+      CrossChainParamsChange.encode(message.params, writer.uint32(18).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateCrossChainParams {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateCrossChainParams();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+
+        case 2:
+          message.params = CrossChainParamsChange.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateCrossChainParams {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      params: isSet(object.params) ? CrossChainParamsChange.fromJSON(object.params) : undefined
+    };
+  },
+
+  toJSON(message: MsgUpdateCrossChainParams): unknown {
+    const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
+    message.params !== undefined && (obj.params = message.params ? CrossChainParamsChange.toJSON(message.params) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateCrossChainParams>, I>>(object: I): MsgUpdateCrossChainParams {
+    const message = createBaseMsgUpdateCrossChainParams();
+    message.authority = object.authority ?? "";
+    message.params = object.params !== undefined && object.params !== null ? CrossChainParamsChange.fromPartial(object.params) : undefined;
+    return message;
+  },
+
+  fromSDK(object: MsgUpdateCrossChainParamsSDKType): MsgUpdateCrossChainParams {
+    return {
+      authority: object?.authority,
+      params: object.params ? CrossChainParamsChange.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: MsgUpdateCrossChainParams): MsgUpdateCrossChainParamsSDKType {
+    const obj: any = {};
+    obj.authority = message.authority;
+    message.params !== undefined && (obj.params = message.params ? CrossChainParamsChange.toSDK(message.params) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseMsgUpdateCrossChainParamsResponse(): MsgUpdateCrossChainParamsResponse {
+  return {};
+}
+
+export const MsgUpdateCrossChainParamsResponse = {
+  encode(_: MsgUpdateCrossChainParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateCrossChainParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateCrossChainParamsResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateCrossChainParamsResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateCrossChainParamsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateCrossChainParamsResponse>, I>>(_: I): MsgUpdateCrossChainParamsResponse {
+    const message = createBaseMsgUpdateCrossChainParamsResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgUpdateCrossChainParamsResponseSDKType): MsgUpdateCrossChainParamsResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateCrossChainParamsResponse): MsgUpdateCrossChainParamsResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
 /** Msg defines the gov Msg service. */
 
 export interface Msg {
-  /** SubmitProposal defines a method to create new proposal given a content. */
+  /** SubmitProposal defines a method to create new proposal given the messages. */
   SubmitProposal(request: MsgSubmitProposal): Promise<MsgSubmitProposalResponse>;
   /**
    * ExecLegacyContent defines a Msg to be in included in a MsgSubmitProposal
@@ -986,6 +1389,17 @@ export interface Msg {
   /** Deposit defines a method to add deposit on a specific proposal. */
 
   Deposit(request: MsgDeposit): Promise<MsgDepositResponse>;
+  /**
+   * UpdateParams defines a governance operation for updating the x/gov module
+   * parameters. The authority is defined in the keeper.
+   * 
+   * Since: cosmos-sdk 0.47
+   */
+
+  UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
+  /** UpdateCrossChainParams defines a method to send IBC package to update cross-chain params */
+
+  UpdateCrossChainParams(request: MsgUpdateCrossChainParams): Promise<MsgUpdateCrossChainParamsResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -997,6 +1411,8 @@ export class MsgClientImpl implements Msg {
     this.Vote = this.Vote.bind(this);
     this.VoteWeighted = this.VoteWeighted.bind(this);
     this.Deposit = this.Deposit.bind(this);
+    this.UpdateParams = this.UpdateParams.bind(this);
+    this.UpdateCrossChainParams = this.UpdateCrossChainParams.bind(this);
   }
 
   SubmitProposal(request: MsgSubmitProposal): Promise<MsgSubmitProposalResponse> {
@@ -1027,6 +1443,18 @@ export class MsgClientImpl implements Msg {
     const data = MsgDeposit.encode(request).finish();
     const promise = this.rpc.request("cosmos.gov.v1.Msg", "Deposit", data);
     return promise.then(data => MsgDepositResponse.decode(new _m0.Reader(data)));
+  }
+
+  UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
+    const data = MsgUpdateParams.encode(request).finish();
+    const promise = this.rpc.request("cosmos.gov.v1.Msg", "UpdateParams", data);
+    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
+  }
+
+  UpdateCrossChainParams(request: MsgUpdateCrossChainParams): Promise<MsgUpdateCrossChainParamsResponse> {
+    const data = MsgUpdateCrossChainParams.encode(request).finish();
+    const promise = this.rpc.request("cosmos.gov.v1.Msg", "UpdateCrossChainParams", data);
+    return promise.then(data => MsgUpdateCrossChainParamsResponse.decode(new _m0.Reader(data)));
   }
 
 }
