@@ -2,7 +2,7 @@
 import { VoteResult, voteResultFromJSON, voteResultToJSON } from "./types";
 import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
-export const protobufPackage = "greenfield.challenge";
+export const protobufPackage = "bnbchain.greenfield.challenge";
 /** EventStartChallenge to indicate a challenge has bee created. */
 
 export interface EventStartChallenge {

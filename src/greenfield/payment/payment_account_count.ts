@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
-export const protobufPackage = "greenfield.payment";
+export const protobufPackage = "bnbchain.greenfield.payment";
 /** PaymentAccountCount defines the state struct which stores the number of payment accounts for an account */
 
 export interface PaymentAccountCount {

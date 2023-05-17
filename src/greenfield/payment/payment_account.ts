@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
-export const protobufPackage = "greenfield.payment";
+export const protobufPackage = "bnbchain.greenfield.payment";
 /** PaymentAccount defines a payment account */
 
 export interface PaymentAccount {

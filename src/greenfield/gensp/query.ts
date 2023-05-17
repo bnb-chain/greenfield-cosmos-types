@@ -2,7 +2,7 @@
 import { Params, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
-export const protobufPackage = "greenfield.gensp";
+export const protobufPackage = "bnbchain.greenfield.gensp";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
@@ -157,7 +157,7 @@ export class QueryClientImpl implements Query {
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
-    const promise = this.rpc.request("greenfield.gensp.Query", "Params", data);
+    const promise = this.rpc.request("bnbchain.greenfield.gensp.Query", "Params", data);
     return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
 

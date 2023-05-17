@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
-export const protobufPackage = "greenfield.payment";
+export const protobufPackage = "bnbchain.greenfield.payment";
 /** StreamAccountStatus defines the status of a stream account */
 
 export enum StreamAccountStatus {

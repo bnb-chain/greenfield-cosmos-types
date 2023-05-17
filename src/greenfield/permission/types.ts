@@ -4,7 +4,7 @@ import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from "../resou
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
-export const protobufPackage = "greenfield.permission";
+export const protobufPackage = "bnbchain.greenfield.permission";
 export interface Policy {
   /** id is an unique u256 sequence for each policy. It also be used as NFT tokenID */
   id: string;

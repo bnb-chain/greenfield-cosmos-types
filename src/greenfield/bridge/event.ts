@@ -2,7 +2,7 @@
 import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
-export const protobufPackage = "greenfield.bridge";
+export const protobufPackage = "bnbchain.greenfield.bridge";
 export enum RefundReason {
   REFUND_REASON_UNKNOWN = 0,
   REFUND_REASON_INSUFFICIENT_BALANCE = 1,

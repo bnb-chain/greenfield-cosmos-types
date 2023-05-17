@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long, bytesFromBase64, base64FromBytes } from "../../helpers";
-export const protobufPackage = "greenfield.common";
+export const protobufPackage = "bnbchain.greenfield.common";
 /**
  * Wrapper message for `double`.
  * 

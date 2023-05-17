@@ -3,7 +3,7 @@ import { Params, ParamsSDKType } from "./params";
 import { StorageProvider, StorageProviderSDKType, SpStoragePrice, SpStoragePriceSDKType } from "./types";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
-export const protobufPackage = "greenfield.sp";
+export const protobufPackage = "bnbchain.greenfield.sp";
 /** GenesisState defines the sp module's genesis state. */
 
 export interface GenesisState {

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { ProposalStatus, Proposal, ProposalSDKType, Vote, VoteSDKType, VotingParams, VotingParamsSDKType, DepositParams, DepositParamsSDKType, TallyParams, TallyParamsSDKType, Params, ParamsSDKType, Deposit, DepositSDKType, TallyResult, TallyResultSDKType, proposalStatusFromJSON, proposalStatusToJSON } from "./gov";
+import { ProposalStatus, Proposal, ProposalSDKType, Vote, VoteSDKType, VotingParams, VotingParamsSDKType, DepositParams, DepositParamsSDKType, TallyParams, TallyParamsSDKType, Deposit, DepositSDKType, TallyResult, TallyResultSDKType, proposalStatusFromJSON, proposalStatusToJSON } from "./gov";
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../base/query/v1beta1/pagination";
 import { Long, isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
@@ -18,7 +18,6 @@ export interface QueryProposalRequestSDKType {
 /** QueryProposalResponse is the response type for the Query/Proposal RPC method. */
 
 export interface QueryProposalResponse {
-  /** proposal is the requested governance proposal. */
   proposal?: Proposal;
 }
 /** QueryProposalResponse is the response type for the Query/Proposal RPC method. */
@@ -55,7 +54,6 @@ export interface QueryProposalsRequestSDKType {
  */
 
 export interface QueryProposalsResponse {
-  /** proposals defines all the requested governance proposals. */
   proposals: Proposal[];
   /** pagination defines the pagination in the response. */
 
@@ -88,7 +86,7 @@ export interface QueryVoteRequestSDKType {
 /** QueryVoteResponse is the response type for the Query/Vote RPC method. */
 
 export interface QueryVoteResponse {
-  /** vote defines the queried vote. */
+  /** vote defined the queried vote. */
   vote?: Vote;
 }
 /** QueryVoteResponse is the response type for the Query/Vote RPC method. */
@@ -114,7 +112,7 @@ export interface QueryVotesRequestSDKType {
 /** QueryVotesResponse is the response type for the Query/Votes RPC method. */
 
 export interface QueryVotesResponse {
-  /** votes defines the queried votes. */
+  /** votes defined the queried votes. */
   votes: Vote[];
   /** pagination defines the pagination in the response. */
 
@@ -143,49 +141,21 @@ export interface QueryParamsRequestSDKType {
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 
 export interface QueryParamsResponse {
-  /**
-   * Deprecated: Prefer to use `params` instead.
-   * voting_params defines the parameters related to voting.
-   */
-
-  /** @deprecated */
+  /** voting_params defines the parameters related to voting. */
   votingParams?: VotingParams;
-  /**
-   * Deprecated: Prefer to use `params` instead.
-   * deposit_params defines the parameters related to deposit.
-   */
-
-  /** @deprecated */
+  /** deposit_params defines the parameters related to deposit. */
 
   depositParams?: DepositParams;
-  /**
-   * Deprecated: Prefer to use `params` instead.
-   * tally_params defines the parameters related to tally.
-   */
-
-  /** @deprecated */
+  /** tally_params defines the parameters related to tally. */
 
   tallyParams?: TallyParams;
-  /**
-   * params defines all the paramaters of x/gov module.
-   * 
-   * Since: cosmos-sdk 0.47
-   */
-
-  params?: Params;
 }
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 
 export interface QueryParamsResponseSDKType {
-  /** @deprecated */
   voting_params?: VotingParamsSDKType;
-  /** @deprecated */
-
   deposit_params?: DepositParamsSDKType;
-  /** @deprecated */
-
   tally_params?: TallyParamsSDKType;
-  params?: ParamsSDKType;
 }
 /** QueryDepositRequest is the request type for the Query/Deposit RPC method. */
 
@@ -231,7 +201,6 @@ export interface QueryDepositsRequestSDKType {
 /** QueryDepositsResponse is the response type for the Query/Deposits RPC method. */
 
 export interface QueryDepositsResponse {
-  /** deposits defines the requested deposits. */
   deposits: Deposit[];
   /** pagination defines the pagination in the response. */
 
@@ -1013,8 +982,7 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
   return {
     votingParams: undefined,
     depositParams: undefined,
-    tallyParams: undefined,
-    params: undefined
+    tallyParams: undefined
   };
 }
 
@@ -1030,10 +998,6 @@ export const QueryParamsResponse = {
 
     if (message.tallyParams !== undefined) {
       TallyParams.encode(message.tallyParams, writer.uint32(26).fork()).ldelim();
-    }
-
-    if (message.params !== undefined) {
-      Params.encode(message.params, writer.uint32(34).fork()).ldelim();
     }
 
     return writer;
@@ -1060,10 +1024,6 @@ export const QueryParamsResponse = {
           message.tallyParams = TallyParams.decode(reader, reader.uint32());
           break;
 
-        case 4:
-          message.params = Params.decode(reader, reader.uint32());
-          break;
-
         default:
           reader.skipType(tag & 7);
           break;
@@ -1077,8 +1037,7 @@ export const QueryParamsResponse = {
     return {
       votingParams: isSet(object.votingParams) ? VotingParams.fromJSON(object.votingParams) : undefined,
       depositParams: isSet(object.depositParams) ? DepositParams.fromJSON(object.depositParams) : undefined,
-      tallyParams: isSet(object.tallyParams) ? TallyParams.fromJSON(object.tallyParams) : undefined,
-      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined
+      tallyParams: isSet(object.tallyParams) ? TallyParams.fromJSON(object.tallyParams) : undefined
     };
   },
 
@@ -1087,7 +1046,6 @@ export const QueryParamsResponse = {
     message.votingParams !== undefined && (obj.votingParams = message.votingParams ? VotingParams.toJSON(message.votingParams) : undefined);
     message.depositParams !== undefined && (obj.depositParams = message.depositParams ? DepositParams.toJSON(message.depositParams) : undefined);
     message.tallyParams !== undefined && (obj.tallyParams = message.tallyParams ? TallyParams.toJSON(message.tallyParams) : undefined);
-    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     return obj;
   },
 
@@ -1096,7 +1054,6 @@ export const QueryParamsResponse = {
     message.votingParams = object.votingParams !== undefined && object.votingParams !== null ? VotingParams.fromPartial(object.votingParams) : undefined;
     message.depositParams = object.depositParams !== undefined && object.depositParams !== null ? DepositParams.fromPartial(object.depositParams) : undefined;
     message.tallyParams = object.tallyParams !== undefined && object.tallyParams !== null ? TallyParams.fromPartial(object.tallyParams) : undefined;
-    message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     return message;
   },
 
@@ -1104,8 +1061,7 @@ export const QueryParamsResponse = {
     return {
       votingParams: object.voting_params ? VotingParams.fromSDK(object.voting_params) : undefined,
       depositParams: object.deposit_params ? DepositParams.fromSDK(object.deposit_params) : undefined,
-      tallyParams: object.tally_params ? TallyParams.fromSDK(object.tally_params) : undefined,
-      params: object.params ? Params.fromSDK(object.params) : undefined
+      tallyParams: object.tally_params ? TallyParams.fromSDK(object.tally_params) : undefined
     };
   },
 
@@ -1114,7 +1070,6 @@ export const QueryParamsResponse = {
     message.votingParams !== undefined && (obj.voting_params = message.votingParams ? VotingParams.toSDK(message.votingParams) : undefined);
     message.depositParams !== undefined && (obj.deposit_params = message.depositParams ? DepositParams.toSDK(message.depositParams) : undefined);
     message.tallyParams !== undefined && (obj.tally_params = message.tallyParams ? TallyParams.toSDK(message.tallyParams) : undefined);
-    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
   }
 

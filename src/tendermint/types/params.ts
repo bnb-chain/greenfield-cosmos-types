@@ -39,12 +39,21 @@ export interface BlockParams {
    */
 
   maxGas: Long;
+  /**
+   * Minimum time increment between consecutive blocks (in milliseconds) If the
+   * block header timestamp is ahead of the system clock, decrease this value.
+   * 
+   * Not exposed to the application.
+   */
+
+  timeIotaMs: Long;
 }
 /** BlockParams contains limits on the block size. */
 
 export interface BlockParamsSDKType {
   max_bytes: Long;
   max_gas: Long;
+  time_iota_ms: Long;
 }
 /** EvidenceParams determine how we handle evidence of malfeasance. */
 
@@ -99,12 +108,12 @@ export interface ValidatorParamsSDKType {
 /** VersionParams contains the ABCI application version. */
 
 export interface VersionParams {
-  app: Long;
+  appVersion: Long;
 }
 /** VersionParams contains the ABCI application version. */
 
 export interface VersionParamsSDKType {
-  app: Long;
+  app_version: Long;
 }
 /**
  * HashedParams is a subset of ConsensusParams.
@@ -241,7 +250,8 @@ export const ConsensusParams = {
 function createBaseBlockParams(): BlockParams {
   return {
     maxBytes: Long.ZERO,
-    maxGas: Long.ZERO
+    maxGas: Long.ZERO,
+    timeIotaMs: Long.ZERO
   };
 }
 
@@ -253,6 +263,10 @@ export const BlockParams = {
 
     if (!message.maxGas.isZero()) {
       writer.uint32(16).int64(message.maxGas);
+    }
+
+    if (!message.timeIotaMs.isZero()) {
+      writer.uint32(24).int64(message.timeIotaMs);
     }
 
     return writer;
@@ -275,6 +289,10 @@ export const BlockParams = {
           message.maxGas = (reader.int64() as Long);
           break;
 
+        case 3:
+          message.timeIotaMs = (reader.int64() as Long);
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -287,7 +305,8 @@ export const BlockParams = {
   fromJSON(object: any): BlockParams {
     return {
       maxBytes: isSet(object.maxBytes) ? Long.fromValue(object.maxBytes) : Long.ZERO,
-      maxGas: isSet(object.maxGas) ? Long.fromValue(object.maxGas) : Long.ZERO
+      maxGas: isSet(object.maxGas) ? Long.fromValue(object.maxGas) : Long.ZERO,
+      timeIotaMs: isSet(object.timeIotaMs) ? Long.fromValue(object.timeIotaMs) : Long.ZERO
     };
   },
 
@@ -295,6 +314,7 @@ export const BlockParams = {
     const obj: any = {};
     message.maxBytes !== undefined && (obj.maxBytes = (message.maxBytes || Long.ZERO).toString());
     message.maxGas !== undefined && (obj.maxGas = (message.maxGas || Long.ZERO).toString());
+    message.timeIotaMs !== undefined && (obj.timeIotaMs = (message.timeIotaMs || Long.ZERO).toString());
     return obj;
   },
 
@@ -302,13 +322,15 @@ export const BlockParams = {
     const message = createBaseBlockParams();
     message.maxBytes = object.maxBytes !== undefined && object.maxBytes !== null ? Long.fromValue(object.maxBytes) : Long.ZERO;
     message.maxGas = object.maxGas !== undefined && object.maxGas !== null ? Long.fromValue(object.maxGas) : Long.ZERO;
+    message.timeIotaMs = object.timeIotaMs !== undefined && object.timeIotaMs !== null ? Long.fromValue(object.timeIotaMs) : Long.ZERO;
     return message;
   },
 
   fromSDK(object: BlockParamsSDKType): BlockParams {
     return {
       maxBytes: object?.max_bytes,
-      maxGas: object?.max_gas
+      maxGas: object?.max_gas,
+      timeIotaMs: object?.time_iota_ms
     };
   },
 
@@ -316,6 +338,7 @@ export const BlockParams = {
     const obj: any = {};
     obj.max_bytes = message.maxBytes;
     obj.max_gas = message.maxGas;
+    obj.time_iota_ms = message.timeIotaMs;
     return obj;
   }
 
@@ -501,14 +524,14 @@ export const ValidatorParams = {
 
 function createBaseVersionParams(): VersionParams {
   return {
-    app: Long.UZERO
+    appVersion: Long.UZERO
   };
 }
 
 export const VersionParams = {
   encode(message: VersionParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.app.isZero()) {
-      writer.uint32(8).uint64(message.app);
+    if (!message.appVersion.isZero()) {
+      writer.uint32(8).uint64(message.appVersion);
     }
 
     return writer;
@@ -524,7 +547,7 @@ export const VersionParams = {
 
       switch (tag >>> 3) {
         case 1:
-          message.app = (reader.uint64() as Long);
+          message.appVersion = (reader.uint64() as Long);
           break;
 
         default:
@@ -538,31 +561,31 @@ export const VersionParams = {
 
   fromJSON(object: any): VersionParams {
     return {
-      app: isSet(object.app) ? Long.fromValue(object.app) : Long.UZERO
+      appVersion: isSet(object.appVersion) ? Long.fromValue(object.appVersion) : Long.UZERO
     };
   },
 
   toJSON(message: VersionParams): unknown {
     const obj: any = {};
-    message.app !== undefined && (obj.app = (message.app || Long.UZERO).toString());
+    message.appVersion !== undefined && (obj.appVersion = (message.appVersion || Long.UZERO).toString());
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<VersionParams>, I>>(object: I): VersionParams {
     const message = createBaseVersionParams();
-    message.app = object.app !== undefined && object.app !== null ? Long.fromValue(object.app) : Long.UZERO;
+    message.appVersion = object.appVersion !== undefined && object.appVersion !== null ? Long.fromValue(object.appVersion) : Long.UZERO;
     return message;
   },
 
   fromSDK(object: VersionParamsSDKType): VersionParams {
     return {
-      app: object?.app
+      appVersion: object?.app_version
     };
   },
 
   toSDK(message: VersionParams): VersionParamsSDKType {
     const obj: any = {};
-    obj.app = message.app;
+    obj.app_version = message.appVersion;
     return obj;
   }
 

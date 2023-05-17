@@ -7,27 +7,13 @@ export const protobufPackage = "cosmos.evidence.v1beta1";
 /** QueryEvidenceRequest is the request type for the Query/Evidence RPC method. */
 
 export interface QueryEvidenceRequest {
-  /**
-   * evidence_hash defines the hash of the requested evidence.
-   * Deprecated: Use hash, a HEX encoded string, instead.
-   */
-
-  /** @deprecated */
+  /** evidence_hash defines the hash of the requested evidence. */
   evidenceHash: Uint8Array;
-  /**
-   * hash defines the evidence hash of the requested evidence.
-   * 
-   * Since: cosmos-sdk 0.47
-   */
-
-  hash: string;
 }
 /** QueryEvidenceRequest is the request type for the Query/Evidence RPC method. */
 
 export interface QueryEvidenceRequestSDKType {
-  /** @deprecated */
   evidence_hash: Uint8Array;
-  hash: string;
 }
 /** QueryEvidenceResponse is the response type for the Query/Evidence RPC method. */
 
@@ -81,8 +67,7 @@ export interface QueryAllEvidenceResponseSDKType {
 
 function createBaseQueryEvidenceRequest(): QueryEvidenceRequest {
   return {
-    evidenceHash: new Uint8Array(),
-    hash: ""
+    evidenceHash: new Uint8Array()
   };
 }
 
@@ -90,10 +75,6 @@ export const QueryEvidenceRequest = {
   encode(message: QueryEvidenceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.evidenceHash.length !== 0) {
       writer.uint32(10).bytes(message.evidenceHash);
-    }
-
-    if (message.hash !== "") {
-      writer.uint32(18).string(message.hash);
     }
 
     return writer;
@@ -112,10 +93,6 @@ export const QueryEvidenceRequest = {
           message.evidenceHash = reader.bytes();
           break;
 
-        case 2:
-          message.hash = reader.string();
-          break;
-
         default:
           reader.skipType(tag & 7);
           break;
@@ -127,36 +104,31 @@ export const QueryEvidenceRequest = {
 
   fromJSON(object: any): QueryEvidenceRequest {
     return {
-      evidenceHash: isSet(object.evidenceHash) ? bytesFromBase64(object.evidenceHash) : new Uint8Array(),
-      hash: isSet(object.hash) ? String(object.hash) : ""
+      evidenceHash: isSet(object.evidenceHash) ? bytesFromBase64(object.evidenceHash) : new Uint8Array()
     };
   },
 
   toJSON(message: QueryEvidenceRequest): unknown {
     const obj: any = {};
     message.evidenceHash !== undefined && (obj.evidenceHash = base64FromBytes(message.evidenceHash !== undefined ? message.evidenceHash : new Uint8Array()));
-    message.hash !== undefined && (obj.hash = message.hash);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryEvidenceRequest>, I>>(object: I): QueryEvidenceRequest {
     const message = createBaseQueryEvidenceRequest();
     message.evidenceHash = object.evidenceHash ?? new Uint8Array();
-    message.hash = object.hash ?? "";
     return message;
   },
 
   fromSDK(object: QueryEvidenceRequestSDKType): QueryEvidenceRequest {
     return {
-      evidenceHash: object?.evidence_hash,
-      hash: object?.hash
+      evidenceHash: object?.evidence_hash
     };
   },
 
   toSDK(message: QueryEvidenceRequest): QueryEvidenceRequestSDKType {
     const obj: any = {};
     obj.evidence_hash = message.evidenceHash;
-    obj.hash = message.hash;
     return obj;
   }
 

@@ -6,7 +6,7 @@ import { PaymentAccount, PaymentAccountSDKType } from "./payment_account";
 import { AutoSettleRecord, AutoSettleRecordSDKType } from "./auto_settle_record";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
-export const protobufPackage = "greenfield.payment";
+export const protobufPackage = "bnbchain.greenfield.payment";
 /** GenesisState defines the payment module's genesis state. */
 
 export interface GenesisState {

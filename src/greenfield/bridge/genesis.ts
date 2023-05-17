@@ -2,7 +2,7 @@
 import { Params, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
-export const protobufPackage = "greenfield.bridge";
+export const protobufPackage = "bnbchain.greenfield.bridge";
 /** GenesisState defines the bridge module's genesis state. */
 
 export interface GenesisState {

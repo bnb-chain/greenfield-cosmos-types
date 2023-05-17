@@ -14,8 +14,6 @@ export interface BaseVestingAccount {
   originalVesting: Coin[];
   delegatedFree: Coin[];
   delegatedVesting: Coin[];
-  /** Vesting end time, as unix timestamp (in seconds). */
-
   endTime: Long;
 }
 /**
@@ -37,8 +35,6 @@ export interface BaseVestingAccountSDKType {
 
 export interface ContinuousVestingAccount {
   baseVestingAccount?: BaseVestingAccount;
-  /** Vesting start time, as unix timestamp (in seconds). */
-
   startTime: Long;
 }
 /**
@@ -71,7 +67,6 @@ export interface DelayedVestingAccountSDKType {
 /** Period defines a length of time and amount of coins that will vest. */
 
 export interface Period {
-  /** Period duration in seconds. */
   length: Long;
   amount: Coin[];
 }

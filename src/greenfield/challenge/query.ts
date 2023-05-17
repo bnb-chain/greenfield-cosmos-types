@@ -2,7 +2,7 @@
 import { Params, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Long, Rpc } from "../../helpers";
-export const protobufPackage = "greenfield.challenge";
+export const protobufPackage = "bnbchain.greenfield.challenge";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
@@ -574,19 +574,19 @@ export class QueryClientImpl implements Query {
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
-    const promise = this.rpc.request("greenfield.challenge.Query", "Params", data);
+    const promise = this.rpc.request("bnbchain.greenfield.challenge.Query", "Params", data);
     return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
 
   LatestAttestedChallenges(request: QueryLatestAttestedChallengesRequest = {}): Promise<QueryLatestAttestedChallengesResponse> {
     const data = QueryLatestAttestedChallengesRequest.encode(request).finish();
-    const promise = this.rpc.request("greenfield.challenge.Query", "LatestAttestedChallenges", data);
+    const promise = this.rpc.request("bnbchain.greenfield.challenge.Query", "LatestAttestedChallenges", data);
     return promise.then(data => QueryLatestAttestedChallengesResponse.decode(new _m0.Reader(data)));
   }
 
   InturnAttestationSubmitter(request: QueryInturnAttestationSubmitterRequest = {}): Promise<QueryInturnAttestationSubmitterResponse> {
     const data = QueryInturnAttestationSubmitterRequest.encode(request).finish();
-    const promise = this.rpc.request("greenfield.challenge.Query", "InturnAttestationSubmitter", data);
+    const promise = this.rpc.request("bnbchain.greenfield.challenge.Query", "InturnAttestationSubmitter", data);
     return promise.then(data => QueryInturnAttestationSubmitterResponse.decode(new _m0.Reader(data)));
   }
 

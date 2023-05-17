@@ -2,7 +2,7 @@
 import { StreamAccountStatus, OutFlow, OutFlowSDKType, streamAccountStatusFromJSON, streamAccountStatusToJSON } from "./base";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long } from "../../helpers";
-export const protobufPackage = "greenfield.payment";
+export const protobufPackage = "bnbchain.greenfield.payment";
 export enum FeePreviewType {
   FEE_PREVIEW_TYPE_PRELOCKED_FEE = 0,
   FEE_PREVIEW_TYPE_UNLOCKED_FEE = 1,

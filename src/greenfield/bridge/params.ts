@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
-export const protobufPackage = "greenfield.bridge";
+export const protobufPackage = "bnbchain.greenfield.bridge";
 /** Params defines the parameters for the module. */
 
 export interface Params {

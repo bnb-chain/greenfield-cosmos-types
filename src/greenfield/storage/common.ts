@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Long, isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
-export const protobufPackage = "greenfield.storage";
+export const protobufPackage = "bnbchain.greenfield.storage";
 /**
  * SourceType represents the source of resource creation, which can
  * from Greenfield native or from a cross-chain transfer from BSC

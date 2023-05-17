@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
-export const protobufPackage = "greenfield.gensp";
+export const protobufPackage = "bnbchain.greenfield.gensp";
 /**
  * GenesisState defines the gensp module's genesis state.
  * GenesisState defines the raw genesis transaction in JSON.

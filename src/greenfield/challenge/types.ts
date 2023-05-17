@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Long, isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
-export const protobufPackage = "greenfield.challenge";
+export const protobufPackage = "bnbchain.greenfield.challenge";
 /** VoteResult defines the result attestation for a challenge. */
 
 export enum VoteResult {
