@@ -1,3 +1,10 @@
+# [0.4.0-alpha.10](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.9...v0.4.0-alpha.10) (2023-05-27)
+
+
+### Features
+
+* Multi msg ([4373b7f](https://github.com/bnb-chain/greenfield-cosmos-types/commit/4373b7fd1dd9c7ca3684925865fda3c796df0075))
+
 # [0.4.0-alpha.9](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.8...v0.4.0-alpha.9) (2023-05-17)
 
 
