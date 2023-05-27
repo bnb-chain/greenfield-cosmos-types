@@ -421,6 +421,9 @@ export interface EventCreateGroup {
   /** members define the all the address of the members. */
 
   members: string[];
+  /** extra defines extra info for the group */
+
+  extra: string;
 }
 /** EventCreateGroup is emitted on MsgCreateGroup */
 
@@ -430,6 +433,7 @@ export interface EventCreateGroupSDKType {
   group_id: string;
   source_type: SourceType;
   members: string[];
+  extra: string;
 }
 /** EventDeleteGroup is emitted on MsgDeleteGroup */
 
@@ -503,6 +507,33 @@ export interface EventUpdateGroupMemberSDKType {
   group_id: string;
   members_to_add: string[];
   members_to_delete: string[];
+}
+/** EventUpdateGroupExtra is emitted on MsgUpdateGroupExtra */
+
+export interface EventUpdateGroupExtra {
+  /** operator define the account address of operator who update the group member */
+  operator: string;
+  /** owner define the account address of group owner */
+
+  owner: string;
+  /** group_name define the name of the group */
+
+  groupName: string;
+  /** id define an u256 id for group */
+
+  groupId: string;
+  /** extra defines extra info for the group to update */
+
+  extra: string;
+}
+/** EventUpdateGroupExtra is emitted on MsgUpdateGroupExtra */
+
+export interface EventUpdateGroupExtraSDKType {
+  operator: string;
+  owner: string;
+  group_name: string;
+  group_id: string;
+  extra: string;
 }
 /** EventMirrorBucket is emitted on MirrorBucket */
 
@@ -2447,7 +2478,8 @@ function createBaseEventCreateGroup(): EventCreateGroup {
     groupName: "",
     groupId: "",
     sourceType: 0,
-    members: []
+    members: [],
+    extra: ""
   };
 }
 
@@ -2471,6 +2503,10 @@ export const EventCreateGroup = {
 
     for (const v of message.members) {
       writer.uint32(42).string(v!);
+    }
+
+    if (message.extra !== "") {
+      writer.uint32(50).string(message.extra);
     }
 
     return writer;
@@ -2505,6 +2541,10 @@ export const EventCreateGroup = {
           message.members.push(reader.string());
           break;
 
+        case 6:
+          message.extra = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -2520,7 +2560,8 @@ export const EventCreateGroup = {
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
       groupId: isSet(object.groupId) ? String(object.groupId) : "",
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
-      members: Array.isArray(object?.members) ? object.members.map((e: any) => String(e)) : []
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => String(e)) : [],
+      extra: isSet(object.extra) ? String(object.extra) : ""
     };
   },
 
@@ -2537,6 +2578,7 @@ export const EventCreateGroup = {
       obj.members = [];
     }
 
+    message.extra !== undefined && (obj.extra = message.extra);
     return obj;
   },
 
@@ -2547,6 +2589,7 @@ export const EventCreateGroup = {
     message.groupId = object.groupId ?? "";
     message.sourceType = object.sourceType ?? 0;
     message.members = object.members?.map(e => e) || [];
+    message.extra = object.extra ?? "";
     return message;
   },
 
@@ -2556,7 +2599,8 @@ export const EventCreateGroup = {
       groupName: object?.group_name,
       groupId: object?.group_id,
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
-      members: Array.isArray(object?.members) ? object.members.map((e: any) => e) : []
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => e) : [],
+      extra: object?.extra
     };
   },
 
@@ -2573,6 +2617,7 @@ export const EventCreateGroup = {
       obj.members = [];
     }
 
+    obj.extra = message.extra;
     return obj;
   }
 
@@ -2942,6 +2987,131 @@ export const EventUpdateGroupMember = {
       obj.members_to_delete = [];
     }
 
+    return obj;
+  }
+
+};
+
+function createBaseEventUpdateGroupExtra(): EventUpdateGroupExtra {
+  return {
+    operator: "",
+    owner: "",
+    groupName: "",
+    groupId: "",
+    extra: ""
+  };
+}
+
+export const EventUpdateGroupExtra = {
+  encode(message: EventUpdateGroupExtra, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.owner !== "") {
+      writer.uint32(18).string(message.owner);
+    }
+
+    if (message.groupName !== "") {
+      writer.uint32(26).string(message.groupName);
+    }
+
+    if (message.groupId !== "") {
+      writer.uint32(34).string(message.groupId);
+    }
+
+    if (message.extra !== "") {
+      writer.uint32(42).string(message.extra);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateGroupExtra {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventUpdateGroupExtra();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.owner = reader.string();
+          break;
+
+        case 3:
+          message.groupName = reader.string();
+          break;
+
+        case 4:
+          message.groupId = reader.string();
+          break;
+
+        case 5:
+          message.extra = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventUpdateGroupExtra {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      owner: isSet(object.owner) ? String(object.owner) : "",
+      groupName: isSet(object.groupName) ? String(object.groupName) : "",
+      groupId: isSet(object.groupId) ? String(object.groupId) : "",
+      extra: isSet(object.extra) ? String(object.extra) : ""
+    };
+  },
+
+  toJSON(message: EventUpdateGroupExtra): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.owner !== undefined && (obj.owner = message.owner);
+    message.groupName !== undefined && (obj.groupName = message.groupName);
+    message.groupId !== undefined && (obj.groupId = message.groupId);
+    message.extra !== undefined && (obj.extra = message.extra);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventUpdateGroupExtra>, I>>(object: I): EventUpdateGroupExtra {
+    const message = createBaseEventUpdateGroupExtra();
+    message.operator = object.operator ?? "";
+    message.owner = object.owner ?? "";
+    message.groupName = object.groupName ?? "";
+    message.groupId = object.groupId ?? "";
+    message.extra = object.extra ?? "";
+    return message;
+  },
+
+  fromSDK(object: EventUpdateGroupExtraSDKType): EventUpdateGroupExtra {
+    return {
+      operator: object?.operator,
+      owner: object?.owner,
+      groupName: object?.group_name,
+      groupId: object?.group_id,
+      extra: object?.extra
+    };
+  },
+
+  toSDK(message: EventUpdateGroupExtra): EventUpdateGroupExtraSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.owner = message.owner;
+    obj.group_name = message.groupName;
+    obj.group_id = message.groupId;
+    obj.extra = message.extra;
     return obj;
   }
 

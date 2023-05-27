@@ -160,12 +160,16 @@ export interface GroupInfo {
   /** id is the unique identifier of group */
 
   id: string;
+  /** extra is used to store extra info for the group */
+
+  extra: string;
 }
 export interface GroupInfoSDKType {
   owner: string;
   group_name: string;
   source_type: SourceType;
   id: string;
+  extra: string;
 }
 export interface Trait {
   traitType: string;
@@ -927,7 +931,8 @@ function createBaseGroupInfo(): GroupInfo {
     owner: "",
     groupName: "",
     sourceType: 0,
-    id: ""
+    id: "",
+    extra: ""
   };
 }
 
@@ -947,6 +952,10 @@ export const GroupInfo = {
 
     if (message.id !== "") {
       writer.uint32(34).string(message.id);
+    }
+
+    if (message.extra !== "") {
+      writer.uint32(42).string(message.extra);
     }
 
     return writer;
@@ -977,6 +986,10 @@ export const GroupInfo = {
           message.id = reader.string();
           break;
 
+        case 5:
+          message.extra = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -991,7 +1004,8 @@ export const GroupInfo = {
       owner: isSet(object.owner) ? String(object.owner) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
-      id: isSet(object.id) ? String(object.id) : ""
+      id: isSet(object.id) ? String(object.id) : "",
+      extra: isSet(object.extra) ? String(object.extra) : ""
     };
   },
 
@@ -1001,6 +1015,7 @@ export const GroupInfo = {
     message.groupName !== undefined && (obj.groupName = message.groupName);
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
     message.id !== undefined && (obj.id = message.id);
+    message.extra !== undefined && (obj.extra = message.extra);
     return obj;
   },
 
@@ -1010,6 +1025,7 @@ export const GroupInfo = {
     message.groupName = object.groupName ?? "";
     message.sourceType = object.sourceType ?? 0;
     message.id = object.id ?? "";
+    message.extra = object.extra ?? "";
     return message;
   },
 
@@ -1018,7 +1034,8 @@ export const GroupInfo = {
       owner: object?.owner,
       groupName: object?.group_name,
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
-      id: object?.id
+      id: object?.id,
+      extra: object?.extra
     };
   },
 
@@ -1028,6 +1045,7 @@ export const GroupInfo = {
     obj.group_name = message.groupName;
     message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
     obj.id = message.id;
+    obj.extra = message.extra;
     return obj;
   }
 
