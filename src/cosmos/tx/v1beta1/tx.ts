@@ -161,10 +161,7 @@ export interface SignDocDirectAuxSDKType {
   sequence: Long;
   tip?: TipSDKType;
 }
-/**
- * SignDocEIP712 is the type used for generating sign bytes for
- * SIGN_MODE_EIP_712.
- */
+/** SignDocEIP712 is the type used for generating sign bytes for SIGN_MODE_EIP_712. */
 
 export interface SignDocEip712 {
   /**
@@ -189,7 +186,7 @@ export interface SignDocEip712 {
   fee?: Fee;
   /** msg is the msg in the EIP712 transaction. */
 
-  msg?: Any;
+  msgs: Any[];
   /** timeout_height is the transaction's timeout height (if set). */
 
   timeoutHeight: Long;
@@ -211,17 +208,14 @@ export interface SignDocEip712 {
 
   tip?: Tip;
 }
-/**
- * SignDocEIP712 is the type used for generating sign bytes for
- * SIGN_MODE_EIP_712.
- */
+/** SignDocEIP712 is the type used for generating sign bytes for SIGN_MODE_EIP_712. */
 
 export interface SignDocEip712SDKType {
   chain_id: Long;
   account_number: Long;
   sequence: Long;
   fee?: FeeSDKType;
-  msg?: AnySDKType;
+  msgs: AnySDKType[];
   timeout_height: Long;
   memo: string;
   tip?: TipSDKType;
@@ -991,7 +985,7 @@ function createBaseSignDocEip712(): SignDocEip712 {
     accountNumber: Long.UZERO,
     sequence: Long.UZERO,
     fee: undefined,
-    msg: undefined,
+    msgs: [],
     timeoutHeight: Long.UZERO,
     memo: "",
     tip: undefined
@@ -1016,8 +1010,8 @@ export const SignDocEip712 = {
       Fee.encode(message.fee, writer.uint32(34).fork()).ldelim();
     }
 
-    if (message.msg !== undefined) {
-      Any.encode(message.msg, writer.uint32(42).fork()).ldelim();
+    for (const v of message.msgs) {
+      Any.encode(v!, writer.uint32(42).fork()).ldelim();
     }
 
     if (!message.timeoutHeight.isZero()) {
@@ -1061,7 +1055,7 @@ export const SignDocEip712 = {
           break;
 
         case 5:
-          message.msg = Any.decode(reader, reader.uint32());
+          message.msgs.push(Any.decode(reader, reader.uint32()));
           break;
 
         case 6:
@@ -1091,7 +1085,7 @@ export const SignDocEip712 = {
       accountNumber: isSet(object.accountNumber) ? Long.fromValue(object.accountNumber) : Long.UZERO,
       sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO,
       fee: isSet(object.fee) ? Fee.fromJSON(object.fee) : undefined,
-      msg: isSet(object.msg) ? Any.fromJSON(object.msg) : undefined,
+      msgs: Array.isArray(object?.msgs) ? object.msgs.map((e: any) => Any.fromJSON(e)) : [],
       timeoutHeight: isSet(object.timeoutHeight) ? Long.fromValue(object.timeoutHeight) : Long.UZERO,
       memo: isSet(object.memo) ? String(object.memo) : "",
       tip: isSet(object.tip) ? Tip.fromJSON(object.tip) : undefined
@@ -1104,7 +1098,13 @@ export const SignDocEip712 = {
     message.accountNumber !== undefined && (obj.accountNumber = (message.accountNumber || Long.UZERO).toString());
     message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
     message.fee !== undefined && (obj.fee = message.fee ? Fee.toJSON(message.fee) : undefined);
-    message.msg !== undefined && (obj.msg = message.msg ? Any.toJSON(message.msg) : undefined);
+
+    if (message.msgs) {
+      obj.msgs = message.msgs.map(e => e ? Any.toJSON(e) : undefined);
+    } else {
+      obj.msgs = [];
+    }
+
     message.timeoutHeight !== undefined && (obj.timeoutHeight = (message.timeoutHeight || Long.UZERO).toString());
     message.memo !== undefined && (obj.memo = message.memo);
     message.tip !== undefined && (obj.tip = message.tip ? Tip.toJSON(message.tip) : undefined);
@@ -1117,7 +1117,7 @@ export const SignDocEip712 = {
     message.accountNumber = object.accountNumber !== undefined && object.accountNumber !== null ? Long.fromValue(object.accountNumber) : Long.UZERO;
     message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     message.fee = object.fee !== undefined && object.fee !== null ? Fee.fromPartial(object.fee) : undefined;
-    message.msg = object.msg !== undefined && object.msg !== null ? Any.fromPartial(object.msg) : undefined;
+    message.msgs = object.msgs?.map(e => Any.fromPartial(e)) || [];
     message.timeoutHeight = object.timeoutHeight !== undefined && object.timeoutHeight !== null ? Long.fromValue(object.timeoutHeight) : Long.UZERO;
     message.memo = object.memo ?? "";
     message.tip = object.tip !== undefined && object.tip !== null ? Tip.fromPartial(object.tip) : undefined;
@@ -1130,7 +1130,7 @@ export const SignDocEip712 = {
       accountNumber: object?.account_number,
       sequence: object?.sequence,
       fee: object.fee ? Fee.fromSDK(object.fee) : undefined,
-      msg: object.msg ? Any.fromSDK(object.msg) : undefined,
+      msgs: Array.isArray(object?.msgs) ? object.msgs.map((e: any) => Any.fromSDK(e)) : [],
       timeoutHeight: object?.timeout_height,
       memo: object?.memo,
       tip: object.tip ? Tip.fromSDK(object.tip) : undefined
@@ -1143,7 +1143,13 @@ export const SignDocEip712 = {
     obj.account_number = message.accountNumber;
     obj.sequence = message.sequence;
     message.fee !== undefined && (obj.fee = message.fee ? Fee.toSDK(message.fee) : undefined);
-    message.msg !== undefined && (obj.msg = message.msg ? Any.toSDK(message.msg) : undefined);
+
+    if (message.msgs) {
+      obj.msgs = message.msgs.map(e => e ? Any.toSDK(e) : undefined);
+    } else {
+      obj.msgs = [];
+    }
+
     obj.timeout_height = message.timeoutHeight;
     obj.memo = message.memo;
     message.tip !== undefined && (obj.tip = message.tip ? Tip.toSDK(message.tip) : undefined);

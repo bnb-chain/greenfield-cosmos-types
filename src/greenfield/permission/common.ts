@@ -19,6 +19,7 @@ export enum ActionType {
   ACTION_UPDATE_GROUP_MEMBER = 9,
   ACTION_DELETE_GROUP = 10,
   ACTION_UPDATE_OBJECT_INFO = 11,
+  ACTION_UPDATE_GROUP_EXTRA = 12,
   ACTION_TYPE_ALL = 99,
   UNRECOGNIZED = -1,
 }
@@ -73,6 +74,10 @@ export function actionTypeFromJSON(object: any): ActionType {
     case "ACTION_UPDATE_OBJECT_INFO":
       return ActionType.ACTION_UPDATE_OBJECT_INFO;
 
+    case 12:
+    case "ACTION_UPDATE_GROUP_EXTRA":
+      return ActionType.ACTION_UPDATE_GROUP_EXTRA;
+
     case 99:
     case "ACTION_TYPE_ALL":
       return ActionType.ACTION_TYPE_ALL;
@@ -120,6 +125,9 @@ export function actionTypeToJSON(object: ActionType): string {
 
     case ActionType.ACTION_UPDATE_OBJECT_INFO:
       return "ACTION_UPDATE_OBJECT_INFO";
+
+    case ActionType.ACTION_UPDATE_GROUP_EXTRA:
+      return "ACTION_UPDATE_GROUP_EXTRA";
 
     case ActionType.ACTION_TYPE_ALL:
       return "ACTION_TYPE_ALL";
@@ -232,10 +240,11 @@ export interface Statement {
 
   actions: ActionType[];
   /**
-   * CAN ONLY USED IN bucket level. Support fuzzy match and limit to 5
-   * If no sub-resource is specified in a statement, then all objects in the bucket are accessible by the principal.
-   * However, if the sub-resource is defined as 'bucket/test_*,' in the statement, then only objects with a 'test_'
-   * prefix can be accessed by the principal.
+   * CAN ONLY USED IN bucket level. Support fuzzy match and limit to 5.
+   * The sub-resource name must comply with the standard specified in the greenfield/types/grn.go file for Greenfield resource names.
+   * If the sub-resources include 'grn:o:{bucket_name}/*' in the statement, it indicates that specific permissions is granted to all objects within the specified bucket.
+   * If the sub-resources include 'grn:o:{bucket_name}/test_*' in the statement, it indicates that specific permissions is granted to all objects with the `test_` prefix within the specified bucket.
+   * If the sub-resources is empty, when you need to operate(excluding CreateObject) a specified subresource, it will be denied because it cannot match any subresource.
    */
 
   resources: string[];
