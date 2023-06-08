@@ -1,3 +1,10 @@
+# [0.4.0-alpha.11](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.10...v0.4.0-alpha.11) (2023-06-08)
+
+
+### Features
+
+* Sync with Greenfield 0.2.2-alpha.2 ([f51a226](https://github.com/bnb-chain/greenfield-cosmos-types/commit/f51a226a7cd451ee5e7bb877eac3272d314edb26))
+
 # [0.4.0-alpha.10](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.9...v0.4.0-alpha.10) (2023-05-27)
 
 
