@@ -76,6 +76,21 @@ export interface ChallengeSDKType {
   id: Long;
   expired_height: Long;
 }
+/** AttestedChallenge records the challenge which are attested. */
+
+export interface AttestedChallenge {
+  /** The id of the challenge. */
+  id: Long;
+  /** The attestation result of the challenge. */
+
+  result: VoteResult;
+}
+/** AttestedChallenge records the challenge which are attested. */
+
+export interface AttestedChallengeSDKType {
+  id: Long;
+  result: VoteResult;
+}
 /**
  * AttestedChallengeIds stored fixed number of the latest attested challenge ids.
  * To use the storage more efficiently, a circular queue will be constructed using these fields.
@@ -84,9 +99,9 @@ export interface ChallengeSDKType {
 export interface AttestedChallengeIds {
   /** The fixed number of challenge ids to save. */
   size: Long;
-  /** The latest attested challenge ids. */
+  /** The latest attested challenges. */
 
-  ids: Long[];
+  challenges: AttestedChallenge[];
   /** The cursor to retrieve data from the ids field. */
 
   cursor: Long;
@@ -98,7 +113,7 @@ export interface AttestedChallengeIds {
 
 export interface AttestedChallengeIdsSDKType {
   size: Long;
-  ids: Long[];
+  challenges: AttestedChallengeSDKType[];
   cursor: Long;
 }
 
@@ -282,10 +297,93 @@ export const Challenge = {
 
 };
 
+function createBaseAttestedChallenge(): AttestedChallenge {
+  return {
+    id: Long.UZERO,
+    result: 0
+  };
+}
+
+export const AttestedChallenge = {
+  encode(message: AttestedChallenge, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.id.isZero()) {
+      writer.uint32(8).uint64(message.id);
+    }
+
+    if (message.result !== 0) {
+      writer.uint32(16).int32(message.result);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AttestedChallenge {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAttestedChallenge();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.id = (reader.uint64() as Long);
+          break;
+
+        case 2:
+          message.result = (reader.int32() as any);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): AttestedChallenge {
+    return {
+      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO,
+      result: isSet(object.result) ? voteResultFromJSON(object.result) : 0
+    };
+  },
+
+  toJSON(message: AttestedChallenge): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.result !== undefined && (obj.result = voteResultToJSON(message.result));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AttestedChallenge>, I>>(object: I): AttestedChallenge {
+    const message = createBaseAttestedChallenge();
+    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.result = object.result ?? 0;
+    return message;
+  },
+
+  fromSDK(object: AttestedChallengeSDKType): AttestedChallenge {
+    return {
+      id: object?.id,
+      result: isSet(object.result) ? voteResultFromJSON(object.result) : 0
+    };
+  },
+
+  toSDK(message: AttestedChallenge): AttestedChallengeSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    message.result !== undefined && (obj.result = voteResultToJSON(message.result));
+    return obj;
+  }
+
+};
+
 function createBaseAttestedChallengeIds(): AttestedChallengeIds {
   return {
     size: Long.UZERO,
-    ids: [],
+    challenges: [],
     cursor: Long.ZERO
   };
 }
@@ -296,13 +394,9 @@ export const AttestedChallengeIds = {
       writer.uint32(8).uint64(message.size);
     }
 
-    writer.uint32(18).fork();
-
-    for (const v of message.ids) {
-      writer.uint64(v);
+    for (const v of message.challenges) {
+      AttestedChallenge.encode(v!, writer.uint32(18).fork()).ldelim();
     }
-
-    writer.ldelim();
 
     if (!message.cursor.isZero()) {
       writer.uint32(24).int64(message.cursor);
@@ -325,16 +419,7 @@ export const AttestedChallengeIds = {
           break;
 
         case 2:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos;
-
-            while (reader.pos < end2) {
-              message.ids.push((reader.uint64() as Long));
-            }
-          } else {
-            message.ids.push((reader.uint64() as Long));
-          }
-
+          message.challenges.push(AttestedChallenge.decode(reader, reader.uint32()));
           break;
 
         case 3:
@@ -353,7 +438,7 @@ export const AttestedChallengeIds = {
   fromJSON(object: any): AttestedChallengeIds {
     return {
       size: isSet(object.size) ? Long.fromValue(object.size) : Long.UZERO,
-      ids: Array.isArray(object?.ids) ? object.ids.map((e: any) => Long.fromValue(e)) : [],
+      challenges: Array.isArray(object?.challenges) ? object.challenges.map((e: any) => AttestedChallenge.fromJSON(e)) : [],
       cursor: isSet(object.cursor) ? Long.fromValue(object.cursor) : Long.ZERO
     };
   },
@@ -362,10 +447,10 @@ export const AttestedChallengeIds = {
     const obj: any = {};
     message.size !== undefined && (obj.size = (message.size || Long.UZERO).toString());
 
-    if (message.ids) {
-      obj.ids = message.ids.map(e => (e || Long.UZERO).toString());
+    if (message.challenges) {
+      obj.challenges = message.challenges.map(e => e ? AttestedChallenge.toJSON(e) : undefined);
     } else {
-      obj.ids = [];
+      obj.challenges = [];
     }
 
     message.cursor !== undefined && (obj.cursor = (message.cursor || Long.ZERO).toString());
@@ -375,7 +460,7 @@ export const AttestedChallengeIds = {
   fromPartial<I extends Exact<DeepPartial<AttestedChallengeIds>, I>>(object: I): AttestedChallengeIds {
     const message = createBaseAttestedChallengeIds();
     message.size = object.size !== undefined && object.size !== null ? Long.fromValue(object.size) : Long.UZERO;
-    message.ids = object.ids?.map(e => Long.fromValue(e)) || [];
+    message.challenges = object.challenges?.map(e => AttestedChallenge.fromPartial(e)) || [];
     message.cursor = object.cursor !== undefined && object.cursor !== null ? Long.fromValue(object.cursor) : Long.ZERO;
     return message;
   },
@@ -383,7 +468,7 @@ export const AttestedChallengeIds = {
   fromSDK(object: AttestedChallengeIdsSDKType): AttestedChallengeIds {
     return {
       size: object?.size,
-      ids: Array.isArray(object?.ids) ? object.ids.map((e: any) => e) : [],
+      challenges: Array.isArray(object?.challenges) ? object.challenges.map((e: any) => AttestedChallenge.fromSDK(e)) : [],
       cursor: object?.cursor
     };
   },
@@ -392,10 +477,10 @@ export const AttestedChallengeIds = {
     const obj: any = {};
     obj.size = message.size;
 
-    if (message.ids) {
-      obj.ids = message.ids.map(e => e);
+    if (message.challenges) {
+      obj.challenges = message.challenges.map(e => e ? AttestedChallenge.toSDK(e) : undefined);
     } else {
-      obj.ids = [];
+      obj.challenges = [];
     }
 
     obj.cursor = message.cursor;
