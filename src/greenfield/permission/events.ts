@@ -1,9 +1,9 @@
 /* eslint-disable */
 import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "./common";
 import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from "../resource/types";
-import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
+import { Timestamp } from "../../google/protobuf/timestamp";
 import * as _m0 from "protobufjs/minimal";
-import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
+import { toTimestamp, fromTimestamp, isSet, fromJsonTimestamp, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.permission";
 export interface EventPutPolicy {
   /** policy_id is an unique u256 sequence for each policy. It also be used as NFT tokenID */
@@ -25,7 +25,7 @@ export interface EventPutPolicy {
    * Notices: Its priority is higher than the expiration time inside the Statement
    */
 
-  expirationTime?: Timestamp;
+  expirationTime?: Date;
 }
 export interface EventPutPolicySDKType {
   policy_id: string;
@@ -33,7 +33,7 @@ export interface EventPutPolicySDKType {
   resource_type: ResourceType;
   resource_id: string;
   statements: StatementSDKType[];
-  expiration_time?: TimestampSDKType;
+  expiration_time?: Date;
 }
 export interface EventDeletePolicy {
   /** policy_id is an unique u256 sequence for each policy. It also be used as NFT tokenID */
@@ -77,7 +77,7 @@ export const EventPutPolicy = {
     }
 
     if (message.expirationTime !== undefined) {
-      Timestamp.encode(message.expirationTime, writer.uint32(50).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.expirationTime), writer.uint32(50).fork()).ldelim();
     }
 
     return writer;
@@ -113,7 +113,7 @@ export const EventPutPolicy = {
           break;
 
         case 6:
-          message.expirationTime = Timestamp.decode(reader, reader.uint32());
+          message.expirationTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -149,7 +149,7 @@ export const EventPutPolicy = {
       obj.statements = [];
     }
 
-    message.expirationTime !== undefined && (obj.expirationTime = fromTimestamp(message.expirationTime).toISOString());
+    message.expirationTime !== undefined && (obj.expirationTime = message.expirationTime.toISOString());
     return obj;
   },
 
@@ -160,7 +160,7 @@ export const EventPutPolicy = {
     message.resourceType = object.resourceType ?? 0;
     message.resourceId = object.resourceId ?? "";
     message.statements = object.statements?.map(e => Statement.fromPartial(e)) || [];
-    message.expirationTime = object.expirationTime !== undefined && object.expirationTime !== null ? Timestamp.fromPartial(object.expirationTime) : undefined;
+    message.expirationTime = object.expirationTime ?? undefined;
     return message;
   },
 

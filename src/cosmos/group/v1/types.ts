@@ -1,9 +1,9 @@
 /* eslint-disable */
-import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
+import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Duration, DurationSDKType } from "../../../google/protobuf/duration";
 import { Any, AnySDKType } from "../../../google/protobuf/any";
 import * as _m0 from "protobufjs/minimal";
-import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact, Long } from "../../../helpers";
+import { toTimestamp, fromTimestamp, isSet, fromJsonTimestamp, DeepPartial, Exact, Long } from "../../../helpers";
 export const protobufPackage = "cosmos.group.v1";
 /** VoteOption enumerates the valid vote options for a given proposal. */
 
@@ -246,7 +246,7 @@ export interface Member {
   metadata: string;
   /** added_at is a timestamp specifying when a member was added. */
 
-  addedAt?: Timestamp;
+  addedAt?: Date;
 }
 /**
  * Member represents a group member with an account address,
@@ -257,7 +257,7 @@ export interface MemberSDKType {
   address: string;
   weight: string;
   metadata: string;
-  added_at?: TimestampSDKType;
+  added_at?: Date;
 }
 /**
  * MemberRequest represents a group member to be used in Msg server requests.
@@ -404,7 +404,7 @@ export interface GroupInfo {
   totalWeight: string;
   /** created_at is a timestamp specifying when a group was created. */
 
-  createdAt?: Timestamp;
+  createdAt?: Date;
 }
 /** GroupInfo represents the high-level on-chain information for a group. */
 
@@ -414,7 +414,7 @@ export interface GroupInfoSDKType {
   metadata: string;
   version: Long;
   total_weight: string;
-  created_at?: TimestampSDKType;
+  created_at?: Date;
 }
 /** GroupMember represents the relationship between a group and a member. */
 
@@ -456,7 +456,7 @@ export interface GroupPolicyInfo {
   decisionPolicy?: Any;
   /** created_at is a timestamp specifying when a group policy was created. */
 
-  createdAt?: Timestamp;
+  createdAt?: Date;
 }
 /** GroupPolicyInfo represents the high-level on-chain information for a group policy. */
 
@@ -467,7 +467,7 @@ export interface GroupPolicyInfoSDKType {
   metadata: string;
   version: Long;
   decision_policy?: AnySDKType;
-  created_at?: TimestampSDKType;
+  created_at?: Date;
 }
 /**
  * Proposal defines a group proposal. Any member of a group can submit a proposal
@@ -490,7 +490,7 @@ export interface Proposal {
   proposers: string[];
   /** submit_time is a timestamp specifying when a proposal was submitted. */
 
-  submitTime?: Timestamp;
+  submitTime?: Date;
   /**
    * group_version tracks the version of the group at proposal submission.
    * This field is here for informational purposes only.
@@ -524,7 +524,7 @@ export interface Proposal {
    * accordingly updated.
    */
 
-  votingPeriodEnd?: Timestamp;
+  votingPeriodEnd?: Date;
   /** executor_result is the final result of the proposal execution. Initial value is NotRun. */
 
   executorResult: ProposalExecutorResult;
@@ -558,12 +558,12 @@ export interface ProposalSDKType {
   group_policy_address: string;
   metadata: string;
   proposers: string[];
-  submit_time?: TimestampSDKType;
+  submit_time?: Date;
   group_version: Long;
   group_policy_version: Long;
   status: ProposalStatus;
   final_tally_result?: TallyResultSDKType;
-  voting_period_end?: TimestampSDKType;
+  voting_period_end?: Date;
   executor_result: ProposalExecutorResult;
   messages: AnySDKType[];
   title: string;
@@ -608,7 +608,7 @@ export interface Vote {
   metadata: string;
   /** submit_time is the timestamp when the vote was submitted. */
 
-  submitTime?: Timestamp;
+  submitTime?: Date;
 }
 /** Vote represents a vote for a proposal. */
 
@@ -617,7 +617,7 @@ export interface VoteSDKType {
   voter: string;
   option: VoteOption;
   metadata: string;
-  submit_time?: TimestampSDKType;
+  submit_time?: Date;
 }
 
 function createBaseMember(): Member {
@@ -644,7 +644,7 @@ export const Member = {
     }
 
     if (message.addedAt !== undefined) {
-      Timestamp.encode(message.addedAt, writer.uint32(34).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.addedAt), writer.uint32(34).fork()).ldelim();
     }
 
     return writer;
@@ -672,7 +672,7 @@ export const Member = {
           break;
 
         case 4:
-          message.addedAt = Timestamp.decode(reader, reader.uint32());
+          message.addedAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -698,7 +698,7 @@ export const Member = {
     message.address !== undefined && (obj.address = message.address);
     message.weight !== undefined && (obj.weight = message.weight);
     message.metadata !== undefined && (obj.metadata = message.metadata);
-    message.addedAt !== undefined && (obj.addedAt = fromTimestamp(message.addedAt).toISOString());
+    message.addedAt !== undefined && (obj.addedAt = message.addedAt.toISOString());
     return obj;
   },
 
@@ -707,7 +707,7 @@ export const Member = {
     message.address = object.address ?? "";
     message.weight = object.weight ?? "";
     message.metadata = object.metadata ?? "";
-    message.addedAt = object.addedAt !== undefined && object.addedAt !== null ? Timestamp.fromPartial(object.addedAt) : undefined;
+    message.addedAt = object.addedAt ?? undefined;
     return message;
   },
 
@@ -1111,7 +1111,7 @@ export const GroupInfo = {
     }
 
     if (message.createdAt !== undefined) {
-      Timestamp.encode(message.createdAt, writer.uint32(50).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(50).fork()).ldelim();
     }
 
     return writer;
@@ -1147,7 +1147,7 @@ export const GroupInfo = {
           break;
 
         case 6:
-          message.createdAt = Timestamp.decode(reader, reader.uint32());
+          message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -1177,7 +1177,7 @@ export const GroupInfo = {
     message.metadata !== undefined && (obj.metadata = message.metadata);
     message.version !== undefined && (obj.version = (message.version || Long.UZERO).toString());
     message.totalWeight !== undefined && (obj.totalWeight = message.totalWeight);
-    message.createdAt !== undefined && (obj.createdAt = fromTimestamp(message.createdAt).toISOString());
+    message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
     return obj;
   },
 
@@ -1188,7 +1188,7 @@ export const GroupInfo = {
     message.metadata = object.metadata ?? "";
     message.version = object.version !== undefined && object.version !== null ? Long.fromValue(object.version) : Long.UZERO;
     message.totalWeight = object.totalWeight ?? "";
-    message.createdAt = object.createdAt !== undefined && object.createdAt !== null ? Timestamp.fromPartial(object.createdAt) : undefined;
+    message.createdAt = object.createdAt ?? undefined;
     return message;
   },
 
@@ -1338,7 +1338,7 @@ export const GroupPolicyInfo = {
     }
 
     if (message.createdAt !== undefined) {
-      Timestamp.encode(message.createdAt, writer.uint32(58).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.createdAt), writer.uint32(58).fork()).ldelim();
     }
 
     return writer;
@@ -1378,7 +1378,7 @@ export const GroupPolicyInfo = {
           break;
 
         case 7:
-          message.createdAt = Timestamp.decode(reader, reader.uint32());
+          message.createdAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -1410,7 +1410,7 @@ export const GroupPolicyInfo = {
     message.metadata !== undefined && (obj.metadata = message.metadata);
     message.version !== undefined && (obj.version = (message.version || Long.UZERO).toString());
     message.decisionPolicy !== undefined && (obj.decisionPolicy = message.decisionPolicy ? Any.toJSON(message.decisionPolicy) : undefined);
-    message.createdAt !== undefined && (obj.createdAt = fromTimestamp(message.createdAt).toISOString());
+    message.createdAt !== undefined && (obj.createdAt = message.createdAt.toISOString());
     return obj;
   },
 
@@ -1422,7 +1422,7 @@ export const GroupPolicyInfo = {
     message.metadata = object.metadata ?? "";
     message.version = object.version !== undefined && object.version !== null ? Long.fromValue(object.version) : Long.UZERO;
     message.decisionPolicy = object.decisionPolicy !== undefined && object.decisionPolicy !== null ? Any.fromPartial(object.decisionPolicy) : undefined;
-    message.createdAt = object.createdAt !== undefined && object.createdAt !== null ? Timestamp.fromPartial(object.createdAt) : undefined;
+    message.createdAt = object.createdAt ?? undefined;
     return message;
   },
 
@@ -1490,7 +1490,7 @@ export const Proposal = {
     }
 
     if (message.submitTime !== undefined) {
-      Timestamp.encode(message.submitTime, writer.uint32(42).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.submitTime), writer.uint32(42).fork()).ldelim();
     }
 
     if (!message.groupVersion.isZero()) {
@@ -1510,7 +1510,7 @@ export const Proposal = {
     }
 
     if (message.votingPeriodEnd !== undefined) {
-      Timestamp.encode(message.votingPeriodEnd, writer.uint32(82).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.votingPeriodEnd), writer.uint32(82).fork()).ldelim();
     }
 
     if (message.executorResult !== 0) {
@@ -1558,7 +1558,7 @@ export const Proposal = {
           break;
 
         case 5:
-          message.submitTime = Timestamp.decode(reader, reader.uint32());
+          message.submitTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
 
         case 6:
@@ -1578,7 +1578,7 @@ export const Proposal = {
           break;
 
         case 10:
-          message.votingPeriodEnd = Timestamp.decode(reader, reader.uint32());
+          message.votingPeriodEnd = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
 
         case 11:
@@ -1637,12 +1637,12 @@ export const Proposal = {
       obj.proposers = [];
     }
 
-    message.submitTime !== undefined && (obj.submitTime = fromTimestamp(message.submitTime).toISOString());
+    message.submitTime !== undefined && (obj.submitTime = message.submitTime.toISOString());
     message.groupVersion !== undefined && (obj.groupVersion = (message.groupVersion || Long.UZERO).toString());
     message.groupPolicyVersion !== undefined && (obj.groupPolicyVersion = (message.groupPolicyVersion || Long.UZERO).toString());
     message.status !== undefined && (obj.status = proposalStatusToJSON(message.status));
     message.finalTallyResult !== undefined && (obj.finalTallyResult = message.finalTallyResult ? TallyResult.toJSON(message.finalTallyResult) : undefined);
-    message.votingPeriodEnd !== undefined && (obj.votingPeriodEnd = fromTimestamp(message.votingPeriodEnd).toISOString());
+    message.votingPeriodEnd !== undefined && (obj.votingPeriodEnd = message.votingPeriodEnd.toISOString());
     message.executorResult !== undefined && (obj.executorResult = proposalExecutorResultToJSON(message.executorResult));
 
     if (message.messages) {
@@ -1662,12 +1662,12 @@ export const Proposal = {
     message.groupPolicyAddress = object.groupPolicyAddress ?? "";
     message.metadata = object.metadata ?? "";
     message.proposers = object.proposers?.map(e => e) || [];
-    message.submitTime = object.submitTime !== undefined && object.submitTime !== null ? Timestamp.fromPartial(object.submitTime) : undefined;
+    message.submitTime = object.submitTime ?? undefined;
     message.groupVersion = object.groupVersion !== undefined && object.groupVersion !== null ? Long.fromValue(object.groupVersion) : Long.UZERO;
     message.groupPolicyVersion = object.groupPolicyVersion !== undefined && object.groupPolicyVersion !== null ? Long.fromValue(object.groupPolicyVersion) : Long.UZERO;
     message.status = object.status ?? 0;
     message.finalTallyResult = object.finalTallyResult !== undefined && object.finalTallyResult !== null ? TallyResult.fromPartial(object.finalTallyResult) : undefined;
-    message.votingPeriodEnd = object.votingPeriodEnd !== undefined && object.votingPeriodEnd !== null ? Timestamp.fromPartial(object.votingPeriodEnd) : undefined;
+    message.votingPeriodEnd = object.votingPeriodEnd ?? undefined;
     message.executorResult = object.executorResult ?? 0;
     message.messages = object.messages?.map(e => Any.fromPartial(e)) || [];
     message.title = object.title ?? "";
@@ -1867,7 +1867,7 @@ export const Vote = {
     }
 
     if (message.submitTime !== undefined) {
-      Timestamp.encode(message.submitTime, writer.uint32(42).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.submitTime), writer.uint32(42).fork()).ldelim();
     }
 
     return writer;
@@ -1899,7 +1899,7 @@ export const Vote = {
           break;
 
         case 5:
-          message.submitTime = Timestamp.decode(reader, reader.uint32());
+          message.submitTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -1927,7 +1927,7 @@ export const Vote = {
     message.voter !== undefined && (obj.voter = message.voter);
     message.option !== undefined && (obj.option = voteOptionToJSON(message.option));
     message.metadata !== undefined && (obj.metadata = message.metadata);
-    message.submitTime !== undefined && (obj.submitTime = fromTimestamp(message.submitTime).toISOString());
+    message.submitTime !== undefined && (obj.submitTime = message.submitTime.toISOString());
     return obj;
   },
 
@@ -1937,7 +1937,7 @@ export const Vote = {
     message.voter = object.voter ?? "";
     message.option = object.option ?? 0;
     message.metadata = object.metadata ?? "";
-    message.submitTime = object.submitTime !== undefined && object.submitTime !== null ? Timestamp.fromPartial(object.submitTime) : undefined;
+    message.submitTime = object.submitTime ?? undefined;
     return message;
   },
 

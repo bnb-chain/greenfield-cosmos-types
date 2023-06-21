@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { Timestamp, TimestampSDKType } from "../../../../google/protobuf/timestamp";
-import { Long, isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { Timestamp } from "../../../../google/protobuf/timestamp";
+import { Long, toTimestamp, fromTimestamp, isSet, fromJsonTimestamp, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.base.store.v1beta1";
 /**
@@ -11,7 +11,7 @@ export const protobufPackage = "cosmos.base.store.v1beta1";
 export interface CommitInfo {
   version: Long;
   storeInfos: StoreInfo[];
-  timestamp?: Timestamp;
+  timestamp?: Date;
 }
 /**
  * CommitInfo defines commit information used by the multi-store when committing
@@ -21,7 +21,7 @@ export interface CommitInfo {
 export interface CommitInfoSDKType {
   version: Long;
   store_infos: StoreInfoSDKType[];
-  timestamp?: TimestampSDKType;
+  timestamp?: Date;
 }
 /**
  * StoreInfo defines store-specific commit information. It contains a reference
@@ -79,7 +79,7 @@ export const CommitInfo = {
     }
 
     if (message.timestamp !== undefined) {
-      Timestamp.encode(message.timestamp, writer.uint32(26).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(26).fork()).ldelim();
     }
 
     return writer;
@@ -103,7 +103,7 @@ export const CommitInfo = {
           break;
 
         case 3:
-          message.timestamp = Timestamp.decode(reader, reader.uint32());
+          message.timestamp = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -133,7 +133,7 @@ export const CommitInfo = {
       obj.storeInfos = [];
     }
 
-    message.timestamp !== undefined && (obj.timestamp = fromTimestamp(message.timestamp).toISOString());
+    message.timestamp !== undefined && (obj.timestamp = message.timestamp.toISOString());
     return obj;
   },
 
@@ -141,7 +141,7 @@ export const CommitInfo = {
     const message = createBaseCommitInfo();
     message.version = object.version !== undefined && object.version !== null ? Long.fromValue(object.version) : Long.ZERO;
     message.storeInfos = object.storeInfos?.map(e => StoreInfo.fromPartial(e)) || [];
-    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Timestamp.fromPartial(object.timestamp) : undefined;
+    message.timestamp = object.timestamp ?? undefined;
     return message;
   },
 

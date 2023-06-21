@@ -63,7 +63,7 @@ telescope({
             typingsFormat: {
                 useDeepPartial: true,
                 useExact: true,
-                timestamp: 'timestamp',
+                timestamp: 'date',
                 duration: 'duration'
             }
         },

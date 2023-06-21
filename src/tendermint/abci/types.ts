@@ -1,11 +1,11 @@
 /* eslint-disable */
-import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
+import { Timestamp } from "../../google/protobuf/timestamp";
 import { ConsensusParams, ConsensusParamsSDKType } from "../types/params";
 import { Header, HeaderSDKType } from "../types/types";
 import { ProofOps, ProofOpsSDKType } from "../crypto/proof";
 import { PublicKey, PublicKeySDKType } from "../crypto/keys";
 import * as _m0 from "protobufjs/minimal";
-import { isSet, DeepPartial, Exact, Long, fromJsonTimestamp, bytesFromBase64, fromTimestamp, base64FromBytes, Rpc } from "../../helpers";
+import { isSet, DeepPartial, Exact, Long, toTimestamp, fromTimestamp, fromJsonTimestamp, bytesFromBase64, base64FromBytes, Rpc } from "../../helpers";
 export const protobufPackage = "tendermint.abci";
 export enum CheckTxType {
   NEW = 0,
@@ -343,7 +343,7 @@ export interface RequestInfoSDKType {
   abci_version: string;
 }
 export interface RequestInitChain {
-  time?: Timestamp;
+  time?: Date;
   chainId: string;
   consensusParams?: ConsensusParams;
   validators: ValidatorUpdate[];
@@ -351,7 +351,7 @@ export interface RequestInitChain {
   initialHeight: Long;
 }
 export interface RequestInitChainSDKType {
-  time?: TimestampSDKType;
+  time?: Date;
   chain_id: string;
   consensus_params?: ConsensusParamsSDKType;
   validators: ValidatorUpdateSDKType[];
@@ -465,7 +465,7 @@ export interface RequestPrepareProposal {
   localLastCommit?: ExtendedCommitInfo;
   misbehavior: Misbehavior[];
   height: Long;
-  time?: Timestamp;
+  time?: Date;
   nextValidatorsHash: Uint8Array;
   /** address of the public key of the validator proposing the block. */
 
@@ -477,7 +477,7 @@ export interface RequestPrepareProposalSDKType {
   local_last_commit?: ExtendedCommitInfoSDKType;
   misbehavior: MisbehaviorSDKType[];
   height: Long;
-  time?: TimestampSDKType;
+  time?: Date;
   next_validators_hash: Uint8Array;
   proposer_address: Uint8Array;
 }
@@ -489,7 +489,7 @@ export interface RequestProcessProposal {
 
   hash: Uint8Array;
   height: Long;
-  time?: Timestamp;
+  time?: Date;
   nextValidatorsHash: Uint8Array;
   /** address of the public key of the original proposer of the block. */
 
@@ -501,7 +501,7 @@ export interface RequestProcessProposalSDKType {
   misbehavior: MisbehaviorSDKType[];
   hash: Uint8Array;
   height: Long;
-  time?: TimestampSDKType;
+  time?: Date;
   next_validators_hash: Uint8Array;
   proposer_address: Uint8Array;
 }
@@ -909,7 +909,7 @@ export interface Misbehavior {
   height: Long;
   /** The corresponding time where the offense occurred */
 
-  time?: Timestamp;
+  time?: Date;
   /**
    * Total voting power of the validator set in case the ABCI application does
    * not store historical validators.
@@ -922,7 +922,7 @@ export interface MisbehaviorSDKType {
   type: MisbehaviorType;
   validator?: ValidatorSDKType;
   height: Long;
-  time?: TimestampSDKType;
+  time?: Date;
   total_voting_power: Long;
 }
 export interface Snapshot {
@@ -1488,7 +1488,7 @@ function createBaseRequestInitChain(): RequestInitChain {
 export const RequestInitChain = {
   encode(message: RequestInitChain, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.time !== undefined) {
-      Timestamp.encode(message.time, writer.uint32(10).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(10).fork()).ldelim();
     }
 
     if (message.chainId !== "") {
@@ -1524,7 +1524,7 @@ export const RequestInitChain = {
 
       switch (tag >>> 3) {
         case 1:
-          message.time = Timestamp.decode(reader, reader.uint32());
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -1569,7 +1569,7 @@ export const RequestInitChain = {
 
   toJSON(message: RequestInitChain): unknown {
     const obj: any = {};
-    message.time !== undefined && (obj.time = fromTimestamp(message.time).toISOString());
+    message.time !== undefined && (obj.time = message.time.toISOString());
     message.chainId !== undefined && (obj.chainId = message.chainId);
     message.consensusParams !== undefined && (obj.consensusParams = message.consensusParams ? ConsensusParams.toJSON(message.consensusParams) : undefined);
 
@@ -1586,7 +1586,7 @@ export const RequestInitChain = {
 
   fromPartial<I extends Exact<DeepPartial<RequestInitChain>, I>>(object: I): RequestInitChain {
     const message = createBaseRequestInitChain();
-    message.time = object.time !== undefined && object.time !== null ? Timestamp.fromPartial(object.time) : undefined;
+    message.time = object.time ?? undefined;
     message.chainId = object.chainId ?? "";
     message.consensusParams = object.consensusParams !== undefined && object.consensusParams !== null ? ConsensusParams.fromPartial(object.consensusParams) : undefined;
     message.validators = object.validators?.map(e => ValidatorUpdate.fromPartial(e)) || [];
@@ -2497,7 +2497,7 @@ export const RequestPrepareProposal = {
     }
 
     if (message.time !== undefined) {
-      Timestamp.encode(message.time, writer.uint32(50).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(50).fork()).ldelim();
     }
 
     if (message.nextValidatorsHash.length !== 0) {
@@ -2541,7 +2541,7 @@ export const RequestPrepareProposal = {
           break;
 
         case 6:
-          message.time = Timestamp.decode(reader, reader.uint32());
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
 
         case 7:
@@ -2593,7 +2593,7 @@ export const RequestPrepareProposal = {
     }
 
     message.height !== undefined && (obj.height = (message.height || Long.ZERO).toString());
-    message.time !== undefined && (obj.time = fromTimestamp(message.time).toISOString());
+    message.time !== undefined && (obj.time = message.time.toISOString());
     message.nextValidatorsHash !== undefined && (obj.nextValidatorsHash = base64FromBytes(message.nextValidatorsHash !== undefined ? message.nextValidatorsHash : new Uint8Array()));
     message.proposerAddress !== undefined && (obj.proposerAddress = base64FromBytes(message.proposerAddress !== undefined ? message.proposerAddress : new Uint8Array()));
     return obj;
@@ -2606,7 +2606,7 @@ export const RequestPrepareProposal = {
     message.localLastCommit = object.localLastCommit !== undefined && object.localLastCommit !== null ? ExtendedCommitInfo.fromPartial(object.localLastCommit) : undefined;
     message.misbehavior = object.misbehavior?.map(e => Misbehavior.fromPartial(e)) || [];
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
-    message.time = object.time !== undefined && object.time !== null ? Timestamp.fromPartial(object.time) : undefined;
+    message.time = object.time ?? undefined;
     message.nextValidatorsHash = object.nextValidatorsHash ?? new Uint8Array();
     message.proposerAddress = object.proposerAddress ?? new Uint8Array();
     return message;
@@ -2688,7 +2688,7 @@ export const RequestProcessProposal = {
     }
 
     if (message.time !== undefined) {
-      Timestamp.encode(message.time, writer.uint32(50).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(50).fork()).ldelim();
     }
 
     if (message.nextValidatorsHash.length !== 0) {
@@ -2732,7 +2732,7 @@ export const RequestProcessProposal = {
           break;
 
         case 6:
-          message.time = Timestamp.decode(reader, reader.uint32());
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
 
         case 7:
@@ -2784,7 +2784,7 @@ export const RequestProcessProposal = {
 
     message.hash !== undefined && (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
     message.height !== undefined && (obj.height = (message.height || Long.ZERO).toString());
-    message.time !== undefined && (obj.time = fromTimestamp(message.time).toISOString());
+    message.time !== undefined && (obj.time = message.time.toISOString());
     message.nextValidatorsHash !== undefined && (obj.nextValidatorsHash = base64FromBytes(message.nextValidatorsHash !== undefined ? message.nextValidatorsHash : new Uint8Array()));
     message.proposerAddress !== undefined && (obj.proposerAddress = base64FromBytes(message.proposerAddress !== undefined ? message.proposerAddress : new Uint8Array()));
     return obj;
@@ -2797,7 +2797,7 @@ export const RequestProcessProposal = {
     message.misbehavior = object.misbehavior?.map(e => Misbehavior.fromPartial(e)) || [];
     message.hash = object.hash ?? new Uint8Array();
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
-    message.time = object.time !== undefined && object.time !== null ? Timestamp.fromPartial(object.time) : undefined;
+    message.time = object.time ?? undefined;
     message.nextValidatorsHash = object.nextValidatorsHash ?? new Uint8Array();
     message.proposerAddress = object.proposerAddress ?? new Uint8Array();
     return message;
@@ -5985,7 +5985,7 @@ export const Misbehavior = {
     }
 
     if (message.time !== undefined) {
-      Timestamp.encode(message.time, writer.uint32(34).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(34).fork()).ldelim();
     }
 
     if (!message.totalVotingPower.isZero()) {
@@ -6017,7 +6017,7 @@ export const Misbehavior = {
           break;
 
         case 4:
-          message.time = Timestamp.decode(reader, reader.uint32());
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
 
         case 5:
@@ -6048,7 +6048,7 @@ export const Misbehavior = {
     message.type !== undefined && (obj.type = misbehaviorTypeToJSON(message.type));
     message.validator !== undefined && (obj.validator = message.validator ? Validator.toJSON(message.validator) : undefined);
     message.height !== undefined && (obj.height = (message.height || Long.ZERO).toString());
-    message.time !== undefined && (obj.time = fromTimestamp(message.time).toISOString());
+    message.time !== undefined && (obj.time = message.time.toISOString());
     message.totalVotingPower !== undefined && (obj.totalVotingPower = (message.totalVotingPower || Long.ZERO).toString());
     return obj;
   },
@@ -6058,7 +6058,7 @@ export const Misbehavior = {
     message.type = object.type ?? 0;
     message.validator = object.validator !== undefined && object.validator !== null ? Validator.fromPartial(object.validator) : undefined;
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
-    message.time = object.time !== undefined && object.time !== null ? Timestamp.fromPartial(object.time) : undefined;
+    message.time = object.time ?? undefined;
     message.totalVotingPower = object.totalVotingPower !== undefined && object.totalVotingPower !== null ? Long.fromValue(object.totalVotingPower) : Long.ZERO;
     return message;
   },

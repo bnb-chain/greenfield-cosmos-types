@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
-import { Long, isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../../helpers";
+import { Timestamp } from "../../../google/protobuf/timestamp";
+import { Long, toTimestamp, fromTimestamp, isSet, fromJsonTimestamp, DeepPartial, Exact } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.evidence.v1beta1";
 /**
@@ -13,7 +13,7 @@ export interface Equivocation {
   height: Long;
   /** time is the equivocation time. */
 
-  time?: Timestamp;
+  time?: Date;
   /** power is the equivocation validator power. */
 
   power: Long;
@@ -28,7 +28,7 @@ export interface Equivocation {
 
 export interface EquivocationSDKType {
   height: Long;
-  time?: TimestampSDKType;
+  time?: Date;
   power: Long;
   consensus_address: string;
 }
@@ -49,7 +49,7 @@ export const Equivocation = {
     }
 
     if (message.time !== undefined) {
-      Timestamp.encode(message.time, writer.uint32(18).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.time), writer.uint32(18).fork()).ldelim();
     }
 
     if (!message.power.isZero()) {
@@ -77,7 +77,7 @@ export const Equivocation = {
           break;
 
         case 2:
-          message.time = Timestamp.decode(reader, reader.uint32());
+          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
 
         case 3:
@@ -109,7 +109,7 @@ export const Equivocation = {
   toJSON(message: Equivocation): unknown {
     const obj: any = {};
     message.height !== undefined && (obj.height = (message.height || Long.ZERO).toString());
-    message.time !== undefined && (obj.time = fromTimestamp(message.time).toISOString());
+    message.time !== undefined && (obj.time = message.time.toISOString());
     message.power !== undefined && (obj.power = (message.power || Long.ZERO).toString());
     message.consensusAddress !== undefined && (obj.consensusAddress = message.consensusAddress);
     return obj;
@@ -118,7 +118,7 @@ export const Equivocation = {
   fromPartial<I extends Exact<DeepPartial<Equivocation>, I>>(object: I): Equivocation {
     const message = createBaseEquivocation();
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
-    message.time = object.time !== undefined && object.time !== null ? Timestamp.fromPartial(object.time) : undefined;
+    message.time = object.time ?? undefined;
     message.power = object.power !== undefined && object.power !== null ? Long.fromValue(object.power) : Long.ZERO;
     message.consensusAddress = object.consensusAddress ?? "";
     return message;
