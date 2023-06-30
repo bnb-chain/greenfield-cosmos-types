@@ -323,13 +323,13 @@ export interface MsgUpdateGroupExtra {
   groupName: string;
   /** extra defines extra info for the group to update */
 
-  Extra: string;
+  extra: string;
 }
 export interface MsgUpdateGroupExtraSDKType {
   operator: string;
   group_owner: string;
   group_name: string;
-  Extra: string;
+  extra: string;
 }
 export interface MsgUpdateGroupExtraResponse {}
 export interface MsgUpdateGroupExtraResponseSDKType {}
@@ -2770,7 +2770,7 @@ function createBaseMsgUpdateGroupExtra(): MsgUpdateGroupExtra {
     operator: "",
     groupOwner: "",
     groupName: "",
-    Extra: ""
+    extra: ""
   };
 }
 
@@ -2788,8 +2788,8 @@ export const MsgUpdateGroupExtra = {
       writer.uint32(26).string(message.groupName);
     }
 
-    if (message.Extra !== "") {
-      writer.uint32(34).string(message.Extra);
+    if (message.extra !== "") {
+      writer.uint32(34).string(message.extra);
     }
 
     return writer;
@@ -2817,7 +2817,7 @@ export const MsgUpdateGroupExtra = {
           break;
 
         case 4:
-          message.Extra = reader.string();
+          message.extra = reader.string();
           break;
 
         default:
@@ -2834,7 +2834,7 @@ export const MsgUpdateGroupExtra = {
       operator: isSet(object.operator) ? String(object.operator) : "",
       groupOwner: isSet(object.groupOwner) ? String(object.groupOwner) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
-      Extra: isSet(object.Extra) ? String(object.Extra) : ""
+      extra: isSet(object.extra) ? String(object.extra) : ""
     };
   },
 
@@ -2843,7 +2843,7 @@ export const MsgUpdateGroupExtra = {
     message.operator !== undefined && (obj.operator = message.operator);
     message.groupOwner !== undefined && (obj.groupOwner = message.groupOwner);
     message.groupName !== undefined && (obj.groupName = message.groupName);
-    message.Extra !== undefined && (obj.Extra = message.Extra);
+    message.extra !== undefined && (obj.extra = message.extra);
     return obj;
   },
 
@@ -2852,7 +2852,7 @@ export const MsgUpdateGroupExtra = {
     message.operator = object.operator ?? "";
     message.groupOwner = object.groupOwner ?? "";
     message.groupName = object.groupName ?? "";
-    message.Extra = object.Extra ?? "";
+    message.extra = object.extra ?? "";
     return message;
   },
 
@@ -2861,7 +2861,7 @@ export const MsgUpdateGroupExtra = {
       operator: object?.operator,
       groupOwner: object?.group_owner,
       groupName: object?.group_name,
-      Extra: object?.Extra
+      extra: object?.extra
     };
   },
 
@@ -2870,7 +2870,7 @@ export const MsgUpdateGroupExtra = {
     obj.operator = message.operator;
     obj.group_owner = message.groupOwner;
     obj.group_name = message.groupName;
-    obj.Extra = message.Extra;
+    obj.extra = message.extra;
     return obj;
   }
 

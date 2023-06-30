@@ -48,6 +48,9 @@ export interface Params {
   /** The max number for deleting policy in each end block */
 
   stalePolicyCleanupMax: Long;
+  /** The min interval for making quota smaller in seconds */
+
+  minQuotaUpdateInterval: Long;
 }
 /** Params defines the parameters for the module. */
 
@@ -67,6 +70,7 @@ export interface ParamsSDKType {
   discontinue_confirm_period: Long;
   discontinue_deletion_max: Long;
   stale_policy_cleanup_max: Long;
+  min_quota_update_interval: Long;
 }
 /** VersionedParams defines the parameters for the storage module with multi version, each version store with different timestamp. */
 
@@ -108,7 +112,8 @@ function createBaseParams(): Params {
     discontinueBucketMax: Long.UZERO,
     discontinueConfirmPeriod: Long.ZERO,
     discontinueDeletionMax: Long.UZERO,
-    stalePolicyCleanupMax: Long.UZERO
+    stalePolicyCleanupMax: Long.UZERO,
+    minQuotaUpdateInterval: Long.UZERO
   };
 }
 
@@ -172,6 +177,10 @@ export const Params = {
 
     if (!message.stalePolicyCleanupMax.isZero()) {
       writer.uint32(120).uint64(message.stalePolicyCleanupMax);
+    }
+
+    if (!message.minQuotaUpdateInterval.isZero()) {
+      writer.uint32(128).uint64(message.minQuotaUpdateInterval);
     }
 
     return writer;
@@ -246,6 +255,10 @@ export const Params = {
           message.stalePolicyCleanupMax = (reader.uint64() as Long);
           break;
 
+        case 16:
+          message.minQuotaUpdateInterval = (reader.uint64() as Long);
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -271,7 +284,8 @@ export const Params = {
       discontinueBucketMax: isSet(object.discontinueBucketMax) ? Long.fromValue(object.discontinueBucketMax) : Long.UZERO,
       discontinueConfirmPeriod: isSet(object.discontinueConfirmPeriod) ? Long.fromValue(object.discontinueConfirmPeriod) : Long.ZERO,
       discontinueDeletionMax: isSet(object.discontinueDeletionMax) ? Long.fromValue(object.discontinueDeletionMax) : Long.UZERO,
-      stalePolicyCleanupMax: isSet(object.stalePolicyCleanupMax) ? Long.fromValue(object.stalePolicyCleanupMax) : Long.UZERO
+      stalePolicyCleanupMax: isSet(object.stalePolicyCleanupMax) ? Long.fromValue(object.stalePolicyCleanupMax) : Long.UZERO,
+      minQuotaUpdateInterval: isSet(object.minQuotaUpdateInterval) ? Long.fromValue(object.minQuotaUpdateInterval) : Long.UZERO
     };
   },
 
@@ -292,6 +306,7 @@ export const Params = {
     message.discontinueConfirmPeriod !== undefined && (obj.discontinueConfirmPeriod = (message.discontinueConfirmPeriod || Long.ZERO).toString());
     message.discontinueDeletionMax !== undefined && (obj.discontinueDeletionMax = (message.discontinueDeletionMax || Long.UZERO).toString());
     message.stalePolicyCleanupMax !== undefined && (obj.stalePolicyCleanupMax = (message.stalePolicyCleanupMax || Long.UZERO).toString());
+    message.minQuotaUpdateInterval !== undefined && (obj.minQuotaUpdateInterval = (message.minQuotaUpdateInterval || Long.UZERO).toString());
     return obj;
   },
 
@@ -312,6 +327,7 @@ export const Params = {
     message.discontinueConfirmPeriod = object.discontinueConfirmPeriod !== undefined && object.discontinueConfirmPeriod !== null ? Long.fromValue(object.discontinueConfirmPeriod) : Long.ZERO;
     message.discontinueDeletionMax = object.discontinueDeletionMax !== undefined && object.discontinueDeletionMax !== null ? Long.fromValue(object.discontinueDeletionMax) : Long.UZERO;
     message.stalePolicyCleanupMax = object.stalePolicyCleanupMax !== undefined && object.stalePolicyCleanupMax !== null ? Long.fromValue(object.stalePolicyCleanupMax) : Long.UZERO;
+    message.minQuotaUpdateInterval = object.minQuotaUpdateInterval !== undefined && object.minQuotaUpdateInterval !== null ? Long.fromValue(object.minQuotaUpdateInterval) : Long.UZERO;
     return message;
   },
 
@@ -331,7 +347,8 @@ export const Params = {
       discontinueBucketMax: object?.discontinue_bucket_max,
       discontinueConfirmPeriod: object?.discontinue_confirm_period,
       discontinueDeletionMax: object?.discontinue_deletion_max,
-      stalePolicyCleanupMax: object?.stale_policy_cleanup_max
+      stalePolicyCleanupMax: object?.stale_policy_cleanup_max,
+      minQuotaUpdateInterval: object?.min_quota_update_interval
     };
   },
 
@@ -352,6 +369,7 @@ export const Params = {
     obj.discontinue_confirm_period = message.discontinueConfirmPeriod;
     obj.discontinue_deletion_max = message.discontinueDeletionMax;
     obj.stale_policy_cleanup_max = message.stalePolicyCleanupMax;
+    obj.min_quota_update_interval = message.minQuotaUpdateInterval;
     return obj;
   }
 
