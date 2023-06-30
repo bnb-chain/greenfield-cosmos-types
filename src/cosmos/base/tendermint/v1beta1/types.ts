@@ -2,9 +2,9 @@
 import { Data, DataSDKType, Commit, CommitSDKType, BlockID, BlockIDSDKType } from "../../../../tendermint/types/types";
 import { EvidenceList, EvidenceListSDKType } from "../../../../tendermint/types/evidence";
 import { Consensus, ConsensusSDKType } from "../../../../tendermint/version/types";
-import { Timestamp } from "../../../../google/protobuf/timestamp";
+import { Timestamp, TimestampSDKType } from "../../../../google/protobuf/timestamp";
 import * as _m0 from "protobufjs/minimal";
-import { isSet, DeepPartial, Exact, Long, toTimestamp, fromTimestamp, fromJsonTimestamp, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { isSet, DeepPartial, Exact, Long, fromJsonTimestamp, bytesFromBase64, fromTimestamp, base64FromBytes } from "../../../../helpers";
 export const protobufPackage = "cosmos.base.tendermint.v1beta1";
 /**
  * Block is tendermint type Block, with the Header proposer address
@@ -35,7 +35,7 @@ export interface Header {
   version?: Consensus;
   chainId: string;
   height: Long;
-  time?: Date;
+  time?: Timestamp;
   /** prev block info */
 
   lastBlockId?: BlockID;
@@ -73,7 +73,7 @@ export interface HeaderSDKType {
   version?: ConsensusSDKType;
   chain_id: string;
   height: Long;
-  time?: Date;
+  time?: TimestampSDKType;
   last_block_id?: BlockIDSDKType;
   last_commit_hash: Uint8Array;
   data_hash: Uint8Array;
@@ -231,7 +231,7 @@ export const Header = {
     }
 
     if (message.time !== undefined) {
-      Timestamp.encode(toTimestamp(message.time), writer.uint32(34).fork()).ldelim();
+      Timestamp.encode(message.time, writer.uint32(34).fork()).ldelim();
     }
 
     if (message.lastBlockId !== undefined) {
@@ -299,7 +299,7 @@ export const Header = {
           break;
 
         case 4:
-          message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.time = Timestamp.decode(reader, reader.uint32());
           break;
 
         case 5:
@@ -375,7 +375,7 @@ export const Header = {
     message.version !== undefined && (obj.version = message.version ? Consensus.toJSON(message.version) : undefined);
     message.chainId !== undefined && (obj.chainId = message.chainId);
     message.height !== undefined && (obj.height = (message.height || Long.ZERO).toString());
-    message.time !== undefined && (obj.time = message.time.toISOString());
+    message.time !== undefined && (obj.time = fromTimestamp(message.time).toISOString());
     message.lastBlockId !== undefined && (obj.lastBlockId = message.lastBlockId ? BlockID.toJSON(message.lastBlockId) : undefined);
     message.lastCommitHash !== undefined && (obj.lastCommitHash = base64FromBytes(message.lastCommitHash !== undefined ? message.lastCommitHash : new Uint8Array()));
     message.dataHash !== undefined && (obj.dataHash = base64FromBytes(message.dataHash !== undefined ? message.dataHash : new Uint8Array()));
@@ -394,7 +394,7 @@ export const Header = {
     message.version = object.version !== undefined && object.version !== null ? Consensus.fromPartial(object.version) : undefined;
     message.chainId = object.chainId ?? "";
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
-    message.time = object.time ?? undefined;
+    message.time = object.time !== undefined && object.time !== null ? Timestamp.fromPartial(object.time) : undefined;
     message.lastBlockId = object.lastBlockId !== undefined && object.lastBlockId !== null ? BlockID.fromPartial(object.lastBlockId) : undefined;
     message.lastCommitHash = object.lastCommitHash ?? new Uint8Array();
     message.dataHash = object.dataHash ?? new Uint8Array();
