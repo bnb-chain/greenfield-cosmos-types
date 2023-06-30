@@ -1,3 +1,10 @@
+# [0.4.0-beta.2](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-beta.1...v0.4.0-beta.2) (2023-06-30)
+
+
+### Features
+
+* Bump version ([854f8de](https://github.com/bnb-chain/greenfield-cosmos-types/commit/854f8de886dcdee6aa5cfacdecfa4f7d2eb28799))
+
 # [0.4.0-beta.1](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.3.0...v0.4.0-beta.1) (2023-06-30)
 
 
