@@ -1,3 +1,17 @@
+# [0.4.0-alpha.12](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.11...v0.4.0-alpha.12) (2023-06-30)
+
+
+### Features
+
+* Sync with greenfield-cosmos-sdk v0.2.3-alpha.1 and greendfield v0.2.3-alpha.2 ([7b4a732](https://github.com/bnb-chain/greenfield-cosmos-types/commit/7b4a7327a3f3b5376db820043d9c612017ceb5a9))
+* Sync with greenfield-cosmos-sdk v0.2.3-alpha.1 and greendfield v0.2.3-alpha.2 ([a501864](https://github.com/bnb-chain/greenfield-cosmos-types/commit/a501864a206acd2a9cd361edabd632cb48ec4249))
+* Timestamp use date ([d962216](https://github.com/bnb-chain/greenfield-cosmos-types/commit/d9622168e1b3c35c41999b08382df4c59bbbf609))
+
+
+### Reverts
+
+* Revert "chore(release): 0.4.0-alpha.11 [skip ci]" ([9d1b3e3](https://github.com/bnb-chain/greenfield-cosmos-types/commit/9d1b3e38e47a6aefc846f4916fdcb94c6852daa7))
+
 # [0.4.0-alpha.10](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.9...v0.4.0-alpha.10) (2023-05-27)
 
 
