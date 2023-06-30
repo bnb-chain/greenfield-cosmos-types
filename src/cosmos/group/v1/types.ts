@@ -442,7 +442,11 @@ export interface GroupPolicyInfo {
   /** admin is the account address of the group admin. */
 
   admin: string;
-  /** metadata is any arbitrary metadata attached to the group policy. */
+  /**
+   * metadata is any arbitrary metadata attached to the group policy.
+   * the recommended format of the metadata is to be found here:
+   * https://docs.cosmos.network/v0.47/modules/group#decision-policy-1
+   */
 
   metadata: string;
   /**
@@ -482,7 +486,11 @@ export interface Proposal {
   /** group_policy_address is the account address of group policy. */
 
   groupPolicyAddress: string;
-  /** metadata is any arbitrary metadata attached to the proposal. */
+  /**
+   * metadata is any arbitrary metadata attached to the proposal.
+   * the recommended format of the metadata is to be found here:
+   * https://docs.cosmos.network/v0.47/modules/group#proposal-4
+   */
 
   metadata: string;
   /** proposers are the account addresses of the proposers. */
