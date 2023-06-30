@@ -5,8 +5,8 @@ import { Params, ParamsSDKType } from "./params";
 import { BucketInfo, BucketInfoSDKType, ObjectInfo, ObjectInfoSDKType, BucketMetaData, BucketMetaDataSDKType, ObjectMetaData, ObjectMetaDataSDKType, GroupMetaData, GroupMetaDataSDKType, GroupInfo, GroupInfoSDKType } from "./types";
 import { Policy, PolicySDKType, GroupMember, GroupMemberSDKType } from "../permission/types";
 import * as _m0 from "protobufjs/minimal";
-import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
-export const protobufPackage = "bnbchain.greenfield.storage";
+import { DeepPartial, Exact, isSet, Long, Rpc } from "../../helpers";
+export const protobufPackage = "greenfield.storage";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
@@ -22,6 +22,28 @@ export interface QueryParamsResponse {
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 
 export interface QueryParamsResponseSDKType {
+  params?: ParamsSDKType;
+}
+/** QueryVersionedParamsRequest is request type for the Query/Params RPC method with timestamp. */
+
+export interface QueryParamsByTimestampRequest {
+  /** the timestamp of the block time you want to query */
+  timestamp: Long;
+}
+/** QueryVersionedParamsRequest is request type for the Query/Params RPC method with timestamp. */
+
+export interface QueryParamsByTimestampRequestSDKType {
+  timestamp: Long;
+}
+/** QueryVersionedParamsResponse is response type for the Query/Params RPC method with timestamp. */
+
+export interface QueryParamsByTimestampResponse {
+  /** params holds all the parameters of this module. */
+  params?: Params;
+}
+/** QueryVersionedParamsResponse is response type for the Query/Params RPC method with timestamp. */
+
+export interface QueryParamsByTimestampResponseSDKType {
   params?: ParamsSDKType;
 }
 export interface QueryHeadBucketRequest {
@@ -216,6 +238,18 @@ export interface QueryPolicyForGroupResponse {
 export interface QueryPolicyForGroupResponseSDKType {
   policy?: PolicySDKType;
 }
+export interface QueryPolicyByIdRequest {
+  policyId: string;
+}
+export interface QueryPolicyByIdRequestSDKType {
+  policy_id: string;
+}
+export interface QueryPolicyByIdResponse {
+  policy?: Policy;
+}
+export interface QueryPolicyByIdResponseSDKType {
+  policy?: PolicySDKType;
+}
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
@@ -331,6 +365,144 @@ export const QueryParamsResponse = {
   },
 
   toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseQueryParamsByTimestampRequest(): QueryParamsByTimestampRequest {
+  return {
+    timestamp: Long.ZERO
+  };
+}
+
+export const QueryParamsByTimestampRequest = {
+  encode(message: QueryParamsByTimestampRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.timestamp.isZero()) {
+      writer.uint32(8).int64(message.timestamp);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsByTimestampRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryParamsByTimestampRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.timestamp = (reader.int64() as Long);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryParamsByTimestampRequest {
+    return {
+      timestamp: isSet(object.timestamp) ? Long.fromValue(object.timestamp) : Long.ZERO
+    };
+  },
+
+  toJSON(message: QueryParamsByTimestampRequest): unknown {
+    const obj: any = {};
+    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || Long.ZERO).toString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryParamsByTimestampRequest>, I>>(object: I): QueryParamsByTimestampRequest {
+    const message = createBaseQueryParamsByTimestampRequest();
+    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
+    return message;
+  },
+
+  fromSDK(object: QueryParamsByTimestampRequestSDKType): QueryParamsByTimestampRequest {
+    return {
+      timestamp: object?.timestamp
+    };
+  },
+
+  toSDK(message: QueryParamsByTimestampRequest): QueryParamsByTimestampRequestSDKType {
+    const obj: any = {};
+    obj.timestamp = message.timestamp;
+    return obj;
+  }
+
+};
+
+function createBaseQueryParamsByTimestampResponse(): QueryParamsByTimestampResponse {
+  return {
+    params: undefined
+  };
+}
+
+export const QueryParamsByTimestampResponse = {
+  encode(message: QueryParamsByTimestampResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.params !== undefined) {
+      Params.encode(message.params, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsByTimestampResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryParamsByTimestampResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.params = Params.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryParamsByTimestampResponse {
+    return {
+      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined
+    };
+  },
+
+  toJSON(message: QueryParamsByTimestampResponse): unknown {
+    const obj: any = {};
+    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryParamsByTimestampResponse>, I>>(object: I): QueryParamsByTimestampResponse {
+    const message = createBaseQueryParamsByTimestampResponse();
+    message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
+    return message;
+  },
+
+  fromSDK(object: QueryParamsByTimestampResponseSDKType): QueryParamsByTimestampResponse {
+    return {
+      params: object.params ? Params.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: QueryParamsByTimestampResponse): QueryParamsByTimestampResponseSDKType {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
@@ -2446,11 +2618,152 @@ export const QueryPolicyForGroupResponse = {
   }
 
 };
+
+function createBaseQueryPolicyByIdRequest(): QueryPolicyByIdRequest {
+  return {
+    policyId: ""
+  };
+}
+
+export const QueryPolicyByIdRequest = {
+  encode(message: QueryPolicyByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.policyId !== "") {
+      writer.uint32(10).string(message.policyId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPolicyByIdRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryPolicyByIdRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.policyId = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryPolicyByIdRequest {
+    return {
+      policyId: isSet(object.policyId) ? String(object.policyId) : ""
+    };
+  },
+
+  toJSON(message: QueryPolicyByIdRequest): unknown {
+    const obj: any = {};
+    message.policyId !== undefined && (obj.policyId = message.policyId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryPolicyByIdRequest>, I>>(object: I): QueryPolicyByIdRequest {
+    const message = createBaseQueryPolicyByIdRequest();
+    message.policyId = object.policyId ?? "";
+    return message;
+  },
+
+  fromSDK(object: QueryPolicyByIdRequestSDKType): QueryPolicyByIdRequest {
+    return {
+      policyId: object?.policy_id
+    };
+  },
+
+  toSDK(message: QueryPolicyByIdRequest): QueryPolicyByIdRequestSDKType {
+    const obj: any = {};
+    obj.policy_id = message.policyId;
+    return obj;
+  }
+
+};
+
+function createBaseQueryPolicyByIdResponse(): QueryPolicyByIdResponse {
+  return {
+    policy: undefined
+  };
+}
+
+export const QueryPolicyByIdResponse = {
+  encode(message: QueryPolicyByIdResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.policy !== undefined) {
+      Policy.encode(message.policy, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPolicyByIdResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryPolicyByIdResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.policy = Policy.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryPolicyByIdResponse {
+    return {
+      policy: isSet(object.policy) ? Policy.fromJSON(object.policy) : undefined
+    };
+  },
+
+  toJSON(message: QueryPolicyByIdResponse): unknown {
+    const obj: any = {};
+    message.policy !== undefined && (obj.policy = message.policy ? Policy.toJSON(message.policy) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryPolicyByIdResponse>, I>>(object: I): QueryPolicyByIdResponse {
+    const message = createBaseQueryPolicyByIdResponse();
+    message.policy = object.policy !== undefined && object.policy !== null ? Policy.fromPartial(object.policy) : undefined;
+    return message;
+  },
+
+  fromSDK(object: QueryPolicyByIdResponseSDKType): QueryPolicyByIdResponse {
+    return {
+      policy: object.policy ? Policy.fromSDK(object.policy) : undefined
+    };
+  },
+
+  toSDK(message: QueryPolicyByIdResponse): QueryPolicyByIdResponseSDKType {
+    const obj: any = {};
+    message.policy !== undefined && (obj.policy = message.policy ? Policy.toSDK(message.policy) : undefined);
+    return obj;
+  }
+
+};
 /** Query defines the gRPC querier service. */
 
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
+  /** Parameters queries the parameters of the module. */
+
+  QueryParamsByTimestamp(request: QueryParamsByTimestampRequest): Promise<QueryParamsByTimestampResponse>;
   /** Queries a bucket with specify name. */
 
   HeadBucket(request: QueryHeadBucketRequest): Promise<QueryHeadBucketResponse>;
@@ -2499,6 +2812,9 @@ export interface Query {
   /** Queries a policy that grants permission to a group */
 
   QueryPolicyForGroup(request: QueryPolicyForGroupRequest): Promise<QueryPolicyForGroupResponse>;
+  /** Queries a policy by policy id */
+
+  QueryPolicyById(request: QueryPolicyByIdRequest): Promise<QueryPolicyByIdResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -2506,6 +2822,7 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
+    this.QueryParamsByTimestamp = this.QueryParamsByTimestamp.bind(this);
     this.HeadBucket = this.HeadBucket.bind(this);
     this.HeadBucketById = this.HeadBucketById.bind(this);
     this.HeadBucketNFT = this.HeadBucketNFT.bind(this);
@@ -2522,47 +2839,54 @@ export class QueryClientImpl implements Query {
     this.ListGroup = this.ListGroup.bind(this);
     this.HeadGroupMember = this.HeadGroupMember.bind(this);
     this.QueryPolicyForGroup = this.QueryPolicyForGroup.bind(this);
+    this.QueryPolicyById = this.QueryPolicyById.bind(this);
   }
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "Params", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "Params", data);
     return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+  }
+
+  QueryParamsByTimestamp(request: QueryParamsByTimestampRequest): Promise<QueryParamsByTimestampResponse> {
+    const data = QueryParamsByTimestampRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Query", "QueryParamsByTimestamp", data);
+    return promise.then(data => QueryParamsByTimestampResponse.decode(new _m0.Reader(data)));
   }
 
   HeadBucket(request: QueryHeadBucketRequest): Promise<QueryHeadBucketResponse> {
     const data = QueryHeadBucketRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadBucket", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "HeadBucket", data);
     return promise.then(data => QueryHeadBucketResponse.decode(new _m0.Reader(data)));
   }
 
   HeadBucketById(request: QueryHeadBucketByIdRequest): Promise<QueryHeadBucketResponse> {
     const data = QueryHeadBucketByIdRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadBucketById", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "HeadBucketById", data);
     return promise.then(data => QueryHeadBucketResponse.decode(new _m0.Reader(data)));
   }
 
   HeadBucketNFT(request: QueryNFTRequest): Promise<QueryBucketNFTResponse> {
     const data = QueryNFTRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadBucketNFT", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "HeadBucketNFT", data);
     return promise.then(data => QueryBucketNFTResponse.decode(new _m0.Reader(data)));
   }
 
   HeadObject(request: QueryHeadObjectRequest): Promise<QueryHeadObjectResponse> {
     const data = QueryHeadObjectRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadObject", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "HeadObject", data);
     return promise.then(data => QueryHeadObjectResponse.decode(new _m0.Reader(data)));
   }
 
   HeadObjectById(request: QueryHeadObjectByIdRequest): Promise<QueryHeadObjectResponse> {
     const data = QueryHeadObjectByIdRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadObjectById", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "HeadObjectById", data);
     return promise.then(data => QueryHeadObjectResponse.decode(new _m0.Reader(data)));
   }
 
   HeadObjectNFT(request: QueryNFTRequest): Promise<QueryObjectNFTResponse> {
     const data = QueryNFTRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadObjectNFT", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "HeadObjectNFT", data);
     return promise.then(data => QueryObjectNFTResponse.decode(new _m0.Reader(data)));
   }
 
@@ -2570,62 +2894,68 @@ export class QueryClientImpl implements Query {
     pagination: undefined
   }): Promise<QueryListBucketsResponse> {
     const data = QueryListBucketsRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "ListBuckets", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "ListBuckets", data);
     return promise.then(data => QueryListBucketsResponse.decode(new _m0.Reader(data)));
   }
 
   ListObjects(request: QueryListObjectsRequest): Promise<QueryListObjectsResponse> {
     const data = QueryListObjectsRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "ListObjects", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "ListObjects", data);
     return promise.then(data => QueryListObjectsResponse.decode(new _m0.Reader(data)));
   }
 
   ListObjectsByBucketId(request: QueryListObjectsByBucketIdRequest): Promise<QueryListObjectsResponse> {
     const data = QueryListObjectsByBucketIdRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "ListObjectsByBucketId", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "ListObjectsByBucketId", data);
     return promise.then(data => QueryListObjectsResponse.decode(new _m0.Reader(data)));
   }
 
   HeadGroupNFT(request: QueryNFTRequest): Promise<QueryGroupNFTResponse> {
     const data = QueryNFTRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadGroupNFT", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "HeadGroupNFT", data);
     return promise.then(data => QueryGroupNFTResponse.decode(new _m0.Reader(data)));
   }
 
   QueryPolicyForAccount(request: QueryPolicyForAccountRequest): Promise<QueryPolicyForAccountResponse> {
     const data = QueryPolicyForAccountRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "QueryPolicyForAccount", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "QueryPolicyForAccount", data);
     return promise.then(data => QueryPolicyForAccountResponse.decode(new _m0.Reader(data)));
   }
 
   VerifyPermission(request: QueryVerifyPermissionRequest): Promise<QueryVerifyPermissionResponse> {
     const data = QueryVerifyPermissionRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "VerifyPermission", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "VerifyPermission", data);
     return promise.then(data => QueryVerifyPermissionResponse.decode(new _m0.Reader(data)));
   }
 
   HeadGroup(request: QueryHeadGroupRequest): Promise<QueryHeadGroupResponse> {
     const data = QueryHeadGroupRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadGroup", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "HeadGroup", data);
     return promise.then(data => QueryHeadGroupResponse.decode(new _m0.Reader(data)));
   }
 
   ListGroup(request: QueryListGroupRequest): Promise<QueryListGroupResponse> {
     const data = QueryListGroupRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "ListGroup", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "ListGroup", data);
     return promise.then(data => QueryListGroupResponse.decode(new _m0.Reader(data)));
   }
 
   HeadGroupMember(request: QueryHeadGroupMemberRequest): Promise<QueryHeadGroupMemberResponse> {
     const data = QueryHeadGroupMemberRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "HeadGroupMember", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "HeadGroupMember", data);
     return promise.then(data => QueryHeadGroupMemberResponse.decode(new _m0.Reader(data)));
   }
 
   QueryPolicyForGroup(request: QueryPolicyForGroupRequest): Promise<QueryPolicyForGroupResponse> {
     const data = QueryPolicyForGroupRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Query", "QueryPolicyForGroup", data);
+    const promise = this.rpc.request("greenfield.storage.Query", "QueryPolicyForGroup", data);
     return promise.then(data => QueryPolicyForGroupResponse.decode(new _m0.Reader(data)));
+  }
+
+  QueryPolicyById(request: QueryPolicyByIdRequest): Promise<QueryPolicyByIdResponse> {
+    const data = QueryPolicyByIdRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Query", "QueryPolicyById", data);
+    return promise.then(data => QueryPolicyByIdResponse.decode(new _m0.Reader(data)));
   }
 
 }

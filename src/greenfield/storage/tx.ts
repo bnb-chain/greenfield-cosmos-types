@@ -3,9 +3,10 @@ import { VisibilityType, Approval, ApprovalSDKType, RedundancyType, visibilityTy
 import { UInt64Value, UInt64ValueSDKType } from "../common/wrapper";
 import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "../permission/common";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
+import { Params, ParamsSDKType } from "./params";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp, Rpc } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
-export const protobufPackage = "bnbchain.greenfield.storage";
+export const protobufPackage = "greenfield.storage";
 export interface MsgCreateBucket {
   /** creator defines the account address of bucket creator, it is also the bucket owner. */
   creator: string;
@@ -257,11 +258,15 @@ export interface MsgCreateGroup {
   /** member_request defines a list of member which to be add or remove */
 
   members: string[];
+  /** extra defines extra info for the group */
+
+  extra: string;
 }
 export interface MsgCreateGroupSDKType {
   creator: string;
   group_name: string;
   members: string[];
+  extra: string;
 }
 export interface MsgCreateGroupResponse {
   groupId: string;
@@ -307,6 +312,27 @@ export interface MsgUpdateGroupMemberSDKType {
 }
 export interface MsgUpdateGroupMemberResponse {}
 export interface MsgUpdateGroupMemberResponseSDKType {}
+export interface MsgUpdateGroupExtra {
+  /** operator defines the account address of the operator who has the UpdateGroupMember permission of the group. */
+  operator: string;
+  /** group_owner defines the account address of the group owner */
+
+  groupOwner: string;
+  /** group_name defines the name of the group which to be updated */
+
+  groupName: string;
+  /** extra defines extra info for the group to update */
+
+  Extra: string;
+}
+export interface MsgUpdateGroupExtraSDKType {
+  operator: string;
+  group_owner: string;
+  group_name: string;
+  Extra: string;
+}
+export interface MsgUpdateGroupExtraResponse {}
+export interface MsgUpdateGroupExtraResponseSDKType {}
 export interface MsgLeaveGroup {
   /** member defines the account address of the member who want to leave the group */
   member: string;
@@ -434,10 +460,18 @@ export interface MsgMirrorObject {
   /** id defines the unique u256 for object. */
 
   id: string;
+  /** bucket_name defines the name of the bucket where the object is stored */
+
+  bucketName: string;
+  /** object_name defines the name of object */
+
+  objectName: string;
 }
 export interface MsgMirrorObjectSDKType {
   operator: string;
   id: string;
+  bucket_name: string;
+  object_name: string;
 }
 export interface MsgMirrorObjectResponse {}
 export interface MsgMirrorObjectResponseSDKType {}
@@ -447,10 +481,14 @@ export interface MsgMirrorBucket {
   /** id defines the unique u256 for bucket. */
 
   id: string;
+  /** bucket_name defines a globally unique name of bucket */
+
+  bucketName: string;
 }
 export interface MsgMirrorBucketSDKType {
   operator: string;
   id: string;
+  bucket_name: string;
 }
 export interface MsgUpdateObjectInfoResponse {}
 export interface MsgUpdateObjectInfoResponseSDKType {}
@@ -479,18 +517,53 @@ export interface MsgUpdateObjectInfoSDKType {
 export interface MsgMirrorBucketResponse {}
 export interface MsgMirrorBucketResponseSDKType {}
 export interface MsgMirrorGroup {
-  /** operator defines the account address of the operator who has the DeleteGroup permission of the group to be deleted. */
+  /** operator defines the account address of the operator who is the owner of the group */
   operator: string;
   /** id defines the unique u256 for group. */
 
   id: string;
+  /** group_name defines the name of the group */
+
+  groupName: string;
 }
 export interface MsgMirrorGroupSDKType {
   operator: string;
   id: string;
+  group_name: string;
 }
 export interface MsgMirrorGroupResponse {}
 export interface MsgMirrorGroupResponseSDKType {}
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
+
+export interface MsgUpdateParams {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority: string;
+  /**
+   * params defines the x/storage parameters to update.
+   * 
+   * NOTE: All parameters must be supplied.
+   */
+
+  params?: Params;
+}
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
+
+export interface MsgUpdateParamsSDKType {
+  authority: string;
+  params?: ParamsSDKType;
+}
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ */
+
+export interface MsgUpdateParamsResponse {}
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ */
+
+export interface MsgUpdateParamsResponseSDKType {}
 
 function createBaseMsgCreateBucket(): MsgCreateBucket {
   return {
@@ -2170,7 +2243,8 @@ function createBaseMsgCreateGroup(): MsgCreateGroup {
   return {
     creator: "",
     groupName: "",
-    members: []
+    members: [],
+    extra: ""
   };
 }
 
@@ -2186,6 +2260,10 @@ export const MsgCreateGroup = {
 
     for (const v of message.members) {
       writer.uint32(26).string(v!);
+    }
+
+    if (message.extra !== "") {
+      writer.uint32(34).string(message.extra);
     }
 
     return writer;
@@ -2212,6 +2290,10 @@ export const MsgCreateGroup = {
           message.members.push(reader.string());
           break;
 
+        case 4:
+          message.extra = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -2225,7 +2307,8 @@ export const MsgCreateGroup = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
-      members: Array.isArray(object?.members) ? object.members.map((e: any) => String(e)) : []
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => String(e)) : [],
+      extra: isSet(object.extra) ? String(object.extra) : ""
     };
   },
 
@@ -2240,6 +2323,7 @@ export const MsgCreateGroup = {
       obj.members = [];
     }
 
+    message.extra !== undefined && (obj.extra = message.extra);
     return obj;
   },
 
@@ -2248,6 +2332,7 @@ export const MsgCreateGroup = {
     message.creator = object.creator ?? "";
     message.groupName = object.groupName ?? "";
     message.members = object.members?.map(e => e) || [];
+    message.extra = object.extra ?? "";
     return message;
   },
 
@@ -2255,7 +2340,8 @@ export const MsgCreateGroup = {
     return {
       creator: object?.creator,
       groupName: object?.group_name,
-      members: Array.isArray(object?.members) ? object.members.map((e: any) => e) : []
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => e) : [],
+      extra: object?.extra
     };
   },
 
@@ -2270,6 +2356,7 @@ export const MsgCreateGroup = {
       obj.members = [];
     }
 
+    obj.extra = message.extra;
     return obj;
   }
 
@@ -2672,6 +2759,169 @@ export const MsgUpdateGroupMemberResponse = {
   },
 
   toSDK(_: MsgUpdateGroupMemberResponse): MsgUpdateGroupMemberResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
+
+function createBaseMsgUpdateGroupExtra(): MsgUpdateGroupExtra {
+  return {
+    operator: "",
+    groupOwner: "",
+    groupName: "",
+    Extra: ""
+  };
+}
+
+export const MsgUpdateGroupExtra = {
+  encode(message: MsgUpdateGroupExtra, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.groupOwner !== "") {
+      writer.uint32(18).string(message.groupOwner);
+    }
+
+    if (message.groupName !== "") {
+      writer.uint32(26).string(message.groupName);
+    }
+
+    if (message.Extra !== "") {
+      writer.uint32(34).string(message.Extra);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateGroupExtra {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateGroupExtra();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.groupOwner = reader.string();
+          break;
+
+        case 3:
+          message.groupName = reader.string();
+          break;
+
+        case 4:
+          message.Extra = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateGroupExtra {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      groupOwner: isSet(object.groupOwner) ? String(object.groupOwner) : "",
+      groupName: isSet(object.groupName) ? String(object.groupName) : "",
+      Extra: isSet(object.Extra) ? String(object.Extra) : ""
+    };
+  },
+
+  toJSON(message: MsgUpdateGroupExtra): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.groupOwner !== undefined && (obj.groupOwner = message.groupOwner);
+    message.groupName !== undefined && (obj.groupName = message.groupName);
+    message.Extra !== undefined && (obj.Extra = message.Extra);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateGroupExtra>, I>>(object: I): MsgUpdateGroupExtra {
+    const message = createBaseMsgUpdateGroupExtra();
+    message.operator = object.operator ?? "";
+    message.groupOwner = object.groupOwner ?? "";
+    message.groupName = object.groupName ?? "";
+    message.Extra = object.Extra ?? "";
+    return message;
+  },
+
+  fromSDK(object: MsgUpdateGroupExtraSDKType): MsgUpdateGroupExtra {
+    return {
+      operator: object?.operator,
+      groupOwner: object?.group_owner,
+      groupName: object?.group_name,
+      Extra: object?.Extra
+    };
+  },
+
+  toSDK(message: MsgUpdateGroupExtra): MsgUpdateGroupExtraSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.group_owner = message.groupOwner;
+    obj.group_name = message.groupName;
+    obj.Extra = message.Extra;
+    return obj;
+  }
+
+};
+
+function createBaseMsgUpdateGroupExtraResponse(): MsgUpdateGroupExtraResponse {
+  return {};
+}
+
+export const MsgUpdateGroupExtraResponse = {
+  encode(_: MsgUpdateGroupExtraResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateGroupExtraResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateGroupExtraResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateGroupExtraResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateGroupExtraResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateGroupExtraResponse>, I>>(_: I): MsgUpdateGroupExtraResponse {
+    const message = createBaseMsgUpdateGroupExtraResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgUpdateGroupExtraResponseSDKType): MsgUpdateGroupExtraResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateGroupExtraResponse): MsgUpdateGroupExtraResponseSDKType {
     const obj: any = {};
     return obj;
   }
@@ -3528,7 +3778,9 @@ export const MsgDeletePolicyResponse = {
 function createBaseMsgMirrorObject(): MsgMirrorObject {
   return {
     operator: "",
-    id: ""
+    id: "",
+    bucketName: "",
+    objectName: ""
   };
 }
 
@@ -3540,6 +3792,14 @@ export const MsgMirrorObject = {
 
     if (message.id !== "") {
       writer.uint32(18).string(message.id);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(26).string(message.bucketName);
+    }
+
+    if (message.objectName !== "") {
+      writer.uint32(34).string(message.objectName);
     }
 
     return writer;
@@ -3562,6 +3822,14 @@ export const MsgMirrorObject = {
           message.id = reader.string();
           break;
 
+        case 3:
+          message.bucketName = reader.string();
+          break;
+
+        case 4:
+          message.objectName = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -3574,7 +3842,9 @@ export const MsgMirrorObject = {
   fromJSON(object: any): MsgMirrorObject {
     return {
       operator: isSet(object.operator) ? String(object.operator) : "",
-      id: isSet(object.id) ? String(object.id) : ""
+      id: isSet(object.id) ? String(object.id) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      objectName: isSet(object.objectName) ? String(object.objectName) : ""
     };
   },
 
@@ -3582,6 +3852,8 @@ export const MsgMirrorObject = {
     const obj: any = {};
     message.operator !== undefined && (obj.operator = message.operator);
     message.id !== undefined && (obj.id = message.id);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.objectName !== undefined && (obj.objectName = message.objectName);
     return obj;
   },
 
@@ -3589,13 +3861,17 @@ export const MsgMirrorObject = {
     const message = createBaseMsgMirrorObject();
     message.operator = object.operator ?? "";
     message.id = object.id ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.objectName = object.objectName ?? "";
     return message;
   },
 
   fromSDK(object: MsgMirrorObjectSDKType): MsgMirrorObject {
     return {
       operator: object?.operator,
-      id: object?.id
+      id: object?.id,
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name
     };
   },
 
@@ -3603,6 +3879,8 @@ export const MsgMirrorObject = {
     const obj: any = {};
     obj.operator = message.operator;
     obj.id = message.id;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
     return obj;
   }
 
@@ -3663,7 +3941,8 @@ export const MsgMirrorObjectResponse = {
 function createBaseMsgMirrorBucket(): MsgMirrorBucket {
   return {
     operator: "",
-    id: ""
+    id: "",
+    bucketName: ""
   };
 }
 
@@ -3675,6 +3954,10 @@ export const MsgMirrorBucket = {
 
     if (message.id !== "") {
       writer.uint32(18).string(message.id);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(26).string(message.bucketName);
     }
 
     return writer;
@@ -3697,6 +3980,10 @@ export const MsgMirrorBucket = {
           message.id = reader.string();
           break;
 
+        case 3:
+          message.bucketName = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -3709,7 +3996,8 @@ export const MsgMirrorBucket = {
   fromJSON(object: any): MsgMirrorBucket {
     return {
       operator: isSet(object.operator) ? String(object.operator) : "",
-      id: isSet(object.id) ? String(object.id) : ""
+      id: isSet(object.id) ? String(object.id) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : ""
     };
   },
 
@@ -3717,6 +4005,7 @@ export const MsgMirrorBucket = {
     const obj: any = {};
     message.operator !== undefined && (obj.operator = message.operator);
     message.id !== undefined && (obj.id = message.id);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     return obj;
   },
 
@@ -3724,13 +4013,15 @@ export const MsgMirrorBucket = {
     const message = createBaseMsgMirrorBucket();
     message.operator = object.operator ?? "";
     message.id = object.id ?? "";
+    message.bucketName = object.bucketName ?? "";
     return message;
   },
 
   fromSDK(object: MsgMirrorBucketSDKType): MsgMirrorBucket {
     return {
       operator: object?.operator,
-      id: object?.id
+      id: object?.id,
+      bucketName: object?.bucket_name
     };
   },
 
@@ -3738,6 +4029,7 @@ export const MsgMirrorBucket = {
     const obj: any = {};
     obj.operator = message.operator;
     obj.id = message.id;
+    obj.bucket_name = message.bucketName;
     return obj;
   }
 
@@ -3961,7 +4253,8 @@ export const MsgMirrorBucketResponse = {
 function createBaseMsgMirrorGroup(): MsgMirrorGroup {
   return {
     operator: "",
-    id: ""
+    id: "",
+    groupName: ""
   };
 }
 
@@ -3973,6 +4266,10 @@ export const MsgMirrorGroup = {
 
     if (message.id !== "") {
       writer.uint32(18).string(message.id);
+    }
+
+    if (message.groupName !== "") {
+      writer.uint32(26).string(message.groupName);
     }
 
     return writer;
@@ -3995,6 +4292,10 @@ export const MsgMirrorGroup = {
           message.id = reader.string();
           break;
 
+        case 3:
+          message.groupName = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -4007,7 +4308,8 @@ export const MsgMirrorGroup = {
   fromJSON(object: any): MsgMirrorGroup {
     return {
       operator: isSet(object.operator) ? String(object.operator) : "",
-      id: isSet(object.id) ? String(object.id) : ""
+      id: isSet(object.id) ? String(object.id) : "",
+      groupName: isSet(object.groupName) ? String(object.groupName) : ""
     };
   },
 
@@ -4015,6 +4317,7 @@ export const MsgMirrorGroup = {
     const obj: any = {};
     message.operator !== undefined && (obj.operator = message.operator);
     message.id !== undefined && (obj.id = message.id);
+    message.groupName !== undefined && (obj.groupName = message.groupName);
     return obj;
   },
 
@@ -4022,13 +4325,15 @@ export const MsgMirrorGroup = {
     const message = createBaseMsgMirrorGroup();
     message.operator = object.operator ?? "";
     message.id = object.id ?? "";
+    message.groupName = object.groupName ?? "";
     return message;
   },
 
   fromSDK(object: MsgMirrorGroupSDKType): MsgMirrorGroup {
     return {
       operator: object?.operator,
-      id: object?.id
+      id: object?.id,
+      groupName: object?.group_name
     };
   },
 
@@ -4036,6 +4341,7 @@ export const MsgMirrorGroup = {
     const obj: any = {};
     obj.operator = message.operator;
     obj.id = message.id;
+    obj.group_name = message.groupName;
     return obj;
   }
 
@@ -4092,6 +4398,141 @@ export const MsgMirrorGroupResponse = {
   }
 
 };
+
+function createBaseMsgUpdateParams(): MsgUpdateParams {
+  return {
+    authority: "",
+    params: undefined
+  };
+}
+
+export const MsgUpdateParams = {
+  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
+    if (message.params !== undefined) {
+      Params.encode(message.params, writer.uint32(18).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateParams();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+
+        case 2:
+          message.params = Params.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateParams {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined
+    };
+  },
+
+  toJSON(message: MsgUpdateParams): unknown {
+    const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
+    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParams>, I>>(object: I): MsgUpdateParams {
+    const message = createBaseMsgUpdateParams();
+    message.authority = object.authority ?? "";
+    message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
+    return message;
+  },
+
+  fromSDK(object: MsgUpdateParamsSDKType): MsgUpdateParams {
+    return {
+      authority: object?.authority,
+      params: object.params ? Params.fromSDK(object.params) : undefined
+    };
+  },
+
+  toSDK(message: MsgUpdateParams): MsgUpdateParamsSDKType {
+    const obj: any = {};
+    obj.authority = message.authority;
+    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
+  return {};
+}
+
+export const MsgUpdateParamsResponse = {
+  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateParamsResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateParamsResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateParamsResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateParamsResponse>, I>>(_: I): MsgUpdateParamsResponse {
+    const message = createBaseMsgUpdateParamsResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgUpdateParamsResponseSDKType): MsgUpdateParamsResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
 /** Msg defines the Msg service. */
 
 export interface Msg {
@@ -4117,12 +4558,21 @@ export interface Msg {
   CreateGroup(request: MsgCreateGroup): Promise<MsgCreateGroupResponse>;
   DeleteGroup(request: MsgDeleteGroup): Promise<MsgDeleteGroupResponse>;
   UpdateGroupMember(request: MsgUpdateGroupMember): Promise<MsgUpdateGroupMemberResponse>;
+  UpdateGroupExtra(request: MsgUpdateGroupExtra): Promise<MsgUpdateGroupExtraResponse>;
   LeaveGroup(request: MsgLeaveGroup): Promise<MsgLeaveGroupResponse>;
   MirrorGroup(request: MsgMirrorGroup): Promise<MsgMirrorGroupResponse>;
   /** basic operation of policy */
 
   PutPolicy(request: MsgPutPolicy): Promise<MsgPutPolicyResponse>;
   DeletePolicy(request: MsgDeletePolicy): Promise<MsgDeletePolicyResponse>;
+  /**
+   * UpdateParams defines a governance operation for updating the x/storage module parameters.
+   * The authority is defined in the keeper.
+   * 
+   * Since: cosmos-sdk 0.47
+   */
+
+  UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -4146,136 +4596,150 @@ export class MsgClientImpl implements Msg {
     this.CreateGroup = this.CreateGroup.bind(this);
     this.DeleteGroup = this.DeleteGroup.bind(this);
     this.UpdateGroupMember = this.UpdateGroupMember.bind(this);
+    this.UpdateGroupExtra = this.UpdateGroupExtra.bind(this);
     this.LeaveGroup = this.LeaveGroup.bind(this);
     this.MirrorGroup = this.MirrorGroup.bind(this);
     this.PutPolicy = this.PutPolicy.bind(this);
     this.DeletePolicy = this.DeletePolicy.bind(this);
+    this.UpdateParams = this.UpdateParams.bind(this);
   }
 
   CreateBucket(request: MsgCreateBucket): Promise<MsgCreateBucketResponse> {
     const data = MsgCreateBucket.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "CreateBucket", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "CreateBucket", data);
     return promise.then(data => MsgCreateBucketResponse.decode(new _m0.Reader(data)));
   }
 
   DeleteBucket(request: MsgDeleteBucket): Promise<MsgDeleteBucketResponse> {
     const data = MsgDeleteBucket.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "DeleteBucket", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "DeleteBucket", data);
     return promise.then(data => MsgDeleteBucketResponse.decode(new _m0.Reader(data)));
   }
 
   UpdateBucketInfo(request: MsgUpdateBucketInfo): Promise<MsgUpdateBucketInfoResponse> {
     const data = MsgUpdateBucketInfo.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "UpdateBucketInfo", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "UpdateBucketInfo", data);
     return promise.then(data => MsgUpdateBucketInfoResponse.decode(new _m0.Reader(data)));
   }
 
   MirrorBucket(request: MsgMirrorBucket): Promise<MsgMirrorBucketResponse> {
     const data = MsgMirrorBucket.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "MirrorBucket", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "MirrorBucket", data);
     return promise.then(data => MsgMirrorBucketResponse.decode(new _m0.Reader(data)));
   }
 
   DiscontinueBucket(request: MsgDiscontinueBucket): Promise<MsgDiscontinueBucketResponse> {
     const data = MsgDiscontinueBucket.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "DiscontinueBucket", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "DiscontinueBucket", data);
     return promise.then(data => MsgDiscontinueBucketResponse.decode(new _m0.Reader(data)));
   }
 
   CreateObject(request: MsgCreateObject): Promise<MsgCreateObjectResponse> {
     const data = MsgCreateObject.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "CreateObject", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "CreateObject", data);
     return promise.then(data => MsgCreateObjectResponse.decode(new _m0.Reader(data)));
   }
 
   SealObject(request: MsgSealObject): Promise<MsgSealObjectResponse> {
     const data = MsgSealObject.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "SealObject", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "SealObject", data);
     return promise.then(data => MsgSealObjectResponse.decode(new _m0.Reader(data)));
   }
 
   RejectSealObject(request: MsgRejectSealObject): Promise<MsgRejectSealObjectResponse> {
     const data = MsgRejectSealObject.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "RejectSealObject", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "RejectSealObject", data);
     return promise.then(data => MsgRejectSealObjectResponse.decode(new _m0.Reader(data)));
   }
 
   CopyObject(request: MsgCopyObject): Promise<MsgCopyObjectResponse> {
     const data = MsgCopyObject.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "CopyObject", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "CopyObject", data);
     return promise.then(data => MsgCopyObjectResponse.decode(new _m0.Reader(data)));
   }
 
   DeleteObject(request: MsgDeleteObject): Promise<MsgDeleteObjectResponse> {
     const data = MsgDeleteObject.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "DeleteObject", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "DeleteObject", data);
     return promise.then(data => MsgDeleteObjectResponse.decode(new _m0.Reader(data)));
   }
 
   CancelCreateObject(request: MsgCancelCreateObject): Promise<MsgCancelCreateObjectResponse> {
     const data = MsgCancelCreateObject.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "CancelCreateObject", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "CancelCreateObject", data);
     return promise.then(data => MsgCancelCreateObjectResponse.decode(new _m0.Reader(data)));
   }
 
   MirrorObject(request: MsgMirrorObject): Promise<MsgMirrorObjectResponse> {
     const data = MsgMirrorObject.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "MirrorObject", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "MirrorObject", data);
     return promise.then(data => MsgMirrorObjectResponse.decode(new _m0.Reader(data)));
   }
 
   DiscontinueObject(request: MsgDiscontinueObject): Promise<MsgDiscontinueObjectResponse> {
     const data = MsgDiscontinueObject.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "DiscontinueObject", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "DiscontinueObject", data);
     return promise.then(data => MsgDiscontinueObjectResponse.decode(new _m0.Reader(data)));
   }
 
   UpdateObjectInfo(request: MsgUpdateObjectInfo): Promise<MsgUpdateObjectInfoResponse> {
     const data = MsgUpdateObjectInfo.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "UpdateObjectInfo", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "UpdateObjectInfo", data);
     return promise.then(data => MsgUpdateObjectInfoResponse.decode(new _m0.Reader(data)));
   }
 
   CreateGroup(request: MsgCreateGroup): Promise<MsgCreateGroupResponse> {
     const data = MsgCreateGroup.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "CreateGroup", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "CreateGroup", data);
     return promise.then(data => MsgCreateGroupResponse.decode(new _m0.Reader(data)));
   }
 
   DeleteGroup(request: MsgDeleteGroup): Promise<MsgDeleteGroupResponse> {
     const data = MsgDeleteGroup.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "DeleteGroup", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "DeleteGroup", data);
     return promise.then(data => MsgDeleteGroupResponse.decode(new _m0.Reader(data)));
   }
 
   UpdateGroupMember(request: MsgUpdateGroupMember): Promise<MsgUpdateGroupMemberResponse> {
     const data = MsgUpdateGroupMember.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "UpdateGroupMember", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "UpdateGroupMember", data);
     return promise.then(data => MsgUpdateGroupMemberResponse.decode(new _m0.Reader(data)));
+  }
+
+  UpdateGroupExtra(request: MsgUpdateGroupExtra): Promise<MsgUpdateGroupExtraResponse> {
+    const data = MsgUpdateGroupExtra.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Msg", "UpdateGroupExtra", data);
+    return promise.then(data => MsgUpdateGroupExtraResponse.decode(new _m0.Reader(data)));
   }
 
   LeaveGroup(request: MsgLeaveGroup): Promise<MsgLeaveGroupResponse> {
     const data = MsgLeaveGroup.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "LeaveGroup", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "LeaveGroup", data);
     return promise.then(data => MsgLeaveGroupResponse.decode(new _m0.Reader(data)));
   }
 
   MirrorGroup(request: MsgMirrorGroup): Promise<MsgMirrorGroupResponse> {
     const data = MsgMirrorGroup.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "MirrorGroup", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "MirrorGroup", data);
     return promise.then(data => MsgMirrorGroupResponse.decode(new _m0.Reader(data)));
   }
 
   PutPolicy(request: MsgPutPolicy): Promise<MsgPutPolicyResponse> {
     const data = MsgPutPolicy.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "PutPolicy", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "PutPolicy", data);
     return promise.then(data => MsgPutPolicyResponse.decode(new _m0.Reader(data)));
   }
 
   DeletePolicy(request: MsgDeletePolicy): Promise<MsgDeletePolicyResponse> {
     const data = MsgDeletePolicy.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.storage.Msg", "DeletePolicy", data);
+    const promise = this.rpc.request("greenfield.storage.Msg", "DeletePolicy", data);
     return promise.then(data => MsgDeletePolicyResponse.decode(new _m0.Reader(data)));
+  }
+
+  UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
+    const data = MsgUpdateParams.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Msg", "UpdateParams", data);
+    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
   }
 
 }

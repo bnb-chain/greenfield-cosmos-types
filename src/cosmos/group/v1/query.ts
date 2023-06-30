@@ -18,7 +18,7 @@ export interface QueryGroupInfoRequestSDKType {
 /** QueryGroupInfoResponse is the Query/GroupInfo response type. */
 
 export interface QueryGroupInfoResponse {
-  /** info is the GroupInfo for the group. */
+  /** info is the GroupInfo of the group. */
   info?: GroupInfo;
 }
 /** QueryGroupInfoResponse is the Query/GroupInfo response type. */
@@ -40,7 +40,7 @@ export interface QueryGroupPolicyInfoRequestSDKType {
 /** QueryGroupPolicyInfoResponse is the Query/GroupPolicyInfo response type. */
 
 export interface QueryGroupPolicyInfoResponse {
-  /** info is the GroupPolicyInfo for the group policy. */
+  /** info is the GroupPolicyInfo of the group policy. */
   info?: GroupPolicyInfo;
 }
 /** QueryGroupPolicyInfoResponse is the Query/GroupPolicyInfo response type. */
@@ -357,6 +357,48 @@ export interface QueryTallyResultResponse {
 
 export interface QueryTallyResultResponseSDKType {
   tally?: TallyResultSDKType;
+}
+/**
+ * QueryGroupsRequest is the Query/Groups request type.
+ * 
+ * Since: cosmos-sdk 0.47.1
+ */
+
+export interface QueryGroupsRequest {
+  /** pagination defines an optional pagination for the request. */
+  pagination?: PageRequest;
+}
+/**
+ * QueryGroupsRequest is the Query/Groups request type.
+ * 
+ * Since: cosmos-sdk 0.47.1
+ */
+
+export interface QueryGroupsRequestSDKType {
+  pagination?: PageRequestSDKType;
+}
+/**
+ * QueryGroupsResponse is the Query/Groups response type.
+ * 
+ * Since: cosmos-sdk 0.47.1
+ */
+
+export interface QueryGroupsResponse {
+  /** `groups` is all the groups present in state. */
+  groups: GroupInfo[];
+  /** pagination defines the pagination in the response. */
+
+  pagination?: PageResponse;
+}
+/**
+ * QueryGroupsResponse is the Query/Groups response type.
+ * 
+ * Since: cosmos-sdk 0.47.1
+ */
+
+export interface QueryGroupsResponseSDKType {
+  groups: GroupInfoSDKType[];
+  pagination?: PageResponseSDKType;
 }
 
 function createBaseQueryGroupInfoRequest(): QueryGroupInfoRequest {
@@ -2486,6 +2528,170 @@ export const QueryTallyResultResponse = {
   }
 
 };
+
+function createBaseQueryGroupsRequest(): QueryGroupsRequest {
+  return {
+    pagination: undefined
+  };
+}
+
+export const QueryGroupsRequest = {
+  encode(message: QueryGroupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGroupsRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 2:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryGroupsRequest {
+    return {
+      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
+    };
+  },
+
+  toJSON(message: QueryGroupsRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGroupsRequest>, I>>(object: I): QueryGroupsRequest {
+    const message = createBaseQueryGroupsRequest();
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
+    return message;
+  },
+
+  fromSDK(object: QueryGroupsRequestSDKType): QueryGroupsRequest {
+    return {
+      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryGroupsRequest): QueryGroupsRequestSDKType {
+    const obj: any = {};
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseQueryGroupsResponse(): QueryGroupsResponse {
+  return {
+    groups: [],
+    pagination: undefined
+  };
+}
+
+export const QueryGroupsResponse = {
+  encode(message: QueryGroupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.groups) {
+      GroupInfo.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGroupsResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.groups.push(GroupInfo.decode(reader, reader.uint32()));
+          break;
+
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryGroupsResponse {
+    return {
+      groups: Array.isArray(object?.groups) ? object.groups.map((e: any) => GroupInfo.fromJSON(e)) : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
+    };
+  },
+
+  toJSON(message: QueryGroupsResponse): unknown {
+    const obj: any = {};
+
+    if (message.groups) {
+      obj.groups = message.groups.map(e => e ? GroupInfo.toJSON(e) : undefined);
+    } else {
+      obj.groups = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGroupsResponse>, I>>(object: I): QueryGroupsResponse {
+    const message = createBaseQueryGroupsResponse();
+    message.groups = object.groups?.map(e => GroupInfo.fromPartial(e)) || [];
+    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
+    return message;
+  },
+
+  fromSDK(object: QueryGroupsResponseSDKType): QueryGroupsResponse {
+    return {
+      groups: Array.isArray(object?.groups) ? object.groups.map((e: any) => GroupInfo.fromSDK(e)) : [],
+      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
+    };
+  },
+
+  toSDK(message: QueryGroupsResponse): QueryGroupsResponseSDKType {
+    const obj: any = {};
+
+    if (message.groups) {
+      obj.groups = message.groups.map(e => e ? GroupInfo.toSDK(e) : undefined);
+    } else {
+      obj.groups = [];
+    }
+
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
+    return obj;
+  }
+
+};
 /** Query is the cosmos.group.v1 Query service. */
 
 export interface Query {
@@ -2494,7 +2700,7 @@ export interface Query {
   /** GroupPolicyInfo queries group policy info based on account address of group policy. */
 
   GroupPolicyInfo(request: QueryGroupPolicyInfoRequest): Promise<QueryGroupPolicyInfoResponse>;
-  /** GroupMembers queries members of a group */
+  /** GroupMembers queries members of a group by group id. */
 
   GroupMembers(request: QueryGroupMembersRequest): Promise<QueryGroupMembersResponse>;
   /** GroupsByAdmin queries groups by admin address. */
@@ -2503,7 +2709,7 @@ export interface Query {
   /** GroupPoliciesByGroup queries group policies by group id. */
 
   GroupPoliciesByGroup(request: QueryGroupPoliciesByGroupRequest): Promise<QueryGroupPoliciesByGroupResponse>;
-  /** GroupsByAdmin queries group policies by admin address. */
+  /** GroupPoliciesByAdmin queries group policies by admin address. */
 
   GroupPoliciesByAdmin(request: QueryGroupPoliciesByAdminRequest): Promise<QueryGroupPoliciesByAdminResponse>;
   /** Proposal queries a proposal based on proposal id. */
@@ -2515,7 +2721,7 @@ export interface Query {
   /** VoteByProposalVoter queries a vote by proposal id and voter. */
 
   VoteByProposalVoter(request: QueryVoteByProposalVoterRequest): Promise<QueryVoteByProposalVoterResponse>;
-  /** VotesByProposal queries a vote by proposal. */
+  /** VotesByProposal queries a vote by proposal id. */
 
   VotesByProposal(request: QueryVotesByProposalRequest): Promise<QueryVotesByProposalResponse>;
   /** VotesByVoter queries a vote by voter. */
@@ -2533,6 +2739,13 @@ export interface Query {
    */
 
   TallyResult(request: QueryTallyResultRequest): Promise<QueryTallyResultResponse>;
+  /**
+   * Groups queries all groups in state.
+   * 
+   * Since: cosmos-sdk 0.47.1
+   */
+
+  Groups(request?: QueryGroupsRequest): Promise<QueryGroupsResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -2552,6 +2765,7 @@ export class QueryClientImpl implements Query {
     this.VotesByVoter = this.VotesByVoter.bind(this);
     this.GroupsByMember = this.GroupsByMember.bind(this);
     this.TallyResult = this.TallyResult.bind(this);
+    this.Groups = this.Groups.bind(this);
   }
 
   GroupInfo(request: QueryGroupInfoRequest): Promise<QueryGroupInfoResponse> {
@@ -2630,6 +2844,14 @@ export class QueryClientImpl implements Query {
     const data = QueryTallyResultRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.group.v1.Query", "TallyResult", data);
     return promise.then(data => QueryTallyResultResponse.decode(new _m0.Reader(data)));
+  }
+
+  Groups(request: QueryGroupsRequest = {
+    pagination: undefined
+  }): Promise<QueryGroupsResponse> {
+    const data = QueryGroupsRequest.encode(request).finish();
+    const promise = this.rpc.request("cosmos.group.v1.Query", "Groups", data);
+    return promise.then(data => QueryGroupsResponse.decode(new _m0.Reader(data)));
   }
 
 }

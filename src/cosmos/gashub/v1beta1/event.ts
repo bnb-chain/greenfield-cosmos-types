@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../../helpers";
-export const protobufPackage = "cosmos.gashub.v1alpha1";
+export const protobufPackage = "cosmos.gashub.v1beta1";
 /** EventUpdateMsgGasParams is emitted when updating a message's gas params */
 
 export interface EventUpdateMsgGasParams {

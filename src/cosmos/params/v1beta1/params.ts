@@ -8,12 +8,6 @@ export interface ParameterChangeProposal {
   title: string;
   description: string;
   changes: ParamChange[];
-  /** cross_chain is a flag to indicate whether it is a cross-chain proposal */
-
-  crossChain: boolean;
-  /** addresses is destination smart contract address(es), only used when it is a cross-chain proposal */
-
-  addresses: string[];
 }
 /** ParameterChangeProposal defines a proposal to change one or more parameters. */
 
@@ -21,8 +15,6 @@ export interface ParameterChangeProposalSDKType {
   title: string;
   description: string;
   changes: ParamChangeSDKType[];
-  cross_chain: boolean;
-  addresses: string[];
 }
 /**
  * ParamChange defines an individual parameter change, for use in
@@ -49,9 +41,7 @@ function createBaseParameterChangeProposal(): ParameterChangeProposal {
   return {
     title: "",
     description: "",
-    changes: [],
-    crossChain: false,
-    addresses: []
+    changes: []
   };
 }
 
@@ -67,14 +57,6 @@ export const ParameterChangeProposal = {
 
     for (const v of message.changes) {
       ParamChange.encode(v!, writer.uint32(26).fork()).ldelim();
-    }
-
-    if (message.crossChain === true) {
-      writer.uint32(32).bool(message.crossChain);
-    }
-
-    for (const v of message.addresses) {
-      writer.uint32(42).string(v!);
     }
 
     return writer;
@@ -101,14 +83,6 @@ export const ParameterChangeProposal = {
           message.changes.push(ParamChange.decode(reader, reader.uint32()));
           break;
 
-        case 4:
-          message.crossChain = reader.bool();
-          break;
-
-        case 5:
-          message.addresses.push(reader.string());
-          break;
-
         default:
           reader.skipType(tag & 7);
           break;
@@ -122,9 +96,7 @@ export const ParameterChangeProposal = {
     return {
       title: isSet(object.title) ? String(object.title) : "",
       description: isSet(object.description) ? String(object.description) : "",
-      changes: Array.isArray(object?.changes) ? object.changes.map((e: any) => ParamChange.fromJSON(e)) : [],
-      crossChain: isSet(object.crossChain) ? Boolean(object.crossChain) : false,
-      addresses: Array.isArray(object?.addresses) ? object.addresses.map((e: any) => String(e)) : []
+      changes: Array.isArray(object?.changes) ? object.changes.map((e: any) => ParamChange.fromJSON(e)) : []
     };
   },
 
@@ -139,14 +111,6 @@ export const ParameterChangeProposal = {
       obj.changes = [];
     }
 
-    message.crossChain !== undefined && (obj.crossChain = message.crossChain);
-
-    if (message.addresses) {
-      obj.addresses = message.addresses.map(e => e);
-    } else {
-      obj.addresses = [];
-    }
-
     return obj;
   },
 
@@ -155,8 +119,6 @@ export const ParameterChangeProposal = {
     message.title = object.title ?? "";
     message.description = object.description ?? "";
     message.changes = object.changes?.map(e => ParamChange.fromPartial(e)) || [];
-    message.crossChain = object.crossChain ?? false;
-    message.addresses = object.addresses?.map(e => e) || [];
     return message;
   },
 
@@ -164,9 +126,7 @@ export const ParameterChangeProposal = {
     return {
       title: object?.title,
       description: object?.description,
-      changes: Array.isArray(object?.changes) ? object.changes.map((e: any) => ParamChange.fromSDK(e)) : [],
-      crossChain: object?.cross_chain,
-      addresses: Array.isArray(object?.addresses) ? object.addresses.map((e: any) => e) : []
+      changes: Array.isArray(object?.changes) ? object.changes.map((e: any) => ParamChange.fromSDK(e)) : []
     };
   },
 
@@ -179,14 +139,6 @@ export const ParameterChangeProposal = {
       obj.changes = message.changes.map(e => e ? ParamChange.toSDK(e) : undefined);
     } else {
       obj.changes = [];
-    }
-
-    obj.cross_chain = message.crossChain;
-
-    if (message.addresses) {
-      obj.addresses = message.addresses.map(e => e);
-    } else {
-      obj.addresses = [];
     }
 
     return obj;

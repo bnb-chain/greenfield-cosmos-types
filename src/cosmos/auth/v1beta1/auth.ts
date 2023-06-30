@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { Any, AnySDKType } from "../../../google/protobuf/any";
-import { Long, isSet, DeepPartial, Exact } from "../../../helpers";
+import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.auth.v1beta1";
 /**
@@ -41,6 +41,32 @@ export interface ModuleAccountSDKType {
   name: string;
   permissions: string[];
 }
+/**
+ * ModuleCredential represents a unclaimable pubkey for base accounts controlled by modules.
+ * 
+ * Since: cosmos-sdk 0.47
+ */
+
+export interface ModuleCredential {
+  /** module_name is the name of the module used for address derivation (passed into address.Module). */
+  moduleName: string;
+  /**
+   * derivation_keys is for deriving a module account address (passed into address.Module)
+   * adding more keys creates sub-account addresses (passed into address.Derive)
+   */
+
+  derivationKeys: Uint8Array[];
+}
+/**
+ * ModuleCredential represents a unclaimable pubkey for base accounts controlled by modules.
+ * 
+ * Since: cosmos-sdk 0.47
+ */
+
+export interface ModuleCredentialSDKType {
+  module_name: string;
+  derivation_keys: Uint8Array[];
+}
 /** Params defines the parameters for the auth module. */
 
 export interface Params {
@@ -49,7 +75,6 @@ export interface Params {
   txSizeCostPerByte: Long;
   sigVerifyCostEd25519: Long;
   sigVerifyCostSecp256k1: Long;
-  sigVerifyCostEthsecp256k1: Long;
 }
 /** Params defines the parameters for the auth module. */
 
@@ -59,7 +84,6 @@ export interface ParamsSDKType {
   tx_size_cost_per_byte: Long;
   sig_verify_cost_ed25519: Long;
   sig_verify_cost_secp256k1: Long;
-  sig_verify_cost_ethsecp256k1: Long;
 }
 
 function createBaseBaseAccount(): BaseAccount {
@@ -282,14 +306,108 @@ export const ModuleAccount = {
 
 };
 
+function createBaseModuleCredential(): ModuleCredential {
+  return {
+    moduleName: "",
+    derivationKeys: []
+  };
+}
+
+export const ModuleCredential = {
+  encode(message: ModuleCredential, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.moduleName !== "") {
+      writer.uint32(10).string(message.moduleName);
+    }
+
+    for (const v of message.derivationKeys) {
+      writer.uint32(18).bytes(v!);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ModuleCredential {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseModuleCredential();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.moduleName = reader.string();
+          break;
+
+        case 2:
+          message.derivationKeys.push(reader.bytes());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): ModuleCredential {
+    return {
+      moduleName: isSet(object.moduleName) ? String(object.moduleName) : "",
+      derivationKeys: Array.isArray(object?.derivationKeys) ? object.derivationKeys.map((e: any) => bytesFromBase64(e)) : []
+    };
+  },
+
+  toJSON(message: ModuleCredential): unknown {
+    const obj: any = {};
+    message.moduleName !== undefined && (obj.moduleName = message.moduleName);
+
+    if (message.derivationKeys) {
+      obj.derivationKeys = message.derivationKeys.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
+    } else {
+      obj.derivationKeys = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ModuleCredential>, I>>(object: I): ModuleCredential {
+    const message = createBaseModuleCredential();
+    message.moduleName = object.moduleName ?? "";
+    message.derivationKeys = object.derivationKeys?.map(e => e) || [];
+    return message;
+  },
+
+  fromSDK(object: ModuleCredentialSDKType): ModuleCredential {
+    return {
+      moduleName: object?.module_name,
+      derivationKeys: Array.isArray(object?.derivation_keys) ? object.derivation_keys.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: ModuleCredential): ModuleCredentialSDKType {
+    const obj: any = {};
+    obj.module_name = message.moduleName;
+
+    if (message.derivationKeys) {
+      obj.derivation_keys = message.derivationKeys.map(e => e);
+    } else {
+      obj.derivation_keys = [];
+    }
+
+    return obj;
+  }
+
+};
+
 function createBaseParams(): Params {
   return {
     maxMemoCharacters: Long.UZERO,
     txSigLimit: Long.UZERO,
     txSizeCostPerByte: Long.UZERO,
     sigVerifyCostEd25519: Long.UZERO,
-    sigVerifyCostSecp256k1: Long.UZERO,
-    sigVerifyCostEthsecp256k1: Long.UZERO
+    sigVerifyCostSecp256k1: Long.UZERO
   };
 }
 
@@ -313,10 +431,6 @@ export const Params = {
 
     if (!message.sigVerifyCostSecp256k1.isZero()) {
       writer.uint32(40).uint64(message.sigVerifyCostSecp256k1);
-    }
-
-    if (!message.sigVerifyCostEthsecp256k1.isZero()) {
-      writer.uint32(48).uint64(message.sigVerifyCostEthsecp256k1);
     }
 
     return writer;
@@ -351,10 +465,6 @@ export const Params = {
           message.sigVerifyCostSecp256k1 = (reader.uint64() as Long);
           break;
 
-        case 6:
-          message.sigVerifyCostEthsecp256k1 = (reader.uint64() as Long);
-          break;
-
         default:
           reader.skipType(tag & 7);
           break;
@@ -370,8 +480,7 @@ export const Params = {
       txSigLimit: isSet(object.txSigLimit) ? Long.fromValue(object.txSigLimit) : Long.UZERO,
       txSizeCostPerByte: isSet(object.txSizeCostPerByte) ? Long.fromValue(object.txSizeCostPerByte) : Long.UZERO,
       sigVerifyCostEd25519: isSet(object.sigVerifyCostEd25519) ? Long.fromValue(object.sigVerifyCostEd25519) : Long.UZERO,
-      sigVerifyCostSecp256k1: isSet(object.sigVerifyCostSecp256k1) ? Long.fromValue(object.sigVerifyCostSecp256k1) : Long.UZERO,
-      sigVerifyCostEthsecp256k1: isSet(object.sigVerifyCostEthsecp256k1) ? Long.fromValue(object.sigVerifyCostEthsecp256k1) : Long.UZERO
+      sigVerifyCostSecp256k1: isSet(object.sigVerifyCostSecp256k1) ? Long.fromValue(object.sigVerifyCostSecp256k1) : Long.UZERO
     };
   },
 
@@ -382,7 +491,6 @@ export const Params = {
     message.txSizeCostPerByte !== undefined && (obj.txSizeCostPerByte = (message.txSizeCostPerByte || Long.UZERO).toString());
     message.sigVerifyCostEd25519 !== undefined && (obj.sigVerifyCostEd25519 = (message.sigVerifyCostEd25519 || Long.UZERO).toString());
     message.sigVerifyCostSecp256k1 !== undefined && (obj.sigVerifyCostSecp256k1 = (message.sigVerifyCostSecp256k1 || Long.UZERO).toString());
-    message.sigVerifyCostEthsecp256k1 !== undefined && (obj.sigVerifyCostEthsecp256k1 = (message.sigVerifyCostEthsecp256k1 || Long.UZERO).toString());
     return obj;
   },
 
@@ -393,7 +501,6 @@ export const Params = {
     message.txSizeCostPerByte = object.txSizeCostPerByte !== undefined && object.txSizeCostPerByte !== null ? Long.fromValue(object.txSizeCostPerByte) : Long.UZERO;
     message.sigVerifyCostEd25519 = object.sigVerifyCostEd25519 !== undefined && object.sigVerifyCostEd25519 !== null ? Long.fromValue(object.sigVerifyCostEd25519) : Long.UZERO;
     message.sigVerifyCostSecp256k1 = object.sigVerifyCostSecp256k1 !== undefined && object.sigVerifyCostSecp256k1 !== null ? Long.fromValue(object.sigVerifyCostSecp256k1) : Long.UZERO;
-    message.sigVerifyCostEthsecp256k1 = object.sigVerifyCostEthsecp256k1 !== undefined && object.sigVerifyCostEthsecp256k1 !== null ? Long.fromValue(object.sigVerifyCostEthsecp256k1) : Long.UZERO;
     return message;
   },
 
@@ -403,8 +510,7 @@ export const Params = {
       txSigLimit: object?.tx_sig_limit,
       txSizeCostPerByte: object?.tx_size_cost_per_byte,
       sigVerifyCostEd25519: object?.sig_verify_cost_ed25519,
-      sigVerifyCostSecp256k1: object?.sig_verify_cost_secp256k1,
-      sigVerifyCostEthsecp256k1: object?.sig_verify_cost_ethsecp256k1
+      sigVerifyCostSecp256k1: object?.sig_verify_cost_secp256k1
     };
   },
 
@@ -415,7 +521,6 @@ export const Params = {
     obj.tx_size_cost_per_byte = message.txSizeCostPerByte;
     obj.sig_verify_cost_ed25519 = message.sigVerifyCostEd25519;
     obj.sig_verify_cost_secp256k1 = message.sigVerifyCostSecp256k1;
-    obj.sig_verify_cost_ethsecp256k1 = message.sigVerifyCostEthsecp256k1;
     return obj;
   }
 

@@ -1,8 +1,9 @@
 /* eslint-disable */
 import { Params, ParamsSDKType } from "./params";
+import { AttestedChallenge, AttestedChallengeSDKType } from "./types";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Long, Rpc } from "../../helpers";
-export const protobufPackage = "bnbchain.greenfield.challenge";
+export const protobufPackage = "greenfield.challenge";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
@@ -29,12 +30,12 @@ export interface QueryLatestAttestedChallengesRequestSDKType {}
 /** QueryLatestAttestedChallengesResponse is response type for the Query/LatestAttestedChallenges RPC method. */
 
 export interface QueryLatestAttestedChallengesResponse {
-  challengeIds: Long[];
+  challenges: AttestedChallenge[];
 }
 /** QueryLatestAttestedChallengesResponse is response type for the Query/LatestAttestedChallenges RPC method. */
 
 export interface QueryLatestAttestedChallengesResponseSDKType {
-  challengeIds: Long[];
+  challenges: AttestedChallengeSDKType[];
 }
 /** QueryInturnAttestationSubmitterRequest is request type for the Query/InturnAttestationSubmitter RPC method. */
 
@@ -242,19 +243,16 @@ export const QueryLatestAttestedChallengesRequest = {
 
 function createBaseQueryLatestAttestedChallengesResponse(): QueryLatestAttestedChallengesResponse {
   return {
-    challengeIds: []
+    challenges: []
   };
 }
 
 export const QueryLatestAttestedChallengesResponse = {
   encode(message: QueryLatestAttestedChallengesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    writer.uint32(10).fork();
-
-    for (const v of message.challengeIds) {
-      writer.uint64(v);
+    for (const v of message.challenges) {
+      AttestedChallenge.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
-    writer.ldelim();
     return writer;
   },
 
@@ -268,16 +266,7 @@ export const QueryLatestAttestedChallengesResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos;
-
-            while (reader.pos < end2) {
-              message.challengeIds.push((reader.uint64() as Long));
-            }
-          } else {
-            message.challengeIds.push((reader.uint64() as Long));
-          }
-
+          message.challenges.push(AttestedChallenge.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -291,17 +280,17 @@ export const QueryLatestAttestedChallengesResponse = {
 
   fromJSON(object: any): QueryLatestAttestedChallengesResponse {
     return {
-      challengeIds: Array.isArray(object?.challengeIds) ? object.challengeIds.map((e: any) => Long.fromValue(e)) : []
+      challenges: Array.isArray(object?.challenges) ? object.challenges.map((e: any) => AttestedChallenge.fromJSON(e)) : []
     };
   },
 
   toJSON(message: QueryLatestAttestedChallengesResponse): unknown {
     const obj: any = {};
 
-    if (message.challengeIds) {
-      obj.challengeIds = message.challengeIds.map(e => (e || Long.UZERO).toString());
+    if (message.challenges) {
+      obj.challenges = message.challenges.map(e => e ? AttestedChallenge.toJSON(e) : undefined);
     } else {
-      obj.challengeIds = [];
+      obj.challenges = [];
     }
 
     return obj;
@@ -309,23 +298,23 @@ export const QueryLatestAttestedChallengesResponse = {
 
   fromPartial<I extends Exact<DeepPartial<QueryLatestAttestedChallengesResponse>, I>>(object: I): QueryLatestAttestedChallengesResponse {
     const message = createBaseQueryLatestAttestedChallengesResponse();
-    message.challengeIds = object.challengeIds?.map(e => Long.fromValue(e)) || [];
+    message.challenges = object.challenges?.map(e => AttestedChallenge.fromPartial(e)) || [];
     return message;
   },
 
   fromSDK(object: QueryLatestAttestedChallengesResponseSDKType): QueryLatestAttestedChallengesResponse {
     return {
-      challengeIds: Array.isArray(object?.challengeIds) ? object.challengeIds.map((e: any) => e) : []
+      challenges: Array.isArray(object?.challenges) ? object.challenges.map((e: any) => AttestedChallenge.fromSDK(e)) : []
     };
   },
 
   toSDK(message: QueryLatestAttestedChallengesResponse): QueryLatestAttestedChallengesResponseSDKType {
     const obj: any = {};
 
-    if (message.challengeIds) {
-      obj.challengeIds = message.challengeIds.map(e => e);
+    if (message.challenges) {
+      obj.challenges = message.challenges.map(e => e ? AttestedChallenge.toSDK(e) : undefined);
     } else {
-      obj.challengeIds = [];
+      obj.challenges = [];
     }
 
     return obj;
@@ -555,7 +544,7 @@ export const SubmitInterval = {
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
-  /** Queries the latest attested challenge ids. */
+  /** Queries the latest attested challenges. */
 
   LatestAttestedChallenges(request?: QueryLatestAttestedChallengesRequest): Promise<QueryLatestAttestedChallengesResponse>;
   /** Queries the inturn challenger. */
@@ -574,19 +563,19 @@ export class QueryClientImpl implements Query {
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.challenge.Query", "Params", data);
+    const promise = this.rpc.request("greenfield.challenge.Query", "Params", data);
     return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
 
   LatestAttestedChallenges(request: QueryLatestAttestedChallengesRequest = {}): Promise<QueryLatestAttestedChallengesResponse> {
     const data = QueryLatestAttestedChallengesRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.challenge.Query", "LatestAttestedChallenges", data);
+    const promise = this.rpc.request("greenfield.challenge.Query", "LatestAttestedChallenges", data);
     return promise.then(data => QueryLatestAttestedChallengesResponse.decode(new _m0.Reader(data)));
   }
 
   InturnAttestationSubmitter(request: QueryInturnAttestationSubmitterRequest = {}): Promise<QueryInturnAttestationSubmitterResponse> {
     const data = QueryInturnAttestationSubmitterRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.challenge.Query", "InturnAttestationSubmitter", data);
+    const promise = this.rpc.request("greenfield.challenge.Query", "InturnAttestationSubmitter", data);
     return promise.then(data => QueryInturnAttestationSubmitterResponse.decode(new _m0.Reader(data)));
   }
 

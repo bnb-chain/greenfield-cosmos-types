@@ -1,24 +1,28 @@
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./gashub";
+import { ConsensusParams, ConsensusParamsSDKType } from "../../../tendermint/types/params";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../../helpers";
-export const protobufPackage = "cosmos.gashub.v1alpha1";
-/** QueryParamsRequest is the request type for the Query/Params RPC method. */
+export const protobufPackage = "cosmos.consensus.v1";
+/** QueryParamsRequest defines the request type for querying x/consensus parameters. */
 
 export interface QueryParamsRequest {}
-/** QueryParamsRequest is the request type for the Query/Params RPC method. */
+/** QueryParamsRequest defines the request type for querying x/consensus parameters. */
 
 export interface QueryParamsRequestSDKType {}
-/** QueryParamsResponse is the response type for the Query/Params RPC method. */
+/** QueryParamsResponse defines the response type for querying x/consensus parameters. */
 
 export interface QueryParamsResponse {
-  /** params defines the parameters of the module. */
-  params?: Params;
+  /**
+   * params are the tendermint consensus params stored in the consensus module.
+   * Please note that `params.version` is not populated in this response, it is
+   * tracked separately in the x/upgrade module.
+   */
+  params?: ConsensusParams;
 }
-/** QueryParamsResponse is the response type for the Query/Params RPC method. */
+/** QueryParamsResponse defines the response type for querying x/consensus parameters. */
 
 export interface QueryParamsResponseSDKType {
-  params?: ParamsSDKType;
+  params?: ConsensusParamsSDKType;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -82,7 +86,7 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
 export const QueryParamsResponse = {
   encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
-      Params.encode(message.params, writer.uint32(10).fork()).ldelim();
+      ConsensusParams.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
 
     return writer;
@@ -98,7 +102,7 @@ export const QueryParamsResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.params = Params.decode(reader, reader.uint32());
+          message.params = ConsensusParams.decode(reader, reader.uint32());
           break;
 
         default:
@@ -112,31 +116,31 @@ export const QueryParamsResponse = {
 
   fromJSON(object: any): QueryParamsResponse {
     return {
-      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined
+      params: isSet(object.params) ? ConsensusParams.fromJSON(object.params) : undefined
     };
   },
 
   toJSON(message: QueryParamsResponse): unknown {
     const obj: any = {};
-    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    message.params !== undefined && (obj.params = message.params ? ConsensusParams.toJSON(message.params) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryParamsResponse>, I>>(object: I): QueryParamsResponse {
     const message = createBaseQueryParamsResponse();
-    message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
+    message.params = object.params !== undefined && object.params !== null ? ConsensusParams.fromPartial(object.params) : undefined;
     return message;
   },
 
   fromSDK(object: QueryParamsResponseSDKType): QueryParamsResponse {
     return {
-      params: object.params ? Params.fromSDK(object.params) : undefined
+      params: object.params ? ConsensusParams.fromSDK(object.params) : undefined
     };
   },
 
   toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
     const obj: any = {};
-    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    message.params !== undefined && (obj.params = message.params ? ConsensusParams.toSDK(message.params) : undefined);
     return obj;
   }
 
@@ -144,7 +148,7 @@ export const QueryParamsResponse = {
 /** Query defines the gRPC querier service. */
 
 export interface Query {
-  /** Params queries all parameters. */
+  /** Params queries the parameters of x/consensus_param module. */
   Params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
 }
 export class QueryClientImpl implements Query {
@@ -157,7 +161,7 @@ export class QueryClientImpl implements Query {
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
-    const promise = this.rpc.request("cosmos.gashub.v1alpha1.Query", "Params", data);
+    const promise = this.rpc.request("cosmos.consensus.v1.Query", "Params", data);
     return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
 

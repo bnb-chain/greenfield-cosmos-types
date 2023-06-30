@@ -4,7 +4,7 @@ import { Params, ParamsSDKType } from "./params";
 import { StorageProvider, StorageProviderSDKType, SpStoragePrice, SpStoragePriceSDKType, SecondarySpStorePrice, SecondarySpStorePriceSDKType } from "./types";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Long, Rpc } from "../../helpers";
-export const protobufPackage = "bnbchain.greenfield.sp";
+export const protobufPackage = "greenfield.sp";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 
 export interface QueryParamsRequest {}
@@ -830,7 +830,7 @@ export class QueryClientImpl implements Query {
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.sp.Query", "Params", data);
+    const promise = this.rpc.request("greenfield.sp.Query", "Params", data);
     return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
 
@@ -838,25 +838,25 @@ export class QueryClientImpl implements Query {
     pagination: undefined
   }): Promise<QueryStorageProvidersResponse> {
     const data = QueryStorageProvidersRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.sp.Query", "StorageProviders", data);
+    const promise = this.rpc.request("greenfield.sp.Query", "StorageProviders", data);
     return promise.then(data => QueryStorageProvidersResponse.decode(new _m0.Reader(data)));
   }
 
   QueryGetSpStoragePriceByTime(request: QueryGetSpStoragePriceByTimeRequest): Promise<QueryGetSpStoragePriceByTimeResponse> {
     const data = QueryGetSpStoragePriceByTimeRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.sp.Query", "QueryGetSpStoragePriceByTime", data);
+    const promise = this.rpc.request("greenfield.sp.Query", "QueryGetSpStoragePriceByTime", data);
     return promise.then(data => QueryGetSpStoragePriceByTimeResponse.decode(new _m0.Reader(data)));
   }
 
   QueryGetSecondarySpStorePriceByTime(request: QueryGetSecondarySpStorePriceByTimeRequest): Promise<QueryGetSecondarySpStorePriceByTimeResponse> {
     const data = QueryGetSecondarySpStorePriceByTimeRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.sp.Query", "QueryGetSecondarySpStorePriceByTime", data);
+    const promise = this.rpc.request("greenfield.sp.Query", "QueryGetSecondarySpStorePriceByTime", data);
     return promise.then(data => QueryGetSecondarySpStorePriceByTimeResponse.decode(new _m0.Reader(data)));
   }
 
   StorageProvider(request: QueryStorageProviderRequest): Promise<QueryStorageProviderResponse> {
     const data = QueryStorageProviderRequest.encode(request).finish();
-    const promise = this.rpc.request("bnbchain.greenfield.sp.Query", "StorageProvider", data);
+    const promise = this.rpc.request("greenfield.sp.Query", "StorageProvider", data);
     return promise.then(data => QueryStorageProviderResponse.decode(new _m0.Reader(data)));
   }
 

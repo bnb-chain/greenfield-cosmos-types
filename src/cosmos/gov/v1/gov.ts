@@ -174,7 +174,10 @@ export function proposalStatusToJSON(object: ProposalStatus): string {
 /** WeightedVoteOption defines a unit of vote for vote split. */
 
 export interface WeightedVoteOption {
+  /** option defines the valid vote options, it must not contain duplicate vote options. */
   option: VoteOption;
+  /** weight is the vote weight associated with the vote option. */
+
   weight: string;
 }
 /** WeightedVoteOption defines a unit of vote for vote split. */
@@ -189,8 +192,13 @@ export interface WeightedVoteOptionSDKType {
  */
 
 export interface Deposit {
+  /** proposal_id defines the unique id of the proposal. */
   proposalId: Long;
+  /** depositor defines the deposit addresses from the proposals. */
+
   depositor: string;
+  /** amount to be deposited by depositor. */
+
   amount: Coin[];
 }
 /**
@@ -206,8 +214,13 @@ export interface DepositSDKType {
 /** Proposal defines the core field members of a governance proposal. */
 
 export interface Proposal {
+  /** id defines the unique id of the proposal. */
   id: Long;
+  /** messages are the arbitrary messages to be executed if the proposal passes. */
+
   messages: Any[];
+  /** status defines the proposal status. */
+
   status: ProposalStatus;
   /**
    * final_tally_result is the final tally result of the proposal. When
@@ -216,14 +229,45 @@ export interface Proposal {
    */
 
   finalTallyResult?: TallyResult;
+  /** submit_time is the time of proposal submission. */
+
   submitTime?: Timestamp;
+  /** deposit_end_time is the end time for deposition. */
+
   depositEndTime?: Timestamp;
+  /** total_deposit is the total deposit on the proposal. */
+
   totalDeposit: Coin[];
+  /** voting_start_time is the starting time to vote on a proposal. */
+
   votingStartTime?: Timestamp;
+  /** voting_end_time is the end time of voting on a proposal. */
+
   votingEndTime?: Timestamp;
   /** metadata is any arbitrary metadata attached to the proposal. */
 
   metadata: string;
+  /**
+   * title is the title of the proposal
+   * 
+   * Since: cosmos-sdk 0.47
+   */
+
+  title: string;
+  /**
+   * summary is a short summary of the proposal
+   * 
+   * Since: cosmos-sdk 0.47
+   */
+
+  summary: string;
+  /**
+   * Proposer is the address of the proposal sumbitter
+   * 
+   * Since: cosmos-sdk 0.47
+   */
+
+  proposer: string;
 }
 /** Proposal defines the core field members of a governance proposal. */
 
@@ -238,13 +282,23 @@ export interface ProposalSDKType {
   voting_start_time?: TimestampSDKType;
   voting_end_time?: TimestampSDKType;
   metadata: string;
+  title: string;
+  summary: string;
+  proposer: string;
 }
 /** TallyResult defines a standard tally for a governance proposal. */
 
 export interface TallyResult {
+  /** yes_count is the number of yes votes on a proposal. */
   yesCount: string;
+  /** abstain_count is the number of abstain votes on a proposal. */
+
   abstainCount: string;
+  /** no_count is the number of no votes on a proposal. */
+
   noCount: string;
+  /** no_with_veto_count is the number of no with veto votes on a proposal. */
+
   noWithVetoCount: string;
 }
 /** TallyResult defines a standard tally for a governance proposal. */
@@ -261,8 +315,13 @@ export interface TallyResultSDKType {
  */
 
 export interface Vote {
+  /** proposal_id defines the unique id of the proposal. */
   proposalId: Long;
+  /** voter is the voter address of the proposal. */
+
   voter: string;
+  /** options is the weighted vote options. */
+
   options: WeightedVoteOption[];
   /** metadata is any  arbitrary metadata to attached to the vote. */
 
@@ -286,7 +345,7 @@ export interface DepositParams {
   minDeposit: Coin[];
   /**
    * Maximum period for Atom holders to deposit on a proposal. Initial value: 2
-   *  months.
+   * months.
    */
 
   maxDepositPeriod?: Duration;
@@ -300,7 +359,7 @@ export interface DepositParamsSDKType {
 /** VotingParams defines the params for voting on governance proposals. */
 
 export interface VotingParams {
-  /** Length of the voting period. */
+  /** Duration of the voting period. */
   votingPeriod?: Duration;
 }
 /** VotingParams defines the params for voting on governance proposals. */
@@ -313,7 +372,7 @@ export interface VotingParamsSDKType {
 export interface TallyParams {
   /**
    * Minimum percentage of total stake needed to vote for a result to be
-   *  considered valid.
+   * considered valid.
    */
   quorum: string;
   /** Minimum proportion of Yes votes for proposal to pass. Default value: 0.5. */
@@ -321,7 +380,7 @@ export interface TallyParams {
   threshold: string;
   /**
    * Minimum value of Veto votes to Total votes ratio for proposal to be
-   *  vetoed. Default value: 1/3.
+   * vetoed. Default value: 1/3.
    */
 
   vetoThreshold: string;
@@ -332,6 +391,89 @@ export interface TallyParamsSDKType {
   quorum: string;
   threshold: string;
   veto_threshold: string;
+}
+/**
+ * Params defines the parameters for the x/gov module.
+ * 
+ * Since: cosmos-sdk 0.47
+ */
+
+export interface Params {
+  /** Minimum deposit for a proposal to enter voting period. */
+  minDeposit: Coin[];
+  /**
+   * Maximum period for Atom holders to deposit on a proposal. Initial value: 2
+   * months.
+   */
+
+  maxDepositPeriod?: Duration;
+  /** Duration of the voting period. */
+
+  votingPeriod?: Duration;
+  /**
+   * Minimum percentage of total stake needed to vote for a result to be
+   *  considered valid.
+   */
+
+  quorum: string;
+  /** Minimum proportion of Yes votes for proposal to pass. Default value: 0.5. */
+
+  threshold: string;
+  /**
+   * Minimum value of Veto votes to Total votes ratio for proposal to be
+   *  vetoed. Default value: 1/3.
+   */
+
+  vetoThreshold: string;
+  /** The ratio representing the proportion of the deposit value that must be paid at proposal submission. */
+
+  minInitialDepositRatio: string;
+  /** burn deposits if a proposal does not meet quorum */
+
+  burnVoteQuorum: boolean;
+  /** burn deposits if the proposal does not enter voting period */
+
+  burnProposalDepositPrevote: boolean;
+  /** burn deposits if quorum with vote type no_veto is met */
+
+  burnVoteVeto: boolean;
+}
+/**
+ * Params defines the parameters for the x/gov module.
+ * 
+ * Since: cosmos-sdk 0.47
+ */
+
+export interface ParamsSDKType {
+  min_deposit: CoinSDKType[];
+  max_deposit_period?: DurationSDKType;
+  voting_period?: DurationSDKType;
+  quorum: string;
+  threshold: string;
+  veto_threshold: string;
+  min_initial_deposit_ratio: string;
+  burn_vote_quorum: boolean;
+  burn_proposal_deposit_prevote: boolean;
+  burn_vote_veto: boolean;
+}
+/** CrossChainParamsChange defines the parameter change or contract upgrade */
+
+export interface CrossChainParamsChange {
+  /** parameter to be updated or 'upgrade' for contract upgrade */
+  key: string;
+  /** values is a new parameter or slice of new contract addresses in hex format */
+
+  values: string[];
+  /** targets defines a slice of addresses string in hex format */
+
+  targets: string[];
+}
+/** CrossChainParamsChange defines the parameter change or contract upgrade */
+
+export interface CrossChainParamsChangeSDKType {
+  key: string;
+  values: string[];
+  targets: string[];
 }
 
 function createBaseWeightedVoteOption(): WeightedVoteOption {
@@ -537,7 +679,10 @@ function createBaseProposal(): Proposal {
     totalDeposit: [],
     votingStartTime: undefined,
     votingEndTime: undefined,
-    metadata: ""
+    metadata: "",
+    title: "",
+    summary: "",
+    proposer: ""
   };
 }
 
@@ -581,6 +726,18 @@ export const Proposal = {
 
     if (message.metadata !== "") {
       writer.uint32(82).string(message.metadata);
+    }
+
+    if (message.title !== "") {
+      writer.uint32(90).string(message.title);
+    }
+
+    if (message.summary !== "") {
+      writer.uint32(98).string(message.summary);
+    }
+
+    if (message.proposer !== "") {
+      writer.uint32(106).string(message.proposer);
     }
 
     return writer;
@@ -635,6 +792,18 @@ export const Proposal = {
           message.metadata = reader.string();
           break;
 
+        case 11:
+          message.title = reader.string();
+          break;
+
+        case 12:
+          message.summary = reader.string();
+          break;
+
+        case 13:
+          message.proposer = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -655,7 +824,10 @@ export const Proposal = {
       totalDeposit: Array.isArray(object?.totalDeposit) ? object.totalDeposit.map((e: any) => Coin.fromJSON(e)) : [],
       votingStartTime: isSet(object.votingStartTime) ? fromJsonTimestamp(object.votingStartTime) : undefined,
       votingEndTime: isSet(object.votingEndTime) ? fromJsonTimestamp(object.votingEndTime) : undefined,
-      metadata: isSet(object.metadata) ? String(object.metadata) : ""
+      metadata: isSet(object.metadata) ? String(object.metadata) : "",
+      title: isSet(object.title) ? String(object.title) : "",
+      summary: isSet(object.summary) ? String(object.summary) : "",
+      proposer: isSet(object.proposer) ? String(object.proposer) : ""
     };
   },
 
@@ -683,6 +855,9 @@ export const Proposal = {
     message.votingStartTime !== undefined && (obj.votingStartTime = fromTimestamp(message.votingStartTime).toISOString());
     message.votingEndTime !== undefined && (obj.votingEndTime = fromTimestamp(message.votingEndTime).toISOString());
     message.metadata !== undefined && (obj.metadata = message.metadata);
+    message.title !== undefined && (obj.title = message.title);
+    message.summary !== undefined && (obj.summary = message.summary);
+    message.proposer !== undefined && (obj.proposer = message.proposer);
     return obj;
   },
 
@@ -698,6 +873,9 @@ export const Proposal = {
     message.votingStartTime = object.votingStartTime !== undefined && object.votingStartTime !== null ? Timestamp.fromPartial(object.votingStartTime) : undefined;
     message.votingEndTime = object.votingEndTime !== undefined && object.votingEndTime !== null ? Timestamp.fromPartial(object.votingEndTime) : undefined;
     message.metadata = object.metadata ?? "";
+    message.title = object.title ?? "";
+    message.summary = object.summary ?? "";
+    message.proposer = object.proposer ?? "";
     return message;
   },
 
@@ -712,7 +890,10 @@ export const Proposal = {
       totalDeposit: Array.isArray(object?.total_deposit) ? object.total_deposit.map((e: any) => Coin.fromSDK(e)) : [],
       votingStartTime: object.voting_start_time ? Timestamp.fromSDK(object.voting_start_time) : undefined,
       votingEndTime: object.voting_end_time ? Timestamp.fromSDK(object.voting_end_time) : undefined,
-      metadata: object?.metadata
+      metadata: object?.metadata,
+      title: object?.title,
+      summary: object?.summary,
+      proposer: object?.proposer
     };
   },
 
@@ -740,6 +921,9 @@ export const Proposal = {
     message.votingStartTime !== undefined && (obj.voting_start_time = message.votingStartTime ? Timestamp.toSDK(message.votingStartTime) : undefined);
     message.votingEndTime !== undefined && (obj.voting_end_time = message.votingEndTime ? Timestamp.toSDK(message.votingEndTime) : undefined);
     obj.metadata = message.metadata;
+    obj.title = message.title;
+    obj.summary = message.summary;
+    obj.proposer = message.proposer;
     return obj;
   }
 
@@ -1235,6 +1419,332 @@ export const TallyParams = {
     obj.quorum = message.quorum;
     obj.threshold = message.threshold;
     obj.veto_threshold = message.vetoThreshold;
+    return obj;
+  }
+
+};
+
+function createBaseParams(): Params {
+  return {
+    minDeposit: [],
+    maxDepositPeriod: undefined,
+    votingPeriod: undefined,
+    quorum: "",
+    threshold: "",
+    vetoThreshold: "",
+    minInitialDepositRatio: "",
+    burnVoteQuorum: false,
+    burnProposalDepositPrevote: false,
+    burnVoteVeto: false
+  };
+}
+
+export const Params = {
+  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.minDeposit) {
+      Coin.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+
+    if (message.maxDepositPeriod !== undefined) {
+      Duration.encode(message.maxDepositPeriod, writer.uint32(18).fork()).ldelim();
+    }
+
+    if (message.votingPeriod !== undefined) {
+      Duration.encode(message.votingPeriod, writer.uint32(26).fork()).ldelim();
+    }
+
+    if (message.quorum !== "") {
+      writer.uint32(34).string(message.quorum);
+    }
+
+    if (message.threshold !== "") {
+      writer.uint32(42).string(message.threshold);
+    }
+
+    if (message.vetoThreshold !== "") {
+      writer.uint32(50).string(message.vetoThreshold);
+    }
+
+    if (message.minInitialDepositRatio !== "") {
+      writer.uint32(58).string(message.minInitialDepositRatio);
+    }
+
+    if (message.burnVoteQuorum === true) {
+      writer.uint32(104).bool(message.burnVoteQuorum);
+    }
+
+    if (message.burnProposalDepositPrevote === true) {
+      writer.uint32(112).bool(message.burnProposalDepositPrevote);
+    }
+
+    if (message.burnVoteVeto === true) {
+      writer.uint32(120).bool(message.burnVoteVeto);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseParams();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.minDeposit.push(Coin.decode(reader, reader.uint32()));
+          break;
+
+        case 2:
+          message.maxDepositPeriod = Duration.decode(reader, reader.uint32());
+          break;
+
+        case 3:
+          message.votingPeriod = Duration.decode(reader, reader.uint32());
+          break;
+
+        case 4:
+          message.quorum = reader.string();
+          break;
+
+        case 5:
+          message.threshold = reader.string();
+          break;
+
+        case 6:
+          message.vetoThreshold = reader.string();
+          break;
+
+        case 7:
+          message.minInitialDepositRatio = reader.string();
+          break;
+
+        case 13:
+          message.burnVoteQuorum = reader.bool();
+          break;
+
+        case 14:
+          message.burnProposalDepositPrevote = reader.bool();
+          break;
+
+        case 15:
+          message.burnVoteVeto = reader.bool();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): Params {
+    return {
+      minDeposit: Array.isArray(object?.minDeposit) ? object.minDeposit.map((e: any) => Coin.fromJSON(e)) : [],
+      maxDepositPeriod: isSet(object.maxDepositPeriod) ? Duration.fromJSON(object.maxDepositPeriod) : undefined,
+      votingPeriod: isSet(object.votingPeriod) ? Duration.fromJSON(object.votingPeriod) : undefined,
+      quorum: isSet(object.quorum) ? String(object.quorum) : "",
+      threshold: isSet(object.threshold) ? String(object.threshold) : "",
+      vetoThreshold: isSet(object.vetoThreshold) ? String(object.vetoThreshold) : "",
+      minInitialDepositRatio: isSet(object.minInitialDepositRatio) ? String(object.minInitialDepositRatio) : "",
+      burnVoteQuorum: isSet(object.burnVoteQuorum) ? Boolean(object.burnVoteQuorum) : false,
+      burnProposalDepositPrevote: isSet(object.burnProposalDepositPrevote) ? Boolean(object.burnProposalDepositPrevote) : false,
+      burnVoteVeto: isSet(object.burnVoteVeto) ? Boolean(object.burnVoteVeto) : false
+    };
+  },
+
+  toJSON(message: Params): unknown {
+    const obj: any = {};
+
+    if (message.minDeposit) {
+      obj.minDeposit = message.minDeposit.map(e => e ? Coin.toJSON(e) : undefined);
+    } else {
+      obj.minDeposit = [];
+    }
+
+    message.maxDepositPeriod !== undefined && (obj.maxDepositPeriod = message.maxDepositPeriod ? Duration.toJSON(message.maxDepositPeriod) : undefined);
+    message.votingPeriod !== undefined && (obj.votingPeriod = message.votingPeriod ? Duration.toJSON(message.votingPeriod) : undefined);
+    message.quorum !== undefined && (obj.quorum = message.quorum);
+    message.threshold !== undefined && (obj.threshold = message.threshold);
+    message.vetoThreshold !== undefined && (obj.vetoThreshold = message.vetoThreshold);
+    message.minInitialDepositRatio !== undefined && (obj.minInitialDepositRatio = message.minInitialDepositRatio);
+    message.burnVoteQuorum !== undefined && (obj.burnVoteQuorum = message.burnVoteQuorum);
+    message.burnProposalDepositPrevote !== undefined && (obj.burnProposalDepositPrevote = message.burnProposalDepositPrevote);
+    message.burnVoteVeto !== undefined && (obj.burnVoteVeto = message.burnVoteVeto);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
+    const message = createBaseParams();
+    message.minDeposit = object.minDeposit?.map(e => Coin.fromPartial(e)) || [];
+    message.maxDepositPeriod = object.maxDepositPeriod !== undefined && object.maxDepositPeriod !== null ? Duration.fromPartial(object.maxDepositPeriod) : undefined;
+    message.votingPeriod = object.votingPeriod !== undefined && object.votingPeriod !== null ? Duration.fromPartial(object.votingPeriod) : undefined;
+    message.quorum = object.quorum ?? "";
+    message.threshold = object.threshold ?? "";
+    message.vetoThreshold = object.vetoThreshold ?? "";
+    message.minInitialDepositRatio = object.minInitialDepositRatio ?? "";
+    message.burnVoteQuorum = object.burnVoteQuorum ?? false;
+    message.burnProposalDepositPrevote = object.burnProposalDepositPrevote ?? false;
+    message.burnVoteVeto = object.burnVoteVeto ?? false;
+    return message;
+  },
+
+  fromSDK(object: ParamsSDKType): Params {
+    return {
+      minDeposit: Array.isArray(object?.min_deposit) ? object.min_deposit.map((e: any) => Coin.fromSDK(e)) : [],
+      maxDepositPeriod: object.max_deposit_period ? Duration.fromSDK(object.max_deposit_period) : undefined,
+      votingPeriod: object.voting_period ? Duration.fromSDK(object.voting_period) : undefined,
+      quorum: object?.quorum,
+      threshold: object?.threshold,
+      vetoThreshold: object?.veto_threshold,
+      minInitialDepositRatio: object?.min_initial_deposit_ratio,
+      burnVoteQuorum: object?.burn_vote_quorum,
+      burnProposalDepositPrevote: object?.burn_proposal_deposit_prevote,
+      burnVoteVeto: object?.burn_vote_veto
+    };
+  },
+
+  toSDK(message: Params): ParamsSDKType {
+    const obj: any = {};
+
+    if (message.minDeposit) {
+      obj.min_deposit = message.minDeposit.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.min_deposit = [];
+    }
+
+    message.maxDepositPeriod !== undefined && (obj.max_deposit_period = message.maxDepositPeriod ? Duration.toSDK(message.maxDepositPeriod) : undefined);
+    message.votingPeriod !== undefined && (obj.voting_period = message.votingPeriod ? Duration.toSDK(message.votingPeriod) : undefined);
+    obj.quorum = message.quorum;
+    obj.threshold = message.threshold;
+    obj.veto_threshold = message.vetoThreshold;
+    obj.min_initial_deposit_ratio = message.minInitialDepositRatio;
+    obj.burn_vote_quorum = message.burnVoteQuorum;
+    obj.burn_proposal_deposit_prevote = message.burnProposalDepositPrevote;
+    obj.burn_vote_veto = message.burnVoteVeto;
+    return obj;
+  }
+
+};
+
+function createBaseCrossChainParamsChange(): CrossChainParamsChange {
+  return {
+    key: "",
+    values: [],
+    targets: []
+  };
+}
+
+export const CrossChainParamsChange = {
+  encode(message: CrossChainParamsChange, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+
+    for (const v of message.values) {
+      writer.uint32(18).string(v!);
+    }
+
+    for (const v of message.targets) {
+      writer.uint32(26).string(v!);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CrossChainParamsChange {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCrossChainParamsChange();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+
+        case 2:
+          message.values.push(reader.string());
+          break;
+
+        case 3:
+          message.targets.push(reader.string());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): CrossChainParamsChange {
+    return {
+      key: isSet(object.key) ? String(object.key) : "",
+      values: Array.isArray(object?.values) ? object.values.map((e: any) => String(e)) : [],
+      targets: Array.isArray(object?.targets) ? object.targets.map((e: any) => String(e)) : []
+    };
+  },
+
+  toJSON(message: CrossChainParamsChange): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+
+    if (message.values) {
+      obj.values = message.values.map(e => e);
+    } else {
+      obj.values = [];
+    }
+
+    if (message.targets) {
+      obj.targets = message.targets.map(e => e);
+    } else {
+      obj.targets = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CrossChainParamsChange>, I>>(object: I): CrossChainParamsChange {
+    const message = createBaseCrossChainParamsChange();
+    message.key = object.key ?? "";
+    message.values = object.values?.map(e => e) || [];
+    message.targets = object.targets?.map(e => e) || [];
+    return message;
+  },
+
+  fromSDK(object: CrossChainParamsChangeSDKType): CrossChainParamsChange {
+    return {
+      key: object?.key,
+      values: Array.isArray(object?.values) ? object.values.map((e: any) => e) : [],
+      targets: Array.isArray(object?.targets) ? object.targets.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: CrossChainParamsChange): CrossChainParamsChangeSDKType {
+    const obj: any = {};
+    obj.key = message.key;
+
+    if (message.values) {
+      obj.values = message.values.map(e => e);
+    } else {
+      obj.values = [];
+    }
+
+    if (message.targets) {
+      obj.targets = message.targets.map(e => e);
+    } else {
+      obj.targets = [];
+    }
+
     return obj;
   }
 

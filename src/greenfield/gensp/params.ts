@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact } from "../../helpers";
-export const protobufPackage = "bnbchain.greenfield.gensp";
+export const protobufPackage = "greenfield.gensp";
 /** Params defines the parameters for the module. */
 
 export interface Params {}

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
-export const protobufPackage = "bnbchain.greenfield.payment";
+export const protobufPackage = "greenfield.payment";
 /**
  * AutoSettleRecord is the record keeps the auto settle information.
  * The EndBlocker of payment module will scan the list of AutoSettleRecord

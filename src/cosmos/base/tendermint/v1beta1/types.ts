@@ -8,7 +8,7 @@ import { isSet, DeepPartial, Exact, Long, fromJsonTimestamp, bytesFromBase64, fr
 export const protobufPackage = "cosmos.base.tendermint.v1beta1";
 /**
  * Block is tendermint type Block, with the Header proposer address
- * field converted to bech32 string.
+ * field converted to hex string.
  */
 
 export interface Block {
@@ -19,7 +19,7 @@ export interface Block {
 }
 /**
  * Block is tendermint type Block, with the Header proposer address
- * field converted to bech32 string.
+ * field converted to hex string.
  */
 
 export interface BlockSDKType {
@@ -60,8 +60,8 @@ export interface Header {
 
   evidenceHash: Uint8Array;
   /**
-   * proposer_address is the original block proposer address, formatted as a Bech32 string.
-   * In Tendermint, this type is `bytes`, but in the SDK, we convert it to a Bech32 string
+   * proposer_address is the original block proposer address, formatted as a hex string.
+   * In Tendermint, this type is `bytes`, but in the SDK, we convert it to a hex string
    * for better UX.
    */
 
