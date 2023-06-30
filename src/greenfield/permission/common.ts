@@ -1,8 +1,8 @@
 /* eslint-disable */
-import { Timestamp } from "../../google/protobuf/timestamp";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import { UInt64Value, UInt64ValueSDKType } from "../common/wrapper";
 import * as _m0 from "protobufjs/minimal";
-import { toTimestamp, fromTimestamp, isSet, fromJsonTimestamp, DeepPartial, Exact } from "../../helpers";
+import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.permission";
 /** ActionType defines the operations you can execute in greenfield storage network */
 
@@ -250,7 +250,7 @@ export interface Statement {
   resources: string[];
   /** expiration_time defines how long the permission is valid. If not explicitly specified, it means it will not expire. */
 
-  expirationTime?: Date;
+  expirationTime?: Timestamp;
   /** limit_size defines the total data size that is allowed to operate. If not explicitly specified, it means it will not limit. */
 
   limitSize?: UInt64Value;
@@ -259,7 +259,7 @@ export interface StatementSDKType {
   effect: Effect;
   actions: ActionType[];
   resources: string[];
-  expiration_time?: Date;
+  expiration_time?: TimestampSDKType;
   limit_size?: UInt64ValueSDKType;
 }
 /** Principal define the roles that can grant permissions. Currently, it can be account or group. */
@@ -309,7 +309,7 @@ export const Statement = {
     }
 
     if (message.expirationTime !== undefined) {
-      Timestamp.encode(toTimestamp(message.expirationTime), writer.uint32(34).fork()).ldelim();
+      Timestamp.encode(message.expirationTime, writer.uint32(34).fork()).ldelim();
     }
 
     if (message.limitSize !== undefined) {
@@ -350,7 +350,7 @@ export const Statement = {
           break;
 
         case 4:
-          message.expirationTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.expirationTime = Timestamp.decode(reader, reader.uint32());
           break;
 
         case 5:
@@ -392,7 +392,7 @@ export const Statement = {
       obj.resources = [];
     }
 
-    message.expirationTime !== undefined && (obj.expirationTime = message.expirationTime.toISOString());
+    message.expirationTime !== undefined && (obj.expirationTime = fromTimestamp(message.expirationTime).toISOString());
     message.limitSize !== undefined && (obj.limitSize = message.limitSize ? UInt64Value.toJSON(message.limitSize) : undefined);
     return obj;
   },
@@ -402,7 +402,7 @@ export const Statement = {
     message.effect = object.effect ?? 0;
     message.actions = object.actions?.map(e => e) || [];
     message.resources = object.resources?.map(e => e) || [];
-    message.expirationTime = object.expirationTime ?? undefined;
+    message.expirationTime = object.expirationTime !== undefined && object.expirationTime !== null ? Timestamp.fromPartial(object.expirationTime) : undefined;
     message.limitSize = object.limitSize !== undefined && object.limitSize !== null ? UInt64Value.fromPartial(object.limitSize) : undefined;
     return message;
   },

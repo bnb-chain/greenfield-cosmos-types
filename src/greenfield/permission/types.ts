@@ -1,9 +1,9 @@
 /* eslint-disable */
 import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "./common";
 import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from "../resource/types";
-import { Timestamp } from "../../google/protobuf/timestamp";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import * as _m0 from "protobufjs/minimal";
-import { toTimestamp, fromTimestamp, isSet, fromJsonTimestamp, DeepPartial, Exact } from "../../helpers";
+import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.permission";
 export interface Policy {
   /** id is an unique u256 sequence for each policy. It also be used as NFT tokenID */
@@ -25,7 +25,7 @@ export interface Policy {
    * Notices: Its priority is higher than the expiration time inside the Statement
    */
 
-  expirationTime?: Date;
+  expirationTime?: Timestamp;
 }
 export interface PolicySDKType {
   id: string;
@@ -33,7 +33,7 @@ export interface PolicySDKType {
   resource_type: ResourceType;
   resource_id: string;
   statements: StatementSDKType[];
-  expiration_time?: Date;
+  expiration_time?: TimestampSDKType;
 }
 /**
  * PolicyGroup refers to a group of policies which grant permission to Group, which is limited to MaxGroupNum (default 10).
@@ -112,7 +112,7 @@ export const Policy = {
     }
 
     if (message.expirationTime !== undefined) {
-      Timestamp.encode(toTimestamp(message.expirationTime), writer.uint32(50).fork()).ldelim();
+      Timestamp.encode(message.expirationTime, writer.uint32(50).fork()).ldelim();
     }
 
     return writer;
@@ -148,7 +148,7 @@ export const Policy = {
           break;
 
         case 6:
-          message.expirationTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.expirationTime = Timestamp.decode(reader, reader.uint32());
           break;
 
         default:
@@ -184,7 +184,7 @@ export const Policy = {
       obj.statements = [];
     }
 
-    message.expirationTime !== undefined && (obj.expirationTime = message.expirationTime.toISOString());
+    message.expirationTime !== undefined && (obj.expirationTime = fromTimestamp(message.expirationTime).toISOString());
     return obj;
   },
 
@@ -195,7 +195,7 @@ export const Policy = {
     message.resourceType = object.resourceType ?? 0;
     message.resourceId = object.resourceId ?? "";
     message.statements = object.statements?.map(e => Statement.fromPartial(e)) || [];
-    message.expirationTime = object.expirationTime ?? undefined;
+    message.expirationTime = object.expirationTime !== undefined && object.expirationTime !== null ? Timestamp.fromPartial(object.expirationTime) : undefined;
     return message;
   },
 

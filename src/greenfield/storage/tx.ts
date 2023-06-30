@@ -2,9 +2,9 @@
 import { VisibilityType, Approval, ApprovalSDKType, RedundancyType, visibilityTypeFromJSON, visibilityTypeToJSON, redundancyTypeFromJSON, redundancyTypeToJSON } from "./common";
 import { UInt64Value, UInt64ValueSDKType } from "../common/wrapper";
 import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "../permission/common";
-import { Timestamp } from "../../google/protobuf/timestamp";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import { Params, ParamsSDKType } from "./params";
-import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, toTimestamp, fromTimestamp, fromJsonTimestamp, Rpc } from "../../helpers";
+import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp, Rpc } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.storage";
 export interface MsgCreateBucket {
@@ -418,14 +418,14 @@ export interface MsgPutPolicy {
    * Notices: Its priority is higher than the expiration time inside the Statement
    */
 
-  expirationTime?: Date;
+  expirationTime?: Timestamp;
 }
 export interface MsgPutPolicySDKType {
   operator: string;
   principal?: PrincipalSDKType;
   resource: string;
   statements: StatementSDKType[];
-  expiration_time?: Date;
+  expiration_time?: TimestampSDKType;
 }
 export interface MsgPutPolicyResponse {
   policyId: string;
@@ -3432,7 +3432,7 @@ export const MsgPutPolicy = {
     }
 
     if (message.expirationTime !== undefined) {
-      Timestamp.encode(toTimestamp(message.expirationTime), writer.uint32(58).fork()).ldelim();
+      Timestamp.encode(message.expirationTime, writer.uint32(58).fork()).ldelim();
     }
 
     return writer;
@@ -3464,7 +3464,7 @@ export const MsgPutPolicy = {
           break;
 
         case 7:
-          message.expirationTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.expirationTime = Timestamp.decode(reader, reader.uint32());
           break;
 
         default:
@@ -3498,7 +3498,7 @@ export const MsgPutPolicy = {
       obj.statements = [];
     }
 
-    message.expirationTime !== undefined && (obj.expirationTime = message.expirationTime.toISOString());
+    message.expirationTime !== undefined && (obj.expirationTime = fromTimestamp(message.expirationTime).toISOString());
     return obj;
   },
 
@@ -3508,7 +3508,7 @@ export const MsgPutPolicy = {
     message.principal = object.principal !== undefined && object.principal !== null ? Principal.fromPartial(object.principal) : undefined;
     message.resource = object.resource ?? "";
     message.statements = object.statements?.map(e => Statement.fromPartial(e)) || [];
-    message.expirationTime = object.expirationTime ?? undefined;
+    message.expirationTime = object.expirationTime !== undefined && object.expirationTime !== null ? Timestamp.fromPartial(object.expirationTime) : undefined;
     return message;
   },
 

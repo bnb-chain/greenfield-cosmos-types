@@ -1,10 +1,10 @@
 /* eslint-disable */
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../../base/query/v1beta1/pagination";
 import { Any, AnySDKType } from "../../../../google/protobuf/any";
-import { Timestamp } from "../../../../google/protobuf/timestamp";
+import { Timestamp, TimestampSDKType } from "../../../../google/protobuf/timestamp";
 import { Duration, DurationSDKType } from "../../../../google/protobuf/duration";
 import * as _m0 from "protobufjs/minimal";
-import { isSet, DeepPartial, Exact, toTimestamp, Long, fromTimestamp, bytesFromBase64, fromJsonTimestamp, base64FromBytes, Rpc } from "../../../../helpers";
+import { isSet, DeepPartial, Exact, Long, bytesFromBase64, fromJsonTimestamp, base64FromBytes, fromTimestamp, Rpc } from "../../../../helpers";
 export const protobufPackage = "cosmos.orm.query.v1alpha1";
 /** GetRequest is the Query/Get request type. */
 
@@ -158,7 +158,7 @@ export interface IndexValue {
   bool?: boolean;
   /** timestamp specifies a value for a timestamp index field. */
 
-  timestamp?: Date;
+  timestamp?: Timestamp;
   /** duration specifies a value for a duration index field. */
 
   duration?: Duration;
@@ -172,7 +172,7 @@ export interface IndexValueSDKType {
   bytes?: Uint8Array;
   enum?: string;
   bool?: boolean;
-  timestamp?: Date;
+  timestamp?: TimestampSDKType;
   duration?: DurationSDKType;
 }
 
@@ -800,7 +800,7 @@ export const IndexValue = {
     }
 
     if (message.timestamp !== undefined) {
-      Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(58).fork()).ldelim();
+      Timestamp.encode(message.timestamp, writer.uint32(58).fork()).ldelim();
     }
 
     if (message.duration !== undefined) {
@@ -844,7 +844,7 @@ export const IndexValue = {
           break;
 
         case 7:
-          message.timestamp = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.timestamp = Timestamp.decode(reader, reader.uint32());
           break;
 
         case 8:
@@ -881,7 +881,7 @@ export const IndexValue = {
     message.bytes !== undefined && (obj.bytes = message.bytes !== undefined ? base64FromBytes(message.bytes) : undefined);
     message.enum !== undefined && (obj.enum = message.enum);
     message.bool !== undefined && (obj.bool = message.bool);
-    message.timestamp !== undefined && (obj.timestamp = message.timestamp.toISOString());
+    message.timestamp !== undefined && (obj.timestamp = fromTimestamp(message.timestamp).toISOString());
     message.duration !== undefined && (obj.duration = message.duration ? Duration.toJSON(message.duration) : undefined);
     return obj;
   },
@@ -894,7 +894,7 @@ export const IndexValue = {
     message.bytes = object.bytes ?? undefined;
     message.enum = object.enum ?? undefined;
     message.bool = object.bool ?? undefined;
-    message.timestamp = object.timestamp ?? undefined;
+    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Timestamp.fromPartial(object.timestamp) : undefined;
     message.duration = object.duration !== undefined && object.duration !== null ? Duration.fromPartial(object.duration) : undefined;
     return message;
   },
