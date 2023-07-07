@@ -250,6 +250,27 @@ export interface QueryPolicyByIdResponse {
 export interface QueryPolicyByIdResponseSDKType {
   policy?: PolicySDKType;
 }
+export interface QueryLockFeeRequest {
+  /** primary_sp_address is the address of the primary sp. */
+  primarySpAddress: string;
+  /** create_at define the block timestamp when the object created. */
+
+  createAt: Long;
+  /** payloadSize is the total size of the object payload */
+
+  payloadSize: Long;
+}
+export interface QueryLockFeeRequestSDKType {
+  primary_sp_address: string;
+  create_at: Long;
+  payload_size: Long;
+}
+export interface QueryLockFeeResponse {
+  amount: string;
+}
+export interface QueryLockFeeResponseSDKType {
+  amount: string;
+}
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
@@ -2756,6 +2777,172 @@ export const QueryPolicyByIdResponse = {
   }
 
 };
+
+function createBaseQueryLockFeeRequest(): QueryLockFeeRequest {
+  return {
+    primarySpAddress: "",
+    createAt: Long.ZERO,
+    payloadSize: Long.UZERO
+  };
+}
+
+export const QueryLockFeeRequest = {
+  encode(message: QueryLockFeeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.primarySpAddress !== "") {
+      writer.uint32(10).string(message.primarySpAddress);
+    }
+
+    if (!message.createAt.isZero()) {
+      writer.uint32(16).int64(message.createAt);
+    }
+
+    if (!message.payloadSize.isZero()) {
+      writer.uint32(24).uint64(message.payloadSize);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLockFeeRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryLockFeeRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.primarySpAddress = reader.string();
+          break;
+
+        case 2:
+          message.createAt = (reader.int64() as Long);
+          break;
+
+        case 3:
+          message.payloadSize = (reader.uint64() as Long);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryLockFeeRequest {
+    return {
+      primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
+      createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
+      payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO
+    };
+  },
+
+  toJSON(message: QueryLockFeeRequest): unknown {
+    const obj: any = {};
+    message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
+    message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
+    message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryLockFeeRequest>, I>>(object: I): QueryLockFeeRequest {
+    const message = createBaseQueryLockFeeRequest();
+    message.primarySpAddress = object.primarySpAddress ?? "";
+    message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
+    message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
+    return message;
+  },
+
+  fromSDK(object: QueryLockFeeRequestSDKType): QueryLockFeeRequest {
+    return {
+      primarySpAddress: object?.primary_sp_address,
+      createAt: object?.create_at,
+      payloadSize: object?.payload_size
+    };
+  },
+
+  toSDK(message: QueryLockFeeRequest): QueryLockFeeRequestSDKType {
+    const obj: any = {};
+    obj.primary_sp_address = message.primarySpAddress;
+    obj.create_at = message.createAt;
+    obj.payload_size = message.payloadSize;
+    return obj;
+  }
+
+};
+
+function createBaseQueryLockFeeResponse(): QueryLockFeeResponse {
+  return {
+    amount: ""
+  };
+}
+
+export const QueryLockFeeResponse = {
+  encode(message: QueryLockFeeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.amount !== "") {
+      writer.uint32(10).string(message.amount);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLockFeeResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryLockFeeResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.amount = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryLockFeeResponse {
+    return {
+      amount: isSet(object.amount) ? String(object.amount) : ""
+    };
+  },
+
+  toJSON(message: QueryLockFeeResponse): unknown {
+    const obj: any = {};
+    message.amount !== undefined && (obj.amount = message.amount);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryLockFeeResponse>, I>>(object: I): QueryLockFeeResponse {
+    const message = createBaseQueryLockFeeResponse();
+    message.amount = object.amount ?? "";
+    return message;
+  },
+
+  fromSDK(object: QueryLockFeeResponseSDKType): QueryLockFeeResponse {
+    return {
+      amount: object?.amount
+    };
+  },
+
+  toSDK(message: QueryLockFeeResponse): QueryLockFeeResponseSDKType {
+    const obj: any = {};
+    obj.amount = message.amount;
+    return obj;
+  }
+
+};
 /** Query defines the gRPC querier service. */
 
 export interface Query {
@@ -2815,6 +3002,9 @@ export interface Query {
   /** Queries a policy by policy id */
 
   QueryPolicyById(request: QueryPolicyByIdRequest): Promise<QueryPolicyByIdResponse>;
+  /** Queries lock fee for storing an object */
+
+  QueryLockFee(request: QueryLockFeeRequest): Promise<QueryLockFeeResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -2840,6 +3030,7 @@ export class QueryClientImpl implements Query {
     this.HeadGroupMember = this.HeadGroupMember.bind(this);
     this.QueryPolicyForGroup = this.QueryPolicyForGroup.bind(this);
     this.QueryPolicyById = this.QueryPolicyById.bind(this);
+    this.QueryLockFee = this.QueryLockFee.bind(this);
   }
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
@@ -2956,6 +3147,12 @@ export class QueryClientImpl implements Query {
     const data = QueryPolicyByIdRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryPolicyById", data);
     return promise.then(data => QueryPolicyByIdResponse.decode(new _m0.Reader(data)));
+  }
+
+  QueryLockFee(request: QueryLockFeeRequest): Promise<QueryLockFeeResponse> {
+    const data = QueryLockFeeRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Query", "QueryLockFee", data);
+    return promise.then(data => QueryLockFeeResponse.decode(new _m0.Reader(data)));
   }
 
 }
