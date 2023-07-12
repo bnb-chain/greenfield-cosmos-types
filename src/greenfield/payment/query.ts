@@ -25,28 +25,6 @@ export interface QueryParamsResponse {
 export interface QueryParamsResponseSDKType {
   params?: ParamsSDKType;
 }
-/** QueryParamsByTimestampRequest is request type for the Query/ParamsByTimestamp RPC method with timestamp. */
-
-export interface QueryParamsByTimestampRequest {
-  /** the timestamp of the block time you want to query */
-  timestamp: Long;
-}
-/** QueryParamsByTimestampRequest is request type for the Query/ParamsByTimestamp RPC method with timestamp. */
-
-export interface QueryParamsByTimestampRequestSDKType {
-  timestamp: Long;
-}
-/** QueryParamsByTimestampResponse is response type for the Query/ParamsByTimestamp RPC method with timestamp. */
-
-export interface QueryParamsByTimestampResponse {
-  /** params holds all the parameters of this module. */
-  params?: Params;
-}
-/** QueryParamsByTimestampResponse is response type for the Query/ParamsByTimestamp RPC method with timestamp. */
-
-export interface QueryParamsByTimestampResponseSDKType {
-  params?: ParamsSDKType;
-}
 export interface QueryGetStreamRecordRequest {
   account: string;
 }
@@ -303,144 +281,6 @@ export const QueryParamsResponse = {
   },
 
   toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
-    const obj: any = {};
-    message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
-    return obj;
-  }
-
-};
-
-function createBaseQueryParamsByTimestampRequest(): QueryParamsByTimestampRequest {
-  return {
-    timestamp: Long.ZERO
-  };
-}
-
-export const QueryParamsByTimestampRequest = {
-  encode(message: QueryParamsByTimestampRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.timestamp.isZero()) {
-      writer.uint32(8).int64(message.timestamp);
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsByTimestampRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryParamsByTimestampRequest();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.timestamp = (reader.int64() as Long);
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryParamsByTimestampRequest {
-    return {
-      timestamp: isSet(object.timestamp) ? Long.fromValue(object.timestamp) : Long.ZERO
-    };
-  },
-
-  toJSON(message: QueryParamsByTimestampRequest): unknown {
-    const obj: any = {};
-    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || Long.ZERO).toString());
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryParamsByTimestampRequest>, I>>(object: I): QueryParamsByTimestampRequest {
-    const message = createBaseQueryParamsByTimestampRequest();
-    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
-    return message;
-  },
-
-  fromSDK(object: QueryParamsByTimestampRequestSDKType): QueryParamsByTimestampRequest {
-    return {
-      timestamp: object?.timestamp
-    };
-  },
-
-  toSDK(message: QueryParamsByTimestampRequest): QueryParamsByTimestampRequestSDKType {
-    const obj: any = {};
-    obj.timestamp = message.timestamp;
-    return obj;
-  }
-
-};
-
-function createBaseQueryParamsByTimestampResponse(): QueryParamsByTimestampResponse {
-  return {
-    params: undefined
-  };
-}
-
-export const QueryParamsByTimestampResponse = {
-  encode(message: QueryParamsByTimestampResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.params !== undefined) {
-      Params.encode(message.params, writer.uint32(10).fork()).ldelim();
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsByTimestampResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryParamsByTimestampResponse();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.params = Params.decode(reader, reader.uint32());
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): QueryParamsByTimestampResponse {
-    return {
-      params: isSet(object.params) ? Params.fromJSON(object.params) : undefined
-    };
-  },
-
-  toJSON(message: QueryParamsByTimestampResponse): unknown {
-    const obj: any = {};
-    message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<QueryParamsByTimestampResponse>, I>>(object: I): QueryParamsByTimestampResponse {
-    const message = createBaseQueryParamsByTimestampResponse();
-    message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
-    return message;
-  },
-
-  fromSDK(object: QueryParamsByTimestampResponseSDKType): QueryParamsByTimestampResponse {
-    return {
-      params: object.params ? Params.fromSDK(object.params) : undefined
-    };
-  },
-
-  toSDK(message: QueryParamsByTimestampResponse): QueryParamsByTimestampResponseSDKType {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
@@ -1894,9 +1734,6 @@ export const QueryAllAutoSettleRecordResponse = {
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
-  /** ParamsByTimestamp queries the parameters of the module. */
-
-  ParamsByTimestamp(request: QueryParamsByTimestampRequest): Promise<QueryParamsByTimestampResponse>;
   /** Queries a StreamRecord by index. */
 
   StreamRecord(request: QueryGetStreamRecordRequest): Promise<QueryGetStreamRecordResponse>;
@@ -1931,7 +1768,6 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
-    this.ParamsByTimestamp = this.ParamsByTimestamp.bind(this);
     this.StreamRecord = this.StreamRecord.bind(this);
     this.StreamRecordAll = this.StreamRecordAll.bind(this);
     this.PaymentAccountCount = this.PaymentAccountCount.bind(this);
@@ -1947,12 +1783,6 @@ export class QueryClientImpl implements Query {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "Params", data);
     return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
-  }
-
-  ParamsByTimestamp(request: QueryParamsByTimestampRequest): Promise<QueryParamsByTimestampResponse> {
-    const data = QueryParamsByTimestampRequest.encode(request).finish();
-    const promise = this.rpc.request("greenfield.payment.Query", "ParamsByTimestamp", data);
-    return promise.then(data => QueryParamsByTimestampResponse.decode(new _m0.Reader(data)));
   }
 
   StreamRecord(request: QueryGetStreamRecordRequest): Promise<QueryGetStreamRecordResponse> {
