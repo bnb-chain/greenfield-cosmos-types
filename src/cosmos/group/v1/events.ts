@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { ProposalExecutorResult, ProposalStatus, TallyResult, TallyResultSDKType, proposalExecutorResultFromJSON, proposalExecutorResultToJSON, proposalStatusFromJSON, proposalStatusToJSON } from "./types";
+import { ProposalExecutorResult, proposalExecutorResultFromJSON, proposalExecutorResultToJSON } from "./types";
 import { Long, isSet, DeepPartial, Exact } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.group.v1";
@@ -113,25 +113,6 @@ export interface EventLeaveGroup {
 export interface EventLeaveGroupSDKType {
   group_id: Long;
   address: string;
-}
-/** EventProposalPruned is an event emitted when a proposal is pruned. */
-
-export interface EventProposalPruned {
-  /** proposal_id is the unique ID of the proposal. */
-  proposalId: Long;
-  /** status is the proposal status (UNSPECIFIED, SUBMITTED, ACCEPTED, REJECTED, ABORTED, WITHDRAWN). */
-
-  status: ProposalStatus;
-  /** tally_result is the proposal tally result (when applicable). */
-
-  tallyResult?: TallyResult;
-}
-/** EventProposalPruned is an event emitted when a proposal is pruned. */
-
-export interface EventProposalPrunedSDKType {
-  proposal_id: Long;
-  status: ProposalStatus;
-  tally_result?: TallyResultSDKType;
 }
 
 function createBaseEventCreateGroup(): EventCreateGroup {
@@ -792,103 +773,6 @@ export const EventLeaveGroup = {
     const obj: any = {};
     obj.group_id = message.groupId;
     obj.address = message.address;
-    return obj;
-  }
-
-};
-
-function createBaseEventProposalPruned(): EventProposalPruned {
-  return {
-    proposalId: Long.UZERO,
-    status: 0,
-    tallyResult: undefined
-  };
-}
-
-export const EventProposalPruned = {
-  encode(message: EventProposalPruned, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.proposalId.isZero()) {
-      writer.uint32(8).uint64(message.proposalId);
-    }
-
-    if (message.status !== 0) {
-      writer.uint32(16).int32(message.status);
-    }
-
-    if (message.tallyResult !== undefined) {
-      TallyResult.encode(message.tallyResult, writer.uint32(26).fork()).ldelim();
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventProposalPruned {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEventProposalPruned();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.proposalId = (reader.uint64() as Long);
-          break;
-
-        case 2:
-          message.status = (reader.int32() as any);
-          break;
-
-        case 3:
-          message.tallyResult = TallyResult.decode(reader, reader.uint32());
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): EventProposalPruned {
-    return {
-      proposalId: isSet(object.proposalId) ? Long.fromValue(object.proposalId) : Long.UZERO,
-      status: isSet(object.status) ? proposalStatusFromJSON(object.status) : 0,
-      tallyResult: isSet(object.tallyResult) ? TallyResult.fromJSON(object.tallyResult) : undefined
-    };
-  },
-
-  toJSON(message: EventProposalPruned): unknown {
-    const obj: any = {};
-    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || Long.UZERO).toString());
-    message.status !== undefined && (obj.status = proposalStatusToJSON(message.status));
-    message.tallyResult !== undefined && (obj.tallyResult = message.tallyResult ? TallyResult.toJSON(message.tallyResult) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<EventProposalPruned>, I>>(object: I): EventProposalPruned {
-    const message = createBaseEventProposalPruned();
-    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? Long.fromValue(object.proposalId) : Long.UZERO;
-    message.status = object.status ?? 0;
-    message.tallyResult = object.tallyResult !== undefined && object.tallyResult !== null ? TallyResult.fromPartial(object.tallyResult) : undefined;
-    return message;
-  },
-
-  fromSDK(object: EventProposalPrunedSDKType): EventProposalPruned {
-    return {
-      proposalId: object?.proposal_id,
-      status: isSet(object.status) ? proposalStatusFromJSON(object.status) : 0,
-      tallyResult: object.tally_result ? TallyResult.fromSDK(object.tally_result) : undefined
-    };
-  },
-
-  toSDK(message: EventProposalPruned): EventProposalPrunedSDKType {
-    const obj: any = {};
-    obj.proposal_id = message.proposalId;
-    message.status !== undefined && (obj.status = proposalStatusToJSON(message.status));
-    message.tallyResult !== undefined && (obj.tally_result = message.tallyResult ? TallyResult.toSDK(message.tallyResult) : undefined);
     return obj;
   }
 
