@@ -2,46 +2,42 @@
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.payment";
-/** StreamAccountStatus defines the status of a stream account */
+/** OutFlowStatus defines the status of a out flow */
 
-export enum StreamAccountStatus {
-  /** STREAM_ACCOUNT_STATUS_ACTIVE - STREAM_ACCOUNT_STATUS_ACTIVE defines the active status of a stream account. */
-  STREAM_ACCOUNT_STATUS_ACTIVE = 0,
+export enum OutFlowStatus {
+  /** OUT_FLOW_STATUS_ACTIVE - OUT_FLOW_STATUS_ACTIVE defines the active status of a out flow. */
+  OUT_FLOW_STATUS_ACTIVE = 0,
 
-  /**
-   * STREAM_ACCOUNT_STATUS_FROZEN - STREAM_ACCOUNT_STATUS_FROZEN defines the frozen status of a stream account.
-   * A frozen stream account cannot be used as payment address for buckets.
-   * It can be unfrozen by depositing more BNB to the stream account.
-   */
-  STREAM_ACCOUNT_STATUS_FROZEN = 1,
+  /** OUT_FLOW_STATUS_FROZEN - OUT_FLOW_STATUS_FROZEN defines the frozen status of a out flow. */
+  OUT_FLOW_STATUS_FROZEN = 1,
   UNRECOGNIZED = -1,
 }
-export const StreamAccountStatusSDKType = StreamAccountStatus;
-export function streamAccountStatusFromJSON(object: any): StreamAccountStatus {
+export const OutFlowStatusSDKType = OutFlowStatus;
+export function outFlowStatusFromJSON(object: any): OutFlowStatus {
   switch (object) {
     case 0:
-    case "STREAM_ACCOUNT_STATUS_ACTIVE":
-      return StreamAccountStatus.STREAM_ACCOUNT_STATUS_ACTIVE;
+    case "OUT_FLOW_STATUS_ACTIVE":
+      return OutFlowStatus.OUT_FLOW_STATUS_ACTIVE;
 
     case 1:
-    case "STREAM_ACCOUNT_STATUS_FROZEN":
-      return StreamAccountStatus.STREAM_ACCOUNT_STATUS_FROZEN;
+    case "OUT_FLOW_STATUS_FROZEN":
+      return OutFlowStatus.OUT_FLOW_STATUS_FROZEN;
 
     case -1:
     case "UNRECOGNIZED":
     default:
-      return StreamAccountStatus.UNRECOGNIZED;
+      return OutFlowStatus.UNRECOGNIZED;
   }
 }
-export function streamAccountStatusToJSON(object: StreamAccountStatus): string {
+export function outFlowStatusToJSON(object: OutFlowStatus): string {
   switch (object) {
-    case StreamAccountStatus.STREAM_ACCOUNT_STATUS_ACTIVE:
-      return "STREAM_ACCOUNT_STATUS_ACTIVE";
+    case OutFlowStatus.OUT_FLOW_STATUS_ACTIVE:
+      return "OUT_FLOW_STATUS_ACTIVE";
 
-    case StreamAccountStatus.STREAM_ACCOUNT_STATUS_FROZEN:
-      return "STREAM_ACCOUNT_STATUS_FROZEN";
+    case OutFlowStatus.OUT_FLOW_STATUS_FROZEN:
+      return "OUT_FLOW_STATUS_FROZEN";
 
-    case StreamAccountStatus.UNRECOGNIZED:
+    case OutFlowStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -57,6 +53,9 @@ export interface OutFlow {
   /** flow rate */
 
   rate: string;
+  /** status */
+
+  status: OutFlowStatus;
 }
 /**
  * OutFlow defines the accumulative outflow stream rate in BNB
@@ -66,12 +65,14 @@ export interface OutFlow {
 export interface OutFlowSDKType {
   to_address: string;
   rate: string;
+  status: OutFlowStatus;
 }
 
 function createBaseOutFlow(): OutFlow {
   return {
     toAddress: "",
-    rate: ""
+    rate: "",
+    status: 0
   };
 }
 
@@ -83,6 +84,10 @@ export const OutFlow = {
 
     if (message.rate !== "") {
       writer.uint32(18).string(message.rate);
+    }
+
+    if (message.status !== 0) {
+      writer.uint32(24).int32(message.status);
     }
 
     return writer;
@@ -105,6 +110,10 @@ export const OutFlow = {
           message.rate = reader.string();
           break;
 
+        case 3:
+          message.status = (reader.int32() as any);
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -117,7 +126,8 @@ export const OutFlow = {
   fromJSON(object: any): OutFlow {
     return {
       toAddress: isSet(object.toAddress) ? String(object.toAddress) : "",
-      rate: isSet(object.rate) ? String(object.rate) : ""
+      rate: isSet(object.rate) ? String(object.rate) : "",
+      status: isSet(object.status) ? outFlowStatusFromJSON(object.status) : 0
     };
   },
 
@@ -125,6 +135,7 @@ export const OutFlow = {
     const obj: any = {};
     message.toAddress !== undefined && (obj.toAddress = message.toAddress);
     message.rate !== undefined && (obj.rate = message.rate);
+    message.status !== undefined && (obj.status = outFlowStatusToJSON(message.status));
     return obj;
   },
 
@@ -132,13 +143,15 @@ export const OutFlow = {
     const message = createBaseOutFlow();
     message.toAddress = object.toAddress ?? "";
     message.rate = object.rate ?? "";
+    message.status = object.status ?? 0;
     return message;
   },
 
   fromSDK(object: OutFlowSDKType): OutFlow {
     return {
       toAddress: object?.to_address,
-      rate: object?.rate
+      rate: object?.rate,
+      status: isSet(object.status) ? outFlowStatusFromJSON(object.status) : 0
     };
   },
 
@@ -146,6 +159,7 @@ export const OutFlow = {
     const obj: any = {};
     obj.to_address = message.toAddress;
     obj.rate = message.rate;
+    message.status !== undefined && (obj.status = outFlowStatusToJSON(message.status));
     return obj;
   }
 

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Long, isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
+import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.challenge";
 /** VoteResult defines the result attestation for a challenge. */
@@ -46,7 +46,7 @@ export function voteResultToJSON(object: VoteResult): string {
 
 export interface Slash {
   /** The slashed storage provider. */
-  spOperatorAddress: Uint8Array;
+  spId: number;
   /** The slashed object info. */
 
   objectId: string;
@@ -57,7 +57,7 @@ export interface Slash {
 /** Slash records the storage provider slashes, which will be pruned periodically. */
 
 export interface SlashSDKType {
-  sp_operator_address: Uint8Array;
+  sp_id: number;
   object_id: string;
   height: Long;
 }
@@ -119,7 +119,7 @@ export interface AttestedChallengeIdsSDKType {
 
 function createBaseSlash(): Slash {
   return {
-    spOperatorAddress: new Uint8Array(),
+    spId: 0,
     objectId: "",
     height: Long.UZERO
   };
@@ -127,8 +127,8 @@ function createBaseSlash(): Slash {
 
 export const Slash = {
   encode(message: Slash, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spOperatorAddress.length !== 0) {
-      writer.uint32(10).bytes(message.spOperatorAddress);
+    if (message.spId !== 0) {
+      writer.uint32(8).uint32(message.spId);
     }
 
     if (message.objectId !== "") {
@@ -152,7 +152,7 @@ export const Slash = {
 
       switch (tag >>> 3) {
         case 1:
-          message.spOperatorAddress = reader.bytes();
+          message.spId = reader.uint32();
           break;
 
         case 2:
@@ -174,7 +174,7 @@ export const Slash = {
 
   fromJSON(object: any): Slash {
     return {
-      spOperatorAddress: isSet(object.spOperatorAddress) ? bytesFromBase64(object.spOperatorAddress) : new Uint8Array(),
+      spId: isSet(object.spId) ? Number(object.spId) : 0,
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
       height: isSet(object.height) ? Long.fromValue(object.height) : Long.UZERO
     };
@@ -182,7 +182,7 @@ export const Slash = {
 
   toJSON(message: Slash): unknown {
     const obj: any = {};
-    message.spOperatorAddress !== undefined && (obj.spOperatorAddress = base64FromBytes(message.spOperatorAddress !== undefined ? message.spOperatorAddress : new Uint8Array()));
+    message.spId !== undefined && (obj.spId = Math.round(message.spId));
     message.objectId !== undefined && (obj.objectId = message.objectId);
     message.height !== undefined && (obj.height = (message.height || Long.UZERO).toString());
     return obj;
@@ -190,7 +190,7 @@ export const Slash = {
 
   fromPartial<I extends Exact<DeepPartial<Slash>, I>>(object: I): Slash {
     const message = createBaseSlash();
-    message.spOperatorAddress = object.spOperatorAddress ?? new Uint8Array();
+    message.spId = object.spId ?? 0;
     message.objectId = object.objectId ?? "";
     message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.UZERO;
     return message;
@@ -198,7 +198,7 @@ export const Slash = {
 
   fromSDK(object: SlashSDKType): Slash {
     return {
-      spOperatorAddress: object?.sp_operator_address,
+      spId: object?.sp_id,
       objectId: object?.object_id,
       height: object?.height
     };
@@ -206,7 +206,7 @@ export const Slash = {
 
   toSDK(message: Slash): SlashSDKType {
     const obj: any = {};
-    obj.sp_operator_address = message.spOperatorAddress;
+    obj.sp_id = message.spId;
     obj.object_id = message.objectId;
     obj.height = message.height;
     return obj;

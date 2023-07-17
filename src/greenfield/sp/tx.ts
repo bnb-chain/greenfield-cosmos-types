@@ -43,6 +43,10 @@ export interface MsgCreateStorageProvider {
   /** store price, in bnb wei per charge byte */
 
   storePrice: string;
+  /** bls_key defines the bls pub key of the Storage provider for sealing object */
+
+  blsKey: string;
+  blsProof: string;
 }
 /** MsgCreateStorageProvider defines message for creating a new storage provider. */
 
@@ -59,6 +63,8 @@ export interface MsgCreateStorageProviderSDKType {
   read_price: string;
   free_read_quota: Long;
   store_price: string;
+  bls_key: string;
+  bls_proof: string;
 }
 /** MsgCreateStorageProviderResponse defines the Msg/CreateStorageProvider response type. */
 
@@ -91,7 +97,10 @@ export interface MsgDepositResponse {}
 /** MsgDepositResponse defines the Msg/Deposit response type. */
 
 export interface MsgDepositResponseSDKType {}
-/** MsgEditStorageProvider defines a SDK message for editing an existing sp. */
+/**
+ * MsgEditStorageProvider defines a SDK message for editing an existing sp.
+ * TODO: use sp id to edit the storage provider.
+ */
 
 export interface MsgEditStorageProvider {
   spAddress: string;
@@ -106,8 +115,15 @@ export interface MsgEditStorageProvider {
   /** gc_address defines one of the storage provider's accounts which is used for gc purpose */
 
   gcAddress: string;
+  /** bls_key defines the bls pub key of the Storage provider for sealing object */
+
+  blsKey: string;
+  blsProof: string;
 }
-/** MsgEditStorageProvider defines a SDK message for editing an existing sp. */
+/**
+ * MsgEditStorageProvider defines a SDK message for editing an existing sp.
+ * TODO: use sp id to edit the storage provider.
+ */
 
 export interface MsgEditStorageProviderSDKType {
   sp_address: string;
@@ -116,6 +132,8 @@ export interface MsgEditStorageProviderSDKType {
   seal_address: string;
   approval_address: string;
   gc_address: string;
+  bls_key: string;
+  bls_proof: string;
 }
 /** MsgEditStorageProviderResponse defines the Msg/EditStorageProvider response type. */
 
@@ -189,7 +207,9 @@ function createBaseMsgCreateStorageProvider(): MsgCreateStorageProvider {
     deposit: undefined,
     readPrice: "",
     freeReadQuota: Long.UZERO,
-    storePrice: ""
+    storePrice: "",
+    blsKey: "",
+    blsProof: ""
   };
 }
 
@@ -241,6 +261,14 @@ export const MsgCreateStorageProvider = {
 
     if (message.storePrice !== "") {
       writer.uint32(98).string(message.storePrice);
+    }
+
+    if (message.blsKey !== "") {
+      writer.uint32(106).string(message.blsKey);
+    }
+
+    if (message.blsProof !== "") {
+      writer.uint32(114).string(message.blsProof);
     }
 
     return writer;
@@ -303,6 +331,14 @@ export const MsgCreateStorageProvider = {
           message.storePrice = reader.string();
           break;
 
+        case 13:
+          message.blsKey = reader.string();
+          break;
+
+        case 14:
+          message.blsProof = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -325,7 +361,9 @@ export const MsgCreateStorageProvider = {
       deposit: isSet(object.deposit) ? Coin.fromJSON(object.deposit) : undefined,
       readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
       freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
-      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+      storePrice: isSet(object.storePrice) ? String(object.storePrice) : "",
+      blsKey: isSet(object.blsKey) ? String(object.blsKey) : "",
+      blsProof: isSet(object.blsProof) ? String(object.blsProof) : ""
     };
   },
 
@@ -343,6 +381,8 @@ export const MsgCreateStorageProvider = {
     message.readPrice !== undefined && (obj.readPrice = message.readPrice);
     message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
     message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    message.blsKey !== undefined && (obj.blsKey = message.blsKey);
+    message.blsProof !== undefined && (obj.blsProof = message.blsProof);
     return obj;
   },
 
@@ -360,6 +400,8 @@ export const MsgCreateStorageProvider = {
     message.readPrice = object.readPrice ?? "";
     message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
     message.storePrice = object.storePrice ?? "";
+    message.blsKey = object.blsKey ?? "";
+    message.blsProof = object.blsProof ?? "";
     return message;
   },
 
@@ -376,7 +418,9 @@ export const MsgCreateStorageProvider = {
       deposit: object.deposit ? Coin.fromSDK(object.deposit) : undefined,
       readPrice: object?.read_price,
       freeReadQuota: object?.free_read_quota,
-      storePrice: object?.store_price
+      storePrice: object?.store_price,
+      blsKey: object?.bls_key,
+      blsProof: object?.bls_proof
     };
   },
 
@@ -394,6 +438,8 @@ export const MsgCreateStorageProvider = {
     obj.read_price = message.readPrice;
     obj.free_read_quota = message.freeReadQuota;
     obj.store_price = message.storePrice;
+    obj.bls_key = message.blsKey;
+    obj.bls_proof = message.blsProof;
     return obj;
   }
 
@@ -607,7 +653,9 @@ function createBaseMsgEditStorageProvider(): MsgEditStorageProvider {
     description: undefined,
     sealAddress: "",
     approvalAddress: "",
-    gcAddress: ""
+    gcAddress: "",
+    blsKey: "",
+    blsProof: ""
   };
 }
 
@@ -635,6 +683,14 @@ export const MsgEditStorageProvider = {
 
     if (message.gcAddress !== "") {
       writer.uint32(50).string(message.gcAddress);
+    }
+
+    if (message.blsKey !== "") {
+      writer.uint32(58).string(message.blsKey);
+    }
+
+    if (message.blsProof !== "") {
+      writer.uint32(66).string(message.blsProof);
     }
 
     return writer;
@@ -673,6 +729,14 @@ export const MsgEditStorageProvider = {
           message.gcAddress = reader.string();
           break;
 
+        case 7:
+          message.blsKey = reader.string();
+          break;
+
+        case 8:
+          message.blsProof = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -689,7 +753,9 @@ export const MsgEditStorageProvider = {
       description: isSet(object.description) ? Description.fromJSON(object.description) : undefined,
       sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
       approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
-      gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : ""
+      gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : "",
+      blsKey: isSet(object.blsKey) ? String(object.blsKey) : "",
+      blsProof: isSet(object.blsProof) ? String(object.blsProof) : ""
     };
   },
 
@@ -701,6 +767,8 @@ export const MsgEditStorageProvider = {
     message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
     message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
     message.gcAddress !== undefined && (obj.gcAddress = message.gcAddress);
+    message.blsKey !== undefined && (obj.blsKey = message.blsKey);
+    message.blsProof !== undefined && (obj.blsProof = message.blsProof);
     return obj;
   },
 
@@ -712,6 +780,8 @@ export const MsgEditStorageProvider = {
     message.sealAddress = object.sealAddress ?? "";
     message.approvalAddress = object.approvalAddress ?? "";
     message.gcAddress = object.gcAddress ?? "";
+    message.blsKey = object.blsKey ?? "";
+    message.blsProof = object.blsProof ?? "";
     return message;
   },
 
@@ -722,7 +792,9 @@ export const MsgEditStorageProvider = {
       description: object.description ? Description.fromSDK(object.description) : undefined,
       sealAddress: object?.seal_address,
       approvalAddress: object?.approval_address,
-      gcAddress: object?.gc_address
+      gcAddress: object?.gc_address,
+      blsKey: object?.bls_key,
+      blsProof: object?.bls_proof
     };
   },
 
@@ -734,6 +806,8 @@ export const MsgEditStorageProvider = {
     obj.seal_address = message.sealAddress;
     obj.approval_address = message.approvalAddress;
     obj.gc_address = message.gcAddress;
+    obj.bls_key = message.blsKey;
+    obj.bls_proof = message.blsProof;
     return obj;
   }
 

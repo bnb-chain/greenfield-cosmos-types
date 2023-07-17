@@ -5,34 +5,34 @@ export const protobufPackage = "greenfield.bridge";
 /** Params defines the parameters for the module. */
 
 export interface Params {
-  /** Relayer fee for the cross chain transfer out tx */
-  transferOutRelayerFee: string;
-  /** Relayer fee for the ACK or FAIL_ACK package of the cross chain transfer out tx */
+  /** Relayer fee for the cross chain transfer out tx to bsc */
+  bscTransferOutRelayerFee: string;
+  /** Relayer fee for the ACK or FAIL_ACK package of the cross chain transfer out tx to bsc */
 
-  transferOutAckRelayerFee: string;
+  bscTransferOutAckRelayerFee: string;
 }
 /** Params defines the parameters for the module. */
 
 export interface ParamsSDKType {
-  transfer_out_relayer_fee: string;
-  transfer_out_ack_relayer_fee: string;
+  bsc_transfer_out_relayer_fee: string;
+  bsc_transfer_out_ack_relayer_fee: string;
 }
 
 function createBaseParams(): Params {
   return {
-    transferOutRelayerFee: "",
-    transferOutAckRelayerFee: ""
+    bscTransferOutRelayerFee: "",
+    bscTransferOutAckRelayerFee: ""
   };
 }
 
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.transferOutRelayerFee !== "") {
-      writer.uint32(10).string(message.transferOutRelayerFee);
+    if (message.bscTransferOutRelayerFee !== "") {
+      writer.uint32(10).string(message.bscTransferOutRelayerFee);
     }
 
-    if (message.transferOutAckRelayerFee !== "") {
-      writer.uint32(18).string(message.transferOutAckRelayerFee);
+    if (message.bscTransferOutAckRelayerFee !== "") {
+      writer.uint32(18).string(message.bscTransferOutAckRelayerFee);
     }
 
     return writer;
@@ -48,11 +48,11 @@ export const Params = {
 
       switch (tag >>> 3) {
         case 1:
-          message.transferOutRelayerFee = reader.string();
+          message.bscTransferOutRelayerFee = reader.string();
           break;
 
         case 2:
-          message.transferOutAckRelayerFee = reader.string();
+          message.bscTransferOutAckRelayerFee = reader.string();
           break;
 
         default:
@@ -66,36 +66,36 @@ export const Params = {
 
   fromJSON(object: any): Params {
     return {
-      transferOutRelayerFee: isSet(object.transferOutRelayerFee) ? String(object.transferOutRelayerFee) : "",
-      transferOutAckRelayerFee: isSet(object.transferOutAckRelayerFee) ? String(object.transferOutAckRelayerFee) : ""
+      bscTransferOutRelayerFee: isSet(object.bscTransferOutRelayerFee) ? String(object.bscTransferOutRelayerFee) : "",
+      bscTransferOutAckRelayerFee: isSet(object.bscTransferOutAckRelayerFee) ? String(object.bscTransferOutAckRelayerFee) : ""
     };
   },
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.transferOutRelayerFee !== undefined && (obj.transferOutRelayerFee = message.transferOutRelayerFee);
-    message.transferOutAckRelayerFee !== undefined && (obj.transferOutAckRelayerFee = message.transferOutAckRelayerFee);
+    message.bscTransferOutRelayerFee !== undefined && (obj.bscTransferOutRelayerFee = message.bscTransferOutRelayerFee);
+    message.bscTransferOutAckRelayerFee !== undefined && (obj.bscTransferOutAckRelayerFee = message.bscTransferOutAckRelayerFee);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.transferOutRelayerFee = object.transferOutRelayerFee ?? "";
-    message.transferOutAckRelayerFee = object.transferOutAckRelayerFee ?? "";
+    message.bscTransferOutRelayerFee = object.bscTransferOutRelayerFee ?? "";
+    message.bscTransferOutAckRelayerFee = object.bscTransferOutAckRelayerFee ?? "";
     return message;
   },
 
   fromSDK(object: ParamsSDKType): Params {
     return {
-      transferOutRelayerFee: object?.transfer_out_relayer_fee,
-      transferOutAckRelayerFee: object?.transfer_out_ack_relayer_fee
+      bscTransferOutRelayerFee: object?.bsc_transfer_out_relayer_fee,
+      bscTransferOutAckRelayerFee: object?.bsc_transfer_out_ack_relayer_fee
     };
   },
 
   toSDK(message: Params): ParamsSDKType {
     const obj: any = {};
-    obj.transfer_out_relayer_fee = message.transferOutRelayerFee;
-    obj.transfer_out_ack_relayer_fee = message.transferOutAckRelayerFee;
+    obj.bsc_transfer_out_relayer_fee = message.bscTransferOutRelayerFee;
+    obj.bsc_transfer_out_ack_relayer_fee = message.bscTransferOutAckRelayerFee;
     return obj;
   }
 
