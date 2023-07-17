@@ -7,7 +7,10 @@ export const protobufPackage = "greenfield.sp";
 /** EventCreateStorageProvider is emitted when there is a storage provider created */
 
 export interface EventCreateStorageProvider {
+  /** sp_id defines the identifier of storage provider which generated on-chain */
+  spId: number;
   /** sp_address is the operator address of the storage provider */
+
   spAddress: string;
   /** funding_address is the funding account address of the storage provider */
 
@@ -33,10 +36,14 @@ export interface EventCreateStorageProvider {
   /** description defines the description terms for the storage provider */
 
   description?: Description;
+  /** bls_key defines the bls pub key owned by storage provider used when sealing object and completing migration */
+
+  blsKey: string;
 }
 /** EventCreateStorageProvider is emitted when there is a storage provider created */
 
 export interface EventCreateStorageProviderSDKType {
+  sp_id: number;
   sp_address: string;
   funding_address: string;
   seal_address: string;
@@ -46,11 +53,15 @@ export interface EventCreateStorageProviderSDKType {
   total_deposit?: CoinSDKType;
   status: Status;
   description?: DescriptionSDKType;
+  bls_key: string;
 }
 /** EventEditStorageProvider is emitted when SP's metadata is edited. */
 
 export interface EventEditStorageProvider {
+  /** sp_id defines the identifier of storage provider which generated on-chain */
+  spId: number;
   /** sp_address is the operator address of the storage provider */
+
   spAddress: string;
   /** endpoint is the service endpoint of the storage provider */
 
@@ -67,16 +78,21 @@ export interface EventEditStorageProvider {
   /** gc_address defines one of the storage provider's accounts which is used for gc purpose */
 
   gcAddress: string;
+  /** bls_key defines the bls pub key owned by storage provider used when sealing object */
+
+  blsKey: string;
 }
 /** EventEditStorageProvider is emitted when SP's metadata is edited. */
 
 export interface EventEditStorageProviderSDKType {
+  sp_id: number;
   sp_address: string;
   endpoint: string;
   description?: DescriptionSDKType;
   seal_address: string;
   approval_address: string;
   gc_address: string;
+  bls_key: string;
 }
 /** EventDeposit is emitted when sp deposit tokens. */
 
@@ -98,8 +114,8 @@ export interface EventDepositSDKType {
   total_deposit: string;
 }
 export interface EventSpStoragePriceUpdate {
-  /** sp address */
-  spAddress: string;
+  /** sp id */
+  spId: number;
   /** update time, in unix timestamp */
 
   updateTimeSec: Long;
@@ -114,7 +130,7 @@ export interface EventSpStoragePriceUpdate {
   storePrice: string;
 }
 export interface EventSpStoragePriceUpdateSDKType {
-  sp_address: string;
+  sp_id: number;
   update_time_sec: Long;
   read_price: string;
   free_read_quota: Long;
@@ -134,6 +150,7 @@ export interface EventSecondarySpStorePriceUpdateSDKType {
 
 function createBaseEventCreateStorageProvider(): EventCreateStorageProvider {
   return {
+    spId: 0,
     spAddress: "",
     fundingAddress: "",
     sealAddress: "",
@@ -142,46 +159,55 @@ function createBaseEventCreateStorageProvider(): EventCreateStorageProvider {
     endpoint: "",
     totalDeposit: undefined,
     status: 0,
-    description: undefined
+    description: undefined,
+    blsKey: ""
   };
 }
 
 export const EventCreateStorageProvider = {
   encode(message: EventCreateStorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.spId !== 0) {
+      writer.uint32(8).uint32(message.spId);
+    }
+
     if (message.spAddress !== "") {
-      writer.uint32(10).string(message.spAddress);
+      writer.uint32(18).string(message.spAddress);
     }
 
     if (message.fundingAddress !== "") {
-      writer.uint32(18).string(message.fundingAddress);
+      writer.uint32(26).string(message.fundingAddress);
     }
 
     if (message.sealAddress !== "") {
-      writer.uint32(26).string(message.sealAddress);
+      writer.uint32(34).string(message.sealAddress);
     }
 
     if (message.approvalAddress !== "") {
-      writer.uint32(34).string(message.approvalAddress);
+      writer.uint32(42).string(message.approvalAddress);
     }
 
     if (message.gcAddress !== "") {
-      writer.uint32(42).string(message.gcAddress);
+      writer.uint32(50).string(message.gcAddress);
     }
 
     if (message.endpoint !== "") {
-      writer.uint32(50).string(message.endpoint);
+      writer.uint32(58).string(message.endpoint);
     }
 
     if (message.totalDeposit !== undefined) {
-      Coin.encode(message.totalDeposit, writer.uint32(58).fork()).ldelim();
+      Coin.encode(message.totalDeposit, writer.uint32(66).fork()).ldelim();
     }
 
     if (message.status !== 0) {
-      writer.uint32(64).int32(message.status);
+      writer.uint32(72).int32(message.status);
     }
 
     if (message.description !== undefined) {
-      Description.encode(message.description, writer.uint32(74).fork()).ldelim();
+      Description.encode(message.description, writer.uint32(82).fork()).ldelim();
+    }
+
+    if (message.blsKey !== "") {
+      writer.uint32(90).string(message.blsKey);
     }
 
     return writer;
@@ -197,39 +223,47 @@ export const EventCreateStorageProvider = {
 
       switch (tag >>> 3) {
         case 1:
-          message.spAddress = reader.string();
+          message.spId = reader.uint32();
           break;
 
         case 2:
-          message.fundingAddress = reader.string();
+          message.spAddress = reader.string();
           break;
 
         case 3:
-          message.sealAddress = reader.string();
+          message.fundingAddress = reader.string();
           break;
 
         case 4:
-          message.approvalAddress = reader.string();
+          message.sealAddress = reader.string();
           break;
 
         case 5:
-          message.gcAddress = reader.string();
+          message.approvalAddress = reader.string();
           break;
 
         case 6:
-          message.endpoint = reader.string();
+          message.gcAddress = reader.string();
           break;
 
         case 7:
-          message.totalDeposit = Coin.decode(reader, reader.uint32());
+          message.endpoint = reader.string();
           break;
 
         case 8:
-          message.status = (reader.int32() as any);
+          message.totalDeposit = Coin.decode(reader, reader.uint32());
           break;
 
         case 9:
+          message.status = (reader.int32() as any);
+          break;
+
+        case 10:
           message.description = Description.decode(reader, reader.uint32());
+          break;
+
+        case 11:
+          message.blsKey = reader.string();
           break;
 
         default:
@@ -243,6 +277,7 @@ export const EventCreateStorageProvider = {
 
   fromJSON(object: any): EventCreateStorageProvider {
     return {
+      spId: isSet(object.spId) ? Number(object.spId) : 0,
       spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
       fundingAddress: isSet(object.fundingAddress) ? String(object.fundingAddress) : "",
       sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
@@ -251,12 +286,14 @@ export const EventCreateStorageProvider = {
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
       totalDeposit: isSet(object.totalDeposit) ? Coin.fromJSON(object.totalDeposit) : undefined,
       status: isSet(object.status) ? statusFromJSON(object.status) : 0,
-      description: isSet(object.description) ? Description.fromJSON(object.description) : undefined
+      description: isSet(object.description) ? Description.fromJSON(object.description) : undefined,
+      blsKey: isSet(object.blsKey) ? String(object.blsKey) : ""
     };
   },
 
   toJSON(message: EventCreateStorageProvider): unknown {
     const obj: any = {};
+    message.spId !== undefined && (obj.spId = Math.round(message.spId));
     message.spAddress !== undefined && (obj.spAddress = message.spAddress);
     message.fundingAddress !== undefined && (obj.fundingAddress = message.fundingAddress);
     message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
@@ -266,11 +303,13 @@ export const EventCreateStorageProvider = {
     message.totalDeposit !== undefined && (obj.totalDeposit = message.totalDeposit ? Coin.toJSON(message.totalDeposit) : undefined);
     message.status !== undefined && (obj.status = statusToJSON(message.status));
     message.description !== undefined && (obj.description = message.description ? Description.toJSON(message.description) : undefined);
+    message.blsKey !== undefined && (obj.blsKey = message.blsKey);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<EventCreateStorageProvider>, I>>(object: I): EventCreateStorageProvider {
     const message = createBaseEventCreateStorageProvider();
+    message.spId = object.spId ?? 0;
     message.spAddress = object.spAddress ?? "";
     message.fundingAddress = object.fundingAddress ?? "";
     message.sealAddress = object.sealAddress ?? "";
@@ -280,11 +319,13 @@ export const EventCreateStorageProvider = {
     message.totalDeposit = object.totalDeposit !== undefined && object.totalDeposit !== null ? Coin.fromPartial(object.totalDeposit) : undefined;
     message.status = object.status ?? 0;
     message.description = object.description !== undefined && object.description !== null ? Description.fromPartial(object.description) : undefined;
+    message.blsKey = object.blsKey ?? "";
     return message;
   },
 
   fromSDK(object: EventCreateStorageProviderSDKType): EventCreateStorageProvider {
     return {
+      spId: object?.sp_id,
       spAddress: object?.sp_address,
       fundingAddress: object?.funding_address,
       sealAddress: object?.seal_address,
@@ -293,12 +334,14 @@ export const EventCreateStorageProvider = {
       endpoint: object?.endpoint,
       totalDeposit: object.total_deposit ? Coin.fromSDK(object.total_deposit) : undefined,
       status: isSet(object.status) ? statusFromJSON(object.status) : 0,
-      description: object.description ? Description.fromSDK(object.description) : undefined
+      description: object.description ? Description.fromSDK(object.description) : undefined,
+      blsKey: object?.bls_key
     };
   },
 
   toSDK(message: EventCreateStorageProvider): EventCreateStorageProviderSDKType {
     const obj: any = {};
+    obj.sp_id = message.spId;
     obj.sp_address = message.spAddress;
     obj.funding_address = message.fundingAddress;
     obj.seal_address = message.sealAddress;
@@ -308,6 +351,7 @@ export const EventCreateStorageProvider = {
     message.totalDeposit !== undefined && (obj.total_deposit = message.totalDeposit ? Coin.toSDK(message.totalDeposit) : undefined);
     message.status !== undefined && (obj.status = statusToJSON(message.status));
     message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
+    obj.bls_key = message.blsKey;
     return obj;
   }
 
@@ -315,39 +359,49 @@ export const EventCreateStorageProvider = {
 
 function createBaseEventEditStorageProvider(): EventEditStorageProvider {
   return {
+    spId: 0,
     spAddress: "",
     endpoint: "",
     description: undefined,
     sealAddress: "",
     approvalAddress: "",
-    gcAddress: ""
+    gcAddress: "",
+    blsKey: ""
   };
 }
 
 export const EventEditStorageProvider = {
   encode(message: EventEditStorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.spId !== 0) {
+      writer.uint32(8).uint32(message.spId);
+    }
+
     if (message.spAddress !== "") {
-      writer.uint32(10).string(message.spAddress);
+      writer.uint32(18).string(message.spAddress);
     }
 
     if (message.endpoint !== "") {
-      writer.uint32(18).string(message.endpoint);
+      writer.uint32(26).string(message.endpoint);
     }
 
     if (message.description !== undefined) {
-      Description.encode(message.description, writer.uint32(26).fork()).ldelim();
+      Description.encode(message.description, writer.uint32(34).fork()).ldelim();
     }
 
     if (message.sealAddress !== "") {
-      writer.uint32(34).string(message.sealAddress);
+      writer.uint32(42).string(message.sealAddress);
     }
 
     if (message.approvalAddress !== "") {
-      writer.uint32(42).string(message.approvalAddress);
+      writer.uint32(50).string(message.approvalAddress);
     }
 
     if (message.gcAddress !== "") {
-      writer.uint32(50).string(message.gcAddress);
+      writer.uint32(58).string(message.gcAddress);
+    }
+
+    if (message.blsKey !== "") {
+      writer.uint32(66).string(message.blsKey);
     }
 
     return writer;
@@ -363,27 +417,35 @@ export const EventEditStorageProvider = {
 
       switch (tag >>> 3) {
         case 1:
-          message.spAddress = reader.string();
+          message.spId = reader.uint32();
           break;
 
         case 2:
-          message.endpoint = reader.string();
+          message.spAddress = reader.string();
           break;
 
         case 3:
-          message.description = Description.decode(reader, reader.uint32());
+          message.endpoint = reader.string();
           break;
 
         case 4:
-          message.sealAddress = reader.string();
+          message.description = Description.decode(reader, reader.uint32());
           break;
 
         case 5:
-          message.approvalAddress = reader.string();
+          message.sealAddress = reader.string();
           break;
 
         case 6:
+          message.approvalAddress = reader.string();
+          break;
+
+        case 7:
           message.gcAddress = reader.string();
+          break;
+
+        case 8:
+          message.blsKey = reader.string();
           break;
 
         default:
@@ -397,56 +459,66 @@ export const EventEditStorageProvider = {
 
   fromJSON(object: any): EventEditStorageProvider {
     return {
+      spId: isSet(object.spId) ? Number(object.spId) : 0,
       spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
       description: isSet(object.description) ? Description.fromJSON(object.description) : undefined,
       sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
       approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
-      gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : ""
+      gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : "",
+      blsKey: isSet(object.blsKey) ? String(object.blsKey) : ""
     };
   },
 
   toJSON(message: EventEditStorageProvider): unknown {
     const obj: any = {};
+    message.spId !== undefined && (obj.spId = Math.round(message.spId));
     message.spAddress !== undefined && (obj.spAddress = message.spAddress);
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
     message.description !== undefined && (obj.description = message.description ? Description.toJSON(message.description) : undefined);
     message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
     message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
     message.gcAddress !== undefined && (obj.gcAddress = message.gcAddress);
+    message.blsKey !== undefined && (obj.blsKey = message.blsKey);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<EventEditStorageProvider>, I>>(object: I): EventEditStorageProvider {
     const message = createBaseEventEditStorageProvider();
+    message.spId = object.spId ?? 0;
     message.spAddress = object.spAddress ?? "";
     message.endpoint = object.endpoint ?? "";
     message.description = object.description !== undefined && object.description !== null ? Description.fromPartial(object.description) : undefined;
     message.sealAddress = object.sealAddress ?? "";
     message.approvalAddress = object.approvalAddress ?? "";
     message.gcAddress = object.gcAddress ?? "";
+    message.blsKey = object.blsKey ?? "";
     return message;
   },
 
   fromSDK(object: EventEditStorageProviderSDKType): EventEditStorageProvider {
     return {
+      spId: object?.sp_id,
       spAddress: object?.sp_address,
       endpoint: object?.endpoint,
       description: object.description ? Description.fromSDK(object.description) : undefined,
       sealAddress: object?.seal_address,
       approvalAddress: object?.approval_address,
-      gcAddress: object?.gc_address
+      gcAddress: object?.gc_address,
+      blsKey: object?.bls_key
     };
   },
 
   toSDK(message: EventEditStorageProvider): EventEditStorageProviderSDKType {
     const obj: any = {};
+    obj.sp_id = message.spId;
     obj.sp_address = message.spAddress;
     obj.endpoint = message.endpoint;
     message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
     obj.seal_address = message.sealAddress;
     obj.approval_address = message.approvalAddress;
     obj.gc_address = message.gcAddress;
+    obj.bls_key = message.blsKey;
     return obj;
   }
 
@@ -551,7 +623,7 @@ export const EventDeposit = {
 
 function createBaseEventSpStoragePriceUpdate(): EventSpStoragePriceUpdate {
   return {
-    spAddress: "",
+    spId: 0,
     updateTimeSec: Long.ZERO,
     readPrice: "",
     freeReadQuota: Long.UZERO,
@@ -561,8 +633,8 @@ function createBaseEventSpStoragePriceUpdate(): EventSpStoragePriceUpdate {
 
 export const EventSpStoragePriceUpdate = {
   encode(message: EventSpStoragePriceUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spAddress !== "") {
-      writer.uint32(10).string(message.spAddress);
+    if (message.spId !== 0) {
+      writer.uint32(8).uint32(message.spId);
     }
 
     if (!message.updateTimeSec.isZero()) {
@@ -594,7 +666,7 @@ export const EventSpStoragePriceUpdate = {
 
       switch (tag >>> 3) {
         case 1:
-          message.spAddress = reader.string();
+          message.spId = reader.uint32();
           break;
 
         case 2:
@@ -624,7 +696,7 @@ export const EventSpStoragePriceUpdate = {
 
   fromJSON(object: any): EventSpStoragePriceUpdate {
     return {
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      spId: isSet(object.spId) ? Number(object.spId) : 0,
       updateTimeSec: isSet(object.updateTimeSec) ? Long.fromValue(object.updateTimeSec) : Long.ZERO,
       readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
       freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
@@ -634,7 +706,7 @@ export const EventSpStoragePriceUpdate = {
 
   toJSON(message: EventSpStoragePriceUpdate): unknown {
     const obj: any = {};
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.spId !== undefined && (obj.spId = Math.round(message.spId));
     message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || Long.ZERO).toString());
     message.readPrice !== undefined && (obj.readPrice = message.readPrice);
     message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
@@ -644,7 +716,7 @@ export const EventSpStoragePriceUpdate = {
 
   fromPartial<I extends Exact<DeepPartial<EventSpStoragePriceUpdate>, I>>(object: I): EventSpStoragePriceUpdate {
     const message = createBaseEventSpStoragePriceUpdate();
-    message.spAddress = object.spAddress ?? "";
+    message.spId = object.spId ?? 0;
     message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? Long.fromValue(object.updateTimeSec) : Long.ZERO;
     message.readPrice = object.readPrice ?? "";
     message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
@@ -654,7 +726,7 @@ export const EventSpStoragePriceUpdate = {
 
   fromSDK(object: EventSpStoragePriceUpdateSDKType): EventSpStoragePriceUpdate {
     return {
-      spAddress: object?.sp_address,
+      spId: object?.sp_id,
       updateTimeSec: object?.update_time_sec,
       readPrice: object?.read_price,
       freeReadQuota: object?.free_read_quota,
@@ -664,7 +736,7 @@ export const EventSpStoragePriceUpdate = {
 
   toSDK(message: EventSpStoragePriceUpdate): EventSpStoragePriceUpdateSDKType {
     const obj: any = {};
-    obj.sp_address = message.spAddress;
+    obj.sp_id = message.spId;
     obj.update_time_sec = message.updateTimeSec;
     obj.read_price = message.readPrice;
     obj.free_read_quota = message.freeReadQuota;

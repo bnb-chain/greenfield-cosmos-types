@@ -20,6 +20,7 @@ export interface MsgCreateValidator {
   relayerAddress: string;
   challengerAddress: string;
   blsKey: string;
+  blsProof: string;
 }
 /** MsgCreateValidator defines a SDK message for creating a new validator. */
 
@@ -35,6 +36,7 @@ export interface MsgCreateValidatorSDKType {
   relayer_address: string;
   challenger_address: string;
   bls_key: string;
+  bls_proof: string;
 }
 /** MsgCreateValidatorResponse defines the Msg/CreateValidator response type. */
 
@@ -61,6 +63,7 @@ export interface MsgEditValidator {
   /** The BLS pubkey for the authorized relayer/challenger */
 
   blsKey: string;
+  blsProof: string;
 }
 /** MsgEditValidator defines a SDK message for editing an existing validator. */
 
@@ -72,6 +75,7 @@ export interface MsgEditValidatorSDKType {
   relayer_address: string;
   challenger_address: string;
   bls_key: string;
+  bls_proof: string;
 }
 /** MsgEditValidatorResponse defines the Msg/EditValidator response type. */
 
@@ -265,7 +269,8 @@ function createBaseMsgCreateValidator(): MsgCreateValidator {
     from: "",
     relayerAddress: "",
     challengerAddress: "",
-    blsKey: ""
+    blsKey: "",
+    blsProof: ""
   };
 }
 
@@ -313,6 +318,10 @@ export const MsgCreateValidator = {
 
     if (message.blsKey !== "") {
       writer.uint32(90).string(message.blsKey);
+    }
+
+    if (message.blsProof !== "") {
+      writer.uint32(98).string(message.blsProof);
     }
 
     return writer;
@@ -371,6 +380,10 @@ export const MsgCreateValidator = {
           message.blsKey = reader.string();
           break;
 
+        case 12:
+          message.blsProof = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -392,7 +405,8 @@ export const MsgCreateValidator = {
       from: isSet(object.from) ? String(object.from) : "",
       relayerAddress: isSet(object.relayerAddress) ? String(object.relayerAddress) : "",
       challengerAddress: isSet(object.challengerAddress) ? String(object.challengerAddress) : "",
-      blsKey: isSet(object.blsKey) ? String(object.blsKey) : ""
+      blsKey: isSet(object.blsKey) ? String(object.blsKey) : "",
+      blsProof: isSet(object.blsProof) ? String(object.blsProof) : ""
     };
   },
 
@@ -409,6 +423,7 @@ export const MsgCreateValidator = {
     message.relayerAddress !== undefined && (obj.relayerAddress = message.relayerAddress);
     message.challengerAddress !== undefined && (obj.challengerAddress = message.challengerAddress);
     message.blsKey !== undefined && (obj.blsKey = message.blsKey);
+    message.blsProof !== undefined && (obj.blsProof = message.blsProof);
     return obj;
   },
 
@@ -425,6 +440,7 @@ export const MsgCreateValidator = {
     message.relayerAddress = object.relayerAddress ?? "";
     message.challengerAddress = object.challengerAddress ?? "";
     message.blsKey = object.blsKey ?? "";
+    message.blsProof = object.blsProof ?? "";
     return message;
   },
 
@@ -440,7 +456,8 @@ export const MsgCreateValidator = {
       from: object?.from,
       relayerAddress: object?.relayer_address,
       challengerAddress: object?.challenger_address,
-      blsKey: object?.bls_key
+      blsKey: object?.bls_key,
+      blsProof: object?.bls_proof
     };
   },
 
@@ -457,6 +474,7 @@ export const MsgCreateValidator = {
     obj.relayer_address = message.relayerAddress;
     obj.challenger_address = message.challengerAddress;
     obj.bls_key = message.blsKey;
+    obj.bls_proof = message.blsProof;
     return obj;
   }
 
@@ -522,7 +540,8 @@ function createBaseMsgEditValidator(): MsgEditValidator {
     minSelfDelegation: "",
     relayerAddress: "",
     challengerAddress: "",
-    blsKey: ""
+    blsKey: "",
+    blsProof: ""
   };
 }
 
@@ -554,6 +573,10 @@ export const MsgEditValidator = {
 
     if (message.blsKey !== "") {
       writer.uint32(58).string(message.blsKey);
+    }
+
+    if (message.blsProof !== "") {
+      writer.uint32(66).string(message.blsProof);
     }
 
     return writer;
@@ -596,6 +619,10 @@ export const MsgEditValidator = {
           message.blsKey = reader.string();
           break;
 
+        case 8:
+          message.blsProof = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -613,7 +640,8 @@ export const MsgEditValidator = {
       minSelfDelegation: isSet(object.minSelfDelegation) ? String(object.minSelfDelegation) : "",
       relayerAddress: isSet(object.relayerAddress) ? String(object.relayerAddress) : "",
       challengerAddress: isSet(object.challengerAddress) ? String(object.challengerAddress) : "",
-      blsKey: isSet(object.blsKey) ? String(object.blsKey) : ""
+      blsKey: isSet(object.blsKey) ? String(object.blsKey) : "",
+      blsProof: isSet(object.blsProof) ? String(object.blsProof) : ""
     };
   },
 
@@ -626,6 +654,7 @@ export const MsgEditValidator = {
     message.relayerAddress !== undefined && (obj.relayerAddress = message.relayerAddress);
     message.challengerAddress !== undefined && (obj.challengerAddress = message.challengerAddress);
     message.blsKey !== undefined && (obj.blsKey = message.blsKey);
+    message.blsProof !== undefined && (obj.blsProof = message.blsProof);
     return obj;
   },
 
@@ -638,6 +667,7 @@ export const MsgEditValidator = {
     message.relayerAddress = object.relayerAddress ?? "";
     message.challengerAddress = object.challengerAddress ?? "";
     message.blsKey = object.blsKey ?? "";
+    message.blsProof = object.blsProof ?? "";
     return message;
   },
 
@@ -649,7 +679,8 @@ export const MsgEditValidator = {
       minSelfDelegation: object?.min_self_delegation,
       relayerAddress: object?.relayer_address,
       challengerAddress: object?.challenger_address,
-      blsKey: object?.bls_key
+      blsKey: object?.bls_key,
+      blsProof: object?.bls_proof
     };
   },
 
@@ -662,6 +693,7 @@ export const MsgEditValidator = {
     obj.relayer_address = message.relayerAddress;
     obj.challenger_address = message.challengerAddress;
     obj.bls_key = message.blsKey;
+    obj.bls_proof = message.blsProof;
     return obj;
   }
 

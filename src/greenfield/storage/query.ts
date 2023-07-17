@@ -3,6 +3,7 @@ import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } fr
 import { ActionType, Effect, actionTypeFromJSON, actionTypeToJSON, effectFromJSON, effectToJSON } from "../permission/common";
 import { Params, ParamsSDKType } from "./params";
 import { BucketInfo, BucketInfoSDKType, ObjectInfo, ObjectInfoSDKType, BucketMetaData, BucketMetaDataSDKType, ObjectMetaData, ObjectMetaDataSDKType, GroupMetaData, GroupMetaDataSDKType, GroupInfo, GroupInfoSDKType } from "./types";
+import { GlobalVirtualGroup, GlobalVirtualGroupSDKType } from "../virtualgroup/types";
 import { Policy, PolicySDKType, GroupMember, GroupMemberSDKType } from "../permission/types";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Long, Rpc } from "../../helpers";
@@ -80,9 +81,11 @@ export interface QueryHeadObjectByIdRequestSDKType {
 }
 export interface QueryHeadObjectResponse {
   objectInfo?: ObjectInfo;
+  globalVirtualGroup?: GlobalVirtualGroup;
 }
 export interface QueryHeadObjectResponseSDKType {
   object_info?: ObjectInfoSDKType;
+  global_virtual_group?: GlobalVirtualGroupSDKType;
 }
 export interface QueryListBucketsRequest {
   pagination?: PageRequest;
@@ -892,7 +895,8 @@ export const QueryHeadObjectByIdRequest = {
 
 function createBaseQueryHeadObjectResponse(): QueryHeadObjectResponse {
   return {
-    objectInfo: undefined
+    objectInfo: undefined,
+    globalVirtualGroup: undefined
   };
 }
 
@@ -900,6 +904,10 @@ export const QueryHeadObjectResponse = {
   encode(message: QueryHeadObjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.objectInfo !== undefined) {
       ObjectInfo.encode(message.objectInfo, writer.uint32(10).fork()).ldelim();
+    }
+
+    if (message.globalVirtualGroup !== undefined) {
+      GlobalVirtualGroup.encode(message.globalVirtualGroup, writer.uint32(18).fork()).ldelim();
     }
 
     return writer;
@@ -918,6 +926,10 @@ export const QueryHeadObjectResponse = {
           message.objectInfo = ObjectInfo.decode(reader, reader.uint32());
           break;
 
+        case 2:
+          message.globalVirtualGroup = GlobalVirtualGroup.decode(reader, reader.uint32());
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -929,31 +941,36 @@ export const QueryHeadObjectResponse = {
 
   fromJSON(object: any): QueryHeadObjectResponse {
     return {
-      objectInfo: isSet(object.objectInfo) ? ObjectInfo.fromJSON(object.objectInfo) : undefined
+      objectInfo: isSet(object.objectInfo) ? ObjectInfo.fromJSON(object.objectInfo) : undefined,
+      globalVirtualGroup: isSet(object.globalVirtualGroup) ? GlobalVirtualGroup.fromJSON(object.globalVirtualGroup) : undefined
     };
   },
 
   toJSON(message: QueryHeadObjectResponse): unknown {
     const obj: any = {};
     message.objectInfo !== undefined && (obj.objectInfo = message.objectInfo ? ObjectInfo.toJSON(message.objectInfo) : undefined);
+    message.globalVirtualGroup !== undefined && (obj.globalVirtualGroup = message.globalVirtualGroup ? GlobalVirtualGroup.toJSON(message.globalVirtualGroup) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryHeadObjectResponse>, I>>(object: I): QueryHeadObjectResponse {
     const message = createBaseQueryHeadObjectResponse();
     message.objectInfo = object.objectInfo !== undefined && object.objectInfo !== null ? ObjectInfo.fromPartial(object.objectInfo) : undefined;
+    message.globalVirtualGroup = object.globalVirtualGroup !== undefined && object.globalVirtualGroup !== null ? GlobalVirtualGroup.fromPartial(object.globalVirtualGroup) : undefined;
     return message;
   },
 
   fromSDK(object: QueryHeadObjectResponseSDKType): QueryHeadObjectResponse {
     return {
-      objectInfo: object.object_info ? ObjectInfo.fromSDK(object.object_info) : undefined
+      objectInfo: object.object_info ? ObjectInfo.fromSDK(object.object_info) : undefined,
+      globalVirtualGroup: object.global_virtual_group ? GlobalVirtualGroup.fromSDK(object.global_virtual_group) : undefined
     };
   },
 
   toSDK(message: QueryHeadObjectResponse): QueryHeadObjectResponseSDKType {
     const obj: any = {};
     message.objectInfo !== undefined && (obj.object_info = message.objectInfo ? ObjectInfo.toSDK(message.objectInfo) : undefined);
+    message.globalVirtualGroup !== undefined && (obj.global_virtual_group = message.globalVirtualGroup ? GlobalVirtualGroup.toSDK(message.globalVirtualGroup) : undefined);
     return obj;
   }
 

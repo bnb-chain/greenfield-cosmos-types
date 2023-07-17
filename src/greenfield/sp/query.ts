@@ -74,15 +74,27 @@ export interface QueryGetSecondarySpStorePriceByTimeResponseSDKType {
   secondary_sp_store_price?: SecondarySpStorePriceSDKType;
 }
 export interface QueryStorageProviderRequest {
-  spAddress: string;
+  id: number;
 }
 export interface QueryStorageProviderRequestSDKType {
-  spAddress: string;
+  id: number;
 }
 export interface QueryStorageProviderResponse {
   storageProvider?: StorageProvider;
 }
 export interface QueryStorageProviderResponseSDKType {
+  storageProvider?: StorageProviderSDKType;
+}
+export interface QueryStorageProviderByOperatorAddressRequest {
+  operatorAddress: string;
+}
+export interface QueryStorageProviderByOperatorAddressRequestSDKType {
+  operator_address: string;
+}
+export interface QueryStorageProviderByOperatorAddressResponse {
+  storageProvider?: StorageProvider;
+}
+export interface QueryStorageProviderByOperatorAddressResponseSDKType {
   storageProvider?: StorageProviderSDKType;
 }
 
@@ -663,14 +675,14 @@ export const QueryGetSecondarySpStorePriceByTimeResponse = {
 
 function createBaseQueryStorageProviderRequest(): QueryStorageProviderRequest {
   return {
-    spAddress: ""
+    id: 0
   };
 }
 
 export const QueryStorageProviderRequest = {
   encode(message: QueryStorageProviderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spAddress !== "") {
-      writer.uint32(10).string(message.spAddress);
+    if (message.id !== 0) {
+      writer.uint32(8).uint32(message.id);
     }
 
     return writer;
@@ -686,7 +698,7 @@ export const QueryStorageProviderRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.spAddress = reader.string();
+          message.id = reader.uint32();
           break;
 
         default:
@@ -700,31 +712,31 @@ export const QueryStorageProviderRequest = {
 
   fromJSON(object: any): QueryStorageProviderRequest {
     return {
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : ""
+      id: isSet(object.id) ? Number(object.id) : 0
     };
   },
 
   toJSON(message: QueryStorageProviderRequest): unknown {
     const obj: any = {};
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.id !== undefined && (obj.id = Math.round(message.id));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryStorageProviderRequest>, I>>(object: I): QueryStorageProviderRequest {
     const message = createBaseQueryStorageProviderRequest();
-    message.spAddress = object.spAddress ?? "";
+    message.id = object.id ?? 0;
     return message;
   },
 
   fromSDK(object: QueryStorageProviderRequestSDKType): QueryStorageProviderRequest {
     return {
-      spAddress: object?.spAddress
+      id: object?.id
     };
   },
 
   toSDK(message: QueryStorageProviderRequest): QueryStorageProviderRequestSDKType {
     const obj: any = {};
-    obj.spAddress = message.spAddress;
+    obj.id = message.id;
     return obj;
   }
 
@@ -798,6 +810,144 @@ export const QueryStorageProviderResponse = {
   }
 
 };
+
+function createBaseQueryStorageProviderByOperatorAddressRequest(): QueryStorageProviderByOperatorAddressRequest {
+  return {
+    operatorAddress: ""
+  };
+}
+
+export const QueryStorageProviderByOperatorAddressRequest = {
+  encode(message: QueryStorageProviderByOperatorAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operatorAddress !== "") {
+      writer.uint32(10).string(message.operatorAddress);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderByOperatorAddressRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryStorageProviderByOperatorAddressRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operatorAddress = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryStorageProviderByOperatorAddressRequest {
+    return {
+      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : ""
+    };
+  },
+
+  toJSON(message: QueryStorageProviderByOperatorAddressRequest): unknown {
+    const obj: any = {};
+    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryStorageProviderByOperatorAddressRequest>, I>>(object: I): QueryStorageProviderByOperatorAddressRequest {
+    const message = createBaseQueryStorageProviderByOperatorAddressRequest();
+    message.operatorAddress = object.operatorAddress ?? "";
+    return message;
+  },
+
+  fromSDK(object: QueryStorageProviderByOperatorAddressRequestSDKType): QueryStorageProviderByOperatorAddressRequest {
+    return {
+      operatorAddress: object?.operator_address
+    };
+  },
+
+  toSDK(message: QueryStorageProviderByOperatorAddressRequest): QueryStorageProviderByOperatorAddressRequestSDKType {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    return obj;
+  }
+
+};
+
+function createBaseQueryStorageProviderByOperatorAddressResponse(): QueryStorageProviderByOperatorAddressResponse {
+  return {
+    storageProvider: undefined
+  };
+}
+
+export const QueryStorageProviderByOperatorAddressResponse = {
+  encode(message: QueryStorageProviderByOperatorAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.storageProvider !== undefined) {
+      StorageProvider.encode(message.storageProvider, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderByOperatorAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryStorageProviderByOperatorAddressResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.storageProvider = StorageProvider.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryStorageProviderByOperatorAddressResponse {
+    return {
+      storageProvider: isSet(object.storageProvider) ? StorageProvider.fromJSON(object.storageProvider) : undefined
+    };
+  },
+
+  toJSON(message: QueryStorageProviderByOperatorAddressResponse): unknown {
+    const obj: any = {};
+    message.storageProvider !== undefined && (obj.storageProvider = message.storageProvider ? StorageProvider.toJSON(message.storageProvider) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryStorageProviderByOperatorAddressResponse>, I>>(object: I): QueryStorageProviderByOperatorAddressResponse {
+    const message = createBaseQueryStorageProviderByOperatorAddressResponse();
+    message.storageProvider = object.storageProvider !== undefined && object.storageProvider !== null ? StorageProvider.fromPartial(object.storageProvider) : undefined;
+    return message;
+  },
+
+  fromSDK(object: QueryStorageProviderByOperatorAddressResponseSDKType): QueryStorageProviderByOperatorAddressResponse {
+    return {
+      storageProvider: object.storageProvider ? StorageProvider.fromSDK(object.storageProvider) : undefined
+    };
+  },
+
+  toSDK(message: QueryStorageProviderByOperatorAddressResponse): QueryStorageProviderByOperatorAddressResponseSDKType {
+    const obj: any = {};
+    message.storageProvider !== undefined && (obj.storageProvider = message.storageProvider ? StorageProvider.toSDK(message.storageProvider) : undefined);
+    return obj;
+  }
+
+};
 /** Query defines the gRPC querier service. */
 
 export interface Query {
@@ -812,9 +962,12 @@ export interface Query {
   /** get secondary store price by time */
 
   QueryGetSecondarySpStorePriceByTime(request: QueryGetSecondarySpStorePriceByTimeRequest): Promise<QueryGetSecondarySpStorePriceByTimeResponse>;
-  /** Queries a storage provider with specify address */
+  /** Queries a storage provider with specify id */
 
   StorageProvider(request: QueryStorageProviderRequest): Promise<QueryStorageProviderResponse>;
+  /** Queries a StorageProvider by specify operator address. */
+
+  StorageProviderByOperatorAddress(request: QueryStorageProviderByOperatorAddressRequest): Promise<QueryStorageProviderByOperatorAddressResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -826,6 +979,7 @@ export class QueryClientImpl implements Query {
     this.QueryGetSpStoragePriceByTime = this.QueryGetSpStoragePriceByTime.bind(this);
     this.QueryGetSecondarySpStorePriceByTime = this.QueryGetSecondarySpStorePriceByTime.bind(this);
     this.StorageProvider = this.StorageProvider.bind(this);
+    this.StorageProviderByOperatorAddress = this.StorageProviderByOperatorAddress.bind(this);
   }
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
@@ -858,6 +1012,12 @@ export class QueryClientImpl implements Query {
     const data = QueryStorageProviderRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "StorageProvider", data);
     return promise.then(data => QueryStorageProviderResponse.decode(new _m0.Reader(data)));
+  }
+
+  StorageProviderByOperatorAddress(request: QueryStorageProviderByOperatorAddressRequest): Promise<QueryStorageProviderByOperatorAddressResponse> {
+    const data = QueryStorageProviderByOperatorAddressRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.sp.Query", "StorageProviderByOperatorAddress", data);
+    return promise.then(data => QueryStorageProviderByOperatorAddressResponse.decode(new _m0.Reader(data)));
   }
 
 }

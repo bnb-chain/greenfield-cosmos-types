@@ -1,6 +1,6 @@
 /* eslint-disable */
-import { Long, isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
+import { isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact, Long } from "../../helpers";
 export const protobufPackage = "greenfield.storage";
 /**
  * SourceType represents the source of resource creation, which can
@@ -59,6 +59,7 @@ export function sourceTypeToJSON(object: SourceType): string {
 export enum BucketStatus {
   BUCKET_STATUS_CREATED = 0,
   BUCKET_STATUS_DISCONTINUED = 1,
+  BUCKET_STATUS_MIGRATING = 2,
   UNRECOGNIZED = -1,
 }
 export const BucketStatusSDKType = BucketStatus;
@@ -71,6 +72,10 @@ export function bucketStatusFromJSON(object: any): BucketStatus {
     case 1:
     case "BUCKET_STATUS_DISCONTINUED":
       return BucketStatus.BUCKET_STATUS_DISCONTINUED;
+
+    case 2:
+    case "BUCKET_STATUS_MIGRATING":
+      return BucketStatus.BUCKET_STATUS_MIGRATING;
 
     case -1:
     case "UNRECOGNIZED":
@@ -85,6 +90,9 @@ export function bucketStatusToJSON(object: BucketStatus): string {
 
     case BucketStatus.BUCKET_STATUS_DISCONTINUED:
       return "BUCKET_STATUS_DISCONTINUED";
+
+    case BucketStatus.BUCKET_STATUS_MIGRATING:
+      return "BUCKET_STATUS_MIGRATING";
 
     case BucketStatus.UNRECOGNIZED:
     default:
@@ -238,181 +246,148 @@ export function visibilityTypeToJSON(object: VisibilityType): string {
   }
 }
 /**
- * Approval is the signature information returned by the Primary Storage Provider (SP) to the user
- * after allowing them to create a bucket or object, which is then used for verification on the chain
- * to ensure agreement between the Primary SP and the user."
- */
-
-export interface Approval {
-  /** expired_height is the block height at which the signature expires. */
-  expiredHeight: Long;
-  /** The signature needs to conform to the EIP 712 specification. */
-
-  sig: Uint8Array;
-}
-/**
- * Approval is the signature information returned by the Primary Storage Provider (SP) to the user
- * after allowing them to create a bucket or object, which is then used for verification on the chain
- * to ensure agreement between the Primary SP and the user."
- */
-
-export interface ApprovalSDKType {
-  expired_height: Long;
-  sig: Uint8Array;
-}
-/**
- * SecondarySpSignDoc used to generate seal signature of secondary SP
+ * SecondarySpSealObjectSignDoc used to generate seal signature of secondary SP
  * If the secondary SP only signs the checksum to declare the object pieces are saved,
  * it might be reused by the primary SP to fake it's declaration.
  * Then the primary SP can challenge and slash the secondary SP.
  * So the id of the object is needed to prevent this.
  */
 
-export interface SecondarySpSignDoc {
-  spAddress: string;
+export interface SecondarySpSealObjectSignDoc {
+  chainId: string;
+  globalVirtualGroupId: number;
   objectId: string;
+  /** checksum is the sha256 hash of slice of integrity hash from secondary sps */
+
   checksum: Uint8Array;
 }
 /**
- * SecondarySpSignDoc used to generate seal signature of secondary SP
+ * SecondarySpSealObjectSignDoc used to generate seal signature of secondary SP
  * If the secondary SP only signs the checksum to declare the object pieces are saved,
  * it might be reused by the primary SP to fake it's declaration.
  * Then the primary SP can challenge and slash the secondary SP.
  * So the id of the object is needed to prevent this.
  */
 
-export interface SecondarySpSignDocSDKType {
-  sp_address: string;
+export interface SecondarySpSealObjectSignDocSDKType {
+  chain_id: string;
+  global_virtual_group_id: number;
   object_id: string;
   checksum: Uint8Array;
 }
+export interface GVGMapping {
+  srcGlobalVirtualGroupId: number;
+  dstGlobalVirtualGroupId: number;
+  secondarySpBlsSignature: Uint8Array;
+}
+export interface GVGMappingSDKType {
+  src_global_virtual_group_id: number;
+  dst_global_virtual_group_id: number;
+  secondary_sp_bls_signature: Uint8Array;
+}
+export interface SecondarySpMigrationBucketSignDoc {
+  chainId: string;
+  dstPrimarySpId: number;
+  srcGlobalVirtualGroupId: number;
+  dstGlobalVirtualGroupId: number;
+  bucketId: string;
+}
+export interface SecondarySpMigrationBucketSignDocSDKType {
+  chain_id: string;
+  dst_primary_sp_id: number;
+  src_global_virtual_group_id: number;
+  dst_global_virtual_group_id: number;
+  bucket_id: string;
+}
+/**
+ * Local virtual group(LVG) uniquely associated with a global virtual group.
+ * Each bucket maintains a mapping from local virtual group to global virtual group
+ * Each local virtual group is associated with a unique virtual payment account,
+ * where all object fees are streamed to.
+ */
 
-function createBaseApproval(): Approval {
-  return {
-    expiredHeight: Long.UZERO,
-    sig: new Uint8Array()
-  };
+export interface LocalVirtualGroup {
+  /** id is the identifier of the local virtual group. */
+  id: number;
+  /** global_virtual_group_id is the identifier of the global virtual group. */
+
+  globalVirtualGroupId: number;
+  /** stored_size is the size of the stored data in the local virtual group. */
+
+  storedSize: Long;
+  /**
+   * total_charge_size is the total charged size of the objects in the LVG.
+   * Notice that the minimum unit of charge is 128K
+   */
+
+  totalChargeSize: Long;
+}
+/**
+ * Local virtual group(LVG) uniquely associated with a global virtual group.
+ * Each bucket maintains a mapping from local virtual group to global virtual group
+ * Each local virtual group is associated with a unique virtual payment account,
+ * where all object fees are streamed to.
+ */
+
+export interface LocalVirtualGroupSDKType {
+  id: number;
+  global_virtual_group_id: number;
+  stored_size: Long;
+  total_charge_size: Long;
 }
 
-export const Approval = {
-  encode(message: Approval, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.expiredHeight.isZero()) {
-      writer.uint32(8).uint64(message.expiredHeight);
-    }
-
-    if (message.sig.length !== 0) {
-      writer.uint32(18).bytes(message.sig);
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): Approval {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseApproval();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.expiredHeight = (reader.uint64() as Long);
-          break;
-
-        case 2:
-          message.sig = reader.bytes();
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): Approval {
-    return {
-      expiredHeight: isSet(object.expiredHeight) ? Long.fromValue(object.expiredHeight) : Long.UZERO,
-      sig: isSet(object.sig) ? bytesFromBase64(object.sig) : new Uint8Array()
-    };
-  },
-
-  toJSON(message: Approval): unknown {
-    const obj: any = {};
-    message.expiredHeight !== undefined && (obj.expiredHeight = (message.expiredHeight || Long.UZERO).toString());
-    message.sig !== undefined && (obj.sig = base64FromBytes(message.sig !== undefined ? message.sig : new Uint8Array()));
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<Approval>, I>>(object: I): Approval {
-    const message = createBaseApproval();
-    message.expiredHeight = object.expiredHeight !== undefined && object.expiredHeight !== null ? Long.fromValue(object.expiredHeight) : Long.UZERO;
-    message.sig = object.sig ?? new Uint8Array();
-    return message;
-  },
-
-  fromSDK(object: ApprovalSDKType): Approval {
-    return {
-      expiredHeight: object?.expired_height,
-      sig: object?.sig
-    };
-  },
-
-  toSDK(message: Approval): ApprovalSDKType {
-    const obj: any = {};
-    obj.expired_height = message.expiredHeight;
-    obj.sig = message.sig;
-    return obj;
-  }
-
-};
-
-function createBaseSecondarySpSignDoc(): SecondarySpSignDoc {
+function createBaseSecondarySpSealObjectSignDoc(): SecondarySpSealObjectSignDoc {
   return {
-    spAddress: "",
+    chainId: "",
+    globalVirtualGroupId: 0,
     objectId: "",
     checksum: new Uint8Array()
   };
 }
 
-export const SecondarySpSignDoc = {
-  encode(message: SecondarySpSignDoc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spAddress !== "") {
-      writer.uint32(10).string(message.spAddress);
+export const SecondarySpSealObjectSignDoc = {
+  encode(message: SecondarySpSealObjectSignDoc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.chainId !== "") {
+      writer.uint32(10).string(message.chainId);
+    }
+
+    if (message.globalVirtualGroupId !== 0) {
+      writer.uint32(16).uint32(message.globalVirtualGroupId);
     }
 
     if (message.objectId !== "") {
-      writer.uint32(18).string(message.objectId);
+      writer.uint32(26).string(message.objectId);
     }
 
     if (message.checksum.length !== 0) {
-      writer.uint32(26).bytes(message.checksum);
+      writer.uint32(34).bytes(message.checksum);
     }
 
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): SecondarySpSignDoc {
+  decode(input: _m0.Reader | Uint8Array, length?: number): SecondarySpSealObjectSignDoc {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSecondarySpSignDoc();
+    const message = createBaseSecondarySpSealObjectSignDoc();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
 
       switch (tag >>> 3) {
         case 1:
-          message.spAddress = reader.string();
+          message.chainId = reader.string();
           break;
 
         case 2:
-          message.objectId = reader.string();
+          message.globalVirtualGroupId = reader.uint32();
           break;
 
         case 3:
+          message.objectId = reader.string();
+          break;
+
+        case 4:
           message.checksum = reader.bytes();
           break;
 
@@ -425,43 +400,381 @@ export const SecondarySpSignDoc = {
     return message;
   },
 
-  fromJSON(object: any): SecondarySpSignDoc {
+  fromJSON(object: any): SecondarySpSealObjectSignDoc {
     return {
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      chainId: isSet(object.chainId) ? String(object.chainId) : "",
+      globalVirtualGroupId: isSet(object.globalVirtualGroupId) ? Number(object.globalVirtualGroupId) : 0,
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
       checksum: isSet(object.checksum) ? bytesFromBase64(object.checksum) : new Uint8Array()
     };
   },
 
-  toJSON(message: SecondarySpSignDoc): unknown {
+  toJSON(message: SecondarySpSealObjectSignDoc): unknown {
     const obj: any = {};
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.chainId !== undefined && (obj.chainId = message.chainId);
+    message.globalVirtualGroupId !== undefined && (obj.globalVirtualGroupId = Math.round(message.globalVirtualGroupId));
     message.objectId !== undefined && (obj.objectId = message.objectId);
     message.checksum !== undefined && (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<SecondarySpSignDoc>, I>>(object: I): SecondarySpSignDoc {
-    const message = createBaseSecondarySpSignDoc();
-    message.spAddress = object.spAddress ?? "";
+  fromPartial<I extends Exact<DeepPartial<SecondarySpSealObjectSignDoc>, I>>(object: I): SecondarySpSealObjectSignDoc {
+    const message = createBaseSecondarySpSealObjectSignDoc();
+    message.chainId = object.chainId ?? "";
+    message.globalVirtualGroupId = object.globalVirtualGroupId ?? 0;
     message.objectId = object.objectId ?? "";
     message.checksum = object.checksum ?? new Uint8Array();
     return message;
   },
 
-  fromSDK(object: SecondarySpSignDocSDKType): SecondarySpSignDoc {
+  fromSDK(object: SecondarySpSealObjectSignDocSDKType): SecondarySpSealObjectSignDoc {
     return {
-      spAddress: object?.sp_address,
+      chainId: object?.chain_id,
+      globalVirtualGroupId: object?.global_virtual_group_id,
       objectId: object?.object_id,
       checksum: object?.checksum
     };
   },
 
-  toSDK(message: SecondarySpSignDoc): SecondarySpSignDocSDKType {
+  toSDK(message: SecondarySpSealObjectSignDoc): SecondarySpSealObjectSignDocSDKType {
     const obj: any = {};
-    obj.sp_address = message.spAddress;
+    obj.chain_id = message.chainId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
     obj.object_id = message.objectId;
     obj.checksum = message.checksum;
+    return obj;
+  }
+
+};
+
+function createBaseGVGMapping(): GVGMapping {
+  return {
+    srcGlobalVirtualGroupId: 0,
+    dstGlobalVirtualGroupId: 0,
+    secondarySpBlsSignature: new Uint8Array()
+  };
+}
+
+export const GVGMapping = {
+  encode(message: GVGMapping, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.srcGlobalVirtualGroupId !== 0) {
+      writer.uint32(8).uint32(message.srcGlobalVirtualGroupId);
+    }
+
+    if (message.dstGlobalVirtualGroupId !== 0) {
+      writer.uint32(16).uint32(message.dstGlobalVirtualGroupId);
+    }
+
+    if (message.secondarySpBlsSignature.length !== 0) {
+      writer.uint32(26).bytes(message.secondarySpBlsSignature);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GVGMapping {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGVGMapping();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.srcGlobalVirtualGroupId = reader.uint32();
+          break;
+
+        case 2:
+          message.dstGlobalVirtualGroupId = reader.uint32();
+          break;
+
+        case 3:
+          message.secondarySpBlsSignature = reader.bytes();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): GVGMapping {
+    return {
+      srcGlobalVirtualGroupId: isSet(object.srcGlobalVirtualGroupId) ? Number(object.srcGlobalVirtualGroupId) : 0,
+      dstGlobalVirtualGroupId: isSet(object.dstGlobalVirtualGroupId) ? Number(object.dstGlobalVirtualGroupId) : 0,
+      secondarySpBlsSignature: isSet(object.secondarySpBlsSignature) ? bytesFromBase64(object.secondarySpBlsSignature) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: GVGMapping): unknown {
+    const obj: any = {};
+    message.srcGlobalVirtualGroupId !== undefined && (obj.srcGlobalVirtualGroupId = Math.round(message.srcGlobalVirtualGroupId));
+    message.dstGlobalVirtualGroupId !== undefined && (obj.dstGlobalVirtualGroupId = Math.round(message.dstGlobalVirtualGroupId));
+    message.secondarySpBlsSignature !== undefined && (obj.secondarySpBlsSignature = base64FromBytes(message.secondarySpBlsSignature !== undefined ? message.secondarySpBlsSignature : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GVGMapping>, I>>(object: I): GVGMapping {
+    const message = createBaseGVGMapping();
+    message.srcGlobalVirtualGroupId = object.srcGlobalVirtualGroupId ?? 0;
+    message.dstGlobalVirtualGroupId = object.dstGlobalVirtualGroupId ?? 0;
+    message.secondarySpBlsSignature = object.secondarySpBlsSignature ?? new Uint8Array();
+    return message;
+  },
+
+  fromSDK(object: GVGMappingSDKType): GVGMapping {
+    return {
+      srcGlobalVirtualGroupId: object?.src_global_virtual_group_id,
+      dstGlobalVirtualGroupId: object?.dst_global_virtual_group_id,
+      secondarySpBlsSignature: object?.secondary_sp_bls_signature
+    };
+  },
+
+  toSDK(message: GVGMapping): GVGMappingSDKType {
+    const obj: any = {};
+    obj.src_global_virtual_group_id = message.srcGlobalVirtualGroupId;
+    obj.dst_global_virtual_group_id = message.dstGlobalVirtualGroupId;
+    obj.secondary_sp_bls_signature = message.secondarySpBlsSignature;
+    return obj;
+  }
+
+};
+
+function createBaseSecondarySpMigrationBucketSignDoc(): SecondarySpMigrationBucketSignDoc {
+  return {
+    chainId: "",
+    dstPrimarySpId: 0,
+    srcGlobalVirtualGroupId: 0,
+    dstGlobalVirtualGroupId: 0,
+    bucketId: ""
+  };
+}
+
+export const SecondarySpMigrationBucketSignDoc = {
+  encode(message: SecondarySpMigrationBucketSignDoc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.chainId !== "") {
+      writer.uint32(10).string(message.chainId);
+    }
+
+    if (message.dstPrimarySpId !== 0) {
+      writer.uint32(16).uint32(message.dstPrimarySpId);
+    }
+
+    if (message.srcGlobalVirtualGroupId !== 0) {
+      writer.uint32(24).uint32(message.srcGlobalVirtualGroupId);
+    }
+
+    if (message.dstGlobalVirtualGroupId !== 0) {
+      writer.uint32(32).uint32(message.dstGlobalVirtualGroupId);
+    }
+
+    if (message.bucketId !== "") {
+      writer.uint32(42).string(message.bucketId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SecondarySpMigrationBucketSignDoc {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSecondarySpMigrationBucketSignDoc();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.chainId = reader.string();
+          break;
+
+        case 2:
+          message.dstPrimarySpId = reader.uint32();
+          break;
+
+        case 3:
+          message.srcGlobalVirtualGroupId = reader.uint32();
+          break;
+
+        case 4:
+          message.dstGlobalVirtualGroupId = reader.uint32();
+          break;
+
+        case 5:
+          message.bucketId = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): SecondarySpMigrationBucketSignDoc {
+    return {
+      chainId: isSet(object.chainId) ? String(object.chainId) : "",
+      dstPrimarySpId: isSet(object.dstPrimarySpId) ? Number(object.dstPrimarySpId) : 0,
+      srcGlobalVirtualGroupId: isSet(object.srcGlobalVirtualGroupId) ? Number(object.srcGlobalVirtualGroupId) : 0,
+      dstGlobalVirtualGroupId: isSet(object.dstGlobalVirtualGroupId) ? Number(object.dstGlobalVirtualGroupId) : 0,
+      bucketId: isSet(object.bucketId) ? String(object.bucketId) : ""
+    };
+  },
+
+  toJSON(message: SecondarySpMigrationBucketSignDoc): unknown {
+    const obj: any = {};
+    message.chainId !== undefined && (obj.chainId = message.chainId);
+    message.dstPrimarySpId !== undefined && (obj.dstPrimarySpId = Math.round(message.dstPrimarySpId));
+    message.srcGlobalVirtualGroupId !== undefined && (obj.srcGlobalVirtualGroupId = Math.round(message.srcGlobalVirtualGroupId));
+    message.dstGlobalVirtualGroupId !== undefined && (obj.dstGlobalVirtualGroupId = Math.round(message.dstGlobalVirtualGroupId));
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SecondarySpMigrationBucketSignDoc>, I>>(object: I): SecondarySpMigrationBucketSignDoc {
+    const message = createBaseSecondarySpMigrationBucketSignDoc();
+    message.chainId = object.chainId ?? "";
+    message.dstPrimarySpId = object.dstPrimarySpId ?? 0;
+    message.srcGlobalVirtualGroupId = object.srcGlobalVirtualGroupId ?? 0;
+    message.dstGlobalVirtualGroupId = object.dstGlobalVirtualGroupId ?? 0;
+    message.bucketId = object.bucketId ?? "";
+    return message;
+  },
+
+  fromSDK(object: SecondarySpMigrationBucketSignDocSDKType): SecondarySpMigrationBucketSignDoc {
+    return {
+      chainId: object?.chain_id,
+      dstPrimarySpId: object?.dst_primary_sp_id,
+      srcGlobalVirtualGroupId: object?.src_global_virtual_group_id,
+      dstGlobalVirtualGroupId: object?.dst_global_virtual_group_id,
+      bucketId: object?.bucket_id
+    };
+  },
+
+  toSDK(message: SecondarySpMigrationBucketSignDoc): SecondarySpMigrationBucketSignDocSDKType {
+    const obj: any = {};
+    obj.chain_id = message.chainId;
+    obj.dst_primary_sp_id = message.dstPrimarySpId;
+    obj.src_global_virtual_group_id = message.srcGlobalVirtualGroupId;
+    obj.dst_global_virtual_group_id = message.dstGlobalVirtualGroupId;
+    obj.bucket_id = message.bucketId;
+    return obj;
+  }
+
+};
+
+function createBaseLocalVirtualGroup(): LocalVirtualGroup {
+  return {
+    id: 0,
+    globalVirtualGroupId: 0,
+    storedSize: Long.UZERO,
+    totalChargeSize: Long.UZERO
+  };
+}
+
+export const LocalVirtualGroup = {
+  encode(message: LocalVirtualGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint32(message.id);
+    }
+
+    if (message.globalVirtualGroupId !== 0) {
+      writer.uint32(24).uint32(message.globalVirtualGroupId);
+    }
+
+    if (!message.storedSize.isZero()) {
+      writer.uint32(32).uint64(message.storedSize);
+    }
+
+    if (!message.totalChargeSize.isZero()) {
+      writer.uint32(40).uint64(message.totalChargeSize);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LocalVirtualGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLocalVirtualGroup();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint32();
+          break;
+
+        case 3:
+          message.globalVirtualGroupId = reader.uint32();
+          break;
+
+        case 4:
+          message.storedSize = (reader.uint64() as Long);
+          break;
+
+        case 5:
+          message.totalChargeSize = (reader.uint64() as Long);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): LocalVirtualGroup {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      globalVirtualGroupId: isSet(object.globalVirtualGroupId) ? Number(object.globalVirtualGroupId) : 0,
+      storedSize: isSet(object.storedSize) ? Long.fromValue(object.storedSize) : Long.UZERO,
+      totalChargeSize: isSet(object.totalChargeSize) ? Long.fromValue(object.totalChargeSize) : Long.UZERO
+    };
+  },
+
+  toJSON(message: LocalVirtualGroup): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.globalVirtualGroupId !== undefined && (obj.globalVirtualGroupId = Math.round(message.globalVirtualGroupId));
+    message.storedSize !== undefined && (obj.storedSize = (message.storedSize || Long.UZERO).toString());
+    message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || Long.UZERO).toString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<LocalVirtualGroup>, I>>(object: I): LocalVirtualGroup {
+    const message = createBaseLocalVirtualGroup();
+    message.id = object.id ?? 0;
+    message.globalVirtualGroupId = object.globalVirtualGroupId ?? 0;
+    message.storedSize = object.storedSize !== undefined && object.storedSize !== null ? Long.fromValue(object.storedSize) : Long.UZERO;
+    message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? Long.fromValue(object.totalChargeSize) : Long.UZERO;
+    return message;
+  },
+
+  fromSDK(object: LocalVirtualGroupSDKType): LocalVirtualGroup {
+    return {
+      id: object?.id,
+      globalVirtualGroupId: object?.global_virtual_group_id,
+      storedSize: object?.stored_size,
+      totalChargeSize: object?.total_charge_size
+    };
+  },
+
+  toSDK(message: LocalVirtualGroup): LocalVirtualGroupSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    obj.stored_size = message.storedSize;
+    obj.total_charge_size = message.totalChargeSize;
     return obj;
   }
 

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { StreamAccountStatus, OutFlow, OutFlowSDKType, streamAccountStatusFromJSON, streamAccountStatusToJSON } from "./base";
+import { StreamAccountStatus, streamAccountStatusFromJSON, streamAccountStatusToJSON } from "./stream_record";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Long } from "../../helpers";
 export const protobufPackage = "greenfield.payment";
@@ -67,6 +67,9 @@ export interface EventStreamRecordUpdate {
    */
 
   netflowRate: string;
+  /** The frozen netflow rate, which is used when resuming stream account */
+
+  frozenNetflowRate: string;
   /** The balance of the stream account at the latest CRUD timestamp. */
 
   staticBalance: string;
@@ -85,9 +88,6 @@ export interface EventStreamRecordUpdate {
   /** the unix timestamp when the stream account will be settled */
 
   settleTimestamp: Long;
-  /** the accumulated outflow rates of the stream account */
-
-  outFlows: OutFlow[];
 }
 /** Stream Payment Record of a stream account */
 
@@ -95,12 +95,12 @@ export interface EventStreamRecordUpdateSDKType {
   account: string;
   crud_timestamp: Long;
   netflow_rate: string;
+  frozen_netflow_rate: string;
   static_balance: string;
   buffer_balance: string;
   lock_balance: string;
   status: StreamAccountStatus;
   settle_timestamp: Long;
-  out_flows: OutFlowSDKType[];
 }
 /**
  * EventForceSettle may be emitted on all Msgs and EndBlocker when a payment account's
@@ -280,12 +280,12 @@ function createBaseEventStreamRecordUpdate(): EventStreamRecordUpdate {
     account: "",
     crudTimestamp: Long.ZERO,
     netflowRate: "",
+    frozenNetflowRate: "",
     staticBalance: "",
     bufferBalance: "",
     lockBalance: "",
     status: 0,
-    settleTimestamp: Long.ZERO,
-    outFlows: []
+    settleTimestamp: Long.ZERO
   };
 }
 
@@ -303,28 +303,28 @@ export const EventStreamRecordUpdate = {
       writer.uint32(26).string(message.netflowRate);
     }
 
+    if (message.frozenNetflowRate !== "") {
+      writer.uint32(34).string(message.frozenNetflowRate);
+    }
+
     if (message.staticBalance !== "") {
-      writer.uint32(34).string(message.staticBalance);
+      writer.uint32(42).string(message.staticBalance);
     }
 
     if (message.bufferBalance !== "") {
-      writer.uint32(42).string(message.bufferBalance);
+      writer.uint32(50).string(message.bufferBalance);
     }
 
     if (message.lockBalance !== "") {
-      writer.uint32(50).string(message.lockBalance);
+      writer.uint32(58).string(message.lockBalance);
     }
 
     if (message.status !== 0) {
-      writer.uint32(56).int32(message.status);
+      writer.uint32(64).int32(message.status);
     }
 
     if (!message.settleTimestamp.isZero()) {
-      writer.uint32(64).int64(message.settleTimestamp);
-    }
-
-    for (const v of message.outFlows) {
-      OutFlow.encode(v!, writer.uint32(74).fork()).ldelim();
+      writer.uint32(72).int64(message.settleTimestamp);
     }
 
     return writer;
@@ -352,27 +352,27 @@ export const EventStreamRecordUpdate = {
           break;
 
         case 4:
-          message.staticBalance = reader.string();
+          message.frozenNetflowRate = reader.string();
           break;
 
         case 5:
-          message.bufferBalance = reader.string();
+          message.staticBalance = reader.string();
           break;
 
         case 6:
-          message.lockBalance = reader.string();
+          message.bufferBalance = reader.string();
           break;
 
         case 7:
-          message.status = (reader.int32() as any);
+          message.lockBalance = reader.string();
           break;
 
         case 8:
-          message.settleTimestamp = (reader.int64() as Long);
+          message.status = (reader.int32() as any);
           break;
 
         case 9:
-          message.outFlows.push(OutFlow.decode(reader, reader.uint32()));
+          message.settleTimestamp = (reader.int64() as Long);
           break;
 
         default:
@@ -389,12 +389,12 @@ export const EventStreamRecordUpdate = {
       account: isSet(object.account) ? String(object.account) : "",
       crudTimestamp: isSet(object.crudTimestamp) ? Long.fromValue(object.crudTimestamp) : Long.ZERO,
       netflowRate: isSet(object.netflowRate) ? String(object.netflowRate) : "",
+      frozenNetflowRate: isSet(object.frozenNetflowRate) ? String(object.frozenNetflowRate) : "",
       staticBalance: isSet(object.staticBalance) ? String(object.staticBalance) : "",
       bufferBalance: isSet(object.bufferBalance) ? String(object.bufferBalance) : "",
       lockBalance: isSet(object.lockBalance) ? String(object.lockBalance) : "",
       status: isSet(object.status) ? streamAccountStatusFromJSON(object.status) : 0,
-      settleTimestamp: isSet(object.settleTimestamp) ? Long.fromValue(object.settleTimestamp) : Long.ZERO,
-      outFlows: Array.isArray(object?.outFlows) ? object.outFlows.map((e: any) => OutFlow.fromJSON(e)) : []
+      settleTimestamp: isSet(object.settleTimestamp) ? Long.fromValue(object.settleTimestamp) : Long.ZERO
     };
   },
 
@@ -403,18 +403,12 @@ export const EventStreamRecordUpdate = {
     message.account !== undefined && (obj.account = message.account);
     message.crudTimestamp !== undefined && (obj.crudTimestamp = (message.crudTimestamp || Long.ZERO).toString());
     message.netflowRate !== undefined && (obj.netflowRate = message.netflowRate);
+    message.frozenNetflowRate !== undefined && (obj.frozenNetflowRate = message.frozenNetflowRate);
     message.staticBalance !== undefined && (obj.staticBalance = message.staticBalance);
     message.bufferBalance !== undefined && (obj.bufferBalance = message.bufferBalance);
     message.lockBalance !== undefined && (obj.lockBalance = message.lockBalance);
     message.status !== undefined && (obj.status = streamAccountStatusToJSON(message.status));
     message.settleTimestamp !== undefined && (obj.settleTimestamp = (message.settleTimestamp || Long.ZERO).toString());
-
-    if (message.outFlows) {
-      obj.outFlows = message.outFlows.map(e => e ? OutFlow.toJSON(e) : undefined);
-    } else {
-      obj.outFlows = [];
-    }
-
     return obj;
   },
 
@@ -423,12 +417,12 @@ export const EventStreamRecordUpdate = {
     message.account = object.account ?? "";
     message.crudTimestamp = object.crudTimestamp !== undefined && object.crudTimestamp !== null ? Long.fromValue(object.crudTimestamp) : Long.ZERO;
     message.netflowRate = object.netflowRate ?? "";
+    message.frozenNetflowRate = object.frozenNetflowRate ?? "";
     message.staticBalance = object.staticBalance ?? "";
     message.bufferBalance = object.bufferBalance ?? "";
     message.lockBalance = object.lockBalance ?? "";
     message.status = object.status ?? 0;
     message.settleTimestamp = object.settleTimestamp !== undefined && object.settleTimestamp !== null ? Long.fromValue(object.settleTimestamp) : Long.ZERO;
-    message.outFlows = object.outFlows?.map(e => OutFlow.fromPartial(e)) || [];
     return message;
   },
 
@@ -437,12 +431,12 @@ export const EventStreamRecordUpdate = {
       account: object?.account,
       crudTimestamp: object?.crud_timestamp,
       netflowRate: object?.netflow_rate,
+      frozenNetflowRate: object?.frozen_netflow_rate,
       staticBalance: object?.static_balance,
       bufferBalance: object?.buffer_balance,
       lockBalance: object?.lock_balance,
       status: isSet(object.status) ? streamAccountStatusFromJSON(object.status) : 0,
-      settleTimestamp: object?.settle_timestamp,
-      outFlows: Array.isArray(object?.out_flows) ? object.out_flows.map((e: any) => OutFlow.fromSDK(e)) : []
+      settleTimestamp: object?.settle_timestamp
     };
   },
 
@@ -451,18 +445,12 @@ export const EventStreamRecordUpdate = {
     obj.account = message.account;
     obj.crud_timestamp = message.crudTimestamp;
     obj.netflow_rate = message.netflowRate;
+    obj.frozen_netflow_rate = message.frozenNetflowRate;
     obj.static_balance = message.staticBalance;
     obj.buffer_balance = message.bufferBalance;
     obj.lock_balance = message.lockBalance;
     message.status !== undefined && (obj.status = streamAccountStatusToJSON(message.status));
     obj.settle_timestamp = message.settleTimestamp;
-
-    if (message.outFlows) {
-      obj.out_flows = message.outFlows.map(e => e ? OutFlow.toSDK(e) : undefined);
-    } else {
-      obj.out_flows = [];
-    }
-
     return obj;
   }
 

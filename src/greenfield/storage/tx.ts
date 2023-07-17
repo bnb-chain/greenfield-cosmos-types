@@ -1,5 +1,6 @@
 /* eslint-disable */
-import { VisibilityType, Approval, ApprovalSDKType, RedundancyType, visibilityTypeFromJSON, visibilityTypeToJSON, redundancyTypeFromJSON, redundancyTypeToJSON } from "./common";
+import { VisibilityType, RedundancyType, GVGMapping, GVGMappingSDKType, visibilityTypeFromJSON, visibilityTypeToJSON, redundancyTypeFromJSON, redundancyTypeToJSON } from "./common";
+import { Approval, ApprovalSDKType } from "../common/approval";
 import { UInt64Value, UInt64ValueSDKType } from "../common/wrapper";
 import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "../permission/common";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
@@ -111,9 +112,6 @@ export interface MsgCreateObject {
   /** redundancy_type can be ec or replica */
 
   redundancyType: RedundancyType;
-  /** expect_secondarySPs defines a list of StorageProvider address, which is optional */
-
-  expectSecondarySpAddresses: string[];
 }
 export interface MsgCreateObjectSDKType {
   creator: string;
@@ -125,7 +123,6 @@ export interface MsgCreateObjectSDKType {
   primary_sp_approval?: ApprovalSDKType;
   expect_checksums: Uint8Array[];
   redundancy_type: RedundancyType;
-  expect_secondary_sp_addresses: string[];
 }
 export interface MsgCreateObjectResponse {
   objectId: string;
@@ -142,22 +139,22 @@ export interface MsgSealObject {
   /** object_name defines the name of object to be sealed. */
 
   objectName: string;
-  /** secondary_sp_addresses defines a list of storage provider which store the redundant data. */
+  /** global_virtual_group_id defines the id of global virtual group */
 
-  secondarySpAddresses: string[];
+  globalVirtualGroupId: number;
   /**
-   * secondary_sp_signatures defines the signature of the secondary sp that can
+   * secondary_sp_bls_agg_signatures defines the aggregate bls signature of the secondary sp that can
    * acknowledge that the payload data has received and stored.
    */
 
-  secondarySpSignatures: Uint8Array[];
+  secondarySpBlsAggSignatures: Uint8Array;
 }
 export interface MsgSealObjectSDKType {
   operator: string;
   bucket_name: string;
   object_name: string;
-  secondary_sp_addresses: string[];
-  secondary_sp_signatures: Uint8Array[];
+  global_virtual_group_id: number;
+  secondary_sp_bls_agg_signatures: Uint8Array;
 }
 export interface MsgSealObjectResponse {}
 export interface MsgSealObjectResponseSDKType {}
@@ -323,13 +320,13 @@ export interface MsgUpdateGroupExtra {
   groupName: string;
   /** extra defines extra info for the group to update */
 
-  Extra: string;
+  extra: string;
 }
 export interface MsgUpdateGroupExtraSDKType {
   operator: string;
   group_owner: string;
   group_name: string;
-  Extra: string;
+  extra: string;
 }
 export interface MsgUpdateGroupExtraResponse {}
 export interface MsgUpdateGroupExtraResponseSDKType {}
@@ -540,7 +537,6 @@ export interface MsgUpdateParams {
   authority: string;
   /**
    * params defines the x/storage parameters to update.
-   * 
    * NOTE: All parameters must be supplied.
    */
 
@@ -552,18 +548,77 @@ export interface MsgUpdateParamsSDKType {
   authority: string;
   params?: ParamsSDKType;
 }
-/**
- * MsgUpdateParamsResponse defines the response structure for executing a
- * MsgUpdateParams message.
- */
+/** MsgUpdateParamsResponse defines the response structure for executing a */
 
 export interface MsgUpdateParamsResponse {}
-/**
- * MsgUpdateParamsResponse defines the response structure for executing a
- * MsgUpdateParams message.
- */
+/** MsgUpdateParamsResponse defines the response structure for executing a */
 
 export interface MsgUpdateParamsResponseSDKType {}
+/** this line is used by starport scaffolding # proto/tx/message */
+
+export interface MsgMigrateBucket {
+  /** operator defines the account address of the operator who initial the migrate bucket */
+  operator: string;
+  /** bucket_name defines the name of the bucket that need to be migrated */
+
+  bucketName: string;
+  /** dst_primary_sp_id defines the destination SP for migration */
+
+  dstPrimarySpId: number;
+  /** dst_primary_sp_approval defines the approval of destination sp */
+
+  dstPrimarySpApproval?: Approval;
+}
+/** this line is used by starport scaffolding # proto/tx/message */
+
+export interface MsgMigrateBucketSDKType {
+  operator: string;
+  bucket_name: string;
+  dst_primary_sp_id: number;
+  dst_primary_sp_approval?: ApprovalSDKType;
+}
+export interface MsgMigrateBucketResponse {}
+export interface MsgMigrateBucketResponseSDKType {}
+export interface MsgCompleteMigrateBucket {
+  /**
+   * operator defines the account address of the msg operator.
+   * The CompleteMigrateBucket transaction must be initiated by the destination SP of the migration
+   */
+  operator: string;
+  /** bucket_name defines the name of the bucket that need to be migrated */
+
+  bucketName: string;
+  /** global_virtual_group_family_id defines the family id which the bucket migrate to */
+
+  globalVirtualGroupFamilyId: number;
+  /** gvg_mappings defines the src and dst gvg mapping relationships which the bucket migrate to */
+
+  gvgMappings: GVGMapping[];
+}
+export interface MsgCompleteMigrateBucketSDKType {
+  operator: string;
+  bucket_name: string;
+  global_virtual_group_family_id: number;
+  gvg_mappings: GVGMappingSDKType[];
+}
+export interface MsgCompleteMigrateBucketResponse {}
+export interface MsgCompleteMigrateBucketResponseSDKType {}
+export interface MsgCancelMigrateBucket {
+  /**
+   * operator defines the account address of the msg operator.
+   * Only the user can send this transaction to cancel the migrate bucket
+   */
+  operator: string;
+  /** bucket_name defines the name of the bucket that need to be migrated */
+
+  bucketName: string;
+}
+export interface MsgCancelMigrateBucketSDKType {
+  operator: string;
+  bucket_name: string;
+}
+export interface MsgCancelMigrateBucketResponse {}
+export interface MsgCancelMigrateBucketResponseSDKType {}
 
 function createBaseMsgCreateBucket(): MsgCreateBucket {
   return {
@@ -596,15 +651,15 @@ export const MsgCreateBucket = {
     }
 
     if (message.primarySpAddress !== "") {
-      writer.uint32(50).string(message.primarySpAddress);
+      writer.uint32(42).string(message.primarySpAddress);
     }
 
     if (message.primarySpApproval !== undefined) {
-      Approval.encode(message.primarySpApproval, writer.uint32(58).fork()).ldelim();
+      Approval.encode(message.primarySpApproval, writer.uint32(50).fork()).ldelim();
     }
 
     if (!message.chargedReadQuota.isZero()) {
-      writer.uint32(64).uint64(message.chargedReadQuota);
+      writer.uint32(56).uint64(message.chargedReadQuota);
     }
 
     return writer;
@@ -635,15 +690,15 @@ export const MsgCreateBucket = {
           message.paymentAddress = reader.string();
           break;
 
-        case 6:
+        case 5:
           message.primarySpAddress = reader.string();
           break;
 
-        case 7:
+        case 6:
           message.primarySpApproval = Approval.decode(reader, reader.uint32());
           break;
 
-        case 8:
+        case 7:
           message.chargedReadQuota = (reader.uint64() as Long);
           break;
 
@@ -1081,8 +1136,7 @@ function createBaseMsgCreateObject(): MsgCreateObject {
     contentType: "",
     primarySpApproval: undefined,
     expectChecksums: [],
-    redundancyType: 0,
-    expectSecondarySpAddresses: []
+    redundancyType: 0
   };
 }
 
@@ -1122,10 +1176,6 @@ export const MsgCreateObject = {
 
     if (message.redundancyType !== 0) {
       writer.uint32(72).int32(message.redundancyType);
-    }
-
-    for (const v of message.expectSecondarySpAddresses) {
-      writer.uint32(82).string(v!);
     }
 
     return writer;
@@ -1176,10 +1226,6 @@ export const MsgCreateObject = {
           message.redundancyType = (reader.int32() as any);
           break;
 
-        case 10:
-          message.expectSecondarySpAddresses.push(reader.string());
-          break;
-
         default:
           reader.skipType(tag & 7);
           break;
@@ -1199,8 +1245,7 @@ export const MsgCreateObject = {
       contentType: isSet(object.contentType) ? String(object.contentType) : "",
       primarySpApproval: isSet(object.primarySpApproval) ? Approval.fromJSON(object.primarySpApproval) : undefined,
       expectChecksums: Array.isArray(object?.expectChecksums) ? object.expectChecksums.map((e: any) => bytesFromBase64(e)) : [],
-      redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : 0,
-      expectSecondarySpAddresses: Array.isArray(object?.expectSecondarySpAddresses) ? object.expectSecondarySpAddresses.map((e: any) => String(e)) : []
+      redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : 0
     };
   },
 
@@ -1221,13 +1266,6 @@ export const MsgCreateObject = {
     }
 
     message.redundancyType !== undefined && (obj.redundancyType = redundancyTypeToJSON(message.redundancyType));
-
-    if (message.expectSecondarySpAddresses) {
-      obj.expectSecondarySpAddresses = message.expectSecondarySpAddresses.map(e => e);
-    } else {
-      obj.expectSecondarySpAddresses = [];
-    }
-
     return obj;
   },
 
@@ -1242,7 +1280,6 @@ export const MsgCreateObject = {
     message.primarySpApproval = object.primarySpApproval !== undefined && object.primarySpApproval !== null ? Approval.fromPartial(object.primarySpApproval) : undefined;
     message.expectChecksums = object.expectChecksums?.map(e => e) || [];
     message.redundancyType = object.redundancyType ?? 0;
-    message.expectSecondarySpAddresses = object.expectSecondarySpAddresses?.map(e => e) || [];
     return message;
   },
 
@@ -1256,8 +1293,7 @@ export const MsgCreateObject = {
       contentType: object?.content_type,
       primarySpApproval: object.primary_sp_approval ? Approval.fromSDK(object.primary_sp_approval) : undefined,
       expectChecksums: Array.isArray(object?.expect_checksums) ? object.expect_checksums.map((e: any) => e) : [],
-      redundancyType: isSet(object.redundancy_type) ? redundancyTypeFromJSON(object.redundancy_type) : 0,
-      expectSecondarySpAddresses: Array.isArray(object?.expect_secondary_sp_addresses) ? object.expect_secondary_sp_addresses.map((e: any) => e) : []
+      redundancyType: isSet(object.redundancy_type) ? redundancyTypeFromJSON(object.redundancy_type) : 0
     };
   },
 
@@ -1278,13 +1314,6 @@ export const MsgCreateObject = {
     }
 
     message.redundancyType !== undefined && (obj.redundancy_type = redundancyTypeToJSON(message.redundancyType));
-
-    if (message.expectSecondarySpAddresses) {
-      obj.expect_secondary_sp_addresses = message.expectSecondarySpAddresses.map(e => e);
-    } else {
-      obj.expect_secondary_sp_addresses = [];
-    }
-
     return obj;
   }
 
@@ -1364,8 +1393,8 @@ function createBaseMsgSealObject(): MsgSealObject {
     operator: "",
     bucketName: "",
     objectName: "",
-    secondarySpAddresses: [],
-    secondarySpSignatures: []
+    globalVirtualGroupId: 0,
+    secondarySpBlsAggSignatures: new Uint8Array()
   };
 }
 
@@ -1383,12 +1412,12 @@ export const MsgSealObject = {
       writer.uint32(26).string(message.objectName);
     }
 
-    for (const v of message.secondarySpAddresses) {
-      writer.uint32(34).string(v!);
+    if (message.globalVirtualGroupId !== 0) {
+      writer.uint32(32).uint32(message.globalVirtualGroupId);
     }
 
-    for (const v of message.secondarySpSignatures) {
-      writer.uint32(42).bytes(v!);
+    if (message.secondarySpBlsAggSignatures.length !== 0) {
+      writer.uint32(42).bytes(message.secondarySpBlsAggSignatures);
     }
 
     return writer;
@@ -1416,11 +1445,11 @@ export const MsgSealObject = {
           break;
 
         case 4:
-          message.secondarySpAddresses.push(reader.string());
+          message.globalVirtualGroupId = reader.uint32();
           break;
 
         case 5:
-          message.secondarySpSignatures.push(reader.bytes());
+          message.secondarySpBlsAggSignatures = reader.bytes();
           break;
 
         default:
@@ -1437,8 +1466,8 @@ export const MsgSealObject = {
       operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
-      secondarySpAddresses: Array.isArray(object?.secondarySpAddresses) ? object.secondarySpAddresses.map((e: any) => String(e)) : [],
-      secondarySpSignatures: Array.isArray(object?.secondarySpSignatures) ? object.secondarySpSignatures.map((e: any) => bytesFromBase64(e)) : []
+      globalVirtualGroupId: isSet(object.globalVirtualGroupId) ? Number(object.globalVirtualGroupId) : 0,
+      secondarySpBlsAggSignatures: isSet(object.secondarySpBlsAggSignatures) ? bytesFromBase64(object.secondarySpBlsAggSignatures) : new Uint8Array()
     };
   },
 
@@ -1447,19 +1476,8 @@ export const MsgSealObject = {
     message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
-
-    if (message.secondarySpAddresses) {
-      obj.secondarySpAddresses = message.secondarySpAddresses.map(e => e);
-    } else {
-      obj.secondarySpAddresses = [];
-    }
-
-    if (message.secondarySpSignatures) {
-      obj.secondarySpSignatures = message.secondarySpSignatures.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
-    } else {
-      obj.secondarySpSignatures = [];
-    }
-
+    message.globalVirtualGroupId !== undefined && (obj.globalVirtualGroupId = Math.round(message.globalVirtualGroupId));
+    message.secondarySpBlsAggSignatures !== undefined && (obj.secondarySpBlsAggSignatures = base64FromBytes(message.secondarySpBlsAggSignatures !== undefined ? message.secondarySpBlsAggSignatures : new Uint8Array()));
     return obj;
   },
 
@@ -1468,8 +1486,8 @@ export const MsgSealObject = {
     message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
-    message.secondarySpAddresses = object.secondarySpAddresses?.map(e => e) || [];
-    message.secondarySpSignatures = object.secondarySpSignatures?.map(e => e) || [];
+    message.globalVirtualGroupId = object.globalVirtualGroupId ?? 0;
+    message.secondarySpBlsAggSignatures = object.secondarySpBlsAggSignatures ?? new Uint8Array();
     return message;
   },
 
@@ -1478,8 +1496,8 @@ export const MsgSealObject = {
       operator: object?.operator,
       bucketName: object?.bucket_name,
       objectName: object?.object_name,
-      secondarySpAddresses: Array.isArray(object?.secondary_sp_addresses) ? object.secondary_sp_addresses.map((e: any) => e) : [],
-      secondarySpSignatures: Array.isArray(object?.secondary_sp_signatures) ? object.secondary_sp_signatures.map((e: any) => e) : []
+      globalVirtualGroupId: object?.global_virtual_group_id,
+      secondarySpBlsAggSignatures: object?.secondary_sp_bls_agg_signatures
     };
   },
 
@@ -1488,19 +1506,8 @@ export const MsgSealObject = {
     obj.operator = message.operator;
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
-
-    if (message.secondarySpAddresses) {
-      obj.secondary_sp_addresses = message.secondarySpAddresses.map(e => e);
-    } else {
-      obj.secondary_sp_addresses = [];
-    }
-
-    if (message.secondarySpSignatures) {
-      obj.secondary_sp_signatures = message.secondarySpSignatures.map(e => e);
-    } else {
-      obj.secondary_sp_signatures = [];
-    }
-
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    obj.secondary_sp_bls_agg_signatures = message.secondarySpBlsAggSignatures;
     return obj;
   }
 
@@ -2770,7 +2777,7 @@ function createBaseMsgUpdateGroupExtra(): MsgUpdateGroupExtra {
     operator: "",
     groupOwner: "",
     groupName: "",
-    Extra: ""
+    extra: ""
   };
 }
 
@@ -2788,8 +2795,8 @@ export const MsgUpdateGroupExtra = {
       writer.uint32(26).string(message.groupName);
     }
 
-    if (message.Extra !== "") {
-      writer.uint32(34).string(message.Extra);
+    if (message.extra !== "") {
+      writer.uint32(34).string(message.extra);
     }
 
     return writer;
@@ -2817,7 +2824,7 @@ export const MsgUpdateGroupExtra = {
           break;
 
         case 4:
-          message.Extra = reader.string();
+          message.extra = reader.string();
           break;
 
         default:
@@ -2834,7 +2841,7 @@ export const MsgUpdateGroupExtra = {
       operator: isSet(object.operator) ? String(object.operator) : "",
       groupOwner: isSet(object.groupOwner) ? String(object.groupOwner) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
-      Extra: isSet(object.Extra) ? String(object.Extra) : ""
+      extra: isSet(object.extra) ? String(object.extra) : ""
     };
   },
 
@@ -2843,7 +2850,7 @@ export const MsgUpdateGroupExtra = {
     message.operator !== undefined && (obj.operator = message.operator);
     message.groupOwner !== undefined && (obj.groupOwner = message.groupOwner);
     message.groupName !== undefined && (obj.groupName = message.groupName);
-    message.Extra !== undefined && (obj.Extra = message.Extra);
+    message.extra !== undefined && (obj.extra = message.extra);
     return obj;
   },
 
@@ -2852,7 +2859,7 @@ export const MsgUpdateGroupExtra = {
     message.operator = object.operator ?? "";
     message.groupOwner = object.groupOwner ?? "";
     message.groupName = object.groupName ?? "";
-    message.Extra = object.Extra ?? "";
+    message.extra = object.extra ?? "";
     return message;
   },
 
@@ -2861,7 +2868,7 @@ export const MsgUpdateGroupExtra = {
       operator: object?.operator,
       groupOwner: object?.group_owner,
       groupName: object?.group_name,
-      Extra: object?.Extra
+      extra: object?.extra
     };
   },
 
@@ -2870,7 +2877,7 @@ export const MsgUpdateGroupExtra = {
     obj.operator = message.operator;
     obj.group_owner = message.groupOwner;
     obj.group_name = message.groupName;
-    obj.Extra = message.Extra;
+    obj.extra = message.extra;
     return obj;
   }
 
@@ -4533,6 +4540,479 @@ export const MsgUpdateParamsResponse = {
   }
 
 };
+
+function createBaseMsgMigrateBucket(): MsgMigrateBucket {
+  return {
+    operator: "",
+    bucketName: "",
+    dstPrimarySpId: 0,
+    dstPrimarySpApproval: undefined
+  };
+}
+
+export const MsgMigrateBucket = {
+  encode(message: MsgMigrateBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    if (message.dstPrimarySpId !== 0) {
+      writer.uint32(24).uint32(message.dstPrimarySpId);
+    }
+
+    if (message.dstPrimarySpApproval !== undefined) {
+      Approval.encode(message.dstPrimarySpApproval, writer.uint32(34).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMigrateBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgMigrateBucket();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        case 3:
+          message.dstPrimarySpId = reader.uint32();
+          break;
+
+        case 4:
+          message.dstPrimarySpApproval = Approval.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgMigrateBucket {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      dstPrimarySpId: isSet(object.dstPrimarySpId) ? Number(object.dstPrimarySpId) : 0,
+      dstPrimarySpApproval: isSet(object.dstPrimarySpApproval) ? Approval.fromJSON(object.dstPrimarySpApproval) : undefined
+    };
+  },
+
+  toJSON(message: MsgMigrateBucket): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.dstPrimarySpId !== undefined && (obj.dstPrimarySpId = Math.round(message.dstPrimarySpId));
+    message.dstPrimarySpApproval !== undefined && (obj.dstPrimarySpApproval = message.dstPrimarySpApproval ? Approval.toJSON(message.dstPrimarySpApproval) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgMigrateBucket>, I>>(object: I): MsgMigrateBucket {
+    const message = createBaseMsgMigrateBucket();
+    message.operator = object.operator ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.dstPrimarySpId = object.dstPrimarySpId ?? 0;
+    message.dstPrimarySpApproval = object.dstPrimarySpApproval !== undefined && object.dstPrimarySpApproval !== null ? Approval.fromPartial(object.dstPrimarySpApproval) : undefined;
+    return message;
+  },
+
+  fromSDK(object: MsgMigrateBucketSDKType): MsgMigrateBucket {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      dstPrimarySpId: object?.dst_primary_sp_id,
+      dstPrimarySpApproval: object.dst_primary_sp_approval ? Approval.fromSDK(object.dst_primary_sp_approval) : undefined
+    };
+  },
+
+  toSDK(message: MsgMigrateBucket): MsgMigrateBucketSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.dst_primary_sp_id = message.dstPrimarySpId;
+    message.dstPrimarySpApproval !== undefined && (obj.dst_primary_sp_approval = message.dstPrimarySpApproval ? Approval.toSDK(message.dstPrimarySpApproval) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseMsgMigrateBucketResponse(): MsgMigrateBucketResponse {
+  return {};
+}
+
+export const MsgMigrateBucketResponse = {
+  encode(_: MsgMigrateBucketResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMigrateBucketResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgMigrateBucketResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgMigrateBucketResponse {
+    return {};
+  },
+
+  toJSON(_: MsgMigrateBucketResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgMigrateBucketResponse>, I>>(_: I): MsgMigrateBucketResponse {
+    const message = createBaseMsgMigrateBucketResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgMigrateBucketResponseSDKType): MsgMigrateBucketResponse {
+    return {};
+  },
+
+  toSDK(_: MsgMigrateBucketResponse): MsgMigrateBucketResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
+
+function createBaseMsgCompleteMigrateBucket(): MsgCompleteMigrateBucket {
+  return {
+    operator: "",
+    bucketName: "",
+    globalVirtualGroupFamilyId: 0,
+    gvgMappings: []
+  };
+}
+
+export const MsgCompleteMigrateBucket = {
+  encode(message: MsgCompleteMigrateBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(24).uint32(message.globalVirtualGroupFamilyId);
+    }
+
+    for (const v of message.gvgMappings) {
+      GVGMapping.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCompleteMigrateBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCompleteMigrateBucket();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        case 3:
+          message.globalVirtualGroupFamilyId = reader.uint32();
+          break;
+
+        case 4:
+          message.gvgMappings.push(GVGMapping.decode(reader, reader.uint32()));
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgCompleteMigrateBucket {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
+      gvgMappings: Array.isArray(object?.gvgMappings) ? object.gvgMappings.map((e: any) => GVGMapping.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: MsgCompleteMigrateBucket): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
+
+    if (message.gvgMappings) {
+      obj.gvgMappings = message.gvgMappings.map(e => e ? GVGMapping.toJSON(e) : undefined);
+    } else {
+      obj.gvgMappings = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCompleteMigrateBucket>, I>>(object: I): MsgCompleteMigrateBucket {
+    const message = createBaseMsgCompleteMigrateBucket();
+    message.operator = object.operator ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
+    message.gvgMappings = object.gvgMappings?.map(e => GVGMapping.fromPartial(e)) || [];
+    return message;
+  },
+
+  fromSDK(object: MsgCompleteMigrateBucketSDKType): MsgCompleteMigrateBucket {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
+      gvgMappings: Array.isArray(object?.gvg_mappings) ? object.gvg_mappings.map((e: any) => GVGMapping.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: MsgCompleteMigrateBucket): MsgCompleteMigrateBucketSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+
+    if (message.gvgMappings) {
+      obj.gvg_mappings = message.gvgMappings.map(e => e ? GVGMapping.toSDK(e) : undefined);
+    } else {
+      obj.gvg_mappings = [];
+    }
+
+    return obj;
+  }
+
+};
+
+function createBaseMsgCompleteMigrateBucketResponse(): MsgCompleteMigrateBucketResponse {
+  return {};
+}
+
+export const MsgCompleteMigrateBucketResponse = {
+  encode(_: MsgCompleteMigrateBucketResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCompleteMigrateBucketResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCompleteMigrateBucketResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgCompleteMigrateBucketResponse {
+    return {};
+  },
+
+  toJSON(_: MsgCompleteMigrateBucketResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCompleteMigrateBucketResponse>, I>>(_: I): MsgCompleteMigrateBucketResponse {
+    const message = createBaseMsgCompleteMigrateBucketResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgCompleteMigrateBucketResponseSDKType): MsgCompleteMigrateBucketResponse {
+    return {};
+  },
+
+  toSDK(_: MsgCompleteMigrateBucketResponse): MsgCompleteMigrateBucketResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
+
+function createBaseMsgCancelMigrateBucket(): MsgCancelMigrateBucket {
+  return {
+    operator: "",
+    bucketName: ""
+  };
+}
+
+export const MsgCancelMigrateBucket = {
+  encode(message: MsgCancelMigrateBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelMigrateBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCancelMigrateBucket();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgCancelMigrateBucket {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : ""
+    };
+  },
+
+  toJSON(message: MsgCancelMigrateBucket): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCancelMigrateBucket>, I>>(object: I): MsgCancelMigrateBucket {
+    const message = createBaseMsgCancelMigrateBucket();
+    message.operator = object.operator ?? "";
+    message.bucketName = object.bucketName ?? "";
+    return message;
+  },
+
+  fromSDK(object: MsgCancelMigrateBucketSDKType): MsgCancelMigrateBucket {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name
+    };
+  },
+
+  toSDK(message: MsgCancelMigrateBucket): MsgCancelMigrateBucketSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    return obj;
+  }
+
+};
+
+function createBaseMsgCancelMigrateBucketResponse(): MsgCancelMigrateBucketResponse {
+  return {};
+}
+
+export const MsgCancelMigrateBucketResponse = {
+  encode(_: MsgCancelMigrateBucketResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelMigrateBucketResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCancelMigrateBucketResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgCancelMigrateBucketResponse {
+    return {};
+  },
+
+  toJSON(_: MsgCancelMigrateBucketResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgCancelMigrateBucketResponse>, I>>(_: I): MsgCancelMigrateBucketResponse {
+    const message = createBaseMsgCancelMigrateBucketResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgCancelMigrateBucketResponseSDKType): MsgCancelMigrateBucketResponse {
+    return {};
+  },
+
+  toSDK(_: MsgCancelMigrateBucketResponse): MsgCancelMigrateBucketResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
 /** Msg defines the Msg service. */
 
 export interface Msg {
@@ -4565,14 +5045,14 @@ export interface Msg {
 
   PutPolicy(request: MsgPutPolicy): Promise<MsgPutPolicyResponse>;
   DeletePolicy(request: MsgDeletePolicy): Promise<MsgDeletePolicyResponse>;
-  /**
-   * UpdateParams defines a governance operation for updating the x/storage module parameters.
-   * The authority is defined in the keeper.
-   * 
-   * Since: cosmos-sdk 0.47
-   */
+  /** Since: cosmos-sdk 0.47 */
 
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+
+  MigrateBucket(request: MsgMigrateBucket): Promise<MsgMigrateBucketResponse>;
+  CompleteMigrateBucket(request: MsgCompleteMigrateBucket): Promise<MsgCompleteMigrateBucketResponse>;
+  CancelMigrateBucket(request: MsgCancelMigrateBucket): Promise<MsgCancelMigrateBucketResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -4602,6 +5082,9 @@ export class MsgClientImpl implements Msg {
     this.PutPolicy = this.PutPolicy.bind(this);
     this.DeletePolicy = this.DeletePolicy.bind(this);
     this.UpdateParams = this.UpdateParams.bind(this);
+    this.MigrateBucket = this.MigrateBucket.bind(this);
+    this.CompleteMigrateBucket = this.CompleteMigrateBucket.bind(this);
+    this.CancelMigrateBucket = this.CancelMigrateBucket.bind(this);
   }
 
   CreateBucket(request: MsgCreateBucket): Promise<MsgCreateBucketResponse> {
@@ -4740,6 +5223,24 @@ export class MsgClientImpl implements Msg {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Msg", "UpdateParams", data);
     return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
+  }
+
+  MigrateBucket(request: MsgMigrateBucket): Promise<MsgMigrateBucketResponse> {
+    const data = MsgMigrateBucket.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Msg", "MigrateBucket", data);
+    return promise.then(data => MsgMigrateBucketResponse.decode(new _m0.Reader(data)));
+  }
+
+  CompleteMigrateBucket(request: MsgCompleteMigrateBucket): Promise<MsgCompleteMigrateBucketResponse> {
+    const data = MsgCompleteMigrateBucket.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Msg", "CompleteMigrateBucket", data);
+    return promise.then(data => MsgCompleteMigrateBucketResponse.decode(new _m0.Reader(data)));
+  }
+
+  CancelMigrateBucket(request: MsgCancelMigrateBucket): Promise<MsgCancelMigrateBucketResponse> {
+    const data = MsgCancelMigrateBucket.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Msg", "CancelMigrateBucket", data);
+    return promise.then(data => MsgCancelMigrateBucketResponse.decode(new _m0.Reader(data)));
   }
 
 }

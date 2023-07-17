@@ -16,6 +16,9 @@ export interface EventStartChallenge {
   segmentIndex: number;
   /** The storage provider to be challenged. */
 
+  spId: number;
+  /** The storage provider to be challenged. */
+
   spOperatorAddress: string;
   /** The redundancy index, which comes from the index of storage providers. */
 
@@ -33,6 +36,7 @@ export interface EventStartChallengeSDKType {
   challenge_id: Long;
   object_id: string;
   segment_index: number;
+  sp_id: number;
   sp_operator_address: string;
   redundancy_index: number;
   challenger_address: string;
@@ -48,7 +52,7 @@ export interface EventAttestChallenge {
   result: VoteResult;
   /** The slashed storage provider address. */
 
-  spOperatorAddress: string;
+  spId: number;
   /** The slashed amount from the storage provider. */
 
   slashAmount: string;
@@ -73,7 +77,7 @@ export interface EventAttestChallenge {
 export interface EventAttestChallengeSDKType {
   challenge_id: Long;
   result: VoteResult;
-  sp_operator_address: string;
+  sp_id: number;
   slash_amount: string;
   challenger_address: string;
   challenger_reward_amount: string;
@@ -87,6 +91,7 @@ function createBaseEventStartChallenge(): EventStartChallenge {
     challengeId: Long.UZERO,
     objectId: "",
     segmentIndex: 0,
+    spId: 0,
     spOperatorAddress: "",
     redundancyIndex: 0,
     challengerAddress: "",
@@ -108,20 +113,24 @@ export const EventStartChallenge = {
       writer.uint32(24).uint32(message.segmentIndex);
     }
 
+    if (message.spId !== 0) {
+      writer.uint32(32).uint32(message.spId);
+    }
+
     if (message.spOperatorAddress !== "") {
-      writer.uint32(34).string(message.spOperatorAddress);
+      writer.uint32(42).string(message.spOperatorAddress);
     }
 
     if (message.redundancyIndex !== 0) {
-      writer.uint32(40).int32(message.redundancyIndex);
+      writer.uint32(48).int32(message.redundancyIndex);
     }
 
     if (message.challengerAddress !== "") {
-      writer.uint32(50).string(message.challengerAddress);
+      writer.uint32(58).string(message.challengerAddress);
     }
 
     if (!message.expiredHeight.isZero()) {
-      writer.uint32(56).uint64(message.expiredHeight);
+      writer.uint32(64).uint64(message.expiredHeight);
     }
 
     return writer;
@@ -149,18 +158,22 @@ export const EventStartChallenge = {
           break;
 
         case 4:
-          message.spOperatorAddress = reader.string();
+          message.spId = reader.uint32();
           break;
 
         case 5:
-          message.redundancyIndex = reader.int32();
+          message.spOperatorAddress = reader.string();
           break;
 
         case 6:
-          message.challengerAddress = reader.string();
+          message.redundancyIndex = reader.int32();
           break;
 
         case 7:
+          message.challengerAddress = reader.string();
+          break;
+
+        case 8:
           message.expiredHeight = (reader.uint64() as Long);
           break;
 
@@ -178,6 +191,7 @@ export const EventStartChallenge = {
       challengeId: isSet(object.challengeId) ? Long.fromValue(object.challengeId) : Long.UZERO,
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
       segmentIndex: isSet(object.segmentIndex) ? Number(object.segmentIndex) : 0,
+      spId: isSet(object.spId) ? Number(object.spId) : 0,
       spOperatorAddress: isSet(object.spOperatorAddress) ? String(object.spOperatorAddress) : "",
       redundancyIndex: isSet(object.redundancyIndex) ? Number(object.redundancyIndex) : 0,
       challengerAddress: isSet(object.challengerAddress) ? String(object.challengerAddress) : "",
@@ -190,6 +204,7 @@ export const EventStartChallenge = {
     message.challengeId !== undefined && (obj.challengeId = (message.challengeId || Long.UZERO).toString());
     message.objectId !== undefined && (obj.objectId = message.objectId);
     message.segmentIndex !== undefined && (obj.segmentIndex = Math.round(message.segmentIndex));
+    message.spId !== undefined && (obj.spId = Math.round(message.spId));
     message.spOperatorAddress !== undefined && (obj.spOperatorAddress = message.spOperatorAddress);
     message.redundancyIndex !== undefined && (obj.redundancyIndex = Math.round(message.redundancyIndex));
     message.challengerAddress !== undefined && (obj.challengerAddress = message.challengerAddress);
@@ -202,6 +217,7 @@ export const EventStartChallenge = {
     message.challengeId = object.challengeId !== undefined && object.challengeId !== null ? Long.fromValue(object.challengeId) : Long.UZERO;
     message.objectId = object.objectId ?? "";
     message.segmentIndex = object.segmentIndex ?? 0;
+    message.spId = object.spId ?? 0;
     message.spOperatorAddress = object.spOperatorAddress ?? "";
     message.redundancyIndex = object.redundancyIndex ?? 0;
     message.challengerAddress = object.challengerAddress ?? "";
@@ -214,6 +230,7 @@ export const EventStartChallenge = {
       challengeId: object?.challenge_id,
       objectId: object?.object_id,
       segmentIndex: object?.segment_index,
+      spId: object?.sp_id,
       spOperatorAddress: object?.sp_operator_address,
       redundancyIndex: object?.redundancy_index,
       challengerAddress: object?.challenger_address,
@@ -226,6 +243,7 @@ export const EventStartChallenge = {
     obj.challenge_id = message.challengeId;
     obj.object_id = message.objectId;
     obj.segment_index = message.segmentIndex;
+    obj.sp_id = message.spId;
     obj.sp_operator_address = message.spOperatorAddress;
     obj.redundancy_index = message.redundancyIndex;
     obj.challenger_address = message.challengerAddress;
@@ -239,7 +257,7 @@ function createBaseEventAttestChallenge(): EventAttestChallenge {
   return {
     challengeId: Long.UZERO,
     result: 0,
-    spOperatorAddress: "",
+    spId: 0,
     slashAmount: "",
     challengerAddress: "",
     challengerRewardAmount: "",
@@ -259,8 +277,8 @@ export const EventAttestChallenge = {
       writer.uint32(16).int32(message.result);
     }
 
-    if (message.spOperatorAddress !== "") {
-      writer.uint32(26).string(message.spOperatorAddress);
+    if (message.spId !== 0) {
+      writer.uint32(24).uint32(message.spId);
     }
 
     if (message.slashAmount !== "") {
@@ -308,7 +326,7 @@ export const EventAttestChallenge = {
           break;
 
         case 3:
-          message.spOperatorAddress = reader.string();
+          message.spId = reader.uint32();
           break;
 
         case 4:
@@ -348,7 +366,7 @@ export const EventAttestChallenge = {
     return {
       challengeId: isSet(object.challengeId) ? Long.fromValue(object.challengeId) : Long.UZERO,
       result: isSet(object.result) ? voteResultFromJSON(object.result) : 0,
-      spOperatorAddress: isSet(object.spOperatorAddress) ? String(object.spOperatorAddress) : "",
+      spId: isSet(object.spId) ? Number(object.spId) : 0,
       slashAmount: isSet(object.slashAmount) ? String(object.slashAmount) : "",
       challengerAddress: isSet(object.challengerAddress) ? String(object.challengerAddress) : "",
       challengerRewardAmount: isSet(object.challengerRewardAmount) ? String(object.challengerRewardAmount) : "",
@@ -362,7 +380,7 @@ export const EventAttestChallenge = {
     const obj: any = {};
     message.challengeId !== undefined && (obj.challengeId = (message.challengeId || Long.UZERO).toString());
     message.result !== undefined && (obj.result = voteResultToJSON(message.result));
-    message.spOperatorAddress !== undefined && (obj.spOperatorAddress = message.spOperatorAddress);
+    message.spId !== undefined && (obj.spId = Math.round(message.spId));
     message.slashAmount !== undefined && (obj.slashAmount = message.slashAmount);
     message.challengerAddress !== undefined && (obj.challengerAddress = message.challengerAddress);
     message.challengerRewardAmount !== undefined && (obj.challengerRewardAmount = message.challengerRewardAmount);
@@ -376,7 +394,7 @@ export const EventAttestChallenge = {
     const message = createBaseEventAttestChallenge();
     message.challengeId = object.challengeId !== undefined && object.challengeId !== null ? Long.fromValue(object.challengeId) : Long.UZERO;
     message.result = object.result ?? 0;
-    message.spOperatorAddress = object.spOperatorAddress ?? "";
+    message.spId = object.spId ?? 0;
     message.slashAmount = object.slashAmount ?? "";
     message.challengerAddress = object.challengerAddress ?? "";
     message.challengerRewardAmount = object.challengerRewardAmount ?? "";
@@ -390,7 +408,7 @@ export const EventAttestChallenge = {
     return {
       challengeId: object?.challenge_id,
       result: isSet(object.result) ? voteResultFromJSON(object.result) : 0,
-      spOperatorAddress: object?.sp_operator_address,
+      spId: object?.sp_id,
       slashAmount: object?.slash_amount,
       challengerAddress: object?.challenger_address,
       challengerRewardAmount: object?.challenger_reward_amount,
@@ -404,7 +422,7 @@ export const EventAttestChallenge = {
     const obj: any = {};
     obj.challenge_id = message.challengeId;
     message.result !== undefined && (obj.result = voteResultToJSON(message.result));
-    obj.sp_operator_address = message.spOperatorAddress;
+    obj.sp_id = message.spId;
     obj.slash_amount = message.slashAmount;
     obj.challenger_address = message.challengerAddress;
     obj.challenger_reward_amount = message.challengerRewardAmount;

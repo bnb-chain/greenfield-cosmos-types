@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
+import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, GVGMapping, GVGMappingSDKType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { DeleteInfo, DeleteInfoSDKType } from "./types";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
@@ -30,9 +30,12 @@ export interface EventCreateBucket {
   /** payment_address is the address of the payment account */
 
   paymentAddress: string;
-  /** primary_sp_address is the operator address of the primary sp. */
+  /** primary_sp_id is the unique id of primary sp. */
 
-  primarySpAddress: string;
+  primarySpId: number;
+  /** global_virtual_group_family_id defines the unique id of gvg family */
+
+  globalVirtualGroupFamilyId: number;
   /** status define the status of the bucket. */
 
   status: BucketStatus;
@@ -48,7 +51,8 @@ export interface EventCreateBucketSDKType {
   source_type: SourceType;
   charged_read_quota: Long;
   payment_address: string;
-  primary_sp_address: string;
+  primary_sp_id: number;
+  global_virtual_group_family_id: number;
   status: BucketStatus;
 }
 /** EventDeleteBucket is emitted on MsgDeleteBucket */
@@ -65,9 +69,9 @@ export interface EventDeleteBucket {
   /** bucket_id define an u256 id for bucket */
 
   bucketId: string;
-  /** primary_sp_address define the account address of primary sp */
+  /** primary_sp_id is the unique id of primary sp. */
 
-  primarySpAddress: string;
+  primarySpId: number;
 }
 /** EventDeleteBucket is emitted on MsgDeleteBucket */
 
@@ -76,7 +80,7 @@ export interface EventDeleteBucketSDKType {
   owner: string;
   bucket_name: string;
   bucket_id: string;
-  primary_sp_address: string;
+  primary_sp_id: number;
 }
 /** EventUpdateBucketInfo is emitted on MsgUpdateBucketInfo */
 
@@ -160,9 +164,9 @@ export interface EventCreateObject {
   /** object_id define an u256 id for object */
 
   objectId: string;
-  /** primary_sp_address define the account address of primary sp */
+  /** primary_sp_id define the unique id of primary sp */
 
-  primarySpAddress: string;
+  primarySpId: number;
   /** payload_size define the size of payload data which you want upload */
 
   payloadSize: Long;
@@ -197,7 +201,7 @@ export interface EventCreateObjectSDKType {
   object_name: string;
   bucket_id: string;
   object_id: string;
-  primary_sp_address: string;
+  primary_sp_id: number;
   payload_size: Long;
   visibility: VisibilityType;
   content_type: string;
@@ -207,7 +211,7 @@ export interface EventCreateObjectSDKType {
   source_type: SourceType;
   checksums: Uint8Array[];
 }
-/** EventSealObject is emitted on MsgSealObject */
+/** EventCancelCreateObject is emitted on MsgCancelCreateObject */
 
 export interface EventCancelCreateObject {
   /** operator define the account address of operator who cancel create object */
@@ -218,20 +222,20 @@ export interface EventCancelCreateObject {
   /** object_name define the name of the object */
 
   objectName: string;
-  /** primary_sp_address define the operator account address of the sp */
+  /** primary_sp_id define the unique id of primary sp */
 
-  primarySpAddress: string;
+  primarySpId: number;
   /** id define an u256 id for object */
 
   objectId: string;
 }
-/** EventSealObject is emitted on MsgSealObject */
+/** EventCancelCreateObject is emitted on MsgCancelCreateObject */
 
 export interface EventCancelCreateObjectSDKType {
   operator: string;
   bucket_name: string;
   object_name: string;
-  primary_sp_address: string;
+  primary_sp_id: number;
   object_id: string;
 }
 /** EventSealObject is emitted on MsgSealObject */
@@ -251,9 +255,12 @@ export interface EventSealObject {
   /** status define the status of the object. INIT or IN_SERVICE or others */
 
   status: ObjectStatus;
-  /** secondary_sp_address define all the operator address of the secondary sps */
+  /** global_virtual_group_id defines the unique id of gvg which the object stored */
 
-  secondarySpAddresses: string[];
+  globalVirtualGroupId: number;
+  /** local_virtual_group_id defines the unique id of lvg which the object stored */
+
+  localVirtualGroupId: number;
 }
 /** EventSealObject is emitted on MsgSealObject */
 
@@ -263,7 +270,8 @@ export interface EventSealObjectSDKType {
   object_name: string;
   object_id: string;
   status: ObjectStatus;
-  secondary_sp_addresses: string[];
+  global_virtual_group_id: number;
+  local_virtual_group_id: number;
 }
 /** EventCopyObject is emitted on MsgCopyObject */
 
@@ -314,12 +322,9 @@ export interface EventDeleteObject {
   /** id define an u256 id for object */
 
   objectId: string;
-  /** primary_sp_address define the operator account address of the sp */
+  /** local_virtual_group_id defines the unique id of lvg which the object stored */
 
-  primarySpAddress: string;
-  /** secondary_sp_address define all the operator address of the secondary sps */
-
-  secondarySpAddresses: string[];
+  localVirtualGroupId: number;
 }
 /** EventDeleteObject is emitted on MsgDeleteObject */
 
@@ -328,8 +333,7 @@ export interface EventDeleteObjectSDKType {
   bucket_name: string;
   object_name: string;
   object_id: string;
-  primary_sp_address: string;
-  secondary_sp_addresses: string[];
+  local_virtual_group_id: number;
 }
 /** EventRejectSealObject is emitted on MsgRejectSealObject */
 
@@ -546,6 +550,9 @@ export interface EventMirrorBucket {
   /** bucket_id define an u256 id for bucket */
 
   bucketId: string;
+  /** chain id of the destination chain */
+
+  destChainId: number;
 }
 /** EventMirrorBucket is emitted on MirrorBucket */
 
@@ -553,6 +560,7 @@ export interface EventMirrorBucketSDKType {
   operator: string;
   bucket_name: string;
   bucket_id: string;
+  dest_chain_id: number;
 }
 /** EventMirrorBucketResult is emitted on receiving ack package from destination chain */
 
@@ -565,6 +573,9 @@ export interface EventMirrorBucketResult {
   /** bucket_id define an u256 id for bucket */
 
   bucketId: string;
+  /** chain id of the destination chain */
+
+  destChainId: number;
 }
 /** EventMirrorBucketResult is emitted on receiving ack package from destination chain */
 
@@ -572,6 +583,7 @@ export interface EventMirrorBucketResultSDKType {
   status: number;
   bucket_name: string;
   bucket_id: string;
+  dest_chain_id: number;
 }
 /** EventMirrorObject is emitted on MirrorObject */
 
@@ -587,6 +599,9 @@ export interface EventMirrorObject {
   /** object_id define an u256 id for object */
 
   objectId: string;
+  /** chain id of the destination chain */
+
+  destChainId: number;
 }
 /** EventMirrorObject is emitted on MirrorObject */
 
@@ -595,6 +610,7 @@ export interface EventMirrorObjectSDKType {
   bucket_name: string;
   object_name: string;
   object_id: string;
+  dest_chain_id: number;
 }
 /** EventMirrorObjectResult is emitted on receiving ack package from destination chain */
 
@@ -610,6 +626,9 @@ export interface EventMirrorObjectResult {
   /** object_id define an u256 id for object */
 
   objectId: string;
+  /** chain id of the destination chain */
+
+  destChainId: number;
 }
 /** EventMirrorObjectResult is emitted on receiving ack package from destination chain */
 
@@ -618,6 +637,7 @@ export interface EventMirrorObjectResultSDKType {
   bucket_name: string;
   object_name: string;
   object_id: string;
+  dest_chain_id: number;
 }
 /** EventMirrorGroup is emitted on MirrorGroup */
 
@@ -630,6 +650,9 @@ export interface EventMirrorGroup {
   /** group_id define an u256 id for group */
 
   groupId: string;
+  /** chain id of the destination chain */
+
+  destChainId: number;
 }
 /** EventMirrorGroup is emitted on MirrorGroup */
 
@@ -637,6 +660,7 @@ export interface EventMirrorGroupSDKType {
   owner: string;
   group_name: string;
   group_id: string;
+  dest_chain_id: number;
 }
 /** EventMirrorGroupResult is emitted on receiving ack package from destination chain */
 
@@ -649,6 +673,9 @@ export interface EventMirrorGroupResult {
   /** group_id define an u256 id for group */
 
   groupId: string;
+  /** chain id of the destination chain */
+
+  destChainId: number;
 }
 /** EventMirrorGroupResult is emitted on receiving ack package from destination chain */
 
@@ -656,6 +683,7 @@ export interface EventMirrorGroupResultSDKType {
   status: number;
   group_name: string;
   group_id: string;
+  dest_chain_id: number;
 }
 /** EventStalePolicyCleanup is emitted when specified block height's stale policies need to be Garbage collected */
 
@@ -669,6 +697,72 @@ export interface EventStalePolicyCleanupSDKType {
   blockNum: Long;
   delete_info?: DeleteInfoSDKType;
 }
+export interface EventMigrationBucket {
+  /**
+   * The address of the operator that initiated the bucket migration,
+   * usually the owner of the bucket or another account which has permission to operate
+   */
+  operator: string;
+  /** The name of the bucket to be migrated */
+
+  bucketName: string;
+  /** bucket_id define an u256 id for object */
+
+  bucketId: string;
+  /** The id of the destination primary sp */
+
+  dstPrimarySpId: number;
+}
+export interface EventMigrationBucketSDKType {
+  operator: string;
+  bucket_name: string;
+  bucket_id: string;
+  dst_primary_sp_id: number;
+}
+export interface EventCancelMigrationBucket {
+  /**
+   * The address of the operator that canceled the bucket migration,
+   * usually the owner of the bucket or another account which has permission to operate
+   */
+  operator: string;
+  /** The name of the bucket to be migrated */
+
+  bucketName: string;
+  /** bucket_id define an u256 id for object */
+
+  bucketId: string;
+}
+export interface EventCancelMigrationBucketSDKType {
+  operator: string;
+  bucket_name: string;
+  bucket_id: string;
+}
+export interface EventCompleteMigrationBucket {
+  /**
+   * The address of the operator that initiated the bucket migration,
+   * usually the owner of the bucket or another account which has permission to operate
+   */
+  operator: string;
+  /** The name of the bucket to be migrated */
+
+  bucketName: string;
+  /** bucket_id define an u256 id for object */
+
+  bucketId: string;
+  /** The family id that the bucket to be migrated to */
+
+  globalVirtualGroupFamilyId: number;
+  /** The src and dst gvg mapping */
+
+  gvgMappings: GVGMapping[];
+}
+export interface EventCompleteMigrationBucketSDKType {
+  operator: string;
+  bucket_name: string;
+  bucket_id: string;
+  global_virtual_group_family_id: number;
+  gvg_mappings: GVGMappingSDKType[];
+}
 
 function createBaseEventCreateBucket(): EventCreateBucket {
   return {
@@ -680,7 +774,8 @@ function createBaseEventCreateBucket(): EventCreateBucket {
     sourceType: 0,
     chargedReadQuota: Long.UZERO,
     paymentAddress: "",
-    primarySpAddress: "",
+    primarySpId: 0,
+    globalVirtualGroupFamilyId: 0,
     status: 0
   };
 }
@@ -719,12 +814,16 @@ export const EventCreateBucket = {
       writer.uint32(66).string(message.paymentAddress);
     }
 
-    if (message.primarySpAddress !== "") {
-      writer.uint32(74).string(message.primarySpAddress);
+    if (message.primarySpId !== 0) {
+      writer.uint32(72).uint32(message.primarySpId);
+    }
+
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(80).uint32(message.globalVirtualGroupFamilyId);
     }
 
     if (message.status !== 0) {
-      writer.uint32(80).int32(message.status);
+      writer.uint32(88).int32(message.status);
     }
 
     return writer;
@@ -772,10 +871,14 @@ export const EventCreateBucket = {
           break;
 
         case 9:
-          message.primarySpAddress = reader.string();
+          message.primarySpId = reader.uint32();
           break;
 
         case 10:
+          message.globalVirtualGroupFamilyId = reader.uint32();
+          break;
+
+        case 11:
           message.status = (reader.int32() as any);
           break;
 
@@ -798,7 +901,8 @@ export const EventCreateBucket = {
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
       chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
-      primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
+      primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0,
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
       status: isSet(object.status) ? bucketStatusFromJSON(object.status) : 0
     };
   },
@@ -813,7 +917,8 @@ export const EventCreateBucket = {
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
     message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
-    message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
+    message.primarySpId !== undefined && (obj.primarySpId = Math.round(message.primarySpId));
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
     message.status !== undefined && (obj.status = bucketStatusToJSON(message.status));
     return obj;
   },
@@ -828,7 +933,8 @@ export const EventCreateBucket = {
     message.sourceType = object.sourceType ?? 0;
     message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
     message.paymentAddress = object.paymentAddress ?? "";
-    message.primarySpAddress = object.primarySpAddress ?? "";
+    message.primarySpId = object.primarySpId ?? 0;
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
     message.status = object.status ?? 0;
     return message;
   },
@@ -843,7 +949,8 @@ export const EventCreateBucket = {
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
       chargedReadQuota: object?.charged_read_quota,
       paymentAddress: object?.payment_address,
-      primarySpAddress: object?.primary_sp_address,
+      primarySpId: object?.primary_sp_id,
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
       status: isSet(object.status) ? bucketStatusFromJSON(object.status) : 0
     };
   },
@@ -858,7 +965,8 @@ export const EventCreateBucket = {
     message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
     obj.charged_read_quota = message.chargedReadQuota;
     obj.payment_address = message.paymentAddress;
-    obj.primary_sp_address = message.primarySpAddress;
+    obj.primary_sp_id = message.primarySpId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
     message.status !== undefined && (obj.status = bucketStatusToJSON(message.status));
     return obj;
   }
@@ -871,7 +979,7 @@ function createBaseEventDeleteBucket(): EventDeleteBucket {
     owner: "",
     bucketName: "",
     bucketId: "",
-    primarySpAddress: ""
+    primarySpId: 0
   };
 }
 
@@ -893,8 +1001,8 @@ export const EventDeleteBucket = {
       writer.uint32(34).string(message.bucketId);
     }
 
-    if (message.primarySpAddress !== "") {
-      writer.uint32(42).string(message.primarySpAddress);
+    if (message.primarySpId !== 0) {
+      writer.uint32(40).uint32(message.primarySpId);
     }
 
     return writer;
@@ -926,7 +1034,7 @@ export const EventDeleteBucket = {
           break;
 
         case 5:
-          message.primarySpAddress = reader.string();
+          message.primarySpId = reader.uint32();
           break;
 
         default:
@@ -944,7 +1052,7 @@ export const EventDeleteBucket = {
       owner: isSet(object.owner) ? String(object.owner) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
-      primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : ""
+      primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0
     };
   },
 
@@ -954,7 +1062,7 @@ export const EventDeleteBucket = {
     message.owner !== undefined && (obj.owner = message.owner);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
-    message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
+    message.primarySpId !== undefined && (obj.primarySpId = Math.round(message.primarySpId));
     return obj;
   },
 
@@ -964,7 +1072,7 @@ export const EventDeleteBucket = {
     message.owner = object.owner ?? "";
     message.bucketName = object.bucketName ?? "";
     message.bucketId = object.bucketId ?? "";
-    message.primarySpAddress = object.primarySpAddress ?? "";
+    message.primarySpId = object.primarySpId ?? 0;
     return message;
   },
 
@@ -974,7 +1082,7 @@ export const EventDeleteBucket = {
       owner: object?.owner,
       bucketName: object?.bucket_name,
       bucketId: object?.bucket_id,
-      primarySpAddress: object?.primary_sp_address
+      primarySpId: object?.primary_sp_id
     };
   },
 
@@ -984,7 +1092,7 @@ export const EventDeleteBucket = {
     obj.owner = message.owner;
     obj.bucket_name = message.bucketName;
     obj.bucket_id = message.bucketId;
-    obj.primary_sp_address = message.primarySpAddress;
+    obj.primary_sp_id = message.primarySpId;
     return obj;
   }
 
@@ -1276,7 +1384,7 @@ function createBaseEventCreateObject(): EventCreateObject {
     objectName: "",
     bucketId: "",
     objectId: "",
-    primarySpAddress: "",
+    primarySpId: 0,
     payloadSize: Long.UZERO,
     visibility: 0,
     contentType: "",
@@ -1314,8 +1422,8 @@ export const EventCreateObject = {
       writer.uint32(58).string(message.objectId);
     }
 
-    if (message.primarySpAddress !== "") {
-      writer.uint32(66).string(message.primarySpAddress);
+    if (message.primarySpId !== 0) {
+      writer.uint32(64).uint32(message.primarySpId);
     }
 
     if (!message.payloadSize.isZero()) {
@@ -1387,7 +1495,7 @@ export const EventCreateObject = {
           break;
 
         case 8:
-          message.primarySpAddress = reader.string();
+          message.primarySpId = reader.uint32();
           break;
 
         case 9:
@@ -1439,7 +1547,7 @@ export const EventCreateObject = {
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
-      primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
+      primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0,
       payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO,
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       contentType: isSet(object.contentType) ? String(object.contentType) : "",
@@ -1459,7 +1567,7 @@ export const EventCreateObject = {
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     message.objectId !== undefined && (obj.objectId = message.objectId);
-    message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
+    message.primarySpId !== undefined && (obj.primarySpId = Math.round(message.primarySpId));
     message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.contentType !== undefined && (obj.contentType = message.contentType);
@@ -1485,7 +1593,7 @@ export const EventCreateObject = {
     message.objectName = object.objectName ?? "";
     message.bucketId = object.bucketId ?? "";
     message.objectId = object.objectId ?? "";
-    message.primarySpAddress = object.primarySpAddress ?? "";
+    message.primarySpId = object.primarySpId ?? 0;
     message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
     message.visibility = object.visibility ?? 0;
     message.contentType = object.contentType ?? "";
@@ -1505,7 +1613,7 @@ export const EventCreateObject = {
       objectName: object?.object_name,
       bucketId: object?.bucket_id,
       objectId: object?.object_id,
-      primarySpAddress: object?.primary_sp_address,
+      primarySpId: object?.primary_sp_id,
       payloadSize: object?.payload_size,
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       contentType: object?.content_type,
@@ -1525,7 +1633,7 @@ export const EventCreateObject = {
     obj.object_name = message.objectName;
     obj.bucket_id = message.bucketId;
     obj.object_id = message.objectId;
-    obj.primary_sp_address = message.primarySpAddress;
+    obj.primary_sp_id = message.primarySpId;
     obj.payload_size = message.payloadSize;
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     obj.content_type = message.contentType;
@@ -1550,7 +1658,7 @@ function createBaseEventCancelCreateObject(): EventCancelCreateObject {
     operator: "",
     bucketName: "",
     objectName: "",
-    primarySpAddress: "",
+    primarySpId: 0,
     objectId: ""
   };
 }
@@ -1569,8 +1677,8 @@ export const EventCancelCreateObject = {
       writer.uint32(26).string(message.objectName);
     }
 
-    if (message.primarySpAddress !== "") {
-      writer.uint32(34).string(message.primarySpAddress);
+    if (message.primarySpId !== 0) {
+      writer.uint32(32).uint32(message.primarySpId);
     }
 
     if (message.objectId !== "") {
@@ -1602,7 +1710,7 @@ export const EventCancelCreateObject = {
           break;
 
         case 4:
-          message.primarySpAddress = reader.string();
+          message.primarySpId = reader.uint32();
           break;
 
         case 6:
@@ -1623,7 +1731,7 @@ export const EventCancelCreateObject = {
       operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
-      primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
+      primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0,
       objectId: isSet(object.objectId) ? String(object.objectId) : ""
     };
   },
@@ -1633,7 +1741,7 @@ export const EventCancelCreateObject = {
     message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
-    message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
+    message.primarySpId !== undefined && (obj.primarySpId = Math.round(message.primarySpId));
     message.objectId !== undefined && (obj.objectId = message.objectId);
     return obj;
   },
@@ -1643,7 +1751,7 @@ export const EventCancelCreateObject = {
     message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
-    message.primarySpAddress = object.primarySpAddress ?? "";
+    message.primarySpId = object.primarySpId ?? 0;
     message.objectId = object.objectId ?? "";
     return message;
   },
@@ -1653,7 +1761,7 @@ export const EventCancelCreateObject = {
       operator: object?.operator,
       bucketName: object?.bucket_name,
       objectName: object?.object_name,
-      primarySpAddress: object?.primary_sp_address,
+      primarySpId: object?.primary_sp_id,
       objectId: object?.object_id
     };
   },
@@ -1663,7 +1771,7 @@ export const EventCancelCreateObject = {
     obj.operator = message.operator;
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
-    obj.primary_sp_address = message.primarySpAddress;
+    obj.primary_sp_id = message.primarySpId;
     obj.object_id = message.objectId;
     return obj;
   }
@@ -1677,7 +1785,8 @@ function createBaseEventSealObject(): EventSealObject {
     objectName: "",
     objectId: "",
     status: 0,
-    secondarySpAddresses: []
+    globalVirtualGroupId: 0,
+    localVirtualGroupId: 0
   };
 }
 
@@ -1703,8 +1812,12 @@ export const EventSealObject = {
       writer.uint32(48).int32(message.status);
     }
 
-    for (const v of message.secondarySpAddresses) {
-      writer.uint32(58).string(v!);
+    if (message.globalVirtualGroupId !== 0) {
+      writer.uint32(56).uint32(message.globalVirtualGroupId);
+    }
+
+    if (message.localVirtualGroupId !== 0) {
+      writer.uint32(64).uint32(message.localVirtualGroupId);
     }
 
     return writer;
@@ -1740,7 +1853,11 @@ export const EventSealObject = {
           break;
 
         case 7:
-          message.secondarySpAddresses.push(reader.string());
+          message.globalVirtualGroupId = reader.uint32();
+          break;
+
+        case 8:
+          message.localVirtualGroupId = reader.uint32();
           break;
 
         default:
@@ -1759,7 +1876,8 @@ export const EventSealObject = {
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
       status: isSet(object.status) ? objectStatusFromJSON(object.status) : 0,
-      secondarySpAddresses: Array.isArray(object?.secondarySpAddresses) ? object.secondarySpAddresses.map((e: any) => String(e)) : []
+      globalVirtualGroupId: isSet(object.globalVirtualGroupId) ? Number(object.globalVirtualGroupId) : 0,
+      localVirtualGroupId: isSet(object.localVirtualGroupId) ? Number(object.localVirtualGroupId) : 0
     };
   },
 
@@ -1770,13 +1888,8 @@ export const EventSealObject = {
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.objectId !== undefined && (obj.objectId = message.objectId);
     message.status !== undefined && (obj.status = objectStatusToJSON(message.status));
-
-    if (message.secondarySpAddresses) {
-      obj.secondarySpAddresses = message.secondarySpAddresses.map(e => e);
-    } else {
-      obj.secondarySpAddresses = [];
-    }
-
+    message.globalVirtualGroupId !== undefined && (obj.globalVirtualGroupId = Math.round(message.globalVirtualGroupId));
+    message.localVirtualGroupId !== undefined && (obj.localVirtualGroupId = Math.round(message.localVirtualGroupId));
     return obj;
   },
 
@@ -1787,7 +1900,8 @@ export const EventSealObject = {
     message.objectName = object.objectName ?? "";
     message.objectId = object.objectId ?? "";
     message.status = object.status ?? 0;
-    message.secondarySpAddresses = object.secondarySpAddresses?.map(e => e) || [];
+    message.globalVirtualGroupId = object.globalVirtualGroupId ?? 0;
+    message.localVirtualGroupId = object.localVirtualGroupId ?? 0;
     return message;
   },
 
@@ -1798,7 +1912,8 @@ export const EventSealObject = {
       objectName: object?.object_name,
       objectId: object?.object_id,
       status: isSet(object.status) ? objectStatusFromJSON(object.status) : 0,
-      secondarySpAddresses: Array.isArray(object?.secondary_sp_addresses) ? object.secondary_sp_addresses.map((e: any) => e) : []
+      globalVirtualGroupId: object?.global_virtual_group_id,
+      localVirtualGroupId: object?.local_virtual_group_id
     };
   },
 
@@ -1809,13 +1924,8 @@ export const EventSealObject = {
     obj.object_name = message.objectName;
     obj.object_id = message.objectId;
     message.status !== undefined && (obj.status = objectStatusToJSON(message.status));
-
-    if (message.secondarySpAddresses) {
-      obj.secondary_sp_addresses = message.secondarySpAddresses.map(e => e);
-    } else {
-      obj.secondary_sp_addresses = [];
-    }
-
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    obj.local_virtual_group_id = message.localVirtualGroupId;
     return obj;
   }
 
@@ -1980,8 +2090,7 @@ function createBaseEventDeleteObject(): EventDeleteObject {
     bucketName: "",
     objectName: "",
     objectId: "",
-    primarySpAddress: "",
-    secondarySpAddresses: []
+    localVirtualGroupId: 0
   };
 }
 
@@ -2003,12 +2112,8 @@ export const EventDeleteObject = {
       writer.uint32(34).string(message.objectId);
     }
 
-    if (message.primarySpAddress !== "") {
-      writer.uint32(42).string(message.primarySpAddress);
-    }
-
-    for (const v of message.secondarySpAddresses) {
-      writer.uint32(50).string(v!);
+    if (message.localVirtualGroupId !== 0) {
+      writer.uint32(40).uint32(message.localVirtualGroupId);
     }
 
     return writer;
@@ -2040,11 +2145,7 @@ export const EventDeleteObject = {
           break;
 
         case 5:
-          message.primarySpAddress = reader.string();
-          break;
-
-        case 6:
-          message.secondarySpAddresses.push(reader.string());
+          message.localVirtualGroupId = reader.uint32();
           break;
 
         default:
@@ -2062,8 +2163,7 @@ export const EventDeleteObject = {
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
-      primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
-      secondarySpAddresses: Array.isArray(object?.secondarySpAddresses) ? object.secondarySpAddresses.map((e: any) => String(e)) : []
+      localVirtualGroupId: isSet(object.localVirtualGroupId) ? Number(object.localVirtualGroupId) : 0
     };
   },
 
@@ -2073,14 +2173,7 @@ export const EventDeleteObject = {
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.objectId !== undefined && (obj.objectId = message.objectId);
-    message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
-
-    if (message.secondarySpAddresses) {
-      obj.secondarySpAddresses = message.secondarySpAddresses.map(e => e);
-    } else {
-      obj.secondarySpAddresses = [];
-    }
-
+    message.localVirtualGroupId !== undefined && (obj.localVirtualGroupId = Math.round(message.localVirtualGroupId));
     return obj;
   },
 
@@ -2090,8 +2183,7 @@ export const EventDeleteObject = {
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     message.objectId = object.objectId ?? "";
-    message.primarySpAddress = object.primarySpAddress ?? "";
-    message.secondarySpAddresses = object.secondarySpAddresses?.map(e => e) || [];
+    message.localVirtualGroupId = object.localVirtualGroupId ?? 0;
     return message;
   },
 
@@ -2101,8 +2193,7 @@ export const EventDeleteObject = {
       bucketName: object?.bucket_name,
       objectName: object?.object_name,
       objectId: object?.object_id,
-      primarySpAddress: object?.primary_sp_address,
-      secondarySpAddresses: Array.isArray(object?.secondary_sp_addresses) ? object.secondary_sp_addresses.map((e: any) => e) : []
+      localVirtualGroupId: object?.local_virtual_group_id
     };
   },
 
@@ -2112,14 +2203,7 @@ export const EventDeleteObject = {
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
     obj.object_id = message.objectId;
-    obj.primary_sp_address = message.primarySpAddress;
-
-    if (message.secondarySpAddresses) {
-      obj.secondary_sp_addresses = message.secondarySpAddresses.map(e => e);
-    } else {
-      obj.secondary_sp_addresses = [];
-    }
-
+    obj.local_virtual_group_id = message.localVirtualGroupId;
     return obj;
   }
 
@@ -3121,7 +3205,8 @@ function createBaseEventMirrorBucket(): EventMirrorBucket {
   return {
     operator: "",
     bucketName: "",
-    bucketId: ""
+    bucketId: "",
+    destChainId: 0
   };
 }
 
@@ -3137,6 +3222,10 @@ export const EventMirrorBucket = {
 
     if (message.bucketId !== "") {
       writer.uint32(34).string(message.bucketId);
+    }
+
+    if (message.destChainId !== 0) {
+      writer.uint32(40).uint32(message.destChainId);
     }
 
     return writer;
@@ -3163,6 +3252,10 @@ export const EventMirrorBucket = {
           message.bucketId = reader.string();
           break;
 
+        case 5:
+          message.destChainId = reader.uint32();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -3176,7 +3269,8 @@ export const EventMirrorBucket = {
     return {
       operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
-      bucketId: isSet(object.bucketId) ? String(object.bucketId) : ""
+      bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
+      destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0
     };
   },
 
@@ -3185,6 +3279,7 @@ export const EventMirrorBucket = {
     message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
     return obj;
   },
 
@@ -3193,6 +3288,7 @@ export const EventMirrorBucket = {
     message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.bucketId = object.bucketId ?? "";
+    message.destChainId = object.destChainId ?? 0;
     return message;
   },
 
@@ -3200,7 +3296,8 @@ export const EventMirrorBucket = {
     return {
       operator: object?.operator,
       bucketName: object?.bucket_name,
-      bucketId: object?.bucket_id
+      bucketId: object?.bucket_id,
+      destChainId: object?.dest_chain_id
     };
   },
 
@@ -3209,6 +3306,7 @@ export const EventMirrorBucket = {
     obj.operator = message.operator;
     obj.bucket_name = message.bucketName;
     obj.bucket_id = message.bucketId;
+    obj.dest_chain_id = message.destChainId;
     return obj;
   }
 
@@ -3218,7 +3316,8 @@ function createBaseEventMirrorBucketResult(): EventMirrorBucketResult {
   return {
     status: 0,
     bucketName: "",
-    bucketId: ""
+    bucketId: "",
+    destChainId: 0
   };
 }
 
@@ -3234,6 +3333,10 @@ export const EventMirrorBucketResult = {
 
     if (message.bucketId !== "") {
       writer.uint32(34).string(message.bucketId);
+    }
+
+    if (message.destChainId !== 0) {
+      writer.uint32(40).uint32(message.destChainId);
     }
 
     return writer;
@@ -3260,6 +3363,10 @@ export const EventMirrorBucketResult = {
           message.bucketId = reader.string();
           break;
 
+        case 5:
+          message.destChainId = reader.uint32();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -3273,7 +3380,8 @@ export const EventMirrorBucketResult = {
     return {
       status: isSet(object.status) ? Number(object.status) : 0,
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
-      bucketId: isSet(object.bucketId) ? String(object.bucketId) : ""
+      bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
+      destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0
     };
   },
 
@@ -3282,6 +3390,7 @@ export const EventMirrorBucketResult = {
     message.status !== undefined && (obj.status = Math.round(message.status));
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
     return obj;
   },
 
@@ -3290,6 +3399,7 @@ export const EventMirrorBucketResult = {
     message.status = object.status ?? 0;
     message.bucketName = object.bucketName ?? "";
     message.bucketId = object.bucketId ?? "";
+    message.destChainId = object.destChainId ?? 0;
     return message;
   },
 
@@ -3297,7 +3407,8 @@ export const EventMirrorBucketResult = {
     return {
       status: object?.status,
       bucketName: object?.bucket_name,
-      bucketId: object?.bucket_id
+      bucketId: object?.bucket_id,
+      destChainId: object?.dest_chain_id
     };
   },
 
@@ -3306,6 +3417,7 @@ export const EventMirrorBucketResult = {
     obj.status = message.status;
     obj.bucket_name = message.bucketName;
     obj.bucket_id = message.bucketId;
+    obj.dest_chain_id = message.destChainId;
     return obj;
   }
 
@@ -3316,7 +3428,8 @@ function createBaseEventMirrorObject(): EventMirrorObject {
     operator: "",
     bucketName: "",
     objectName: "",
-    objectId: ""
+    objectId: "",
+    destChainId: 0
   };
 }
 
@@ -3336,6 +3449,10 @@ export const EventMirrorObject = {
 
     if (message.objectId !== "") {
       writer.uint32(34).string(message.objectId);
+    }
+
+    if (message.destChainId !== 0) {
+      writer.uint32(40).uint32(message.destChainId);
     }
 
     return writer;
@@ -3366,6 +3483,10 @@ export const EventMirrorObject = {
           message.objectId = reader.string();
           break;
 
+        case 5:
+          message.destChainId = reader.uint32();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -3380,7 +3501,8 @@ export const EventMirrorObject = {
       operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
-      objectId: isSet(object.objectId) ? String(object.objectId) : ""
+      objectId: isSet(object.objectId) ? String(object.objectId) : "",
+      destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0
     };
   },
 
@@ -3390,6 +3512,7 @@ export const EventMirrorObject = {
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.objectId !== undefined && (obj.objectId = message.objectId);
+    message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
     return obj;
   },
 
@@ -3399,6 +3522,7 @@ export const EventMirrorObject = {
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     message.objectId = object.objectId ?? "";
+    message.destChainId = object.destChainId ?? 0;
     return message;
   },
 
@@ -3407,7 +3531,8 @@ export const EventMirrorObject = {
       operator: object?.operator,
       bucketName: object?.bucket_name,
       objectName: object?.object_name,
-      objectId: object?.object_id
+      objectId: object?.object_id,
+      destChainId: object?.dest_chain_id
     };
   },
 
@@ -3417,6 +3542,7 @@ export const EventMirrorObject = {
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
     obj.object_id = message.objectId;
+    obj.dest_chain_id = message.destChainId;
     return obj;
   }
 
@@ -3427,7 +3553,8 @@ function createBaseEventMirrorObjectResult(): EventMirrorObjectResult {
     status: 0,
     bucketName: "",
     objectName: "",
-    objectId: ""
+    objectId: "",
+    destChainId: 0
   };
 }
 
@@ -3447,6 +3574,10 @@ export const EventMirrorObjectResult = {
 
     if (message.objectId !== "") {
       writer.uint32(34).string(message.objectId);
+    }
+
+    if (message.destChainId !== 0) {
+      writer.uint32(40).uint32(message.destChainId);
     }
 
     return writer;
@@ -3477,6 +3608,10 @@ export const EventMirrorObjectResult = {
           message.objectId = reader.string();
           break;
 
+        case 5:
+          message.destChainId = reader.uint32();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -3491,7 +3626,8 @@ export const EventMirrorObjectResult = {
       status: isSet(object.status) ? Number(object.status) : 0,
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
-      objectId: isSet(object.objectId) ? String(object.objectId) : ""
+      objectId: isSet(object.objectId) ? String(object.objectId) : "",
+      destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0
     };
   },
 
@@ -3501,6 +3637,7 @@ export const EventMirrorObjectResult = {
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.objectId !== undefined && (obj.objectId = message.objectId);
+    message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
     return obj;
   },
 
@@ -3510,6 +3647,7 @@ export const EventMirrorObjectResult = {
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     message.objectId = object.objectId ?? "";
+    message.destChainId = object.destChainId ?? 0;
     return message;
   },
 
@@ -3518,7 +3656,8 @@ export const EventMirrorObjectResult = {
       status: object?.status,
       bucketName: object?.bucket_name,
       objectName: object?.object_name,
-      objectId: object?.object_id
+      objectId: object?.object_id,
+      destChainId: object?.dest_chain_id
     };
   },
 
@@ -3528,6 +3667,7 @@ export const EventMirrorObjectResult = {
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
     obj.object_id = message.objectId;
+    obj.dest_chain_id = message.destChainId;
     return obj;
   }
 
@@ -3537,7 +3677,8 @@ function createBaseEventMirrorGroup(): EventMirrorGroup {
   return {
     owner: "",
     groupName: "",
-    groupId: ""
+    groupId: "",
+    destChainId: 0
   };
 }
 
@@ -3553,6 +3694,10 @@ export const EventMirrorGroup = {
 
     if (message.groupId !== "") {
       writer.uint32(26).string(message.groupId);
+    }
+
+    if (message.destChainId !== 0) {
+      writer.uint32(32).uint32(message.destChainId);
     }
 
     return writer;
@@ -3579,6 +3724,10 @@ export const EventMirrorGroup = {
           message.groupId = reader.string();
           break;
 
+        case 4:
+          message.destChainId = reader.uint32();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -3592,7 +3741,8 @@ export const EventMirrorGroup = {
     return {
       owner: isSet(object.owner) ? String(object.owner) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
-      groupId: isSet(object.groupId) ? String(object.groupId) : ""
+      groupId: isSet(object.groupId) ? String(object.groupId) : "",
+      destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0
     };
   },
 
@@ -3601,6 +3751,7 @@ export const EventMirrorGroup = {
     message.owner !== undefined && (obj.owner = message.owner);
     message.groupName !== undefined && (obj.groupName = message.groupName);
     message.groupId !== undefined && (obj.groupId = message.groupId);
+    message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
     return obj;
   },
 
@@ -3609,6 +3760,7 @@ export const EventMirrorGroup = {
     message.owner = object.owner ?? "";
     message.groupName = object.groupName ?? "";
     message.groupId = object.groupId ?? "";
+    message.destChainId = object.destChainId ?? 0;
     return message;
   },
 
@@ -3616,7 +3768,8 @@ export const EventMirrorGroup = {
     return {
       owner: object?.owner,
       groupName: object?.group_name,
-      groupId: object?.group_id
+      groupId: object?.group_id,
+      destChainId: object?.dest_chain_id
     };
   },
 
@@ -3625,6 +3778,7 @@ export const EventMirrorGroup = {
     obj.owner = message.owner;
     obj.group_name = message.groupName;
     obj.group_id = message.groupId;
+    obj.dest_chain_id = message.destChainId;
     return obj;
   }
 
@@ -3634,7 +3788,8 @@ function createBaseEventMirrorGroupResult(): EventMirrorGroupResult {
   return {
     status: 0,
     groupName: "",
-    groupId: ""
+    groupId: "",
+    destChainId: 0
   };
 }
 
@@ -3650,6 +3805,10 @@ export const EventMirrorGroupResult = {
 
     if (message.groupId !== "") {
       writer.uint32(26).string(message.groupId);
+    }
+
+    if (message.destChainId !== 0) {
+      writer.uint32(32).uint32(message.destChainId);
     }
 
     return writer;
@@ -3676,6 +3835,10 @@ export const EventMirrorGroupResult = {
           message.groupId = reader.string();
           break;
 
+        case 4:
+          message.destChainId = reader.uint32();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -3689,7 +3852,8 @@ export const EventMirrorGroupResult = {
     return {
       status: isSet(object.status) ? Number(object.status) : 0,
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
-      groupId: isSet(object.groupId) ? String(object.groupId) : ""
+      groupId: isSet(object.groupId) ? String(object.groupId) : "",
+      destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0
     };
   },
 
@@ -3698,6 +3862,7 @@ export const EventMirrorGroupResult = {
     message.status !== undefined && (obj.status = Math.round(message.status));
     message.groupName !== undefined && (obj.groupName = message.groupName);
     message.groupId !== undefined && (obj.groupId = message.groupId);
+    message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
     return obj;
   },
 
@@ -3706,6 +3871,7 @@ export const EventMirrorGroupResult = {
     message.status = object.status ?? 0;
     message.groupName = object.groupName ?? "";
     message.groupId = object.groupId ?? "";
+    message.destChainId = object.destChainId ?? 0;
     return message;
   },
 
@@ -3713,7 +3879,8 @@ export const EventMirrorGroupResult = {
     return {
       status: object?.status,
       groupName: object?.group_name,
-      groupId: object?.group_id
+      groupId: object?.group_id,
+      destChainId: object?.dest_chain_id
     };
   },
 
@@ -3722,6 +3889,7 @@ export const EventMirrorGroupResult = {
     obj.status = message.status;
     obj.group_name = message.groupName;
     obj.group_id = message.groupId;
+    obj.dest_chain_id = message.destChainId;
     return obj;
   }
 
@@ -3805,6 +3973,351 @@ export const EventStalePolicyCleanup = {
     const obj: any = {};
     obj.blockNum = message.blockNum;
     message.deleteInfo !== undefined && (obj.delete_info = message.deleteInfo ? DeleteInfo.toSDK(message.deleteInfo) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseEventMigrationBucket(): EventMigrationBucket {
+  return {
+    operator: "",
+    bucketName: "",
+    bucketId: "",
+    dstPrimarySpId: 0
+  };
+}
+
+export const EventMigrationBucket = {
+  encode(message: EventMigrationBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    if (message.bucketId !== "") {
+      writer.uint32(26).string(message.bucketId);
+    }
+
+    if (message.dstPrimarySpId !== 0) {
+      writer.uint32(32).uint32(message.dstPrimarySpId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventMigrationBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventMigrationBucket();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        case 3:
+          message.bucketId = reader.string();
+          break;
+
+        case 4:
+          message.dstPrimarySpId = reader.uint32();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventMigrationBucket {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
+      dstPrimarySpId: isSet(object.dstPrimarySpId) ? Number(object.dstPrimarySpId) : 0
+    };
+  },
+
+  toJSON(message: EventMigrationBucket): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    message.dstPrimarySpId !== undefined && (obj.dstPrimarySpId = Math.round(message.dstPrimarySpId));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventMigrationBucket>, I>>(object: I): EventMigrationBucket {
+    const message = createBaseEventMigrationBucket();
+    message.operator = object.operator ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.bucketId = object.bucketId ?? "";
+    message.dstPrimarySpId = object.dstPrimarySpId ?? 0;
+    return message;
+  },
+
+  fromSDK(object: EventMigrationBucketSDKType): EventMigrationBucket {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      bucketId: object?.bucket_id,
+      dstPrimarySpId: object?.dst_primary_sp_id
+    };
+  },
+
+  toSDK(message: EventMigrationBucket): EventMigrationBucketSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.bucket_id = message.bucketId;
+    obj.dst_primary_sp_id = message.dstPrimarySpId;
+    return obj;
+  }
+
+};
+
+function createBaseEventCancelMigrationBucket(): EventCancelMigrationBucket {
+  return {
+    operator: "",
+    bucketName: "",
+    bucketId: ""
+  };
+}
+
+export const EventCancelMigrationBucket = {
+  encode(message: EventCancelMigrationBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    if (message.bucketId !== "") {
+      writer.uint32(26).string(message.bucketId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCancelMigrationBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventCancelMigrationBucket();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        case 3:
+          message.bucketId = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventCancelMigrationBucket {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      bucketId: isSet(object.bucketId) ? String(object.bucketId) : ""
+    };
+  },
+
+  toJSON(message: EventCancelMigrationBucket): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventCancelMigrationBucket>, I>>(object: I): EventCancelMigrationBucket {
+    const message = createBaseEventCancelMigrationBucket();
+    message.operator = object.operator ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.bucketId = object.bucketId ?? "";
+    return message;
+  },
+
+  fromSDK(object: EventCancelMigrationBucketSDKType): EventCancelMigrationBucket {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      bucketId: object?.bucket_id
+    };
+  },
+
+  toSDK(message: EventCancelMigrationBucket): EventCancelMigrationBucketSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.bucket_id = message.bucketId;
+    return obj;
+  }
+
+};
+
+function createBaseEventCompleteMigrationBucket(): EventCompleteMigrationBucket {
+  return {
+    operator: "",
+    bucketName: "",
+    bucketId: "",
+    globalVirtualGroupFamilyId: 0,
+    gvgMappings: []
+  };
+}
+
+export const EventCompleteMigrationBucket = {
+  encode(message: EventCompleteMigrationBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.bucketName !== "") {
+      writer.uint32(18).string(message.bucketName);
+    }
+
+    if (message.bucketId !== "") {
+      writer.uint32(26).string(message.bucketId);
+    }
+
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(32).uint32(message.globalVirtualGroupFamilyId);
+    }
+
+    for (const v of message.gvgMappings) {
+      GVGMapping.encode(v!, writer.uint32(42).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCompleteMigrationBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventCompleteMigrationBucket();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.bucketName = reader.string();
+          break;
+
+        case 3:
+          message.bucketId = reader.string();
+          break;
+
+        case 4:
+          message.globalVirtualGroupFamilyId = reader.uint32();
+          break;
+
+        case 5:
+          message.gvgMappings.push(GVGMapping.decode(reader, reader.uint32()));
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventCompleteMigrationBucket {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
+      gvgMappings: Array.isArray(object?.gvgMappings) ? object.gvgMappings.map((e: any) => GVGMapping.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: EventCompleteMigrationBucket): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
+
+    if (message.gvgMappings) {
+      obj.gvgMappings = message.gvgMappings.map(e => e ? GVGMapping.toJSON(e) : undefined);
+    } else {
+      obj.gvgMappings = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventCompleteMigrationBucket>, I>>(object: I): EventCompleteMigrationBucket {
+    const message = createBaseEventCompleteMigrationBucket();
+    message.operator = object.operator ?? "";
+    message.bucketName = object.bucketName ?? "";
+    message.bucketId = object.bucketId ?? "";
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
+    message.gvgMappings = object.gvgMappings?.map(e => GVGMapping.fromPartial(e)) || [];
+    return message;
+  },
+
+  fromSDK(object: EventCompleteMigrationBucketSDKType): EventCompleteMigrationBucket {
+    return {
+      operator: object?.operator,
+      bucketName: object?.bucket_name,
+      bucketId: object?.bucket_id,
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
+      gvgMappings: Array.isArray(object?.gvg_mappings) ? object.gvg_mappings.map((e: any) => GVGMapping.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: EventCompleteMigrationBucket): EventCompleteMigrationBucketSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.bucket_id = message.bucketId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+
+    if (message.gvgMappings) {
+      obj.gvg_mappings = message.gvgMappings.map(e => e ? GVGMapping.toSDK(e) : undefined);
+    } else {
+      obj.gvg_mappings = [];
+    }
+
     return obj;
   }
 

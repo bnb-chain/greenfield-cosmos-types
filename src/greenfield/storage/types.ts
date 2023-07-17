@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
+import { VisibilityType, SourceType, BucketStatus, LocalVirtualGroup, LocalVirtualGroupSDKType, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.storage";
@@ -25,11 +25,14 @@ export interface BucketInfo {
 
   paymentAddress: string;
   /**
-   * primary_sp_address is the address of the primary sp. Objects belongs to this bucket will never
+   * primary_sp_id is the unique id of the primary sp. Objects belongs to this bucket will never
    * leave this SP, unless you explicitly shift them to another SP.
    */
 
-  primarySpAddress: string;
+  primarySpId: number;
+  /** global_virtual_group_family_id defines the unique id of gvg family */
+
+  globalVirtualGroupFamilyId: number;
   /**
    * charged_read_quota defines the traffic quota for read in bytes per month.
    * The available read data for each user is the sum of the free read data provided by SP and
@@ -37,9 +40,6 @@ export interface BucketInfo {
    */
 
   chargedReadQuota: Long;
-  /** billing info of the bucket */
-
-  billingInfo?: BillingInfo;
   /** bucket_status define the status of the bucket. */
 
   bucketStatus: BucketStatus;
@@ -52,47 +52,36 @@ export interface BucketInfoSDKType {
   source_type: SourceType;
   create_at: Long;
   payment_address: string;
-  primary_sp_address: string;
+  primary_sp_id: number;
+  global_virtual_group_family_id: number;
   charged_read_quota: Long;
-  billing_info?: BillingInfoSDKType;
   bucket_status: BucketStatus;
 }
-/** BillingInfo is the billing information of the bucket */
-
-export interface BillingInfo {
+export interface InternalBucketInfo {
   /** the time of the payment price, used to calculate the charge rate of the bucket */
   priceTime: Long;
   /** the total size of the objects in the bucket, used to calculate the charge rate of the bucket */
 
   totalChargeSize: Long;
-  /** secondary sp objects size statistics */
+  /** local_virtual_groups contains all the lvg of this bucket. */
 
-  secondarySpObjectsSize: SecondarySpObjectsSize[];
+  localVirtualGroups: LocalVirtualGroup[];
+  /** next_local_virtual_group_id store the next id used by local virtual group */
+
+  nextLocalVirtualGroupId: number;
 }
-/** BillingInfo is the billing information of the bucket */
-
-export interface BillingInfoSDKType {
+export interface InternalBucketInfoSDKType {
   price_time: Long;
   total_charge_size: Long;
-  secondary_sp_objects_size: SecondarySpObjectsSizeSDKType[];
-}
-/** secondary sp objects size statistics */
-
-export interface SecondarySpObjectsSize {
-  /** address is the address of the secondary sp */
-  spAddress: string;
-  /** size is the total size of the objects in the secondary sp */
-
-  totalChargeSize: Long;
-}
-/** secondary sp objects size statistics */
-
-export interface SecondarySpObjectsSizeSDKType {
-  sp_address: string;
-  total_charge_size: Long;
+  local_virtual_groups: LocalVirtualGroupSDKType[];
+  next_local_virtual_group_id: number;
 }
 export interface ObjectInfo {
+  /** owner is the object owner */
   owner: string;
+  /** creator is the address of the uploader, it always be same as owner address */
+
+  creator: string;
   /** bucket_name is the name of the bucket */
 
   bucketName: string;
@@ -102,6 +91,7 @@ export interface ObjectInfo {
   /** id is the unique identifier of object */
 
   id: string;
+  localVirtualGroupId: number;
   /** payloadSize is the total size of the object payload */
 
   payloadSize: Long;
@@ -129,15 +119,14 @@ export interface ObjectInfo {
    */
 
   checksums: Uint8Array[];
-  /** secondary_sp_addresses define the addresses of secondary_sps */
-
-  secondarySpAddresses: string[];
 }
 export interface ObjectInfoSDKType {
   owner: string;
+  creator: string;
   bucket_name: string;
   object_name: string;
   id: string;
+  local_virtual_group_id: number;
   payload_size: Long;
   visibility: VisibilityType;
   content_type: string;
@@ -146,7 +135,6 @@ export interface ObjectInfoSDKType {
   redundancy_type: RedundancyType;
   source_type: SourceType;
   checksums: Uint8Array[];
-  secondary_sp_addresses: string[];
 }
 export interface GroupInfo {
   /** owner is the owner of the group. It can not changed once it created. */
@@ -265,6 +253,20 @@ export interface DeleteInfoSDKType {
   object_ids?: IdsSDKType;
   group_ids?: IdsSDKType;
 }
+export interface MigrationBucketInfo {
+  srcSpId: number;
+  srcGlobalVirtualGroupFamilyId: number;
+  dstSpId: number;
+  /** id is the unique identifier of bucket */
+
+  bucketId: string;
+}
+export interface MigrationBucketInfoSDKType {
+  src_sp_id: number;
+  src_global_virtual_group_family_id: number;
+  dst_sp_id: number;
+  bucket_id: string;
+}
 
 function createBaseBucketInfo(): BucketInfo {
   return {
@@ -275,9 +277,9 @@ function createBaseBucketInfo(): BucketInfo {
     sourceType: 0,
     createAt: Long.ZERO,
     paymentAddress: "",
-    primarySpAddress: "",
+    primarySpId: 0,
+    globalVirtualGroupFamilyId: 0,
     chargedReadQuota: Long.UZERO,
-    billingInfo: undefined,
     bucketStatus: 0
   };
 }
@@ -312,16 +314,16 @@ export const BucketInfo = {
       writer.uint32(58).string(message.paymentAddress);
     }
 
-    if (message.primarySpAddress !== "") {
-      writer.uint32(66).string(message.primarySpAddress);
+    if (message.primarySpId !== 0) {
+      writer.uint32(64).uint32(message.primarySpId);
+    }
+
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(72).uint32(message.globalVirtualGroupFamilyId);
     }
 
     if (!message.chargedReadQuota.isZero()) {
-      writer.uint32(72).uint64(message.chargedReadQuota);
-    }
-
-    if (message.billingInfo !== undefined) {
-      BillingInfo.encode(message.billingInfo, writer.uint32(82).fork()).ldelim();
+      writer.uint32(80).uint64(message.chargedReadQuota);
     }
 
     if (message.bucketStatus !== 0) {
@@ -369,15 +371,15 @@ export const BucketInfo = {
           break;
 
         case 8:
-          message.primarySpAddress = reader.string();
+          message.primarySpId = reader.uint32();
           break;
 
         case 9:
-          message.chargedReadQuota = (reader.uint64() as Long);
+          message.globalVirtualGroupFamilyId = reader.uint32();
           break;
 
         case 10:
-          message.billingInfo = BillingInfo.decode(reader, reader.uint32());
+          message.chargedReadQuota = (reader.uint64() as Long);
           break;
 
         case 11:
@@ -402,9 +404,9 @@ export const BucketInfo = {
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
       createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
-      primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
+      primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0,
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
       chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
-      billingInfo: isSet(object.billingInfo) ? BillingInfo.fromJSON(object.billingInfo) : undefined,
       bucketStatus: isSet(object.bucketStatus) ? bucketStatusFromJSON(object.bucketStatus) : 0
     };
   },
@@ -418,9 +420,9 @@ export const BucketInfo = {
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
     message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
-    message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
+    message.primarySpId !== undefined && (obj.primarySpId = Math.round(message.primarySpId));
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
     message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
-    message.billingInfo !== undefined && (obj.billingInfo = message.billingInfo ? BillingInfo.toJSON(message.billingInfo) : undefined);
     message.bucketStatus !== undefined && (obj.bucketStatus = bucketStatusToJSON(message.bucketStatus));
     return obj;
   },
@@ -434,9 +436,9 @@ export const BucketInfo = {
     message.sourceType = object.sourceType ?? 0;
     message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
     message.paymentAddress = object.paymentAddress ?? "";
-    message.primarySpAddress = object.primarySpAddress ?? "";
+    message.primarySpId = object.primarySpId ?? 0;
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
     message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
-    message.billingInfo = object.billingInfo !== undefined && object.billingInfo !== null ? BillingInfo.fromPartial(object.billingInfo) : undefined;
     message.bucketStatus = object.bucketStatus ?? 0;
     return message;
   },
@@ -450,9 +452,9 @@ export const BucketInfo = {
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
       createAt: object?.create_at,
       paymentAddress: object?.payment_address,
-      primarySpAddress: object?.primary_sp_address,
+      primarySpId: object?.primary_sp_id,
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
       chargedReadQuota: object?.charged_read_quota,
-      billingInfo: object.billing_info ? BillingInfo.fromSDK(object.billing_info) : undefined,
       bucketStatus: isSet(object.bucket_status) ? bucketStatusFromJSON(object.bucket_status) : 0
     };
   },
@@ -466,25 +468,26 @@ export const BucketInfo = {
     message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
     obj.create_at = message.createAt;
     obj.payment_address = message.paymentAddress;
-    obj.primary_sp_address = message.primarySpAddress;
+    obj.primary_sp_id = message.primarySpId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
     obj.charged_read_quota = message.chargedReadQuota;
-    message.billingInfo !== undefined && (obj.billing_info = message.billingInfo ? BillingInfo.toSDK(message.billingInfo) : undefined);
     message.bucketStatus !== undefined && (obj.bucket_status = bucketStatusToJSON(message.bucketStatus));
     return obj;
   }
 
 };
 
-function createBaseBillingInfo(): BillingInfo {
+function createBaseInternalBucketInfo(): InternalBucketInfo {
   return {
     priceTime: Long.ZERO,
     totalChargeSize: Long.UZERO,
-    secondarySpObjectsSize: []
+    localVirtualGroups: [],
+    nextLocalVirtualGroupId: 0
   };
 }
 
-export const BillingInfo = {
-  encode(message: BillingInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const InternalBucketInfo = {
+  encode(message: InternalBucketInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (!message.priceTime.isZero()) {
       writer.uint32(8).int64(message.priceTime);
     }
@@ -493,17 +496,21 @@ export const BillingInfo = {
       writer.uint32(16).uint64(message.totalChargeSize);
     }
 
-    for (const v of message.secondarySpObjectsSize) {
-      SecondarySpObjectsSize.encode(v!, writer.uint32(26).fork()).ldelim();
+    for (const v of message.localVirtualGroups) {
+      LocalVirtualGroup.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+
+    if (message.nextLocalVirtualGroupId !== 0) {
+      writer.uint32(32).uint32(message.nextLocalVirtualGroupId);
     }
 
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): BillingInfo {
+  decode(input: _m0.Reader | Uint8Array, length?: number): InternalBucketInfo {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseBillingInfo();
+    const message = createBaseInternalBucketInfo();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -518,7 +525,11 @@ export const BillingInfo = {
           break;
 
         case 3:
-          message.secondarySpObjectsSize.push(SecondarySpObjectsSize.decode(reader, reader.uint32()));
+          message.localVirtualGroups.push(LocalVirtualGroup.decode(reader, reader.uint32()));
+          break;
+
+        case 4:
+          message.nextLocalVirtualGroupId = reader.uint32();
           break;
 
         default:
@@ -530,138 +541,60 @@ export const BillingInfo = {
     return message;
   },
 
-  fromJSON(object: any): BillingInfo {
+  fromJSON(object: any): InternalBucketInfo {
     return {
       priceTime: isSet(object.priceTime) ? Long.fromValue(object.priceTime) : Long.ZERO,
       totalChargeSize: isSet(object.totalChargeSize) ? Long.fromValue(object.totalChargeSize) : Long.UZERO,
-      secondarySpObjectsSize: Array.isArray(object?.secondarySpObjectsSize) ? object.secondarySpObjectsSize.map((e: any) => SecondarySpObjectsSize.fromJSON(e)) : []
+      localVirtualGroups: Array.isArray(object?.localVirtualGroups) ? object.localVirtualGroups.map((e: any) => LocalVirtualGroup.fromJSON(e)) : [],
+      nextLocalVirtualGroupId: isSet(object.nextLocalVirtualGroupId) ? Number(object.nextLocalVirtualGroupId) : 0
     };
   },
 
-  toJSON(message: BillingInfo): unknown {
+  toJSON(message: InternalBucketInfo): unknown {
     const obj: any = {};
     message.priceTime !== undefined && (obj.priceTime = (message.priceTime || Long.ZERO).toString());
     message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || Long.UZERO).toString());
 
-    if (message.secondarySpObjectsSize) {
-      obj.secondarySpObjectsSize = message.secondarySpObjectsSize.map(e => e ? SecondarySpObjectsSize.toJSON(e) : undefined);
+    if (message.localVirtualGroups) {
+      obj.localVirtualGroups = message.localVirtualGroups.map(e => e ? LocalVirtualGroup.toJSON(e) : undefined);
     } else {
-      obj.secondarySpObjectsSize = [];
+      obj.localVirtualGroups = [];
     }
 
+    message.nextLocalVirtualGroupId !== undefined && (obj.nextLocalVirtualGroupId = Math.round(message.nextLocalVirtualGroupId));
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<BillingInfo>, I>>(object: I): BillingInfo {
-    const message = createBaseBillingInfo();
+  fromPartial<I extends Exact<DeepPartial<InternalBucketInfo>, I>>(object: I): InternalBucketInfo {
+    const message = createBaseInternalBucketInfo();
     message.priceTime = object.priceTime !== undefined && object.priceTime !== null ? Long.fromValue(object.priceTime) : Long.ZERO;
     message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? Long.fromValue(object.totalChargeSize) : Long.UZERO;
-    message.secondarySpObjectsSize = object.secondarySpObjectsSize?.map(e => SecondarySpObjectsSize.fromPartial(e)) || [];
+    message.localVirtualGroups = object.localVirtualGroups?.map(e => LocalVirtualGroup.fromPartial(e)) || [];
+    message.nextLocalVirtualGroupId = object.nextLocalVirtualGroupId ?? 0;
     return message;
   },
 
-  fromSDK(object: BillingInfoSDKType): BillingInfo {
+  fromSDK(object: InternalBucketInfoSDKType): InternalBucketInfo {
     return {
       priceTime: object?.price_time,
       totalChargeSize: object?.total_charge_size,
-      secondarySpObjectsSize: Array.isArray(object?.secondary_sp_objects_size) ? object.secondary_sp_objects_size.map((e: any) => SecondarySpObjectsSize.fromSDK(e)) : []
+      localVirtualGroups: Array.isArray(object?.local_virtual_groups) ? object.local_virtual_groups.map((e: any) => LocalVirtualGroup.fromSDK(e)) : [],
+      nextLocalVirtualGroupId: object?.next_local_virtual_group_id
     };
   },
 
-  toSDK(message: BillingInfo): BillingInfoSDKType {
+  toSDK(message: InternalBucketInfo): InternalBucketInfoSDKType {
     const obj: any = {};
     obj.price_time = message.priceTime;
     obj.total_charge_size = message.totalChargeSize;
 
-    if (message.secondarySpObjectsSize) {
-      obj.secondary_sp_objects_size = message.secondarySpObjectsSize.map(e => e ? SecondarySpObjectsSize.toSDK(e) : undefined);
+    if (message.localVirtualGroups) {
+      obj.local_virtual_groups = message.localVirtualGroups.map(e => e ? LocalVirtualGroup.toSDK(e) : undefined);
     } else {
-      obj.secondary_sp_objects_size = [];
+      obj.local_virtual_groups = [];
     }
 
-    return obj;
-  }
-
-};
-
-function createBaseSecondarySpObjectsSize(): SecondarySpObjectsSize {
-  return {
-    spAddress: "",
-    totalChargeSize: Long.UZERO
-  };
-}
-
-export const SecondarySpObjectsSize = {
-  encode(message: SecondarySpObjectsSize, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spAddress !== "") {
-      writer.uint32(10).string(message.spAddress);
-    }
-
-    if (!message.totalChargeSize.isZero()) {
-      writer.uint32(16).uint64(message.totalChargeSize);
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): SecondarySpObjectsSize {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSecondarySpObjectsSize();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.spAddress = reader.string();
-          break;
-
-        case 2:
-          message.totalChargeSize = (reader.uint64() as Long);
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): SecondarySpObjectsSize {
-    return {
-      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
-      totalChargeSize: isSet(object.totalChargeSize) ? Long.fromValue(object.totalChargeSize) : Long.UZERO
-    };
-  },
-
-  toJSON(message: SecondarySpObjectsSize): unknown {
-    const obj: any = {};
-    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
-    message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || Long.UZERO).toString());
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<SecondarySpObjectsSize>, I>>(object: I): SecondarySpObjectsSize {
-    const message = createBaseSecondarySpObjectsSize();
-    message.spAddress = object.spAddress ?? "";
-    message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? Long.fromValue(object.totalChargeSize) : Long.UZERO;
-    return message;
-  },
-
-  fromSDK(object: SecondarySpObjectsSizeSDKType): SecondarySpObjectsSize {
-    return {
-      spAddress: object?.sp_address,
-      totalChargeSize: object?.total_charge_size
-    };
-  },
-
-  toSDK(message: SecondarySpObjectsSize): SecondarySpObjectsSizeSDKType {
-    const obj: any = {};
-    obj.sp_address = message.spAddress;
-    obj.total_charge_size = message.totalChargeSize;
+    obj.next_local_virtual_group_id = message.nextLocalVirtualGroupId;
     return obj;
   }
 
@@ -670,9 +603,11 @@ export const SecondarySpObjectsSize = {
 function createBaseObjectInfo(): ObjectInfo {
   return {
     owner: "",
+    creator: "",
     bucketName: "",
     objectName: "",
     id: "",
+    localVirtualGroupId: 0,
     payloadSize: Long.UZERO,
     visibility: 0,
     contentType: "",
@@ -680,8 +615,7 @@ function createBaseObjectInfo(): ObjectInfo {
     objectStatus: 0,
     redundancyType: 0,
     sourceType: 0,
-    checksums: [],
-    secondarySpAddresses: []
+    checksums: []
   };
 }
 
@@ -691,52 +625,56 @@ export const ObjectInfo = {
       writer.uint32(10).string(message.owner);
     }
 
+    if (message.creator !== "") {
+      writer.uint32(18).string(message.creator);
+    }
+
     if (message.bucketName !== "") {
-      writer.uint32(18).string(message.bucketName);
+      writer.uint32(26).string(message.bucketName);
     }
 
     if (message.objectName !== "") {
-      writer.uint32(26).string(message.objectName);
+      writer.uint32(34).string(message.objectName);
     }
 
     if (message.id !== "") {
-      writer.uint32(34).string(message.id);
+      writer.uint32(42).string(message.id);
+    }
+
+    if (message.localVirtualGroupId !== 0) {
+      writer.uint32(48).uint32(message.localVirtualGroupId);
     }
 
     if (!message.payloadSize.isZero()) {
-      writer.uint32(40).uint64(message.payloadSize);
+      writer.uint32(56).uint64(message.payloadSize);
     }
 
     if (message.visibility !== 0) {
-      writer.uint32(48).int32(message.visibility);
+      writer.uint32(64).int32(message.visibility);
     }
 
     if (message.contentType !== "") {
-      writer.uint32(58).string(message.contentType);
+      writer.uint32(74).string(message.contentType);
     }
 
     if (!message.createAt.isZero()) {
-      writer.uint32(64).int64(message.createAt);
+      writer.uint32(80).int64(message.createAt);
     }
 
     if (message.objectStatus !== 0) {
-      writer.uint32(72).int32(message.objectStatus);
+      writer.uint32(88).int32(message.objectStatus);
     }
 
     if (message.redundancyType !== 0) {
-      writer.uint32(80).int32(message.redundancyType);
+      writer.uint32(96).int32(message.redundancyType);
     }
 
     if (message.sourceType !== 0) {
-      writer.uint32(88).int32(message.sourceType);
+      writer.uint32(104).int32(message.sourceType);
     }
 
     for (const v of message.checksums) {
-      writer.uint32(98).bytes(v!);
-    }
-
-    for (const v of message.secondarySpAddresses) {
-      writer.uint32(106).string(v!);
+      writer.uint32(114).bytes(v!);
     }
 
     return writer;
@@ -756,51 +694,55 @@ export const ObjectInfo = {
           break;
 
         case 2:
-          message.bucketName = reader.string();
+          message.creator = reader.string();
           break;
 
         case 3:
-          message.objectName = reader.string();
+          message.bucketName = reader.string();
           break;
 
         case 4:
-          message.id = reader.string();
+          message.objectName = reader.string();
           break;
 
         case 5:
-          message.payloadSize = (reader.uint64() as Long);
+          message.id = reader.string();
           break;
 
         case 6:
-          message.visibility = (reader.int32() as any);
+          message.localVirtualGroupId = reader.uint32();
           break;
 
         case 7:
-          message.contentType = reader.string();
+          message.payloadSize = (reader.uint64() as Long);
           break;
 
         case 8:
-          message.createAt = (reader.int64() as Long);
+          message.visibility = (reader.int32() as any);
           break;
 
         case 9:
-          message.objectStatus = (reader.int32() as any);
+          message.contentType = reader.string();
           break;
 
         case 10:
-          message.redundancyType = (reader.int32() as any);
+          message.createAt = (reader.int64() as Long);
           break;
 
         case 11:
-          message.sourceType = (reader.int32() as any);
+          message.objectStatus = (reader.int32() as any);
           break;
 
         case 12:
-          message.checksums.push(reader.bytes());
+          message.redundancyType = (reader.int32() as any);
           break;
 
         case 13:
-          message.secondarySpAddresses.push(reader.string());
+          message.sourceType = (reader.int32() as any);
+          break;
+
+        case 14:
+          message.checksums.push(reader.bytes());
           break;
 
         default:
@@ -815,9 +757,11 @@ export const ObjectInfo = {
   fromJSON(object: any): ObjectInfo {
     return {
       owner: isSet(object.owner) ? String(object.owner) : "",
+      creator: isSet(object.creator) ? String(object.creator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       id: isSet(object.id) ? String(object.id) : "",
+      localVirtualGroupId: isSet(object.localVirtualGroupId) ? Number(object.localVirtualGroupId) : 0,
       payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO,
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       contentType: isSet(object.contentType) ? String(object.contentType) : "",
@@ -825,17 +769,18 @@ export const ObjectInfo = {
       objectStatus: isSet(object.objectStatus) ? objectStatusFromJSON(object.objectStatus) : 0,
       redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : 0,
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
-      checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => bytesFromBase64(e)) : [],
-      secondarySpAddresses: Array.isArray(object?.secondarySpAddresses) ? object.secondarySpAddresses.map((e: any) => String(e)) : []
+      checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => bytesFromBase64(e)) : []
     };
   },
 
   toJSON(message: ObjectInfo): unknown {
     const obj: any = {};
     message.owner !== undefined && (obj.owner = message.owner);
+    message.creator !== undefined && (obj.creator = message.creator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.id !== undefined && (obj.id = message.id);
+    message.localVirtualGroupId !== undefined && (obj.localVirtualGroupId = Math.round(message.localVirtualGroupId));
     message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.contentType !== undefined && (obj.contentType = message.contentType);
@@ -850,21 +795,17 @@ export const ObjectInfo = {
       obj.checksums = [];
     }
 
-    if (message.secondarySpAddresses) {
-      obj.secondarySpAddresses = message.secondarySpAddresses.map(e => e);
-    } else {
-      obj.secondarySpAddresses = [];
-    }
-
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<ObjectInfo>, I>>(object: I): ObjectInfo {
     const message = createBaseObjectInfo();
     message.owner = object.owner ?? "";
+    message.creator = object.creator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
     message.id = object.id ?? "";
+    message.localVirtualGroupId = object.localVirtualGroupId ?? 0;
     message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
     message.visibility = object.visibility ?? 0;
     message.contentType = object.contentType ?? "";
@@ -873,16 +814,17 @@ export const ObjectInfo = {
     message.redundancyType = object.redundancyType ?? 0;
     message.sourceType = object.sourceType ?? 0;
     message.checksums = object.checksums?.map(e => e) || [];
-    message.secondarySpAddresses = object.secondarySpAddresses?.map(e => e) || [];
     return message;
   },
 
   fromSDK(object: ObjectInfoSDKType): ObjectInfo {
     return {
       owner: object?.owner,
+      creator: object?.creator,
       bucketName: object?.bucket_name,
       objectName: object?.object_name,
       id: object?.id,
+      localVirtualGroupId: object?.local_virtual_group_id,
       payloadSize: object?.payload_size,
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
       contentType: object?.content_type,
@@ -890,17 +832,18 @@ export const ObjectInfo = {
       objectStatus: isSet(object.object_status) ? objectStatusFromJSON(object.object_status) : 0,
       redundancyType: isSet(object.redundancy_type) ? redundancyTypeFromJSON(object.redundancy_type) : 0,
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
-      checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => e) : [],
-      secondarySpAddresses: Array.isArray(object?.secondary_sp_addresses) ? object.secondary_sp_addresses.map((e: any) => e) : []
+      checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => e) : []
     };
   },
 
   toSDK(message: ObjectInfo): ObjectInfoSDKType {
     const obj: any = {};
     obj.owner = message.owner;
+    obj.creator = message.creator;
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
     obj.id = message.id;
+    obj.local_virtual_group_id = message.localVirtualGroupId;
     obj.payload_size = message.payloadSize;
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     obj.content_type = message.contentType;
@@ -913,12 +856,6 @@ export const ObjectInfo = {
       obj.checksums = message.checksums.map(e => e);
     } else {
       obj.checksums = [];
-    }
-
-    if (message.secondarySpAddresses) {
-      obj.secondary_sp_addresses = message.secondarySpAddresses.map(e => e);
-    } else {
-      obj.secondary_sp_addresses = [];
     }
 
     return obj;
@@ -1718,6 +1655,117 @@ export const DeleteInfo = {
     message.bucketIds !== undefined && (obj.bucket_ids = message.bucketIds ? Ids.toSDK(message.bucketIds) : undefined);
     message.objectIds !== undefined && (obj.object_ids = message.objectIds ? Ids.toSDK(message.objectIds) : undefined);
     message.groupIds !== undefined && (obj.group_ids = message.groupIds ? Ids.toSDK(message.groupIds) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseMigrationBucketInfo(): MigrationBucketInfo {
+  return {
+    srcSpId: 0,
+    srcGlobalVirtualGroupFamilyId: 0,
+    dstSpId: 0,
+    bucketId: ""
+  };
+}
+
+export const MigrationBucketInfo = {
+  encode(message: MigrationBucketInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.srcSpId !== 0) {
+      writer.uint32(8).uint32(message.srcSpId);
+    }
+
+    if (message.srcGlobalVirtualGroupFamilyId !== 0) {
+      writer.uint32(16).uint32(message.srcGlobalVirtualGroupFamilyId);
+    }
+
+    if (message.dstSpId !== 0) {
+      writer.uint32(24).uint32(message.dstSpId);
+    }
+
+    if (message.bucketId !== "") {
+      writer.uint32(34).string(message.bucketId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MigrationBucketInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMigrationBucketInfo();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.srcSpId = reader.uint32();
+          break;
+
+        case 2:
+          message.srcGlobalVirtualGroupFamilyId = reader.uint32();
+          break;
+
+        case 3:
+          message.dstSpId = reader.uint32();
+          break;
+
+        case 4:
+          message.bucketId = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MigrationBucketInfo {
+    return {
+      srcSpId: isSet(object.srcSpId) ? Number(object.srcSpId) : 0,
+      srcGlobalVirtualGroupFamilyId: isSet(object.srcGlobalVirtualGroupFamilyId) ? Number(object.srcGlobalVirtualGroupFamilyId) : 0,
+      dstSpId: isSet(object.dstSpId) ? Number(object.dstSpId) : 0,
+      bucketId: isSet(object.bucketId) ? String(object.bucketId) : ""
+    };
+  },
+
+  toJSON(message: MigrationBucketInfo): unknown {
+    const obj: any = {};
+    message.srcSpId !== undefined && (obj.srcSpId = Math.round(message.srcSpId));
+    message.srcGlobalVirtualGroupFamilyId !== undefined && (obj.srcGlobalVirtualGroupFamilyId = Math.round(message.srcGlobalVirtualGroupFamilyId));
+    message.dstSpId !== undefined && (obj.dstSpId = Math.round(message.dstSpId));
+    message.bucketId !== undefined && (obj.bucketId = message.bucketId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MigrationBucketInfo>, I>>(object: I): MigrationBucketInfo {
+    const message = createBaseMigrationBucketInfo();
+    message.srcSpId = object.srcSpId ?? 0;
+    message.srcGlobalVirtualGroupFamilyId = object.srcGlobalVirtualGroupFamilyId ?? 0;
+    message.dstSpId = object.dstSpId ?? 0;
+    message.bucketId = object.bucketId ?? "";
+    return message;
+  },
+
+  fromSDK(object: MigrationBucketInfoSDKType): MigrationBucketInfo {
+    return {
+      srcSpId: object?.src_sp_id,
+      srcGlobalVirtualGroupFamilyId: object?.src_global_virtual_group_family_id,
+      dstSpId: object?.dst_sp_id,
+      bucketId: object?.bucket_id
+    };
+  },
+
+  toSDK(message: MigrationBucketInfo): MigrationBucketInfoSDKType {
+    const obj: any = {};
+    obj.src_sp_id = message.srcSpId;
+    obj.src_global_virtual_group_family_id = message.srcGlobalVirtualGroupFamilyId;
+    obj.dst_sp_id = message.dstSpId;
+    obj.bucket_id = message.bucketId;
     return obj;
   }
 

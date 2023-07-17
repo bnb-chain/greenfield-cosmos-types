@@ -268,6 +268,9 @@ export interface Proposal {
    */
 
   proposer: string;
+  /** The reason of the failure proposal */
+
+  failedReason: string;
 }
 /** Proposal defines the core field members of a governance proposal. */
 
@@ -285,6 +288,7 @@ export interface ProposalSDKType {
   title: string;
   summary: string;
   proposer: string;
+  failed_reason: string;
 }
 /** TallyResult defines a standard tally for a governance proposal. */
 
@@ -682,7 +686,8 @@ function createBaseProposal(): Proposal {
     metadata: "",
     title: "",
     summary: "",
-    proposer: ""
+    proposer: "",
+    failedReason: ""
   };
 }
 
@@ -738,6 +743,10 @@ export const Proposal = {
 
     if (message.proposer !== "") {
       writer.uint32(106).string(message.proposer);
+    }
+
+    if (message.failedReason !== "") {
+      writer.uint32(114).string(message.failedReason);
     }
 
     return writer;
@@ -804,6 +813,10 @@ export const Proposal = {
           message.proposer = reader.string();
           break;
 
+        case 14:
+          message.failedReason = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -827,7 +840,8 @@ export const Proposal = {
       metadata: isSet(object.metadata) ? String(object.metadata) : "",
       title: isSet(object.title) ? String(object.title) : "",
       summary: isSet(object.summary) ? String(object.summary) : "",
-      proposer: isSet(object.proposer) ? String(object.proposer) : ""
+      proposer: isSet(object.proposer) ? String(object.proposer) : "",
+      failedReason: isSet(object.failedReason) ? String(object.failedReason) : ""
     };
   },
 
@@ -858,6 +872,7 @@ export const Proposal = {
     message.title !== undefined && (obj.title = message.title);
     message.summary !== undefined && (obj.summary = message.summary);
     message.proposer !== undefined && (obj.proposer = message.proposer);
+    message.failedReason !== undefined && (obj.failedReason = message.failedReason);
     return obj;
   },
 
@@ -876,6 +891,7 @@ export const Proposal = {
     message.title = object.title ?? "";
     message.summary = object.summary ?? "";
     message.proposer = object.proposer ?? "";
+    message.failedReason = object.failedReason ?? "";
     return message;
   },
 
@@ -893,7 +909,8 @@ export const Proposal = {
       metadata: object?.metadata,
       title: object?.title,
       summary: object?.summary,
-      proposer: object?.proposer
+      proposer: object?.proposer,
+      failedReason: object?.failed_reason
     };
   },
 
@@ -924,6 +941,7 @@ export const Proposal = {
     obj.title = message.title;
     obj.summary = message.summary;
     obj.proposer = message.proposer;
+    obj.failed_reason = message.failedReason;
     return obj;
   }
 
