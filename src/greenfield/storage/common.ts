@@ -685,15 +685,15 @@ export const LocalVirtualGroup = {
     }
 
     if (message.globalVirtualGroupId !== 0) {
-      writer.uint32(24).uint32(message.globalVirtualGroupId);
+      writer.uint32(16).uint32(message.globalVirtualGroupId);
     }
 
     if (!message.storedSize.isZero()) {
-      writer.uint32(32).uint64(message.storedSize);
+      writer.uint32(24).uint64(message.storedSize);
     }
 
     if (!message.totalChargeSize.isZero()) {
-      writer.uint32(40).uint64(message.totalChargeSize);
+      writer.uint32(32).uint64(message.totalChargeSize);
     }
 
     return writer;
@@ -712,15 +712,15 @@ export const LocalVirtualGroup = {
           message.id = reader.uint32();
           break;
 
-        case 3:
+        case 2:
           message.globalVirtualGroupId = reader.uint32();
           break;
 
-        case 4:
+        case 3:
           message.storedSize = (reader.uint64() as Long);
           break;
 
-        case 5:
+        case 4:
           message.totalChargeSize = (reader.uint64() as Long);
           break;
 

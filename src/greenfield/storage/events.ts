@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, GVGMapping, GVGMappingSDKType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
+import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { DeleteInfo, DeleteInfoSDKType } from "./types";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
@@ -69,9 +69,9 @@ export interface EventDeleteBucket {
   /** bucket_id define an u256 id for bucket */
 
   bucketId: string;
-  /** primary_sp_id is the unique id of primary sp. */
+  /** global_virtual_group_family_id defines the unique id of gvg family */
 
-  primarySpId: number;
+  globalVirtualGroupFamilyId: number;
 }
 /** EventDeleteBucket is emitted on MsgDeleteBucket */
 
@@ -80,7 +80,7 @@ export interface EventDeleteBucketSDKType {
   owner: string;
   bucket_name: string;
   bucket_id: string;
-  primary_sp_id: number;
+  global_virtual_group_family_id: number;
 }
 /** EventUpdateBucketInfo is emitted on MsgUpdateBucketInfo */
 
@@ -93,21 +93,18 @@ export interface EventUpdateBucketInfo {
   /** bucket_id define an u256 id for bucket */
 
   bucketId: string;
-  /** charged_read_quota_before define the read quota before updated */
-
-  chargedReadQuotaBefore: Long;
   /** charged_read_quota_after define the read quota after updated */
 
-  chargedReadQuotaAfter: Long;
-  /** payment_address_before define the payment address before updated */
+  chargedReadQuota: Long;
+  /** payment_address define the payment address after updated */
 
-  paymentAddressBefore: string;
-  /** payment_address_after define the payment address after updated */
-
-  paymentAddressAfter: string;
+  paymentAddress: string;
   /** visibility defines the highest permission of object. */
 
   visibility: VisibilityType;
+  /** global_virtual_group_family_id defines the gvg family id after migrated. */
+
+  globalVirtualGroupFamilyId: number;
 }
 /** EventUpdateBucketInfo is emitted on MsgUpdateBucketInfo */
 
@@ -115,11 +112,10 @@ export interface EventUpdateBucketInfoSDKType {
   operator: string;
   bucket_name: string;
   bucket_id: string;
-  charged_read_quota_before: Long;
-  charged_read_quota_after: Long;
-  payment_address_before: string;
-  payment_address_after: string;
+  charged_read_quota: Long;
+  payment_address: string;
   visibility: VisibilityType;
+  global_virtual_group_family_id: number;
 }
 /** EventDiscontinueBucket is emitted on MsgDiscontinueBucket */
 
@@ -752,16 +748,16 @@ export interface EventCompleteMigrationBucket {
   /** The family id that the bucket to be migrated to */
 
   globalVirtualGroupFamilyId: number;
-  /** The src and dst gvg mapping */
+  /** The src_primary_sp_id defines the primary sp id of the bucket before migrate. */
 
-  gvgMappings: GVGMapping[];
+  srcPrimarySpId: number;
 }
 export interface EventCompleteMigrationBucketSDKType {
   operator: string;
   bucket_name: string;
   bucket_id: string;
   global_virtual_group_family_id: number;
-  gvg_mappings: GVGMappingSDKType[];
+  src_primary_sp_id: number;
 }
 
 function createBaseEventCreateBucket(): EventCreateBucket {
@@ -979,7 +975,7 @@ function createBaseEventDeleteBucket(): EventDeleteBucket {
     owner: "",
     bucketName: "",
     bucketId: "",
-    primarySpId: 0
+    globalVirtualGroupFamilyId: 0
   };
 }
 
@@ -1001,8 +997,8 @@ export const EventDeleteBucket = {
       writer.uint32(34).string(message.bucketId);
     }
 
-    if (message.primarySpId !== 0) {
-      writer.uint32(40).uint32(message.primarySpId);
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(40).uint32(message.globalVirtualGroupFamilyId);
     }
 
     return writer;
@@ -1034,7 +1030,7 @@ export const EventDeleteBucket = {
           break;
 
         case 5:
-          message.primarySpId = reader.uint32();
+          message.globalVirtualGroupFamilyId = reader.uint32();
           break;
 
         default:
@@ -1052,7 +1048,7 @@ export const EventDeleteBucket = {
       owner: isSet(object.owner) ? String(object.owner) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
-      primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0
     };
   },
 
@@ -1062,7 +1058,7 @@ export const EventDeleteBucket = {
     message.owner !== undefined && (obj.owner = message.owner);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
-    message.primarySpId !== undefined && (obj.primarySpId = Math.round(message.primarySpId));
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
     return obj;
   },
 
@@ -1072,7 +1068,7 @@ export const EventDeleteBucket = {
     message.owner = object.owner ?? "";
     message.bucketName = object.bucketName ?? "";
     message.bucketId = object.bucketId ?? "";
-    message.primarySpId = object.primarySpId ?? 0;
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
     return message;
   },
 
@@ -1082,7 +1078,7 @@ export const EventDeleteBucket = {
       owner: object?.owner,
       bucketName: object?.bucket_name,
       bucketId: object?.bucket_id,
-      primarySpId: object?.primary_sp_id
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id
     };
   },
 
@@ -1092,7 +1088,7 @@ export const EventDeleteBucket = {
     obj.owner = message.owner;
     obj.bucket_name = message.bucketName;
     obj.bucket_id = message.bucketId;
-    obj.primary_sp_id = message.primarySpId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
     return obj;
   }
 
@@ -1103,11 +1099,10 @@ function createBaseEventUpdateBucketInfo(): EventUpdateBucketInfo {
     operator: "",
     bucketName: "",
     bucketId: "",
-    chargedReadQuotaBefore: Long.UZERO,
-    chargedReadQuotaAfter: Long.UZERO,
-    paymentAddressBefore: "",
-    paymentAddressAfter: "",
-    visibility: 0
+    chargedReadQuota: Long.UZERO,
+    paymentAddress: "",
+    visibility: 0,
+    globalVirtualGroupFamilyId: 0
   };
 }
 
@@ -1125,24 +1120,20 @@ export const EventUpdateBucketInfo = {
       writer.uint32(26).string(message.bucketId);
     }
 
-    if (!message.chargedReadQuotaBefore.isZero()) {
-      writer.uint32(32).uint64(message.chargedReadQuotaBefore);
+    if (!message.chargedReadQuota.isZero()) {
+      writer.uint32(32).uint64(message.chargedReadQuota);
     }
 
-    if (!message.chargedReadQuotaAfter.isZero()) {
-      writer.uint32(40).uint64(message.chargedReadQuotaAfter);
-    }
-
-    if (message.paymentAddressBefore !== "") {
-      writer.uint32(50).string(message.paymentAddressBefore);
-    }
-
-    if (message.paymentAddressAfter !== "") {
-      writer.uint32(58).string(message.paymentAddressAfter);
+    if (message.paymentAddress !== "") {
+      writer.uint32(42).string(message.paymentAddress);
     }
 
     if (message.visibility !== 0) {
-      writer.uint32(64).int32(message.visibility);
+      writer.uint32(48).int32(message.visibility);
+    }
+
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(56).uint32(message.globalVirtualGroupFamilyId);
     }
 
     return writer;
@@ -1170,23 +1161,19 @@ export const EventUpdateBucketInfo = {
           break;
 
         case 4:
-          message.chargedReadQuotaBefore = (reader.uint64() as Long);
+          message.chargedReadQuota = (reader.uint64() as Long);
           break;
 
         case 5:
-          message.chargedReadQuotaAfter = (reader.uint64() as Long);
+          message.paymentAddress = reader.string();
           break;
 
         case 6:
-          message.paymentAddressBefore = reader.string();
+          message.visibility = (reader.int32() as any);
           break;
 
         case 7:
-          message.paymentAddressAfter = reader.string();
-          break;
-
-        case 8:
-          message.visibility = (reader.int32() as any);
+          message.globalVirtualGroupFamilyId = reader.uint32();
           break;
 
         default:
@@ -1203,11 +1190,10 @@ export const EventUpdateBucketInfo = {
       operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
-      chargedReadQuotaBefore: isSet(object.chargedReadQuotaBefore) ? Long.fromValue(object.chargedReadQuotaBefore) : Long.UZERO,
-      chargedReadQuotaAfter: isSet(object.chargedReadQuotaAfter) ? Long.fromValue(object.chargedReadQuotaAfter) : Long.UZERO,
-      paymentAddressBefore: isSet(object.paymentAddressBefore) ? String(object.paymentAddressBefore) : "",
-      paymentAddressAfter: isSet(object.paymentAddressAfter) ? String(object.paymentAddressAfter) : "",
-      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0
+      chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
+      paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0
     };
   },
 
@@ -1216,11 +1202,10 @@ export const EventUpdateBucketInfo = {
     message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
-    message.chargedReadQuotaBefore !== undefined && (obj.chargedReadQuotaBefore = (message.chargedReadQuotaBefore || Long.UZERO).toString());
-    message.chargedReadQuotaAfter !== undefined && (obj.chargedReadQuotaAfter = (message.chargedReadQuotaAfter || Long.UZERO).toString());
-    message.paymentAddressBefore !== undefined && (obj.paymentAddressBefore = message.paymentAddressBefore);
-    message.paymentAddressAfter !== undefined && (obj.paymentAddressAfter = message.paymentAddressAfter);
+    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
+    message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
     return obj;
   },
 
@@ -1229,11 +1214,10 @@ export const EventUpdateBucketInfo = {
     message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.bucketId = object.bucketId ?? "";
-    message.chargedReadQuotaBefore = object.chargedReadQuotaBefore !== undefined && object.chargedReadQuotaBefore !== null ? Long.fromValue(object.chargedReadQuotaBefore) : Long.UZERO;
-    message.chargedReadQuotaAfter = object.chargedReadQuotaAfter !== undefined && object.chargedReadQuotaAfter !== null ? Long.fromValue(object.chargedReadQuotaAfter) : Long.UZERO;
-    message.paymentAddressBefore = object.paymentAddressBefore ?? "";
-    message.paymentAddressAfter = object.paymentAddressAfter ?? "";
+    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
+    message.paymentAddress = object.paymentAddress ?? "";
     message.visibility = object.visibility ?? 0;
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
     return message;
   },
 
@@ -1242,11 +1226,10 @@ export const EventUpdateBucketInfo = {
       operator: object?.operator,
       bucketName: object?.bucket_name,
       bucketId: object?.bucket_id,
-      chargedReadQuotaBefore: object?.charged_read_quota_before,
-      chargedReadQuotaAfter: object?.charged_read_quota_after,
-      paymentAddressBefore: object?.payment_address_before,
-      paymentAddressAfter: object?.payment_address_after,
-      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0
+      chargedReadQuota: object?.charged_read_quota,
+      paymentAddress: object?.payment_address,
+      visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : 0,
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id
     };
   },
 
@@ -1255,11 +1238,10 @@ export const EventUpdateBucketInfo = {
     obj.operator = message.operator;
     obj.bucket_name = message.bucketName;
     obj.bucket_id = message.bucketId;
-    obj.charged_read_quota_before = message.chargedReadQuotaBefore;
-    obj.charged_read_quota_after = message.chargedReadQuotaAfter;
-    obj.payment_address_before = message.paymentAddressBefore;
-    obj.payment_address_after = message.paymentAddressAfter;
+    obj.charged_read_quota = message.chargedReadQuota;
+    obj.payment_address = message.paymentAddress;
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
     return obj;
   }
 
@@ -4192,7 +4174,7 @@ function createBaseEventCompleteMigrationBucket(): EventCompleteMigrationBucket 
     bucketName: "",
     bucketId: "",
     globalVirtualGroupFamilyId: 0,
-    gvgMappings: []
+    srcPrimarySpId: 0
   };
 }
 
@@ -4214,8 +4196,8 @@ export const EventCompleteMigrationBucket = {
       writer.uint32(32).uint32(message.globalVirtualGroupFamilyId);
     }
 
-    for (const v of message.gvgMappings) {
-      GVGMapping.encode(v!, writer.uint32(42).fork()).ldelim();
+    if (message.srcPrimarySpId !== 0) {
+      writer.uint32(40).uint32(message.srcPrimarySpId);
     }
 
     return writer;
@@ -4247,7 +4229,7 @@ export const EventCompleteMigrationBucket = {
           break;
 
         case 5:
-          message.gvgMappings.push(GVGMapping.decode(reader, reader.uint32()));
+          message.srcPrimarySpId = reader.uint32();
           break;
 
         default:
@@ -4265,7 +4247,7 @@ export const EventCompleteMigrationBucket = {
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
       globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
-      gvgMappings: Array.isArray(object?.gvgMappings) ? object.gvgMappings.map((e: any) => GVGMapping.fromJSON(e)) : []
+      srcPrimarySpId: isSet(object.srcPrimarySpId) ? Number(object.srcPrimarySpId) : 0
     };
   },
 
@@ -4275,13 +4257,7 @@ export const EventCompleteMigrationBucket = {
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
-
-    if (message.gvgMappings) {
-      obj.gvgMappings = message.gvgMappings.map(e => e ? GVGMapping.toJSON(e) : undefined);
-    } else {
-      obj.gvgMappings = [];
-    }
-
+    message.srcPrimarySpId !== undefined && (obj.srcPrimarySpId = Math.round(message.srcPrimarySpId));
     return obj;
   },
 
@@ -4291,7 +4267,7 @@ export const EventCompleteMigrationBucket = {
     message.bucketName = object.bucketName ?? "";
     message.bucketId = object.bucketId ?? "";
     message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
-    message.gvgMappings = object.gvgMappings?.map(e => GVGMapping.fromPartial(e)) || [];
+    message.srcPrimarySpId = object.srcPrimarySpId ?? 0;
     return message;
   },
 
@@ -4301,7 +4277,7 @@ export const EventCompleteMigrationBucket = {
       bucketName: object?.bucket_name,
       bucketId: object?.bucket_id,
       globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
-      gvgMappings: Array.isArray(object?.gvg_mappings) ? object.gvg_mappings.map((e: any) => GVGMapping.fromSDK(e)) : []
+      srcPrimarySpId: object?.src_primary_sp_id
     };
   },
 
@@ -4311,13 +4287,7 @@ export const EventCompleteMigrationBucket = {
     obj.bucket_name = message.bucketName;
     obj.bucket_id = message.bucketId;
     obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
-
-    if (message.gvgMappings) {
-      obj.gvg_mappings = message.gvgMappings.map(e => e ? GVGMapping.toSDK(e) : undefined);
-    } else {
-      obj.gvg_mappings = [];
-    }
-
+    obj.src_primary_sp_id = message.srcPrimarySpId;
     return obj;
   }
 

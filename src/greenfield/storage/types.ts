@@ -24,12 +24,6 @@ export interface BucketInfo {
   /** payment_address is the address of the payment account */
 
   paymentAddress: string;
-  /**
-   * primary_sp_id is the unique id of the primary sp. Objects belongs to this bucket will never
-   * leave this SP, unless you explicitly shift them to another SP.
-   */
-
-  primarySpId: number;
   /** global_virtual_group_family_id defines the unique id of gvg family */
 
   globalVirtualGroupFamilyId: number;
@@ -52,7 +46,6 @@ export interface BucketInfoSDKType {
   source_type: SourceType;
   create_at: Long;
   payment_address: string;
-  primary_sp_id: number;
   global_virtual_group_family_id: number;
   charged_read_quota: Long;
   bucket_status: BucketStatus;
@@ -277,7 +270,6 @@ function createBaseBucketInfo(): BucketInfo {
     sourceType: 0,
     createAt: Long.ZERO,
     paymentAddress: "",
-    primarySpId: 0,
     globalVirtualGroupFamilyId: 0,
     chargedReadQuota: Long.UZERO,
     bucketStatus: 0
@@ -314,20 +306,16 @@ export const BucketInfo = {
       writer.uint32(58).string(message.paymentAddress);
     }
 
-    if (message.primarySpId !== 0) {
-      writer.uint32(64).uint32(message.primarySpId);
-    }
-
     if (message.globalVirtualGroupFamilyId !== 0) {
-      writer.uint32(72).uint32(message.globalVirtualGroupFamilyId);
+      writer.uint32(64).uint32(message.globalVirtualGroupFamilyId);
     }
 
     if (!message.chargedReadQuota.isZero()) {
-      writer.uint32(80).uint64(message.chargedReadQuota);
+      writer.uint32(72).uint64(message.chargedReadQuota);
     }
 
     if (message.bucketStatus !== 0) {
-      writer.uint32(88).int32(message.bucketStatus);
+      writer.uint32(80).int32(message.bucketStatus);
     }
 
     return writer;
@@ -371,18 +359,14 @@ export const BucketInfo = {
           break;
 
         case 8:
-          message.primarySpId = reader.uint32();
-          break;
-
-        case 9:
           message.globalVirtualGroupFamilyId = reader.uint32();
           break;
 
-        case 10:
+        case 9:
           message.chargedReadQuota = (reader.uint64() as Long);
           break;
 
-        case 11:
+        case 10:
           message.bucketStatus = (reader.int32() as any);
           break;
 
@@ -404,7 +388,6 @@ export const BucketInfo = {
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
       createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
-      primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0,
       globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
       chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
       bucketStatus: isSet(object.bucketStatus) ? bucketStatusFromJSON(object.bucketStatus) : 0
@@ -420,7 +403,6 @@ export const BucketInfo = {
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
     message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
-    message.primarySpId !== undefined && (obj.primarySpId = Math.round(message.primarySpId));
     message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
     message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
     message.bucketStatus !== undefined && (obj.bucketStatus = bucketStatusToJSON(message.bucketStatus));
@@ -436,7 +418,6 @@ export const BucketInfo = {
     message.sourceType = object.sourceType ?? 0;
     message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
     message.paymentAddress = object.paymentAddress ?? "";
-    message.primarySpId = object.primarySpId ?? 0;
     message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
     message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
     message.bucketStatus = object.bucketStatus ?? 0;
@@ -452,7 +433,6 @@ export const BucketInfo = {
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
       createAt: object?.create_at,
       paymentAddress: object?.payment_address,
-      primarySpId: object?.primary_sp_id,
       globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
       chargedReadQuota: object?.charged_read_quota,
       bucketStatus: isSet(object.bucket_status) ? bucketStatusFromJSON(object.bucket_status) : 0
@@ -468,7 +448,6 @@ export const BucketInfo = {
     message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
     obj.create_at = message.createAt;
     obj.payment_address = message.paymentAddress;
-    obj.primary_sp_id = message.primarySpId;
     obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
     obj.charged_read_quota = message.chargedReadQuota;
     message.bucketStatus !== undefined && (obj.bucket_status = bucketStatusToJSON(message.bucketStatus));
