@@ -2,7 +2,7 @@
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
 import { ActionType, Effect, actionTypeFromJSON, actionTypeToJSON, effectFromJSON, effectToJSON } from "../permission/common";
 import { Params, ParamsSDKType } from "./params";
-import { BucketInfo, BucketInfoSDKType, ObjectInfo, ObjectInfoSDKType, BucketMetaData, BucketMetaDataSDKType, ObjectMetaData, ObjectMetaDataSDKType, GroupMetaData, GroupMetaDataSDKType, GroupInfo, GroupInfoSDKType } from "./types";
+import { BucketInfo, BucketInfoSDKType, ObjectInfo, ObjectInfoSDKType, BucketMetaData, BucketMetaDataSDKType, ObjectMetaData, ObjectMetaDataSDKType, GroupMetaData, GroupMetaDataSDKType, GroupInfo, GroupInfoSDKType, InternalBucketInfo, InternalBucketInfoSDKType } from "./types";
 import { GlobalVirtualGroup, GlobalVirtualGroupSDKType } from "../virtualgroup/types";
 import { Policy, PolicySDKType, GroupMember, GroupMemberSDKType } from "../permission/types";
 import * as _m0 from "protobufjs/minimal";
@@ -273,6 +273,46 @@ export interface QueryLockFeeResponse {
 }
 export interface QueryLockFeeResponseSDKType {
   amount: string;
+}
+export interface QueryHeadBucketExtraRequest {
+  bucketName: string;
+}
+export interface QueryHeadBucketExtraRequestSDKType {
+  bucket_name: string;
+}
+export interface QueryHeadBucketExtraResponse {
+  extraInfo?: InternalBucketInfo;
+}
+export interface QueryHeadBucketExtraResponseSDKType {
+  extra_info?: InternalBucketInfoSDKType;
+}
+export interface QueryIsPriceChangedRequest {
+  bucketName: string;
+}
+export interface QueryIsPriceChangedRequestSDKType {
+  bucket_name: string;
+}
+export interface QueryIsPriceChangedResponse {
+  changed: boolean;
+  currentReadPrice: string;
+  currentPrimaryStorePrice: string;
+  currentSecondaryStorePrice: string;
+  currentValidatorTaxRate: string;
+  newReadPrice: string;
+  newPrimaryStorePrice: string;
+  newSecondaryStorePrice: string;
+  newValidatorTaxRate: string;
+}
+export interface QueryIsPriceChangedResponseSDKType {
+  changed: boolean;
+  current_read_price: string;
+  current_primary_store_price: string;
+  current_secondary_store_price: string;
+  current_validator_tax_rate: string;
+  new_read_price: string;
+  new_primary_store_price: string;
+  new_secondary_store_price: string;
+  new_validator_tax_rate: string;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -2960,6 +3000,394 @@ export const QueryLockFeeResponse = {
   }
 
 };
+
+function createBaseQueryHeadBucketExtraRequest(): QueryHeadBucketExtraRequest {
+  return {
+    bucketName: ""
+  };
+}
+
+export const QueryHeadBucketExtraRequest = {
+  encode(message: QueryHeadBucketExtraRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.bucketName !== "") {
+      writer.uint32(10).string(message.bucketName);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadBucketExtraRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryHeadBucketExtraRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketName = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryHeadBucketExtraRequest {
+    return {
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : ""
+    };
+  },
+
+  toJSON(message: QueryHeadBucketExtraRequest): unknown {
+    const obj: any = {};
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryHeadBucketExtraRequest>, I>>(object: I): QueryHeadBucketExtraRequest {
+    const message = createBaseQueryHeadBucketExtraRequest();
+    message.bucketName = object.bucketName ?? "";
+    return message;
+  },
+
+  fromSDK(object: QueryHeadBucketExtraRequestSDKType): QueryHeadBucketExtraRequest {
+    return {
+      bucketName: object?.bucket_name
+    };
+  },
+
+  toSDK(message: QueryHeadBucketExtraRequest): QueryHeadBucketExtraRequestSDKType {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    return obj;
+  }
+
+};
+
+function createBaseQueryHeadBucketExtraResponse(): QueryHeadBucketExtraResponse {
+  return {
+    extraInfo: undefined
+  };
+}
+
+export const QueryHeadBucketExtraResponse = {
+  encode(message: QueryHeadBucketExtraResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.extraInfo !== undefined) {
+      InternalBucketInfo.encode(message.extraInfo, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadBucketExtraResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryHeadBucketExtraResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.extraInfo = InternalBucketInfo.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryHeadBucketExtraResponse {
+    return {
+      extraInfo: isSet(object.extraInfo) ? InternalBucketInfo.fromJSON(object.extraInfo) : undefined
+    };
+  },
+
+  toJSON(message: QueryHeadBucketExtraResponse): unknown {
+    const obj: any = {};
+    message.extraInfo !== undefined && (obj.extraInfo = message.extraInfo ? InternalBucketInfo.toJSON(message.extraInfo) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryHeadBucketExtraResponse>, I>>(object: I): QueryHeadBucketExtraResponse {
+    const message = createBaseQueryHeadBucketExtraResponse();
+    message.extraInfo = object.extraInfo !== undefined && object.extraInfo !== null ? InternalBucketInfo.fromPartial(object.extraInfo) : undefined;
+    return message;
+  },
+
+  fromSDK(object: QueryHeadBucketExtraResponseSDKType): QueryHeadBucketExtraResponse {
+    return {
+      extraInfo: object.extra_info ? InternalBucketInfo.fromSDK(object.extra_info) : undefined
+    };
+  },
+
+  toSDK(message: QueryHeadBucketExtraResponse): QueryHeadBucketExtraResponseSDKType {
+    const obj: any = {};
+    message.extraInfo !== undefined && (obj.extra_info = message.extraInfo ? InternalBucketInfo.toSDK(message.extraInfo) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseQueryIsPriceChangedRequest(): QueryIsPriceChangedRequest {
+  return {
+    bucketName: ""
+  };
+}
+
+export const QueryIsPriceChangedRequest = {
+  encode(message: QueryIsPriceChangedRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.bucketName !== "") {
+      writer.uint32(10).string(message.bucketName);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryIsPriceChangedRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryIsPriceChangedRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketName = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryIsPriceChangedRequest {
+    return {
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : ""
+    };
+  },
+
+  toJSON(message: QueryIsPriceChangedRequest): unknown {
+    const obj: any = {};
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryIsPriceChangedRequest>, I>>(object: I): QueryIsPriceChangedRequest {
+    const message = createBaseQueryIsPriceChangedRequest();
+    message.bucketName = object.bucketName ?? "";
+    return message;
+  },
+
+  fromSDK(object: QueryIsPriceChangedRequestSDKType): QueryIsPriceChangedRequest {
+    return {
+      bucketName: object?.bucket_name
+    };
+  },
+
+  toSDK(message: QueryIsPriceChangedRequest): QueryIsPriceChangedRequestSDKType {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    return obj;
+  }
+
+};
+
+function createBaseQueryIsPriceChangedResponse(): QueryIsPriceChangedResponse {
+  return {
+    changed: false,
+    currentReadPrice: "",
+    currentPrimaryStorePrice: "",
+    currentSecondaryStorePrice: "",
+    currentValidatorTaxRate: "",
+    newReadPrice: "",
+    newPrimaryStorePrice: "",
+    newSecondaryStorePrice: "",
+    newValidatorTaxRate: ""
+  };
+}
+
+export const QueryIsPriceChangedResponse = {
+  encode(message: QueryIsPriceChangedResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.changed === true) {
+      writer.uint32(8).bool(message.changed);
+    }
+
+    if (message.currentReadPrice !== "") {
+      writer.uint32(18).string(message.currentReadPrice);
+    }
+
+    if (message.currentPrimaryStorePrice !== "") {
+      writer.uint32(26).string(message.currentPrimaryStorePrice);
+    }
+
+    if (message.currentSecondaryStorePrice !== "") {
+      writer.uint32(34).string(message.currentSecondaryStorePrice);
+    }
+
+    if (message.currentValidatorTaxRate !== "") {
+      writer.uint32(42).string(message.currentValidatorTaxRate);
+    }
+
+    if (message.newReadPrice !== "") {
+      writer.uint32(50).string(message.newReadPrice);
+    }
+
+    if (message.newPrimaryStorePrice !== "") {
+      writer.uint32(58).string(message.newPrimaryStorePrice);
+    }
+
+    if (message.newSecondaryStorePrice !== "") {
+      writer.uint32(66).string(message.newSecondaryStorePrice);
+    }
+
+    if (message.newValidatorTaxRate !== "") {
+      writer.uint32(74).string(message.newValidatorTaxRate);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryIsPriceChangedResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryIsPriceChangedResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.changed = reader.bool();
+          break;
+
+        case 2:
+          message.currentReadPrice = reader.string();
+          break;
+
+        case 3:
+          message.currentPrimaryStorePrice = reader.string();
+          break;
+
+        case 4:
+          message.currentSecondaryStorePrice = reader.string();
+          break;
+
+        case 5:
+          message.currentValidatorTaxRate = reader.string();
+          break;
+
+        case 6:
+          message.newReadPrice = reader.string();
+          break;
+
+        case 7:
+          message.newPrimaryStorePrice = reader.string();
+          break;
+
+        case 8:
+          message.newSecondaryStorePrice = reader.string();
+          break;
+
+        case 9:
+          message.newValidatorTaxRate = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryIsPriceChangedResponse {
+    return {
+      changed: isSet(object.changed) ? Boolean(object.changed) : false,
+      currentReadPrice: isSet(object.currentReadPrice) ? String(object.currentReadPrice) : "",
+      currentPrimaryStorePrice: isSet(object.currentPrimaryStorePrice) ? String(object.currentPrimaryStorePrice) : "",
+      currentSecondaryStorePrice: isSet(object.currentSecondaryStorePrice) ? String(object.currentSecondaryStorePrice) : "",
+      currentValidatorTaxRate: isSet(object.currentValidatorTaxRate) ? String(object.currentValidatorTaxRate) : "",
+      newReadPrice: isSet(object.newReadPrice) ? String(object.newReadPrice) : "",
+      newPrimaryStorePrice: isSet(object.newPrimaryStorePrice) ? String(object.newPrimaryStorePrice) : "",
+      newSecondaryStorePrice: isSet(object.newSecondaryStorePrice) ? String(object.newSecondaryStorePrice) : "",
+      newValidatorTaxRate: isSet(object.newValidatorTaxRate) ? String(object.newValidatorTaxRate) : ""
+    };
+  },
+
+  toJSON(message: QueryIsPriceChangedResponse): unknown {
+    const obj: any = {};
+    message.changed !== undefined && (obj.changed = message.changed);
+    message.currentReadPrice !== undefined && (obj.currentReadPrice = message.currentReadPrice);
+    message.currentPrimaryStorePrice !== undefined && (obj.currentPrimaryStorePrice = message.currentPrimaryStorePrice);
+    message.currentSecondaryStorePrice !== undefined && (obj.currentSecondaryStorePrice = message.currentSecondaryStorePrice);
+    message.currentValidatorTaxRate !== undefined && (obj.currentValidatorTaxRate = message.currentValidatorTaxRate);
+    message.newReadPrice !== undefined && (obj.newReadPrice = message.newReadPrice);
+    message.newPrimaryStorePrice !== undefined && (obj.newPrimaryStorePrice = message.newPrimaryStorePrice);
+    message.newSecondaryStorePrice !== undefined && (obj.newSecondaryStorePrice = message.newSecondaryStorePrice);
+    message.newValidatorTaxRate !== undefined && (obj.newValidatorTaxRate = message.newValidatorTaxRate);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryIsPriceChangedResponse>, I>>(object: I): QueryIsPriceChangedResponse {
+    const message = createBaseQueryIsPriceChangedResponse();
+    message.changed = object.changed ?? false;
+    message.currentReadPrice = object.currentReadPrice ?? "";
+    message.currentPrimaryStorePrice = object.currentPrimaryStorePrice ?? "";
+    message.currentSecondaryStorePrice = object.currentSecondaryStorePrice ?? "";
+    message.currentValidatorTaxRate = object.currentValidatorTaxRate ?? "";
+    message.newReadPrice = object.newReadPrice ?? "";
+    message.newPrimaryStorePrice = object.newPrimaryStorePrice ?? "";
+    message.newSecondaryStorePrice = object.newSecondaryStorePrice ?? "";
+    message.newValidatorTaxRate = object.newValidatorTaxRate ?? "";
+    return message;
+  },
+
+  fromSDK(object: QueryIsPriceChangedResponseSDKType): QueryIsPriceChangedResponse {
+    return {
+      changed: object?.changed,
+      currentReadPrice: object?.current_read_price,
+      currentPrimaryStorePrice: object?.current_primary_store_price,
+      currentSecondaryStorePrice: object?.current_secondary_store_price,
+      currentValidatorTaxRate: object?.current_validator_tax_rate,
+      newReadPrice: object?.new_read_price,
+      newPrimaryStorePrice: object?.new_primary_store_price,
+      newSecondaryStorePrice: object?.new_secondary_store_price,
+      newValidatorTaxRate: object?.new_validator_tax_rate
+    };
+  },
+
+  toSDK(message: QueryIsPriceChangedResponse): QueryIsPriceChangedResponseSDKType {
+    const obj: any = {};
+    obj.changed = message.changed;
+    obj.current_read_price = message.currentReadPrice;
+    obj.current_primary_store_price = message.currentPrimaryStorePrice;
+    obj.current_secondary_store_price = message.currentSecondaryStorePrice;
+    obj.current_validator_tax_rate = message.currentValidatorTaxRate;
+    obj.new_read_price = message.newReadPrice;
+    obj.new_primary_store_price = message.newPrimaryStorePrice;
+    obj.new_secondary_store_price = message.newSecondaryStorePrice;
+    obj.new_validator_tax_rate = message.newValidatorTaxRate;
+    return obj;
+  }
+
+};
 /** Query defines the gRPC querier service. */
 
 export interface Query {
@@ -3022,6 +3450,12 @@ export interface Query {
   /** Queries lock fee for storing an object */
 
   QueryLockFee(request: QueryLockFeeRequest): Promise<QueryLockFeeResponse>;
+  /** Queries a bucket extra info (with gvg bindings and price time) with specify name. */
+
+  HeadBucketExtra(request: QueryHeadBucketExtraRequest): Promise<QueryHeadBucketExtraResponse>;
+  /** Queries whether read and storage prices changed for the bucket. */
+
+  QueryIsPriceChanged(request: QueryIsPriceChangedRequest): Promise<QueryIsPriceChangedResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -3048,6 +3482,8 @@ export class QueryClientImpl implements Query {
     this.QueryPolicyForGroup = this.QueryPolicyForGroup.bind(this);
     this.QueryPolicyById = this.QueryPolicyById.bind(this);
     this.QueryLockFee = this.QueryLockFee.bind(this);
+    this.HeadBucketExtra = this.HeadBucketExtra.bind(this);
+    this.QueryIsPriceChanged = this.QueryIsPriceChanged.bind(this);
   }
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
@@ -3170,6 +3606,18 @@ export class QueryClientImpl implements Query {
     const data = QueryLockFeeRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryLockFee", data);
     return promise.then(data => QueryLockFeeResponse.decode(new _m0.Reader(data)));
+  }
+
+  HeadBucketExtra(request: QueryHeadBucketExtraRequest): Promise<QueryHeadBucketExtraResponse> {
+    const data = QueryHeadBucketExtraRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Query", "HeadBucketExtra", data);
+    return promise.then(data => QueryHeadBucketExtraResponse.decode(new _m0.Reader(data)));
+  }
+
+  QueryIsPriceChanged(request: QueryIsPriceChangedRequest): Promise<QueryIsPriceChangedResponse> {
+    const data = QueryIsPriceChangedRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Query", "QueryIsPriceChanged", data);
+    return promise.then(data => QueryIsPriceChangedResponse.decode(new _m0.Reader(data)));
   }
 
 }

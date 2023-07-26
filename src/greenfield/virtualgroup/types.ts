@@ -53,6 +53,9 @@ export interface GlobalVirtualGroupSDKType {
 export interface GlobalVirtualGroupFamily {
   /** id is the identifier of the global virtual group family. */
   id: number;
+  /** primary_sp_id */
+
+  primarySpId: number;
   /** global_virtual_group_ids is a list of identifiers of the global virtual groups associated with the family. */
 
   globalVirtualGroupIds: number[];
@@ -67,6 +70,7 @@ export interface GlobalVirtualGroupFamily {
 
 export interface GlobalVirtualGroupFamilySDKType {
   id: number;
+  primary_sp_id: number;
   global_virtual_group_ids: number[];
   virtual_payment_address: string;
 }
@@ -88,6 +92,9 @@ export interface GlobalVirtualGroupsBindingOnBucketSDKType {
 export interface GVGStatisticsWithinSP {
   /** storage_provider_id defines the id of the sp which the statistics associated to */
   storageProviderId: number;
+  /** primary_sp_family_count defines the number of the family which this sp serves as primary sp */
+
+  primaryCount: number;
   /**
    * secondary_count defines the number of global virtual groups (GVGs) in
    * which this storage provider serves as a secondary storage provider.
@@ -97,6 +104,7 @@ export interface GVGStatisticsWithinSP {
 }
 export interface GVGStatisticsWithinSPSDKType {
   storage_provider_id: number;
+  primary_count: number;
   secondary_count: number;
 }
 export interface SwapOutInfo {
@@ -292,6 +300,7 @@ export const GlobalVirtualGroup = {
 function createBaseGlobalVirtualGroupFamily(): GlobalVirtualGroupFamily {
   return {
     id: 0,
+    primarySpId: 0,
     globalVirtualGroupIds: [],
     virtualPaymentAddress: ""
   };
@@ -303,7 +312,11 @@ export const GlobalVirtualGroupFamily = {
       writer.uint32(8).uint32(message.id);
     }
 
-    writer.uint32(18).fork();
+    if (message.primarySpId !== 0) {
+      writer.uint32(16).uint32(message.primarySpId);
+    }
+
+    writer.uint32(26).fork();
 
     for (const v of message.globalVirtualGroupIds) {
       writer.uint32(v);
@@ -312,7 +325,7 @@ export const GlobalVirtualGroupFamily = {
     writer.ldelim();
 
     if (message.virtualPaymentAddress !== "") {
-      writer.uint32(26).string(message.virtualPaymentAddress);
+      writer.uint32(34).string(message.virtualPaymentAddress);
     }
 
     return writer;
@@ -332,6 +345,10 @@ export const GlobalVirtualGroupFamily = {
           break;
 
         case 2:
+          message.primarySpId = reader.uint32();
+          break;
+
+        case 3:
           if ((tag & 7) === 2) {
             const end2 = reader.uint32() + reader.pos;
 
@@ -344,7 +361,7 @@ export const GlobalVirtualGroupFamily = {
 
           break;
 
-        case 3:
+        case 4:
           message.virtualPaymentAddress = reader.string();
           break;
 
@@ -360,6 +377,7 @@ export const GlobalVirtualGroupFamily = {
   fromJSON(object: any): GlobalVirtualGroupFamily {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
+      primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0,
       globalVirtualGroupIds: Array.isArray(object?.globalVirtualGroupIds) ? object.globalVirtualGroupIds.map((e: any) => Number(e)) : [],
       virtualPaymentAddress: isSet(object.virtualPaymentAddress) ? String(object.virtualPaymentAddress) : ""
     };
@@ -368,6 +386,7 @@ export const GlobalVirtualGroupFamily = {
   toJSON(message: GlobalVirtualGroupFamily): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
+    message.primarySpId !== undefined && (obj.primarySpId = Math.round(message.primarySpId));
 
     if (message.globalVirtualGroupIds) {
       obj.globalVirtualGroupIds = message.globalVirtualGroupIds.map(e => Math.round(e));
@@ -382,6 +401,7 @@ export const GlobalVirtualGroupFamily = {
   fromPartial<I extends Exact<DeepPartial<GlobalVirtualGroupFamily>, I>>(object: I): GlobalVirtualGroupFamily {
     const message = createBaseGlobalVirtualGroupFamily();
     message.id = object.id ?? 0;
+    message.primarySpId = object.primarySpId ?? 0;
     message.globalVirtualGroupIds = object.globalVirtualGroupIds?.map(e => e) || [];
     message.virtualPaymentAddress = object.virtualPaymentAddress ?? "";
     return message;
@@ -390,6 +410,7 @@ export const GlobalVirtualGroupFamily = {
   fromSDK(object: GlobalVirtualGroupFamilySDKType): GlobalVirtualGroupFamily {
     return {
       id: object?.id,
+      primarySpId: object?.primary_sp_id,
       globalVirtualGroupIds: Array.isArray(object?.global_virtual_group_ids) ? object.global_virtual_group_ids.map((e: any) => e) : [],
       virtualPaymentAddress: object?.virtual_payment_address
     };
@@ -398,6 +419,7 @@ export const GlobalVirtualGroupFamily = {
   toSDK(message: GlobalVirtualGroupFamily): GlobalVirtualGroupFamilySDKType {
     const obj: any = {};
     obj.id = message.id;
+    obj.primary_sp_id = message.primarySpId;
 
     if (message.globalVirtualGroupIds) {
       obj.global_virtual_group_ids = message.globalVirtualGroupIds.map(e => e);
@@ -557,6 +579,7 @@ export const GlobalVirtualGroupsBindingOnBucket = {
 function createBaseGVGStatisticsWithinSP(): GVGStatisticsWithinSP {
   return {
     storageProviderId: 0,
+    primaryCount: 0,
     secondaryCount: 0
   };
 }
@@ -565,6 +588,10 @@ export const GVGStatisticsWithinSP = {
   encode(message: GVGStatisticsWithinSP, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProviderId !== 0) {
       writer.uint32(8).uint32(message.storageProviderId);
+    }
+
+    if (message.primaryCount !== 0) {
+      writer.uint32(16).uint32(message.primaryCount);
     }
 
     if (message.secondaryCount !== 0) {
@@ -587,6 +614,10 @@ export const GVGStatisticsWithinSP = {
           message.storageProviderId = reader.uint32();
           break;
 
+        case 2:
+          message.primaryCount = reader.uint32();
+          break;
+
         case 3:
           message.secondaryCount = reader.uint32();
           break;
@@ -603,6 +634,7 @@ export const GVGStatisticsWithinSP = {
   fromJSON(object: any): GVGStatisticsWithinSP {
     return {
       storageProviderId: isSet(object.storageProviderId) ? Number(object.storageProviderId) : 0,
+      primaryCount: isSet(object.primaryCount) ? Number(object.primaryCount) : 0,
       secondaryCount: isSet(object.secondaryCount) ? Number(object.secondaryCount) : 0
     };
   },
@@ -610,6 +642,7 @@ export const GVGStatisticsWithinSP = {
   toJSON(message: GVGStatisticsWithinSP): unknown {
     const obj: any = {};
     message.storageProviderId !== undefined && (obj.storageProviderId = Math.round(message.storageProviderId));
+    message.primaryCount !== undefined && (obj.primaryCount = Math.round(message.primaryCount));
     message.secondaryCount !== undefined && (obj.secondaryCount = Math.round(message.secondaryCount));
     return obj;
   },
@@ -617,6 +650,7 @@ export const GVGStatisticsWithinSP = {
   fromPartial<I extends Exact<DeepPartial<GVGStatisticsWithinSP>, I>>(object: I): GVGStatisticsWithinSP {
     const message = createBaseGVGStatisticsWithinSP();
     message.storageProviderId = object.storageProviderId ?? 0;
+    message.primaryCount = object.primaryCount ?? 0;
     message.secondaryCount = object.secondaryCount ?? 0;
     return message;
   },
@@ -624,6 +658,7 @@ export const GVGStatisticsWithinSP = {
   fromSDK(object: GVGStatisticsWithinSPSDKType): GVGStatisticsWithinSP {
     return {
       storageProviderId: object?.storage_provider_id,
+      primaryCount: object?.primary_count,
       secondaryCount: object?.secondary_count
     };
   },
@@ -631,6 +666,7 @@ export const GVGStatisticsWithinSP = {
   toSDK(message: GVGStatisticsWithinSP): GVGStatisticsWithinSPSDKType {
     const obj: any = {};
     obj.storage_provider_id = message.storageProviderId;
+    obj.primary_count = message.primaryCount;
     obj.secondary_count = message.secondaryCount;
     return obj;
   }
