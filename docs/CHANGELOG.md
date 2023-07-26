@@ -1,3 +1,10 @@
+# [0.4.0-alpha.17](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.16...v0.4.0-alpha.17) (2023-07-26)
+
+
+### Features
+
+* Greenfield-cosmos-sdk v0.2.3-alpha.4 and greenfield v0.2.3-alpha.6 ([5f63aef](https://github.com/bnb-chain/greenfield-cosmos-types/commit/5f63aefbd58214633791c46360178df50d853184))
+
 # [0.4.0-alpha.16](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.15...v0.4.0-alpha.16) (2023-07-17)
 
 
