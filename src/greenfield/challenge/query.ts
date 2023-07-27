@@ -21,6 +21,27 @@ export interface QueryParamsResponse {
 export interface QueryParamsResponseSDKType {
   params?: ParamsSDKType;
 }
+/** QueryAttestedChallengeRequest is request type for the Query/AttestedChallenge RPC method. */
+
+export interface QueryAttestedChallengeRequest {
+  /** The id of the challenge. */
+  challengeId: Long;
+}
+/** QueryAttestedChallengeRequest is request type for the Query/AttestedChallenge RPC method. */
+
+export interface QueryAttestedChallengeRequestSDKType {
+  challenge_id: Long;
+}
+/** QueryAttestedChallengeResponse is response type for the Query/AttestedChallenge RPC method. */
+
+export interface QueryAttestedChallengeResponse {
+  challenge?: AttestedChallenge;
+}
+/** QueryAttestedChallengeResponse is response type for the Query/AttestedChallenge RPC method. */
+
+export interface QueryAttestedChallengeResponseSDKType {
+  challenge?: AttestedChallengeSDKType;
+}
 /** QueryLatestAttestedChallengesRequest is request type for the Query/LatestAttestedChallenges RPC method. */
 
 export interface QueryLatestAttestedChallengesRequest {}
@@ -184,6 +205,144 @@ export const QueryParamsResponse = {
   toSDK(message: QueryParamsResponse): QueryParamsResponseSDKType {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
+    return obj;
+  }
+
+};
+
+function createBaseQueryAttestedChallengeRequest(): QueryAttestedChallengeRequest {
+  return {
+    challengeId: Long.UZERO
+  };
+}
+
+export const QueryAttestedChallengeRequest = {
+  encode(message: QueryAttestedChallengeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.challengeId.isZero()) {
+      writer.uint32(8).uint64(message.challengeId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAttestedChallengeRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAttestedChallengeRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.challengeId = (reader.uint64() as Long);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryAttestedChallengeRequest {
+    return {
+      challengeId: isSet(object.challengeId) ? Long.fromValue(object.challengeId) : Long.UZERO
+    };
+  },
+
+  toJSON(message: QueryAttestedChallengeRequest): unknown {
+    const obj: any = {};
+    message.challengeId !== undefined && (obj.challengeId = (message.challengeId || Long.UZERO).toString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAttestedChallengeRequest>, I>>(object: I): QueryAttestedChallengeRequest {
+    const message = createBaseQueryAttestedChallengeRequest();
+    message.challengeId = object.challengeId !== undefined && object.challengeId !== null ? Long.fromValue(object.challengeId) : Long.UZERO;
+    return message;
+  },
+
+  fromSDK(object: QueryAttestedChallengeRequestSDKType): QueryAttestedChallengeRequest {
+    return {
+      challengeId: object?.challenge_id
+    };
+  },
+
+  toSDK(message: QueryAttestedChallengeRequest): QueryAttestedChallengeRequestSDKType {
+    const obj: any = {};
+    obj.challenge_id = message.challengeId;
+    return obj;
+  }
+
+};
+
+function createBaseQueryAttestedChallengeResponse(): QueryAttestedChallengeResponse {
+  return {
+    challenge: undefined
+  };
+}
+
+export const QueryAttestedChallengeResponse = {
+  encode(message: QueryAttestedChallengeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.challenge !== undefined) {
+      AttestedChallenge.encode(message.challenge, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAttestedChallengeResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAttestedChallengeResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.challenge = AttestedChallenge.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryAttestedChallengeResponse {
+    return {
+      challenge: isSet(object.challenge) ? AttestedChallenge.fromJSON(object.challenge) : undefined
+    };
+  },
+
+  toJSON(message: QueryAttestedChallengeResponse): unknown {
+    const obj: any = {};
+    message.challenge !== undefined && (obj.challenge = message.challenge ? AttestedChallenge.toJSON(message.challenge) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAttestedChallengeResponse>, I>>(object: I): QueryAttestedChallengeResponse {
+    const message = createBaseQueryAttestedChallengeResponse();
+    message.challenge = object.challenge !== undefined && object.challenge !== null ? AttestedChallenge.fromPartial(object.challenge) : undefined;
+    return message;
+  },
+
+  fromSDK(object: QueryAttestedChallengeResponseSDKType): QueryAttestedChallengeResponse {
+    return {
+      challenge: object.challenge ? AttestedChallenge.fromSDK(object.challenge) : undefined
+    };
+  },
+
+  toSDK(message: QueryAttestedChallengeResponse): QueryAttestedChallengeResponseSDKType {
+    const obj: any = {};
+    message.challenge !== undefined && (obj.challenge = message.challenge ? AttestedChallenge.toSDK(message.challenge) : undefined);
     return obj;
   }
 
@@ -544,6 +703,9 @@ export const SubmitInterval = {
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
+  /** Queries the attested challenge by challenge id. */
+
+  AttestedChallenge(request: QueryAttestedChallengeRequest): Promise<QueryAttestedChallengeResponse>;
   /** Queries the latest attested challenges. */
 
   LatestAttestedChallenges(request?: QueryLatestAttestedChallengesRequest): Promise<QueryLatestAttestedChallengesResponse>;
@@ -557,6 +719,7 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
+    this.AttestedChallenge = this.AttestedChallenge.bind(this);
     this.LatestAttestedChallenges = this.LatestAttestedChallenges.bind(this);
     this.InturnAttestationSubmitter = this.InturnAttestationSubmitter.bind(this);
   }
@@ -565,6 +728,12 @@ export class QueryClientImpl implements Query {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.challenge.Query", "Params", data);
     return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+  }
+
+  AttestedChallenge(request: QueryAttestedChallengeRequest): Promise<QueryAttestedChallengeResponse> {
+    const data = QueryAttestedChallengeRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.challenge.Query", "AttestedChallenge", data);
+    return promise.then(data => QueryAttestedChallengeResponse.decode(new _m0.Reader(data)));
   }
 
   LatestAttestedChallenges(request: QueryLatestAttestedChallengesRequest = {}): Promise<QueryLatestAttestedChallengesResponse> {

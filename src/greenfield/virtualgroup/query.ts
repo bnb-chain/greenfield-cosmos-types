@@ -35,11 +35,9 @@ export interface QueryGlobalVirtualGroupResponseSDKType {
   global_virtual_group?: GlobalVirtualGroupSDKType;
 }
 export interface QueryGlobalVirtualGroupByFamilyIDRequest {
-  storageProviderId: number;
   globalVirtualGroupFamilyId: number;
 }
 export interface QueryGlobalVirtualGroupByFamilyIDRequestSDKType {
-  storage_provider_id: number;
   global_virtual_group_family_id: number;
 }
 export interface QueryGlobalVirtualGroupByFamilyIDResponse {
@@ -352,19 +350,14 @@ export const QueryGlobalVirtualGroupResponse = {
 
 function createBaseQueryGlobalVirtualGroupByFamilyIDRequest(): QueryGlobalVirtualGroupByFamilyIDRequest {
   return {
-    storageProviderId: 0,
     globalVirtualGroupFamilyId: 0
   };
 }
 
 export const QueryGlobalVirtualGroupByFamilyIDRequest = {
   encode(message: QueryGlobalVirtualGroupByFamilyIDRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.storageProviderId !== 0) {
-      writer.uint32(8).uint32(message.storageProviderId);
-    }
-
     if (message.globalVirtualGroupFamilyId !== 0) {
-      writer.uint32(16).uint32(message.globalVirtualGroupFamilyId);
+      writer.uint32(8).uint32(message.globalVirtualGroupFamilyId);
     }
 
     return writer;
@@ -380,10 +373,6 @@ export const QueryGlobalVirtualGroupByFamilyIDRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.storageProviderId = reader.uint32();
-          break;
-
-        case 2:
           message.globalVirtualGroupFamilyId = reader.uint32();
           break;
 
@@ -398,35 +387,30 @@ export const QueryGlobalVirtualGroupByFamilyIDRequest = {
 
   fromJSON(object: any): QueryGlobalVirtualGroupByFamilyIDRequest {
     return {
-      storageProviderId: isSet(object.storageProviderId) ? Number(object.storageProviderId) : 0,
       globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0
     };
   },
 
   toJSON(message: QueryGlobalVirtualGroupByFamilyIDRequest): unknown {
     const obj: any = {};
-    message.storageProviderId !== undefined && (obj.storageProviderId = Math.round(message.storageProviderId));
     message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryGlobalVirtualGroupByFamilyIDRequest>, I>>(object: I): QueryGlobalVirtualGroupByFamilyIDRequest {
     const message = createBaseQueryGlobalVirtualGroupByFamilyIDRequest();
-    message.storageProviderId = object.storageProviderId ?? 0;
     message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
     return message;
   },
 
   fromSDK(object: QueryGlobalVirtualGroupByFamilyIDRequestSDKType): QueryGlobalVirtualGroupByFamilyIDRequest {
     return {
-      storageProviderId: object?.storage_provider_id,
       globalVirtualGroupFamilyId: object?.global_virtual_group_family_id
     };
   },
 
   toSDK(message: QueryGlobalVirtualGroupByFamilyIDRequest): QueryGlobalVirtualGroupByFamilyIDRequestSDKType {
     const obj: any = {};
-    obj.storage_provider_id = message.storageProviderId;
     obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
     return obj;
   }

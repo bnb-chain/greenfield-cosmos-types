@@ -40,6 +40,12 @@ export interface Params {
   /** The number of kept attested challenge ids, which can be queried by clients. */
 
   attestationKeptCount: Long;
+  /** The max slash amount for a sp in a counting window. */
+
+  spSlashMaxAmount: string;
+  /** The number of blocks to count how much a sp had been slashed. */
+
+  spSlashCountingWindow: Long;
 }
 /** Params defines the parameters for the module. */
 
@@ -56,6 +62,8 @@ export interface ParamsSDKType {
   heartbeat_interval: Long;
   attestation_inturn_interval: Long;
   attestation_kept_count: Long;
+  sp_slash_max_amount: string;
+  sp_slash_counting_window: Long;
 }
 
 function createBaseParams(): Params {
@@ -71,7 +79,9 @@ function createBaseParams(): Params {
     rewardSubmitterThreshold: "",
     heartbeatInterval: Long.UZERO,
     attestationInturnInterval: Long.UZERO,
-    attestationKeptCount: Long.UZERO
+    attestationKeptCount: Long.UZERO,
+    spSlashMaxAmount: "",
+    spSlashCountingWindow: Long.UZERO
   };
 }
 
@@ -123,6 +133,14 @@ export const Params = {
 
     if (!message.attestationKeptCount.isZero()) {
       writer.uint32(96).uint64(message.attestationKeptCount);
+    }
+
+    if (message.spSlashMaxAmount !== "") {
+      writer.uint32(106).string(message.spSlashMaxAmount);
+    }
+
+    if (!message.spSlashCountingWindow.isZero()) {
+      writer.uint32(112).uint64(message.spSlashCountingWindow);
     }
 
     return writer;
@@ -185,6 +203,14 @@ export const Params = {
           message.attestationKeptCount = (reader.uint64() as Long);
           break;
 
+        case 13:
+          message.spSlashMaxAmount = reader.string();
+          break;
+
+        case 14:
+          message.spSlashCountingWindow = (reader.uint64() as Long);
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -207,7 +233,9 @@ export const Params = {
       rewardSubmitterThreshold: isSet(object.rewardSubmitterThreshold) ? String(object.rewardSubmitterThreshold) : "",
       heartbeatInterval: isSet(object.heartbeatInterval) ? Long.fromValue(object.heartbeatInterval) : Long.UZERO,
       attestationInturnInterval: isSet(object.attestationInturnInterval) ? Long.fromValue(object.attestationInturnInterval) : Long.UZERO,
-      attestationKeptCount: isSet(object.attestationKeptCount) ? Long.fromValue(object.attestationKeptCount) : Long.UZERO
+      attestationKeptCount: isSet(object.attestationKeptCount) ? Long.fromValue(object.attestationKeptCount) : Long.UZERO,
+      spSlashMaxAmount: isSet(object.spSlashMaxAmount) ? String(object.spSlashMaxAmount) : "",
+      spSlashCountingWindow: isSet(object.spSlashCountingWindow) ? Long.fromValue(object.spSlashCountingWindow) : Long.UZERO
     };
   },
 
@@ -225,6 +253,8 @@ export const Params = {
     message.heartbeatInterval !== undefined && (obj.heartbeatInterval = (message.heartbeatInterval || Long.UZERO).toString());
     message.attestationInturnInterval !== undefined && (obj.attestationInturnInterval = (message.attestationInturnInterval || Long.UZERO).toString());
     message.attestationKeptCount !== undefined && (obj.attestationKeptCount = (message.attestationKeptCount || Long.UZERO).toString());
+    message.spSlashMaxAmount !== undefined && (obj.spSlashMaxAmount = message.spSlashMaxAmount);
+    message.spSlashCountingWindow !== undefined && (obj.spSlashCountingWindow = (message.spSlashCountingWindow || Long.UZERO).toString());
     return obj;
   },
 
@@ -242,6 +272,8 @@ export const Params = {
     message.heartbeatInterval = object.heartbeatInterval !== undefined && object.heartbeatInterval !== null ? Long.fromValue(object.heartbeatInterval) : Long.UZERO;
     message.attestationInturnInterval = object.attestationInturnInterval !== undefined && object.attestationInturnInterval !== null ? Long.fromValue(object.attestationInturnInterval) : Long.UZERO;
     message.attestationKeptCount = object.attestationKeptCount !== undefined && object.attestationKeptCount !== null ? Long.fromValue(object.attestationKeptCount) : Long.UZERO;
+    message.spSlashMaxAmount = object.spSlashMaxAmount ?? "";
+    message.spSlashCountingWindow = object.spSlashCountingWindow !== undefined && object.spSlashCountingWindow !== null ? Long.fromValue(object.spSlashCountingWindow) : Long.UZERO;
     return message;
   },
 
@@ -258,7 +290,9 @@ export const Params = {
       rewardSubmitterThreshold: object?.reward_submitter_threshold,
       heartbeatInterval: object?.heartbeat_interval,
       attestationInturnInterval: object?.attestation_inturn_interval,
-      attestationKeptCount: object?.attestation_kept_count
+      attestationKeptCount: object?.attestation_kept_count,
+      spSlashMaxAmount: object?.sp_slash_max_amount,
+      spSlashCountingWindow: object?.sp_slash_counting_window
     };
   },
 
@@ -276,6 +310,8 @@ export const Params = {
     obj.heartbeat_interval = message.heartbeatInterval;
     obj.attestation_inturn_interval = message.attestationInturnInterval;
     obj.attestation_kept_count = message.attestationKeptCount;
+    obj.sp_slash_max_amount = message.spSlashMaxAmount;
+    obj.sp_slash_counting_window = message.spSlashCountingWindow;
     return obj;
   }
 
