@@ -37,10 +37,15 @@ export interface MsgSubmitSDKType {
 }
 /** MsgSubmitResponse defines the response of MsgSubmit. */
 
-export interface MsgSubmitResponse {}
+export interface MsgSubmitResponse {
+  /** The id of the challenge. */
+  challengeId: Long;
+}
 /** MsgSubmitResponse defines the response of MsgSubmit. */
 
-export interface MsgSubmitResponseSDKType {}
+export interface MsgSubmitResponseSDKType {
+  challenge_id: Long;
+}
 /** MsgSubmit defines the message for attesting challenges. */
 
 export interface MsgAttest {
@@ -251,11 +256,17 @@ export const MsgSubmit = {
 };
 
 function createBaseMsgSubmitResponse(): MsgSubmitResponse {
-  return {};
+  return {
+    challengeId: Long.UZERO
+  };
 }
 
 export const MsgSubmitResponse = {
-  encode(_: MsgSubmitResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgSubmitResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.challengeId.isZero()) {
+      writer.uint32(8).uint64(message.challengeId);
+    }
+
     return writer;
   },
 
@@ -268,6 +279,10 @@ export const MsgSubmitResponse = {
       const tag = reader.uint32();
 
       switch (tag >>> 3) {
+        case 1:
+          message.challengeId = (reader.uint64() as Long);
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -277,26 +292,33 @@ export const MsgSubmitResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgSubmitResponse {
-    return {};
+  fromJSON(object: any): MsgSubmitResponse {
+    return {
+      challengeId: isSet(object.challengeId) ? Long.fromValue(object.challengeId) : Long.UZERO
+    };
   },
 
-  toJSON(_: MsgSubmitResponse): unknown {
+  toJSON(message: MsgSubmitResponse): unknown {
     const obj: any = {};
+    message.challengeId !== undefined && (obj.challengeId = (message.challengeId || Long.UZERO).toString());
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<MsgSubmitResponse>, I>>(_: I): MsgSubmitResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgSubmitResponse>, I>>(object: I): MsgSubmitResponse {
     const message = createBaseMsgSubmitResponse();
+    message.challengeId = object.challengeId !== undefined && object.challengeId !== null ? Long.fromValue(object.challengeId) : Long.UZERO;
     return message;
   },
 
-  fromSDK(_: MsgSubmitResponseSDKType): MsgSubmitResponse {
-    return {};
+  fromSDK(object: MsgSubmitResponseSDKType): MsgSubmitResponse {
+    return {
+      challengeId: object?.challenge_id
+    };
   },
 
-  toSDK(_: MsgSubmitResponse): MsgSubmitResponseSDKType {
+  toSDK(message: MsgSubmitResponse): MsgSubmitResponseSDKType {
     const obj: any = {};
+    obj.challenge_id = message.challengeId;
     return obj;
   }
 
