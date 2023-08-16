@@ -9,7 +9,7 @@ export enum Status {
   STATUS_IN_SERVICE = 0,
   STATUS_IN_JAILED = 1,
   STATUS_GRACEFUL_EXITING = 2,
-  STATUS_OUT_OF_SERVICE = 3,
+  STATUS_IN_MAINTENANCE = 3,
   UNRECOGNIZED = -1,
 }
 export const StatusSDKType = Status;
@@ -28,8 +28,8 @@ export function statusFromJSON(object: any): Status {
       return Status.STATUS_GRACEFUL_EXITING;
 
     case 3:
-    case "STATUS_OUT_OF_SERVICE":
-      return Status.STATUS_OUT_OF_SERVICE;
+    case "STATUS_IN_MAINTENANCE":
+      return Status.STATUS_IN_MAINTENANCE;
 
     case -1:
     case "UNRECOGNIZED":
@@ -48,8 +48,8 @@ export function statusToJSON(object: Status): string {
     case Status.STATUS_GRACEFUL_EXITING:
       return "STATUS_GRACEFUL_EXITING";
 
-    case Status.STATUS_OUT_OF_SERVICE:
-      return "STATUS_OUT_OF_SERVICE";
+    case Status.STATUS_IN_MAINTENANCE:
+      return "STATUS_IN_MAINTENANCE";
 
     case Status.UNRECOGNIZED:
     default:
@@ -103,6 +103,9 @@ export interface StorageProvider {
   /** gc_address defines one of the storage provider's accounts which is used for gc purpose. */
 
   gcAddress: string;
+  /** maintenance_address defines one of the storage provider's accounts which is used for testing while in maintenance mode */
+
+  maintenanceAddress: string;
   /** total_deposit defines the number of tokens deposited by this storage provider for staking. */
 
   totalDeposit: string;
@@ -128,6 +131,7 @@ export interface StorageProviderSDKType {
   seal_address: string;
   approval_address: string;
   gc_address: string;
+  maintenance_address: string;
   total_deposit: string;
   status: Status;
   endpoint: string;
@@ -183,6 +187,35 @@ export interface SecondarySpStorePrice {
 export interface SecondarySpStorePriceSDKType {
   update_time_sec: Long;
   store_price: string;
+}
+export interface SpMaintenanceStats {
+  records: MaintenanceRecord[];
+}
+export interface SpMaintenanceStatsSDKType {
+  records: MaintenanceRecordSDKType[];
+}
+/** MaintenanceRecord is to keep track of every time a sp request to be in Maintenance mode */
+
+export interface MaintenanceRecord {
+  /** block height that request to be in Maintenance mode */
+  height: Long;
+  /** request duration */
+
+  requestDuration: Long;
+  /** actual duration */
+
+  actualDuration: Long;
+  /** request timestamp */
+
+  requestAt: Long;
+}
+/** MaintenanceRecord is to keep track of every time a sp request to be in Maintenance mode */
+
+export interface MaintenanceRecordSDKType {
+  height: Long;
+  request_duration: Long;
+  actual_duration: Long;
+  request_at: Long;
 }
 
 function createBaseDescription(): Description {
@@ -318,6 +351,7 @@ function createBaseStorageProvider(): StorageProvider {
     sealAddress: "",
     approvalAddress: "",
     gcAddress: "",
+    maintenanceAddress: "",
     totalDeposit: "",
     status: 0,
     endpoint: "",
@@ -352,24 +386,28 @@ export const StorageProvider = {
       writer.uint32(50).string(message.gcAddress);
     }
 
+    if (message.maintenanceAddress !== "") {
+      writer.uint32(58).string(message.maintenanceAddress);
+    }
+
     if (message.totalDeposit !== "") {
-      writer.uint32(58).string(message.totalDeposit);
+      writer.uint32(66).string(message.totalDeposit);
     }
 
     if (message.status !== 0) {
-      writer.uint32(64).int32(message.status);
+      writer.uint32(72).int32(message.status);
     }
 
     if (message.endpoint !== "") {
-      writer.uint32(74).string(message.endpoint);
+      writer.uint32(82).string(message.endpoint);
     }
 
     if (message.description !== undefined) {
-      Description.encode(message.description, writer.uint32(82).fork()).ldelim();
+      Description.encode(message.description, writer.uint32(90).fork()).ldelim();
     }
 
     if (message.blsKey.length !== 0) {
-      writer.uint32(90).bytes(message.blsKey);
+      writer.uint32(98).bytes(message.blsKey);
     }
 
     return writer;
@@ -409,22 +447,26 @@ export const StorageProvider = {
           break;
 
         case 7:
-          message.totalDeposit = reader.string();
+          message.maintenanceAddress = reader.string();
           break;
 
         case 8:
-          message.status = (reader.int32() as any);
+          message.totalDeposit = reader.string();
           break;
 
         case 9:
-          message.endpoint = reader.string();
+          message.status = (reader.int32() as any);
           break;
 
         case 10:
-          message.description = Description.decode(reader, reader.uint32());
+          message.endpoint = reader.string();
           break;
 
         case 11:
+          message.description = Description.decode(reader, reader.uint32());
+          break;
+
+        case 12:
           message.blsKey = reader.bytes();
           break;
 
@@ -445,6 +487,7 @@ export const StorageProvider = {
       sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
       approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
       gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : "",
+      maintenanceAddress: isSet(object.maintenanceAddress) ? String(object.maintenanceAddress) : "",
       totalDeposit: isSet(object.totalDeposit) ? String(object.totalDeposit) : "",
       status: isSet(object.status) ? statusFromJSON(object.status) : 0,
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
@@ -461,6 +504,7 @@ export const StorageProvider = {
     message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
     message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
     message.gcAddress !== undefined && (obj.gcAddress = message.gcAddress);
+    message.maintenanceAddress !== undefined && (obj.maintenanceAddress = message.maintenanceAddress);
     message.totalDeposit !== undefined && (obj.totalDeposit = message.totalDeposit);
     message.status !== undefined && (obj.status = statusToJSON(message.status));
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
@@ -477,6 +521,7 @@ export const StorageProvider = {
     message.sealAddress = object.sealAddress ?? "";
     message.approvalAddress = object.approvalAddress ?? "";
     message.gcAddress = object.gcAddress ?? "";
+    message.maintenanceAddress = object.maintenanceAddress ?? "";
     message.totalDeposit = object.totalDeposit ?? "";
     message.status = object.status ?? 0;
     message.endpoint = object.endpoint ?? "";
@@ -493,6 +538,7 @@ export const StorageProvider = {
       sealAddress: object?.seal_address,
       approvalAddress: object?.approval_address,
       gcAddress: object?.gc_address,
+      maintenanceAddress: object?.maintenance_address,
       totalDeposit: object?.total_deposit,
       status: isSet(object.status) ? statusFromJSON(object.status) : 0,
       endpoint: object?.endpoint,
@@ -509,6 +555,7 @@ export const StorageProvider = {
     obj.seal_address = message.sealAddress;
     obj.approval_address = message.approvalAddress;
     obj.gc_address = message.gcAddress;
+    obj.maintenance_address = message.maintenanceAddress;
     obj.total_deposit = message.totalDeposit;
     message.status !== undefined && (obj.status = statusToJSON(message.status));
     obj.endpoint = message.endpoint;
@@ -805,6 +852,198 @@ export const SecondarySpStorePrice = {
     const obj: any = {};
     obj.update_time_sec = message.updateTimeSec;
     obj.store_price = message.storePrice;
+    return obj;
+  }
+
+};
+
+function createBaseSpMaintenanceStats(): SpMaintenanceStats {
+  return {
+    records: []
+  };
+}
+
+export const SpMaintenanceStats = {
+  encode(message: SpMaintenanceStats, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.records) {
+      MaintenanceRecord.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SpMaintenanceStats {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSpMaintenanceStats();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.records.push(MaintenanceRecord.decode(reader, reader.uint32()));
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): SpMaintenanceStats {
+    return {
+      records: Array.isArray(object?.records) ? object.records.map((e: any) => MaintenanceRecord.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: SpMaintenanceStats): unknown {
+    const obj: any = {};
+
+    if (message.records) {
+      obj.records = message.records.map(e => e ? MaintenanceRecord.toJSON(e) : undefined);
+    } else {
+      obj.records = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SpMaintenanceStats>, I>>(object: I): SpMaintenanceStats {
+    const message = createBaseSpMaintenanceStats();
+    message.records = object.records?.map(e => MaintenanceRecord.fromPartial(e)) || [];
+    return message;
+  },
+
+  fromSDK(object: SpMaintenanceStatsSDKType): SpMaintenanceStats {
+    return {
+      records: Array.isArray(object?.records) ? object.records.map((e: any) => MaintenanceRecord.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: SpMaintenanceStats): SpMaintenanceStatsSDKType {
+    const obj: any = {};
+
+    if (message.records) {
+      obj.records = message.records.map(e => e ? MaintenanceRecord.toSDK(e) : undefined);
+    } else {
+      obj.records = [];
+    }
+
+    return obj;
+  }
+
+};
+
+function createBaseMaintenanceRecord(): MaintenanceRecord {
+  return {
+    height: Long.ZERO,
+    requestDuration: Long.ZERO,
+    actualDuration: Long.ZERO,
+    requestAt: Long.ZERO
+  };
+}
+
+export const MaintenanceRecord = {
+  encode(message: MaintenanceRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.height.isZero()) {
+      writer.uint32(8).int64(message.height);
+    }
+
+    if (!message.requestDuration.isZero()) {
+      writer.uint32(16).int64(message.requestDuration);
+    }
+
+    if (!message.actualDuration.isZero()) {
+      writer.uint32(24).int64(message.actualDuration);
+    }
+
+    if (!message.requestAt.isZero()) {
+      writer.uint32(32).int64(message.requestAt);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MaintenanceRecord {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMaintenanceRecord();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.height = (reader.int64() as Long);
+          break;
+
+        case 2:
+          message.requestDuration = (reader.int64() as Long);
+          break;
+
+        case 3:
+          message.actualDuration = (reader.int64() as Long);
+          break;
+
+        case 4:
+          message.requestAt = (reader.int64() as Long);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MaintenanceRecord {
+    return {
+      height: isSet(object.height) ? Long.fromValue(object.height) : Long.ZERO,
+      requestDuration: isSet(object.requestDuration) ? Long.fromValue(object.requestDuration) : Long.ZERO,
+      actualDuration: isSet(object.actualDuration) ? Long.fromValue(object.actualDuration) : Long.ZERO,
+      requestAt: isSet(object.requestAt) ? Long.fromValue(object.requestAt) : Long.ZERO
+    };
+  },
+
+  toJSON(message: MaintenanceRecord): unknown {
+    const obj: any = {};
+    message.height !== undefined && (obj.height = (message.height || Long.ZERO).toString());
+    message.requestDuration !== undefined && (obj.requestDuration = (message.requestDuration || Long.ZERO).toString());
+    message.actualDuration !== undefined && (obj.actualDuration = (message.actualDuration || Long.ZERO).toString());
+    message.requestAt !== undefined && (obj.requestAt = (message.requestAt || Long.ZERO).toString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MaintenanceRecord>, I>>(object: I): MaintenanceRecord {
+    const message = createBaseMaintenanceRecord();
+    message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
+    message.requestDuration = object.requestDuration !== undefined && object.requestDuration !== null ? Long.fromValue(object.requestDuration) : Long.ZERO;
+    message.actualDuration = object.actualDuration !== undefined && object.actualDuration !== null ? Long.fromValue(object.actualDuration) : Long.ZERO;
+    message.requestAt = object.requestAt !== undefined && object.requestAt !== null ? Long.fromValue(object.requestAt) : Long.ZERO;
+    return message;
+  },
+
+  fromSDK(object: MaintenanceRecordSDKType): MaintenanceRecord {
+    return {
+      height: object?.height,
+      requestDuration: object?.request_duration,
+      actualDuration: object?.actual_duration,
+      requestAt: object?.request_at
+    };
+  },
+
+  toSDK(message: MaintenanceRecord): MaintenanceRecordSDKType {
+    const obj: any = {};
+    obj.height = message.height;
+    obj.request_duration = message.requestDuration;
+    obj.actual_duration = message.actualDuration;
+    obj.request_at = message.requestAt;
     return obj;
   }
 

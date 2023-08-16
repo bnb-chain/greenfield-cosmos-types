@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
 import { Params, ParamsSDKType } from "./params";
-import { StorageProvider, StorageProviderSDKType, SpStoragePrice, SpStoragePriceSDKType, SecondarySpStorePrice, SecondarySpStorePriceSDKType } from "./types";
+import { StorageProvider, StorageProviderSDKType, SpStoragePrice, SpStoragePriceSDKType, SecondarySpStorePrice, SecondarySpStorePriceSDKType, MaintenanceRecord, MaintenanceRecordSDKType } from "./types";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Long, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.sp";
@@ -96,6 +96,18 @@ export interface QueryStorageProviderByOperatorAddressResponse {
 }
 export interface QueryStorageProviderByOperatorAddressResponseSDKType {
   storageProvider?: StorageProviderSDKType;
+}
+export interface QueryStorageProviderMaintenanceRecordsRequest {
+  operatorAddress: string;
+}
+export interface QueryStorageProviderMaintenanceRecordsRequestSDKType {
+  operator_address: string;
+}
+export interface QueryStorageProviderMaintenanceRecordsResponse {
+  records: MaintenanceRecord[];
+}
+export interface QueryStorageProviderMaintenanceRecordsResponseSDKType {
+  records: MaintenanceRecordSDKType[];
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -948,6 +960,156 @@ export const QueryStorageProviderByOperatorAddressResponse = {
   }
 
 };
+
+function createBaseQueryStorageProviderMaintenanceRecordsRequest(): QueryStorageProviderMaintenanceRecordsRequest {
+  return {
+    operatorAddress: ""
+  };
+}
+
+export const QueryStorageProviderMaintenanceRecordsRequest = {
+  encode(message: QueryStorageProviderMaintenanceRecordsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operatorAddress !== "") {
+      writer.uint32(10).string(message.operatorAddress);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderMaintenanceRecordsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryStorageProviderMaintenanceRecordsRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operatorAddress = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryStorageProviderMaintenanceRecordsRequest {
+    return {
+      operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : ""
+    };
+  },
+
+  toJSON(message: QueryStorageProviderMaintenanceRecordsRequest): unknown {
+    const obj: any = {};
+    message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryStorageProviderMaintenanceRecordsRequest>, I>>(object: I): QueryStorageProviderMaintenanceRecordsRequest {
+    const message = createBaseQueryStorageProviderMaintenanceRecordsRequest();
+    message.operatorAddress = object.operatorAddress ?? "";
+    return message;
+  },
+
+  fromSDK(object: QueryStorageProviderMaintenanceRecordsRequestSDKType): QueryStorageProviderMaintenanceRecordsRequest {
+    return {
+      operatorAddress: object?.operator_address
+    };
+  },
+
+  toSDK(message: QueryStorageProviderMaintenanceRecordsRequest): QueryStorageProviderMaintenanceRecordsRequestSDKType {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    return obj;
+  }
+
+};
+
+function createBaseQueryStorageProviderMaintenanceRecordsResponse(): QueryStorageProviderMaintenanceRecordsResponse {
+  return {
+    records: []
+  };
+}
+
+export const QueryStorageProviderMaintenanceRecordsResponse = {
+  encode(message: QueryStorageProviderMaintenanceRecordsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.records) {
+      MaintenanceRecord.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderMaintenanceRecordsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryStorageProviderMaintenanceRecordsResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.records.push(MaintenanceRecord.decode(reader, reader.uint32()));
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryStorageProviderMaintenanceRecordsResponse {
+    return {
+      records: Array.isArray(object?.records) ? object.records.map((e: any) => MaintenanceRecord.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: QueryStorageProviderMaintenanceRecordsResponse): unknown {
+    const obj: any = {};
+
+    if (message.records) {
+      obj.records = message.records.map(e => e ? MaintenanceRecord.toJSON(e) : undefined);
+    } else {
+      obj.records = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryStorageProviderMaintenanceRecordsResponse>, I>>(object: I): QueryStorageProviderMaintenanceRecordsResponse {
+    const message = createBaseQueryStorageProviderMaintenanceRecordsResponse();
+    message.records = object.records?.map(e => MaintenanceRecord.fromPartial(e)) || [];
+    return message;
+  },
+
+  fromSDK(object: QueryStorageProviderMaintenanceRecordsResponseSDKType): QueryStorageProviderMaintenanceRecordsResponse {
+    return {
+      records: Array.isArray(object?.records) ? object.records.map((e: any) => MaintenanceRecord.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: QueryStorageProviderMaintenanceRecordsResponse): QueryStorageProviderMaintenanceRecordsResponseSDKType {
+    const obj: any = {};
+
+    if (message.records) {
+      obj.records = message.records.map(e => e ? MaintenanceRecord.toSDK(e) : undefined);
+    } else {
+      obj.records = [];
+    }
+
+    return obj;
+  }
+
+};
 /** Query defines the gRPC querier service. */
 
 export interface Query {
@@ -968,6 +1130,9 @@ export interface Query {
   /** Queries a StorageProvider by specify operator address. */
 
   StorageProviderByOperatorAddress(request: QueryStorageProviderByOperatorAddressRequest): Promise<QueryStorageProviderByOperatorAddressResponse>;
+  /** Queries a StorageProvider by specify operator address. */
+
+  StorageProviderMaintenanceRecordsByOperatorAddress(request: QueryStorageProviderMaintenanceRecordsRequest): Promise<QueryStorageProviderMaintenanceRecordsResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -980,6 +1145,7 @@ export class QueryClientImpl implements Query {
     this.QueryGetSecondarySpStorePriceByTime = this.QueryGetSecondarySpStorePriceByTime.bind(this);
     this.StorageProvider = this.StorageProvider.bind(this);
     this.StorageProviderByOperatorAddress = this.StorageProviderByOperatorAddress.bind(this);
+    this.StorageProviderMaintenanceRecordsByOperatorAddress = this.StorageProviderMaintenanceRecordsByOperatorAddress.bind(this);
   }
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
@@ -1018,6 +1184,12 @@ export class QueryClientImpl implements Query {
     const data = QueryStorageProviderByOperatorAddressRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "StorageProviderByOperatorAddress", data);
     return promise.then(data => QueryStorageProviderByOperatorAddressResponse.decode(new _m0.Reader(data)));
+  }
+
+  StorageProviderMaintenanceRecordsByOperatorAddress(request: QueryStorageProviderMaintenanceRecordsRequest): Promise<QueryStorageProviderMaintenanceRecordsResponse> {
+    const data = QueryStorageProviderMaintenanceRecordsRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.sp.Query", "StorageProviderMaintenanceRecordsByOperatorAddress", data);
+    return promise.then(data => QueryStorageProviderMaintenanceRecordsResponse.decode(new _m0.Reader(data)));
   }
 
 }

@@ -72,70 +72,70 @@ export interface QueryGetStreamRecordResponse {
 export interface QueryGetStreamRecordResponseSDKType {
   stream_record?: StreamRecordSDKType;
 }
-export interface QueryAllStreamRecordRequest {
+export interface QueryStreamRecordsRequest {
   pagination?: PageRequest;
 }
-export interface QueryAllStreamRecordRequestSDKType {
+export interface QueryStreamRecordsRequestSDKType {
   pagination?: PageRequestSDKType;
 }
-export interface QueryAllStreamRecordResponse {
-  streamRecord: StreamRecord[];
+export interface QueryStreamRecordsResponse {
+  streamRecords: StreamRecord[];
   pagination?: PageResponse;
 }
-export interface QueryAllStreamRecordResponseSDKType {
-  stream_record: StreamRecordSDKType[];
+export interface QueryStreamRecordsResponseSDKType {
+  stream_records: StreamRecordSDKType[];
   pagination?: PageResponseSDKType;
 }
-export interface QueryGetPaymentAccountCountRequest {
+export interface QueryPaymentAccountCountRequest {
   owner: string;
 }
-export interface QueryGetPaymentAccountCountRequestSDKType {
+export interface QueryPaymentAccountCountRequestSDKType {
   owner: string;
 }
-export interface QueryGetPaymentAccountCountResponse {
+export interface QueryPaymentAccountCountResponse {
   paymentAccountCount?: PaymentAccountCount;
 }
-export interface QueryGetPaymentAccountCountResponseSDKType {
+export interface QueryPaymentAccountCountResponseSDKType {
   payment_account_count?: PaymentAccountCountSDKType;
 }
-export interface QueryAllPaymentAccountCountRequest {
+export interface QueryPaymentAccountCountsRequest {
   pagination?: PageRequest;
 }
-export interface QueryAllPaymentAccountCountRequestSDKType {
+export interface QueryPaymentAccountCountsRequestSDKType {
   pagination?: PageRequestSDKType;
 }
-export interface QueryAllPaymentAccountCountResponse {
-  paymentAccountCount: PaymentAccountCount[];
+export interface QueryPaymentAccountCountsResponse {
+  paymentAccountCounts: PaymentAccountCount[];
   pagination?: PageResponse;
 }
-export interface QueryAllPaymentAccountCountResponseSDKType {
-  payment_account_count: PaymentAccountCountSDKType[];
+export interface QueryPaymentAccountCountsResponseSDKType {
+  payment_account_counts: PaymentAccountCountSDKType[];
   pagination?: PageResponseSDKType;
 }
-export interface QueryGetPaymentAccountRequest {
+export interface QueryPaymentAccountRequest {
   addr: string;
 }
-export interface QueryGetPaymentAccountRequestSDKType {
+export interface QueryPaymentAccountRequestSDKType {
   addr: string;
 }
-export interface QueryGetPaymentAccountResponse {
+export interface QueryPaymentAccountResponse {
   paymentAccount?: PaymentAccount;
 }
-export interface QueryGetPaymentAccountResponseSDKType {
+export interface QueryPaymentAccountResponseSDKType {
   payment_account?: PaymentAccountSDKType;
 }
-export interface QueryAllPaymentAccountRequest {
+export interface QueryPaymentAccountsRequest {
   pagination?: PageRequest;
 }
-export interface QueryAllPaymentAccountRequestSDKType {
+export interface QueryPaymentAccountsRequestSDKType {
   pagination?: PageRequestSDKType;
 }
-export interface QueryAllPaymentAccountResponse {
-  paymentAccount: PaymentAccount[];
+export interface QueryPaymentAccountsResponse {
+  paymentAccounts: PaymentAccount[];
   pagination?: PageResponse;
 }
-export interface QueryAllPaymentAccountResponseSDKType {
-  payment_account: PaymentAccountSDKType[];
+export interface QueryPaymentAccountsResponseSDKType {
+  payment_accounts: PaymentAccountSDKType[];
   pagination?: PageResponseSDKType;
 }
 export interface QueryDynamicBalanceRequest {
@@ -175,30 +175,30 @@ export interface QueryDynamicBalanceResponseSDKType {
   locked_fee: string;
   change_rate: string;
 }
-export interface QueryGetPaymentAccountsByOwnerRequest {
+export interface QueryPaymentAccountsByOwnerRequest {
   owner: string;
 }
-export interface QueryGetPaymentAccountsByOwnerRequestSDKType {
+export interface QueryPaymentAccountsByOwnerRequestSDKType {
   owner: string;
 }
-export interface QueryGetPaymentAccountsByOwnerResponse {
+export interface QueryPaymentAccountsByOwnerResponse {
   paymentAccounts: string[];
 }
-export interface QueryGetPaymentAccountsByOwnerResponseSDKType {
+export interface QueryPaymentAccountsByOwnerResponseSDKType {
   paymentAccounts: string[];
 }
-export interface QueryAllAutoSettleRecordRequest {
+export interface QueryAutoSettleRecordsRequest {
   pagination?: PageRequest;
 }
-export interface QueryAllAutoSettleRecordRequestSDKType {
+export interface QueryAutoSettleRecordsRequestSDKType {
   pagination?: PageRequestSDKType;
 }
-export interface QueryAllAutoSettleRecordResponse {
-  autoSettleRecord: AutoSettleRecord[];
+export interface QueryAutoSettleRecordsResponse {
+  autoSettleRecords: AutoSettleRecord[];
   pagination?: PageResponse;
 }
-export interface QueryAllAutoSettleRecordResponseSDKType {
-  auto_settle_record: AutoSettleRecordSDKType[];
+export interface QueryAutoSettleRecordsResponseSDKType {
+  auto_settle_records: AutoSettleRecordSDKType[];
   pagination?: PageResponseSDKType;
 }
 
@@ -749,14 +749,14 @@ export const QueryGetStreamRecordResponse = {
 
 };
 
-function createBaseQueryAllStreamRecordRequest(): QueryAllStreamRecordRequest {
+function createBaseQueryStreamRecordsRequest(): QueryStreamRecordsRequest {
   return {
     pagination: undefined
   };
 }
 
-export const QueryAllStreamRecordRequest = {
-  encode(message: QueryAllStreamRecordRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryStreamRecordsRequest = {
+  encode(message: QueryStreamRecordsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -764,10 +764,10 @@ export const QueryAllStreamRecordRequest = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllStreamRecordRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStreamRecordsRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllStreamRecordRequest();
+    const message = createBaseQueryStreamRecordsRequest();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -786,31 +786,31 @@ export const QueryAllStreamRecordRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllStreamRecordRequest {
+  fromJSON(object: any): QueryStreamRecordsRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
 
-  toJSON(message: QueryAllStreamRecordRequest): unknown {
+  toJSON(message: QueryStreamRecordsRequest): unknown {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryAllStreamRecordRequest>, I>>(object: I): QueryAllStreamRecordRequest {
-    const message = createBaseQueryAllStreamRecordRequest();
+  fromPartial<I extends Exact<DeepPartial<QueryStreamRecordsRequest>, I>>(object: I): QueryStreamRecordsRequest {
+    const message = createBaseQueryStreamRecordsRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
   },
 
-  fromSDK(object: QueryAllStreamRecordRequestSDKType): QueryAllStreamRecordRequest {
+  fromSDK(object: QueryStreamRecordsRequestSDKType): QueryStreamRecordsRequest {
     return {
       pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
     };
   },
 
-  toSDK(message: QueryAllStreamRecordRequest): QueryAllStreamRecordRequestSDKType {
+  toSDK(message: QueryStreamRecordsRequest): QueryStreamRecordsRequestSDKType {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
     return obj;
@@ -818,16 +818,16 @@ export const QueryAllStreamRecordRequest = {
 
 };
 
-function createBaseQueryAllStreamRecordResponse(): QueryAllStreamRecordResponse {
+function createBaseQueryStreamRecordsResponse(): QueryStreamRecordsResponse {
   return {
-    streamRecord: [],
+    streamRecords: [],
     pagination: undefined
   };
 }
 
-export const QueryAllStreamRecordResponse = {
-  encode(message: QueryAllStreamRecordResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.streamRecord) {
+export const QueryStreamRecordsResponse = {
+  encode(message: QueryStreamRecordsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.streamRecords) {
       StreamRecord.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
@@ -838,17 +838,17 @@ export const QueryAllStreamRecordResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllStreamRecordResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStreamRecordsResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllStreamRecordResponse();
+    const message = createBaseQueryStreamRecordsResponse();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
 
       switch (tag >>> 3) {
         case 1:
-          message.streamRecord.push(StreamRecord.decode(reader, reader.uint32()));
+          message.streamRecords.push(StreamRecord.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -864,47 +864,47 @@ export const QueryAllStreamRecordResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllStreamRecordResponse {
+  fromJSON(object: any): QueryStreamRecordsResponse {
     return {
-      streamRecord: Array.isArray(object?.streamRecord) ? object.streamRecord.map((e: any) => StreamRecord.fromJSON(e)) : [],
+      streamRecords: Array.isArray(object?.streamRecords) ? object.streamRecords.map((e: any) => StreamRecord.fromJSON(e)) : [],
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
     };
   },
 
-  toJSON(message: QueryAllStreamRecordResponse): unknown {
+  toJSON(message: QueryStreamRecordsResponse): unknown {
     const obj: any = {};
 
-    if (message.streamRecord) {
-      obj.streamRecord = message.streamRecord.map(e => e ? StreamRecord.toJSON(e) : undefined);
+    if (message.streamRecords) {
+      obj.streamRecords = message.streamRecords.map(e => e ? StreamRecord.toJSON(e) : undefined);
     } else {
-      obj.streamRecord = [];
+      obj.streamRecords = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryAllStreamRecordResponse>, I>>(object: I): QueryAllStreamRecordResponse {
-    const message = createBaseQueryAllStreamRecordResponse();
-    message.streamRecord = object.streamRecord?.map(e => StreamRecord.fromPartial(e)) || [];
+  fromPartial<I extends Exact<DeepPartial<QueryStreamRecordsResponse>, I>>(object: I): QueryStreamRecordsResponse {
+    const message = createBaseQueryStreamRecordsResponse();
+    message.streamRecords = object.streamRecords?.map(e => StreamRecord.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
   },
 
-  fromSDK(object: QueryAllStreamRecordResponseSDKType): QueryAllStreamRecordResponse {
+  fromSDK(object: QueryStreamRecordsResponseSDKType): QueryStreamRecordsResponse {
     return {
-      streamRecord: Array.isArray(object?.stream_record) ? object.stream_record.map((e: any) => StreamRecord.fromSDK(e)) : [],
+      streamRecords: Array.isArray(object?.stream_records) ? object.stream_records.map((e: any) => StreamRecord.fromSDK(e)) : [],
       pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
     };
   },
 
-  toSDK(message: QueryAllStreamRecordResponse): QueryAllStreamRecordResponseSDKType {
+  toSDK(message: QueryStreamRecordsResponse): QueryStreamRecordsResponseSDKType {
     const obj: any = {};
 
-    if (message.streamRecord) {
-      obj.stream_record = message.streamRecord.map(e => e ? StreamRecord.toSDK(e) : undefined);
+    if (message.streamRecords) {
+      obj.stream_records = message.streamRecords.map(e => e ? StreamRecord.toSDK(e) : undefined);
     } else {
-      obj.stream_record = [];
+      obj.stream_records = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
@@ -913,14 +913,14 @@ export const QueryAllStreamRecordResponse = {
 
 };
 
-function createBaseQueryGetPaymentAccountCountRequest(): QueryGetPaymentAccountCountRequest {
+function createBaseQueryPaymentAccountCountRequest(): QueryPaymentAccountCountRequest {
   return {
     owner: ""
   };
 }
 
-export const QueryGetPaymentAccountCountRequest = {
-  encode(message: QueryGetPaymentAccountCountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryPaymentAccountCountRequest = {
+  encode(message: QueryPaymentAccountCountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -928,10 +928,10 @@ export const QueryGetPaymentAccountCountRequest = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPaymentAccountCountRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountCountRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetPaymentAccountCountRequest();
+    const message = createBaseQueryPaymentAccountCountRequest();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -950,31 +950,31 @@ export const QueryGetPaymentAccountCountRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetPaymentAccountCountRequest {
+  fromJSON(object: any): QueryPaymentAccountCountRequest {
     return {
       owner: isSet(object.owner) ? String(object.owner) : ""
     };
   },
 
-  toJSON(message: QueryGetPaymentAccountCountRequest): unknown {
+  toJSON(message: QueryPaymentAccountCountRequest): unknown {
     const obj: any = {};
     message.owner !== undefined && (obj.owner = message.owner);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryGetPaymentAccountCountRequest>, I>>(object: I): QueryGetPaymentAccountCountRequest {
-    const message = createBaseQueryGetPaymentAccountCountRequest();
+  fromPartial<I extends Exact<DeepPartial<QueryPaymentAccountCountRequest>, I>>(object: I): QueryPaymentAccountCountRequest {
+    const message = createBaseQueryPaymentAccountCountRequest();
     message.owner = object.owner ?? "";
     return message;
   },
 
-  fromSDK(object: QueryGetPaymentAccountCountRequestSDKType): QueryGetPaymentAccountCountRequest {
+  fromSDK(object: QueryPaymentAccountCountRequestSDKType): QueryPaymentAccountCountRequest {
     return {
       owner: object?.owner
     };
   },
 
-  toSDK(message: QueryGetPaymentAccountCountRequest): QueryGetPaymentAccountCountRequestSDKType {
+  toSDK(message: QueryPaymentAccountCountRequest): QueryPaymentAccountCountRequestSDKType {
     const obj: any = {};
     obj.owner = message.owner;
     return obj;
@@ -982,14 +982,14 @@ export const QueryGetPaymentAccountCountRequest = {
 
 };
 
-function createBaseQueryGetPaymentAccountCountResponse(): QueryGetPaymentAccountCountResponse {
+function createBaseQueryPaymentAccountCountResponse(): QueryPaymentAccountCountResponse {
   return {
     paymentAccountCount: undefined
   };
 }
 
-export const QueryGetPaymentAccountCountResponse = {
-  encode(message: QueryGetPaymentAccountCountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryPaymentAccountCountResponse = {
+  encode(message: QueryPaymentAccountCountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.paymentAccountCount !== undefined) {
       PaymentAccountCount.encode(message.paymentAccountCount, writer.uint32(10).fork()).ldelim();
     }
@@ -997,10 +997,10 @@ export const QueryGetPaymentAccountCountResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPaymentAccountCountResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountCountResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetPaymentAccountCountResponse();
+    const message = createBaseQueryPaymentAccountCountResponse();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -1019,31 +1019,31 @@ export const QueryGetPaymentAccountCountResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetPaymentAccountCountResponse {
+  fromJSON(object: any): QueryPaymentAccountCountResponse {
     return {
       paymentAccountCount: isSet(object.paymentAccountCount) ? PaymentAccountCount.fromJSON(object.paymentAccountCount) : undefined
     };
   },
 
-  toJSON(message: QueryGetPaymentAccountCountResponse): unknown {
+  toJSON(message: QueryPaymentAccountCountResponse): unknown {
     const obj: any = {};
     message.paymentAccountCount !== undefined && (obj.paymentAccountCount = message.paymentAccountCount ? PaymentAccountCount.toJSON(message.paymentAccountCount) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryGetPaymentAccountCountResponse>, I>>(object: I): QueryGetPaymentAccountCountResponse {
-    const message = createBaseQueryGetPaymentAccountCountResponse();
+  fromPartial<I extends Exact<DeepPartial<QueryPaymentAccountCountResponse>, I>>(object: I): QueryPaymentAccountCountResponse {
+    const message = createBaseQueryPaymentAccountCountResponse();
     message.paymentAccountCount = object.paymentAccountCount !== undefined && object.paymentAccountCount !== null ? PaymentAccountCount.fromPartial(object.paymentAccountCount) : undefined;
     return message;
   },
 
-  fromSDK(object: QueryGetPaymentAccountCountResponseSDKType): QueryGetPaymentAccountCountResponse {
+  fromSDK(object: QueryPaymentAccountCountResponseSDKType): QueryPaymentAccountCountResponse {
     return {
       paymentAccountCount: object.payment_account_count ? PaymentAccountCount.fromSDK(object.payment_account_count) : undefined
     };
   },
 
-  toSDK(message: QueryGetPaymentAccountCountResponse): QueryGetPaymentAccountCountResponseSDKType {
+  toSDK(message: QueryPaymentAccountCountResponse): QueryPaymentAccountCountResponseSDKType {
     const obj: any = {};
     message.paymentAccountCount !== undefined && (obj.payment_account_count = message.paymentAccountCount ? PaymentAccountCount.toSDK(message.paymentAccountCount) : undefined);
     return obj;
@@ -1051,14 +1051,14 @@ export const QueryGetPaymentAccountCountResponse = {
 
 };
 
-function createBaseQueryAllPaymentAccountCountRequest(): QueryAllPaymentAccountCountRequest {
+function createBaseQueryPaymentAccountCountsRequest(): QueryPaymentAccountCountsRequest {
   return {
     pagination: undefined
   };
 }
 
-export const QueryAllPaymentAccountCountRequest = {
-  encode(message: QueryAllPaymentAccountCountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryPaymentAccountCountsRequest = {
+  encode(message: QueryPaymentAccountCountsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -1066,10 +1066,10 @@ export const QueryAllPaymentAccountCountRequest = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllPaymentAccountCountRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountCountsRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllPaymentAccountCountRequest();
+    const message = createBaseQueryPaymentAccountCountsRequest();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -1088,31 +1088,31 @@ export const QueryAllPaymentAccountCountRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllPaymentAccountCountRequest {
+  fromJSON(object: any): QueryPaymentAccountCountsRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
 
-  toJSON(message: QueryAllPaymentAccountCountRequest): unknown {
+  toJSON(message: QueryPaymentAccountCountsRequest): unknown {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryAllPaymentAccountCountRequest>, I>>(object: I): QueryAllPaymentAccountCountRequest {
-    const message = createBaseQueryAllPaymentAccountCountRequest();
+  fromPartial<I extends Exact<DeepPartial<QueryPaymentAccountCountsRequest>, I>>(object: I): QueryPaymentAccountCountsRequest {
+    const message = createBaseQueryPaymentAccountCountsRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
   },
 
-  fromSDK(object: QueryAllPaymentAccountCountRequestSDKType): QueryAllPaymentAccountCountRequest {
+  fromSDK(object: QueryPaymentAccountCountsRequestSDKType): QueryPaymentAccountCountsRequest {
     return {
       pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
     };
   },
 
-  toSDK(message: QueryAllPaymentAccountCountRequest): QueryAllPaymentAccountCountRequestSDKType {
+  toSDK(message: QueryPaymentAccountCountsRequest): QueryPaymentAccountCountsRequestSDKType {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
     return obj;
@@ -1120,16 +1120,16 @@ export const QueryAllPaymentAccountCountRequest = {
 
 };
 
-function createBaseQueryAllPaymentAccountCountResponse(): QueryAllPaymentAccountCountResponse {
+function createBaseQueryPaymentAccountCountsResponse(): QueryPaymentAccountCountsResponse {
   return {
-    paymentAccountCount: [],
+    paymentAccountCounts: [],
     pagination: undefined
   };
 }
 
-export const QueryAllPaymentAccountCountResponse = {
-  encode(message: QueryAllPaymentAccountCountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.paymentAccountCount) {
+export const QueryPaymentAccountCountsResponse = {
+  encode(message: QueryPaymentAccountCountsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.paymentAccountCounts) {
       PaymentAccountCount.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
@@ -1140,17 +1140,17 @@ export const QueryAllPaymentAccountCountResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllPaymentAccountCountResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountCountsResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllPaymentAccountCountResponse();
+    const message = createBaseQueryPaymentAccountCountsResponse();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
 
       switch (tag >>> 3) {
         case 1:
-          message.paymentAccountCount.push(PaymentAccountCount.decode(reader, reader.uint32()));
+          message.paymentAccountCounts.push(PaymentAccountCount.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -1166,47 +1166,47 @@ export const QueryAllPaymentAccountCountResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllPaymentAccountCountResponse {
+  fromJSON(object: any): QueryPaymentAccountCountsResponse {
     return {
-      paymentAccountCount: Array.isArray(object?.paymentAccountCount) ? object.paymentAccountCount.map((e: any) => PaymentAccountCount.fromJSON(e)) : [],
+      paymentAccountCounts: Array.isArray(object?.paymentAccountCounts) ? object.paymentAccountCounts.map((e: any) => PaymentAccountCount.fromJSON(e)) : [],
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
     };
   },
 
-  toJSON(message: QueryAllPaymentAccountCountResponse): unknown {
+  toJSON(message: QueryPaymentAccountCountsResponse): unknown {
     const obj: any = {};
 
-    if (message.paymentAccountCount) {
-      obj.paymentAccountCount = message.paymentAccountCount.map(e => e ? PaymentAccountCount.toJSON(e) : undefined);
+    if (message.paymentAccountCounts) {
+      obj.paymentAccountCounts = message.paymentAccountCounts.map(e => e ? PaymentAccountCount.toJSON(e) : undefined);
     } else {
-      obj.paymentAccountCount = [];
+      obj.paymentAccountCounts = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryAllPaymentAccountCountResponse>, I>>(object: I): QueryAllPaymentAccountCountResponse {
-    const message = createBaseQueryAllPaymentAccountCountResponse();
-    message.paymentAccountCount = object.paymentAccountCount?.map(e => PaymentAccountCount.fromPartial(e)) || [];
+  fromPartial<I extends Exact<DeepPartial<QueryPaymentAccountCountsResponse>, I>>(object: I): QueryPaymentAccountCountsResponse {
+    const message = createBaseQueryPaymentAccountCountsResponse();
+    message.paymentAccountCounts = object.paymentAccountCounts?.map(e => PaymentAccountCount.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
   },
 
-  fromSDK(object: QueryAllPaymentAccountCountResponseSDKType): QueryAllPaymentAccountCountResponse {
+  fromSDK(object: QueryPaymentAccountCountsResponseSDKType): QueryPaymentAccountCountsResponse {
     return {
-      paymentAccountCount: Array.isArray(object?.payment_account_count) ? object.payment_account_count.map((e: any) => PaymentAccountCount.fromSDK(e)) : [],
+      paymentAccountCounts: Array.isArray(object?.payment_account_counts) ? object.payment_account_counts.map((e: any) => PaymentAccountCount.fromSDK(e)) : [],
       pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
     };
   },
 
-  toSDK(message: QueryAllPaymentAccountCountResponse): QueryAllPaymentAccountCountResponseSDKType {
+  toSDK(message: QueryPaymentAccountCountsResponse): QueryPaymentAccountCountsResponseSDKType {
     const obj: any = {};
 
-    if (message.paymentAccountCount) {
-      obj.payment_account_count = message.paymentAccountCount.map(e => e ? PaymentAccountCount.toSDK(e) : undefined);
+    if (message.paymentAccountCounts) {
+      obj.payment_account_counts = message.paymentAccountCounts.map(e => e ? PaymentAccountCount.toSDK(e) : undefined);
     } else {
-      obj.payment_account_count = [];
+      obj.payment_account_counts = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
@@ -1215,14 +1215,14 @@ export const QueryAllPaymentAccountCountResponse = {
 
 };
 
-function createBaseQueryGetPaymentAccountRequest(): QueryGetPaymentAccountRequest {
+function createBaseQueryPaymentAccountRequest(): QueryPaymentAccountRequest {
   return {
     addr: ""
   };
 }
 
-export const QueryGetPaymentAccountRequest = {
-  encode(message: QueryGetPaymentAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryPaymentAccountRequest = {
+  encode(message: QueryPaymentAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.addr !== "") {
       writer.uint32(10).string(message.addr);
     }
@@ -1230,10 +1230,10 @@ export const QueryGetPaymentAccountRequest = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPaymentAccountRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetPaymentAccountRequest();
+    const message = createBaseQueryPaymentAccountRequest();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -1252,31 +1252,31 @@ export const QueryGetPaymentAccountRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetPaymentAccountRequest {
+  fromJSON(object: any): QueryPaymentAccountRequest {
     return {
       addr: isSet(object.addr) ? String(object.addr) : ""
     };
   },
 
-  toJSON(message: QueryGetPaymentAccountRequest): unknown {
+  toJSON(message: QueryPaymentAccountRequest): unknown {
     const obj: any = {};
     message.addr !== undefined && (obj.addr = message.addr);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryGetPaymentAccountRequest>, I>>(object: I): QueryGetPaymentAccountRequest {
-    const message = createBaseQueryGetPaymentAccountRequest();
+  fromPartial<I extends Exact<DeepPartial<QueryPaymentAccountRequest>, I>>(object: I): QueryPaymentAccountRequest {
+    const message = createBaseQueryPaymentAccountRequest();
     message.addr = object.addr ?? "";
     return message;
   },
 
-  fromSDK(object: QueryGetPaymentAccountRequestSDKType): QueryGetPaymentAccountRequest {
+  fromSDK(object: QueryPaymentAccountRequestSDKType): QueryPaymentAccountRequest {
     return {
       addr: object?.addr
     };
   },
 
-  toSDK(message: QueryGetPaymentAccountRequest): QueryGetPaymentAccountRequestSDKType {
+  toSDK(message: QueryPaymentAccountRequest): QueryPaymentAccountRequestSDKType {
     const obj: any = {};
     obj.addr = message.addr;
     return obj;
@@ -1284,14 +1284,14 @@ export const QueryGetPaymentAccountRequest = {
 
 };
 
-function createBaseQueryGetPaymentAccountResponse(): QueryGetPaymentAccountResponse {
+function createBaseQueryPaymentAccountResponse(): QueryPaymentAccountResponse {
   return {
     paymentAccount: undefined
   };
 }
 
-export const QueryGetPaymentAccountResponse = {
-  encode(message: QueryGetPaymentAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryPaymentAccountResponse = {
+  encode(message: QueryPaymentAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.paymentAccount !== undefined) {
       PaymentAccount.encode(message.paymentAccount, writer.uint32(10).fork()).ldelim();
     }
@@ -1299,10 +1299,10 @@ export const QueryGetPaymentAccountResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPaymentAccountResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetPaymentAccountResponse();
+    const message = createBaseQueryPaymentAccountResponse();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -1321,31 +1321,31 @@ export const QueryGetPaymentAccountResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetPaymentAccountResponse {
+  fromJSON(object: any): QueryPaymentAccountResponse {
     return {
       paymentAccount: isSet(object.paymentAccount) ? PaymentAccount.fromJSON(object.paymentAccount) : undefined
     };
   },
 
-  toJSON(message: QueryGetPaymentAccountResponse): unknown {
+  toJSON(message: QueryPaymentAccountResponse): unknown {
     const obj: any = {};
     message.paymentAccount !== undefined && (obj.paymentAccount = message.paymentAccount ? PaymentAccount.toJSON(message.paymentAccount) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryGetPaymentAccountResponse>, I>>(object: I): QueryGetPaymentAccountResponse {
-    const message = createBaseQueryGetPaymentAccountResponse();
+  fromPartial<I extends Exact<DeepPartial<QueryPaymentAccountResponse>, I>>(object: I): QueryPaymentAccountResponse {
+    const message = createBaseQueryPaymentAccountResponse();
     message.paymentAccount = object.paymentAccount !== undefined && object.paymentAccount !== null ? PaymentAccount.fromPartial(object.paymentAccount) : undefined;
     return message;
   },
 
-  fromSDK(object: QueryGetPaymentAccountResponseSDKType): QueryGetPaymentAccountResponse {
+  fromSDK(object: QueryPaymentAccountResponseSDKType): QueryPaymentAccountResponse {
     return {
       paymentAccount: object.payment_account ? PaymentAccount.fromSDK(object.payment_account) : undefined
     };
   },
 
-  toSDK(message: QueryGetPaymentAccountResponse): QueryGetPaymentAccountResponseSDKType {
+  toSDK(message: QueryPaymentAccountResponse): QueryPaymentAccountResponseSDKType {
     const obj: any = {};
     message.paymentAccount !== undefined && (obj.payment_account = message.paymentAccount ? PaymentAccount.toSDK(message.paymentAccount) : undefined);
     return obj;
@@ -1353,14 +1353,14 @@ export const QueryGetPaymentAccountResponse = {
 
 };
 
-function createBaseQueryAllPaymentAccountRequest(): QueryAllPaymentAccountRequest {
+function createBaseQueryPaymentAccountsRequest(): QueryPaymentAccountsRequest {
   return {
     pagination: undefined
   };
 }
 
-export const QueryAllPaymentAccountRequest = {
-  encode(message: QueryAllPaymentAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryPaymentAccountsRequest = {
+  encode(message: QueryPaymentAccountsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -1368,10 +1368,10 @@ export const QueryAllPaymentAccountRequest = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllPaymentAccountRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountsRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllPaymentAccountRequest();
+    const message = createBaseQueryPaymentAccountsRequest();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -1390,31 +1390,31 @@ export const QueryAllPaymentAccountRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllPaymentAccountRequest {
+  fromJSON(object: any): QueryPaymentAccountsRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
 
-  toJSON(message: QueryAllPaymentAccountRequest): unknown {
+  toJSON(message: QueryPaymentAccountsRequest): unknown {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryAllPaymentAccountRequest>, I>>(object: I): QueryAllPaymentAccountRequest {
-    const message = createBaseQueryAllPaymentAccountRequest();
+  fromPartial<I extends Exact<DeepPartial<QueryPaymentAccountsRequest>, I>>(object: I): QueryPaymentAccountsRequest {
+    const message = createBaseQueryPaymentAccountsRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
   },
 
-  fromSDK(object: QueryAllPaymentAccountRequestSDKType): QueryAllPaymentAccountRequest {
+  fromSDK(object: QueryPaymentAccountsRequestSDKType): QueryPaymentAccountsRequest {
     return {
       pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
     };
   },
 
-  toSDK(message: QueryAllPaymentAccountRequest): QueryAllPaymentAccountRequestSDKType {
+  toSDK(message: QueryPaymentAccountsRequest): QueryPaymentAccountsRequestSDKType {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
     return obj;
@@ -1422,16 +1422,16 @@ export const QueryAllPaymentAccountRequest = {
 
 };
 
-function createBaseQueryAllPaymentAccountResponse(): QueryAllPaymentAccountResponse {
+function createBaseQueryPaymentAccountsResponse(): QueryPaymentAccountsResponse {
   return {
-    paymentAccount: [],
+    paymentAccounts: [],
     pagination: undefined
   };
 }
 
-export const QueryAllPaymentAccountResponse = {
-  encode(message: QueryAllPaymentAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.paymentAccount) {
+export const QueryPaymentAccountsResponse = {
+  encode(message: QueryPaymentAccountsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.paymentAccounts) {
       PaymentAccount.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
@@ -1442,17 +1442,17 @@ export const QueryAllPaymentAccountResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllPaymentAccountResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountsResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllPaymentAccountResponse();
+    const message = createBaseQueryPaymentAccountsResponse();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
 
       switch (tag >>> 3) {
         case 1:
-          message.paymentAccount.push(PaymentAccount.decode(reader, reader.uint32()));
+          message.paymentAccounts.push(PaymentAccount.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -1468,47 +1468,47 @@ export const QueryAllPaymentAccountResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllPaymentAccountResponse {
+  fromJSON(object: any): QueryPaymentAccountsResponse {
     return {
-      paymentAccount: Array.isArray(object?.paymentAccount) ? object.paymentAccount.map((e: any) => PaymentAccount.fromJSON(e)) : [],
+      paymentAccounts: Array.isArray(object?.paymentAccounts) ? object.paymentAccounts.map((e: any) => PaymentAccount.fromJSON(e)) : [],
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
     };
   },
 
-  toJSON(message: QueryAllPaymentAccountResponse): unknown {
+  toJSON(message: QueryPaymentAccountsResponse): unknown {
     const obj: any = {};
 
-    if (message.paymentAccount) {
-      obj.paymentAccount = message.paymentAccount.map(e => e ? PaymentAccount.toJSON(e) : undefined);
+    if (message.paymentAccounts) {
+      obj.paymentAccounts = message.paymentAccounts.map(e => e ? PaymentAccount.toJSON(e) : undefined);
     } else {
-      obj.paymentAccount = [];
+      obj.paymentAccounts = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryAllPaymentAccountResponse>, I>>(object: I): QueryAllPaymentAccountResponse {
-    const message = createBaseQueryAllPaymentAccountResponse();
-    message.paymentAccount = object.paymentAccount?.map(e => PaymentAccount.fromPartial(e)) || [];
+  fromPartial<I extends Exact<DeepPartial<QueryPaymentAccountsResponse>, I>>(object: I): QueryPaymentAccountsResponse {
+    const message = createBaseQueryPaymentAccountsResponse();
+    message.paymentAccounts = object.paymentAccounts?.map(e => PaymentAccount.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
   },
 
-  fromSDK(object: QueryAllPaymentAccountResponseSDKType): QueryAllPaymentAccountResponse {
+  fromSDK(object: QueryPaymentAccountsResponseSDKType): QueryPaymentAccountsResponse {
     return {
-      paymentAccount: Array.isArray(object?.payment_account) ? object.payment_account.map((e: any) => PaymentAccount.fromSDK(e)) : [],
+      paymentAccounts: Array.isArray(object?.payment_accounts) ? object.payment_accounts.map((e: any) => PaymentAccount.fromSDK(e)) : [],
       pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
     };
   },
 
-  toSDK(message: QueryAllPaymentAccountResponse): QueryAllPaymentAccountResponseSDKType {
+  toSDK(message: QueryPaymentAccountsResponse): QueryPaymentAccountsResponseSDKType {
     const obj: any = {};
 
-    if (message.paymentAccount) {
-      obj.payment_account = message.paymentAccount.map(e => e ? PaymentAccount.toSDK(e) : undefined);
+    if (message.paymentAccounts) {
+      obj.payment_accounts = message.paymentAccounts.map(e => e ? PaymentAccount.toSDK(e) : undefined);
     } else {
-      obj.payment_account = [];
+      obj.payment_accounts = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
@@ -1739,14 +1739,14 @@ export const QueryDynamicBalanceResponse = {
 
 };
 
-function createBaseQueryGetPaymentAccountsByOwnerRequest(): QueryGetPaymentAccountsByOwnerRequest {
+function createBaseQueryPaymentAccountsByOwnerRequest(): QueryPaymentAccountsByOwnerRequest {
   return {
     owner: ""
   };
 }
 
-export const QueryGetPaymentAccountsByOwnerRequest = {
-  encode(message: QueryGetPaymentAccountsByOwnerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryPaymentAccountsByOwnerRequest = {
+  encode(message: QueryPaymentAccountsByOwnerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -1754,10 +1754,10 @@ export const QueryGetPaymentAccountsByOwnerRequest = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPaymentAccountsByOwnerRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountsByOwnerRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetPaymentAccountsByOwnerRequest();
+    const message = createBaseQueryPaymentAccountsByOwnerRequest();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -1776,31 +1776,31 @@ export const QueryGetPaymentAccountsByOwnerRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetPaymentAccountsByOwnerRequest {
+  fromJSON(object: any): QueryPaymentAccountsByOwnerRequest {
     return {
       owner: isSet(object.owner) ? String(object.owner) : ""
     };
   },
 
-  toJSON(message: QueryGetPaymentAccountsByOwnerRequest): unknown {
+  toJSON(message: QueryPaymentAccountsByOwnerRequest): unknown {
     const obj: any = {};
     message.owner !== undefined && (obj.owner = message.owner);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryGetPaymentAccountsByOwnerRequest>, I>>(object: I): QueryGetPaymentAccountsByOwnerRequest {
-    const message = createBaseQueryGetPaymentAccountsByOwnerRequest();
+  fromPartial<I extends Exact<DeepPartial<QueryPaymentAccountsByOwnerRequest>, I>>(object: I): QueryPaymentAccountsByOwnerRequest {
+    const message = createBaseQueryPaymentAccountsByOwnerRequest();
     message.owner = object.owner ?? "";
     return message;
   },
 
-  fromSDK(object: QueryGetPaymentAccountsByOwnerRequestSDKType): QueryGetPaymentAccountsByOwnerRequest {
+  fromSDK(object: QueryPaymentAccountsByOwnerRequestSDKType): QueryPaymentAccountsByOwnerRequest {
     return {
       owner: object?.owner
     };
   },
 
-  toSDK(message: QueryGetPaymentAccountsByOwnerRequest): QueryGetPaymentAccountsByOwnerRequestSDKType {
+  toSDK(message: QueryPaymentAccountsByOwnerRequest): QueryPaymentAccountsByOwnerRequestSDKType {
     const obj: any = {};
     obj.owner = message.owner;
     return obj;
@@ -1808,14 +1808,14 @@ export const QueryGetPaymentAccountsByOwnerRequest = {
 
 };
 
-function createBaseQueryGetPaymentAccountsByOwnerResponse(): QueryGetPaymentAccountsByOwnerResponse {
+function createBaseQueryPaymentAccountsByOwnerResponse(): QueryPaymentAccountsByOwnerResponse {
   return {
     paymentAccounts: []
   };
 }
 
-export const QueryGetPaymentAccountsByOwnerResponse = {
-  encode(message: QueryGetPaymentAccountsByOwnerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryPaymentAccountsByOwnerResponse = {
+  encode(message: QueryPaymentAccountsByOwnerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.paymentAccounts) {
       writer.uint32(10).string(v!);
     }
@@ -1823,10 +1823,10 @@ export const QueryGetPaymentAccountsByOwnerResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetPaymentAccountsByOwnerResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountsByOwnerResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetPaymentAccountsByOwnerResponse();
+    const message = createBaseQueryPaymentAccountsByOwnerResponse();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -1845,13 +1845,13 @@ export const QueryGetPaymentAccountsByOwnerResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetPaymentAccountsByOwnerResponse {
+  fromJSON(object: any): QueryPaymentAccountsByOwnerResponse {
     return {
       paymentAccounts: Array.isArray(object?.paymentAccounts) ? object.paymentAccounts.map((e: any) => String(e)) : []
     };
   },
 
-  toJSON(message: QueryGetPaymentAccountsByOwnerResponse): unknown {
+  toJSON(message: QueryPaymentAccountsByOwnerResponse): unknown {
     const obj: any = {};
 
     if (message.paymentAccounts) {
@@ -1863,19 +1863,19 @@ export const QueryGetPaymentAccountsByOwnerResponse = {
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryGetPaymentAccountsByOwnerResponse>, I>>(object: I): QueryGetPaymentAccountsByOwnerResponse {
-    const message = createBaseQueryGetPaymentAccountsByOwnerResponse();
+  fromPartial<I extends Exact<DeepPartial<QueryPaymentAccountsByOwnerResponse>, I>>(object: I): QueryPaymentAccountsByOwnerResponse {
+    const message = createBaseQueryPaymentAccountsByOwnerResponse();
     message.paymentAccounts = object.paymentAccounts?.map(e => e) || [];
     return message;
   },
 
-  fromSDK(object: QueryGetPaymentAccountsByOwnerResponseSDKType): QueryGetPaymentAccountsByOwnerResponse {
+  fromSDK(object: QueryPaymentAccountsByOwnerResponseSDKType): QueryPaymentAccountsByOwnerResponse {
     return {
       paymentAccounts: Array.isArray(object?.paymentAccounts) ? object.paymentAccounts.map((e: any) => e) : []
     };
   },
 
-  toSDK(message: QueryGetPaymentAccountsByOwnerResponse): QueryGetPaymentAccountsByOwnerResponseSDKType {
+  toSDK(message: QueryPaymentAccountsByOwnerResponse): QueryPaymentAccountsByOwnerResponseSDKType {
     const obj: any = {};
 
     if (message.paymentAccounts) {
@@ -1889,14 +1889,14 @@ export const QueryGetPaymentAccountsByOwnerResponse = {
 
 };
 
-function createBaseQueryAllAutoSettleRecordRequest(): QueryAllAutoSettleRecordRequest {
+function createBaseQueryAutoSettleRecordsRequest(): QueryAutoSettleRecordsRequest {
   return {
     pagination: undefined
   };
 }
 
-export const QueryAllAutoSettleRecordRequest = {
-  encode(message: QueryAllAutoSettleRecordRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryAutoSettleRecordsRequest = {
+  encode(message: QueryAutoSettleRecordsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -1904,10 +1904,10 @@ export const QueryAllAutoSettleRecordRequest = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllAutoSettleRecordRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAutoSettleRecordsRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllAutoSettleRecordRequest();
+    const message = createBaseQueryAutoSettleRecordsRequest();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -1926,31 +1926,31 @@ export const QueryAllAutoSettleRecordRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllAutoSettleRecordRequest {
+  fromJSON(object: any): QueryAutoSettleRecordsRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
     };
   },
 
-  toJSON(message: QueryAllAutoSettleRecordRequest): unknown {
+  toJSON(message: QueryAutoSettleRecordsRequest): unknown {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryAllAutoSettleRecordRequest>, I>>(object: I): QueryAllAutoSettleRecordRequest {
-    const message = createBaseQueryAllAutoSettleRecordRequest();
+  fromPartial<I extends Exact<DeepPartial<QueryAutoSettleRecordsRequest>, I>>(object: I): QueryAutoSettleRecordsRequest {
+    const message = createBaseQueryAutoSettleRecordsRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
   },
 
-  fromSDK(object: QueryAllAutoSettleRecordRequestSDKType): QueryAllAutoSettleRecordRequest {
+  fromSDK(object: QueryAutoSettleRecordsRequestSDKType): QueryAutoSettleRecordsRequest {
     return {
       pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
     };
   },
 
-  toSDK(message: QueryAllAutoSettleRecordRequest): QueryAllAutoSettleRecordRequestSDKType {
+  toSDK(message: QueryAutoSettleRecordsRequest): QueryAutoSettleRecordsRequestSDKType {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
     return obj;
@@ -1958,16 +1958,16 @@ export const QueryAllAutoSettleRecordRequest = {
 
 };
 
-function createBaseQueryAllAutoSettleRecordResponse(): QueryAllAutoSettleRecordResponse {
+function createBaseQueryAutoSettleRecordsResponse(): QueryAutoSettleRecordsResponse {
   return {
-    autoSettleRecord: [],
+    autoSettleRecords: [],
     pagination: undefined
   };
 }
 
-export const QueryAllAutoSettleRecordResponse = {
-  encode(message: QueryAllAutoSettleRecordResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.autoSettleRecord) {
+export const QueryAutoSettleRecordsResponse = {
+  encode(message: QueryAutoSettleRecordsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.autoSettleRecords) {
       AutoSettleRecord.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
@@ -1978,17 +1978,17 @@ export const QueryAllAutoSettleRecordResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllAutoSettleRecordResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAutoSettleRecordsResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllAutoSettleRecordResponse();
+    const message = createBaseQueryAutoSettleRecordsResponse();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
 
       switch (tag >>> 3) {
         case 1:
-          message.autoSettleRecord.push(AutoSettleRecord.decode(reader, reader.uint32()));
+          message.autoSettleRecords.push(AutoSettleRecord.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -2004,47 +2004,47 @@ export const QueryAllAutoSettleRecordResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllAutoSettleRecordResponse {
+  fromJSON(object: any): QueryAutoSettleRecordsResponse {
     return {
-      autoSettleRecord: Array.isArray(object?.autoSettleRecord) ? object.autoSettleRecord.map((e: any) => AutoSettleRecord.fromJSON(e)) : [],
+      autoSettleRecords: Array.isArray(object?.autoSettleRecords) ? object.autoSettleRecords.map((e: any) => AutoSettleRecord.fromJSON(e)) : [],
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
     };
   },
 
-  toJSON(message: QueryAllAutoSettleRecordResponse): unknown {
+  toJSON(message: QueryAutoSettleRecordsResponse): unknown {
     const obj: any = {};
 
-    if (message.autoSettleRecord) {
-      obj.autoSettleRecord = message.autoSettleRecord.map(e => e ? AutoSettleRecord.toJSON(e) : undefined);
+    if (message.autoSettleRecords) {
+      obj.autoSettleRecords = message.autoSettleRecords.map(e => e ? AutoSettleRecord.toJSON(e) : undefined);
     } else {
-      obj.autoSettleRecord = [];
+      obj.autoSettleRecords = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryAllAutoSettleRecordResponse>, I>>(object: I): QueryAllAutoSettleRecordResponse {
-    const message = createBaseQueryAllAutoSettleRecordResponse();
-    message.autoSettleRecord = object.autoSettleRecord?.map(e => AutoSettleRecord.fromPartial(e)) || [];
+  fromPartial<I extends Exact<DeepPartial<QueryAutoSettleRecordsResponse>, I>>(object: I): QueryAutoSettleRecordsResponse {
+    const message = createBaseQueryAutoSettleRecordsResponse();
+    message.autoSettleRecords = object.autoSettleRecords?.map(e => AutoSettleRecord.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
   },
 
-  fromSDK(object: QueryAllAutoSettleRecordResponseSDKType): QueryAllAutoSettleRecordResponse {
+  fromSDK(object: QueryAutoSettleRecordsResponseSDKType): QueryAutoSettleRecordsResponse {
     return {
-      autoSettleRecord: Array.isArray(object?.auto_settle_record) ? object.auto_settle_record.map((e: any) => AutoSettleRecord.fromSDK(e)) : [],
+      autoSettleRecords: Array.isArray(object?.auto_settle_records) ? object.auto_settle_records.map((e: any) => AutoSettleRecord.fromSDK(e)) : [],
       pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
     };
   },
 
-  toSDK(message: QueryAllAutoSettleRecordResponse): QueryAllAutoSettleRecordResponseSDKType {
+  toSDK(message: QueryAutoSettleRecordsResponse): QueryAutoSettleRecordsResponseSDKType {
     const obj: any = {};
 
-    if (message.autoSettleRecord) {
-      obj.auto_settle_record = message.autoSettleRecord.map(e => e ? AutoSettleRecord.toSDK(e) : undefined);
+    if (message.autoSettleRecords) {
+      obj.auto_settle_records = message.autoSettleRecords.map(e => e ? AutoSettleRecord.toSDK(e) : undefined);
     } else {
-      obj.auto_settle_record = [];
+      obj.auto_settle_records = [];
     }
 
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
@@ -2057,39 +2057,39 @@ export const QueryAllAutoSettleRecordResponse = {
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
-  /** ParamsByTimestamp queries the parameters of the module. */
+  /** ParamsByTimestamp queries the parameter of the module by timestamp. */
 
   ParamsByTimestamp(request: QueryParamsByTimestampRequest): Promise<QueryParamsByTimestampResponse>;
-  /** Queries a StreamRecord by index. */
+  /** Queries our flows by account. */
 
   OutFlows(request: QueryOutFlowsRequest): Promise<QueryOutFlowsResponse>;
-  /** Queries a StreamRecord by index. */
+  /** Queries a stream record by account. */
 
   StreamRecord(request: QueryGetStreamRecordRequest): Promise<QueryGetStreamRecordResponse>;
-  /** Queries a list of StreamRecord items. */
+  /** Queries all stream records. */
 
-  StreamRecordAll(request?: QueryAllStreamRecordRequest): Promise<QueryAllStreamRecordResponse>;
-  /** Queries a PaymentAccountCount by index. */
+  StreamRecords(request?: QueryStreamRecordsRequest): Promise<QueryStreamRecordsResponse>;
+  /** Queries the count of payment account by owner. */
 
-  PaymentAccountCount(request: QueryGetPaymentAccountCountRequest): Promise<QueryGetPaymentAccountCountResponse>;
-  /** Queries a list of PaymentAccountCount items. */
+  PaymentAccountCount(request: QueryPaymentAccountCountRequest): Promise<QueryPaymentAccountCountResponse>;
+  /** Queries all counts of payment account for all owners. */
 
-  PaymentAccountCountAll(request?: QueryAllPaymentAccountCountRequest): Promise<QueryAllPaymentAccountCountResponse>;
-  /** Queries a PaymentAccount by index. */
+  PaymentAccountCounts(request?: QueryPaymentAccountCountsRequest): Promise<QueryPaymentAccountCountsResponse>;
+  /** Queries a payment account by payment account address. */
 
-  PaymentAccount(request: QueryGetPaymentAccountRequest): Promise<QueryGetPaymentAccountResponse>;
-  /** Queries a list of PaymentAccount items. */
+  PaymentAccount(request: QueryPaymentAccountRequest): Promise<QueryPaymentAccountResponse>;
+  /** Queries all payment accounts. */
 
-  PaymentAccountAll(request?: QueryAllPaymentAccountRequest): Promise<QueryAllPaymentAccountResponse>;
-  /** Queries a list of DynamicBalance items. */
+  PaymentAccounts(request?: QueryPaymentAccountsRequest): Promise<QueryPaymentAccountsResponse>;
+  /** Queries dynamic balance of a payment account. */
 
   DynamicBalance(request: QueryDynamicBalanceRequest): Promise<QueryDynamicBalanceResponse>;
-  /** Queries a list of GetPaymentAccountsByOwner items. */
+  /** Queries all payment accounts by a owner. */
 
-  GetPaymentAccountsByOwner(request: QueryGetPaymentAccountsByOwnerRequest): Promise<QueryGetPaymentAccountsByOwnerResponse>;
-  /** Queries a list of AutoSettleRecord items. */
+  PaymentAccountsByOwner(request: QueryPaymentAccountsByOwnerRequest): Promise<QueryPaymentAccountsByOwnerResponse>;
+  /** Queries all auto settle records. */
 
-  AutoSettleRecordAll(request?: QueryAllAutoSettleRecordRequest): Promise<QueryAllAutoSettleRecordResponse>;
+  AutoSettleRecords(request?: QueryAutoSettleRecordsRequest): Promise<QueryAutoSettleRecordsResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -2100,14 +2100,14 @@ export class QueryClientImpl implements Query {
     this.ParamsByTimestamp = this.ParamsByTimestamp.bind(this);
     this.OutFlows = this.OutFlows.bind(this);
     this.StreamRecord = this.StreamRecord.bind(this);
-    this.StreamRecordAll = this.StreamRecordAll.bind(this);
+    this.StreamRecords = this.StreamRecords.bind(this);
     this.PaymentAccountCount = this.PaymentAccountCount.bind(this);
-    this.PaymentAccountCountAll = this.PaymentAccountCountAll.bind(this);
+    this.PaymentAccountCounts = this.PaymentAccountCounts.bind(this);
     this.PaymentAccount = this.PaymentAccount.bind(this);
-    this.PaymentAccountAll = this.PaymentAccountAll.bind(this);
+    this.PaymentAccounts = this.PaymentAccounts.bind(this);
     this.DynamicBalance = this.DynamicBalance.bind(this);
-    this.GetPaymentAccountsByOwner = this.GetPaymentAccountsByOwner.bind(this);
-    this.AutoSettleRecordAll = this.AutoSettleRecordAll.bind(this);
+    this.PaymentAccountsByOwner = this.PaymentAccountsByOwner.bind(this);
+    this.AutoSettleRecords = this.AutoSettleRecords.bind(this);
   }
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
@@ -2134,40 +2134,40 @@ export class QueryClientImpl implements Query {
     return promise.then(data => QueryGetStreamRecordResponse.decode(new _m0.Reader(data)));
   }
 
-  StreamRecordAll(request: QueryAllStreamRecordRequest = {
+  StreamRecords(request: QueryStreamRecordsRequest = {
     pagination: undefined
-  }): Promise<QueryAllStreamRecordResponse> {
-    const data = QueryAllStreamRecordRequest.encode(request).finish();
-    const promise = this.rpc.request("greenfield.payment.Query", "StreamRecordAll", data);
-    return promise.then(data => QueryAllStreamRecordResponse.decode(new _m0.Reader(data)));
+  }): Promise<QueryStreamRecordsResponse> {
+    const data = QueryStreamRecordsRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.payment.Query", "StreamRecords", data);
+    return promise.then(data => QueryStreamRecordsResponse.decode(new _m0.Reader(data)));
   }
 
-  PaymentAccountCount(request: QueryGetPaymentAccountCountRequest): Promise<QueryGetPaymentAccountCountResponse> {
-    const data = QueryGetPaymentAccountCountRequest.encode(request).finish();
+  PaymentAccountCount(request: QueryPaymentAccountCountRequest): Promise<QueryPaymentAccountCountResponse> {
+    const data = QueryPaymentAccountCountRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccountCount", data);
-    return promise.then(data => QueryGetPaymentAccountCountResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryPaymentAccountCountResponse.decode(new _m0.Reader(data)));
   }
 
-  PaymentAccountCountAll(request: QueryAllPaymentAccountCountRequest = {
+  PaymentAccountCounts(request: QueryPaymentAccountCountsRequest = {
     pagination: undefined
-  }): Promise<QueryAllPaymentAccountCountResponse> {
-    const data = QueryAllPaymentAccountCountRequest.encode(request).finish();
-    const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccountCountAll", data);
-    return promise.then(data => QueryAllPaymentAccountCountResponse.decode(new _m0.Reader(data)));
+  }): Promise<QueryPaymentAccountCountsResponse> {
+    const data = QueryPaymentAccountCountsRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccountCounts", data);
+    return promise.then(data => QueryPaymentAccountCountsResponse.decode(new _m0.Reader(data)));
   }
 
-  PaymentAccount(request: QueryGetPaymentAccountRequest): Promise<QueryGetPaymentAccountResponse> {
-    const data = QueryGetPaymentAccountRequest.encode(request).finish();
+  PaymentAccount(request: QueryPaymentAccountRequest): Promise<QueryPaymentAccountResponse> {
+    const data = QueryPaymentAccountRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccount", data);
-    return promise.then(data => QueryGetPaymentAccountResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryPaymentAccountResponse.decode(new _m0.Reader(data)));
   }
 
-  PaymentAccountAll(request: QueryAllPaymentAccountRequest = {
+  PaymentAccounts(request: QueryPaymentAccountsRequest = {
     pagination: undefined
-  }): Promise<QueryAllPaymentAccountResponse> {
-    const data = QueryAllPaymentAccountRequest.encode(request).finish();
-    const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccountAll", data);
-    return promise.then(data => QueryAllPaymentAccountResponse.decode(new _m0.Reader(data)));
+  }): Promise<QueryPaymentAccountsResponse> {
+    const data = QueryPaymentAccountsRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccounts", data);
+    return promise.then(data => QueryPaymentAccountsResponse.decode(new _m0.Reader(data)));
   }
 
   DynamicBalance(request: QueryDynamicBalanceRequest): Promise<QueryDynamicBalanceResponse> {
@@ -2176,18 +2176,18 @@ export class QueryClientImpl implements Query {
     return promise.then(data => QueryDynamicBalanceResponse.decode(new _m0.Reader(data)));
   }
 
-  GetPaymentAccountsByOwner(request: QueryGetPaymentAccountsByOwnerRequest): Promise<QueryGetPaymentAccountsByOwnerResponse> {
-    const data = QueryGetPaymentAccountsByOwnerRequest.encode(request).finish();
-    const promise = this.rpc.request("greenfield.payment.Query", "GetPaymentAccountsByOwner", data);
-    return promise.then(data => QueryGetPaymentAccountsByOwnerResponse.decode(new _m0.Reader(data)));
+  PaymentAccountsByOwner(request: QueryPaymentAccountsByOwnerRequest): Promise<QueryPaymentAccountsByOwnerResponse> {
+    const data = QueryPaymentAccountsByOwnerRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccountsByOwner", data);
+    return promise.then(data => QueryPaymentAccountsByOwnerResponse.decode(new _m0.Reader(data)));
   }
 
-  AutoSettleRecordAll(request: QueryAllAutoSettleRecordRequest = {
+  AutoSettleRecords(request: QueryAutoSettleRecordsRequest = {
     pagination: undefined
-  }): Promise<QueryAllAutoSettleRecordResponse> {
-    const data = QueryAllAutoSettleRecordRequest.encode(request).finish();
-    const promise = this.rpc.request("greenfield.payment.Query", "AutoSettleRecordAll", data);
-    return promise.then(data => QueryAllAutoSettleRecordResponse.decode(new _m0.Reader(data)));
+  }): Promise<QueryAutoSettleRecordsResponse> {
+    const data = QueryAutoSettleRecordsRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.payment.Query", "AutoSettleRecords", data);
+    return promise.then(data => QueryAutoSettleRecordsResponse.decode(new _m0.Reader(data)));
   }
 
 }

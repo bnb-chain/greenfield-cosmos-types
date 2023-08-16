@@ -24,6 +24,9 @@ export interface EventCreateStorageProvider {
   /** gc_address defines one of the storage provider's accounts which is used for gc purpose */
 
   gcAddress: string;
+  /** maintenance_address defines one of the storage provider's accounts which is used for testing while in maintenance mode */
+
+  maintenanceAddress: string;
   /** endpoint is the domain name address used by SP to provide storage services */
 
   endpoint: string;
@@ -49,6 +52,7 @@ export interface EventCreateStorageProviderSDKType {
   seal_address: string;
   approval_address: string;
   gc_address: string;
+  maintenance_address: string;
   endpoint: string;
   total_deposit?: CoinSDKType;
   status: Status;
@@ -78,6 +82,9 @@ export interface EventEditStorageProvider {
   /** gc_address defines one of the storage provider's accounts which is used for gc purpose */
 
   gcAddress: string;
+  /** maintenance_address defines one of the storage provider's accounts which is used for testing while in maintenance mode */
+
+  maintenanceAddress: string;
   /** bls_key defines the bls pub key owned by storage provider used when sealing object */
 
   blsKey: string;
@@ -92,6 +99,7 @@ export interface EventEditStorageProviderSDKType {
   seal_address: string;
   approval_address: string;
   gc_address: string;
+  maintenance_address: string;
   bls_key: string;
 }
 /** EventDeposit is emitted when sp deposit tokens. */
@@ -147,6 +155,29 @@ export interface EventSecondarySpStorePriceUpdateSDKType {
   update_time_sec: Long;
   store_price: string;
 }
+/** EventUpdateStorageProviderStatus is emitted when the SP update its status successfully */
+
+export interface EventUpdateStorageProviderStatus {
+  /** sp_id defines the identifier of storage provider which generated on-chain */
+  spId: number;
+  /** sp_address is the operator address of the storage provider */
+
+  spAddress: string;
+  /** pre status */
+
+  preStatus: string;
+  /** new status */
+
+  newStatus: string;
+}
+/** EventUpdateStorageProviderStatus is emitted when the SP update its status successfully */
+
+export interface EventUpdateStorageProviderStatusSDKType {
+  sp_id: number;
+  sp_address: string;
+  pre_status: string;
+  new_status: string;
+}
 
 function createBaseEventCreateStorageProvider(): EventCreateStorageProvider {
   return {
@@ -156,6 +187,7 @@ function createBaseEventCreateStorageProvider(): EventCreateStorageProvider {
     sealAddress: "",
     approvalAddress: "",
     gcAddress: "",
+    maintenanceAddress: "",
     endpoint: "",
     totalDeposit: undefined,
     status: 0,
@@ -190,24 +222,28 @@ export const EventCreateStorageProvider = {
       writer.uint32(50).string(message.gcAddress);
     }
 
+    if (message.maintenanceAddress !== "") {
+      writer.uint32(58).string(message.maintenanceAddress);
+    }
+
     if (message.endpoint !== "") {
-      writer.uint32(58).string(message.endpoint);
+      writer.uint32(66).string(message.endpoint);
     }
 
     if (message.totalDeposit !== undefined) {
-      Coin.encode(message.totalDeposit, writer.uint32(66).fork()).ldelim();
+      Coin.encode(message.totalDeposit, writer.uint32(74).fork()).ldelim();
     }
 
     if (message.status !== 0) {
-      writer.uint32(72).int32(message.status);
+      writer.uint32(80).int32(message.status);
     }
 
     if (message.description !== undefined) {
-      Description.encode(message.description, writer.uint32(82).fork()).ldelim();
+      Description.encode(message.description, writer.uint32(90).fork()).ldelim();
     }
 
     if (message.blsKey !== "") {
-      writer.uint32(90).string(message.blsKey);
+      writer.uint32(98).string(message.blsKey);
     }
 
     return writer;
@@ -247,22 +283,26 @@ export const EventCreateStorageProvider = {
           break;
 
         case 7:
-          message.endpoint = reader.string();
+          message.maintenanceAddress = reader.string();
           break;
 
         case 8:
-          message.totalDeposit = Coin.decode(reader, reader.uint32());
+          message.endpoint = reader.string();
           break;
 
         case 9:
-          message.status = (reader.int32() as any);
+          message.totalDeposit = Coin.decode(reader, reader.uint32());
           break;
 
         case 10:
-          message.description = Description.decode(reader, reader.uint32());
+          message.status = (reader.int32() as any);
           break;
 
         case 11:
+          message.description = Description.decode(reader, reader.uint32());
+          break;
+
+        case 12:
           message.blsKey = reader.string();
           break;
 
@@ -283,6 +323,7 @@ export const EventCreateStorageProvider = {
       sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
       approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
       gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : "",
+      maintenanceAddress: isSet(object.maintenanceAddress) ? String(object.maintenanceAddress) : "",
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
       totalDeposit: isSet(object.totalDeposit) ? Coin.fromJSON(object.totalDeposit) : undefined,
       status: isSet(object.status) ? statusFromJSON(object.status) : 0,
@@ -299,6 +340,7 @@ export const EventCreateStorageProvider = {
     message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
     message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
     message.gcAddress !== undefined && (obj.gcAddress = message.gcAddress);
+    message.maintenanceAddress !== undefined && (obj.maintenanceAddress = message.maintenanceAddress);
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
     message.totalDeposit !== undefined && (obj.totalDeposit = message.totalDeposit ? Coin.toJSON(message.totalDeposit) : undefined);
     message.status !== undefined && (obj.status = statusToJSON(message.status));
@@ -315,6 +357,7 @@ export const EventCreateStorageProvider = {
     message.sealAddress = object.sealAddress ?? "";
     message.approvalAddress = object.approvalAddress ?? "";
     message.gcAddress = object.gcAddress ?? "";
+    message.maintenanceAddress = object.maintenanceAddress ?? "";
     message.endpoint = object.endpoint ?? "";
     message.totalDeposit = object.totalDeposit !== undefined && object.totalDeposit !== null ? Coin.fromPartial(object.totalDeposit) : undefined;
     message.status = object.status ?? 0;
@@ -331,6 +374,7 @@ export const EventCreateStorageProvider = {
       sealAddress: object?.seal_address,
       approvalAddress: object?.approval_address,
       gcAddress: object?.gc_address,
+      maintenanceAddress: object?.maintenance_address,
       endpoint: object?.endpoint,
       totalDeposit: object.total_deposit ? Coin.fromSDK(object.total_deposit) : undefined,
       status: isSet(object.status) ? statusFromJSON(object.status) : 0,
@@ -347,6 +391,7 @@ export const EventCreateStorageProvider = {
     obj.seal_address = message.sealAddress;
     obj.approval_address = message.approvalAddress;
     obj.gc_address = message.gcAddress;
+    obj.maintenance_address = message.maintenanceAddress;
     obj.endpoint = message.endpoint;
     message.totalDeposit !== undefined && (obj.total_deposit = message.totalDeposit ? Coin.toSDK(message.totalDeposit) : undefined);
     message.status !== undefined && (obj.status = statusToJSON(message.status));
@@ -366,6 +411,7 @@ function createBaseEventEditStorageProvider(): EventEditStorageProvider {
     sealAddress: "",
     approvalAddress: "",
     gcAddress: "",
+    maintenanceAddress: "",
     blsKey: ""
   };
 }
@@ -400,8 +446,12 @@ export const EventEditStorageProvider = {
       writer.uint32(58).string(message.gcAddress);
     }
 
+    if (message.maintenanceAddress !== "") {
+      writer.uint32(66).string(message.maintenanceAddress);
+    }
+
     if (message.blsKey !== "") {
-      writer.uint32(66).string(message.blsKey);
+      writer.uint32(74).string(message.blsKey);
     }
 
     return writer;
@@ -445,6 +495,10 @@ export const EventEditStorageProvider = {
           break;
 
         case 8:
+          message.maintenanceAddress = reader.string();
+          break;
+
+        case 9:
           message.blsKey = reader.string();
           break;
 
@@ -466,6 +520,7 @@ export const EventEditStorageProvider = {
       sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
       approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
       gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : "",
+      maintenanceAddress: isSet(object.maintenanceAddress) ? String(object.maintenanceAddress) : "",
       blsKey: isSet(object.blsKey) ? String(object.blsKey) : ""
     };
   },
@@ -479,6 +534,7 @@ export const EventEditStorageProvider = {
     message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
     message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
     message.gcAddress !== undefined && (obj.gcAddress = message.gcAddress);
+    message.maintenanceAddress !== undefined && (obj.maintenanceAddress = message.maintenanceAddress);
     message.blsKey !== undefined && (obj.blsKey = message.blsKey);
     return obj;
   },
@@ -492,6 +548,7 @@ export const EventEditStorageProvider = {
     message.sealAddress = object.sealAddress ?? "";
     message.approvalAddress = object.approvalAddress ?? "";
     message.gcAddress = object.gcAddress ?? "";
+    message.maintenanceAddress = object.maintenanceAddress ?? "";
     message.blsKey = object.blsKey ?? "";
     return message;
   },
@@ -505,6 +562,7 @@ export const EventEditStorageProvider = {
       sealAddress: object?.seal_address,
       approvalAddress: object?.approval_address,
       gcAddress: object?.gc_address,
+      maintenanceAddress: object?.maintenance_address,
       blsKey: object?.bls_key
     };
   },
@@ -518,6 +576,7 @@ export const EventEditStorageProvider = {
     obj.seal_address = message.sealAddress;
     obj.approval_address = message.approvalAddress;
     obj.gc_address = message.gcAddress;
+    obj.maintenance_address = message.maintenanceAddress;
     obj.bls_key = message.blsKey;
     return obj;
   }
@@ -824,6 +883,117 @@ export const EventSecondarySpStorePriceUpdate = {
     const obj: any = {};
     obj.update_time_sec = message.updateTimeSec;
     obj.store_price = message.storePrice;
+    return obj;
+  }
+
+};
+
+function createBaseEventUpdateStorageProviderStatus(): EventUpdateStorageProviderStatus {
+  return {
+    spId: 0,
+    spAddress: "",
+    preStatus: "",
+    newStatus: ""
+  };
+}
+
+export const EventUpdateStorageProviderStatus = {
+  encode(message: EventUpdateStorageProviderStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.spId !== 0) {
+      writer.uint32(8).uint32(message.spId);
+    }
+
+    if (message.spAddress !== "") {
+      writer.uint32(18).string(message.spAddress);
+    }
+
+    if (message.preStatus !== "") {
+      writer.uint32(26).string(message.preStatus);
+    }
+
+    if (message.newStatus !== "") {
+      writer.uint32(34).string(message.newStatus);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateStorageProviderStatus {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventUpdateStorageProviderStatus();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.spId = reader.uint32();
+          break;
+
+        case 2:
+          message.spAddress = reader.string();
+          break;
+
+        case 3:
+          message.preStatus = reader.string();
+          break;
+
+        case 4:
+          message.newStatus = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventUpdateStorageProviderStatus {
+    return {
+      spId: isSet(object.spId) ? Number(object.spId) : 0,
+      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      preStatus: isSet(object.preStatus) ? String(object.preStatus) : "",
+      newStatus: isSet(object.newStatus) ? String(object.newStatus) : ""
+    };
+  },
+
+  toJSON(message: EventUpdateStorageProviderStatus): unknown {
+    const obj: any = {};
+    message.spId !== undefined && (obj.spId = Math.round(message.spId));
+    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.preStatus !== undefined && (obj.preStatus = message.preStatus);
+    message.newStatus !== undefined && (obj.newStatus = message.newStatus);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventUpdateStorageProviderStatus>, I>>(object: I): EventUpdateStorageProviderStatus {
+    const message = createBaseEventUpdateStorageProviderStatus();
+    message.spId = object.spId ?? 0;
+    message.spAddress = object.spAddress ?? "";
+    message.preStatus = object.preStatus ?? "";
+    message.newStatus = object.newStatus ?? "";
+    return message;
+  },
+
+  fromSDK(object: EventUpdateStorageProviderStatusSDKType): EventUpdateStorageProviderStatus {
+    return {
+      spId: object?.sp_id,
+      spAddress: object?.sp_address,
+      preStatus: object?.pre_status,
+      newStatus: object?.new_status
+    };
+  },
+
+  toSDK(message: EventUpdateStorageProviderStatus): EventUpdateStorageProviderStatusSDKType {
+    const obj: any = {};
+    obj.sp_id = message.spId;
+    obj.sp_address = message.spAddress;
+    obj.pre_status = message.preStatus;
+    obj.new_status = message.newStatus;
     return obj;
   }
 
