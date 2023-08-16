@@ -1,3 +1,12 @@
+# [0.4.0-alpha.19](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.18...v0.4.0-alpha.19) (2023-08-16)
+
+
+### Features
+
+* Sync with Greenfield-cosmos-sdk v0.2.4-alpha.1 and greenfield v0.2.4-alpha.1 ([c1d2d1f](https://github.com/bnb-chain/greenfield-cosmos-types/commit/c1d2d1f7e8d59c460f56c29d9e15006bb8a3f191))
+* Sync with Greenfield-cosmos-sdk v0.2.4-alpha.1 and greenfield v0.2.4-alpha.1 ([7bb6b11](https://github.com/bnb-chain/greenfield-cosmos-types/commit/7bb6b117c48cc65e86a1de205074ee01c71197b4))
+* Upgrade telescope ([c35a1b3](https://github.com/bnb-chain/greenfield-cosmos-types/commit/c35a1b3d2d18d7c1210eca6053596c2c4df31064))
+
 # [0.4.0-alpha.18](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.17...v0.4.0-alpha.18) (2023-07-27)
 
 
