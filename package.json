@@ -35,18 +35,18 @@
     "access": "public"
   },
   "devDependencies": {
-    "@osmonauts/telescope": "^0.81.5",
-    "@semantic-release/changelog": "^6.0.1",
+    "@cosmology/telescope": "^0.104.0",
+    "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@types/long": "^4.0.1",
-    "@types/node": "^15.6.2",
-    "rimraf": "^4.4.0",
-    "semantic-release": "^19.0.3",
+    "@types/long": "^4.0.2",
+    "@types/node": "^15.14.9",
+    "rimraf": "^4.4.1",
+    "semantic-release": "^19.0.5",
     "ts-morph": "^18.0.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "long": "^4.0.0",
-    "protobufjs": "~6.11.2"
+    "protobufjs": "~6.11.4"
   }
 }
