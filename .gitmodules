@@ -3,4 +3,4 @@
 	url = git@github.com:bnb-chain/greenfield-cosmos-sdk.git
 [submodule "greenfield"]
 	path = greenfield
-	url = https://github.com/bnb-chain/greenfield
+	url = git@github.com:bnb-chain/greenfield.git
