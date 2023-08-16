@@ -2,7 +2,7 @@
 
 const { join } = require('path');
 const { writeFileSync } = require('fs');
-const telescope = require('@cosmology/telescope').default;
+const telescope = require('@osmonauts/telescope').default;
 
 const outPath = join(__dirname, '/../src');
 
@@ -16,7 +16,7 @@ telescope({
     options: {
         logLevel: 0,
         tsDisable: {
-            disableAll: true
+            disableAll: false
         },
         eslintDisable: {
             disableAll: true
@@ -28,7 +28,7 @@ telescope({
             includePackageVar: true,
             excluded: {
                 protos: [
-                    'cosmos/authz/v1beta1/event.proto',
+                                        'cosmos/authz/v1beta1/event.proto',
                     'cosmos/autocli/v1/query.proto',
                     'cosmos/autocli/v1/options.proto',
                     'cosmos/base/reflection/v2alpha1/reflection.proto',
@@ -37,6 +37,7 @@ telescope({
                     'ibc/lightclients/solomachine/v2/solomachine.proto',
                     'tendermint/libs/bits/types.proto',
                     'google/api/httpbody.proto',
+                    'tendermint/blockchain/types.proto',
                     'tendermint/consensus/types.proto',
                     'tendermint/consensus/wal.proto',
                     'tendermint/mempool/types.proto',
@@ -49,8 +50,6 @@ telescope({
                     'tendermint/store/types.proto',
                     'tendermint/types/canonical.proto',
                     'tendermint/types/events.proto',
-                    'tendermint/types/validator.proto',
-                    'tendermint/types/block.proto',
                 ]
             },
             useOptionalNullable: true,

@@ -7,6 +7,7 @@ export const protobufPackage = "greenfield.storage";
  * SourceType represents the source of resource creation, which can
  * from Greenfield native or from a cross-chain transfer from BSC
  */
+
 export enum SourceType {
   SOURCE_TYPE_ORIGIN = 0,
   SOURCE_TYPE_BSC_CROSS_CHAIN = 1,
@@ -19,12 +20,15 @@ export function sourceTypeFromJSON(object: any): SourceType {
     case 0:
     case "SOURCE_TYPE_ORIGIN":
       return SourceType.SOURCE_TYPE_ORIGIN;
+
     case 1:
     case "SOURCE_TYPE_BSC_CROSS_CHAIN":
       return SourceType.SOURCE_TYPE_BSC_CROSS_CHAIN;
+
     case 2:
     case "SOURCE_TYPE_MIRROR_PENDING":
       return SourceType.SOURCE_TYPE_MIRROR_PENDING;
+
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -35,10 +39,13 @@ export function sourceTypeToJSON(object: SourceType): string {
   switch (object) {
     case SourceType.SOURCE_TYPE_ORIGIN:
       return "SOURCE_TYPE_ORIGIN";
+
     case SourceType.SOURCE_TYPE_BSC_CROSS_CHAIN:
       return "SOURCE_TYPE_BSC_CROSS_CHAIN";
+
     case SourceType.SOURCE_TYPE_MIRROR_PENDING:
       return "SOURCE_TYPE_MIRROR_PENDING";
+
     case SourceType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -49,6 +56,7 @@ export function sourceTypeToJSON(object: SourceType): string {
  * sends a CreateBucket transaction onto the chain, the status is set to 'Created'.
  * When a Discontinue Object transaction is received on chain, the status is set to 'Discontinued'.
  */
+
 export enum BucketStatus {
   BUCKET_STATUS_CREATED = 0,
   BUCKET_STATUS_DISCONTINUED = 1,
@@ -61,12 +69,15 @@ export function bucketStatusFromJSON(object: any): BucketStatus {
     case 0:
     case "BUCKET_STATUS_CREATED":
       return BucketStatus.BUCKET_STATUS_CREATED;
+
     case 1:
     case "BUCKET_STATUS_DISCONTINUED":
       return BucketStatus.BUCKET_STATUS_DISCONTINUED;
+
     case 2:
     case "BUCKET_STATUS_MIGRATING":
       return BucketStatus.BUCKET_STATUS_MIGRATING;
+
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -77,10 +88,13 @@ export function bucketStatusToJSON(object: BucketStatus): string {
   switch (object) {
     case BucketStatus.BUCKET_STATUS_CREATED:
       return "BUCKET_STATUS_CREATED";
+
     case BucketStatus.BUCKET_STATUS_DISCONTINUED:
       return "BUCKET_STATUS_DISCONTINUED";
+
     case BucketStatus.BUCKET_STATUS_MIGRATING:
       return "BUCKET_STATUS_MIGRATING";
+
     case BucketStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -90,6 +104,7 @@ export function bucketStatusToJSON(object: BucketStatus): string {
  * RedundancyType represents the redundancy algorithm type for object data,
  * which can be either multi-replica or erasure coding.
  */
+
 export enum RedundancyType {
   REDUNDANCY_EC_TYPE = 0,
   REDUNDANCY_REPLICA_TYPE = 1,
@@ -101,9 +116,11 @@ export function redundancyTypeFromJSON(object: any): RedundancyType {
     case 0:
     case "REDUNDANCY_EC_TYPE":
       return RedundancyType.REDUNDANCY_EC_TYPE;
+
     case 1:
     case "REDUNDANCY_REPLICA_TYPE":
       return RedundancyType.REDUNDANCY_REPLICA_TYPE;
+
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -114,8 +131,10 @@ export function redundancyTypeToJSON(object: RedundancyType): string {
   switch (object) {
     case RedundancyType.REDUNDANCY_EC_TYPE:
       return "REDUNDANCY_EC_TYPE";
+
     case RedundancyType.REDUNDANCY_REPLICA_TYPE:
       return "REDUNDANCY_REPLICA_TYPE";
+
     case RedundancyType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -128,6 +147,7 @@ export function redundancyTypeToJSON(object: RedundancyType): string {
  * the chain, the status is set to 'Sealed'. When a Discontinue Object transaction is
  * received on chain, the status is set to 'Discontinued'.
  */
+
 export enum ObjectStatus {
   OBJECT_STATUS_CREATED = 0,
   OBJECT_STATUS_SEALED = 1,
@@ -140,12 +160,15 @@ export function objectStatusFromJSON(object: any): ObjectStatus {
     case 0:
     case "OBJECT_STATUS_CREATED":
       return ObjectStatus.OBJECT_STATUS_CREATED;
+
     case 1:
     case "OBJECT_STATUS_SEALED":
       return ObjectStatus.OBJECT_STATUS_SEALED;
+
     case 2:
     case "OBJECT_STATUS_DISCONTINUED":
       return ObjectStatus.OBJECT_STATUS_DISCONTINUED;
+
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -156,20 +179,25 @@ export function objectStatusToJSON(object: ObjectStatus): string {
   switch (object) {
     case ObjectStatus.OBJECT_STATUS_CREATED:
       return "OBJECT_STATUS_CREATED";
+
     case ObjectStatus.OBJECT_STATUS_SEALED:
       return "OBJECT_STATUS_SEALED";
+
     case ObjectStatus.OBJECT_STATUS_DISCONTINUED:
       return "OBJECT_STATUS_DISCONTINUED";
+
     case ObjectStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
 }
 /** VisibilityType is the resources public status. */
+
 export enum VisibilityType {
   VISIBILITY_TYPE_UNSPECIFIED = 0,
   VISIBILITY_TYPE_PUBLIC_READ = 1,
   VISIBILITY_TYPE_PRIVATE = 2,
+
   /** VISIBILITY_TYPE_INHERIT - If the bucket Visibility is inherit, it's finally set to private. If the object Visibility is inherit, it's the same as bucket. */
   VISIBILITY_TYPE_INHERIT = 3,
   UNRECOGNIZED = -1,
@@ -180,15 +208,19 @@ export function visibilityTypeFromJSON(object: any): VisibilityType {
     case 0:
     case "VISIBILITY_TYPE_UNSPECIFIED":
       return VisibilityType.VISIBILITY_TYPE_UNSPECIFIED;
+
     case 1:
     case "VISIBILITY_TYPE_PUBLIC_READ":
       return VisibilityType.VISIBILITY_TYPE_PUBLIC_READ;
+
     case 2:
     case "VISIBILITY_TYPE_PRIVATE":
       return VisibilityType.VISIBILITY_TYPE_PRIVATE;
+
     case 3:
     case "VISIBILITY_TYPE_INHERIT":
       return VisibilityType.VISIBILITY_TYPE_INHERIT;
+
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -199,12 +231,16 @@ export function visibilityTypeToJSON(object: VisibilityType): string {
   switch (object) {
     case VisibilityType.VISIBILITY_TYPE_UNSPECIFIED:
       return "VISIBILITY_TYPE_UNSPECIFIED";
+
     case VisibilityType.VISIBILITY_TYPE_PUBLIC_READ:
       return "VISIBILITY_TYPE_PUBLIC_READ";
+
     case VisibilityType.VISIBILITY_TYPE_PRIVATE:
       return "VISIBILITY_TYPE_PRIVATE";
+
     case VisibilityType.VISIBILITY_TYPE_INHERIT:
       return "VISIBILITY_TYPE_INHERIT";
+
     case VisibilityType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -217,11 +253,13 @@ export function visibilityTypeToJSON(object: VisibilityType): string {
  * Then the primary SP can challenge and slash the secondary SP.
  * So the id of the object is needed to prevent this.
  */
+
 export interface SecondarySpSealObjectSignDoc {
   chainId: string;
   globalVirtualGroupId: number;
   objectId: string;
   /** checksum is the sha256 hash of slice of integrity hash from secondary sps */
+
   checksum: Uint8Array;
 }
 /**
@@ -231,6 +269,7 @@ export interface SecondarySpSealObjectSignDoc {
  * Then the primary SP can challenge and slash the secondary SP.
  * So the id of the object is needed to prevent this.
  */
+
 export interface SecondarySpSealObjectSignDocSDKType {
   chain_id: string;
   global_virtual_group_id: number;
@@ -267,17 +306,21 @@ export interface SecondarySpMigrationBucketSignDocSDKType {
  * Each local virtual group is associated with a unique virtual payment account,
  * where all object fees are streamed to.
  */
+
 export interface LocalVirtualGroup {
   /** id is the identifier of the local virtual group. */
   id: number;
   /** global_virtual_group_id is the identifier of the global virtual group. */
+
   globalVirtualGroupId: number;
   /** stored_size is the size of the stored data in the local virtual group. */
+
   storedSize: Long;
   /**
    * total_charge_size is the total charged size of the objects in the LVG.
    * Notice that the minimum unit of charge is 128K
    */
+
   totalChargeSize: Long;
 }
 /**
@@ -286,12 +329,14 @@ export interface LocalVirtualGroup {
  * Each local virtual group is associated with a unique virtual payment account,
  * where all object fees are streamed to.
  */
+
 export interface LocalVirtualGroupSDKType {
   id: number;
   global_virtual_group_id: number;
   stored_size: Long;
   total_charge_size: Long;
 }
+
 function createBaseSecondarySpSealObjectSignDoc(): SecondarySpSealObjectSignDoc {
   return {
     chainId: "",
@@ -300,48 +345,62 @@ function createBaseSecondarySpSealObjectSignDoc(): SecondarySpSealObjectSignDoc 
     checksum: new Uint8Array()
   };
 }
+
 export const SecondarySpSealObjectSignDoc = {
   encode(message: SecondarySpSealObjectSignDoc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.chainId !== "") {
       writer.uint32(10).string(message.chainId);
     }
+
     if (message.globalVirtualGroupId !== 0) {
       writer.uint32(16).uint32(message.globalVirtualGroupId);
     }
+
     if (message.objectId !== "") {
       writer.uint32(26).string(message.objectId);
     }
+
     if (message.checksum.length !== 0) {
       writer.uint32(34).bytes(message.checksum);
     }
+
     return writer;
   },
+
   decode(input: _m0.Reader | Uint8Array, length?: number): SecondarySpSealObjectSignDoc {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSecondarySpSealObjectSignDoc();
+
     while (reader.pos < end) {
       const tag = reader.uint32();
+
       switch (tag >>> 3) {
         case 1:
           message.chainId = reader.string();
           break;
+
         case 2:
           message.globalVirtualGroupId = reader.uint32();
           break;
+
         case 3:
           message.objectId = reader.string();
           break;
+
         case 4:
           message.checksum = reader.bytes();
           break;
+
         default:
           reader.skipType(tag & 7);
           break;
       }
     }
+
     return message;
   },
+
   fromJSON(object: any): SecondarySpSealObjectSignDoc {
     return {
       chainId: isSet(object.chainId) ? String(object.chainId) : "",
@@ -350,6 +409,7 @@ export const SecondarySpSealObjectSignDoc = {
       checksum: isSet(object.checksum) ? bytesFromBase64(object.checksum) : new Uint8Array()
     };
   },
+
   toJSON(message: SecondarySpSealObjectSignDoc): unknown {
     const obj: any = {};
     message.chainId !== undefined && (obj.chainId = message.chainId);
@@ -358,6 +418,7 @@ export const SecondarySpSealObjectSignDoc = {
     message.checksum !== undefined && (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
     return obj;
   },
+
   fromPartial<I extends Exact<DeepPartial<SecondarySpSealObjectSignDoc>, I>>(object: I): SecondarySpSealObjectSignDoc {
     const message = createBaseSecondarySpSealObjectSignDoc();
     message.chainId = object.chainId ?? "";
@@ -366,6 +427,7 @@ export const SecondarySpSealObjectSignDoc = {
     message.checksum = object.checksum ?? new Uint8Array();
     return message;
   },
+
   fromSDK(object: SecondarySpSealObjectSignDocSDKType): SecondarySpSealObjectSignDoc {
     return {
       chainId: object?.chain_id,
@@ -374,6 +436,7 @@ export const SecondarySpSealObjectSignDoc = {
       checksum: object?.checksum
     };
   },
+
   toSDK(message: SecondarySpSealObjectSignDoc): SecondarySpSealObjectSignDocSDKType {
     const obj: any = {};
     obj.chain_id = message.chainId;
@@ -382,7 +445,9 @@ export const SecondarySpSealObjectSignDoc = {
     obj.checksum = message.checksum;
     return obj;
   }
+
 };
+
 function createBaseGVGMapping(): GVGMapping {
   return {
     srcGlobalVirtualGroupId: 0,
@@ -390,42 +455,54 @@ function createBaseGVGMapping(): GVGMapping {
     secondarySpBlsSignature: new Uint8Array()
   };
 }
+
 export const GVGMapping = {
   encode(message: GVGMapping, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.srcGlobalVirtualGroupId !== 0) {
       writer.uint32(8).uint32(message.srcGlobalVirtualGroupId);
     }
+
     if (message.dstGlobalVirtualGroupId !== 0) {
       writer.uint32(16).uint32(message.dstGlobalVirtualGroupId);
     }
+
     if (message.secondarySpBlsSignature.length !== 0) {
       writer.uint32(26).bytes(message.secondarySpBlsSignature);
     }
+
     return writer;
   },
+
   decode(input: _m0.Reader | Uint8Array, length?: number): GVGMapping {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGVGMapping();
+
     while (reader.pos < end) {
       const tag = reader.uint32();
+
       switch (tag >>> 3) {
         case 1:
           message.srcGlobalVirtualGroupId = reader.uint32();
           break;
+
         case 2:
           message.dstGlobalVirtualGroupId = reader.uint32();
           break;
+
         case 3:
           message.secondarySpBlsSignature = reader.bytes();
           break;
+
         default:
           reader.skipType(tag & 7);
           break;
       }
     }
+
     return message;
   },
+
   fromJSON(object: any): GVGMapping {
     return {
       srcGlobalVirtualGroupId: isSet(object.srcGlobalVirtualGroupId) ? Number(object.srcGlobalVirtualGroupId) : 0,
@@ -433,6 +510,7 @@ export const GVGMapping = {
       secondarySpBlsSignature: isSet(object.secondarySpBlsSignature) ? bytesFromBase64(object.secondarySpBlsSignature) : new Uint8Array()
     };
   },
+
   toJSON(message: GVGMapping): unknown {
     const obj: any = {};
     message.srcGlobalVirtualGroupId !== undefined && (obj.srcGlobalVirtualGroupId = Math.round(message.srcGlobalVirtualGroupId));
@@ -440,6 +518,7 @@ export const GVGMapping = {
     message.secondarySpBlsSignature !== undefined && (obj.secondarySpBlsSignature = base64FromBytes(message.secondarySpBlsSignature !== undefined ? message.secondarySpBlsSignature : new Uint8Array()));
     return obj;
   },
+
   fromPartial<I extends Exact<DeepPartial<GVGMapping>, I>>(object: I): GVGMapping {
     const message = createBaseGVGMapping();
     message.srcGlobalVirtualGroupId = object.srcGlobalVirtualGroupId ?? 0;
@@ -447,6 +526,7 @@ export const GVGMapping = {
     message.secondarySpBlsSignature = object.secondarySpBlsSignature ?? new Uint8Array();
     return message;
   },
+
   fromSDK(object: GVGMappingSDKType): GVGMapping {
     return {
       srcGlobalVirtualGroupId: object?.src_global_virtual_group_id,
@@ -454,6 +534,7 @@ export const GVGMapping = {
       secondarySpBlsSignature: object?.secondary_sp_bls_signature
     };
   },
+
   toSDK(message: GVGMapping): GVGMappingSDKType {
     const obj: any = {};
     obj.src_global_virtual_group_id = message.srcGlobalVirtualGroupId;
@@ -461,7 +542,9 @@ export const GVGMapping = {
     obj.secondary_sp_bls_signature = message.secondarySpBlsSignature;
     return obj;
   }
+
 };
+
 function createBaseSecondarySpMigrationBucketSignDoc(): SecondarySpMigrationBucketSignDoc {
   return {
     chainId: "",
@@ -471,54 +554,70 @@ function createBaseSecondarySpMigrationBucketSignDoc(): SecondarySpMigrationBuck
     bucketId: ""
   };
 }
+
 export const SecondarySpMigrationBucketSignDoc = {
   encode(message: SecondarySpMigrationBucketSignDoc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.chainId !== "") {
       writer.uint32(10).string(message.chainId);
     }
+
     if (message.dstPrimarySpId !== 0) {
       writer.uint32(16).uint32(message.dstPrimarySpId);
     }
+
     if (message.srcGlobalVirtualGroupId !== 0) {
       writer.uint32(24).uint32(message.srcGlobalVirtualGroupId);
     }
+
     if (message.dstGlobalVirtualGroupId !== 0) {
       writer.uint32(32).uint32(message.dstGlobalVirtualGroupId);
     }
+
     if (message.bucketId !== "") {
       writer.uint32(42).string(message.bucketId);
     }
+
     return writer;
   },
+
   decode(input: _m0.Reader | Uint8Array, length?: number): SecondarySpMigrationBucketSignDoc {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSecondarySpMigrationBucketSignDoc();
+
     while (reader.pos < end) {
       const tag = reader.uint32();
+
       switch (tag >>> 3) {
         case 1:
           message.chainId = reader.string();
           break;
+
         case 2:
           message.dstPrimarySpId = reader.uint32();
           break;
+
         case 3:
           message.srcGlobalVirtualGroupId = reader.uint32();
           break;
+
         case 4:
           message.dstGlobalVirtualGroupId = reader.uint32();
           break;
+
         case 5:
           message.bucketId = reader.string();
           break;
+
         default:
           reader.skipType(tag & 7);
           break;
       }
     }
+
     return message;
   },
+
   fromJSON(object: any): SecondarySpMigrationBucketSignDoc {
     return {
       chainId: isSet(object.chainId) ? String(object.chainId) : "",
@@ -528,6 +627,7 @@ export const SecondarySpMigrationBucketSignDoc = {
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : ""
     };
   },
+
   toJSON(message: SecondarySpMigrationBucketSignDoc): unknown {
     const obj: any = {};
     message.chainId !== undefined && (obj.chainId = message.chainId);
@@ -537,6 +637,7 @@ export const SecondarySpMigrationBucketSignDoc = {
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     return obj;
   },
+
   fromPartial<I extends Exact<DeepPartial<SecondarySpMigrationBucketSignDoc>, I>>(object: I): SecondarySpMigrationBucketSignDoc {
     const message = createBaseSecondarySpMigrationBucketSignDoc();
     message.chainId = object.chainId ?? "";
@@ -546,6 +647,7 @@ export const SecondarySpMigrationBucketSignDoc = {
     message.bucketId = object.bucketId ?? "";
     return message;
   },
+
   fromSDK(object: SecondarySpMigrationBucketSignDocSDKType): SecondarySpMigrationBucketSignDoc {
     return {
       chainId: object?.chain_id,
@@ -555,6 +657,7 @@ export const SecondarySpMigrationBucketSignDoc = {
       bucketId: object?.bucket_id
     };
   },
+
   toSDK(message: SecondarySpMigrationBucketSignDoc): SecondarySpMigrationBucketSignDocSDKType {
     const obj: any = {};
     obj.chain_id = message.chainId;
@@ -564,7 +667,9 @@ export const SecondarySpMigrationBucketSignDoc = {
     obj.bucket_id = message.bucketId;
     return obj;
   }
+
 };
+
 function createBaseLocalVirtualGroup(): LocalVirtualGroup {
   return {
     id: 0,
@@ -573,48 +678,62 @@ function createBaseLocalVirtualGroup(): LocalVirtualGroup {
     totalChargeSize: Long.UZERO
   };
 }
+
 export const LocalVirtualGroup = {
   encode(message: LocalVirtualGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id);
     }
+
     if (message.globalVirtualGroupId !== 0) {
       writer.uint32(16).uint32(message.globalVirtualGroupId);
     }
+
     if (!message.storedSize.isZero()) {
       writer.uint32(24).uint64(message.storedSize);
     }
+
     if (!message.totalChargeSize.isZero()) {
       writer.uint32(32).uint64(message.totalChargeSize);
     }
+
     return writer;
   },
+
   decode(input: _m0.Reader | Uint8Array, length?: number): LocalVirtualGroup {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLocalVirtualGroup();
+
     while (reader.pos < end) {
       const tag = reader.uint32();
+
       switch (tag >>> 3) {
         case 1:
           message.id = reader.uint32();
           break;
+
         case 2:
           message.globalVirtualGroupId = reader.uint32();
           break;
+
         case 3:
           message.storedSize = (reader.uint64() as Long);
           break;
+
         case 4:
           message.totalChargeSize = (reader.uint64() as Long);
           break;
+
         default:
           reader.skipType(tag & 7);
           break;
       }
     }
+
     return message;
   },
+
   fromJSON(object: any): LocalVirtualGroup {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
@@ -623,6 +742,7 @@ export const LocalVirtualGroup = {
       totalChargeSize: isSet(object.totalChargeSize) ? Long.fromValue(object.totalChargeSize) : Long.UZERO
     };
   },
+
   toJSON(message: LocalVirtualGroup): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
@@ -631,6 +751,7 @@ export const LocalVirtualGroup = {
     message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || Long.UZERO).toString());
     return obj;
   },
+
   fromPartial<I extends Exact<DeepPartial<LocalVirtualGroup>, I>>(object: I): LocalVirtualGroup {
     const message = createBaseLocalVirtualGroup();
     message.id = object.id ?? 0;
@@ -639,6 +760,7 @@ export const LocalVirtualGroup = {
     message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? Long.fromValue(object.totalChargeSize) : Long.UZERO;
     return message;
   },
+
   fromSDK(object: LocalVirtualGroupSDKType): LocalVirtualGroup {
     return {
       id: object?.id,
@@ -647,6 +769,7 @@ export const LocalVirtualGroup = {
       totalChargeSize: object?.total_charge_size
     };
   },
+
   toSDK(message: LocalVirtualGroup): LocalVirtualGroupSDKType {
     const obj: any = {};
     obj.id = message.id;
@@ -655,4 +778,5 @@ export const LocalVirtualGroup = {
     obj.total_charge_size = message.totalChargeSize;
     return obj;
   }
+
 };
