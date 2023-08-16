@@ -4,62 +4,44 @@ import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.storage";
 /** Params defines the parameters for the module. */
-
 export interface Params {
-  versionedParams?: VersionedParams;
+  versionedParams: VersionedParams;
   /** max_payload_size is the maximum size of the payload, default: 2G */
-
   maxPayloadSize: Long;
   /** relayer fee for the mirror bucket tx to bsc */
-
   bscMirrorBucketRelayerFee: string;
   /** relayer fee for the ACK or FAIL_ACK package of the mirror bucket tx to bsc */
-
   bscMirrorBucketAckRelayerFee: string;
   /** relayer fee for the mirror object tx to bsc */
-
   bscMirrorObjectRelayerFee: string;
   /** Relayer fee for the ACK or FAIL_ACK package of the mirror object tx to bsc */
-
   bscMirrorObjectAckRelayerFee: string;
   /** relayer fee for the mirror object tx to bsc */
-
   bscMirrorGroupRelayerFee: string;
   /** Relayer fee for the ACK or FAIL_ACK package of the mirror object tx to bsc */
-
   bscMirrorGroupAckRelayerFee: string;
   /** The maximum number of buckets that can be created per account */
-
   maxBucketsPerAccount: number;
   /** The window to count the discontinued objects or buckets */
-
   discontinueCountingWindow: Long;
   /** The max objects can be requested in a window */
-
   discontinueObjectMax: Long;
   /** The max buckets can be requested in a window */
-
   discontinueBucketMax: Long;
   /** The object will be deleted after the confirm period in seconds */
-
   discontinueConfirmPeriod: Long;
   /** The max delete objects in each end block */
-
   discontinueDeletionMax: Long;
   /** The max number for deleting policy in each end block */
-
   stalePolicyCleanupMax: Long;
   /** The min interval for making quota smaller in seconds */
-
   minQuotaUpdateInterval: Long;
   /** the max number of local virtual group per bucket */
-
   maxLocalVirtualGroupNumPerBucket: number;
 }
 /** Params defines the parameters for the module. */
-
 export interface ParamsSDKType {
-  versioned_params?: VersionedParamsSDKType;
+  versioned_params: VersionedParamsSDKType;
   max_payload_size: Long;
   bsc_mirror_bucket_relayer_fee: string;
   bsc_mirror_bucket_ack_relayer_fee: string;
@@ -78,32 +60,26 @@ export interface ParamsSDKType {
   max_local_virtual_group_num_per_bucket: number;
 }
 /** VersionedParams defines the parameters for the storage module with multi version, each version store with different timestamp. */
-
 export interface VersionedParams {
   /** max_segment_size is the maximum size of a segment. default: 16M */
   maxSegmentSize: Long;
   /** redundant_data_check_num is the num of data chunks of EC redundancy algorithm */
-
   redundantDataChunkNum: number;
   /** redundant_data_check_num is the num of parity chunks of EC redundancy algorithm */
-
   redundantParityChunkNum: number;
   /** min_charge_size is the minimum charge size of the payload, objects smaller than this size will be charged as this size */
-
   minChargeSize: Long;
 }
 /** VersionedParams defines the parameters for the storage module with multi version, each version store with different timestamp. */
-
 export interface VersionedParamsSDKType {
   max_segment_size: Long;
   redundant_data_chunk_num: number;
   redundant_parity_chunk_num: number;
   min_charge_size: Long;
 }
-
 function createBaseParams(): Params {
   return {
-    versionedParams: undefined,
+    versionedParams: VersionedParams.fromPartial({}),
     maxPayloadSize: Long.UZERO,
     bscMirrorBucketRelayerFee: "",
     bscMirrorBucketAckRelayerFee: "",
@@ -122,166 +98,126 @@ function createBaseParams(): Params {
     maxLocalVirtualGroupNumPerBucket: 0
   };
 }
-
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.versionedParams !== undefined) {
       VersionedParams.encode(message.versionedParams, writer.uint32(10).fork()).ldelim();
     }
-
     if (!message.maxPayloadSize.isZero()) {
       writer.uint32(16).uint64(message.maxPayloadSize);
     }
-
     if (message.bscMirrorBucketRelayerFee !== "") {
       writer.uint32(26).string(message.bscMirrorBucketRelayerFee);
     }
-
     if (message.bscMirrorBucketAckRelayerFee !== "") {
       writer.uint32(34).string(message.bscMirrorBucketAckRelayerFee);
     }
-
     if (message.bscMirrorObjectRelayerFee !== "") {
       writer.uint32(42).string(message.bscMirrorObjectRelayerFee);
     }
-
     if (message.bscMirrorObjectAckRelayerFee !== "") {
       writer.uint32(50).string(message.bscMirrorObjectAckRelayerFee);
     }
-
     if (message.bscMirrorGroupRelayerFee !== "") {
       writer.uint32(58).string(message.bscMirrorGroupRelayerFee);
     }
-
     if (message.bscMirrorGroupAckRelayerFee !== "") {
       writer.uint32(66).string(message.bscMirrorGroupAckRelayerFee);
     }
-
     if (message.maxBucketsPerAccount !== 0) {
       writer.uint32(72).uint32(message.maxBucketsPerAccount);
     }
-
     if (!message.discontinueCountingWindow.isZero()) {
       writer.uint32(80).uint64(message.discontinueCountingWindow);
     }
-
     if (!message.discontinueObjectMax.isZero()) {
       writer.uint32(88).uint64(message.discontinueObjectMax);
     }
-
     if (!message.discontinueBucketMax.isZero()) {
       writer.uint32(96).uint64(message.discontinueBucketMax);
     }
-
     if (!message.discontinueConfirmPeriod.isZero()) {
       writer.uint32(104).int64(message.discontinueConfirmPeriod);
     }
-
     if (!message.discontinueDeletionMax.isZero()) {
       writer.uint32(112).uint64(message.discontinueDeletionMax);
     }
-
     if (!message.stalePolicyCleanupMax.isZero()) {
       writer.uint32(120).uint64(message.stalePolicyCleanupMax);
     }
-
     if (!message.minQuotaUpdateInterval.isZero()) {
       writer.uint32(128).uint64(message.minQuotaUpdateInterval);
     }
-
     if (message.maxLocalVirtualGroupNumPerBucket !== 0) {
       writer.uint32(136).uint32(message.maxLocalVirtualGroupNumPerBucket);
     }
-
     return writer;
   },
-
   decode(input: _m0.Reader | Uint8Array, length?: number): Params {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
-
     while (reader.pos < end) {
       const tag = reader.uint32();
-
       switch (tag >>> 3) {
         case 1:
           message.versionedParams = VersionedParams.decode(reader, reader.uint32());
           break;
-
         case 2:
           message.maxPayloadSize = (reader.uint64() as Long);
           break;
-
         case 3:
           message.bscMirrorBucketRelayerFee = reader.string();
           break;
-
         case 4:
           message.bscMirrorBucketAckRelayerFee = reader.string();
           break;
-
         case 5:
           message.bscMirrorObjectRelayerFee = reader.string();
           break;
-
         case 6:
           message.bscMirrorObjectAckRelayerFee = reader.string();
           break;
-
         case 7:
           message.bscMirrorGroupRelayerFee = reader.string();
           break;
-
         case 8:
           message.bscMirrorGroupAckRelayerFee = reader.string();
           break;
-
         case 9:
           message.maxBucketsPerAccount = reader.uint32();
           break;
-
         case 10:
           message.discontinueCountingWindow = (reader.uint64() as Long);
           break;
-
         case 11:
           message.discontinueObjectMax = (reader.uint64() as Long);
           break;
-
         case 12:
           message.discontinueBucketMax = (reader.uint64() as Long);
           break;
-
         case 13:
           message.discontinueConfirmPeriod = (reader.int64() as Long);
           break;
-
         case 14:
           message.discontinueDeletionMax = (reader.uint64() as Long);
           break;
-
         case 15:
           message.stalePolicyCleanupMax = (reader.uint64() as Long);
           break;
-
         case 16:
           message.minQuotaUpdateInterval = (reader.uint64() as Long);
           break;
-
         case 17:
           message.maxLocalVirtualGroupNumPerBucket = reader.uint32();
           break;
-
         default:
           reader.skipType(tag & 7);
           break;
       }
     }
-
     return message;
   },
-
   fromJSON(object: any): Params {
     return {
       versionedParams: isSet(object.versionedParams) ? VersionedParams.fromJSON(object.versionedParams) : undefined,
@@ -303,7 +239,6 @@ export const Params = {
       maxLocalVirtualGroupNumPerBucket: isSet(object.maxLocalVirtualGroupNumPerBucket) ? Number(object.maxLocalVirtualGroupNumPerBucket) : 0
     };
   },
-
   toJSON(message: Params): unknown {
     const obj: any = {};
     message.versionedParams !== undefined && (obj.versionedParams = message.versionedParams ? VersionedParams.toJSON(message.versionedParams) : undefined);
@@ -325,7 +260,6 @@ export const Params = {
     message.maxLocalVirtualGroupNumPerBucket !== undefined && (obj.maxLocalVirtualGroupNumPerBucket = Math.round(message.maxLocalVirtualGroupNumPerBucket));
     return obj;
   },
-
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
     message.versionedParams = object.versionedParams !== undefined && object.versionedParams !== null ? VersionedParams.fromPartial(object.versionedParams) : undefined;
@@ -347,7 +281,6 @@ export const Params = {
     message.maxLocalVirtualGroupNumPerBucket = object.maxLocalVirtualGroupNumPerBucket ?? 0;
     return message;
   },
-
   fromSDK(object: ParamsSDKType): Params {
     return {
       versionedParams: object.versioned_params ? VersionedParams.fromSDK(object.versioned_params) : undefined,
@@ -369,7 +302,6 @@ export const Params = {
       maxLocalVirtualGroupNumPerBucket: object?.max_local_virtual_group_num_per_bucket
     };
   },
-
   toSDK(message: Params): ParamsSDKType {
     const obj: any = {};
     message.versionedParams !== undefined && (obj.versioned_params = message.versionedParams ? VersionedParams.toSDK(message.versionedParams) : undefined);
@@ -391,9 +323,7 @@ export const Params = {
     obj.max_local_virtual_group_num_per_bucket = message.maxLocalVirtualGroupNumPerBucket;
     return obj;
   }
-
 };
-
 function createBaseVersionedParams(): VersionedParams {
   return {
     maxSegmentSize: Long.UZERO,
@@ -402,62 +332,48 @@ function createBaseVersionedParams(): VersionedParams {
     minChargeSize: Long.UZERO
   };
 }
-
 export const VersionedParams = {
   encode(message: VersionedParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (!message.maxSegmentSize.isZero()) {
       writer.uint32(8).uint64(message.maxSegmentSize);
     }
-
     if (message.redundantDataChunkNum !== 0) {
       writer.uint32(16).uint32(message.redundantDataChunkNum);
     }
-
     if (message.redundantParityChunkNum !== 0) {
       writer.uint32(24).uint32(message.redundantParityChunkNum);
     }
-
     if (!message.minChargeSize.isZero()) {
       writer.uint32(32).uint64(message.minChargeSize);
     }
-
     return writer;
   },
-
   decode(input: _m0.Reader | Uint8Array, length?: number): VersionedParams {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseVersionedParams();
-
     while (reader.pos < end) {
       const tag = reader.uint32();
-
       switch (tag >>> 3) {
         case 1:
           message.maxSegmentSize = (reader.uint64() as Long);
           break;
-
         case 2:
           message.redundantDataChunkNum = reader.uint32();
           break;
-
         case 3:
           message.redundantParityChunkNum = reader.uint32();
           break;
-
         case 4:
           message.minChargeSize = (reader.uint64() as Long);
           break;
-
         default:
           reader.skipType(tag & 7);
           break;
       }
     }
-
     return message;
   },
-
   fromJSON(object: any): VersionedParams {
     return {
       maxSegmentSize: isSet(object.maxSegmentSize) ? Long.fromValue(object.maxSegmentSize) : Long.UZERO,
@@ -466,7 +382,6 @@ export const VersionedParams = {
       minChargeSize: isSet(object.minChargeSize) ? Long.fromValue(object.minChargeSize) : Long.UZERO
     };
   },
-
   toJSON(message: VersionedParams): unknown {
     const obj: any = {};
     message.maxSegmentSize !== undefined && (obj.maxSegmentSize = (message.maxSegmentSize || Long.UZERO).toString());
@@ -475,7 +390,6 @@ export const VersionedParams = {
     message.minChargeSize !== undefined && (obj.minChargeSize = (message.minChargeSize || Long.UZERO).toString());
     return obj;
   },
-
   fromPartial<I extends Exact<DeepPartial<VersionedParams>, I>>(object: I): VersionedParams {
     const message = createBaseVersionedParams();
     message.maxSegmentSize = object.maxSegmentSize !== undefined && object.maxSegmentSize !== null ? Long.fromValue(object.maxSegmentSize) : Long.UZERO;
@@ -484,7 +398,6 @@ export const VersionedParams = {
     message.minChargeSize = object.minChargeSize !== undefined && object.minChargeSize !== null ? Long.fromValue(object.minChargeSize) : Long.UZERO;
     return message;
   },
-
   fromSDK(object: VersionedParamsSDKType): VersionedParams {
     return {
       maxSegmentSize: object?.max_segment_size,
@@ -493,7 +406,6 @@ export const VersionedParams = {
       minChargeSize: object?.min_charge_size
     };
   },
-
   toSDK(message: VersionedParams): VersionedParamsSDKType {
     const obj: any = {};
     obj.max_segment_size = message.maxSegmentSize;
@@ -502,5 +414,4 @@ export const VersionedParams = {
     obj.min_charge_size = message.minChargeSize;
     return obj;
   }
-
 };
