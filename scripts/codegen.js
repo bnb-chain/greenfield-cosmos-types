@@ -2,7 +2,7 @@
 
 const { join } = require('path');
 const { writeFileSync } = require('fs');
-const telescope = require('@osmonauts/telescope').default;
+const telescope = require('@cosmology/telescope').default;
 
 const outPath = join(__dirname, '/../src');
 
@@ -16,7 +16,7 @@ telescope({
     options: {
         logLevel: 0,
         tsDisable: {
-            disableAll: false
+            disableAll: true,
         },
         eslintDisable: {
             disableAll: true
@@ -28,7 +28,7 @@ telescope({
             includePackageVar: true,
             excluded: {
                 protos: [
-                                        'cosmos/authz/v1beta1/event.proto',
+                    'cosmos/authz/v1beta1/event.proto',
                     'cosmos/autocli/v1/query.proto',
                     'cosmos/autocli/v1/options.proto',
                     'cosmos/base/reflection/v2alpha1/reflection.proto',

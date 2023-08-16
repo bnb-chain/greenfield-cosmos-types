@@ -4,11 +4,9 @@ import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.payment";
 /** StreamAccountStatus defines the status of a stream account */
-
 export enum StreamAccountStatus {
   /** STREAM_ACCOUNT_STATUS_ACTIVE - STREAM_ACCOUNT_STATUS_ACTIVE defines the active status of a stream account. */
   STREAM_ACCOUNT_STATUS_ACTIVE = 0,
-
   /**
    * STREAM_ACCOUNT_STATUS_FROZEN - STREAM_ACCOUNT_STATUS_FROZEN defines the frozen status of a stream account.
    * A frozen stream account cannot be used as payment address for buckets.
@@ -23,11 +21,9 @@ export function streamAccountStatusFromJSON(object: any): StreamAccountStatus {
     case 0:
     case "STREAM_ACCOUNT_STATUS_ACTIVE":
       return StreamAccountStatus.STREAM_ACCOUNT_STATUS_ACTIVE;
-
     case 1:
     case "STREAM_ACCOUNT_STATUS_FROZEN":
       return StreamAccountStatus.STREAM_ACCOUNT_STATUS_FROZEN;
-
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -38,56 +34,43 @@ export function streamAccountStatusToJSON(object: StreamAccountStatus): string {
   switch (object) {
     case StreamAccountStatus.STREAM_ACCOUNT_STATUS_ACTIVE:
       return "STREAM_ACCOUNT_STATUS_ACTIVE";
-
     case StreamAccountStatus.STREAM_ACCOUNT_STATUS_FROZEN:
       return "STREAM_ACCOUNT_STATUS_FROZEN";
-
     case StreamAccountStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
 }
 /** Stream Payment Record of a stream account */
-
 export interface StreamRecord {
   /** account address */
   account: string;
   /** latest update timestamp of the stream record */
-
   crudTimestamp: Long;
   /**
    * The per-second rate that an account's balance is changing.
    * It is the sum of the account's inbound and outbound flow rates.
    */
-
   netflowRate: string;
   /** The balance of the stream account at the latest CRUD timestamp. */
-
   staticBalance: string;
   /**
    * reserved balance of the stream account
    * If the netflow rate is negative, the reserved balance is `netflow_rate * reserve_time`
    */
-
   bufferBalance: string;
   /** the locked balance of the stream account after it puts a new object and before the object is sealed */
-
   lockBalance: string;
   /** the status of the stream account */
-
   status: StreamAccountStatus;
   /** the unix timestamp when the stream account will be settled */
-
   settleTimestamp: Long;
   /** the count of its out flows */
-
   outFlowCount: Long;
   /** the frozen netflow rate, which is used when resuming stream account */
-
   frozenNetflowRate: string;
 }
 /** Stream Payment Record of a stream account */
-
 export interface StreamRecordSDKType {
   account: string;
   crud_timestamp: Long;
@@ -100,7 +83,6 @@ export interface StreamRecordSDKType {
   out_flow_count: Long;
   frozen_netflow_rate: string;
 }
-
 function createBaseStreamRecord(): StreamRecord {
   return {
     account: "",
@@ -115,110 +97,84 @@ function createBaseStreamRecord(): StreamRecord {
     frozenNetflowRate: ""
   };
 }
-
 export const StreamRecord = {
   encode(message: StreamRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.account !== "") {
       writer.uint32(10).string(message.account);
     }
-
     if (!message.crudTimestamp.isZero()) {
       writer.uint32(16).int64(message.crudTimestamp);
     }
-
     if (message.netflowRate !== "") {
       writer.uint32(26).string(message.netflowRate);
     }
-
     if (message.staticBalance !== "") {
       writer.uint32(34).string(message.staticBalance);
     }
-
     if (message.bufferBalance !== "") {
       writer.uint32(42).string(message.bufferBalance);
     }
-
     if (message.lockBalance !== "") {
       writer.uint32(50).string(message.lockBalance);
     }
-
     if (message.status !== 0) {
       writer.uint32(56).int32(message.status);
     }
-
     if (!message.settleTimestamp.isZero()) {
       writer.uint32(64).int64(message.settleTimestamp);
     }
-
     if (!message.outFlowCount.isZero()) {
       writer.uint32(72).uint64(message.outFlowCount);
     }
-
     if (message.frozenNetflowRate !== "") {
       writer.uint32(82).string(message.frozenNetflowRate);
     }
-
     return writer;
   },
-
   decode(input: _m0.Reader | Uint8Array, length?: number): StreamRecord {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStreamRecord();
-
     while (reader.pos < end) {
       const tag = reader.uint32();
-
       switch (tag >>> 3) {
         case 1:
           message.account = reader.string();
           break;
-
         case 2:
           message.crudTimestamp = (reader.int64() as Long);
           break;
-
         case 3:
           message.netflowRate = reader.string();
           break;
-
         case 4:
           message.staticBalance = reader.string();
           break;
-
         case 5:
           message.bufferBalance = reader.string();
           break;
-
         case 6:
           message.lockBalance = reader.string();
           break;
-
         case 7:
           message.status = (reader.int32() as any);
           break;
-
         case 8:
           message.settleTimestamp = (reader.int64() as Long);
           break;
-
         case 9:
           message.outFlowCount = (reader.uint64() as Long);
           break;
-
         case 10:
           message.frozenNetflowRate = reader.string();
           break;
-
         default:
           reader.skipType(tag & 7);
           break;
       }
     }
-
     return message;
   },
-
   fromJSON(object: any): StreamRecord {
     return {
       account: isSet(object.account) ? String(object.account) : "",
@@ -227,13 +183,12 @@ export const StreamRecord = {
       staticBalance: isSet(object.staticBalance) ? String(object.staticBalance) : "",
       bufferBalance: isSet(object.bufferBalance) ? String(object.bufferBalance) : "",
       lockBalance: isSet(object.lockBalance) ? String(object.lockBalance) : "",
-      status: isSet(object.status) ? streamAccountStatusFromJSON(object.status) : 0,
+      status: isSet(object.status) ? streamAccountStatusFromJSON(object.status) : -1,
       settleTimestamp: isSet(object.settleTimestamp) ? Long.fromValue(object.settleTimestamp) : Long.ZERO,
       outFlowCount: isSet(object.outFlowCount) ? Long.fromValue(object.outFlowCount) : Long.UZERO,
       frozenNetflowRate: isSet(object.frozenNetflowRate) ? String(object.frozenNetflowRate) : ""
     };
   },
-
   toJSON(message: StreamRecord): unknown {
     const obj: any = {};
     message.account !== undefined && (obj.account = message.account);
@@ -248,7 +203,6 @@ export const StreamRecord = {
     message.frozenNetflowRate !== undefined && (obj.frozenNetflowRate = message.frozenNetflowRate);
     return obj;
   },
-
   fromPartial<I extends Exact<DeepPartial<StreamRecord>, I>>(object: I): StreamRecord {
     const message = createBaseStreamRecord();
     message.account = object.account ?? "";
@@ -263,7 +217,6 @@ export const StreamRecord = {
     message.frozenNetflowRate = object.frozenNetflowRate ?? "";
     return message;
   },
-
   fromSDK(object: StreamRecordSDKType): StreamRecord {
     return {
       account: object?.account,
@@ -272,13 +225,12 @@ export const StreamRecord = {
       staticBalance: object?.static_balance,
       bufferBalance: object?.buffer_balance,
       lockBalance: object?.lock_balance,
-      status: isSet(object.status) ? streamAccountStatusFromJSON(object.status) : 0,
+      status: isSet(object.status) ? streamAccountStatusFromJSON(object.status) : -1,
       settleTimestamp: object?.settle_timestamp,
       outFlowCount: object?.out_flow_count,
       frozenNetflowRate: object?.frozen_netflow_rate
     };
   },
-
   toSDK(message: StreamRecord): StreamRecordSDKType {
     const obj: any = {};
     obj.account = message.account;
@@ -293,5 +245,4 @@ export const StreamRecord = {
     obj.frozen_netflow_rate = message.frozenNetflowRate;
     return obj;
   }
-
 };
