@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Description, DescriptionSDKType } from "./types";
+import { Description, DescriptionSDKType, Status, statusFromJSON, statusToJSON } from "./types";
 import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Params, ParamsSDKType } from "./params";
 import { Long, isSet, DeepPartial, Exact, Rpc } from "../../helpers";
@@ -28,6 +28,9 @@ export interface MsgCreateStorageProvider {
   /** gc_address defines one of the storage provider's accounts which is used for gc purpose. */
 
   gcAddress: string;
+  /** maintenance_address defines one of the storage provider's accounts which is used for testing while in maintenance mode */
+
+  maintenanceAddress: string;
   /** endpoint is the service address of the storage provider */
 
   endpoint: string;
@@ -58,6 +61,7 @@ export interface MsgCreateStorageProviderSDKType {
   seal_address: string;
   approval_address: string;
   gc_address: string;
+  maintenance_address: string;
   endpoint: string;
   deposit?: CoinSDKType;
   read_price: string;
@@ -115,6 +119,9 @@ export interface MsgEditStorageProvider {
   /** gc_address defines one of the storage provider's accounts which is used for gc purpose */
 
   gcAddress: string;
+  /** maintenance_address defines one of the storage provider's accounts which is used for testing while in maintenance mode */
+
+  maintenanceAddress: string;
   /** bls_key defines the bls pub key of the Storage provider for sealing object */
 
   blsKey: string;
@@ -132,6 +139,7 @@ export interface MsgEditStorageProviderSDKType {
   seal_address: string;
   approval_address: string;
   gc_address: string;
+  maintenance_address: string;
   bls_key: string;
   bls_proof: string;
 }
@@ -193,6 +201,31 @@ export interface MsgUpdateParamsResponse {}
  */
 
 export interface MsgUpdateParamsResponseSDKType {}
+/** MsgUpdateStorageProviderStatus is used to update the status of a SP by itself */
+
+export interface MsgUpdateStorageProviderStatus {
+  /** sp_address defines the operator address */
+  spAddress: string;
+  /** status defines the desired status be update to. */
+
+  status: Status;
+  /** duration defines the time requested in desired status */
+
+  duration: Long;
+}
+/** MsgUpdateStorageProviderStatus is used to update the status of a SP by itself */
+
+export interface MsgUpdateStorageProviderStatusSDKType {
+  sp_address: string;
+  status: Status;
+  duration: Long;
+}
+/** MsgUpdateStorageProviderStatusResponse defines the MsgUpdateStorageProviderStatus response type. */
+
+export interface MsgUpdateStorageProviderStatusResponse {}
+/** MsgUpdateStorageProviderStatusResponse defines the MsgUpdateStorageProviderStatus response type. */
+
+export interface MsgUpdateStorageProviderStatusResponseSDKType {}
 
 function createBaseMsgCreateStorageProvider(): MsgCreateStorageProvider {
   return {
@@ -203,6 +236,7 @@ function createBaseMsgCreateStorageProvider(): MsgCreateStorageProvider {
     sealAddress: "",
     approvalAddress: "",
     gcAddress: "",
+    maintenanceAddress: "",
     endpoint: "",
     deposit: undefined,
     readPrice: "",
@@ -243,32 +277,36 @@ export const MsgCreateStorageProvider = {
       writer.uint32(58).string(message.gcAddress);
     }
 
+    if (message.maintenanceAddress !== "") {
+      writer.uint32(66).string(message.maintenanceAddress);
+    }
+
     if (message.endpoint !== "") {
-      writer.uint32(66).string(message.endpoint);
+      writer.uint32(74).string(message.endpoint);
     }
 
     if (message.deposit !== undefined) {
-      Coin.encode(message.deposit, writer.uint32(74).fork()).ldelim();
+      Coin.encode(message.deposit, writer.uint32(82).fork()).ldelim();
     }
 
     if (message.readPrice !== "") {
-      writer.uint32(82).string(message.readPrice);
+      writer.uint32(90).string(message.readPrice);
     }
 
     if (!message.freeReadQuota.isZero()) {
-      writer.uint32(88).uint64(message.freeReadQuota);
+      writer.uint32(96).uint64(message.freeReadQuota);
     }
 
     if (message.storePrice !== "") {
-      writer.uint32(98).string(message.storePrice);
+      writer.uint32(106).string(message.storePrice);
     }
 
     if (message.blsKey !== "") {
-      writer.uint32(106).string(message.blsKey);
+      writer.uint32(114).string(message.blsKey);
     }
 
     if (message.blsProof !== "") {
-      writer.uint32(114).string(message.blsProof);
+      writer.uint32(122).string(message.blsProof);
     }
 
     return writer;
@@ -312,30 +350,34 @@ export const MsgCreateStorageProvider = {
           break;
 
         case 8:
-          message.endpoint = reader.string();
+          message.maintenanceAddress = reader.string();
           break;
 
         case 9:
-          message.deposit = Coin.decode(reader, reader.uint32());
+          message.endpoint = reader.string();
           break;
 
         case 10:
-          message.readPrice = reader.string();
+          message.deposit = Coin.decode(reader, reader.uint32());
           break;
 
         case 11:
-          message.freeReadQuota = (reader.uint64() as Long);
+          message.readPrice = reader.string();
           break;
 
         case 12:
-          message.storePrice = reader.string();
+          message.freeReadQuota = (reader.uint64() as Long);
           break;
 
         case 13:
-          message.blsKey = reader.string();
+          message.storePrice = reader.string();
           break;
 
         case 14:
+          message.blsKey = reader.string();
+          break;
+
+        case 15:
           message.blsProof = reader.string();
           break;
 
@@ -357,6 +399,7 @@ export const MsgCreateStorageProvider = {
       sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
       approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
       gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : "",
+      maintenanceAddress: isSet(object.maintenanceAddress) ? String(object.maintenanceAddress) : "",
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
       deposit: isSet(object.deposit) ? Coin.fromJSON(object.deposit) : undefined,
       readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
@@ -376,6 +419,7 @@ export const MsgCreateStorageProvider = {
     message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
     message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
     message.gcAddress !== undefined && (obj.gcAddress = message.gcAddress);
+    message.maintenanceAddress !== undefined && (obj.maintenanceAddress = message.maintenanceAddress);
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
     message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toJSON(message.deposit) : undefined);
     message.readPrice !== undefined && (obj.readPrice = message.readPrice);
@@ -395,6 +439,7 @@ export const MsgCreateStorageProvider = {
     message.sealAddress = object.sealAddress ?? "";
     message.approvalAddress = object.approvalAddress ?? "";
     message.gcAddress = object.gcAddress ?? "";
+    message.maintenanceAddress = object.maintenanceAddress ?? "";
     message.endpoint = object.endpoint ?? "";
     message.deposit = object.deposit !== undefined && object.deposit !== null ? Coin.fromPartial(object.deposit) : undefined;
     message.readPrice = object.readPrice ?? "";
@@ -414,6 +459,7 @@ export const MsgCreateStorageProvider = {
       sealAddress: object?.seal_address,
       approvalAddress: object?.approval_address,
       gcAddress: object?.gc_address,
+      maintenanceAddress: object?.maintenance_address,
       endpoint: object?.endpoint,
       deposit: object.deposit ? Coin.fromSDK(object.deposit) : undefined,
       readPrice: object?.read_price,
@@ -433,6 +479,7 @@ export const MsgCreateStorageProvider = {
     obj.seal_address = message.sealAddress;
     obj.approval_address = message.approvalAddress;
     obj.gc_address = message.gcAddress;
+    obj.maintenance_address = message.maintenanceAddress;
     obj.endpoint = message.endpoint;
     message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toSDK(message.deposit) : undefined);
     obj.read_price = message.readPrice;
@@ -654,6 +701,7 @@ function createBaseMsgEditStorageProvider(): MsgEditStorageProvider {
     sealAddress: "",
     approvalAddress: "",
     gcAddress: "",
+    maintenanceAddress: "",
     blsKey: "",
     blsProof: ""
   };
@@ -685,12 +733,16 @@ export const MsgEditStorageProvider = {
       writer.uint32(50).string(message.gcAddress);
     }
 
+    if (message.maintenanceAddress !== "") {
+      writer.uint32(58).string(message.maintenanceAddress);
+    }
+
     if (message.blsKey !== "") {
-      writer.uint32(58).string(message.blsKey);
+      writer.uint32(66).string(message.blsKey);
     }
 
     if (message.blsProof !== "") {
-      writer.uint32(66).string(message.blsProof);
+      writer.uint32(74).string(message.blsProof);
     }
 
     return writer;
@@ -730,10 +782,14 @@ export const MsgEditStorageProvider = {
           break;
 
         case 7:
-          message.blsKey = reader.string();
+          message.maintenanceAddress = reader.string();
           break;
 
         case 8:
+          message.blsKey = reader.string();
+          break;
+
+        case 9:
           message.blsProof = reader.string();
           break;
 
@@ -754,6 +810,7 @@ export const MsgEditStorageProvider = {
       sealAddress: isSet(object.sealAddress) ? String(object.sealAddress) : "",
       approvalAddress: isSet(object.approvalAddress) ? String(object.approvalAddress) : "",
       gcAddress: isSet(object.gcAddress) ? String(object.gcAddress) : "",
+      maintenanceAddress: isSet(object.maintenanceAddress) ? String(object.maintenanceAddress) : "",
       blsKey: isSet(object.blsKey) ? String(object.blsKey) : "",
       blsProof: isSet(object.blsProof) ? String(object.blsProof) : ""
     };
@@ -767,6 +824,7 @@ export const MsgEditStorageProvider = {
     message.sealAddress !== undefined && (obj.sealAddress = message.sealAddress);
     message.approvalAddress !== undefined && (obj.approvalAddress = message.approvalAddress);
     message.gcAddress !== undefined && (obj.gcAddress = message.gcAddress);
+    message.maintenanceAddress !== undefined && (obj.maintenanceAddress = message.maintenanceAddress);
     message.blsKey !== undefined && (obj.blsKey = message.blsKey);
     message.blsProof !== undefined && (obj.blsProof = message.blsProof);
     return obj;
@@ -780,6 +838,7 @@ export const MsgEditStorageProvider = {
     message.sealAddress = object.sealAddress ?? "";
     message.approvalAddress = object.approvalAddress ?? "";
     message.gcAddress = object.gcAddress ?? "";
+    message.maintenanceAddress = object.maintenanceAddress ?? "";
     message.blsKey = object.blsKey ?? "";
     message.blsProof = object.blsProof ?? "";
     return message;
@@ -793,6 +852,7 @@ export const MsgEditStorageProvider = {
       sealAddress: object?.seal_address,
       approvalAddress: object?.approval_address,
       gcAddress: object?.gc_address,
+      maintenanceAddress: object?.maintenance_address,
       blsKey: object?.bls_key,
       blsProof: object?.bls_proof
     };
@@ -806,6 +866,7 @@ export const MsgEditStorageProvider = {
     obj.seal_address = message.sealAddress;
     obj.approval_address = message.approvalAddress;
     obj.gc_address = message.gcAddress;
+    obj.maintenance_address = message.maintenanceAddress;
     obj.bls_key = message.blsKey;
     obj.bls_proof = message.blsProof;
     return obj;
@@ -1162,6 +1223,155 @@ export const MsgUpdateParamsResponse = {
   }
 
 };
+
+function createBaseMsgUpdateStorageProviderStatus(): MsgUpdateStorageProviderStatus {
+  return {
+    spAddress: "",
+    status: 0,
+    duration: Long.ZERO
+  };
+}
+
+export const MsgUpdateStorageProviderStatus = {
+  encode(message: MsgUpdateStorageProviderStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.spAddress !== "") {
+      writer.uint32(10).string(message.spAddress);
+    }
+
+    if (message.status !== 0) {
+      writer.uint32(16).int32(message.status);
+    }
+
+    if (!message.duration.isZero()) {
+      writer.uint32(24).int64(message.duration);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateStorageProviderStatus {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateStorageProviderStatus();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.spAddress = reader.string();
+          break;
+
+        case 2:
+          message.status = (reader.int32() as any);
+          break;
+
+        case 3:
+          message.duration = (reader.int64() as Long);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdateStorageProviderStatus {
+    return {
+      spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
+      status: isSet(object.status) ? statusFromJSON(object.status) : 0,
+      duration: isSet(object.duration) ? Long.fromValue(object.duration) : Long.ZERO
+    };
+  },
+
+  toJSON(message: MsgUpdateStorageProviderStatus): unknown {
+    const obj: any = {};
+    message.spAddress !== undefined && (obj.spAddress = message.spAddress);
+    message.status !== undefined && (obj.status = statusToJSON(message.status));
+    message.duration !== undefined && (obj.duration = (message.duration || Long.ZERO).toString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateStorageProviderStatus>, I>>(object: I): MsgUpdateStorageProviderStatus {
+    const message = createBaseMsgUpdateStorageProviderStatus();
+    message.spAddress = object.spAddress ?? "";
+    message.status = object.status ?? 0;
+    message.duration = object.duration !== undefined && object.duration !== null ? Long.fromValue(object.duration) : Long.ZERO;
+    return message;
+  },
+
+  fromSDK(object: MsgUpdateStorageProviderStatusSDKType): MsgUpdateStorageProviderStatus {
+    return {
+      spAddress: object?.sp_address,
+      status: isSet(object.status) ? statusFromJSON(object.status) : 0,
+      duration: object?.duration
+    };
+  },
+
+  toSDK(message: MsgUpdateStorageProviderStatus): MsgUpdateStorageProviderStatusSDKType {
+    const obj: any = {};
+    obj.sp_address = message.spAddress;
+    message.status !== undefined && (obj.status = statusToJSON(message.status));
+    obj.duration = message.duration;
+    return obj;
+  }
+
+};
+
+function createBaseMsgUpdateStorageProviderStatusResponse(): MsgUpdateStorageProviderStatusResponse {
+  return {};
+}
+
+export const MsgUpdateStorageProviderStatusResponse = {
+  encode(_: MsgUpdateStorageProviderStatusResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateStorageProviderStatusResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdateStorageProviderStatusResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdateStorageProviderStatusResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdateStorageProviderStatusResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdateStorageProviderStatusResponse>, I>>(_: I): MsgUpdateStorageProviderStatusResponse {
+    const message = createBaseMsgUpdateStorageProviderStatusResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgUpdateStorageProviderStatusResponseSDKType): MsgUpdateStorageProviderStatusResponse {
+    return {};
+  },
+
+  toSDK(_: MsgUpdateStorageProviderStatusResponse): MsgUpdateStorageProviderStatusResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
 /** Msg defines the Msg service for creating a new storage provider.
  TODO: add a transaction that the Storage Provide claim themself enter short time maintenance to avoid slash */
 
@@ -1170,6 +1380,7 @@ export interface Msg {
   Deposit(request: MsgDeposit): Promise<MsgDepositResponse>;
   EditStorageProvider(request: MsgEditStorageProvider): Promise<MsgEditStorageProviderResponse>;
   UpdateSpStoragePrice(request: MsgUpdateSpStoragePrice): Promise<MsgUpdateSpStoragePriceResponse>;
+  UpdateSpStatus(request: MsgUpdateStorageProviderStatus): Promise<MsgUpdateStorageProviderStatusResponse>;
   /**
    * UpdateParams defines a governance operation for updating the x/sp module parameters.
    * The authority is defined in the keeper.
@@ -1188,6 +1399,7 @@ export class MsgClientImpl implements Msg {
     this.Deposit = this.Deposit.bind(this);
     this.EditStorageProvider = this.EditStorageProvider.bind(this);
     this.UpdateSpStoragePrice = this.UpdateSpStoragePrice.bind(this);
+    this.UpdateSpStatus = this.UpdateSpStatus.bind(this);
     this.UpdateParams = this.UpdateParams.bind(this);
   }
 
@@ -1213,6 +1425,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgUpdateSpStoragePrice.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Msg", "UpdateSpStoragePrice", data);
     return promise.then(data => MsgUpdateSpStoragePriceResponse.decode(new _m0.Reader(data)));
+  }
+
+  UpdateSpStatus(request: MsgUpdateStorageProviderStatus): Promise<MsgUpdateStorageProviderStatusResponse> {
+    const data = MsgUpdateStorageProviderStatus.encode(request).finish();
+    const promise = this.rpc.request("greenfield.sp.Msg", "UpdateSpStatus", data);
+    return promise.then(data => MsgUpdateStorageProviderStatusResponse.decode(new _m0.Reader(data)));
   }
 
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {

@@ -71,11 +71,15 @@ export interface GroupMember {
   /** member is the account address of the member */
 
   member: string;
+  /** expiration_time defines the expiration time of the group member */
+
+  expirationTime?: Timestamp;
 }
 export interface GroupMemberSDKType {
   id: string;
   group_id: string;
   member: string;
+  expiration_time?: TimestampSDKType;
 }
 
 function createBasePolicy(): Policy {
@@ -397,7 +401,8 @@ function createBaseGroupMember(): GroupMember {
   return {
     id: "",
     groupId: "",
-    member: ""
+    member: "",
+    expirationTime: undefined
   };
 }
 
@@ -413,6 +418,10 @@ export const GroupMember = {
 
     if (message.member !== "") {
       writer.uint32(26).string(message.member);
+    }
+
+    if (message.expirationTime !== undefined) {
+      Timestamp.encode(message.expirationTime, writer.uint32(34).fork()).ldelim();
     }
 
     return writer;
@@ -439,6 +448,10 @@ export const GroupMember = {
           message.member = reader.string();
           break;
 
+        case 4:
+          message.expirationTime = Timestamp.decode(reader, reader.uint32());
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -452,7 +465,8 @@ export const GroupMember = {
     return {
       id: isSet(object.id) ? String(object.id) : "",
       groupId: isSet(object.groupId) ? String(object.groupId) : "",
-      member: isSet(object.member) ? String(object.member) : ""
+      member: isSet(object.member) ? String(object.member) : "",
+      expirationTime: isSet(object.expirationTime) ? fromJsonTimestamp(object.expirationTime) : undefined
     };
   },
 
@@ -461,6 +475,7 @@ export const GroupMember = {
     message.id !== undefined && (obj.id = message.id);
     message.groupId !== undefined && (obj.groupId = message.groupId);
     message.member !== undefined && (obj.member = message.member);
+    message.expirationTime !== undefined && (obj.expirationTime = fromTimestamp(message.expirationTime).toISOString());
     return obj;
   },
 
@@ -469,6 +484,7 @@ export const GroupMember = {
     message.id = object.id ?? "";
     message.groupId = object.groupId ?? "";
     message.member = object.member ?? "";
+    message.expirationTime = object.expirationTime !== undefined && object.expirationTime !== null ? Timestamp.fromPartial(object.expirationTime) : undefined;
     return message;
   },
 
@@ -476,7 +492,8 @@ export const GroupMember = {
     return {
       id: object?.id,
       groupId: object?.group_id,
-      member: object?.member
+      member: object?.member,
+      expirationTime: object.expiration_time ? Timestamp.fromSDK(object.expiration_time) : undefined
     };
   },
 
@@ -485,6 +502,7 @@ export const GroupMember = {
     obj.id = message.id;
     obj.group_id = message.groupId;
     obj.member = message.member;
+    message.expirationTime !== undefined && (obj.expiration_time = message.expirationTime ? Timestamp.toSDK(message.expirationTime) : undefined);
     return obj;
   }
 

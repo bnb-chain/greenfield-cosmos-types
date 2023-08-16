@@ -6,7 +6,7 @@ import { BucketInfo, BucketInfoSDKType, ObjectInfo, ObjectInfoSDKType, BucketMet
 import { GlobalVirtualGroup, GlobalVirtualGroupSDKType } from "../virtualgroup/types";
 import { Policy, PolicySDKType, GroupMember, GroupMemberSDKType } from "../permission/types";
 import * as _m0 from "protobufjs/minimal";
-import { DeepPartial, Exact, isSet, Long, Rpc } from "../../helpers";
+import { DeepPartial, Exact, isSet, Long, isObject, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.storage";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 
@@ -195,19 +195,19 @@ export interface QueryHeadGroupResponse {
 export interface QueryHeadGroupResponseSDKType {
   group_info?: GroupInfoSDKType;
 }
-export interface QueryListGroupRequest {
+export interface QueryListGroupsRequest {
   pagination?: PageRequest;
   groupOwner: string;
 }
-export interface QueryListGroupRequestSDKType {
+export interface QueryListGroupsRequestSDKType {
   pagination?: PageRequestSDKType;
   group_owner: string;
 }
-export interface QueryListGroupResponse {
+export interface QueryListGroupsResponse {
   pagination?: PageResponse;
   groupInfos: GroupInfo[];
 }
-export interface QueryListGroupResponseSDKType {
+export interface QueryListGroupsResponseSDKType {
   pagination?: PageResponseSDKType;
   group_infos: GroupInfoSDKType[];
 }
@@ -313,6 +313,64 @@ export interface QueryIsPriceChangedResponseSDKType {
   new_primary_store_price: string;
   new_secondary_store_price: string;
   new_validator_tax_rate: string;
+}
+export interface QueryGroupMembersExistRequest {
+  groupId: string;
+  members: string[];
+}
+export interface QueryGroupMembersExistRequestSDKType {
+  group_id: string;
+  members: string[];
+}
+export interface QueryGroupMembersExistResponse_ExistsEntry {
+  key: string;
+  value: boolean;
+}
+export interface QueryGroupMembersExistResponse_ExistsEntrySDKType {
+  key: string;
+  value: boolean;
+}
+export interface QueryGroupMembersExistResponse {
+  exists: {
+    [key: string]: boolean;
+  };
+}
+export interface QueryGroupMembersExistResponseSDKType {
+  exists: {
+    [key: string]: boolean;
+  };
+}
+export interface QueryGroupsExistRequest {
+  groupOwner: string;
+  groupNames: string[];
+}
+export interface QueryGroupsExistRequestSDKType {
+  group_owner: string;
+  group_names: string[];
+}
+export interface QueryGroupsExistByIdRequest {
+  groupIds: string[];
+}
+export interface QueryGroupsExistByIdRequestSDKType {
+  group_ids: string[];
+}
+export interface QueryGroupsExistResponse_ExistsEntry {
+  key: string;
+  value: boolean;
+}
+export interface QueryGroupsExistResponse_ExistsEntrySDKType {
+  key: string;
+  value: boolean;
+}
+export interface QueryGroupsExistResponse {
+  exists: {
+    [key: string]: boolean;
+  };
+}
+export interface QueryGroupsExistResponseSDKType {
+  exists: {
+    [key: string]: boolean;
+  };
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -2201,15 +2259,15 @@ export const QueryHeadGroupResponse = {
 
 };
 
-function createBaseQueryListGroupRequest(): QueryListGroupRequest {
+function createBaseQueryListGroupsRequest(): QueryListGroupsRequest {
   return {
     pagination: undefined,
     groupOwner: ""
   };
 }
 
-export const QueryListGroupRequest = {
-  encode(message: QueryListGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryListGroupsRequest = {
+  encode(message: QueryListGroupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -2221,10 +2279,10 @@ export const QueryListGroupRequest = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListGroupRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListGroupsRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryListGroupRequest();
+    const message = createBaseQueryListGroupsRequest();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -2247,35 +2305,35 @@ export const QueryListGroupRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryListGroupRequest {
+  fromJSON(object: any): QueryListGroupsRequest {
     return {
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
       groupOwner: isSet(object.groupOwner) ? String(object.groupOwner) : ""
     };
   },
 
-  toJSON(message: QueryListGroupRequest): unknown {
+  toJSON(message: QueryListGroupsRequest): unknown {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     message.groupOwner !== undefined && (obj.groupOwner = message.groupOwner);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryListGroupRequest>, I>>(object: I): QueryListGroupRequest {
-    const message = createBaseQueryListGroupRequest();
+  fromPartial<I extends Exact<DeepPartial<QueryListGroupsRequest>, I>>(object: I): QueryListGroupsRequest {
+    const message = createBaseQueryListGroupsRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     message.groupOwner = object.groupOwner ?? "";
     return message;
   },
 
-  fromSDK(object: QueryListGroupRequestSDKType): QueryListGroupRequest {
+  fromSDK(object: QueryListGroupsRequestSDKType): QueryListGroupsRequest {
     return {
       pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined,
       groupOwner: object?.group_owner
     };
   },
 
-  toSDK(message: QueryListGroupRequest): QueryListGroupRequestSDKType {
+  toSDK(message: QueryListGroupsRequest): QueryListGroupsRequestSDKType {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
     obj.group_owner = message.groupOwner;
@@ -2284,15 +2342,15 @@ export const QueryListGroupRequest = {
 
 };
 
-function createBaseQueryListGroupResponse(): QueryListGroupResponse {
+function createBaseQueryListGroupsResponse(): QueryListGroupsResponse {
   return {
     pagination: undefined,
     groupInfos: []
   };
 }
 
-export const QueryListGroupResponse = {
-  encode(message: QueryListGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryListGroupsResponse = {
+  encode(message: QueryListGroupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -2304,10 +2362,10 @@ export const QueryListGroupResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListGroupResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListGroupsResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryListGroupResponse();
+    const message = createBaseQueryListGroupsResponse();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -2330,14 +2388,14 @@ export const QueryListGroupResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryListGroupResponse {
+  fromJSON(object: any): QueryListGroupsResponse {
     return {
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
       groupInfos: Array.isArray(object?.groupInfos) ? object.groupInfos.map((e: any) => GroupInfo.fromJSON(e)) : []
     };
   },
 
-  toJSON(message: QueryListGroupResponse): unknown {
+  toJSON(message: QueryListGroupsResponse): unknown {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
 
@@ -2350,21 +2408,21 @@ export const QueryListGroupResponse = {
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryListGroupResponse>, I>>(object: I): QueryListGroupResponse {
-    const message = createBaseQueryListGroupResponse();
+  fromPartial<I extends Exact<DeepPartial<QueryListGroupsResponse>, I>>(object: I): QueryListGroupsResponse {
+    const message = createBaseQueryListGroupsResponse();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     message.groupInfos = object.groupInfos?.map(e => GroupInfo.fromPartial(e)) || [];
     return message;
   },
 
-  fromSDK(object: QueryListGroupResponseSDKType): QueryListGroupResponse {
+  fromSDK(object: QueryListGroupsResponseSDKType): QueryListGroupsResponse {
     return {
       pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined,
       groupInfos: Array.isArray(object?.group_infos) ? object.group_infos.map((e: any) => GroupInfo.fromSDK(e)) : []
     };
   },
 
-  toSDK(message: QueryListGroupResponse): QueryListGroupResponseSDKType {
+  toSDK(message: QueryListGroupsResponse): QueryListGroupsResponseSDKType {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
 
@@ -3388,6 +3446,659 @@ export const QueryIsPriceChangedResponse = {
   }
 
 };
+
+function createBaseQueryGroupMembersExistRequest(): QueryGroupMembersExistRequest {
+  return {
+    groupId: "",
+    members: []
+  };
+}
+
+export const QueryGroupMembersExistRequest = {
+  encode(message: QueryGroupMembersExistRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.groupId !== "") {
+      writer.uint32(10).string(message.groupId);
+    }
+
+    for (const v of message.members) {
+      writer.uint32(18).string(v!);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupMembersExistRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGroupMembersExistRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.groupId = reader.string();
+          break;
+
+        case 2:
+          message.members.push(reader.string());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryGroupMembersExistRequest {
+    return {
+      groupId: isSet(object.groupId) ? String(object.groupId) : "",
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => String(e)) : []
+    };
+  },
+
+  toJSON(message: QueryGroupMembersExistRequest): unknown {
+    const obj: any = {};
+    message.groupId !== undefined && (obj.groupId = message.groupId);
+
+    if (message.members) {
+      obj.members = message.members.map(e => e);
+    } else {
+      obj.members = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGroupMembersExistRequest>, I>>(object: I): QueryGroupMembersExistRequest {
+    const message = createBaseQueryGroupMembersExistRequest();
+    message.groupId = object.groupId ?? "";
+    message.members = object.members?.map(e => e) || [];
+    return message;
+  },
+
+  fromSDK(object: QueryGroupMembersExistRequestSDKType): QueryGroupMembersExistRequest {
+    return {
+      groupId: object?.group_id,
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: QueryGroupMembersExistRequest): QueryGroupMembersExistRequestSDKType {
+    const obj: any = {};
+    obj.group_id = message.groupId;
+
+    if (message.members) {
+      obj.members = message.members.map(e => e);
+    } else {
+      obj.members = [];
+    }
+
+    return obj;
+  }
+
+};
+
+function createBaseQueryGroupMembersExistResponse_ExistsEntry(): QueryGroupMembersExistResponse_ExistsEntry {
+  return {
+    key: "",
+    value: false
+  };
+}
+
+export const QueryGroupMembersExistResponse_ExistsEntry = {
+  encode(message: QueryGroupMembersExistResponse_ExistsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+
+    if (message.value === true) {
+      writer.uint32(16).bool(message.value);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupMembersExistResponse_ExistsEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGroupMembersExistResponse_ExistsEntry();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+
+        case 2:
+          message.value = reader.bool();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryGroupMembersExistResponse_ExistsEntry {
+    return {
+      key: isSet(object.key) ? String(object.key) : "",
+      value: isSet(object.value) ? Boolean(object.value) : false
+    };
+  },
+
+  toJSON(message: QueryGroupMembersExistResponse_ExistsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGroupMembersExistResponse_ExistsEntry>, I>>(object: I): QueryGroupMembersExistResponse_ExistsEntry {
+    const message = createBaseQueryGroupMembersExistResponse_ExistsEntry();
+    message.key = object.key ?? "";
+    message.value = object.value ?? false;
+    return message;
+  },
+
+  fromSDK(object: QueryGroupMembersExistResponse_ExistsEntrySDKType): QueryGroupMembersExistResponse_ExistsEntry {
+    return {
+      key: object?.key,
+      value: object?.value
+    };
+  },
+
+  toSDK(message: QueryGroupMembersExistResponse_ExistsEntry): QueryGroupMembersExistResponse_ExistsEntrySDKType {
+    const obj: any = {};
+    obj.key = message.key;
+    obj.value = message.value;
+    return obj;
+  }
+
+};
+
+function createBaseQueryGroupMembersExistResponse(): QueryGroupMembersExistResponse {
+  return {
+    exists: {}
+  };
+}
+
+export const QueryGroupMembersExistResponse = {
+  encode(message: QueryGroupMembersExistResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    Object.entries(message.exists).forEach(([key, value]) => {
+      QueryGroupMembersExistResponse_ExistsEntry.encode({
+        key: (key as any),
+        value
+      }, writer.uint32(8).fork()).ldelim();
+    });
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupMembersExistResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGroupMembersExistResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          const entry1 = QueryGroupMembersExistResponse_ExistsEntry.decode(reader, reader.uint32());
+
+          if (entry1.value !== undefined) {
+            message.exists[entry1.key] = entry1.value;
+          }
+
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryGroupMembersExistResponse {
+    return {
+      exists: isObject(object.exists) ? Object.entries(object.exists).reduce<{
+        [key: string]: bool;
+      }>((acc, [key, value]) => {
+        acc[key] = bool.fromJSON(value);
+        return acc;
+      }, {}) : {}
+    };
+  },
+
+  toJSON(message: QueryGroupMembersExistResponse): unknown {
+    const obj: any = {};
+    obj.exists = {};
+
+    if (message.exists) {
+      Object.entries(message.exists).forEach(([k, v]) => {
+        obj.exists[k] = bool.toJSON(v);
+      });
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGroupMembersExistResponse>, I>>(object: I): QueryGroupMembersExistResponse {
+    const message = createBaseQueryGroupMembersExistResponse();
+    message.exists = Object.entries(object.exists ?? {}).reduce<{
+      [key: string]: bool;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = bool.fromPartial(value);
+      }
+
+      return acc;
+    }, {});
+    return message;
+  },
+
+  fromSDK(object: QueryGroupMembersExistResponseSDKType): QueryGroupMembersExistResponse {
+    return {
+      exists: isObject(object.exists) ? Object.entries(object.exists).reduce<{
+        [key: string]: bool;
+      }>((acc, [key, value]) => {
+        acc[key] = bool.fromSDK(value);
+        return acc;
+      }, {}) : {}
+    };
+  },
+
+  toSDK(message: QueryGroupMembersExistResponse): QueryGroupMembersExistResponseSDKType {
+    const obj: any = {};
+    obj.exists = {};
+
+    if (message.exists) {
+      Object.entries(message.exists).forEach(([k, v]) => {
+        obj.exists[k] = bool.toSDK(v);
+      });
+    }
+
+    return obj;
+  }
+
+};
+
+function createBaseQueryGroupsExistRequest(): QueryGroupsExistRequest {
+  return {
+    groupOwner: "",
+    groupNames: []
+  };
+}
+
+export const QueryGroupsExistRequest = {
+  encode(message: QueryGroupsExistRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.groupOwner !== "") {
+      writer.uint32(10).string(message.groupOwner);
+    }
+
+    for (const v of message.groupNames) {
+      writer.uint32(18).string(v!);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupsExistRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGroupsExistRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.groupOwner = reader.string();
+          break;
+
+        case 2:
+          message.groupNames.push(reader.string());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryGroupsExistRequest {
+    return {
+      groupOwner: isSet(object.groupOwner) ? String(object.groupOwner) : "",
+      groupNames: Array.isArray(object?.groupNames) ? object.groupNames.map((e: any) => String(e)) : []
+    };
+  },
+
+  toJSON(message: QueryGroupsExistRequest): unknown {
+    const obj: any = {};
+    message.groupOwner !== undefined && (obj.groupOwner = message.groupOwner);
+
+    if (message.groupNames) {
+      obj.groupNames = message.groupNames.map(e => e);
+    } else {
+      obj.groupNames = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGroupsExistRequest>, I>>(object: I): QueryGroupsExistRequest {
+    const message = createBaseQueryGroupsExistRequest();
+    message.groupOwner = object.groupOwner ?? "";
+    message.groupNames = object.groupNames?.map(e => e) || [];
+    return message;
+  },
+
+  fromSDK(object: QueryGroupsExistRequestSDKType): QueryGroupsExistRequest {
+    return {
+      groupOwner: object?.group_owner,
+      groupNames: Array.isArray(object?.group_names) ? object.group_names.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: QueryGroupsExistRequest): QueryGroupsExistRequestSDKType {
+    const obj: any = {};
+    obj.group_owner = message.groupOwner;
+
+    if (message.groupNames) {
+      obj.group_names = message.groupNames.map(e => e);
+    } else {
+      obj.group_names = [];
+    }
+
+    return obj;
+  }
+
+};
+
+function createBaseQueryGroupsExistByIdRequest(): QueryGroupsExistByIdRequest {
+  return {
+    groupIds: []
+  };
+}
+
+export const QueryGroupsExistByIdRequest = {
+  encode(message: QueryGroupsExistByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.groupIds) {
+      writer.uint32(10).string(v!);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupsExistByIdRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGroupsExistByIdRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.groupIds.push(reader.string());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryGroupsExistByIdRequest {
+    return {
+      groupIds: Array.isArray(object?.groupIds) ? object.groupIds.map((e: any) => String(e)) : []
+    };
+  },
+
+  toJSON(message: QueryGroupsExistByIdRequest): unknown {
+    const obj: any = {};
+
+    if (message.groupIds) {
+      obj.groupIds = message.groupIds.map(e => e);
+    } else {
+      obj.groupIds = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGroupsExistByIdRequest>, I>>(object: I): QueryGroupsExistByIdRequest {
+    const message = createBaseQueryGroupsExistByIdRequest();
+    message.groupIds = object.groupIds?.map(e => e) || [];
+    return message;
+  },
+
+  fromSDK(object: QueryGroupsExistByIdRequestSDKType): QueryGroupsExistByIdRequest {
+    return {
+      groupIds: Array.isArray(object?.group_ids) ? object.group_ids.map((e: any) => e) : []
+    };
+  },
+
+  toSDK(message: QueryGroupsExistByIdRequest): QueryGroupsExistByIdRequestSDKType {
+    const obj: any = {};
+
+    if (message.groupIds) {
+      obj.group_ids = message.groupIds.map(e => e);
+    } else {
+      obj.group_ids = [];
+    }
+
+    return obj;
+  }
+
+};
+
+function createBaseQueryGroupsExistResponse_ExistsEntry(): QueryGroupsExistResponse_ExistsEntry {
+  return {
+    key: "",
+    value: false
+  };
+}
+
+export const QueryGroupsExistResponse_ExistsEntry = {
+  encode(message: QueryGroupsExistResponse_ExistsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+
+    if (message.value === true) {
+      writer.uint32(16).bool(message.value);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupsExistResponse_ExistsEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGroupsExistResponse_ExistsEntry();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+
+        case 2:
+          message.value = reader.bool();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryGroupsExistResponse_ExistsEntry {
+    return {
+      key: isSet(object.key) ? String(object.key) : "",
+      value: isSet(object.value) ? Boolean(object.value) : false
+    };
+  },
+
+  toJSON(message: QueryGroupsExistResponse_ExistsEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGroupsExistResponse_ExistsEntry>, I>>(object: I): QueryGroupsExistResponse_ExistsEntry {
+    const message = createBaseQueryGroupsExistResponse_ExistsEntry();
+    message.key = object.key ?? "";
+    message.value = object.value ?? false;
+    return message;
+  },
+
+  fromSDK(object: QueryGroupsExistResponse_ExistsEntrySDKType): QueryGroupsExistResponse_ExistsEntry {
+    return {
+      key: object?.key,
+      value: object?.value
+    };
+  },
+
+  toSDK(message: QueryGroupsExistResponse_ExistsEntry): QueryGroupsExistResponse_ExistsEntrySDKType {
+    const obj: any = {};
+    obj.key = message.key;
+    obj.value = message.value;
+    return obj;
+  }
+
+};
+
+function createBaseQueryGroupsExistResponse(): QueryGroupsExistResponse {
+  return {
+    exists: {}
+  };
+}
+
+export const QueryGroupsExistResponse = {
+  encode(message: QueryGroupsExistResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    Object.entries(message.exists).forEach(([key, value]) => {
+      QueryGroupsExistResponse_ExistsEntry.encode({
+        key: (key as any),
+        value
+      }, writer.uint32(8).fork()).ldelim();
+    });
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupsExistResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGroupsExistResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          const entry1 = QueryGroupsExistResponse_ExistsEntry.decode(reader, reader.uint32());
+
+          if (entry1.value !== undefined) {
+            message.exists[entry1.key] = entry1.value;
+          }
+
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryGroupsExistResponse {
+    return {
+      exists: isObject(object.exists) ? Object.entries(object.exists).reduce<{
+        [key: string]: bool;
+      }>((acc, [key, value]) => {
+        acc[key] = bool.fromJSON(value);
+        return acc;
+      }, {}) : {}
+    };
+  },
+
+  toJSON(message: QueryGroupsExistResponse): unknown {
+    const obj: any = {};
+    obj.exists = {};
+
+    if (message.exists) {
+      Object.entries(message.exists).forEach(([k, v]) => {
+        obj.exists[k] = bool.toJSON(v);
+      });
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGroupsExistResponse>, I>>(object: I): QueryGroupsExistResponse {
+    const message = createBaseQueryGroupsExistResponse();
+    message.exists = Object.entries(object.exists ?? {}).reduce<{
+      [key: string]: bool;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = bool.fromPartial(value);
+      }
+
+      return acc;
+    }, {});
+    return message;
+  },
+
+  fromSDK(object: QueryGroupsExistResponseSDKType): QueryGroupsExistResponse {
+    return {
+      exists: isObject(object.exists) ? Object.entries(object.exists).reduce<{
+        [key: string]: bool;
+      }>((acc, [key, value]) => {
+        acc[key] = bool.fromSDK(value);
+        return acc;
+      }, {}) : {}
+    };
+  },
+
+  toSDK(message: QueryGroupsExistResponse): QueryGroupsExistResponseSDKType {
+    const obj: any = {};
+    obj.exists = {};
+
+    if (message.exists) {
+      Object.entries(message.exists).forEach(([k, v]) => {
+        obj.exists[k] = bool.toSDK(v);
+      });
+    }
+
+    return obj;
+  }
+
+};
 /** Query defines the gRPC querier service. */
 
 export interface Query {
@@ -3437,7 +4148,7 @@ export interface Query {
   HeadGroup(request: QueryHeadGroupRequest): Promise<QueryHeadGroupResponse>;
   /** Queries a list of ListGroup items. */
 
-  ListGroup(request: QueryListGroupRequest): Promise<QueryListGroupResponse>;
+  ListGroups(request: QueryListGroupsRequest): Promise<QueryListGroupsResponse>;
   /** Queries a list of HeadGroupMember items. */
 
   HeadGroupMember(request: QueryHeadGroupMemberRequest): Promise<QueryHeadGroupMemberResponse>;
@@ -3456,6 +4167,15 @@ export interface Query {
   /** Queries whether read and storage prices changed for the bucket. */
 
   QueryIsPriceChanged(request: QueryIsPriceChangedRequest): Promise<QueryIsPriceChangedResponse>;
+  /** Queries whether some members are in the group. */
+
+  QueryGroupMembersExist(request: QueryGroupMembersExistRequest): Promise<QueryGroupMembersExistResponse>;
+  /** Queries whether some groups are exist. */
+
+  QueryGroupsExist(request: QueryGroupsExistRequest): Promise<QueryGroupsExistResponse>;
+  /** Queries whether some groups are exist by id. */
+
+  QueryGroupsExistById(request: QueryGroupsExistByIdRequest): Promise<QueryGroupsExistResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -3477,13 +4197,16 @@ export class QueryClientImpl implements Query {
     this.QueryPolicyForAccount = this.QueryPolicyForAccount.bind(this);
     this.VerifyPermission = this.VerifyPermission.bind(this);
     this.HeadGroup = this.HeadGroup.bind(this);
-    this.ListGroup = this.ListGroup.bind(this);
+    this.ListGroups = this.ListGroups.bind(this);
     this.HeadGroupMember = this.HeadGroupMember.bind(this);
     this.QueryPolicyForGroup = this.QueryPolicyForGroup.bind(this);
     this.QueryPolicyById = this.QueryPolicyById.bind(this);
     this.QueryLockFee = this.QueryLockFee.bind(this);
     this.HeadBucketExtra = this.HeadBucketExtra.bind(this);
     this.QueryIsPriceChanged = this.QueryIsPriceChanged.bind(this);
+    this.QueryGroupMembersExist = this.QueryGroupMembersExist.bind(this);
+    this.QueryGroupsExist = this.QueryGroupsExist.bind(this);
+    this.QueryGroupsExistById = this.QueryGroupsExistById.bind(this);
   }
 
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
@@ -3578,10 +4301,10 @@ export class QueryClientImpl implements Query {
     return promise.then(data => QueryHeadGroupResponse.decode(new _m0.Reader(data)));
   }
 
-  ListGroup(request: QueryListGroupRequest): Promise<QueryListGroupResponse> {
-    const data = QueryListGroupRequest.encode(request).finish();
-    const promise = this.rpc.request("greenfield.storage.Query", "ListGroup", data);
-    return promise.then(data => QueryListGroupResponse.decode(new _m0.Reader(data)));
+  ListGroups(request: QueryListGroupsRequest): Promise<QueryListGroupsResponse> {
+    const data = QueryListGroupsRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Query", "ListGroups", data);
+    return promise.then(data => QueryListGroupsResponse.decode(new _m0.Reader(data)));
   }
 
   HeadGroupMember(request: QueryHeadGroupMemberRequest): Promise<QueryHeadGroupMemberResponse> {
@@ -3618,6 +4341,24 @@ export class QueryClientImpl implements Query {
     const data = QueryIsPriceChangedRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryIsPriceChanged", data);
     return promise.then(data => QueryIsPriceChangedResponse.decode(new _m0.Reader(data)));
+  }
+
+  QueryGroupMembersExist(request: QueryGroupMembersExistRequest): Promise<QueryGroupMembersExistResponse> {
+    const data = QueryGroupMembersExistRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Query", "QueryGroupMembersExist", data);
+    return promise.then(data => QueryGroupMembersExistResponse.decode(new _m0.Reader(data)));
+  }
+
+  QueryGroupsExist(request: QueryGroupsExistRequest): Promise<QueryGroupsExistResponse> {
+    const data = QueryGroupsExistRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Query", "QueryGroupsExist", data);
+    return promise.then(data => QueryGroupsExistResponse.decode(new _m0.Reader(data)));
+  }
+
+  QueryGroupsExistById(request: QueryGroupsExistByIdRequest): Promise<QueryGroupsExistResponse> {
+    const data = QueryGroupsExistByIdRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Query", "QueryGroupsExistById", data);
+    return promise.then(data => QueryGroupsExistResponse.decode(new _m0.Reader(data)));
   }
 
 }

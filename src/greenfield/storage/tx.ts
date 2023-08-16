@@ -252,9 +252,6 @@ export interface MsgCreateGroup {
   /** group_name defines the name of the group. it's not globally unique. */
 
   groupName: string;
-  /** member_request defines a list of member which to be add or remove */
-
-  members: string[];
   /** extra defines extra info for the group */
 
   extra: string;
@@ -262,7 +259,6 @@ export interface MsgCreateGroup {
 export interface MsgCreateGroupSDKType {
   creator: string;
   group_name: string;
-  members: string[];
   extra: string;
 }
 export interface MsgCreateGroupResponse {
@@ -295,7 +291,7 @@ export interface MsgUpdateGroupMember {
   groupName: string;
   /** members_to_add defines a list of members account address which will be add to the group */
 
-  membersToAdd: string[];
+  membersToAdd: MsgGroupMember[];
   /** members_to_delete defines a list of members account address which will be remove from the group */
 
   membersToDelete: string[];
@@ -304,11 +300,43 @@ export interface MsgUpdateGroupMemberSDKType {
   operator: string;
   group_owner: string;
   group_name: string;
-  members_to_add: string[];
+  members_to_add: MsgGroupMemberSDKType[];
   members_to_delete: string[];
 }
 export interface MsgUpdateGroupMemberResponse {}
 export interface MsgUpdateGroupMemberResponseSDKType {}
+export interface MsgRenewGroupMember {
+  /** operator defines the account address of the operator who has the UpdateGroupMember permission of the group. */
+  operator: string;
+  /** group_owner defines the account address of the group owner */
+
+  groupOwner: string;
+  /** group_name defines the name of the group which to be updated */
+
+  groupName: string;
+  /** members defines a list of members which will be renew to the group */
+
+  members: MsgGroupMember[];
+}
+export interface MsgRenewGroupMemberSDKType {
+  operator: string;
+  group_owner: string;
+  group_name: string;
+  members: MsgGroupMemberSDKType[];
+}
+export interface MsgRenewGroupMemberResponse {}
+export interface MsgRenewGroupMemberResponseSDKType {}
+export interface MsgGroupMember {
+  /** member defines the account address of the group member */
+  member: string;
+  /** expiration_time defines the expiration time of the group member */
+
+  expirationTime?: Timestamp;
+}
+export interface MsgGroupMemberSDKType {
+  member: string;
+  expiration_time?: TimestampSDKType;
+}
 export interface MsgUpdateGroupExtra {
   /** operator defines the account address of the operator who has the UpdateGroupMember permission of the group. */
   operator: string;
@@ -2250,7 +2278,6 @@ function createBaseMsgCreateGroup(): MsgCreateGroup {
   return {
     creator: "",
     groupName: "",
-    members: [],
     extra: ""
   };
 }
@@ -2265,12 +2292,8 @@ export const MsgCreateGroup = {
       writer.uint32(18).string(message.groupName);
     }
 
-    for (const v of message.members) {
-      writer.uint32(26).string(v!);
-    }
-
     if (message.extra !== "") {
-      writer.uint32(34).string(message.extra);
+      writer.uint32(26).string(message.extra);
     }
 
     return writer;
@@ -2294,10 +2317,6 @@ export const MsgCreateGroup = {
           break;
 
         case 3:
-          message.members.push(reader.string());
-          break;
-
-        case 4:
           message.extra = reader.string();
           break;
 
@@ -2314,7 +2333,6 @@ export const MsgCreateGroup = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
-      members: Array.isArray(object?.members) ? object.members.map((e: any) => String(e)) : [],
       extra: isSet(object.extra) ? String(object.extra) : ""
     };
   },
@@ -2323,13 +2341,6 @@ export const MsgCreateGroup = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.groupName !== undefined && (obj.groupName = message.groupName);
-
-    if (message.members) {
-      obj.members = message.members.map(e => e);
-    } else {
-      obj.members = [];
-    }
-
     message.extra !== undefined && (obj.extra = message.extra);
     return obj;
   },
@@ -2338,7 +2349,6 @@ export const MsgCreateGroup = {
     const message = createBaseMsgCreateGroup();
     message.creator = object.creator ?? "";
     message.groupName = object.groupName ?? "";
-    message.members = object.members?.map(e => e) || [];
     message.extra = object.extra ?? "";
     return message;
   },
@@ -2347,7 +2357,6 @@ export const MsgCreateGroup = {
     return {
       creator: object?.creator,
       groupName: object?.group_name,
-      members: Array.isArray(object?.members) ? object.members.map((e: any) => e) : [],
       extra: object?.extra
     };
   },
@@ -2356,13 +2365,6 @@ export const MsgCreateGroup = {
     const obj: any = {};
     obj.creator = message.creator;
     obj.group_name = message.groupName;
-
-    if (message.members) {
-      obj.members = message.members.map(e => e);
-    } else {
-      obj.members = [];
-    }
-
     obj.extra = message.extra;
     return obj;
   }
@@ -2598,7 +2600,7 @@ export const MsgUpdateGroupMember = {
     }
 
     for (const v of message.membersToAdd) {
-      writer.uint32(34).string(v!);
+      MsgGroupMember.encode(v!, writer.uint32(34).fork()).ldelim();
     }
 
     for (const v of message.membersToDelete) {
@@ -2630,7 +2632,7 @@ export const MsgUpdateGroupMember = {
           break;
 
         case 4:
-          message.membersToAdd.push(reader.string());
+          message.membersToAdd.push(MsgGroupMember.decode(reader, reader.uint32()));
           break;
 
         case 5:
@@ -2651,7 +2653,7 @@ export const MsgUpdateGroupMember = {
       operator: isSet(object.operator) ? String(object.operator) : "",
       groupOwner: isSet(object.groupOwner) ? String(object.groupOwner) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
-      membersToAdd: Array.isArray(object?.membersToAdd) ? object.membersToAdd.map((e: any) => String(e)) : [],
+      membersToAdd: Array.isArray(object?.membersToAdd) ? object.membersToAdd.map((e: any) => MsgGroupMember.fromJSON(e)) : [],
       membersToDelete: Array.isArray(object?.membersToDelete) ? object.membersToDelete.map((e: any) => String(e)) : []
     };
   },
@@ -2663,7 +2665,7 @@ export const MsgUpdateGroupMember = {
     message.groupName !== undefined && (obj.groupName = message.groupName);
 
     if (message.membersToAdd) {
-      obj.membersToAdd = message.membersToAdd.map(e => e);
+      obj.membersToAdd = message.membersToAdd.map(e => e ? MsgGroupMember.toJSON(e) : undefined);
     } else {
       obj.membersToAdd = [];
     }
@@ -2682,7 +2684,7 @@ export const MsgUpdateGroupMember = {
     message.operator = object.operator ?? "";
     message.groupOwner = object.groupOwner ?? "";
     message.groupName = object.groupName ?? "";
-    message.membersToAdd = object.membersToAdd?.map(e => e) || [];
+    message.membersToAdd = object.membersToAdd?.map(e => MsgGroupMember.fromPartial(e)) || [];
     message.membersToDelete = object.membersToDelete?.map(e => e) || [];
     return message;
   },
@@ -2692,7 +2694,7 @@ export const MsgUpdateGroupMember = {
       operator: object?.operator,
       groupOwner: object?.group_owner,
       groupName: object?.group_name,
-      membersToAdd: Array.isArray(object?.members_to_add) ? object.members_to_add.map((e: any) => e) : [],
+      membersToAdd: Array.isArray(object?.members_to_add) ? object.members_to_add.map((e: any) => MsgGroupMember.fromSDK(e)) : [],
       membersToDelete: Array.isArray(object?.members_to_delete) ? object.members_to_delete.map((e: any) => e) : []
     };
   },
@@ -2704,7 +2706,7 @@ export const MsgUpdateGroupMember = {
     obj.group_name = message.groupName;
 
     if (message.membersToAdd) {
-      obj.members_to_add = message.membersToAdd.map(e => e);
+      obj.members_to_add = message.membersToAdd.map(e => e ? MsgGroupMember.toSDK(e) : undefined);
     } else {
       obj.members_to_add = [];
     }
@@ -2767,6 +2769,264 @@ export const MsgUpdateGroupMemberResponse = {
 
   toSDK(_: MsgUpdateGroupMemberResponse): MsgUpdateGroupMemberResponseSDKType {
     const obj: any = {};
+    return obj;
+  }
+
+};
+
+function createBaseMsgRenewGroupMember(): MsgRenewGroupMember {
+  return {
+    operator: "",
+    groupOwner: "",
+    groupName: "",
+    members: []
+  };
+}
+
+export const MsgRenewGroupMember = {
+  encode(message: MsgRenewGroupMember, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.groupOwner !== "") {
+      writer.uint32(18).string(message.groupOwner);
+    }
+
+    if (message.groupName !== "") {
+      writer.uint32(26).string(message.groupName);
+    }
+
+    for (const v of message.members) {
+      MsgGroupMember.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRenewGroupMember {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRenewGroupMember();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.groupOwner = reader.string();
+          break;
+
+        case 3:
+          message.groupName = reader.string();
+          break;
+
+        case 4:
+          message.members.push(MsgGroupMember.decode(reader, reader.uint32()));
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgRenewGroupMember {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      groupOwner: isSet(object.groupOwner) ? String(object.groupOwner) : "",
+      groupName: isSet(object.groupName) ? String(object.groupName) : "",
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => MsgGroupMember.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: MsgRenewGroupMember): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.groupOwner !== undefined && (obj.groupOwner = message.groupOwner);
+    message.groupName !== undefined && (obj.groupName = message.groupName);
+
+    if (message.members) {
+      obj.members = message.members.map(e => e ? MsgGroupMember.toJSON(e) : undefined);
+    } else {
+      obj.members = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgRenewGroupMember>, I>>(object: I): MsgRenewGroupMember {
+    const message = createBaseMsgRenewGroupMember();
+    message.operator = object.operator ?? "";
+    message.groupOwner = object.groupOwner ?? "";
+    message.groupName = object.groupName ?? "";
+    message.members = object.members?.map(e => MsgGroupMember.fromPartial(e)) || [];
+    return message;
+  },
+
+  fromSDK(object: MsgRenewGroupMemberSDKType): MsgRenewGroupMember {
+    return {
+      operator: object?.operator,
+      groupOwner: object?.group_owner,
+      groupName: object?.group_name,
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => MsgGroupMember.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: MsgRenewGroupMember): MsgRenewGroupMemberSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.group_owner = message.groupOwner;
+    obj.group_name = message.groupName;
+
+    if (message.members) {
+      obj.members = message.members.map(e => e ? MsgGroupMember.toSDK(e) : undefined);
+    } else {
+      obj.members = [];
+    }
+
+    return obj;
+  }
+
+};
+
+function createBaseMsgRenewGroupMemberResponse(): MsgRenewGroupMemberResponse {
+  return {};
+}
+
+export const MsgRenewGroupMemberResponse = {
+  encode(_: MsgRenewGroupMemberResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRenewGroupMemberResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRenewGroupMemberResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgRenewGroupMemberResponse {
+    return {};
+  },
+
+  toJSON(_: MsgRenewGroupMemberResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgRenewGroupMemberResponse>, I>>(_: I): MsgRenewGroupMemberResponse {
+    const message = createBaseMsgRenewGroupMemberResponse();
+    return message;
+  },
+
+  fromSDK(_: MsgRenewGroupMemberResponseSDKType): MsgRenewGroupMemberResponse {
+    return {};
+  },
+
+  toSDK(_: MsgRenewGroupMemberResponse): MsgRenewGroupMemberResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+
+};
+
+function createBaseMsgGroupMember(): MsgGroupMember {
+  return {
+    member: "",
+    expirationTime: undefined
+  };
+}
+
+export const MsgGroupMember = {
+  encode(message: MsgGroupMember, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.member !== "") {
+      writer.uint32(10).string(message.member);
+    }
+
+    if (message.expirationTime !== undefined) {
+      Timestamp.encode(message.expirationTime, writer.uint32(18).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgGroupMember {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgGroupMember();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.member = reader.string();
+          break;
+
+        case 2:
+          message.expirationTime = Timestamp.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgGroupMember {
+    return {
+      member: isSet(object.member) ? String(object.member) : "",
+      expirationTime: isSet(object.expirationTime) ? fromJsonTimestamp(object.expirationTime) : undefined
+    };
+  },
+
+  toJSON(message: MsgGroupMember): unknown {
+    const obj: any = {};
+    message.member !== undefined && (obj.member = message.member);
+    message.expirationTime !== undefined && (obj.expirationTime = fromTimestamp(message.expirationTime).toISOString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgGroupMember>, I>>(object: I): MsgGroupMember {
+    const message = createBaseMsgGroupMember();
+    message.member = object.member ?? "";
+    message.expirationTime = object.expirationTime !== undefined && object.expirationTime !== null ? Timestamp.fromPartial(object.expirationTime) : undefined;
+    return message;
+  },
+
+  fromSDK(object: MsgGroupMemberSDKType): MsgGroupMember {
+    return {
+      member: object?.member,
+      expirationTime: object.expiration_time ? Timestamp.fromSDK(object.expiration_time) : undefined
+    };
+  },
+
+  toSDK(message: MsgGroupMember): MsgGroupMemberSDKType {
+    const obj: any = {};
+    obj.member = message.member;
+    message.expirationTime !== undefined && (obj.expiration_time = message.expirationTime ? Timestamp.toSDK(message.expirationTime) : undefined);
     return obj;
   }
 
@@ -5041,6 +5301,7 @@ export interface Msg {
   UpdateGroupExtra(request: MsgUpdateGroupExtra): Promise<MsgUpdateGroupExtraResponse>;
   LeaveGroup(request: MsgLeaveGroup): Promise<MsgLeaveGroupResponse>;
   MirrorGroup(request: MsgMirrorGroup): Promise<MsgMirrorGroupResponse>;
+  RenewGroupMember(request: MsgRenewGroupMember): Promise<MsgRenewGroupMemberResponse>;
   /** basic operation of policy */
 
   PutPolicy(request: MsgPutPolicy): Promise<MsgPutPolicyResponse>;
@@ -5079,6 +5340,7 @@ export class MsgClientImpl implements Msg {
     this.UpdateGroupExtra = this.UpdateGroupExtra.bind(this);
     this.LeaveGroup = this.LeaveGroup.bind(this);
     this.MirrorGroup = this.MirrorGroup.bind(this);
+    this.RenewGroupMember = this.RenewGroupMember.bind(this);
     this.PutPolicy = this.PutPolicy.bind(this);
     this.DeletePolicy = this.DeletePolicy.bind(this);
     this.UpdateParams = this.UpdateParams.bind(this);
@@ -5205,6 +5467,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgMirrorGroup.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Msg", "MirrorGroup", data);
     return promise.then(data => MsgMirrorGroupResponse.decode(new _m0.Reader(data)));
+  }
+
+  RenewGroupMember(request: MsgRenewGroupMember): Promise<MsgRenewGroupMemberResponse> {
+    const data = MsgRenewGroupMember.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Msg", "RenewGroupMember", data);
+    return promise.then(data => MsgRenewGroupMemberResponse.decode(new _m0.Reader(data)));
   }
 
   PutPolicy(request: MsgPutPolicy): Promise<MsgPutPolicyResponse> {

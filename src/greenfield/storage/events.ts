@@ -1,7 +1,8 @@
 /* eslint-disable */
 import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
+import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import { DeleteInfo, DeleteInfoSDKType } from "./types";
-import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
+import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.storage";
 /** EventCreateBucket is emitted on MsgCreateBucket */
@@ -418,9 +419,6 @@ export interface EventCreateGroup {
   /** source_type define the source of the group. CrossChain or Greenfield origin */
 
   sourceType: SourceType;
-  /** members define the all the address of the members. */
-
-  members: string[];
   /** extra defines extra info for the group */
 
   extra: string;
@@ -432,7 +430,6 @@ export interface EventCreateGroupSDKType {
   group_name: string;
   group_id: string;
   source_type: SourceType;
-  members: string[];
   extra: string;
 }
 /** EventDeleteGroup is emitted on MsgDeleteGroup */
@@ -493,7 +490,7 @@ export interface EventUpdateGroupMember {
   groupId: string;
   /** members_to_add defines all the members to be added to the group */
 
-  membersToAdd: string[];
+  membersToAdd: EventGroupMemberDetail[];
   /** members_to_add defines all the members to be deleted from the group */
 
   membersToDelete: string[];
@@ -505,8 +502,46 @@ export interface EventUpdateGroupMemberSDKType {
   owner: string;
   group_name: string;
   group_id: string;
-  members_to_add: string[];
+  members_to_add: EventGroupMemberDetailSDKType[];
   members_to_delete: string[];
+}
+export interface EventRenewGroupMember {
+  /** operator define the account address of operator who update the group member */
+  operator: string;
+  /** owner define the account address of group owner */
+
+  owner: string;
+  /** group_name define the name of the group */
+
+  groupName: string;
+  /** id define an u256 id for group */
+
+  groupId: string;
+  /** source_type define the source of the group. CrossChain or Greenfield origin */
+
+  sourceType: SourceType;
+  /** members define the all the address of the members. */
+
+  members: EventGroupMemberDetail[];
+}
+export interface EventRenewGroupMemberSDKType {
+  operator: string;
+  owner: string;
+  group_name: string;
+  group_id: string;
+  source_type: SourceType;
+  members: EventGroupMemberDetailSDKType[];
+}
+export interface EventGroupMemberDetail {
+  /** member defines the account address of the group member */
+  member: string;
+  /** expiration_time defines the expiration time of the group member */
+
+  expirationTime?: Timestamp;
+}
+export interface EventGroupMemberDetailSDKType {
+  member: string;
+  expiration_time?: TimestampSDKType;
 }
 /** EventUpdateGroupExtra is emitted on MsgUpdateGroupExtra */
 
@@ -2544,7 +2579,6 @@ function createBaseEventCreateGroup(): EventCreateGroup {
     groupName: "",
     groupId: "",
     sourceType: 0,
-    members: [],
     extra: ""
   };
 }
@@ -2567,12 +2601,8 @@ export const EventCreateGroup = {
       writer.uint32(32).int32(message.sourceType);
     }
 
-    for (const v of message.members) {
-      writer.uint32(42).string(v!);
-    }
-
     if (message.extra !== "") {
-      writer.uint32(50).string(message.extra);
+      writer.uint32(42).string(message.extra);
     }
 
     return writer;
@@ -2604,10 +2634,6 @@ export const EventCreateGroup = {
           break;
 
         case 5:
-          message.members.push(reader.string());
-          break;
-
-        case 6:
           message.extra = reader.string();
           break;
 
@@ -2626,7 +2652,6 @@ export const EventCreateGroup = {
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
       groupId: isSet(object.groupId) ? String(object.groupId) : "",
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
-      members: Array.isArray(object?.members) ? object.members.map((e: any) => String(e)) : [],
       extra: isSet(object.extra) ? String(object.extra) : ""
     };
   },
@@ -2637,13 +2662,6 @@ export const EventCreateGroup = {
     message.groupName !== undefined && (obj.groupName = message.groupName);
     message.groupId !== undefined && (obj.groupId = message.groupId);
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
-
-    if (message.members) {
-      obj.members = message.members.map(e => e);
-    } else {
-      obj.members = [];
-    }
-
     message.extra !== undefined && (obj.extra = message.extra);
     return obj;
   },
@@ -2654,7 +2672,6 @@ export const EventCreateGroup = {
     message.groupName = object.groupName ?? "";
     message.groupId = object.groupId ?? "";
     message.sourceType = object.sourceType ?? 0;
-    message.members = object.members?.map(e => e) || [];
     message.extra = object.extra ?? "";
     return message;
   },
@@ -2665,7 +2682,6 @@ export const EventCreateGroup = {
       groupName: object?.group_name,
       groupId: object?.group_id,
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
-      members: Array.isArray(object?.members) ? object.members.map((e: any) => e) : [],
       extra: object?.extra
     };
   },
@@ -2676,13 +2692,6 @@ export const EventCreateGroup = {
     obj.group_name = message.groupName;
     obj.group_id = message.groupId;
     message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
-
-    if (message.members) {
-      obj.members = message.members.map(e => e);
-    } else {
-      obj.members = [];
-    }
-
     obj.extra = message.extra;
     return obj;
   }
@@ -2927,7 +2936,7 @@ export const EventUpdateGroupMember = {
     }
 
     for (const v of message.membersToAdd) {
-      writer.uint32(42).string(v!);
+      EventGroupMemberDetail.encode(v!, writer.uint32(42).fork()).ldelim();
     }
 
     for (const v of message.membersToDelete) {
@@ -2963,7 +2972,7 @@ export const EventUpdateGroupMember = {
           break;
 
         case 5:
-          message.membersToAdd.push(reader.string());
+          message.membersToAdd.push(EventGroupMemberDetail.decode(reader, reader.uint32()));
           break;
 
         case 6:
@@ -2985,7 +2994,7 @@ export const EventUpdateGroupMember = {
       owner: isSet(object.owner) ? String(object.owner) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
       groupId: isSet(object.groupId) ? String(object.groupId) : "",
-      membersToAdd: Array.isArray(object?.membersToAdd) ? object.membersToAdd.map((e: any) => String(e)) : [],
+      membersToAdd: Array.isArray(object?.membersToAdd) ? object.membersToAdd.map((e: any) => EventGroupMemberDetail.fromJSON(e)) : [],
       membersToDelete: Array.isArray(object?.membersToDelete) ? object.membersToDelete.map((e: any) => String(e)) : []
     };
   },
@@ -2998,7 +3007,7 @@ export const EventUpdateGroupMember = {
     message.groupId !== undefined && (obj.groupId = message.groupId);
 
     if (message.membersToAdd) {
-      obj.membersToAdd = message.membersToAdd.map(e => e);
+      obj.membersToAdd = message.membersToAdd.map(e => e ? EventGroupMemberDetail.toJSON(e) : undefined);
     } else {
       obj.membersToAdd = [];
     }
@@ -3018,7 +3027,7 @@ export const EventUpdateGroupMember = {
     message.owner = object.owner ?? "";
     message.groupName = object.groupName ?? "";
     message.groupId = object.groupId ?? "";
-    message.membersToAdd = object.membersToAdd?.map(e => e) || [];
+    message.membersToAdd = object.membersToAdd?.map(e => EventGroupMemberDetail.fromPartial(e)) || [];
     message.membersToDelete = object.membersToDelete?.map(e => e) || [];
     return message;
   },
@@ -3029,7 +3038,7 @@ export const EventUpdateGroupMember = {
       owner: object?.owner,
       groupName: object?.group_name,
       groupId: object?.group_id,
-      membersToAdd: Array.isArray(object?.members_to_add) ? object.members_to_add.map((e: any) => e) : [],
+      membersToAdd: Array.isArray(object?.members_to_add) ? object.members_to_add.map((e: any) => EventGroupMemberDetail.fromSDK(e)) : [],
       membersToDelete: Array.isArray(object?.members_to_delete) ? object.members_to_delete.map((e: any) => e) : []
     };
   },
@@ -3042,7 +3051,7 @@ export const EventUpdateGroupMember = {
     obj.group_id = message.groupId;
 
     if (message.membersToAdd) {
-      obj.members_to_add = message.membersToAdd.map(e => e);
+      obj.members_to_add = message.membersToAdd.map(e => e ? EventGroupMemberDetail.toSDK(e) : undefined);
     } else {
       obj.members_to_add = [];
     }
@@ -3053,6 +3062,240 @@ export const EventUpdateGroupMember = {
       obj.members_to_delete = [];
     }
 
+    return obj;
+  }
+
+};
+
+function createBaseEventRenewGroupMember(): EventRenewGroupMember {
+  return {
+    operator: "",
+    owner: "",
+    groupName: "",
+    groupId: "",
+    sourceType: 0,
+    members: []
+  };
+}
+
+export const EventRenewGroupMember = {
+  encode(message: EventRenewGroupMember, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+
+    if (message.owner !== "") {
+      writer.uint32(18).string(message.owner);
+    }
+
+    if (message.groupName !== "") {
+      writer.uint32(26).string(message.groupName);
+    }
+
+    if (message.groupId !== "") {
+      writer.uint32(34).string(message.groupId);
+    }
+
+    if (message.sourceType !== 0) {
+      writer.uint32(40).int32(message.sourceType);
+    }
+
+    for (const v of message.members) {
+      EventGroupMemberDetail.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventRenewGroupMember {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventRenewGroupMember();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+
+        case 2:
+          message.owner = reader.string();
+          break;
+
+        case 3:
+          message.groupName = reader.string();
+          break;
+
+        case 4:
+          message.groupId = reader.string();
+          break;
+
+        case 5:
+          message.sourceType = (reader.int32() as any);
+          break;
+
+        case 6:
+          message.members.push(EventGroupMemberDetail.decode(reader, reader.uint32()));
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventRenewGroupMember {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      owner: isSet(object.owner) ? String(object.owner) : "",
+      groupName: isSet(object.groupName) ? String(object.groupName) : "",
+      groupId: isSet(object.groupId) ? String(object.groupId) : "",
+      sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : 0,
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => EventGroupMemberDetail.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: EventRenewGroupMember): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.owner !== undefined && (obj.owner = message.owner);
+    message.groupName !== undefined && (obj.groupName = message.groupName);
+    message.groupId !== undefined && (obj.groupId = message.groupId);
+    message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
+
+    if (message.members) {
+      obj.members = message.members.map(e => e ? EventGroupMemberDetail.toJSON(e) : undefined);
+    } else {
+      obj.members = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventRenewGroupMember>, I>>(object: I): EventRenewGroupMember {
+    const message = createBaseEventRenewGroupMember();
+    message.operator = object.operator ?? "";
+    message.owner = object.owner ?? "";
+    message.groupName = object.groupName ?? "";
+    message.groupId = object.groupId ?? "";
+    message.sourceType = object.sourceType ?? 0;
+    message.members = object.members?.map(e => EventGroupMemberDetail.fromPartial(e)) || [];
+    return message;
+  },
+
+  fromSDK(object: EventRenewGroupMemberSDKType): EventRenewGroupMember {
+    return {
+      operator: object?.operator,
+      owner: object?.owner,
+      groupName: object?.group_name,
+      groupId: object?.group_id,
+      sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : 0,
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => EventGroupMemberDetail.fromSDK(e)) : []
+    };
+  },
+
+  toSDK(message: EventRenewGroupMember): EventRenewGroupMemberSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.owner = message.owner;
+    obj.group_name = message.groupName;
+    obj.group_id = message.groupId;
+    message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
+
+    if (message.members) {
+      obj.members = message.members.map(e => e ? EventGroupMemberDetail.toSDK(e) : undefined);
+    } else {
+      obj.members = [];
+    }
+
+    return obj;
+  }
+
+};
+
+function createBaseEventGroupMemberDetail(): EventGroupMemberDetail {
+  return {
+    member: "",
+    expirationTime: undefined
+  };
+}
+
+export const EventGroupMemberDetail = {
+  encode(message: EventGroupMemberDetail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.member !== "") {
+      writer.uint32(10).string(message.member);
+    }
+
+    if (message.expirationTime !== undefined) {
+      Timestamp.encode(message.expirationTime, writer.uint32(18).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventGroupMemberDetail {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventGroupMemberDetail();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.member = reader.string();
+          break;
+
+        case 2:
+          message.expirationTime = Timestamp.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): EventGroupMemberDetail {
+    return {
+      member: isSet(object.member) ? String(object.member) : "",
+      expirationTime: isSet(object.expirationTime) ? fromJsonTimestamp(object.expirationTime) : undefined
+    };
+  },
+
+  toJSON(message: EventGroupMemberDetail): unknown {
+    const obj: any = {};
+    message.member !== undefined && (obj.member = message.member);
+    message.expirationTime !== undefined && (obj.expirationTime = fromTimestamp(message.expirationTime).toISOString());
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<EventGroupMemberDetail>, I>>(object: I): EventGroupMemberDetail {
+    const message = createBaseEventGroupMemberDetail();
+    message.member = object.member ?? "";
+    message.expirationTime = object.expirationTime !== undefined && object.expirationTime !== null ? Timestamp.fromPartial(object.expirationTime) : undefined;
+    return message;
+  },
+
+  fromSDK(object: EventGroupMemberDetailSDKType): EventGroupMemberDetail {
+    return {
+      member: object?.member,
+      expirationTime: object.expiration_time ? Timestamp.fromSDK(object.expiration_time) : undefined
+    };
+  },
+
+  toSDK(message: EventGroupMemberDetail): EventGroupMemberDetailSDKType {
+    const obj: any = {};
+    obj.member = message.member;
+    message.expirationTime !== undefined && (obj.expiration_time = message.expirationTime ? Timestamp.toSDK(message.expirationTime) : undefined);
     return obj;
   }
 
