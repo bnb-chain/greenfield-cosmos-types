@@ -126,12 +126,15 @@ export interface GasInfo {
   gasUsed: Long;
   /** MinGasPrice are the min gas price. */
   minGasPrice: string;
+  /** RWUsed is the amount of r/w actually consumed. */
+  rwUsed: Long;
 }
 /** GasInfo defines tx execution gas context. */
 export interface GasInfoSDKType {
   gas_wanted: Long;
   gas_used: Long;
   min_gas_price: string;
+  rw_used: Long;
 }
 /** Result is the union of ResponseFormat and ResponseCheckTx. */
 export interface Result {
@@ -213,6 +216,8 @@ export interface TxMsgData {
    * Since: cosmos-sdk 0.46
    */
   msgResponses: Any[];
+  /** extra data - the r/w info */
+  extraData: Uint8Array;
 }
 /**
  * TxMsgData defines a list of MsgData. A transaction will have a MsgData object
@@ -222,6 +227,7 @@ export interface TxMsgDataSDKType {
   /** @deprecated */
   data: MsgDataSDKType[];
   msg_responses: AnySDKType[];
+  extra_data: Uint8Array;
 }
 /** SearchTxsResult defines a structure for querying txs pageable */
 export interface SearchTxsResult {
@@ -695,7 +701,8 @@ function createBaseGasInfo(): GasInfo {
   return {
     gasWanted: Long.UZERO,
     gasUsed: Long.UZERO,
-    minGasPrice: ""
+    minGasPrice: "",
+    rwUsed: Long.UZERO
   };
 }
 export const GasInfo = {
@@ -708,6 +715,9 @@ export const GasInfo = {
     }
     if (message.minGasPrice !== "") {
       writer.uint32(26).string(message.minGasPrice);
+    }
+    if (!message.rwUsed.isZero()) {
+      writer.uint32(32).uint64(message.rwUsed);
     }
     return writer;
   },
@@ -727,6 +737,9 @@ export const GasInfo = {
         case 3:
           message.minGasPrice = reader.string();
           break;
+        case 4:
+          message.rwUsed = (reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -738,7 +751,8 @@ export const GasInfo = {
     return {
       gasWanted: isSet(object.gasWanted) ? Long.fromValue(object.gasWanted) : Long.UZERO,
       gasUsed: isSet(object.gasUsed) ? Long.fromValue(object.gasUsed) : Long.UZERO,
-      minGasPrice: isSet(object.minGasPrice) ? String(object.minGasPrice) : ""
+      minGasPrice: isSet(object.minGasPrice) ? String(object.minGasPrice) : "",
+      rwUsed: isSet(object.rwUsed) ? Long.fromValue(object.rwUsed) : Long.UZERO
     };
   },
   toJSON(message: GasInfo): unknown {
@@ -746,6 +760,7 @@ export const GasInfo = {
     message.gasWanted !== undefined && (obj.gasWanted = (message.gasWanted || Long.UZERO).toString());
     message.gasUsed !== undefined && (obj.gasUsed = (message.gasUsed || Long.UZERO).toString());
     message.minGasPrice !== undefined && (obj.minGasPrice = message.minGasPrice);
+    message.rwUsed !== undefined && (obj.rwUsed = (message.rwUsed || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<GasInfo>, I>>(object: I): GasInfo {
@@ -753,13 +768,15 @@ export const GasInfo = {
     message.gasWanted = object.gasWanted !== undefined && object.gasWanted !== null ? Long.fromValue(object.gasWanted) : Long.UZERO;
     message.gasUsed = object.gasUsed !== undefined && object.gasUsed !== null ? Long.fromValue(object.gasUsed) : Long.UZERO;
     message.minGasPrice = object.minGasPrice ?? "";
+    message.rwUsed = object.rwUsed !== undefined && object.rwUsed !== null ? Long.fromValue(object.rwUsed) : Long.UZERO;
     return message;
   },
   fromSDK(object: GasInfoSDKType): GasInfo {
     return {
       gasWanted: object?.gas_wanted,
       gasUsed: object?.gas_used,
-      minGasPrice: object?.min_gas_price
+      minGasPrice: object?.min_gas_price,
+      rwUsed: object?.rw_used
     };
   },
   toSDK(message: GasInfo): GasInfoSDKType {
@@ -767,6 +784,7 @@ export const GasInfo = {
     obj.gas_wanted = message.gasWanted;
     obj.gas_used = message.gasUsed;
     obj.min_gas_price = message.minGasPrice;
+    obj.rw_used = message.rwUsed;
     return obj;
   }
 };
@@ -1014,7 +1032,8 @@ export const MsgData = {
 function createBaseTxMsgData(): TxMsgData {
   return {
     data: [],
-    msgResponses: []
+    msgResponses: [],
+    extraData: new Uint8Array()
   };
 }
 export const TxMsgData = {
@@ -1024,6 +1043,9 @@ export const TxMsgData = {
     }
     for (const v of message.msgResponses) {
       Any.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.extraData.length !== 0) {
+      writer.uint32(26).bytes(message.extraData);
     }
     return writer;
   },
@@ -1040,6 +1062,9 @@ export const TxMsgData = {
         case 2:
           message.msgResponses.push(Any.decode(reader, reader.uint32()));
           break;
+        case 3:
+          message.extraData = reader.bytes();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1050,7 +1075,8 @@ export const TxMsgData = {
   fromJSON(object: any): TxMsgData {
     return {
       data: Array.isArray(object?.data) ? object.data.map((e: any) => MsgData.fromJSON(e)) : [],
-      msgResponses: Array.isArray(object?.msgResponses) ? object.msgResponses.map((e: any) => Any.fromJSON(e)) : []
+      msgResponses: Array.isArray(object?.msgResponses) ? object.msgResponses.map((e: any) => Any.fromJSON(e)) : [],
+      extraData: isSet(object.extraData) ? bytesFromBase64(object.extraData) : new Uint8Array()
     };
   },
   toJSON(message: TxMsgData): unknown {
@@ -1065,18 +1091,21 @@ export const TxMsgData = {
     } else {
       obj.msgResponses = [];
     }
+    message.extraData !== undefined && (obj.extraData = base64FromBytes(message.extraData !== undefined ? message.extraData : new Uint8Array()));
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<TxMsgData>, I>>(object: I): TxMsgData {
     const message = createBaseTxMsgData();
     message.data = object.data?.map(e => MsgData.fromPartial(e)) || [];
     message.msgResponses = object.msgResponses?.map(e => Any.fromPartial(e)) || [];
+    message.extraData = object.extraData ?? new Uint8Array();
     return message;
   },
   fromSDK(object: TxMsgDataSDKType): TxMsgData {
     return {
       data: Array.isArray(object?.data) ? object.data.map((e: any) => MsgData.fromSDK(e)) : [],
-      msgResponses: Array.isArray(object?.msg_responses) ? object.msg_responses.map((e: any) => Any.fromSDK(e)) : []
+      msgResponses: Array.isArray(object?.msg_responses) ? object.msg_responses.map((e: any) => Any.fromSDK(e)) : [],
+      extraData: object?.extra_data
     };
   },
   toSDK(message: TxMsgData): TxMsgDataSDKType {
@@ -1091,6 +1120,7 @@ export const TxMsgData = {
     } else {
       obj.msg_responses = [];
     }
+    obj.extra_data = message.extraData;
     return obj;
   }
 };

@@ -17,6 +17,10 @@ export interface Params {
   maintenanceDurationQuota: Long;
   /** the number of blocks to be wait for sp to be in maintenance mode again if already requested */
   numOfLockupBlocksForMaintenance: Long;
+  /** the time interval to update global storage price, if it is not set then the price will be updated at the first block of each natural month */
+  updateGlobalPriceInterval: Long;
+  /** the days counting backwards from end of a month in which a sp cannot update its price */
+  updatePriceDisallowedDays: number;
 }
 /** Params defines the parameters for the module. */
 export interface ParamsSDKType {
@@ -26,6 +30,8 @@ export interface ParamsSDKType {
   num_of_historical_blocks_for_maintenance_records: Long;
   maintenance_duration_quota: Long;
   num_of_lockup_blocks_for_maintenance: Long;
+  update_global_price_interval: Long;
+  update_price_disallowed_days: number;
 }
 function createBaseParams(): Params {
   return {
@@ -34,7 +40,9 @@ function createBaseParams(): Params {
     secondarySpStorePriceRatio: "",
     numOfHistoricalBlocksForMaintenanceRecords: Long.ZERO,
     maintenanceDurationQuota: Long.ZERO,
-    numOfLockupBlocksForMaintenance: Long.ZERO
+    numOfLockupBlocksForMaintenance: Long.ZERO,
+    updateGlobalPriceInterval: Long.UZERO,
+    updatePriceDisallowedDays: 0
   };
 }
 export const Params = {
@@ -56,6 +64,12 @@ export const Params = {
     }
     if (!message.numOfLockupBlocksForMaintenance.isZero()) {
       writer.uint32(48).int64(message.numOfLockupBlocksForMaintenance);
+    }
+    if (!message.updateGlobalPriceInterval.isZero()) {
+      writer.uint32(56).uint64(message.updateGlobalPriceInterval);
+    }
+    if (message.updatePriceDisallowedDays !== 0) {
+      writer.uint32(64).uint32(message.updatePriceDisallowedDays);
     }
     return writer;
   },
@@ -84,6 +98,12 @@ export const Params = {
         case 6:
           message.numOfLockupBlocksForMaintenance = (reader.int64() as Long);
           break;
+        case 7:
+          message.updateGlobalPriceInterval = (reader.uint64() as Long);
+          break;
+        case 8:
+          message.updatePriceDisallowedDays = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -98,7 +118,9 @@ export const Params = {
       secondarySpStorePriceRatio: isSet(object.secondarySpStorePriceRatio) ? String(object.secondarySpStorePriceRatio) : "",
       numOfHistoricalBlocksForMaintenanceRecords: isSet(object.numOfHistoricalBlocksForMaintenanceRecords) ? Long.fromValue(object.numOfHistoricalBlocksForMaintenanceRecords) : Long.ZERO,
       maintenanceDurationQuota: isSet(object.maintenanceDurationQuota) ? Long.fromValue(object.maintenanceDurationQuota) : Long.ZERO,
-      numOfLockupBlocksForMaintenance: isSet(object.numOfLockupBlocksForMaintenance) ? Long.fromValue(object.numOfLockupBlocksForMaintenance) : Long.ZERO
+      numOfLockupBlocksForMaintenance: isSet(object.numOfLockupBlocksForMaintenance) ? Long.fromValue(object.numOfLockupBlocksForMaintenance) : Long.ZERO,
+      updateGlobalPriceInterval: isSet(object.updateGlobalPriceInterval) ? Long.fromValue(object.updateGlobalPriceInterval) : Long.UZERO,
+      updatePriceDisallowedDays: isSet(object.updatePriceDisallowedDays) ? Number(object.updatePriceDisallowedDays) : 0
     };
   },
   toJSON(message: Params): unknown {
@@ -109,6 +131,8 @@ export const Params = {
     message.numOfHistoricalBlocksForMaintenanceRecords !== undefined && (obj.numOfHistoricalBlocksForMaintenanceRecords = (message.numOfHistoricalBlocksForMaintenanceRecords || Long.ZERO).toString());
     message.maintenanceDurationQuota !== undefined && (obj.maintenanceDurationQuota = (message.maintenanceDurationQuota || Long.ZERO).toString());
     message.numOfLockupBlocksForMaintenance !== undefined && (obj.numOfLockupBlocksForMaintenance = (message.numOfLockupBlocksForMaintenance || Long.ZERO).toString());
+    message.updateGlobalPriceInterval !== undefined && (obj.updateGlobalPriceInterval = (message.updateGlobalPriceInterval || Long.UZERO).toString());
+    message.updatePriceDisallowedDays !== undefined && (obj.updatePriceDisallowedDays = Math.round(message.updatePriceDisallowedDays));
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
@@ -119,6 +143,8 @@ export const Params = {
     message.numOfHistoricalBlocksForMaintenanceRecords = object.numOfHistoricalBlocksForMaintenanceRecords !== undefined && object.numOfHistoricalBlocksForMaintenanceRecords !== null ? Long.fromValue(object.numOfHistoricalBlocksForMaintenanceRecords) : Long.ZERO;
     message.maintenanceDurationQuota = object.maintenanceDurationQuota !== undefined && object.maintenanceDurationQuota !== null ? Long.fromValue(object.maintenanceDurationQuota) : Long.ZERO;
     message.numOfLockupBlocksForMaintenance = object.numOfLockupBlocksForMaintenance !== undefined && object.numOfLockupBlocksForMaintenance !== null ? Long.fromValue(object.numOfLockupBlocksForMaintenance) : Long.ZERO;
+    message.updateGlobalPriceInterval = object.updateGlobalPriceInterval !== undefined && object.updateGlobalPriceInterval !== null ? Long.fromValue(object.updateGlobalPriceInterval) : Long.UZERO;
+    message.updatePriceDisallowedDays = object.updatePriceDisallowedDays ?? 0;
     return message;
   },
   fromSDK(object: ParamsSDKType): Params {
@@ -128,7 +154,9 @@ export const Params = {
       secondarySpStorePriceRatio: object?.secondary_sp_store_price_ratio,
       numOfHistoricalBlocksForMaintenanceRecords: object?.num_of_historical_blocks_for_maintenance_records,
       maintenanceDurationQuota: object?.maintenance_duration_quota,
-      numOfLockupBlocksForMaintenance: object?.num_of_lockup_blocks_for_maintenance
+      numOfLockupBlocksForMaintenance: object?.num_of_lockup_blocks_for_maintenance,
+      updateGlobalPriceInterval: object?.update_global_price_interval,
+      updatePriceDisallowedDays: object?.update_price_disallowed_days
     };
   },
   toSDK(message: Params): ParamsSDKType {
@@ -139,6 +167,8 @@ export const Params = {
     obj.num_of_historical_blocks_for_maintenance_records = message.numOfHistoricalBlocksForMaintenanceRecords;
     obj.maintenance_duration_quota = message.maintenanceDurationQuota;
     obj.num_of_lockup_blocks_for_maintenance = message.numOfLockupBlocksForMaintenance;
+    obj.update_global_price_interval = message.updateGlobalPriceInterval;
+    obj.update_price_disallowed_days = message.updatePriceDisallowedDays;
     return obj;
   }
 };

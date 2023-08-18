@@ -9,8 +9,9 @@ export const protobufPackage = "greenfield.storage";
  */
 export enum SourceType {
   SOURCE_TYPE_ORIGIN = 0,
-  SOURCE_TYPE_BSC_CROSS_CHAIN = 1,
-  SOURCE_TYPE_MIRROR_PENDING = 2,
+  SOURCE_TYPE_MIRROR_PENDING = 1,
+  SOURCE_TYPE_BSC_CROSS_CHAIN = 2,
+  SOURCE_TYPE_OP_CROSS_CHAIN = 3,
   UNRECOGNIZED = -1,
 }
 export const SourceTypeSDKType = SourceType;
@@ -20,11 +21,14 @@ export function sourceTypeFromJSON(object: any): SourceType {
     case "SOURCE_TYPE_ORIGIN":
       return SourceType.SOURCE_TYPE_ORIGIN;
     case 1:
-    case "SOURCE_TYPE_BSC_CROSS_CHAIN":
-      return SourceType.SOURCE_TYPE_BSC_CROSS_CHAIN;
-    case 2:
     case "SOURCE_TYPE_MIRROR_PENDING":
       return SourceType.SOURCE_TYPE_MIRROR_PENDING;
+    case 2:
+    case "SOURCE_TYPE_BSC_CROSS_CHAIN":
+      return SourceType.SOURCE_TYPE_BSC_CROSS_CHAIN;
+    case 3:
+    case "SOURCE_TYPE_OP_CROSS_CHAIN":
+      return SourceType.SOURCE_TYPE_OP_CROSS_CHAIN;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -35,10 +39,12 @@ export function sourceTypeToJSON(object: SourceType): string {
   switch (object) {
     case SourceType.SOURCE_TYPE_ORIGIN:
       return "SOURCE_TYPE_ORIGIN";
-    case SourceType.SOURCE_TYPE_BSC_CROSS_CHAIN:
-      return "SOURCE_TYPE_BSC_CROSS_CHAIN";
     case SourceType.SOURCE_TYPE_MIRROR_PENDING:
       return "SOURCE_TYPE_MIRROR_PENDING";
+    case SourceType.SOURCE_TYPE_BSC_CROSS_CHAIN:
+      return "SOURCE_TYPE_BSC_CROSS_CHAIN";
+    case SourceType.SOURCE_TYPE_OP_CROSS_CHAIN:
+      return "SOURCE_TYPE_OP_CROSS_CHAIN";
     case SourceType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

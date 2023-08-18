@@ -52,6 +52,36 @@ export interface MsgUpdateChannelPermissionsResponse {}
  * MsgUpdateChannelPermissions message.
  */
 export interface MsgUpdateChannelPermissionsResponseSDKType {}
+/**
+ * MsgMintModuleTokens is the Msg/MintModuleTokens request type.
+ * The Msg is used to mint tokens for the crosschain module.
+ * This Only permitted to be called by the authority(gov).
+ */
+export interface MsgMintModuleTokens {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority: string;
+  /** initial balance to mint for crosschain module when the chain starts */
+  amount: string;
+}
+/**
+ * MsgMintModuleTokens is the Msg/MintModuleTokens request type.
+ * The Msg is used to mint tokens for the crosschain module.
+ * This Only permitted to be called by the authority(gov).
+ */
+export interface MsgMintModuleTokensSDKType {
+  authority: string;
+  amount: string;
+}
+/**
+ * MsgMintModuleTokensResponse defines the response structure for executing a
+ * MsgMintModuleTokens message.
+ */
+export interface MsgMintModuleTokensResponse {}
+/**
+ * MsgMintModuleTokensResponse defines the response structure for executing a
+ * MsgMintModuleTokens message.
+ */
+export interface MsgMintModuleTokensResponseSDKType {}
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
@@ -274,6 +304,113 @@ export const MsgUpdateChannelPermissionsResponse = {
     return obj;
   }
 };
+function createBaseMsgMintModuleTokens(): MsgMintModuleTokens {
+  return {
+    authority: "",
+    amount: ""
+  };
+}
+export const MsgMintModuleTokens = {
+  encode(message: MsgMintModuleTokens, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+    if (message.amount !== "") {
+      writer.uint32(18).string(message.amount);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMintModuleTokens {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgMintModuleTokens();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+        case 2:
+          message.amount = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgMintModuleTokens {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      amount: isSet(object.amount) ? String(object.amount) : ""
+    };
+  },
+  toJSON(message: MsgMintModuleTokens): unknown {
+    const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
+    message.amount !== undefined && (obj.amount = message.amount);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgMintModuleTokens>, I>>(object: I): MsgMintModuleTokens {
+    const message = createBaseMsgMintModuleTokens();
+    message.authority = object.authority ?? "";
+    message.amount = object.amount ?? "";
+    return message;
+  },
+  fromSDK(object: MsgMintModuleTokensSDKType): MsgMintModuleTokens {
+    return {
+      authority: object?.authority,
+      amount: object?.amount
+    };
+  },
+  toSDK(message: MsgMintModuleTokens): MsgMintModuleTokensSDKType {
+    const obj: any = {};
+    obj.authority = message.authority;
+    obj.amount = message.amount;
+    return obj;
+  }
+};
+function createBaseMsgMintModuleTokensResponse(): MsgMintModuleTokensResponse {
+  return {};
+}
+export const MsgMintModuleTokensResponse = {
+  encode(_: MsgMintModuleTokensResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMintModuleTokensResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgMintModuleTokensResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgMintModuleTokensResponse {
+    return {};
+  },
+  toJSON(_: MsgMintModuleTokensResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgMintModuleTokensResponse>, I>>(_: I): MsgMintModuleTokensResponse {
+    const message = createBaseMsgMintModuleTokensResponse();
+    return message;
+  },
+  fromSDK(_: MsgMintModuleTokensResponseSDKType): MsgMintModuleTokensResponse {
+    return {};
+  },
+  toSDK(_: MsgMintModuleTokensResponse): MsgMintModuleTokensResponseSDKType {
+    const obj: any = {};
+    return obj;
+  }
+};
 /** Msg defines the crosschain Msg service. */
 export interface Msg {
   /**
@@ -288,6 +425,11 @@ export interface Msg {
    * The authority is defined in the keeper.
    */
   UpdateChannelPermissions(request: MsgUpdateChannelPermissions): Promise<MsgUpdateChannelPermissionsResponse>;
+  /**
+   * MintModuleTokens defines a governance operation for minting tokens for the crosschain module.
+   * The authority is defined in the keeper.
+   */
+  MintModuleTokens(request: MsgMintModuleTokens): Promise<MsgMintModuleTokensResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -295,6 +437,7 @@ export class MsgClientImpl implements Msg {
     this.rpc = rpc;
     this.UpdateParams = this.UpdateParams.bind(this);
     this.UpdateChannelPermissions = this.UpdateChannelPermissions.bind(this);
+    this.MintModuleTokens = this.MintModuleTokens.bind(this);
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
@@ -305,5 +448,10 @@ export class MsgClientImpl implements Msg {
     const data = MsgUpdateChannelPermissions.encode(request).finish();
     const promise = this.rpc.request("cosmos.crosschain.v1.Msg", "UpdateChannelPermissions", data);
     return promise.then(data => MsgUpdateChannelPermissionsResponse.decode(new _m0.Reader(data)));
+  }
+  MintModuleTokens(request: MsgMintModuleTokens): Promise<MsgMintModuleTokensResponse> {
+    const data = MsgMintModuleTokens.encode(request).finish();
+    const promise = this.rpc.request("cosmos.crosschain.v1.Msg", "MintModuleTokens", data);
+    return promise.then(data => MsgMintModuleTokensResponse.decode(new _m0.Reader(data)));
   }
 }
