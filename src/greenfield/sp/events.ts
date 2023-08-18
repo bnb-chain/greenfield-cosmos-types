@@ -114,15 +114,21 @@ export interface EventSpStoragePriceUpdateSDKType {
   free_read_quota: Long;
   store_price: string;
 }
-export interface EventSecondarySpStorePriceUpdate {
+export interface EventGlobalSpStorePriceUpdate {
   /** update time, in unix timestamp */
   updateTimeSec: Long;
-  /** store price, in bnb wei per charge byte */
-  storePrice: string;
+  /** read price, in bnb wei per charge byte */
+  readPrice: string;
+  /** primary store price, in bnb wei per charge byte */
+  primaryStorePrice: string;
+  /** secondary store price, in bnb wei per charge byte */
+  secondaryStorePrice: string;
 }
-export interface EventSecondarySpStorePriceUpdateSDKType {
+export interface EventGlobalSpStorePriceUpdateSDKType {
   update_time_sec: Long;
-  store_price: string;
+  read_price: string;
+  primary_store_price: string;
+  secondary_store_price: string;
 }
 /** EventUpdateStorageProviderStatus is emitted when the SP update its status successfully */
 export interface EventUpdateStorageProviderStatus {
@@ -662,26 +668,34 @@ export const EventSpStoragePriceUpdate = {
     return obj;
   }
 };
-function createBaseEventSecondarySpStorePriceUpdate(): EventSecondarySpStorePriceUpdate {
+function createBaseEventGlobalSpStorePriceUpdate(): EventGlobalSpStorePriceUpdate {
   return {
     updateTimeSec: Long.ZERO,
-    storePrice: ""
+    readPrice: "",
+    primaryStorePrice: "",
+    secondaryStorePrice: ""
   };
 }
-export const EventSecondarySpStorePriceUpdate = {
-  encode(message: EventSecondarySpStorePriceUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const EventGlobalSpStorePriceUpdate = {
+  encode(message: EventGlobalSpStorePriceUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (!message.updateTimeSec.isZero()) {
       writer.uint32(8).int64(message.updateTimeSec);
     }
-    if (message.storePrice !== "") {
-      writer.uint32(18).string(message.storePrice);
+    if (message.readPrice !== "") {
+      writer.uint32(18).string(message.readPrice);
+    }
+    if (message.primaryStorePrice !== "") {
+      writer.uint32(26).string(message.primaryStorePrice);
+    }
+    if (message.secondaryStorePrice !== "") {
+      writer.uint32(34).string(message.secondaryStorePrice);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventSecondarySpStorePriceUpdate {
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventGlobalSpStorePriceUpdate {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseEventSecondarySpStorePriceUpdate();
+    const message = createBaseEventGlobalSpStorePriceUpdate();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -689,7 +703,13 @@ export const EventSecondarySpStorePriceUpdate = {
           message.updateTimeSec = (reader.int64() as Long);
           break;
         case 2:
-          message.storePrice = reader.string();
+          message.readPrice = reader.string();
+          break;
+        case 3:
+          message.primaryStorePrice = reader.string();
+          break;
+        case 4:
+          message.secondaryStorePrice = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -698,34 +718,44 @@ export const EventSecondarySpStorePriceUpdate = {
     }
     return message;
   },
-  fromJSON(object: any): EventSecondarySpStorePriceUpdate {
+  fromJSON(object: any): EventGlobalSpStorePriceUpdate {
     return {
       updateTimeSec: isSet(object.updateTimeSec) ? Long.fromValue(object.updateTimeSec) : Long.ZERO,
-      storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
+      readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
+      primaryStorePrice: isSet(object.primaryStorePrice) ? String(object.primaryStorePrice) : "",
+      secondaryStorePrice: isSet(object.secondaryStorePrice) ? String(object.secondaryStorePrice) : ""
     };
   },
-  toJSON(message: EventSecondarySpStorePriceUpdate): unknown {
+  toJSON(message: EventGlobalSpStorePriceUpdate): unknown {
     const obj: any = {};
     message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || Long.ZERO).toString());
-    message.storePrice !== undefined && (obj.storePrice = message.storePrice);
+    message.readPrice !== undefined && (obj.readPrice = message.readPrice);
+    message.primaryStorePrice !== undefined && (obj.primaryStorePrice = message.primaryStorePrice);
+    message.secondaryStorePrice !== undefined && (obj.secondaryStorePrice = message.secondaryStorePrice);
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<EventSecondarySpStorePriceUpdate>, I>>(object: I): EventSecondarySpStorePriceUpdate {
-    const message = createBaseEventSecondarySpStorePriceUpdate();
+  fromPartial<I extends Exact<DeepPartial<EventGlobalSpStorePriceUpdate>, I>>(object: I): EventGlobalSpStorePriceUpdate {
+    const message = createBaseEventGlobalSpStorePriceUpdate();
     message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? Long.fromValue(object.updateTimeSec) : Long.ZERO;
-    message.storePrice = object.storePrice ?? "";
+    message.readPrice = object.readPrice ?? "";
+    message.primaryStorePrice = object.primaryStorePrice ?? "";
+    message.secondaryStorePrice = object.secondaryStorePrice ?? "";
     return message;
   },
-  fromSDK(object: EventSecondarySpStorePriceUpdateSDKType): EventSecondarySpStorePriceUpdate {
+  fromSDK(object: EventGlobalSpStorePriceUpdateSDKType): EventGlobalSpStorePriceUpdate {
     return {
       updateTimeSec: object?.update_time_sec,
-      storePrice: object?.store_price
+      readPrice: object?.read_price,
+      primaryStorePrice: object?.primary_store_price,
+      secondaryStorePrice: object?.secondary_store_price
     };
   },
-  toSDK(message: EventSecondarySpStorePriceUpdate): EventSecondarySpStorePriceUpdateSDKType {
+  toSDK(message: EventGlobalSpStorePriceUpdate): EventGlobalSpStorePriceUpdateSDKType {
     const obj: any = {};
     obj.update_time_sec = message.updateTimeSec;
-    obj.store_price = message.storePrice;
+    obj.read_price = message.readPrice;
+    obj.primary_store_price = message.primaryStorePrice;
+    obj.secondary_store_price = message.secondaryStorePrice;
     return obj;
   }
 };

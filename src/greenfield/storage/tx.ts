@@ -428,12 +428,15 @@ export interface MsgMirrorObject {
   bucketName: string;
   /** object_name defines the name of object */
   objectName: string;
+  /** destination chain id */
+  destChainId: number;
 }
 export interface MsgMirrorObjectSDKType {
   operator: string;
   id: string;
   bucket_name: string;
   object_name: string;
+  dest_chain_id: number;
 }
 export interface MsgMirrorObjectResponse {}
 export interface MsgMirrorObjectResponseSDKType {}
@@ -444,11 +447,14 @@ export interface MsgMirrorBucket {
   id: string;
   /** bucket_name defines a globally unique name of bucket */
   bucketName: string;
+  /** destination chain id */
+  destChainId: number;
 }
 export interface MsgMirrorBucketSDKType {
   operator: string;
   id: string;
   bucket_name: string;
+  dest_chain_id: number;
 }
 export interface MsgUpdateObjectInfoResponse {}
 export interface MsgUpdateObjectInfoResponseSDKType {}
@@ -480,11 +486,14 @@ export interface MsgMirrorGroup {
   id: string;
   /** group_name defines the name of the group */
   groupName: string;
+  /** destination chain id */
+  destChainId: number;
 }
 export interface MsgMirrorGroupSDKType {
   operator: string;
   id: string;
   group_name: string;
+  dest_chain_id: number;
 }
 export interface MsgMirrorGroupResponse {}
 export interface MsgMirrorGroupResponseSDKType {}
@@ -3298,7 +3307,8 @@ function createBaseMsgMirrorObject(): MsgMirrorObject {
     operator: "",
     id: "",
     bucketName: "",
-    objectName: ""
+    objectName: "",
+    destChainId: 0
   };
 }
 export const MsgMirrorObject = {
@@ -3314,6 +3324,9 @@ export const MsgMirrorObject = {
     }
     if (message.objectName !== "") {
       writer.uint32(34).string(message.objectName);
+    }
+    if (message.destChainId !== 0) {
+      writer.uint32(40).uint32(message.destChainId);
     }
     return writer;
   },
@@ -3336,6 +3349,9 @@ export const MsgMirrorObject = {
         case 4:
           message.objectName = reader.string();
           break;
+        case 5:
+          message.destChainId = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3348,7 +3364,8 @@ export const MsgMirrorObject = {
       operator: isSet(object.operator) ? String(object.operator) : "",
       id: isSet(object.id) ? String(object.id) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
-      objectName: isSet(object.objectName) ? String(object.objectName) : ""
+      objectName: isSet(object.objectName) ? String(object.objectName) : "",
+      destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0
     };
   },
   toJSON(message: MsgMirrorObject): unknown {
@@ -3357,6 +3374,7 @@ export const MsgMirrorObject = {
     message.id !== undefined && (obj.id = message.id);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectName !== undefined && (obj.objectName = message.objectName);
+    message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MsgMirrorObject>, I>>(object: I): MsgMirrorObject {
@@ -3365,6 +3383,7 @@ export const MsgMirrorObject = {
     message.id = object.id ?? "";
     message.bucketName = object.bucketName ?? "";
     message.objectName = object.objectName ?? "";
+    message.destChainId = object.destChainId ?? 0;
     return message;
   },
   fromSDK(object: MsgMirrorObjectSDKType): MsgMirrorObject {
@@ -3372,7 +3391,8 @@ export const MsgMirrorObject = {
       operator: object?.operator,
       id: object?.id,
       bucketName: object?.bucket_name,
-      objectName: object?.object_name
+      objectName: object?.object_name,
+      destChainId: object?.dest_chain_id
     };
   },
   toSDK(message: MsgMirrorObject): MsgMirrorObjectSDKType {
@@ -3381,6 +3401,7 @@ export const MsgMirrorObject = {
     obj.id = message.id;
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
+    obj.dest_chain_id = message.destChainId;
     return obj;
   }
 };
@@ -3428,7 +3449,8 @@ function createBaseMsgMirrorBucket(): MsgMirrorBucket {
   return {
     operator: "",
     id: "",
-    bucketName: ""
+    bucketName: "",
+    destChainId: 0
   };
 }
 export const MsgMirrorBucket = {
@@ -3441,6 +3463,9 @@ export const MsgMirrorBucket = {
     }
     if (message.bucketName !== "") {
       writer.uint32(26).string(message.bucketName);
+    }
+    if (message.destChainId !== 0) {
+      writer.uint32(32).uint32(message.destChainId);
     }
     return writer;
   },
@@ -3460,6 +3485,9 @@ export const MsgMirrorBucket = {
         case 3:
           message.bucketName = reader.string();
           break;
+        case 4:
+          message.destChainId = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3471,7 +3499,8 @@ export const MsgMirrorBucket = {
     return {
       operator: isSet(object.operator) ? String(object.operator) : "",
       id: isSet(object.id) ? String(object.id) : "",
-      bucketName: isSet(object.bucketName) ? String(object.bucketName) : ""
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0
     };
   },
   toJSON(message: MsgMirrorBucket): unknown {
@@ -3479,6 +3508,7 @@ export const MsgMirrorBucket = {
     message.operator !== undefined && (obj.operator = message.operator);
     message.id !== undefined && (obj.id = message.id);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MsgMirrorBucket>, I>>(object: I): MsgMirrorBucket {
@@ -3486,13 +3516,15 @@ export const MsgMirrorBucket = {
     message.operator = object.operator ?? "";
     message.id = object.id ?? "";
     message.bucketName = object.bucketName ?? "";
+    message.destChainId = object.destChainId ?? 0;
     return message;
   },
   fromSDK(object: MsgMirrorBucketSDKType): MsgMirrorBucket {
     return {
       operator: object?.operator,
       id: object?.id,
-      bucketName: object?.bucket_name
+      bucketName: object?.bucket_name,
+      destChainId: object?.dest_chain_id
     };
   },
   toSDK(message: MsgMirrorBucket): MsgMirrorBucketSDKType {
@@ -3500,6 +3532,7 @@ export const MsgMirrorBucket = {
     obj.operator = message.operator;
     obj.id = message.id;
     obj.bucket_name = message.bucketName;
+    obj.dest_chain_id = message.destChainId;
     return obj;
   }
 };
@@ -3678,7 +3711,8 @@ function createBaseMsgMirrorGroup(): MsgMirrorGroup {
   return {
     operator: "",
     id: "",
-    groupName: ""
+    groupName: "",
+    destChainId: 0
   };
 }
 export const MsgMirrorGroup = {
@@ -3691,6 +3725,9 @@ export const MsgMirrorGroup = {
     }
     if (message.groupName !== "") {
       writer.uint32(26).string(message.groupName);
+    }
+    if (message.destChainId !== 0) {
+      writer.uint32(32).uint32(message.destChainId);
     }
     return writer;
   },
@@ -3710,6 +3747,9 @@ export const MsgMirrorGroup = {
         case 3:
           message.groupName = reader.string();
           break;
+        case 4:
+          message.destChainId = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3721,7 +3761,8 @@ export const MsgMirrorGroup = {
     return {
       operator: isSet(object.operator) ? String(object.operator) : "",
       id: isSet(object.id) ? String(object.id) : "",
-      groupName: isSet(object.groupName) ? String(object.groupName) : ""
+      groupName: isSet(object.groupName) ? String(object.groupName) : "",
+      destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0
     };
   },
   toJSON(message: MsgMirrorGroup): unknown {
@@ -3729,6 +3770,7 @@ export const MsgMirrorGroup = {
     message.operator !== undefined && (obj.operator = message.operator);
     message.id !== undefined && (obj.id = message.id);
     message.groupName !== undefined && (obj.groupName = message.groupName);
+    message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MsgMirrorGroup>, I>>(object: I): MsgMirrorGroup {
@@ -3736,13 +3778,15 @@ export const MsgMirrorGroup = {
     message.operator = object.operator ?? "";
     message.id = object.id ?? "";
     message.groupName = object.groupName ?? "";
+    message.destChainId = object.destChainId ?? 0;
     return message;
   },
   fromSDK(object: MsgMirrorGroupSDKType): MsgMirrorGroup {
     return {
       operator: object?.operator,
       id: object?.id,
-      groupName: object?.group_name
+      groupName: object?.group_name,
+      destChainId: object?.dest_chain_id
     };
   },
   toSDK(message: MsgMirrorGroup): MsgMirrorGroupSDKType {
@@ -3750,6 +3794,7 @@ export const MsgMirrorGroup = {
     obj.operator = message.operator;
     obj.id = message.id;
     obj.group_name = message.groupName;
+    obj.dest_chain_id = message.destChainId;
     return obj;
   }
 };

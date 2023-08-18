@@ -38,6 +38,18 @@ export interface Params {
   minQuotaUpdateInterval: Long;
   /** the max number of local virtual group per bucket */
   maxLocalVirtualGroupNumPerBucket: number;
+  /** relayer fee for the mirror bucket tx to op chain */
+  opMirrorBucketRelayerFee: string;
+  /** relayer fee for the ACK or FAIL_ACK package of the mirror bucket tx to op chain */
+  opMirrorBucketAckRelayerFee: string;
+  /** relayer fee for the mirror object tx to op chain */
+  opMirrorObjectRelayerFee: string;
+  /** Relayer fee for the ACK or FAIL_ACK package of the mirror object tx to op chain */
+  opMirrorObjectAckRelayerFee: string;
+  /** relayer fee for the mirror object tx to op chain */
+  opMirrorGroupRelayerFee: string;
+  /** Relayer fee for the ACK or FAIL_ACK package of the mirror object tx to op chain */
+  opMirrorGroupAckRelayerFee: string;
 }
 /** Params defines the parameters for the module. */
 export interface ParamsSDKType {
@@ -58,6 +70,12 @@ export interface ParamsSDKType {
   stale_policy_cleanup_max: Long;
   min_quota_update_interval: Long;
   max_local_virtual_group_num_per_bucket: number;
+  op_mirror_bucket_relayer_fee: string;
+  op_mirror_bucket_ack_relayer_fee: string;
+  op_mirror_object_relayer_fee: string;
+  op_mirror_object_ack_relayer_fee: string;
+  op_mirror_group_relayer_fee: string;
+  op_mirror_group_ack_relayer_fee: string;
 }
 /** VersionedParams defines the parameters for the storage module with multi version, each version store with different timestamp. */
 export interface VersionedParams {
@@ -95,7 +113,13 @@ function createBaseParams(): Params {
     discontinueDeletionMax: Long.UZERO,
     stalePolicyCleanupMax: Long.UZERO,
     minQuotaUpdateInterval: Long.UZERO,
-    maxLocalVirtualGroupNumPerBucket: 0
+    maxLocalVirtualGroupNumPerBucket: 0,
+    opMirrorBucketRelayerFee: "",
+    opMirrorBucketAckRelayerFee: "",
+    opMirrorObjectRelayerFee: "",
+    opMirrorObjectAckRelayerFee: "",
+    opMirrorGroupRelayerFee: "",
+    opMirrorGroupAckRelayerFee: ""
   };
 }
 export const Params = {
@@ -150,6 +174,24 @@ export const Params = {
     }
     if (message.maxLocalVirtualGroupNumPerBucket !== 0) {
       writer.uint32(136).uint32(message.maxLocalVirtualGroupNumPerBucket);
+    }
+    if (message.opMirrorBucketRelayerFee !== "") {
+      writer.uint32(146).string(message.opMirrorBucketRelayerFee);
+    }
+    if (message.opMirrorBucketAckRelayerFee !== "") {
+      writer.uint32(154).string(message.opMirrorBucketAckRelayerFee);
+    }
+    if (message.opMirrorObjectRelayerFee !== "") {
+      writer.uint32(162).string(message.opMirrorObjectRelayerFee);
+    }
+    if (message.opMirrorObjectAckRelayerFee !== "") {
+      writer.uint32(170).string(message.opMirrorObjectAckRelayerFee);
+    }
+    if (message.opMirrorGroupRelayerFee !== "") {
+      writer.uint32(178).string(message.opMirrorGroupRelayerFee);
+    }
+    if (message.opMirrorGroupAckRelayerFee !== "") {
+      writer.uint32(186).string(message.opMirrorGroupAckRelayerFee);
     }
     return writer;
   },
@@ -211,6 +253,24 @@ export const Params = {
         case 17:
           message.maxLocalVirtualGroupNumPerBucket = reader.uint32();
           break;
+        case 18:
+          message.opMirrorBucketRelayerFee = reader.string();
+          break;
+        case 19:
+          message.opMirrorBucketAckRelayerFee = reader.string();
+          break;
+        case 20:
+          message.opMirrorObjectRelayerFee = reader.string();
+          break;
+        case 21:
+          message.opMirrorObjectAckRelayerFee = reader.string();
+          break;
+        case 22:
+          message.opMirrorGroupRelayerFee = reader.string();
+          break;
+        case 23:
+          message.opMirrorGroupAckRelayerFee = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -236,7 +296,13 @@ export const Params = {
       discontinueDeletionMax: isSet(object.discontinueDeletionMax) ? Long.fromValue(object.discontinueDeletionMax) : Long.UZERO,
       stalePolicyCleanupMax: isSet(object.stalePolicyCleanupMax) ? Long.fromValue(object.stalePolicyCleanupMax) : Long.UZERO,
       minQuotaUpdateInterval: isSet(object.minQuotaUpdateInterval) ? Long.fromValue(object.minQuotaUpdateInterval) : Long.UZERO,
-      maxLocalVirtualGroupNumPerBucket: isSet(object.maxLocalVirtualGroupNumPerBucket) ? Number(object.maxLocalVirtualGroupNumPerBucket) : 0
+      maxLocalVirtualGroupNumPerBucket: isSet(object.maxLocalVirtualGroupNumPerBucket) ? Number(object.maxLocalVirtualGroupNumPerBucket) : 0,
+      opMirrorBucketRelayerFee: isSet(object.opMirrorBucketRelayerFee) ? String(object.opMirrorBucketRelayerFee) : "",
+      opMirrorBucketAckRelayerFee: isSet(object.opMirrorBucketAckRelayerFee) ? String(object.opMirrorBucketAckRelayerFee) : "",
+      opMirrorObjectRelayerFee: isSet(object.opMirrorObjectRelayerFee) ? String(object.opMirrorObjectRelayerFee) : "",
+      opMirrorObjectAckRelayerFee: isSet(object.opMirrorObjectAckRelayerFee) ? String(object.opMirrorObjectAckRelayerFee) : "",
+      opMirrorGroupRelayerFee: isSet(object.opMirrorGroupRelayerFee) ? String(object.opMirrorGroupRelayerFee) : "",
+      opMirrorGroupAckRelayerFee: isSet(object.opMirrorGroupAckRelayerFee) ? String(object.opMirrorGroupAckRelayerFee) : ""
     };
   },
   toJSON(message: Params): unknown {
@@ -258,6 +324,12 @@ export const Params = {
     message.stalePolicyCleanupMax !== undefined && (obj.stalePolicyCleanupMax = (message.stalePolicyCleanupMax || Long.UZERO).toString());
     message.minQuotaUpdateInterval !== undefined && (obj.minQuotaUpdateInterval = (message.minQuotaUpdateInterval || Long.UZERO).toString());
     message.maxLocalVirtualGroupNumPerBucket !== undefined && (obj.maxLocalVirtualGroupNumPerBucket = Math.round(message.maxLocalVirtualGroupNumPerBucket));
+    message.opMirrorBucketRelayerFee !== undefined && (obj.opMirrorBucketRelayerFee = message.opMirrorBucketRelayerFee);
+    message.opMirrorBucketAckRelayerFee !== undefined && (obj.opMirrorBucketAckRelayerFee = message.opMirrorBucketAckRelayerFee);
+    message.opMirrorObjectRelayerFee !== undefined && (obj.opMirrorObjectRelayerFee = message.opMirrorObjectRelayerFee);
+    message.opMirrorObjectAckRelayerFee !== undefined && (obj.opMirrorObjectAckRelayerFee = message.opMirrorObjectAckRelayerFee);
+    message.opMirrorGroupRelayerFee !== undefined && (obj.opMirrorGroupRelayerFee = message.opMirrorGroupRelayerFee);
+    message.opMirrorGroupAckRelayerFee !== undefined && (obj.opMirrorGroupAckRelayerFee = message.opMirrorGroupAckRelayerFee);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
@@ -279,6 +351,12 @@ export const Params = {
     message.stalePolicyCleanupMax = object.stalePolicyCleanupMax !== undefined && object.stalePolicyCleanupMax !== null ? Long.fromValue(object.stalePolicyCleanupMax) : Long.UZERO;
     message.minQuotaUpdateInterval = object.minQuotaUpdateInterval !== undefined && object.minQuotaUpdateInterval !== null ? Long.fromValue(object.minQuotaUpdateInterval) : Long.UZERO;
     message.maxLocalVirtualGroupNumPerBucket = object.maxLocalVirtualGroupNumPerBucket ?? 0;
+    message.opMirrorBucketRelayerFee = object.opMirrorBucketRelayerFee ?? "";
+    message.opMirrorBucketAckRelayerFee = object.opMirrorBucketAckRelayerFee ?? "";
+    message.opMirrorObjectRelayerFee = object.opMirrorObjectRelayerFee ?? "";
+    message.opMirrorObjectAckRelayerFee = object.opMirrorObjectAckRelayerFee ?? "";
+    message.opMirrorGroupRelayerFee = object.opMirrorGroupRelayerFee ?? "";
+    message.opMirrorGroupAckRelayerFee = object.opMirrorGroupAckRelayerFee ?? "";
     return message;
   },
   fromSDK(object: ParamsSDKType): Params {
@@ -299,7 +377,13 @@ export const Params = {
       discontinueDeletionMax: object?.discontinue_deletion_max,
       stalePolicyCleanupMax: object?.stale_policy_cleanup_max,
       minQuotaUpdateInterval: object?.min_quota_update_interval,
-      maxLocalVirtualGroupNumPerBucket: object?.max_local_virtual_group_num_per_bucket
+      maxLocalVirtualGroupNumPerBucket: object?.max_local_virtual_group_num_per_bucket,
+      opMirrorBucketRelayerFee: object?.op_mirror_bucket_relayer_fee,
+      opMirrorBucketAckRelayerFee: object?.op_mirror_bucket_ack_relayer_fee,
+      opMirrorObjectRelayerFee: object?.op_mirror_object_relayer_fee,
+      opMirrorObjectAckRelayerFee: object?.op_mirror_object_ack_relayer_fee,
+      opMirrorGroupRelayerFee: object?.op_mirror_group_relayer_fee,
+      opMirrorGroupAckRelayerFee: object?.op_mirror_group_ack_relayer_fee
     };
   },
   toSDK(message: Params): ParamsSDKType {
@@ -321,6 +405,12 @@ export const Params = {
     obj.stale_policy_cleanup_max = message.stalePolicyCleanupMax;
     obj.min_quota_update_interval = message.minQuotaUpdateInterval;
     obj.max_local_virtual_group_num_per_bucket = message.maxLocalVirtualGroupNumPerBucket;
+    obj.op_mirror_bucket_relayer_fee = message.opMirrorBucketRelayerFee;
+    obj.op_mirror_bucket_ack_relayer_fee = message.opMirrorBucketAckRelayerFee;
+    obj.op_mirror_object_relayer_fee = message.opMirrorObjectRelayerFee;
+    obj.op_mirror_object_ack_relayer_fee = message.opMirrorObjectAckRelayerFee;
+    obj.op_mirror_group_relayer_fee = message.opMirrorGroupRelayerFee;
+    obj.op_mirror_group_ack_relayer_fee = message.opMirrorGroupAckRelayerFee;
     return obj;
   }
 };

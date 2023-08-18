@@ -182,11 +182,13 @@ export interface MsgUpdateCrossChainParams {
   authority: string;
   /** for cross chain param change or contract upgrade */
   params: CrossChainParamsChange;
+  destChainId: number;
 }
 /** MsgUpdateCrossChainParams for cross chain gov */
 export interface MsgUpdateCrossChainParamsSDKType {
   authority: string;
   params: CrossChainParamsChangeSDKType;
+  dest_chain_id: number;
 }
 /** MsgUpdateCrossChainParamsResponse defines the response structure for executing a MsgUpdateCrossChainParams message. */
 export interface MsgUpdateCrossChainParamsResponse {}
@@ -992,7 +994,8 @@ export const MsgUpdateParamsResponse = {
 function createBaseMsgUpdateCrossChainParams(): MsgUpdateCrossChainParams {
   return {
     authority: "",
-    params: CrossChainParamsChange.fromPartial({})
+    params: CrossChainParamsChange.fromPartial({}),
+    destChainId: 0
   };
 }
 export const MsgUpdateCrossChainParams = {
@@ -1002,6 +1005,9 @@ export const MsgUpdateCrossChainParams = {
     }
     if (message.params !== undefined) {
       CrossChainParamsChange.encode(message.params, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.destChainId !== 0) {
+      writer.uint32(24).uint32(message.destChainId);
     }
     return writer;
   },
@@ -1018,6 +1024,9 @@ export const MsgUpdateCrossChainParams = {
         case 2:
           message.params = CrossChainParamsChange.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.destChainId = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1028,31 +1037,36 @@ export const MsgUpdateCrossChainParams = {
   fromJSON(object: any): MsgUpdateCrossChainParams {
     return {
       authority: isSet(object.authority) ? String(object.authority) : "",
-      params: isSet(object.params) ? CrossChainParamsChange.fromJSON(object.params) : undefined
+      params: isSet(object.params) ? CrossChainParamsChange.fromJSON(object.params) : undefined,
+      destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0
     };
   },
   toJSON(message: MsgUpdateCrossChainParams): unknown {
     const obj: any = {};
     message.authority !== undefined && (obj.authority = message.authority);
     message.params !== undefined && (obj.params = message.params ? CrossChainParamsChange.toJSON(message.params) : undefined);
+    message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MsgUpdateCrossChainParams>, I>>(object: I): MsgUpdateCrossChainParams {
     const message = createBaseMsgUpdateCrossChainParams();
     message.authority = object.authority ?? "";
     message.params = object.params !== undefined && object.params !== null ? CrossChainParamsChange.fromPartial(object.params) : undefined;
+    message.destChainId = object.destChainId ?? 0;
     return message;
   },
   fromSDK(object: MsgUpdateCrossChainParamsSDKType): MsgUpdateCrossChainParams {
     return {
       authority: object?.authority,
-      params: object.params ? CrossChainParamsChange.fromSDK(object.params) : undefined
+      params: object.params ? CrossChainParamsChange.fromSDK(object.params) : undefined,
+      destChainId: object?.dest_chain_id
     };
   },
   toSDK(message: MsgUpdateCrossChainParams): MsgUpdateCrossChainParamsSDKType {
     const obj: any = {};
     obj.authority = message.authority;
     message.params !== undefined && (obj.params = message.params ? CrossChainParamsChange.toSDK(message.params) : undefined);
+    obj.dest_chain_id = message.destChainId;
     return obj;
   }
 };

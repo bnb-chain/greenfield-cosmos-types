@@ -13,16 +13,20 @@ export interface Params {
    * enforced, thereby reducing the chances of DDos and other security incidents.
    */
   maximumGroupNum: Long;
+  /** the maximum iteration number of `RemoveExpiredPolicies` loops in endblocker */
+  maximumRemoveExpiredPoliciesIteration: Long;
 }
 /** Params defines the parameters for the module. */
 export interface ParamsSDKType {
   maximum_statements_num: Long;
   maximum_group_num: Long;
+  maximum_remove_expired_policies_iteration: Long;
 }
 function createBaseParams(): Params {
   return {
     maximumStatementsNum: Long.UZERO,
-    maximumGroupNum: Long.UZERO
+    maximumGroupNum: Long.UZERO,
+    maximumRemoveExpiredPoliciesIteration: Long.UZERO
   };
 }
 export const Params = {
@@ -32,6 +36,9 @@ export const Params = {
     }
     if (!message.maximumGroupNum.isZero()) {
       writer.uint32(16).uint64(message.maximumGroupNum);
+    }
+    if (!message.maximumRemoveExpiredPoliciesIteration.isZero()) {
+      writer.uint32(24).uint64(message.maximumRemoveExpiredPoliciesIteration);
     }
     return writer;
   },
@@ -48,6 +55,9 @@ export const Params = {
         case 2:
           message.maximumGroupNum = (reader.uint64() as Long);
           break;
+        case 3:
+          message.maximumRemoveExpiredPoliciesIteration = (reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -58,31 +68,36 @@ export const Params = {
   fromJSON(object: any): Params {
     return {
       maximumStatementsNum: isSet(object.maximumStatementsNum) ? Long.fromValue(object.maximumStatementsNum) : Long.UZERO,
-      maximumGroupNum: isSet(object.maximumGroupNum) ? Long.fromValue(object.maximumGroupNum) : Long.UZERO
+      maximumGroupNum: isSet(object.maximumGroupNum) ? Long.fromValue(object.maximumGroupNum) : Long.UZERO,
+      maximumRemoveExpiredPoliciesIteration: isSet(object.maximumRemoveExpiredPoliciesIteration) ? Long.fromValue(object.maximumRemoveExpiredPoliciesIteration) : Long.UZERO
     };
   },
   toJSON(message: Params): unknown {
     const obj: any = {};
     message.maximumStatementsNum !== undefined && (obj.maximumStatementsNum = (message.maximumStatementsNum || Long.UZERO).toString());
     message.maximumGroupNum !== undefined && (obj.maximumGroupNum = (message.maximumGroupNum || Long.UZERO).toString());
+    message.maximumRemoveExpiredPoliciesIteration !== undefined && (obj.maximumRemoveExpiredPoliciesIteration = (message.maximumRemoveExpiredPoliciesIteration || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
     message.maximumStatementsNum = object.maximumStatementsNum !== undefined && object.maximumStatementsNum !== null ? Long.fromValue(object.maximumStatementsNum) : Long.UZERO;
     message.maximumGroupNum = object.maximumGroupNum !== undefined && object.maximumGroupNum !== null ? Long.fromValue(object.maximumGroupNum) : Long.UZERO;
+    message.maximumRemoveExpiredPoliciesIteration = object.maximumRemoveExpiredPoliciesIteration !== undefined && object.maximumRemoveExpiredPoliciesIteration !== null ? Long.fromValue(object.maximumRemoveExpiredPoliciesIteration) : Long.UZERO;
     return message;
   },
   fromSDK(object: ParamsSDKType): Params {
     return {
       maximumStatementsNum: object?.maximum_statements_num,
-      maximumGroupNum: object?.maximum_group_num
+      maximumGroupNum: object?.maximum_group_num,
+      maximumRemoveExpiredPoliciesIteration: object?.maximum_remove_expired_policies_iteration
     };
   },
   toSDK(message: Params): ParamsSDKType {
     const obj: any = {};
     obj.maximum_statements_num = message.maximumStatementsNum;
     obj.maximum_group_num = message.maximumGroupNum;
+    obj.maximum_remove_expired_policies_iteration = message.maximumRemoveExpiredPoliciesIteration;
     return obj;
   }
 };
