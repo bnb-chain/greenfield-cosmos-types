@@ -10,7 +10,7 @@ export const protobufPackage = "greenfield.sp";
 export interface MsgCreateStorageProvider {
   /** creator is the msg signer */
   creator: string;
-  /** description defines the description terms for the validator. */
+  /** description defines the description terms for the storage provider. */
   description: Description;
   /** sp_address defines the address of the sp's operator; It also is the unqiue index key of sp. */
   spAddress: string;
