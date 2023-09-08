@@ -35,7 +35,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@cosmology/telescope": "0.103.2",
+    "@cosmology/telescope": "0.109.4",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@types/long": "^4.0.2",
@@ -48,5 +48,6 @@
   "dependencies": {
     "long": "^4.0.0",
     "protobufjs": "~6.11.4"
-  }
+  },
+  "sideEffects": false
 }

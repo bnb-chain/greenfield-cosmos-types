@@ -710,8 +710,8 @@ export const GetBlockByHeightRequest = {
 function createBaseGetBlockByHeightResponse(): GetBlockByHeightResponse {
   return {
     blockId: BlockID.fromPartial({}),
-    block: Block.fromPartial({}),
-    sdkBlock: Block.fromPartial({})
+    block: Block1.fromPartial({}),
+    sdkBlock: Block2.fromPartial({})
   };
 }
 export const GetBlockByHeightResponse = {
@@ -829,8 +829,8 @@ export const GetLatestBlockRequest = {
 function createBaseGetLatestBlockResponse(): GetLatestBlockResponse {
   return {
     blockId: BlockID.fromPartial({}),
-    block: Block.fromPartial({}),
-    sdkBlock: Block.fromPartial({})
+    block: Block1.fromPartial({}),
+    sdkBlock: Block2.fromPartial({})
   };
 }
 export const GetLatestBlockResponse = {

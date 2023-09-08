@@ -7,6 +7,7 @@ import { StreamRecord, StreamRecordSDKType } from "./stream_record";
 import { PaymentAccountCount, PaymentAccountCountSDKType } from "./payment_account_count";
 import { PaymentAccount, PaymentAccountSDKType } from "./payment_account";
 import { AutoSettleRecord, AutoSettleRecordSDKType } from "./auto_settle_record";
+import { DelayedWithdrawalRecord, DelayedWithdrawalRecordSDKType } from "./delayed_withdrawal_record";
 import { Long, DeepPartial, Exact, isSet, Rpc } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.payment";
@@ -187,6 +188,18 @@ export interface QueryAutoSettleRecordsResponse {
 export interface QueryAutoSettleRecordsResponseSDKType {
   auto_settle_records: AutoSettleRecordSDKType[];
   pagination: PageResponseSDKType;
+}
+export interface QueryDelayedWithdrawalRequest {
+  account: string;
+}
+export interface QueryDelayedWithdrawalRequestSDKType {
+  account: string;
+}
+export interface QueryDelayedWithdrawalResponse {
+  delayedWithdrawal: DelayedWithdrawalRecord;
+}
+export interface QueryDelayedWithdrawalResponseSDKType {
+  delayed_withdrawal: DelayedWithdrawalRecordSDKType;
 }
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
@@ -1661,6 +1674,116 @@ export const QueryAutoSettleRecordsResponse = {
     return obj;
   }
 };
+function createBaseQueryDelayedWithdrawalRequest(): QueryDelayedWithdrawalRequest {
+  return {
+    account: ""
+  };
+}
+export const QueryDelayedWithdrawalRequest = {
+  encode(message: QueryDelayedWithdrawalRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.account !== "") {
+      writer.uint32(10).string(message.account);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryDelayedWithdrawalRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryDelayedWithdrawalRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.account = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryDelayedWithdrawalRequest {
+    return {
+      account: isSet(object.account) ? String(object.account) : ""
+    };
+  },
+  toJSON(message: QueryDelayedWithdrawalRequest): unknown {
+    const obj: any = {};
+    message.account !== undefined && (obj.account = message.account);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryDelayedWithdrawalRequest>, I>>(object: I): QueryDelayedWithdrawalRequest {
+    const message = createBaseQueryDelayedWithdrawalRequest();
+    message.account = object.account ?? "";
+    return message;
+  },
+  fromSDK(object: QueryDelayedWithdrawalRequestSDKType): QueryDelayedWithdrawalRequest {
+    return {
+      account: object?.account
+    };
+  },
+  toSDK(message: QueryDelayedWithdrawalRequest): QueryDelayedWithdrawalRequestSDKType {
+    const obj: any = {};
+    obj.account = message.account;
+    return obj;
+  }
+};
+function createBaseQueryDelayedWithdrawalResponse(): QueryDelayedWithdrawalResponse {
+  return {
+    delayedWithdrawal: DelayedWithdrawalRecord.fromPartial({})
+  };
+}
+export const QueryDelayedWithdrawalResponse = {
+  encode(message: QueryDelayedWithdrawalResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.delayedWithdrawal !== undefined) {
+      DelayedWithdrawalRecord.encode(message.delayedWithdrawal, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryDelayedWithdrawalResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryDelayedWithdrawalResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.delayedWithdrawal = DelayedWithdrawalRecord.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryDelayedWithdrawalResponse {
+    return {
+      delayedWithdrawal: isSet(object.delayedWithdrawal) ? DelayedWithdrawalRecord.fromJSON(object.delayedWithdrawal) : undefined
+    };
+  },
+  toJSON(message: QueryDelayedWithdrawalResponse): unknown {
+    const obj: any = {};
+    message.delayedWithdrawal !== undefined && (obj.delayedWithdrawal = message.delayedWithdrawal ? DelayedWithdrawalRecord.toJSON(message.delayedWithdrawal) : undefined);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryDelayedWithdrawalResponse>, I>>(object: I): QueryDelayedWithdrawalResponse {
+    const message = createBaseQueryDelayedWithdrawalResponse();
+    message.delayedWithdrawal = object.delayedWithdrawal !== undefined && object.delayedWithdrawal !== null ? DelayedWithdrawalRecord.fromPartial(object.delayedWithdrawal) : undefined;
+    return message;
+  },
+  fromSDK(object: QueryDelayedWithdrawalResponseSDKType): QueryDelayedWithdrawalResponse {
+    return {
+      delayedWithdrawal: object.delayed_withdrawal ? DelayedWithdrawalRecord.fromSDK(object.delayed_withdrawal) : undefined
+    };
+  },
+  toSDK(message: QueryDelayedWithdrawalResponse): QueryDelayedWithdrawalResponseSDKType {
+    const obj: any = {};
+    message.delayedWithdrawal !== undefined && (obj.delayed_withdrawal = message.delayedWithdrawal ? DelayedWithdrawalRecord.toSDK(message.delayedWithdrawal) : undefined);
+    return obj;
+  }
+};
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1687,6 +1810,8 @@ export interface Query {
   PaymentAccountsByOwner(request: QueryPaymentAccountsByOwnerRequest): Promise<QueryPaymentAccountsByOwnerResponse>;
   /** Queries all auto settle records. */
   AutoSettleRecords(request?: QueryAutoSettleRecordsRequest): Promise<QueryAutoSettleRecordsResponse>;
+  /** Queries delayed withdrawal of a account. */
+  DelayedWithdrawal(request: QueryDelayedWithdrawalRequest): Promise<QueryDelayedWithdrawalResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -1704,6 +1829,7 @@ export class QueryClientImpl implements Query {
     this.DynamicBalance = this.DynamicBalance.bind(this);
     this.PaymentAccountsByOwner = this.PaymentAccountsByOwner.bind(this);
     this.AutoSettleRecords = this.AutoSettleRecords.bind(this);
+    this.DelayedWithdrawal = this.DelayedWithdrawal.bind(this);
   }
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -1772,5 +1898,10 @@ export class QueryClientImpl implements Query {
     const data = QueryAutoSettleRecordsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "AutoSettleRecords", data);
     return promise.then(data => QueryAutoSettleRecordsResponse.decode(new _m0.Reader(data)));
+  }
+  DelayedWithdrawal(request: QueryDelayedWithdrawalRequest): Promise<QueryDelayedWithdrawalResponse> {
+    const data = QueryDelayedWithdrawalRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.payment.Query", "DelayedWithdrawal", data);
+    return promise.then(data => QueryDelayedWithdrawalResponse.decode(new _m0.Reader(data)));
   }
 }

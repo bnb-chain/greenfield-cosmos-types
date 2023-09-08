@@ -19,6 +19,10 @@ export interface Params {
   maxAutoResumeFlowCount: Long;
   /** The denom of fee charged in payment module */
   feeDenom: string;
+  /** The withdrawal amount threshold to trigger time lock */
+  withdrawTimeLockThreshold: string;
+  /** The duration of the time lock for a big amount withdrawal */
+  withdrawTimeLockDuration: Long;
 }
 /** Params defines the parameters for the module. */
 export interface ParamsSDKType {
@@ -28,6 +32,8 @@ export interface ParamsSDKType {
   max_auto_settle_flow_count: Long;
   max_auto_resume_flow_count: Long;
   fee_denom: string;
+  withdraw_time_lock_threshold: string;
+  withdraw_time_lock_duration: Long;
 }
 /** VersionedParams defines the parameters with multiple versions, each version is stored with different timestamp. */
 export interface VersionedParams {
@@ -48,7 +54,9 @@ function createBaseParams(): Params {
     forcedSettleTime: Long.UZERO,
     maxAutoSettleFlowCount: Long.UZERO,
     maxAutoResumeFlowCount: Long.UZERO,
-    feeDenom: ""
+    feeDenom: "",
+    withdrawTimeLockThreshold: "",
+    withdrawTimeLockDuration: Long.UZERO
   };
 }
 export const Params = {
@@ -70,6 +78,12 @@ export const Params = {
     }
     if (message.feeDenom !== "") {
       writer.uint32(50).string(message.feeDenom);
+    }
+    if (message.withdrawTimeLockThreshold !== "") {
+      writer.uint32(58).string(message.withdrawTimeLockThreshold);
+    }
+    if (!message.withdrawTimeLockDuration.isZero()) {
+      writer.uint32(64).uint64(message.withdrawTimeLockDuration);
     }
     return writer;
   },
@@ -98,6 +112,12 @@ export const Params = {
         case 6:
           message.feeDenom = reader.string();
           break;
+        case 7:
+          message.withdrawTimeLockThreshold = reader.string();
+          break;
+        case 8:
+          message.withdrawTimeLockDuration = (reader.uint64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -112,7 +132,9 @@ export const Params = {
       forcedSettleTime: isSet(object.forcedSettleTime) ? Long.fromValue(object.forcedSettleTime) : Long.UZERO,
       maxAutoSettleFlowCount: isSet(object.maxAutoSettleFlowCount) ? Long.fromValue(object.maxAutoSettleFlowCount) : Long.UZERO,
       maxAutoResumeFlowCount: isSet(object.maxAutoResumeFlowCount) ? Long.fromValue(object.maxAutoResumeFlowCount) : Long.UZERO,
-      feeDenom: isSet(object.feeDenom) ? String(object.feeDenom) : ""
+      feeDenom: isSet(object.feeDenom) ? String(object.feeDenom) : "",
+      withdrawTimeLockThreshold: isSet(object.withdrawTimeLockThreshold) ? String(object.withdrawTimeLockThreshold) : "",
+      withdrawTimeLockDuration: isSet(object.withdrawTimeLockDuration) ? Long.fromValue(object.withdrawTimeLockDuration) : Long.UZERO
     };
   },
   toJSON(message: Params): unknown {
@@ -123,6 +145,8 @@ export const Params = {
     message.maxAutoSettleFlowCount !== undefined && (obj.maxAutoSettleFlowCount = (message.maxAutoSettleFlowCount || Long.UZERO).toString());
     message.maxAutoResumeFlowCount !== undefined && (obj.maxAutoResumeFlowCount = (message.maxAutoResumeFlowCount || Long.UZERO).toString());
     message.feeDenom !== undefined && (obj.feeDenom = message.feeDenom);
+    message.withdrawTimeLockThreshold !== undefined && (obj.withdrawTimeLockThreshold = message.withdrawTimeLockThreshold);
+    message.withdrawTimeLockDuration !== undefined && (obj.withdrawTimeLockDuration = (message.withdrawTimeLockDuration || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
@@ -133,6 +157,8 @@ export const Params = {
     message.maxAutoSettleFlowCount = object.maxAutoSettleFlowCount !== undefined && object.maxAutoSettleFlowCount !== null ? Long.fromValue(object.maxAutoSettleFlowCount) : Long.UZERO;
     message.maxAutoResumeFlowCount = object.maxAutoResumeFlowCount !== undefined && object.maxAutoResumeFlowCount !== null ? Long.fromValue(object.maxAutoResumeFlowCount) : Long.UZERO;
     message.feeDenom = object.feeDenom ?? "";
+    message.withdrawTimeLockThreshold = object.withdrawTimeLockThreshold ?? "";
+    message.withdrawTimeLockDuration = object.withdrawTimeLockDuration !== undefined && object.withdrawTimeLockDuration !== null ? Long.fromValue(object.withdrawTimeLockDuration) : Long.UZERO;
     return message;
   },
   fromSDK(object: ParamsSDKType): Params {
@@ -142,7 +168,9 @@ export const Params = {
       forcedSettleTime: object?.forced_settle_time,
       maxAutoSettleFlowCount: object?.max_auto_settle_flow_count,
       maxAutoResumeFlowCount: object?.max_auto_resume_flow_count,
-      feeDenom: object?.fee_denom
+      feeDenom: object?.fee_denom,
+      withdrawTimeLockThreshold: object?.withdraw_time_lock_threshold,
+      withdrawTimeLockDuration: object?.withdraw_time_lock_duration
     };
   },
   toSDK(message: Params): ParamsSDKType {
@@ -153,6 +181,8 @@ export const Params = {
     obj.max_auto_settle_flow_count = message.maxAutoSettleFlowCount;
     obj.max_auto_resume_flow_count = message.maxAutoResumeFlowCount;
     obj.fee_denom = message.feeDenom;
+    obj.withdraw_time_lock_threshold = message.withdrawTimeLockThreshold;
+    obj.withdraw_time_lock_duration = message.withdrawTimeLockDuration;
     return obj;
   }
 };

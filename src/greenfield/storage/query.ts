@@ -305,6 +305,18 @@ export interface QueryIsPriceChangedResponseSDKType {
   new_secondary_store_price: string;
   new_validator_tax_rate: string;
 }
+export interface QueryQuoteUpdateTimeRequest {
+  bucketName: string;
+}
+export interface QueryQuoteUpdateTimeRequestSDKType {
+  bucket_name: string;
+}
+export interface QueryQuoteUpdateTimeResponse {
+  updateAt: Long;
+}
+export interface QueryQuoteUpdateTimeResponseSDKType {
+  update_at: Long;
+}
 export interface QueryGroupMembersExistRequest {
   groupId: string;
   members: string[];
@@ -2829,6 +2841,116 @@ export const QueryIsPriceChangedResponse = {
     return obj;
   }
 };
+function createBaseQueryQuoteUpdateTimeRequest(): QueryQuoteUpdateTimeRequest {
+  return {
+    bucketName: ""
+  };
+}
+export const QueryQuoteUpdateTimeRequest = {
+  encode(message: QueryQuoteUpdateTimeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.bucketName !== "") {
+      writer.uint32(10).string(message.bucketName);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryQuoteUpdateTimeRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryQuoteUpdateTimeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketName = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryQuoteUpdateTimeRequest {
+    return {
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : ""
+    };
+  },
+  toJSON(message: QueryQuoteUpdateTimeRequest): unknown {
+    const obj: any = {};
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryQuoteUpdateTimeRequest>, I>>(object: I): QueryQuoteUpdateTimeRequest {
+    const message = createBaseQueryQuoteUpdateTimeRequest();
+    message.bucketName = object.bucketName ?? "";
+    return message;
+  },
+  fromSDK(object: QueryQuoteUpdateTimeRequestSDKType): QueryQuoteUpdateTimeRequest {
+    return {
+      bucketName: object?.bucket_name
+    };
+  },
+  toSDK(message: QueryQuoteUpdateTimeRequest): QueryQuoteUpdateTimeRequestSDKType {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    return obj;
+  }
+};
+function createBaseQueryQuoteUpdateTimeResponse(): QueryQuoteUpdateTimeResponse {
+  return {
+    updateAt: Long.ZERO
+  };
+}
+export const QueryQuoteUpdateTimeResponse = {
+  encode(message: QueryQuoteUpdateTimeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.updateAt.isZero()) {
+      writer.uint32(48).int64(message.updateAt);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryQuoteUpdateTimeResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryQuoteUpdateTimeResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 6:
+          message.updateAt = (reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryQuoteUpdateTimeResponse {
+    return {
+      updateAt: isSet(object.updateAt) ? Long.fromValue(object.updateAt) : Long.ZERO
+    };
+  },
+  toJSON(message: QueryQuoteUpdateTimeResponse): unknown {
+    const obj: any = {};
+    message.updateAt !== undefined && (obj.updateAt = (message.updateAt || Long.ZERO).toString());
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryQuoteUpdateTimeResponse>, I>>(object: I): QueryQuoteUpdateTimeResponse {
+    const message = createBaseQueryQuoteUpdateTimeResponse();
+    message.updateAt = object.updateAt !== undefined && object.updateAt !== null ? Long.fromValue(object.updateAt) : Long.ZERO;
+    return message;
+  },
+  fromSDK(object: QueryQuoteUpdateTimeResponseSDKType): QueryQuoteUpdateTimeResponse {
+    return {
+      updateAt: object?.update_at
+    };
+  },
+  toSDK(message: QueryQuoteUpdateTimeResponse): QueryQuoteUpdateTimeResponseSDKType {
+    const obj: any = {};
+    obj.update_at = message.updateAt;
+    return obj;
+  }
+};
 function createBaseQueryGroupMembersExistRequest(): QueryGroupMembersExistRequest {
   return {
     groupId: "",
@@ -3398,6 +3520,8 @@ export interface Query {
   HeadBucketExtra(request: QueryHeadBucketExtraRequest): Promise<QueryHeadBucketExtraResponse>;
   /** Queries whether read and storage prices changed for the bucket. */
   QueryIsPriceChanged(request: QueryIsPriceChangedRequest): Promise<QueryIsPriceChangedResponse>;
+  /** Queries whether read and storage prices changed for the bucket. */
+  QueryQuotaUpdateTime(request: QueryQuoteUpdateTimeRequest): Promise<QueryQuoteUpdateTimeResponse>;
   /** Queries whether some members are in the group. */
   QueryGroupMembersExist(request: QueryGroupMembersExistRequest): Promise<QueryGroupMembersExistResponse>;
   /** Queries whether some groups are exist. */
@@ -3431,6 +3555,7 @@ export class QueryClientImpl implements Query {
     this.QueryLockFee = this.QueryLockFee.bind(this);
     this.HeadBucketExtra = this.HeadBucketExtra.bind(this);
     this.QueryIsPriceChanged = this.QueryIsPriceChanged.bind(this);
+    this.QueryQuotaUpdateTime = this.QueryQuotaUpdateTime.bind(this);
     this.QueryGroupMembersExist = this.QueryGroupMembersExist.bind(this);
     this.QueryGroupsExist = this.QueryGroupsExist.bind(this);
     this.QueryGroupsExistById = this.QueryGroupsExistById.bind(this);
@@ -3546,6 +3671,11 @@ export class QueryClientImpl implements Query {
     const data = QueryIsPriceChangedRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryIsPriceChanged", data);
     return promise.then(data => QueryIsPriceChangedResponse.decode(new _m0.Reader(data)));
+  }
+  QueryQuotaUpdateTime(request: QueryQuoteUpdateTimeRequest): Promise<QueryQuoteUpdateTimeResponse> {
+    const data = QueryQuoteUpdateTimeRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Query", "QueryQuotaUpdateTime", data);
+    return promise.then(data => QueryQuoteUpdateTimeResponse.decode(new _m0.Reader(data)));
   }
   QueryGroupMembersExist(request: QueryGroupMembersExistRequest): Promise<QueryGroupMembersExistResponse> {
     const data = QueryGroupMembersExistRequest.encode(request).finish();
