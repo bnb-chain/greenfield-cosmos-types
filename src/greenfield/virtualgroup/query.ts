@@ -55,11 +55,9 @@ export interface QueryGlobalVirtualGroupFamilyResponse {
 export interface QueryGlobalVirtualGroupFamilyResponseSDKType {
   global_virtual_group_family: GlobalVirtualGroupFamilySDKType;
 }
-/** this line is used by starport scaffolding # 3 */
 export interface QueryGlobalVirtualGroupFamiliesRequest {
   pagination: PageRequest;
 }
-/** this line is used by starport scaffolding # 3 */
 export interface QueryGlobalVirtualGroupFamiliesRequestSDKType {
   pagination: PageRequestSDKType;
 }

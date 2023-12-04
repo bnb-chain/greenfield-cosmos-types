@@ -19,12 +19,10 @@ export interface QueryParamsResponse {
 export interface QueryParamsResponseSDKType {
   params: ParamsSDKType;
 }
-/** this line is used by starport scaffolding # 3 */
 export interface QueryStorageProvidersRequest {
   /** pagination defines an optional pagination for the request. */
   pagination: PageRequest;
 }
-/** this line is used by starport scaffolding # 3 */
 export interface QueryStorageProvidersRequestSDKType {
   pagination: PageRequestSDKType;
 }
