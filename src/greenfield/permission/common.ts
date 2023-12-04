@@ -216,7 +216,7 @@ export interface StatementSDKType {
   expiration_time?: TimestampSDKType;
   limit_size?: UInt64ValueSDKType;
 }
-/** Principal define the roles that can grant permissions. Currently, it can be account or group. */
+/** Principal define the roles that can be grant permissions to. Currently, it can be account or group. */
 export interface Principal {
   type: PrincipalType;
   /**
@@ -225,7 +225,7 @@ export interface Principal {
    */
   value: string;
 }
-/** Principal define the roles that can grant permissions. Currently, it can be account or group. */
+/** Principal define the roles that can be grant permissions to. Currently, it can be account or group. */
 export interface PrincipalSDKType {
   type: PrincipalType;
   value: string;

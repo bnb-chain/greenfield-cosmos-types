@@ -178,7 +178,10 @@ export interface MsgCancelSwapOutResponseSDKType {}
  * secondly, the income will be distributed to related storage providers.
  */
 export interface MsgSettle {
-  /** storage_provider defines the operator/funding account address of the storage provider who initial settle request. */
+  /**
+   * storage_provider defines the account address who initiates the settle request.
+   * After Pampas upgrade, not only storage provider, anyone can submit this message.
+   */
   storageProvider: string;
   /** global_virtual_group_family_id is the identifier of the global virtual group family. */
   globalVirtualGroupFamilyId: number;
@@ -197,12 +200,10 @@ export interface MsgSettleSDKType {
 }
 export interface MsgSettleResponse {}
 export interface MsgSettleResponseSDKType {}
-/** this line is used by starport scaffolding # proto/tx/message */
 export interface MsgStorageProviderExit {
   /** storage_provider defines the operator account address of the storage provider who want to exit from the greenfield storage network. */
   storageProvider: string;
 }
-/** this line is used by starport scaffolding # proto/tx/message */
 export interface MsgStorageProviderExitSDKType {
   storage_provider: string;
 }
@@ -1577,7 +1578,6 @@ export const MsgCompleteStorageProviderExitResponse = {
 };
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/import */
   CreateGlobalVirtualGroup(request: MsgCreateGlobalVirtualGroup): Promise<MsgCreateGlobalVirtualGroupResponse>;
   DeleteGlobalVirtualGroup(request: MsgDeleteGlobalVirtualGroup): Promise<MsgDeleteGlobalVirtualGroupResponse>;
   Deposit(request: MsgDeposit): Promise<MsgDepositResponse>;

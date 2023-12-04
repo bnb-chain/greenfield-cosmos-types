@@ -29,6 +29,8 @@ export interface BucketInfo {
   chargedReadQuota: Long;
   /** bucket_status define the status of the bucket. */
   bucketStatus: BucketStatus;
+  /** tags defines a list of tags the bucket has */
+  tags: ResourceTags;
 }
 export interface BucketInfoSDKType {
   owner: string;
@@ -41,6 +43,7 @@ export interface BucketInfoSDKType {
   global_virtual_group_family_id: number;
   charged_read_quota: Long;
   bucket_status: BucketStatus;
+  tags: ResourceTagsSDKType;
 }
 export interface InternalBucketInfo {
   /** the time of the payment price, used to calculate the charge rate of the bucket */
@@ -89,6 +92,8 @@ export interface ObjectInfo {
    * add omit tag to omit the field when converting to NFT metadata
    */
   checksums: Uint8Array[];
+  /** tags defines a list of tags the object has */
+  tags: ResourceTags;
 }
 export interface ObjectInfoSDKType {
   owner: string;
@@ -105,6 +110,7 @@ export interface ObjectInfoSDKType {
   redundancy_type: RedundancyType;
   source_type: SourceType;
   checksums: Uint8Array[];
+  tags: ResourceTagsSDKType;
 }
 export interface GroupInfo {
   /** owner is the owner of the group. It can not changed once it created. */
@@ -117,6 +123,8 @@ export interface GroupInfo {
   id: string;
   /** extra is used to store extra info for the group */
   extra: string;
+  /** tags defines a list of tags the group has */
+  tags: ResourceTags;
 }
 export interface GroupInfoSDKType {
   owner: string;
@@ -124,6 +132,7 @@ export interface GroupInfoSDKType {
   source_type: SourceType;
   id: string;
   extra: string;
+  tags: ResourceTagsSDKType;
 }
 export interface Trait {
   traitType: string;
@@ -220,6 +229,21 @@ export interface MigrationBucketInfoSDKType {
   dst_sp_id: number;
   bucket_id: string;
 }
+export interface ResourceTags {
+  /** tags defines a list of tags the resource has */
+  tags: ResourceTags_Tag[];
+}
+export interface ResourceTagsSDKType {
+  tags: ResourceTags_TagSDKType[];
+}
+export interface ResourceTags_Tag {
+  key: string;
+  value: string;
+}
+export interface ResourceTags_TagSDKType {
+  key: string;
+  value: string;
+}
 function createBaseBucketInfo(): BucketInfo {
   return {
     owner: "",
@@ -231,7 +255,8 @@ function createBaseBucketInfo(): BucketInfo {
     paymentAddress: "",
     globalVirtualGroupFamilyId: 0,
     chargedReadQuota: Long.UZERO,
-    bucketStatus: 0
+    bucketStatus: 0,
+    tags: ResourceTags.fromPartial({})
   };
 }
 export const BucketInfo = {
@@ -265,6 +290,9 @@ export const BucketInfo = {
     }
     if (message.bucketStatus !== 0) {
       writer.uint32(80).int32(message.bucketStatus);
+    }
+    if (message.tags !== undefined) {
+      ResourceTags.encode(message.tags, writer.uint32(90).fork()).ldelim();
     }
     return writer;
   },
@@ -305,6 +333,9 @@ export const BucketInfo = {
         case 10:
           message.bucketStatus = (reader.int32() as any);
           break;
+        case 11:
+          message.tags = ResourceTags.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -323,7 +354,8 @@ export const BucketInfo = {
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
       chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
-      bucketStatus: isSet(object.bucketStatus) ? bucketStatusFromJSON(object.bucketStatus) : -1
+      bucketStatus: isSet(object.bucketStatus) ? bucketStatusFromJSON(object.bucketStatus) : -1,
+      tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined
     };
   },
   toJSON(message: BucketInfo): unknown {
@@ -338,6 +370,7 @@ export const BucketInfo = {
     message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
     message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
     message.bucketStatus !== undefined && (obj.bucketStatus = bucketStatusToJSON(message.bucketStatus));
+    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toJSON(message.tags) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<BucketInfo>, I>>(object: I): BucketInfo {
@@ -352,6 +385,7 @@ export const BucketInfo = {
     message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
     message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
     message.bucketStatus = object.bucketStatus ?? 0;
+    message.tags = object.tags !== undefined && object.tags !== null ? ResourceTags.fromPartial(object.tags) : undefined;
     return message;
   },
   fromSDK(object: BucketInfoSDKType): BucketInfo {
@@ -365,7 +399,8 @@ export const BucketInfo = {
       paymentAddress: object?.payment_address,
       globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
       chargedReadQuota: object?.charged_read_quota,
-      bucketStatus: isSet(object.bucket_status) ? bucketStatusFromJSON(object.bucket_status) : -1
+      bucketStatus: isSet(object.bucket_status) ? bucketStatusFromJSON(object.bucket_status) : -1,
+      tags: object.tags ? ResourceTags.fromSDK(object.tags) : undefined
     };
   },
   toSDK(message: BucketInfo): BucketInfoSDKType {
@@ -380,6 +415,7 @@ export const BucketInfo = {
     obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
     obj.charged_read_quota = message.chargedReadQuota;
     message.bucketStatus !== undefined && (obj.bucket_status = bucketStatusToJSON(message.bucketStatus));
+    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
   }
 };
@@ -497,7 +533,8 @@ function createBaseObjectInfo(): ObjectInfo {
     objectStatus: 0,
     redundancyType: 0,
     sourceType: 0,
-    checksums: []
+    checksums: [],
+    tags: ResourceTags.fromPartial({})
   };
 }
 export const ObjectInfo = {
@@ -543,6 +580,9 @@ export const ObjectInfo = {
     }
     for (const v of message.checksums) {
       writer.uint32(114).bytes(v!);
+    }
+    if (message.tags !== undefined) {
+      ResourceTags.encode(message.tags, writer.uint32(122).fork()).ldelim();
     }
     return writer;
   },
@@ -595,6 +635,9 @@ export const ObjectInfo = {
         case 14:
           message.checksums.push(reader.bytes());
           break;
+        case 15:
+          message.tags = ResourceTags.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -617,7 +660,8 @@ export const ObjectInfo = {
       objectStatus: isSet(object.objectStatus) ? objectStatusFromJSON(object.objectStatus) : -1,
       redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : -1,
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : -1,
-      checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => bytesFromBase64(e)) : []
+      checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => bytesFromBase64(e)) : [],
+      tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined
     };
   },
   toJSON(message: ObjectInfo): unknown {
@@ -640,6 +684,7 @@ export const ObjectInfo = {
     } else {
       obj.checksums = [];
     }
+    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toJSON(message.tags) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<ObjectInfo>, I>>(object: I): ObjectInfo {
@@ -658,6 +703,7 @@ export const ObjectInfo = {
     message.redundancyType = object.redundancyType ?? 0;
     message.sourceType = object.sourceType ?? 0;
     message.checksums = object.checksums?.map(e => e) || [];
+    message.tags = object.tags !== undefined && object.tags !== null ? ResourceTags.fromPartial(object.tags) : undefined;
     return message;
   },
   fromSDK(object: ObjectInfoSDKType): ObjectInfo {
@@ -675,7 +721,8 @@ export const ObjectInfo = {
       objectStatus: isSet(object.object_status) ? objectStatusFromJSON(object.object_status) : -1,
       redundancyType: isSet(object.redundancy_type) ? redundancyTypeFromJSON(object.redundancy_type) : -1,
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : -1,
-      checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => e) : []
+      checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => e) : [],
+      tags: object.tags ? ResourceTags.fromSDK(object.tags) : undefined
     };
   },
   toSDK(message: ObjectInfo): ObjectInfoSDKType {
@@ -698,6 +745,7 @@ export const ObjectInfo = {
     } else {
       obj.checksums = [];
     }
+    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
   }
 };
@@ -707,7 +755,8 @@ function createBaseGroupInfo(): GroupInfo {
     groupName: "",
     sourceType: 0,
     id: "",
-    extra: ""
+    extra: "",
+    tags: ResourceTags.fromPartial({})
   };
 }
 export const GroupInfo = {
@@ -726,6 +775,9 @@ export const GroupInfo = {
     }
     if (message.extra !== "") {
       writer.uint32(42).string(message.extra);
+    }
+    if (message.tags !== undefined) {
+      ResourceTags.encode(message.tags, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -751,6 +803,9 @@ export const GroupInfo = {
         case 5:
           message.extra = reader.string();
           break;
+        case 6:
+          message.tags = ResourceTags.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -764,7 +819,8 @@ export const GroupInfo = {
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : -1,
       id: isSet(object.id) ? String(object.id) : "",
-      extra: isSet(object.extra) ? String(object.extra) : ""
+      extra: isSet(object.extra) ? String(object.extra) : "",
+      tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined
     };
   },
   toJSON(message: GroupInfo): unknown {
@@ -774,6 +830,7 @@ export const GroupInfo = {
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
     message.id !== undefined && (obj.id = message.id);
     message.extra !== undefined && (obj.extra = message.extra);
+    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toJSON(message.tags) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<GroupInfo>, I>>(object: I): GroupInfo {
@@ -783,6 +840,7 @@ export const GroupInfo = {
     message.sourceType = object.sourceType ?? 0;
     message.id = object.id ?? "";
     message.extra = object.extra ?? "";
+    message.tags = object.tags !== undefined && object.tags !== null ? ResourceTags.fromPartial(object.tags) : undefined;
     return message;
   },
   fromSDK(object: GroupInfoSDKType): GroupInfo {
@@ -791,7 +849,8 @@ export const GroupInfo = {
       groupName: object?.group_name,
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : -1,
       id: object?.id,
-      extra: object?.extra
+      extra: object?.extra,
+      tags: object.tags ? ResourceTags.fromSDK(object.tags) : undefined
     };
   },
   toSDK(message: GroupInfo): GroupInfoSDKType {
@@ -801,6 +860,7 @@ export const GroupInfo = {
     message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
     obj.id = message.id;
     obj.extra = message.extra;
+    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
   }
 };
@@ -1434,6 +1494,136 @@ export const MigrationBucketInfo = {
     obj.src_global_virtual_group_family_id = message.srcGlobalVirtualGroupFamilyId;
     obj.dst_sp_id = message.dstSpId;
     obj.bucket_id = message.bucketId;
+    return obj;
+  }
+};
+function createBaseResourceTags(): ResourceTags {
+  return {
+    tags: []
+  };
+}
+export const ResourceTags = {
+  encode(message: ResourceTags, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.tags) {
+      ResourceTags_Tag.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): ResourceTags {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseResourceTags();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.tags.push(ResourceTags_Tag.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): ResourceTags {
+    return {
+      tags: Array.isArray(object?.tags) ? object.tags.map((e: any) => ResourceTags_Tag.fromJSON(e)) : []
+    };
+  },
+  toJSON(message: ResourceTags): unknown {
+    const obj: any = {};
+    if (message.tags) {
+      obj.tags = message.tags.map(e => e ? ResourceTags_Tag.toJSON(e) : undefined);
+    } else {
+      obj.tags = [];
+    }
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<ResourceTags>, I>>(object: I): ResourceTags {
+    const message = createBaseResourceTags();
+    message.tags = object.tags?.map(e => ResourceTags_Tag.fromPartial(e)) || [];
+    return message;
+  },
+  fromSDK(object: ResourceTagsSDKType): ResourceTags {
+    return {
+      tags: Array.isArray(object?.tags) ? object.tags.map((e: any) => ResourceTags_Tag.fromSDK(e)) : []
+    };
+  },
+  toSDK(message: ResourceTags): ResourceTagsSDKType {
+    const obj: any = {};
+    if (message.tags) {
+      obj.tags = message.tags.map(e => e ? ResourceTags_Tag.toSDK(e) : undefined);
+    } else {
+      obj.tags = [];
+    }
+    return obj;
+  }
+};
+function createBaseResourceTags_Tag(): ResourceTags_Tag {
+  return {
+    key: "",
+    value: ""
+  };
+}
+export const ResourceTags_Tag = {
+  encode(message: ResourceTags_Tag, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): ResourceTags_Tag {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseResourceTags_Tag();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): ResourceTags_Tag {
+    return {
+      key: isSet(object.key) ? String(object.key) : "",
+      value: isSet(object.value) ? String(object.value) : ""
+    };
+  },
+  toJSON(message: ResourceTags_Tag): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<ResourceTags_Tag>, I>>(object: I): ResourceTags_Tag {
+    const message = createBaseResourceTags_Tag();
+    message.key = object.key ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+  fromSDK(object: ResourceTags_TagSDKType): ResourceTags_Tag {
+    return {
+      key: object?.key,
+      value: object?.value
+    };
+  },
+  toSDK(message: ResourceTags_Tag): ResourceTags_TagSDKType {
+    const obj: any = {};
+    obj.key = message.key;
+    obj.value = message.value;
     return obj;
   }
 };
