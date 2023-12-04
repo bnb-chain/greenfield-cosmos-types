@@ -1,3 +1,10 @@
+# [0.4.0-alpha.25](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.24...v0.4.0-alpha.25) (2023-12-04)
+
+
+### Features
+
+* Add Tags filed when create tx ([5c5b23d](https://github.com/bnb-chain/greenfield-cosmos-types/commit/5c5b23d43ed3a5e0c99ac20805952936be7db8f4))
+
 # [0.4.0-alpha.24](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.23...v0.4.0-alpha.24) (2023-09-21)
 
 
