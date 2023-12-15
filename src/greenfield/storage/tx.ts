@@ -4657,7 +4657,7 @@ export interface Msg {
   CompleteMigrateBucket(request: MsgCompleteMigrateBucket): Promise<MsgCompleteMigrateBucketResponse>;
   CancelMigrateBucket(request: MsgCancelMigrateBucket): Promise<MsgCancelMigrateBucketResponse>;
   RejectMigrateBucket(request: MsgRejectMigrateBucket): Promise<MsgRejectMigrateBucketResponse>;
-  /** Since: Eddystone upgrade */
+  /** Since: Manchurian upgrade */
   SetTag(request: MsgSetTag): Promise<MsgSetTagResponse>;
 }
 export class MsgClientImpl implements Msg {
