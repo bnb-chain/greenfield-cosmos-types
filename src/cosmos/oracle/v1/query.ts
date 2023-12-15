@@ -4,6 +4,47 @@ import { Params, ParamsSDKType, RelayInterval, RelayIntervalSDKType } from "./or
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.oracle.v1";
+/** ClaimSrcChain defines the src chain of a claim */
+export enum ClaimSrcChain {
+  /** CLAIM_SRC_CHAIN_UNSPECIFIED - CLAIM_SRC_CHAIN_UNSPECIFIED */
+  CLAIM_SRC_CHAIN_UNSPECIFIED = 0,
+  /** CLAIM_SRC_CHAIN_BSC - CLAIM_SRC_CHAIN_BSC defines BSC source chain */
+  CLAIM_SRC_CHAIN_BSC = 1,
+  /** CLAIM_SRC_CHAIN_OP_BNB - CLAIM_SRC_CHAIN_OP_BNB defines OPBNB source chain */
+  CLAIM_SRC_CHAIN_OP_BNB = 2,
+  UNRECOGNIZED = -1,
+}
+export const ClaimSrcChainSDKType = ClaimSrcChain;
+export function claimSrcChainFromJSON(object: any): ClaimSrcChain {
+  switch (object) {
+    case 0:
+    case "CLAIM_SRC_CHAIN_UNSPECIFIED":
+      return ClaimSrcChain.CLAIM_SRC_CHAIN_UNSPECIFIED;
+    case 1:
+    case "CLAIM_SRC_CHAIN_BSC":
+      return ClaimSrcChain.CLAIM_SRC_CHAIN_BSC;
+    case 2:
+    case "CLAIM_SRC_CHAIN_OP_BNB":
+      return ClaimSrcChain.CLAIM_SRC_CHAIN_OP_BNB;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ClaimSrcChain.UNRECOGNIZED;
+  }
+}
+export function claimSrcChainToJSON(object: ClaimSrcChain): string {
+  switch (object) {
+    case ClaimSrcChain.CLAIM_SRC_CHAIN_UNSPECIFIED:
+      return "CLAIM_SRC_CHAIN_UNSPECIFIED";
+    case ClaimSrcChain.CLAIM_SRC_CHAIN_BSC:
+      return "CLAIM_SRC_CHAIN_BSC";
+    case ClaimSrcChain.CLAIM_SRC_CHAIN_OP_BNB:
+      return "CLAIM_SRC_CHAIN_OP_BNB";
+    case ClaimSrcChain.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
@@ -18,9 +59,14 @@ export interface QueryParamsResponseSDKType {
   params: ParamsSDKType;
 }
 /** QueryInturnRelayerRequest is the request type for the Query In-turn relayer RPC method. */
-export interface QueryInturnRelayerRequest {}
+export interface QueryInturnRelayerRequest {
+  /** ClaimSrcChain defines the src chain of a claim */
+  claimSrcChain: ClaimSrcChain;
+}
 /** QueryInturnRelayerRequest is the request type for the Query In-turn relayer RPC method. */
-export interface QueryInturnRelayerRequestSDKType {}
+export interface QueryInturnRelayerRequestSDKType {
+  claim_src_chain: ClaimSrcChain;
+}
 /** QueryInturnRelayerResponse is the response type for the Query In-turn relayer RPC method. */
 export interface QueryInturnRelayerResponse {
   blsPubKey: string;
@@ -127,10 +173,15 @@ export const QueryParamsResponse = {
   }
 };
 function createBaseQueryInturnRelayerRequest(): QueryInturnRelayerRequest {
-  return {};
+  return {
+    claimSrcChain: 0
+  };
 }
 export const QueryInturnRelayerRequest = {
-  encode(_: QueryInturnRelayerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryInturnRelayerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.claimSrcChain !== 0) {
+      writer.uint32(8).int32(message.claimSrcChain);
+    }
     return writer;
   },
   decode(input: _m0.Reader | Uint8Array, length?: number): QueryInturnRelayerRequest {
@@ -140,6 +191,9 @@ export const QueryInturnRelayerRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.claimSrcChain = (reader.int32() as any);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -147,22 +201,29 @@ export const QueryInturnRelayerRequest = {
     }
     return message;
   },
-  fromJSON(_: any): QueryInturnRelayerRequest {
-    return {};
+  fromJSON(object: any): QueryInturnRelayerRequest {
+    return {
+      claimSrcChain: isSet(object.claimSrcChain) ? claimSrcChainFromJSON(object.claimSrcChain) : -1
+    };
   },
-  toJSON(_: QueryInturnRelayerRequest): unknown {
+  toJSON(message: QueryInturnRelayerRequest): unknown {
     const obj: any = {};
+    message.claimSrcChain !== undefined && (obj.claimSrcChain = claimSrcChainToJSON(message.claimSrcChain));
     return obj;
   },
-  fromPartial<I extends Exact<DeepPartial<QueryInturnRelayerRequest>, I>>(_: I): QueryInturnRelayerRequest {
+  fromPartial<I extends Exact<DeepPartial<QueryInturnRelayerRequest>, I>>(object: I): QueryInturnRelayerRequest {
     const message = createBaseQueryInturnRelayerRequest();
+    message.claimSrcChain = object.claimSrcChain ?? 0;
     return message;
   },
-  fromSDK(_: QueryInturnRelayerRequestSDKType): QueryInturnRelayerRequest {
-    return {};
+  fromSDK(object: QueryInturnRelayerRequestSDKType): QueryInturnRelayerRequest {
+    return {
+      claimSrcChain: isSet(object.claim_src_chain) ? claimSrcChainFromJSON(object.claim_src_chain) : -1
+    };
   },
-  toSDK(_: QueryInturnRelayerRequest): QueryInturnRelayerRequestSDKType {
+  toSDK(message: QueryInturnRelayerRequest): QueryInturnRelayerRequestSDKType {
     const obj: any = {};
+    message.claimSrcChain !== undefined && (obj.claim_src_chain = claimSrcChainToJSON(message.claimSrcChain));
     return obj;
   }
 };
@@ -238,7 +299,7 @@ export interface Query {
   /** Params returns the total set of cross chain parameters. */
   Params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** InturnRelayer returns the inturn relayer bls pub key and its relay interval */
-  InturnRelayer(request?: QueryInturnRelayerRequest): Promise<QueryInturnRelayerResponse>;
+  InturnRelayer(request: QueryInturnRelayerRequest): Promise<QueryInturnRelayerResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -252,7 +313,7 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("cosmos.oracle.v1.Query", "Params", data);
     return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
-  InturnRelayer(request: QueryInturnRelayerRequest = {}): Promise<QueryInturnRelayerResponse> {
+  InturnRelayer(request: QueryInturnRelayerRequest): Promise<QueryInturnRelayerResponse> {
     const data = QueryInturnRelayerRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.oracle.v1.Query", "InturnRelayer", data);
     return promise.then(data => QueryInturnRelayerResponse.decode(new _m0.Reader(data)));
