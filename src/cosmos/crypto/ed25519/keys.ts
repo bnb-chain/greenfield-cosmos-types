@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.crypto.ed25519";
 /**
@@ -12,6 +12,10 @@ export const protobufPackage = "cosmos.crypto.ed25519";
  */
 export interface PubKey {
   key: Uint8Array;
+}
+export interface PubKeyProtoMsg {
+  typeUrl: "/cosmos.crypto.ed25519.PubKey";
+  value: Uint8Array;
 }
 /**
  * PubKey is an ed25519 public key for handling Tendermint keys in SDK.
@@ -30,6 +34,10 @@ export interface PubKeySDKType {
 export interface PrivKey {
   key: Uint8Array;
 }
+export interface PrivKeyProtoMsg {
+  typeUrl: "/cosmos.crypto.ed25519.PrivKey";
+  value: Uint8Array;
+}
 /**
  * Deprecated: PrivKey defines a ed25519 private key.
  * NOTE: ed25519 keys must not be used in SDK apps except in a tendermint validator context.
@@ -43,14 +51,15 @@ function createBasePubKey(): PubKey {
   };
 }
 export const PubKey = {
-  encode(message: PubKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.crypto.ed25519.PubKey",
+  encode(message: PubKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PubKey {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PubKey {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePubKey();
     while (reader.pos < end) {
@@ -90,6 +99,39 @@ export const PubKey = {
     const obj: any = {};
     obj.key = message.key;
     return obj;
+  },
+  fromAmino(object: PubKeyAmino): PubKey {
+    const message = createBasePubKey();
+    if (object.key !== undefined && object.key !== null) {
+      message.key = bytesFromBase64(object.key);
+    }
+    return message;
+  },
+  toAmino(message: PubKey): PubKeyAmino {
+    const obj: any = {};
+    obj.key = message.key ? base64FromBytes(message.key) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: PubKeyAminoMsg): PubKey {
+    return PubKey.fromAmino(object.value);
+  },
+  toAminoMsg(message: PubKey): PubKeyAminoMsg {
+    return {
+      type: "tendermint/PubKeyEd25519",
+      value: PubKey.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: PubKeyProtoMsg): PubKey {
+    return PubKey.decode(message.value);
+  },
+  toProto(message: PubKey): Uint8Array {
+    return PubKey.encode(message).finish();
+  },
+  toProtoMsg(message: PubKey): PubKeyProtoMsg {
+    return {
+      typeUrl: "/cosmos.crypto.ed25519.PubKey",
+      value: PubKey.encode(message).finish()
+    };
   }
 };
 function createBasePrivKey(): PrivKey {
@@ -98,14 +140,15 @@ function createBasePrivKey(): PrivKey {
   };
 }
 export const PrivKey = {
-  encode(message: PrivKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.crypto.ed25519.PrivKey",
+  encode(message: PrivKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PrivKey {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PrivKey {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePrivKey();
     while (reader.pos < end) {
@@ -145,5 +188,38 @@ export const PrivKey = {
     const obj: any = {};
     obj.key = message.key;
     return obj;
+  },
+  fromAmino(object: PrivKeyAmino): PrivKey {
+    const message = createBasePrivKey();
+    if (object.key !== undefined && object.key !== null) {
+      message.key = bytesFromBase64(object.key);
+    }
+    return message;
+  },
+  toAmino(message: PrivKey): PrivKeyAmino {
+    const obj: any = {};
+    obj.key = message.key ? base64FromBytes(message.key) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: PrivKeyAminoMsg): PrivKey {
+    return PrivKey.fromAmino(object.value);
+  },
+  toAminoMsg(message: PrivKey): PrivKeyAminoMsg {
+    return {
+      type: "tendermint/PrivKeyEd25519",
+      value: PrivKey.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: PrivKeyProtoMsg): PrivKey {
+    return PrivKey.decode(message.value);
+  },
+  toProto(message: PrivKey): Uint8Array {
+    return PrivKey.encode(message).finish();
+  },
+  toProtoMsg(message: PrivKey): PrivKeyProtoMsg {
+    return {
+      typeUrl: "/cosmos.crypto.ed25519.PrivKey",
+      value: PrivKey.encode(message).finish()
+    };
   }
 };

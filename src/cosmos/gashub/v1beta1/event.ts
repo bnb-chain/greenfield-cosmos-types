@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.gashub.v1beta1";
 /** EventUpdateMsgGasParams is emitted when updating a message's gas params */
@@ -11,6 +11,10 @@ export interface EventUpdateMsgGasParams {
   fromValue: string;
   /** to_value is the new gas params */
   toValue: string;
+}
+export interface EventUpdateMsgGasParamsProtoMsg {
+  typeUrl: "/cosmos.gashub.v1beta1.EventUpdateMsgGasParams";
+  value: Uint8Array;
 }
 /** EventUpdateMsgGasParams is emitted when updating a message's gas params */
 export interface EventUpdateMsgGasParamsSDKType {
@@ -26,7 +30,8 @@ function createBaseEventUpdateMsgGasParams(): EventUpdateMsgGasParams {
   };
 }
 export const EventUpdateMsgGasParams = {
-  encode(message: EventUpdateMsgGasParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.gashub.v1beta1.EventUpdateMsgGasParams",
+  encode(message: EventUpdateMsgGasParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.msgTypeUrl !== "") {
       writer.uint32(10).string(message.msgTypeUrl);
     }
@@ -38,8 +43,8 @@ export const EventUpdateMsgGasParams = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateMsgGasParams {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateMsgGasParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventUpdateMsgGasParams();
     while (reader.pos < end) {
@@ -95,5 +100,46 @@ export const EventUpdateMsgGasParams = {
     obj.from_value = message.fromValue;
     obj.to_value = message.toValue;
     return obj;
+  },
+  fromAmino(object: EventUpdateMsgGasParamsAmino): EventUpdateMsgGasParams {
+    const message = createBaseEventUpdateMsgGasParams();
+    if (object.msg_type_url !== undefined && object.msg_type_url !== null) {
+      message.msgTypeUrl = object.msg_type_url;
+    }
+    if (object.from_value !== undefined && object.from_value !== null) {
+      message.fromValue = object.from_value;
+    }
+    if (object.to_value !== undefined && object.to_value !== null) {
+      message.toValue = object.to_value;
+    }
+    return message;
+  },
+  toAmino(message: EventUpdateMsgGasParams): EventUpdateMsgGasParamsAmino {
+    const obj: any = {};
+    obj.msg_type_url = message.msgTypeUrl;
+    obj.from_value = message.fromValue;
+    obj.to_value = message.toValue;
+    return obj;
+  },
+  fromAminoMsg(object: EventUpdateMsgGasParamsAminoMsg): EventUpdateMsgGasParams {
+    return EventUpdateMsgGasParams.fromAmino(object.value);
+  },
+  toAminoMsg(message: EventUpdateMsgGasParams): EventUpdateMsgGasParamsAminoMsg {
+    return {
+      type: "cosmos-sdk/EventUpdateMsgGasParams",
+      value: EventUpdateMsgGasParams.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: EventUpdateMsgGasParamsProtoMsg): EventUpdateMsgGasParams {
+    return EventUpdateMsgGasParams.decode(message.value);
+  },
+  toProto(message: EventUpdateMsgGasParams): Uint8Array {
+    return EventUpdateMsgGasParams.encode(message).finish();
+  },
+  toProtoMsg(message: EventUpdateMsgGasParams): EventUpdateMsgGasParamsProtoMsg {
+    return {
+      typeUrl: "/cosmos.gashub.v1beta1.EventUpdateMsgGasParams",
+      value: EventUpdateMsgGasParams.encode(message).finish()
+    };
   }
 };

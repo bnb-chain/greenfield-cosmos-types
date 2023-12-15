@@ -2,9 +2,9 @@
 /* eslint-disable */
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../base/query/v1beta1/pagination";
 import { Any, AnySDKType } from "../../../google/protobuf/any";
-import { Params, ParamsSDKType, BaseAccount, BaseAccountSDKType } from "./auth";
-import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, Rpc } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { Params, ParamsSDKType, BaseAccount, BaseAccountSDKType, ModuleAccount, ModuleAccountSDKType } from "./auth";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.auth.v1beta1";
 /**
  * QueryAccountsRequest is the request type for the Query/Accounts RPC method.
@@ -13,7 +13,11 @@ export const protobufPackage = "cosmos.auth.v1beta1";
  */
 export interface QueryAccountsRequest {
   /** pagination defines an optional pagination for the request. */
-  pagination: PageRequest;
+  pagination?: PageRequest;
+}
+export interface QueryAccountsRequestProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountsRequest";
+  value: Uint8Array;
 }
 /**
  * QueryAccountsRequest is the request type for the Query/Accounts RPC method.
@@ -21,7 +25,7 @@ export interface QueryAccountsRequest {
  * Since: cosmos-sdk 0.43
  */
 export interface QueryAccountsRequestSDKType {
-  pagination: PageRequestSDKType;
+  pagination?: PageRequestSDKType;
 }
 /**
  * QueryAccountsResponse is the response type for the Query/Accounts RPC method.
@@ -30,9 +34,13 @@ export interface QueryAccountsRequestSDKType {
  */
 export interface QueryAccountsResponse {
   /** accounts are the existing accounts */
-  accounts: Any[];
+  accounts: (BaseAccount & Any)[] | Any[];
   /** pagination defines the pagination in the response. */
-  pagination: PageResponse;
+  pagination?: PageResponse;
+}
+export interface QueryAccountsResponseProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountsResponse";
+  value: Uint8Array;
 }
 /**
  * QueryAccountsResponse is the response type for the Query/Accounts RPC method.
@@ -40,13 +48,17 @@ export interface QueryAccountsResponse {
  * Since: cosmos-sdk 0.43
  */
 export interface QueryAccountsResponseSDKType {
-  accounts: AnySDKType[];
-  pagination: PageResponseSDKType;
+  accounts: (BaseAccountSDKType | AnySDKType)[];
+  pagination?: PageResponseSDKType;
 }
 /** QueryAccountRequest is the request type for the Query/Account RPC method. */
 export interface QueryAccountRequest {
   /** address defines the address to query for. */
   address: string;
+}
+export interface QueryAccountRequestProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountRequest";
+  value: Uint8Array;
 }
 /** QueryAccountRequest is the request type for the Query/Account RPC method. */
 export interface QueryAccountRequestSDKType {
@@ -55,20 +67,32 @@ export interface QueryAccountRequestSDKType {
 /** QueryAccountResponse is the response type for the Query/Account RPC method. */
 export interface QueryAccountResponse {
   /** account defines the account of the corresponding address. */
-  account: Any;
+  account?: (BaseAccount & Any) | undefined;
+}
+export interface QueryAccountResponseProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountResponse";
+  value: Uint8Array;
 }
 /** QueryAccountResponse is the response type for the Query/Account RPC method. */
 export interface QueryAccountResponseSDKType {
-  account: AnySDKType;
+  account?: BaseAccountSDKType | AnySDKType | undefined;
 }
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
+export interface QueryParamsRequestProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryParamsRequest";
+  value: Uint8Array;
+}
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponse {
   /** params defines the parameters of the module. */
   params: Params;
+}
+export interface QueryParamsResponseProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryParamsResponse";
+  value: Uint8Array;
 }
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
@@ -80,6 +104,10 @@ export interface QueryParamsResponseSDKType {
  * Since: cosmos-sdk 0.46
  */
 export interface QueryModuleAccountsRequest {}
+export interface QueryModuleAccountsRequestProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountsRequest";
+  value: Uint8Array;
+}
 /**
  * QueryModuleAccountsRequest is the request type for the Query/ModuleAccounts RPC method.
  * 
@@ -92,7 +120,11 @@ export interface QueryModuleAccountsRequestSDKType {}
  * Since: cosmos-sdk 0.46
  */
 export interface QueryModuleAccountsResponse {
-  accounts: Any[];
+  accounts: (ModuleAccount & Any)[] | Any[];
+}
+export interface QueryModuleAccountsResponseProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountsResponse";
+  value: Uint8Array;
 }
 /**
  * QueryModuleAccountsResponse is the response type for the Query/ModuleAccounts RPC method.
@@ -100,11 +132,15 @@ export interface QueryModuleAccountsResponse {
  * Since: cosmos-sdk 0.46
  */
 export interface QueryModuleAccountsResponseSDKType {
-  accounts: AnySDKType[];
+  accounts: (ModuleAccountSDKType | AnySDKType)[];
 }
 /** QueryModuleAccountByNameRequest is the request type for the Query/ModuleAccountByName RPC method. */
 export interface QueryModuleAccountByNameRequest {
   name: string;
+}
+export interface QueryModuleAccountByNameRequestProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountByNameRequest";
+  value: Uint8Array;
 }
 /** QueryModuleAccountByNameRequest is the request type for the Query/ModuleAccountByName RPC method. */
 export interface QueryModuleAccountByNameRequestSDKType {
@@ -112,11 +148,15 @@ export interface QueryModuleAccountByNameRequestSDKType {
 }
 /** QueryModuleAccountByNameResponse is the response type for the Query/ModuleAccountByName RPC method. */
 export interface QueryModuleAccountByNameResponse {
-  account: Any;
+  account?: (ModuleAccount & Any) | undefined;
+}
+export interface QueryModuleAccountByNameResponseProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountByNameResponse";
+  value: Uint8Array;
 }
 /** QueryModuleAccountByNameResponse is the response type for the Query/ModuleAccountByName RPC method. */
 export interface QueryModuleAccountByNameResponseSDKType {
-  account: AnySDKType;
+  account?: ModuleAccountSDKType | AnySDKType | undefined;
 }
 /**
  * AddressBytesToStringRequest is the request type for AddressString rpc method.
@@ -125,6 +165,10 @@ export interface QueryModuleAccountByNameResponseSDKType {
  */
 export interface AddressBytesToStringRequest {
   addressBytes: Uint8Array;
+}
+export interface AddressBytesToStringRequestProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.AddressBytesToStringRequest";
+  value: Uint8Array;
 }
 /**
  * AddressBytesToStringRequest is the request type for AddressString rpc method.
@@ -142,6 +186,10 @@ export interface AddressBytesToStringRequestSDKType {
 export interface AddressBytesToStringResponse {
   addressString: string;
 }
+export interface AddressBytesToStringResponseProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.AddressBytesToStringResponse";
+  value: Uint8Array;
+}
 /**
  * AddressBytesToStringResponse is the response type for AddressString rpc method.
  * 
@@ -158,6 +206,10 @@ export interface AddressBytesToStringResponseSDKType {
 export interface AddressStringToBytesRequest {
   addressString: string;
 }
+export interface AddressStringToBytesRequestProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.AddressStringToBytesRequest";
+  value: Uint8Array;
+}
 /**
  * AddressStringToBytesRequest is the request type for AccountBytes rpc method.
  * 
@@ -173,6 +225,10 @@ export interface AddressStringToBytesRequestSDKType {
  */
 export interface AddressStringToBytesResponse {
   addressBytes: Uint8Array;
+}
+export interface AddressStringToBytesResponseProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.AddressStringToBytesResponse";
+  value: Uint8Array;
 }
 /**
  * AddressStringToBytesResponse is the response type for AddressBytes rpc method.
@@ -196,13 +252,17 @@ export interface QueryAccountAddressByIDRequest {
    * updated to uint64 in a future version of the auth query.
    */
   /** @deprecated */
-  id: Long;
+  id: bigint;
   /**
    * account_id is the account number of the address to be queried.
    * 
    * Since: cosmos-sdk 0.47
    */
-  accountId: Long;
+  accountId: bigint;
+}
+export interface QueryAccountAddressByIDRequestProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountAddressByIDRequest";
+  value: Uint8Array;
 }
 /**
  * QueryAccountAddressByIDRequest is the request type for AccountAddressByID rpc method
@@ -211,8 +271,8 @@ export interface QueryAccountAddressByIDRequest {
  */
 export interface QueryAccountAddressByIDRequestSDKType {
   /** @deprecated */
-  id: Long;
-  account_id: Long;
+  id: bigint;
+  account_id: bigint;
 }
 /**
  * QueryAccountAddressByIDResponse is the response type for AccountAddressByID rpc method
@@ -221,6 +281,10 @@ export interface QueryAccountAddressByIDRequestSDKType {
  */
 export interface QueryAccountAddressByIDResponse {
   accountAddress: string;
+}
+export interface QueryAccountAddressByIDResponseProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountAddressByIDResponse";
+  value: Uint8Array;
 }
 /**
  * QueryAccountAddressByIDResponse is the response type for AccountAddressByID rpc method
@@ -239,6 +303,10 @@ export interface QueryAccountInfoRequest {
   /** address is the account address string. */
   address: string;
 }
+export interface QueryAccountInfoRequestProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountInfoRequest";
+  value: Uint8Array;
+}
 /**
  * QueryAccountInfoRequest is the Query/AccountInfo request type.
  * 
@@ -254,7 +322,11 @@ export interface QueryAccountInfoRequestSDKType {
  */
 export interface QueryAccountInfoResponse {
   /** info is the account info which is represented by BaseAccount. */
-  info: BaseAccount;
+  info?: BaseAccount;
+}
+export interface QueryAccountInfoResponseProtoMsg {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountInfoResponse";
+  value: Uint8Array;
 }
 /**
  * QueryAccountInfoResponse is the Query/AccountInfo response type.
@@ -262,22 +334,23 @@ export interface QueryAccountInfoResponse {
  * Since: cosmos-sdk 0.47
  */
 export interface QueryAccountInfoResponseSDKType {
-  info: BaseAccountSDKType;
+  info?: BaseAccountSDKType;
 }
 function createBaseQueryAccountsRequest(): QueryAccountsRequest {
   return {
-    pagination: PageRequest.fromPartial({})
+    pagination: undefined
   };
 }
 export const QueryAccountsRequest = {
-  encode(message: QueryAccountsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountsRequest",
+  encode(message: QueryAccountsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAccountsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAccountsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAccountsRequest();
     while (reader.pos < end) {
@@ -317,33 +390,67 @@ export const QueryAccountsRequest = {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryAccountsRequestAmino): QueryAccountsRequest {
+    const message = createBaseQueryAccountsRequest();
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryAccountsRequest): QueryAccountsRequestAmino {
+    const obj: any = {};
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryAccountsRequestAminoMsg): QueryAccountsRequest {
+    return QueryAccountsRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryAccountsRequest): QueryAccountsRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryAccountsRequest",
+      value: QueryAccountsRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryAccountsRequestProtoMsg): QueryAccountsRequest {
+    return QueryAccountsRequest.decode(message.value);
+  },
+  toProto(message: QueryAccountsRequest): Uint8Array {
+    return QueryAccountsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryAccountsRequest): QueryAccountsRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryAccountsRequest",
+      value: QueryAccountsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryAccountsResponse(): QueryAccountsResponse {
   return {
     accounts: [],
-    pagination: PageResponse.fromPartial({})
+    pagination: undefined
   };
 }
 export const QueryAccountsResponse = {
-  encode(message: QueryAccountsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountsResponse",
+  encode(message: QueryAccountsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.accounts) {
-      Any.encode(v!, writer.uint32(10).fork()).ldelim();
+      Any.encode((v! as Any), writer.uint32(10).fork()).ldelim();
     }
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAccountsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAccountsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAccountsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.accounts.push(Any.decode(reader, reader.uint32()));
+          message.accounts.push((Any(reader) as Any));
           break;
         case 2:
           message.pagination = PageResponse.decode(reader, reader.uint32());
@@ -392,6 +499,45 @@ export const QueryAccountsResponse = {
     }
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryAccountsResponseAmino): QueryAccountsResponse {
+    const message = createBaseQueryAccountsResponse();
+    message.accounts = object.accounts?.map(e => Cosmos_authv1beta1AccountI_FromAmino(e)) || [];
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryAccountsResponse): QueryAccountsResponseAmino {
+    const obj: any = {};
+    if (message.accounts) {
+      obj.accounts = message.accounts.map(e => e ? Cosmos_authv1beta1AccountI_ToAmino((e as Any)) : undefined);
+    } else {
+      obj.accounts = [];
+    }
+    obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryAccountsResponseAminoMsg): QueryAccountsResponse {
+    return QueryAccountsResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryAccountsResponse): QueryAccountsResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryAccountsResponse",
+      value: QueryAccountsResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryAccountsResponseProtoMsg): QueryAccountsResponse {
+    return QueryAccountsResponse.decode(message.value);
+  },
+  toProto(message: QueryAccountsResponse): Uint8Array {
+    return QueryAccountsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryAccountsResponse): QueryAccountsResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryAccountsResponse",
+      value: QueryAccountsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryAccountRequest(): QueryAccountRequest {
@@ -400,14 +546,15 @@ function createBaseQueryAccountRequest(): QueryAccountRequest {
   };
 }
 export const QueryAccountRequest = {
-  encode(message: QueryAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountRequest",
+  encode(message: QueryAccountRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAccountRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAccountRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAccountRequest();
     while (reader.pos < end) {
@@ -447,29 +594,63 @@ export const QueryAccountRequest = {
     const obj: any = {};
     obj.address = message.address;
     return obj;
+  },
+  fromAmino(object: QueryAccountRequestAmino): QueryAccountRequest {
+    const message = createBaseQueryAccountRequest();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    return message;
+  },
+  toAmino(message: QueryAccountRequest): QueryAccountRequestAmino {
+    const obj: any = {};
+    obj.address = message.address;
+    return obj;
+  },
+  fromAminoMsg(object: QueryAccountRequestAminoMsg): QueryAccountRequest {
+    return QueryAccountRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryAccountRequest): QueryAccountRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryAccountRequest",
+      value: QueryAccountRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryAccountRequestProtoMsg): QueryAccountRequest {
+    return QueryAccountRequest.decode(message.value);
+  },
+  toProto(message: QueryAccountRequest): Uint8Array {
+    return QueryAccountRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryAccountRequest): QueryAccountRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryAccountRequest",
+      value: QueryAccountRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryAccountResponse(): QueryAccountResponse {
   return {
-    account: Any.fromPartial({})
+    account: undefined
   };
 }
 export const QueryAccountResponse = {
-  encode(message: QueryAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountResponse",
+  encode(message: QueryAccountResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.account !== undefined) {
-      Any.encode(message.account, writer.uint32(10).fork()).ldelim();
+      Any.encode((message.account as Any), writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAccountResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAccountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAccountResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.account = Any.decode(reader, reader.uint32());
+          message.account = (Cosmos_authv1beta1AccountI_InterfaceDecoder(reader) as Any);
           break;
         default:
           reader.skipType(tag & 7);
@@ -502,17 +683,51 @@ export const QueryAccountResponse = {
     const obj: any = {};
     message.account !== undefined && (obj.account = message.account ? Any.toSDK(message.account) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryAccountResponseAmino): QueryAccountResponse {
+    const message = createBaseQueryAccountResponse();
+    if (object.account !== undefined && object.account !== null) {
+      message.account = Cosmos_authv1beta1AccountI_FromAmino(object.account);
+    }
+    return message;
+  },
+  toAmino(message: QueryAccountResponse): QueryAccountResponseAmino {
+    const obj: any = {};
+    obj.account = message.account ? Cosmos_authv1beta1AccountI_ToAmino((message.account as Any)) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryAccountResponseAminoMsg): QueryAccountResponse {
+    return QueryAccountResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryAccountResponse): QueryAccountResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryAccountResponse",
+      value: QueryAccountResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryAccountResponseProtoMsg): QueryAccountResponse {
+    return QueryAccountResponse.decode(message.value);
+  },
+  toProto(message: QueryAccountResponse): Uint8Array {
+    return QueryAccountResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryAccountResponse): QueryAccountResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryAccountResponse",
+      value: QueryAccountResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
 export const QueryParamsRequest = {
-  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.QueryParamsRequest",
+  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -542,6 +757,35 @@ export const QueryParamsRequest = {
   toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: QueryParamsRequestAmino): QueryParamsRequest {
+    const message = createBaseQueryParamsRequest();
+    return message;
+  },
+  toAmino(_: QueryParamsRequest): QueryParamsRequestAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsRequestAminoMsg): QueryParamsRequest {
+    return QueryParamsRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryParamsRequest): QueryParamsRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryParamsRequest",
+      value: QueryParamsRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryParamsRequestProtoMsg): QueryParamsRequest {
+    return QueryParamsRequest.decode(message.value);
+  },
+  toProto(message: QueryParamsRequest): Uint8Array {
+    return QueryParamsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryParamsRequest",
+      value: QueryParamsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryParamsResponse(): QueryParamsResponse {
@@ -550,14 +794,15 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
   };
 }
 export const QueryParamsResponse = {
-  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.QueryParamsResponse",
+  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -597,17 +842,51 @@ export const QueryParamsResponse = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryParamsResponseAmino): QueryParamsResponse {
+    const message = createBaseQueryParamsResponse();
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
+    const obj: any = {};
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
+    return QueryParamsResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryParamsResponse): QueryParamsResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryParamsResponse",
+      value: QueryParamsResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryParamsResponseProtoMsg): QueryParamsResponse {
+    return QueryParamsResponse.decode(message.value);
+  },
+  toProto(message: QueryParamsResponse): Uint8Array {
+    return QueryParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryParamsResponse",
+      value: QueryParamsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryModuleAccountsRequest(): QueryModuleAccountsRequest {
   return {};
 }
 export const QueryModuleAccountsRequest = {
-  encode(_: QueryModuleAccountsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountsRequest",
+  encode(_: QueryModuleAccountsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryModuleAccountsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryModuleAccountsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryModuleAccountsRequest();
     while (reader.pos < end) {
@@ -637,6 +916,35 @@ export const QueryModuleAccountsRequest = {
   toSDK(_: QueryModuleAccountsRequest): QueryModuleAccountsRequestSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: QueryModuleAccountsRequestAmino): QueryModuleAccountsRequest {
+    const message = createBaseQueryModuleAccountsRequest();
+    return message;
+  },
+  toAmino(_: QueryModuleAccountsRequest): QueryModuleAccountsRequestAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: QueryModuleAccountsRequestAminoMsg): QueryModuleAccountsRequest {
+    return QueryModuleAccountsRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryModuleAccountsRequest): QueryModuleAccountsRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryModuleAccountsRequest",
+      value: QueryModuleAccountsRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryModuleAccountsRequestProtoMsg): QueryModuleAccountsRequest {
+    return QueryModuleAccountsRequest.decode(message.value);
+  },
+  toProto(message: QueryModuleAccountsRequest): Uint8Array {
+    return QueryModuleAccountsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryModuleAccountsRequest): QueryModuleAccountsRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountsRequest",
+      value: QueryModuleAccountsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryModuleAccountsResponse(): QueryModuleAccountsResponse {
@@ -645,21 +953,22 @@ function createBaseQueryModuleAccountsResponse(): QueryModuleAccountsResponse {
   };
 }
 export const QueryModuleAccountsResponse = {
-  encode(message: QueryModuleAccountsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountsResponse",
+  encode(message: QueryModuleAccountsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.accounts) {
-      Any.encode(v!, writer.uint32(10).fork()).ldelim();
+      Any.encode((v! as Any), writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryModuleAccountsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryModuleAccountsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryModuleAccountsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.accounts.push(Any.decode(reader, reader.uint32()));
+          message.accounts.push((Any(reader) as Any));
           break;
         default:
           reader.skipType(tag & 7);
@@ -700,6 +1009,41 @@ export const QueryModuleAccountsResponse = {
       obj.accounts = [];
     }
     return obj;
+  },
+  fromAmino(object: QueryModuleAccountsResponseAmino): QueryModuleAccountsResponse {
+    const message = createBaseQueryModuleAccountsResponse();
+    message.accounts = object.accounts?.map(e => Cosmos_authv1beta1ModuleAccountI_FromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: QueryModuleAccountsResponse): QueryModuleAccountsResponseAmino {
+    const obj: any = {};
+    if (message.accounts) {
+      obj.accounts = message.accounts.map(e => e ? Cosmos_authv1beta1ModuleAccountI_ToAmino((e as Any)) : undefined);
+    } else {
+      obj.accounts = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: QueryModuleAccountsResponseAminoMsg): QueryModuleAccountsResponse {
+    return QueryModuleAccountsResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryModuleAccountsResponse): QueryModuleAccountsResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryModuleAccountsResponse",
+      value: QueryModuleAccountsResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryModuleAccountsResponseProtoMsg): QueryModuleAccountsResponse {
+    return QueryModuleAccountsResponse.decode(message.value);
+  },
+  toProto(message: QueryModuleAccountsResponse): Uint8Array {
+    return QueryModuleAccountsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryModuleAccountsResponse): QueryModuleAccountsResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountsResponse",
+      value: QueryModuleAccountsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryModuleAccountByNameRequest(): QueryModuleAccountByNameRequest {
@@ -708,14 +1052,15 @@ function createBaseQueryModuleAccountByNameRequest(): QueryModuleAccountByNameRe
   };
 }
 export const QueryModuleAccountByNameRequest = {
-  encode(message: QueryModuleAccountByNameRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountByNameRequest",
+  encode(message: QueryModuleAccountByNameRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryModuleAccountByNameRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryModuleAccountByNameRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryModuleAccountByNameRequest();
     while (reader.pos < end) {
@@ -755,29 +1100,63 @@ export const QueryModuleAccountByNameRequest = {
     const obj: any = {};
     obj.name = message.name;
     return obj;
+  },
+  fromAmino(object: QueryModuleAccountByNameRequestAmino): QueryModuleAccountByNameRequest {
+    const message = createBaseQueryModuleAccountByNameRequest();
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    }
+    return message;
+  },
+  toAmino(message: QueryModuleAccountByNameRequest): QueryModuleAccountByNameRequestAmino {
+    const obj: any = {};
+    obj.name = message.name;
+    return obj;
+  },
+  fromAminoMsg(object: QueryModuleAccountByNameRequestAminoMsg): QueryModuleAccountByNameRequest {
+    return QueryModuleAccountByNameRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryModuleAccountByNameRequest): QueryModuleAccountByNameRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryModuleAccountByNameRequest",
+      value: QueryModuleAccountByNameRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryModuleAccountByNameRequestProtoMsg): QueryModuleAccountByNameRequest {
+    return QueryModuleAccountByNameRequest.decode(message.value);
+  },
+  toProto(message: QueryModuleAccountByNameRequest): Uint8Array {
+    return QueryModuleAccountByNameRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryModuleAccountByNameRequest): QueryModuleAccountByNameRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountByNameRequest",
+      value: QueryModuleAccountByNameRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryModuleAccountByNameResponse(): QueryModuleAccountByNameResponse {
   return {
-    account: Any.fromPartial({})
+    account: undefined
   };
 }
 export const QueryModuleAccountByNameResponse = {
-  encode(message: QueryModuleAccountByNameResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountByNameResponse",
+  encode(message: QueryModuleAccountByNameResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.account !== undefined) {
-      Any.encode(message.account, writer.uint32(10).fork()).ldelim();
+      Any.encode((message.account as Any), writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryModuleAccountByNameResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryModuleAccountByNameResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryModuleAccountByNameResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.account = Any.decode(reader, reader.uint32());
+          message.account = (Cosmos_authv1beta1ModuleAccountI_InterfaceDecoder(reader) as Any);
           break;
         default:
           reader.skipType(tag & 7);
@@ -810,6 +1189,39 @@ export const QueryModuleAccountByNameResponse = {
     const obj: any = {};
     message.account !== undefined && (obj.account = message.account ? Any.toSDK(message.account) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryModuleAccountByNameResponseAmino): QueryModuleAccountByNameResponse {
+    const message = createBaseQueryModuleAccountByNameResponse();
+    if (object.account !== undefined && object.account !== null) {
+      message.account = Cosmos_authv1beta1ModuleAccountI_FromAmino(object.account);
+    }
+    return message;
+  },
+  toAmino(message: QueryModuleAccountByNameResponse): QueryModuleAccountByNameResponseAmino {
+    const obj: any = {};
+    obj.account = message.account ? Cosmos_authv1beta1ModuleAccountI_ToAmino((message.account as Any)) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryModuleAccountByNameResponseAminoMsg): QueryModuleAccountByNameResponse {
+    return QueryModuleAccountByNameResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryModuleAccountByNameResponse): QueryModuleAccountByNameResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryModuleAccountByNameResponse",
+      value: QueryModuleAccountByNameResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryModuleAccountByNameResponseProtoMsg): QueryModuleAccountByNameResponse {
+    return QueryModuleAccountByNameResponse.decode(message.value);
+  },
+  toProto(message: QueryModuleAccountByNameResponse): Uint8Array {
+    return QueryModuleAccountByNameResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryModuleAccountByNameResponse): QueryModuleAccountByNameResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryModuleAccountByNameResponse",
+      value: QueryModuleAccountByNameResponse.encode(message).finish()
+    };
   }
 };
 function createBaseAddressBytesToStringRequest(): AddressBytesToStringRequest {
@@ -818,14 +1230,15 @@ function createBaseAddressBytesToStringRequest(): AddressBytesToStringRequest {
   };
 }
 export const AddressBytesToStringRequest = {
-  encode(message: AddressBytesToStringRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.AddressBytesToStringRequest",
+  encode(message: AddressBytesToStringRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.addressBytes.length !== 0) {
       writer.uint32(10).bytes(message.addressBytes);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AddressBytesToStringRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AddressBytesToStringRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAddressBytesToStringRequest();
     while (reader.pos < end) {
@@ -865,6 +1278,39 @@ export const AddressBytesToStringRequest = {
     const obj: any = {};
     obj.address_bytes = message.addressBytes;
     return obj;
+  },
+  fromAmino(object: AddressBytesToStringRequestAmino): AddressBytesToStringRequest {
+    const message = createBaseAddressBytesToStringRequest();
+    if (object.address_bytes !== undefined && object.address_bytes !== null) {
+      message.addressBytes = bytesFromBase64(object.address_bytes);
+    }
+    return message;
+  },
+  toAmino(message: AddressBytesToStringRequest): AddressBytesToStringRequestAmino {
+    const obj: any = {};
+    obj.address_bytes = message.addressBytes ? base64FromBytes(message.addressBytes) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: AddressBytesToStringRequestAminoMsg): AddressBytesToStringRequest {
+    return AddressBytesToStringRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: AddressBytesToStringRequest): AddressBytesToStringRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/AddressBytesToStringRequest",
+      value: AddressBytesToStringRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: AddressBytesToStringRequestProtoMsg): AddressBytesToStringRequest {
+    return AddressBytesToStringRequest.decode(message.value);
+  },
+  toProto(message: AddressBytesToStringRequest): Uint8Array {
+    return AddressBytesToStringRequest.encode(message).finish();
+  },
+  toProtoMsg(message: AddressBytesToStringRequest): AddressBytesToStringRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.AddressBytesToStringRequest",
+      value: AddressBytesToStringRequest.encode(message).finish()
+    };
   }
 };
 function createBaseAddressBytesToStringResponse(): AddressBytesToStringResponse {
@@ -873,14 +1319,15 @@ function createBaseAddressBytesToStringResponse(): AddressBytesToStringResponse 
   };
 }
 export const AddressBytesToStringResponse = {
-  encode(message: AddressBytesToStringResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.AddressBytesToStringResponse",
+  encode(message: AddressBytesToStringResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.addressString !== "") {
       writer.uint32(10).string(message.addressString);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AddressBytesToStringResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AddressBytesToStringResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAddressBytesToStringResponse();
     while (reader.pos < end) {
@@ -920,6 +1367,39 @@ export const AddressBytesToStringResponse = {
     const obj: any = {};
     obj.address_string = message.addressString;
     return obj;
+  },
+  fromAmino(object: AddressBytesToStringResponseAmino): AddressBytesToStringResponse {
+    const message = createBaseAddressBytesToStringResponse();
+    if (object.address_string !== undefined && object.address_string !== null) {
+      message.addressString = object.address_string;
+    }
+    return message;
+  },
+  toAmino(message: AddressBytesToStringResponse): AddressBytesToStringResponseAmino {
+    const obj: any = {};
+    obj.address_string = message.addressString;
+    return obj;
+  },
+  fromAminoMsg(object: AddressBytesToStringResponseAminoMsg): AddressBytesToStringResponse {
+    return AddressBytesToStringResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: AddressBytesToStringResponse): AddressBytesToStringResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/AddressBytesToStringResponse",
+      value: AddressBytesToStringResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: AddressBytesToStringResponseProtoMsg): AddressBytesToStringResponse {
+    return AddressBytesToStringResponse.decode(message.value);
+  },
+  toProto(message: AddressBytesToStringResponse): Uint8Array {
+    return AddressBytesToStringResponse.encode(message).finish();
+  },
+  toProtoMsg(message: AddressBytesToStringResponse): AddressBytesToStringResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.AddressBytesToStringResponse",
+      value: AddressBytesToStringResponse.encode(message).finish()
+    };
   }
 };
 function createBaseAddressStringToBytesRequest(): AddressStringToBytesRequest {
@@ -928,14 +1408,15 @@ function createBaseAddressStringToBytesRequest(): AddressStringToBytesRequest {
   };
 }
 export const AddressStringToBytesRequest = {
-  encode(message: AddressStringToBytesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.AddressStringToBytesRequest",
+  encode(message: AddressStringToBytesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.addressString !== "") {
       writer.uint32(10).string(message.addressString);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AddressStringToBytesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AddressStringToBytesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAddressStringToBytesRequest();
     while (reader.pos < end) {
@@ -975,6 +1456,39 @@ export const AddressStringToBytesRequest = {
     const obj: any = {};
     obj.address_string = message.addressString;
     return obj;
+  },
+  fromAmino(object: AddressStringToBytesRequestAmino): AddressStringToBytesRequest {
+    const message = createBaseAddressStringToBytesRequest();
+    if (object.address_string !== undefined && object.address_string !== null) {
+      message.addressString = object.address_string;
+    }
+    return message;
+  },
+  toAmino(message: AddressStringToBytesRequest): AddressStringToBytesRequestAmino {
+    const obj: any = {};
+    obj.address_string = message.addressString;
+    return obj;
+  },
+  fromAminoMsg(object: AddressStringToBytesRequestAminoMsg): AddressStringToBytesRequest {
+    return AddressStringToBytesRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: AddressStringToBytesRequest): AddressStringToBytesRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/AddressStringToBytesRequest",
+      value: AddressStringToBytesRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: AddressStringToBytesRequestProtoMsg): AddressStringToBytesRequest {
+    return AddressStringToBytesRequest.decode(message.value);
+  },
+  toProto(message: AddressStringToBytesRequest): Uint8Array {
+    return AddressStringToBytesRequest.encode(message).finish();
+  },
+  toProtoMsg(message: AddressStringToBytesRequest): AddressStringToBytesRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.AddressStringToBytesRequest",
+      value: AddressStringToBytesRequest.encode(message).finish()
+    };
   }
 };
 function createBaseAddressStringToBytesResponse(): AddressStringToBytesResponse {
@@ -983,14 +1497,15 @@ function createBaseAddressStringToBytesResponse(): AddressStringToBytesResponse 
   };
 }
 export const AddressStringToBytesResponse = {
-  encode(message: AddressStringToBytesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.AddressStringToBytesResponse",
+  encode(message: AddressStringToBytesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.addressBytes.length !== 0) {
       writer.uint32(10).bytes(message.addressBytes);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AddressStringToBytesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AddressStringToBytesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAddressStringToBytesResponse();
     while (reader.pos < end) {
@@ -1030,36 +1545,70 @@ export const AddressStringToBytesResponse = {
     const obj: any = {};
     obj.address_bytes = message.addressBytes;
     return obj;
+  },
+  fromAmino(object: AddressStringToBytesResponseAmino): AddressStringToBytesResponse {
+    const message = createBaseAddressStringToBytesResponse();
+    if (object.address_bytes !== undefined && object.address_bytes !== null) {
+      message.addressBytes = bytesFromBase64(object.address_bytes);
+    }
+    return message;
+  },
+  toAmino(message: AddressStringToBytesResponse): AddressStringToBytesResponseAmino {
+    const obj: any = {};
+    obj.address_bytes = message.addressBytes ? base64FromBytes(message.addressBytes) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: AddressStringToBytesResponseAminoMsg): AddressStringToBytesResponse {
+    return AddressStringToBytesResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: AddressStringToBytesResponse): AddressStringToBytesResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/AddressStringToBytesResponse",
+      value: AddressStringToBytesResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: AddressStringToBytesResponseProtoMsg): AddressStringToBytesResponse {
+    return AddressStringToBytesResponse.decode(message.value);
+  },
+  toProto(message: AddressStringToBytesResponse): Uint8Array {
+    return AddressStringToBytesResponse.encode(message).finish();
+  },
+  toProtoMsg(message: AddressStringToBytesResponse): AddressStringToBytesResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.AddressStringToBytesResponse",
+      value: AddressStringToBytesResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryAccountAddressByIDRequest(): QueryAccountAddressByIDRequest {
   return {
-    id: Long.ZERO,
-    accountId: Long.UZERO
+    id: BigInt(0),
+    accountId: BigInt(0)
   };
 }
 export const QueryAccountAddressByIDRequest = {
-  encode(message: QueryAccountAddressByIDRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.id.isZero()) {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountAddressByIDRequest",
+  encode(message: QueryAccountAddressByIDRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.id !== BigInt(0)) {
       writer.uint32(8).int64(message.id);
     }
-    if (!message.accountId.isZero()) {
+    if (message.accountId !== BigInt(0)) {
       writer.uint32(16).uint64(message.accountId);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAccountAddressByIDRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAccountAddressByIDRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAccountAddressByIDRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = (reader.int64() as Long);
+          message.id = reader.int64();
           break;
         case 2:
-          message.accountId = (reader.uint64() as Long);
+          message.accountId = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1070,20 +1619,20 @@ export const QueryAccountAddressByIDRequest = {
   },
   fromJSON(object: any): QueryAccountAddressByIDRequest {
     return {
-      id: isSet(object.id) ? Long.fromValue(object.id) : Long.ZERO,
-      accountId: isSet(object.accountId) ? Long.fromValue(object.accountId) : Long.UZERO
+      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
+      accountId: isSet(object.accountId) ? BigInt(object.accountId.toString()) : BigInt(0)
     };
   },
   toJSON(message: QueryAccountAddressByIDRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || Long.ZERO).toString());
-    message.accountId !== undefined && (obj.accountId = (message.accountId || Long.UZERO).toString());
+    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
+    message.accountId !== undefined && (obj.accountId = (message.accountId || BigInt(0)).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<QueryAccountAddressByIDRequest>, I>>(object: I): QueryAccountAddressByIDRequest {
     const message = createBaseQueryAccountAddressByIDRequest();
-    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.ZERO;
-    message.accountId = object.accountId !== undefined && object.accountId !== null ? Long.fromValue(object.accountId) : Long.UZERO;
+    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
+    message.accountId = object.accountId !== undefined && object.accountId !== null ? BigInt(object.accountId.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: QueryAccountAddressByIDRequestSDKType): QueryAccountAddressByIDRequest {
@@ -1097,6 +1646,43 @@ export const QueryAccountAddressByIDRequest = {
     obj.id = message.id;
     obj.account_id = message.accountId;
     return obj;
+  },
+  fromAmino(object: QueryAccountAddressByIDRequestAmino): QueryAccountAddressByIDRequest {
+    const message = createBaseQueryAccountAddressByIDRequest();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = BigInt(object.id);
+    }
+    if (object.account_id !== undefined && object.account_id !== null) {
+      message.accountId = BigInt(object.account_id);
+    }
+    return message;
+  },
+  toAmino(message: QueryAccountAddressByIDRequest): QueryAccountAddressByIDRequestAmino {
+    const obj: any = {};
+    obj.id = message.id ? message.id.toString() : undefined;
+    obj.account_id = message.accountId ? message.accountId.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryAccountAddressByIDRequestAminoMsg): QueryAccountAddressByIDRequest {
+    return QueryAccountAddressByIDRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryAccountAddressByIDRequest): QueryAccountAddressByIDRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryAccountAddressByIDRequest",
+      value: QueryAccountAddressByIDRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryAccountAddressByIDRequestProtoMsg): QueryAccountAddressByIDRequest {
+    return QueryAccountAddressByIDRequest.decode(message.value);
+  },
+  toProto(message: QueryAccountAddressByIDRequest): Uint8Array {
+    return QueryAccountAddressByIDRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryAccountAddressByIDRequest): QueryAccountAddressByIDRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryAccountAddressByIDRequest",
+      value: QueryAccountAddressByIDRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryAccountAddressByIDResponse(): QueryAccountAddressByIDResponse {
@@ -1105,14 +1691,15 @@ function createBaseQueryAccountAddressByIDResponse(): QueryAccountAddressByIDRes
   };
 }
 export const QueryAccountAddressByIDResponse = {
-  encode(message: QueryAccountAddressByIDResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountAddressByIDResponse",
+  encode(message: QueryAccountAddressByIDResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.accountAddress !== "") {
       writer.uint32(10).string(message.accountAddress);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAccountAddressByIDResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAccountAddressByIDResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAccountAddressByIDResponse();
     while (reader.pos < end) {
@@ -1152,6 +1739,39 @@ export const QueryAccountAddressByIDResponse = {
     const obj: any = {};
     obj.account_address = message.accountAddress;
     return obj;
+  },
+  fromAmino(object: QueryAccountAddressByIDResponseAmino): QueryAccountAddressByIDResponse {
+    const message = createBaseQueryAccountAddressByIDResponse();
+    if (object.account_address !== undefined && object.account_address !== null) {
+      message.accountAddress = object.account_address;
+    }
+    return message;
+  },
+  toAmino(message: QueryAccountAddressByIDResponse): QueryAccountAddressByIDResponseAmino {
+    const obj: any = {};
+    obj.account_address = message.accountAddress;
+    return obj;
+  },
+  fromAminoMsg(object: QueryAccountAddressByIDResponseAminoMsg): QueryAccountAddressByIDResponse {
+    return QueryAccountAddressByIDResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryAccountAddressByIDResponse): QueryAccountAddressByIDResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryAccountAddressByIDResponse",
+      value: QueryAccountAddressByIDResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryAccountAddressByIDResponseProtoMsg): QueryAccountAddressByIDResponse {
+    return QueryAccountAddressByIDResponse.decode(message.value);
+  },
+  toProto(message: QueryAccountAddressByIDResponse): Uint8Array {
+    return QueryAccountAddressByIDResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryAccountAddressByIDResponse): QueryAccountAddressByIDResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryAccountAddressByIDResponse",
+      value: QueryAccountAddressByIDResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryAccountInfoRequest(): QueryAccountInfoRequest {
@@ -1160,14 +1780,15 @@ function createBaseQueryAccountInfoRequest(): QueryAccountInfoRequest {
   };
 }
 export const QueryAccountInfoRequest = {
-  encode(message: QueryAccountInfoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountInfoRequest",
+  encode(message: QueryAccountInfoRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAccountInfoRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAccountInfoRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAccountInfoRequest();
     while (reader.pos < end) {
@@ -1207,22 +1828,56 @@ export const QueryAccountInfoRequest = {
     const obj: any = {};
     obj.address = message.address;
     return obj;
+  },
+  fromAmino(object: QueryAccountInfoRequestAmino): QueryAccountInfoRequest {
+    const message = createBaseQueryAccountInfoRequest();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    return message;
+  },
+  toAmino(message: QueryAccountInfoRequest): QueryAccountInfoRequestAmino {
+    const obj: any = {};
+    obj.address = message.address;
+    return obj;
+  },
+  fromAminoMsg(object: QueryAccountInfoRequestAminoMsg): QueryAccountInfoRequest {
+    return QueryAccountInfoRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryAccountInfoRequest): QueryAccountInfoRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryAccountInfoRequest",
+      value: QueryAccountInfoRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryAccountInfoRequestProtoMsg): QueryAccountInfoRequest {
+    return QueryAccountInfoRequest.decode(message.value);
+  },
+  toProto(message: QueryAccountInfoRequest): Uint8Array {
+    return QueryAccountInfoRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryAccountInfoRequest): QueryAccountInfoRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryAccountInfoRequest",
+      value: QueryAccountInfoRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryAccountInfoResponse(): QueryAccountInfoResponse {
   return {
-    info: BaseAccount.fromPartial({})
+    info: undefined
   };
 }
 export const QueryAccountInfoResponse = {
-  encode(message: QueryAccountInfoResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.auth.v1beta1.QueryAccountInfoResponse",
+  encode(message: QueryAccountInfoResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.info !== undefined) {
       BaseAccount.encode(message.info, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAccountInfoResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAccountInfoResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAccountInfoResponse();
     while (reader.pos < end) {
@@ -1262,6 +1917,59 @@ export const QueryAccountInfoResponse = {
     const obj: any = {};
     message.info !== undefined && (obj.info = message.info ? BaseAccount.toSDK(message.info) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryAccountInfoResponseAmino): QueryAccountInfoResponse {
+    const message = createBaseQueryAccountInfoResponse();
+    if (object.info !== undefined && object.info !== null) {
+      message.info = BaseAccount.fromAmino(object.info);
+    }
+    return message;
+  },
+  toAmino(message: QueryAccountInfoResponse): QueryAccountInfoResponseAmino {
+    const obj: any = {};
+    obj.info = message.info ? BaseAccount.toAmino(message.info) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryAccountInfoResponseAminoMsg): QueryAccountInfoResponse {
+    return QueryAccountInfoResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryAccountInfoResponse): QueryAccountInfoResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryAccountInfoResponse",
+      value: QueryAccountInfoResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryAccountInfoResponseProtoMsg): QueryAccountInfoResponse {
+    return QueryAccountInfoResponse.decode(message.value);
+  },
+  toProto(message: QueryAccountInfoResponse): Uint8Array {
+    return QueryAccountInfoResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryAccountInfoResponse): QueryAccountInfoResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.auth.v1beta1.QueryAccountInfoResponse",
+      value: QueryAccountInfoResponse.encode(message).finish()
+    };
+  }
+};
+export const Cosmos_authv1beta1AccountI_InterfaceDecoder = (input: BinaryReader | Uint8Array): BaseAccount | Any => {
+  const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  const data = Any.decode(reader, reader.uint32(), true);
+  switch (data.typeUrl) {
+    case "/cosmos.auth.v1beta1.BaseAccount":
+      return BaseAccount.decode(data.value, undefined, true);
+    default:
+      return data;
+  }
+};
+export const Cosmos_authv1beta1ModuleAccountI_InterfaceDecoder = (input: BinaryReader | Uint8Array): ModuleAccount | Any => {
+  const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  const data = Any.decode(reader, reader.uint32(), true);
+  switch (data.typeUrl) {
+    case "/cosmos.auth.v1beta1.ModuleAccount":
+      return ModuleAccount.decode(data.value, undefined, true);
+    default:
+      return data;
   }
 };
 /** Query defines the gRPC querier service. */
@@ -1317,36 +2025,36 @@ export class QueryClientImpl implements Query {
   }): Promise<QueryAccountsResponse> {
     const data = QueryAccountsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.auth.v1beta1.Query", "Accounts", data);
-    return promise.then(data => QueryAccountsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryAccountsResponse.decode(new BinaryReader(data)));
   }
   Account(request: QueryAccountRequest): Promise<QueryAccountResponse> {
     const data = QueryAccountRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.auth.v1beta1.Query", "Account", data);
-    return promise.then(data => QueryAccountResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryAccountResponse.decode(new BinaryReader(data)));
   }
   AccountAddressByID(request: QueryAccountAddressByIDRequest): Promise<QueryAccountAddressByIDResponse> {
     const data = QueryAccountAddressByIDRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.auth.v1beta1.Query", "AccountAddressByID", data);
-    return promise.then(data => QueryAccountAddressByIDResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryAccountAddressByIDResponse.decode(new BinaryReader(data)));
   }
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.auth.v1beta1.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   ModuleAccounts(request: QueryModuleAccountsRequest = {}): Promise<QueryModuleAccountsResponse> {
     const data = QueryModuleAccountsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.auth.v1beta1.Query", "ModuleAccounts", data);
-    return promise.then(data => QueryModuleAccountsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryModuleAccountsResponse.decode(new BinaryReader(data)));
   }
   ModuleAccountByName(request: QueryModuleAccountByNameRequest): Promise<QueryModuleAccountByNameResponse> {
     const data = QueryModuleAccountByNameRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.auth.v1beta1.Query", "ModuleAccountByName", data);
-    return promise.then(data => QueryModuleAccountByNameResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryModuleAccountByNameResponse.decode(new BinaryReader(data)));
   }
   AccountInfo(request: QueryAccountInfoRequest): Promise<QueryAccountInfoResponse> {
     const data = QueryAccountInfoRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.auth.v1beta1.Query", "AccountInfo", data);
-    return promise.then(data => QueryAccountInfoResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryAccountInfoResponse.decode(new BinaryReader(data)));
   }
 }

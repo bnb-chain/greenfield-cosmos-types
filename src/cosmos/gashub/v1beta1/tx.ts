@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Params, ParamsSDKType, MsgGasParams, MsgGasParamsSDKType } from "./gashub";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.gashub.v1beta1";
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
@@ -15,6 +15,10 @@ export interface MsgUpdateParams {
    */
   params: Params;
 }
+export interface MsgUpdateParamsProtoMsg {
+  typeUrl: "/cosmos.gashub.v1beta1.MsgUpdateParams";
+  value: Uint8Array;
+}
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
@@ -25,6 +29,10 @@ export interface MsgUpdateParamsSDKType {
  * MsgUpdateParams message.
  */
 export interface MsgUpdateParamsResponse {}
+export interface MsgUpdateParamsResponseProtoMsg {
+  typeUrl: "/cosmos.gashub.v1beta1.MsgUpdateParamsResponse";
+  value: Uint8Array;
+}
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
  * MsgUpdateParams message.
@@ -48,6 +56,10 @@ export interface MsgSetMsgGasParams {
    */
   deleteSet: string[];
 }
+export interface MsgSetMsgGasParamsProtoMsg {
+  typeUrl: "/cosmos.gashub.v1beta1.MsgSetMsgGasParams";
+  value: Uint8Array;
+}
 /**
  * MsgSetMsgGasParams is the Msg/SetMsgGasParams request type.
  * 
@@ -62,6 +74,10 @@ export interface MsgSetMsgGasParamsSDKType {
 }
 /** MsgSetMsgGasParamsResponse defines the Msg/SetMsgGasParams response type. */
 export interface MsgSetMsgGasParamsResponse {}
+export interface MsgSetMsgGasParamsResponseProtoMsg {
+  typeUrl: "/cosmos.gashub.v1beta1.MsgSetMsgGasParamsResponse";
+  value: Uint8Array;
+}
 /** MsgSetMsgGasParamsResponse defines the Msg/SetMsgGasParams response type. */
 export interface MsgSetMsgGasParamsResponseSDKType {}
 function createBaseMsgUpdateParams(): MsgUpdateParams {
@@ -71,7 +87,8 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
   };
 }
 export const MsgUpdateParams = {
-  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.gashub.v1beta1.MsgUpdateParams",
+  encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -80,8 +97,8 @@ export const MsgUpdateParams = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParams();
     while (reader.pos < end) {
@@ -129,17 +146,55 @@ export const MsgUpdateParams = {
     obj.authority = message.authority;
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: MsgUpdateParamsAmino): MsgUpdateParams {
+    const message = createBaseMsgUpdateParams();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
+    const obj: any = {};
+    obj.authority = message.authority;
+    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateParamsAminoMsg): MsgUpdateParams {
+    return MsgUpdateParams.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUpdateParams): MsgUpdateParamsAminoMsg {
+    return {
+      type: "cosmos-sdk/x/gashub/MsgUpdateParams",
+      value: MsgUpdateParams.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgUpdateParamsProtoMsg): MsgUpdateParams {
+    return MsgUpdateParams.decode(message.value);
+  },
+  toProto(message: MsgUpdateParams): Uint8Array {
+    return MsgUpdateParams.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateParams): MsgUpdateParamsProtoMsg {
+    return {
+      typeUrl: "/cosmos.gashub.v1beta1.MsgUpdateParams",
+      value: MsgUpdateParams.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
-  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.gashub.v1beta1.MsgUpdateParamsResponse",
+  encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParamsResponse();
     while (reader.pos < end) {
@@ -169,6 +224,35 @@ export const MsgUpdateParamsResponse = {
   toSDK(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgUpdateParamsResponseAmino): MsgUpdateParamsResponse {
+    const message = createBaseMsgUpdateParamsResponse();
+    return message;
+  },
+  toAmino(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateParamsResponseAminoMsg): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgUpdateParamsResponse",
+      value: MsgUpdateParamsResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgUpdateParamsResponseProtoMsg): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.decode(message.value);
+  },
+  toProto(message: MsgUpdateParamsResponse): Uint8Array {
+    return MsgUpdateParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.gashub.v1beta1.MsgUpdateParamsResponse",
+      value: MsgUpdateParamsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgSetMsgGasParams(): MsgSetMsgGasParams {
@@ -179,7 +263,8 @@ function createBaseMsgSetMsgGasParams(): MsgSetMsgGasParams {
   };
 }
 export const MsgSetMsgGasParams = {
-  encode(message: MsgSetMsgGasParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.gashub.v1beta1.MsgSetMsgGasParams",
+  encode(message: MsgSetMsgGasParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -191,8 +276,8 @@ export const MsgSetMsgGasParams = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSetMsgGasParams {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgSetMsgGasParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSetMsgGasParams();
     while (reader.pos < end) {
@@ -264,17 +349,63 @@ export const MsgSetMsgGasParams = {
       obj.delete_set = [];
     }
     return obj;
+  },
+  fromAmino(object: MsgSetMsgGasParamsAmino): MsgSetMsgGasParams {
+    const message = createBaseMsgSetMsgGasParams();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    message.updateSet = object.update_set?.map(e => MsgGasParams.fromAmino(e)) || [];
+    message.deleteSet = object.delete_set?.map(e => e) || [];
+    return message;
+  },
+  toAmino(message: MsgSetMsgGasParams): MsgSetMsgGasParamsAmino {
+    const obj: any = {};
+    obj.authority = message.authority;
+    if (message.updateSet) {
+      obj.update_set = message.updateSet.map(e => e ? MsgGasParams.toAmino(e) : undefined);
+    } else {
+      obj.update_set = [];
+    }
+    if (message.deleteSet) {
+      obj.delete_set = message.deleteSet.map(e => e);
+    } else {
+      obj.delete_set = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: MsgSetMsgGasParamsAminoMsg): MsgSetMsgGasParams {
+    return MsgSetMsgGasParams.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgSetMsgGasParams): MsgSetMsgGasParamsAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgSetMsgGasParams",
+      value: MsgSetMsgGasParams.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgSetMsgGasParamsProtoMsg): MsgSetMsgGasParams {
+    return MsgSetMsgGasParams.decode(message.value);
+  },
+  toProto(message: MsgSetMsgGasParams): Uint8Array {
+    return MsgSetMsgGasParams.encode(message).finish();
+  },
+  toProtoMsg(message: MsgSetMsgGasParams): MsgSetMsgGasParamsProtoMsg {
+    return {
+      typeUrl: "/cosmos.gashub.v1beta1.MsgSetMsgGasParams",
+      value: MsgSetMsgGasParams.encode(message).finish()
+    };
   }
 };
 function createBaseMsgSetMsgGasParamsResponse(): MsgSetMsgGasParamsResponse {
   return {};
 }
 export const MsgSetMsgGasParamsResponse = {
-  encode(_: MsgSetMsgGasParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.gashub.v1beta1.MsgSetMsgGasParamsResponse",
+  encode(_: MsgSetMsgGasParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSetMsgGasParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgSetMsgGasParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSetMsgGasParamsResponse();
     while (reader.pos < end) {
@@ -304,6 +435,35 @@ export const MsgSetMsgGasParamsResponse = {
   toSDK(_: MsgSetMsgGasParamsResponse): MsgSetMsgGasParamsResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgSetMsgGasParamsResponseAmino): MsgSetMsgGasParamsResponse {
+    const message = createBaseMsgSetMsgGasParamsResponse();
+    return message;
+  },
+  toAmino(_: MsgSetMsgGasParamsResponse): MsgSetMsgGasParamsResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgSetMsgGasParamsResponseAminoMsg): MsgSetMsgGasParamsResponse {
+    return MsgSetMsgGasParamsResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgSetMsgGasParamsResponse): MsgSetMsgGasParamsResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgSetMsgGasParamsResponse",
+      value: MsgSetMsgGasParamsResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgSetMsgGasParamsResponseProtoMsg): MsgSetMsgGasParamsResponse {
+    return MsgSetMsgGasParamsResponse.decode(message.value);
+  },
+  toProto(message: MsgSetMsgGasParamsResponse): Uint8Array {
+    return MsgSetMsgGasParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgSetMsgGasParamsResponse): MsgSetMsgGasParamsResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.gashub.v1beta1.MsgSetMsgGasParamsResponse",
+      value: MsgSetMsgGasParamsResponse.encode(message).finish()
+    };
   }
 };
 /** Msg defines the gashub Msg service. */
@@ -331,11 +491,11 @@ export class MsgClientImpl implements Msg {
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("cosmos.gashub.v1beta1.Msg", "UpdateParams", data);
-    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
   }
   SetMsgGasParams(request: MsgSetMsgGasParams): Promise<MsgSetMsgGasParamsResponse> {
     const data = MsgSetMsgGasParams.encode(request).finish();
     const promise = this.rpc.request("cosmos.gashub.v1beta1.Msg", "SetMsgGasParams", data);
-    return promise.then(data => MsgSetMsgGasParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgSetMsgGasParamsResponse.decode(new BinaryReader(data)));
   }
 }

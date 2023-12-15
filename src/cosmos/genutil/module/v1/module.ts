@@ -1,21 +1,26 @@
 //@ts-nocheck
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { DeepPartial, Exact } from "../../../../helpers";
 export const protobufPackage = "cosmos.genutil.module.v1";
 /** Module is the config object for the genutil module. */
 export interface Module {}
+export interface ModuleProtoMsg {
+  typeUrl: "/cosmos.genutil.module.v1.Module";
+  value: Uint8Array;
+}
 /** Module is the config object for the genutil module. */
 export interface ModuleSDKType {}
 function createBaseModule(): Module {
   return {};
 }
 export const Module = {
-  encode(_: Module, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.genutil.module.v1.Module",
+  encode(_: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Module {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Module {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseModule();
     while (reader.pos < end) {
@@ -45,5 +50,34 @@ export const Module = {
   toSDK(_: Module): ModuleSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: ModuleAmino): Module {
+    const message = createBaseModule();
+    return message;
+  },
+  toAmino(_: Module): ModuleAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: ModuleAminoMsg): Module {
+    return Module.fromAmino(object.value);
+  },
+  toAminoMsg(message: Module): ModuleAminoMsg {
+    return {
+      type: "cosmos-sdk/Module",
+      value: Module.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: ModuleProtoMsg): Module {
+    return Module.decode(message.value);
+  },
+  toProto(message: Module): Uint8Array {
+    return Module.encode(message).finish();
+  },
+  toProtoMsg(message: Module): ModuleProtoMsg {
+    return {
+      typeUrl: "/cosmos.genutil.module.v1.Module",
+      value: Module.encode(message).finish()
+    };
   }
 };

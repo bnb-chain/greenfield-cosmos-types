@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { Params, ParamsSDKType } from "./params";
 import { StorageProvider, StorageProviderSDKType, SpStoragePrice, SpStoragePriceSDKType } from "./types";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.sp";
 /** GenesisState defines the sp module's genesis state. */
@@ -11,6 +11,10 @@ export interface GenesisState {
   /** this used by starport scaffolding # genesis/proto/state */
   storageProviders: StorageProvider[];
   spStoragePriceList: SpStoragePrice[];
+}
+export interface GenesisStateProtoMsg {
+  typeUrl: "/greenfield.sp.GenesisState";
+  value: Uint8Array;
 }
 /** GenesisState defines the sp module's genesis state. */
 export interface GenesisStateSDKType {
@@ -26,7 +30,8 @@ function createBaseGenesisState(): GenesisState {
   };
 }
 export const GenesisState = {
-  encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.GenesisState",
+  encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
@@ -38,8 +43,8 @@ export const GenesisState = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GenesisState {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
@@ -111,5 +116,44 @@ export const GenesisState = {
       obj.sp_storage_price_list = [];
     }
     return obj;
+  },
+  fromAmino(object: GenesisStateAmino): GenesisState {
+    const message = createBaseGenesisState();
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    message.storageProviders = object.storage_providers?.map(e => StorageProvider.fromAmino(e)) || [];
+    message.spStoragePriceList = object.sp_storage_price_list?.map(e => SpStoragePrice.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: GenesisState): GenesisStateAmino {
+    const obj: any = {};
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    if (message.storageProviders) {
+      obj.storage_providers = message.storageProviders.map(e => e ? StorageProvider.toAmino(e) : undefined);
+    } else {
+      obj.storage_providers = [];
+    }
+    if (message.spStoragePriceList) {
+      obj.sp_storage_price_list = message.spStoragePriceList.map(e => e ? SpStoragePrice.toAmino(e) : undefined);
+    } else {
+      obj.sp_storage_price_list = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {
+    return GenesisState.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
+    return GenesisState.decode(message.value);
+  },
+  toProto(message: GenesisState): Uint8Array {
+    return GenesisState.encode(message).finish();
+  },
+  toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.GenesisState",
+      value: GenesisState.encode(message).finish()
+    };
   }
 };

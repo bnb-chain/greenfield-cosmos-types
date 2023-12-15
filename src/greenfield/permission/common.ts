@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import { UInt64Value, UInt64ValueSDKType } from "../common/wrapper";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.permission";
 /** ActionType defines the operations you can execute in greenfield storage network */
@@ -209,6 +209,10 @@ export interface Statement {
   /** limit_size defines the total data size that is allowed to operate. If not explicitly specified, it means it will not limit. */
   limitSize?: UInt64Value;
 }
+export interface StatementProtoMsg {
+  typeUrl: "/greenfield.permission.Statement";
+  value: Uint8Array;
+}
 export interface StatementSDKType {
   effect: Effect;
   actions: ActionType[];
@@ -225,6 +229,10 @@ export interface Principal {
    */
   value: string;
 }
+export interface PrincipalProtoMsg {
+  typeUrl: "/greenfield.permission.Principal";
+  value: Uint8Array;
+}
 /** Principal define the roles that can be grant permissions to. Currently, it can be account or group. */
 export interface PrincipalSDKType {
   type: PrincipalType;
@@ -240,7 +248,8 @@ function createBaseStatement(): Statement {
   };
 }
 export const Statement = {
-  encode(message: Statement, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.permission.Statement",
+  encode(message: Statement, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.effect !== 0) {
       writer.uint32(8).int32(message.effect);
     }
@@ -260,8 +269,8 @@ export const Statement = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Statement {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Statement {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStatement();
     while (reader.pos < end) {
@@ -356,6 +365,53 @@ export const Statement = {
     message.expirationTime !== undefined && (obj.expiration_time = message.expirationTime ? Timestamp.toSDK(message.expirationTime) : undefined);
     message.limitSize !== undefined && (obj.limit_size = message.limitSize ? UInt64Value.toSDK(message.limitSize) : undefined);
     return obj;
+  },
+  fromAmino(object: StatementAmino): Statement {
+    const message = createBaseStatement();
+    if (object.effect !== undefined && object.effect !== null) {
+      message.effect = effectFromJSON(object.effect);
+    }
+    message.actions = object.actions?.map(e => actionTypeFromJSON(e)) || [];
+    message.resources = object.resources?.map(e => e) || [];
+    if (object.expiration_time !== undefined && object.expiration_time !== null) {
+      message.expirationTime = Timestamp.fromAmino(object.expiration_time);
+    }
+    if (object.limit_size !== undefined && object.limit_size !== null) {
+      message.limitSize = UInt64Value.fromAmino(object.limit_size);
+    }
+    return message;
+  },
+  toAmino(message: Statement): StatementAmino {
+    const obj: any = {};
+    obj.effect = effectToJSON(message.effect);
+    if (message.actions) {
+      obj.actions = message.actions.map(e => actionTypeToJSON(e));
+    } else {
+      obj.actions = [];
+    }
+    if (message.resources) {
+      obj.resources = message.resources.map(e => e);
+    } else {
+      obj.resources = [];
+    }
+    obj.expiration_time = message.expirationTime ? Timestamp.toAmino(message.expirationTime) : undefined;
+    obj.limit_size = message.limitSize ? UInt64Value.toAmino(message.limitSize) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: StatementAminoMsg): Statement {
+    return Statement.fromAmino(object.value);
+  },
+  fromProtoMsg(message: StatementProtoMsg): Statement {
+    return Statement.decode(message.value);
+  },
+  toProto(message: Statement): Uint8Array {
+    return Statement.encode(message).finish();
+  },
+  toProtoMsg(message: Statement): StatementProtoMsg {
+    return {
+      typeUrl: "/greenfield.permission.Statement",
+      value: Statement.encode(message).finish()
+    };
   }
 };
 function createBasePrincipal(): Principal {
@@ -365,7 +421,8 @@ function createBasePrincipal(): Principal {
   };
 }
 export const Principal = {
-  encode(message: Principal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.permission.Principal",
+  encode(message: Principal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.type !== 0) {
       writer.uint32(8).int32(message.type);
     }
@@ -374,8 +431,8 @@ export const Principal = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Principal {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Principal {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePrincipal();
     while (reader.pos < end) {
@@ -423,5 +480,36 @@ export const Principal = {
     message.type !== undefined && (obj.type = principalTypeToJSON(message.type));
     obj.value = message.value;
     return obj;
+  },
+  fromAmino(object: PrincipalAmino): Principal {
+    const message = createBasePrincipal();
+    if (object.type !== undefined && object.type !== null) {
+      message.type = principalTypeFromJSON(object.type);
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    }
+    return message;
+  },
+  toAmino(message: Principal): PrincipalAmino {
+    const obj: any = {};
+    obj.type = principalTypeToJSON(message.type);
+    obj.value = message.value;
+    return obj;
+  },
+  fromAminoMsg(object: PrincipalAminoMsg): Principal {
+    return Principal.fromAmino(object.value);
+  },
+  fromProtoMsg(message: PrincipalProtoMsg): Principal {
+    return Principal.decode(message.value);
+  },
+  toProto(message: Principal): Uint8Array {
+    return Principal.encode(message).finish();
+  },
+  toProtoMsg(message: Principal): PrincipalProtoMsg {
+    return {
+      typeUrl: "/greenfield.permission.Principal",
+      value: Principal.encode(message).finish()
+    };
   }
 };

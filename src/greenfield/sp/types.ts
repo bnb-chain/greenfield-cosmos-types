@@ -1,8 +1,9 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
-import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
+import { Decimal } from "@cosmjs/math";
 export const protobufPackage = "greenfield.sp";
 /** Status is the status of a storage provider. */
 export enum Status {
@@ -61,6 +62,10 @@ export interface Description {
   /** details define other optional details. */
   details: string;
 }
+export interface DescriptionProtoMsg {
+  typeUrl: "/greenfield.sp.Description";
+  value: Uint8Array;
+}
 /** Description defines a storage provider description. */
 export interface DescriptionSDKType {
   moniker: string;
@@ -96,6 +101,10 @@ export interface StorageProvider {
   /** bls_key defines the bls pub key of the Storage provider for sealing object and completing migration */
   blsKey: Uint8Array;
 }
+export interface StorageProviderProtoMsg {
+  typeUrl: "/greenfield.sp.StorageProvider";
+  value: Uint8Array;
+}
 /** StorageProvider defines the meta info of storage provider */
 export interface StorageProviderSDKType {
   id: number;
@@ -115,6 +124,10 @@ export interface RewardInfo {
   address: string;
   amount: Coin;
 }
+export interface RewardInfoProtoMsg {
+  typeUrl: "/greenfield.sp.RewardInfo";
+  value: Uint8Array;
+}
 export interface RewardInfoSDKType {
   address: string;
   amount: CoinSDKType;
@@ -124,26 +137,30 @@ export interface SpStoragePrice {
   /** sp id */
   spId: number;
   /** update time, unix timestamp in seconds */
-  updateTimeSec: Long;
+  updateTimeSec: bigint;
   /** read price, in bnb wei per charge byte */
   readPrice: string;
   /** free read quota, in byte */
-  freeReadQuota: Long;
+  freeReadQuota: bigint;
   /** store price, in bnb wei per charge byte */
   storePrice: string;
+}
+export interface SpStoragePriceProtoMsg {
+  typeUrl: "/greenfield.sp.SpStoragePrice";
+  value: Uint8Array;
 }
 /** storage price of a specific sp */
 export interface SpStoragePriceSDKType {
   sp_id: number;
-  update_time_sec: Long;
+  update_time_sec: bigint;
   read_price: string;
-  free_read_quota: Long;
+  free_read_quota: bigint;
   store_price: string;
 }
 /** global sp store price, the price for all sps */
 export interface GlobalSpStorePrice {
   /** update time, unix timestamp in seconds */
-  updateTimeSec: Long;
+  updateTimeSec: bigint;
   /** read price, in bnb wei per charge byte */
   readPrice: string;
   /** primary store price, in bnb wei per charge byte */
@@ -151,9 +168,13 @@ export interface GlobalSpStorePrice {
   /** secondary store price, in bnb wei per charge byte */
   secondaryStorePrice: string;
 }
+export interface GlobalSpStorePriceProtoMsg {
+  typeUrl: "/greenfield.sp.GlobalSpStorePrice";
+  value: Uint8Array;
+}
 /** global sp store price, the price for all sps */
 export interface GlobalSpStorePriceSDKType {
-  update_time_sec: Long;
+  update_time_sec: bigint;
   read_price: string;
   primary_store_price: string;
   secondary_store_price: string;
@@ -161,26 +182,34 @@ export interface GlobalSpStorePriceSDKType {
 export interface SpMaintenanceStats {
   records: MaintenanceRecord[];
 }
+export interface SpMaintenanceStatsProtoMsg {
+  typeUrl: "/greenfield.sp.SpMaintenanceStats";
+  value: Uint8Array;
+}
 export interface SpMaintenanceStatsSDKType {
   records: MaintenanceRecordSDKType[];
 }
 /** MaintenanceRecord is to keep track of every time a sp request to be in Maintenance mode */
 export interface MaintenanceRecord {
   /** block height that request to be in Maintenance mode */
-  height: Long;
+  height: bigint;
   /** request duration */
-  requestDuration: Long;
+  requestDuration: bigint;
   /** actual duration */
-  actualDuration: Long;
+  actualDuration: bigint;
   /** request timestamp */
-  requestAt: Long;
+  requestAt: bigint;
+}
+export interface MaintenanceRecordProtoMsg {
+  typeUrl: "/greenfield.sp.MaintenanceRecord";
+  value: Uint8Array;
 }
 /** MaintenanceRecord is to keep track of every time a sp request to be in Maintenance mode */
 export interface MaintenanceRecordSDKType {
-  height: Long;
-  request_duration: Long;
-  actual_duration: Long;
-  request_at: Long;
+  height: bigint;
+  request_duration: bigint;
+  actual_duration: bigint;
+  request_at: bigint;
 }
 function createBaseDescription(): Description {
   return {
@@ -192,7 +221,8 @@ function createBaseDescription(): Description {
   };
 }
 export const Description = {
-  encode(message: Description, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.Description",
+  encode(message: Description, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.moniker !== "") {
       writer.uint32(10).string(message.moniker);
     }
@@ -210,8 +240,8 @@ export const Description = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Description {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Description {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDescription();
     while (reader.pos < end) {
@@ -283,6 +313,49 @@ export const Description = {
     obj.security_contact = message.securityContact;
     obj.details = message.details;
     return obj;
+  },
+  fromAmino(object: DescriptionAmino): Description {
+    const message = createBaseDescription();
+    if (object.moniker !== undefined && object.moniker !== null) {
+      message.moniker = object.moniker;
+    }
+    if (object.identity !== undefined && object.identity !== null) {
+      message.identity = object.identity;
+    }
+    if (object.website !== undefined && object.website !== null) {
+      message.website = object.website;
+    }
+    if (object.security_contact !== undefined && object.security_contact !== null) {
+      message.securityContact = object.security_contact;
+    }
+    if (object.details !== undefined && object.details !== null) {
+      message.details = object.details;
+    }
+    return message;
+  },
+  toAmino(message: Description): DescriptionAmino {
+    const obj: any = {};
+    obj.moniker = message.moniker;
+    obj.identity = message.identity;
+    obj.website = message.website;
+    obj.security_contact = message.securityContact;
+    obj.details = message.details;
+    return obj;
+  },
+  fromAminoMsg(object: DescriptionAminoMsg): Description {
+    return Description.fromAmino(object.value);
+  },
+  fromProtoMsg(message: DescriptionProtoMsg): Description {
+    return Description.decode(message.value);
+  },
+  toProto(message: Description): Uint8Array {
+    return Description.encode(message).finish();
+  },
+  toProtoMsg(message: Description): DescriptionProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.Description",
+      value: Description.encode(message).finish()
+    };
   }
 };
 function createBaseStorageProvider(): StorageProvider {
@@ -302,7 +375,8 @@ function createBaseStorageProvider(): StorageProvider {
   };
 }
 export const StorageProvider = {
-  encode(message: StorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.StorageProvider",
+  encode(message: StorageProvider, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id);
     }
@@ -341,8 +415,8 @@ export const StorageProvider = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): StorageProvider {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): StorageProvider {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStorageProvider();
     while (reader.pos < end) {
@@ -470,6 +544,77 @@ export const StorageProvider = {
     message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
     obj.bls_key = message.blsKey;
     return obj;
+  },
+  fromAmino(object: StorageProviderAmino): StorageProvider {
+    const message = createBaseStorageProvider();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.operator_address !== undefined && object.operator_address !== null) {
+      message.operatorAddress = object.operator_address;
+    }
+    if (object.funding_address !== undefined && object.funding_address !== null) {
+      message.fundingAddress = object.funding_address;
+    }
+    if (object.seal_address !== undefined && object.seal_address !== null) {
+      message.sealAddress = object.seal_address;
+    }
+    if (object.approval_address !== undefined && object.approval_address !== null) {
+      message.approvalAddress = object.approval_address;
+    }
+    if (object.gc_address !== undefined && object.gc_address !== null) {
+      message.gcAddress = object.gc_address;
+    }
+    if (object.maintenance_address !== undefined && object.maintenance_address !== null) {
+      message.maintenanceAddress = object.maintenance_address;
+    }
+    if (object.total_deposit !== undefined && object.total_deposit !== null) {
+      message.totalDeposit = object.total_deposit;
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = statusFromJSON(object.status);
+    }
+    if (object.endpoint !== undefined && object.endpoint !== null) {
+      message.endpoint = object.endpoint;
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = Description.fromAmino(object.description);
+    }
+    if (object.bls_key !== undefined && object.bls_key !== null) {
+      message.blsKey = bytesFromBase64(object.bls_key);
+    }
+    return message;
+  },
+  toAmino(message: StorageProvider): StorageProviderAmino {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.operator_address = message.operatorAddress;
+    obj.funding_address = message.fundingAddress;
+    obj.seal_address = message.sealAddress;
+    obj.approval_address = message.approvalAddress;
+    obj.gc_address = message.gcAddress;
+    obj.maintenance_address = message.maintenanceAddress;
+    obj.total_deposit = message.totalDeposit;
+    obj.status = statusToJSON(message.status);
+    obj.endpoint = message.endpoint;
+    obj.description = message.description ? Description.toAmino(message.description) : undefined;
+    obj.bls_key = message.blsKey ? base64FromBytes(message.blsKey) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: StorageProviderAminoMsg): StorageProvider {
+    return StorageProvider.fromAmino(object.value);
+  },
+  fromProtoMsg(message: StorageProviderProtoMsg): StorageProvider {
+    return StorageProvider.decode(message.value);
+  },
+  toProto(message: StorageProvider): Uint8Array {
+    return StorageProvider.encode(message).finish();
+  },
+  toProtoMsg(message: StorageProvider): StorageProviderProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.StorageProvider",
+      value: StorageProvider.encode(message).finish()
+    };
   }
 };
 function createBaseRewardInfo(): RewardInfo {
@@ -479,7 +624,8 @@ function createBaseRewardInfo(): RewardInfo {
   };
 }
 export const RewardInfo = {
-  encode(message: RewardInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.RewardInfo",
+  encode(message: RewardInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
@@ -488,8 +634,8 @@ export const RewardInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): RewardInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): RewardInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRewardInfo();
     while (reader.pos < end) {
@@ -537,38 +683,70 @@ export const RewardInfo = {
     obj.address = message.address;
     message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
     return obj;
+  },
+  fromAmino(object: RewardInfoAmino): RewardInfo {
+    const message = createBaseRewardInfo();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = Coin.fromAmino(object.amount);
+    }
+    return message;
+  },
+  toAmino(message: RewardInfo): RewardInfoAmino {
+    const obj: any = {};
+    obj.address = message.address;
+    obj.amount = message.amount ? Coin.toAmino(message.amount) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: RewardInfoAminoMsg): RewardInfo {
+    return RewardInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: RewardInfoProtoMsg): RewardInfo {
+    return RewardInfo.decode(message.value);
+  },
+  toProto(message: RewardInfo): Uint8Array {
+    return RewardInfo.encode(message).finish();
+  },
+  toProtoMsg(message: RewardInfo): RewardInfoProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.RewardInfo",
+      value: RewardInfo.encode(message).finish()
+    };
   }
 };
 function createBaseSpStoragePrice(): SpStoragePrice {
   return {
     spId: 0,
-    updateTimeSec: Long.ZERO,
+    updateTimeSec: BigInt(0),
     readPrice: "",
-    freeReadQuota: Long.UZERO,
+    freeReadQuota: BigInt(0),
     storePrice: ""
   };
 }
 export const SpStoragePrice = {
-  encode(message: SpStoragePrice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.SpStoragePrice",
+  encode(message: SpStoragePrice, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.spId !== 0) {
       writer.uint32(8).uint32(message.spId);
     }
-    if (!message.updateTimeSec.isZero()) {
+    if (message.updateTimeSec !== BigInt(0)) {
       writer.uint32(16).int64(message.updateTimeSec);
     }
     if (message.readPrice !== "") {
-      writer.uint32(26).string(message.readPrice);
+      writer.uint32(26).string(Decimal.fromUserInput(message.readPrice, 18).atomics);
     }
-    if (!message.freeReadQuota.isZero()) {
+    if (message.freeReadQuota !== BigInt(0)) {
       writer.uint32(32).uint64(message.freeReadQuota);
     }
     if (message.storePrice !== "") {
-      writer.uint32(42).string(message.storePrice);
+      writer.uint32(42).string(Decimal.fromUserInput(message.storePrice, 18).atomics);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SpStoragePrice {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SpStoragePrice {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSpStoragePrice();
     while (reader.pos < end) {
@@ -578,16 +756,16 @@ export const SpStoragePrice = {
           message.spId = reader.uint32();
           break;
         case 2:
-          message.updateTimeSec = (reader.int64() as Long);
+          message.updateTimeSec = reader.int64();
           break;
         case 3:
-          message.readPrice = reader.string();
+          message.readPrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 4:
-          message.freeReadQuota = (reader.uint64() as Long);
+          message.freeReadQuota = reader.uint64();
           break;
         case 5:
-          message.storePrice = reader.string();
+          message.storePrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -599,27 +777,27 @@ export const SpStoragePrice = {
   fromJSON(object: any): SpStoragePrice {
     return {
       spId: isSet(object.spId) ? Number(object.spId) : 0,
-      updateTimeSec: isSet(object.updateTimeSec) ? Long.fromValue(object.updateTimeSec) : Long.ZERO,
+      updateTimeSec: isSet(object.updateTimeSec) ? BigInt(object.updateTimeSec.toString()) : BigInt(0),
       readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
-      freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
+      freeReadQuota: isSet(object.freeReadQuota) ? BigInt(object.freeReadQuota.toString()) : BigInt(0),
       storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
     };
   },
   toJSON(message: SpStoragePrice): unknown {
     const obj: any = {};
     message.spId !== undefined && (obj.spId = Math.round(message.spId));
-    message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || Long.ZERO).toString());
+    message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || BigInt(0)).toString());
     message.readPrice !== undefined && (obj.readPrice = message.readPrice);
-    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
+    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || BigInt(0)).toString());
     message.storePrice !== undefined && (obj.storePrice = message.storePrice);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<SpStoragePrice>, I>>(object: I): SpStoragePrice {
     const message = createBaseSpStoragePrice();
     message.spId = object.spId ?? 0;
-    message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? Long.fromValue(object.updateTimeSec) : Long.ZERO;
+    message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? BigInt(object.updateTimeSec.toString()) : BigInt(0);
     message.readPrice = object.readPrice ?? "";
-    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
+    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? BigInt(object.freeReadQuota.toString()) : BigInt(0);
     message.storePrice = object.storePrice ?? "";
     return message;
   },
@@ -640,50 +818,94 @@ export const SpStoragePrice = {
     obj.free_read_quota = message.freeReadQuota;
     obj.store_price = message.storePrice;
     return obj;
+  },
+  fromAmino(object: SpStoragePriceAmino): SpStoragePrice {
+    const message = createBaseSpStoragePrice();
+    if (object.sp_id !== undefined && object.sp_id !== null) {
+      message.spId = object.sp_id;
+    }
+    if (object.update_time_sec !== undefined && object.update_time_sec !== null) {
+      message.updateTimeSec = BigInt(object.update_time_sec);
+    }
+    if (object.read_price !== undefined && object.read_price !== null) {
+      message.readPrice = object.read_price;
+    }
+    if (object.free_read_quota !== undefined && object.free_read_quota !== null) {
+      message.freeReadQuota = BigInt(object.free_read_quota);
+    }
+    if (object.store_price !== undefined && object.store_price !== null) {
+      message.storePrice = object.store_price;
+    }
+    return message;
+  },
+  toAmino(message: SpStoragePrice): SpStoragePriceAmino {
+    const obj: any = {};
+    obj.sp_id = message.spId;
+    obj.update_time_sec = message.updateTimeSec ? message.updateTimeSec.toString() : undefined;
+    obj.read_price = message.readPrice;
+    obj.free_read_quota = message.freeReadQuota ? message.freeReadQuota.toString() : undefined;
+    obj.store_price = message.storePrice;
+    return obj;
+  },
+  fromAminoMsg(object: SpStoragePriceAminoMsg): SpStoragePrice {
+    return SpStoragePrice.fromAmino(object.value);
+  },
+  fromProtoMsg(message: SpStoragePriceProtoMsg): SpStoragePrice {
+    return SpStoragePrice.decode(message.value);
+  },
+  toProto(message: SpStoragePrice): Uint8Array {
+    return SpStoragePrice.encode(message).finish();
+  },
+  toProtoMsg(message: SpStoragePrice): SpStoragePriceProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.SpStoragePrice",
+      value: SpStoragePrice.encode(message).finish()
+    };
   }
 };
 function createBaseGlobalSpStorePrice(): GlobalSpStorePrice {
   return {
-    updateTimeSec: Long.ZERO,
+    updateTimeSec: BigInt(0),
     readPrice: "",
     primaryStorePrice: "",
     secondaryStorePrice: ""
   };
 }
 export const GlobalSpStorePrice = {
-  encode(message: GlobalSpStorePrice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.updateTimeSec.isZero()) {
+  typeUrl: "/greenfield.sp.GlobalSpStorePrice",
+  encode(message: GlobalSpStorePrice, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.updateTimeSec !== BigInt(0)) {
       writer.uint32(8).int64(message.updateTimeSec);
     }
     if (message.readPrice !== "") {
-      writer.uint32(18).string(message.readPrice);
+      writer.uint32(18).string(Decimal.fromUserInput(message.readPrice, 18).atomics);
     }
     if (message.primaryStorePrice !== "") {
-      writer.uint32(26).string(message.primaryStorePrice);
+      writer.uint32(26).string(Decimal.fromUserInput(message.primaryStorePrice, 18).atomics);
     }
     if (message.secondaryStorePrice !== "") {
-      writer.uint32(34).string(message.secondaryStorePrice);
+      writer.uint32(34).string(Decimal.fromUserInput(message.secondaryStorePrice, 18).atomics);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GlobalSpStorePrice {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GlobalSpStorePrice {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGlobalSpStorePrice();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.updateTimeSec = (reader.int64() as Long);
+          message.updateTimeSec = reader.int64();
           break;
         case 2:
-          message.readPrice = reader.string();
+          message.readPrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 3:
-          message.primaryStorePrice = reader.string();
+          message.primaryStorePrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 4:
-          message.secondaryStorePrice = reader.string();
+          message.secondaryStorePrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -694,7 +916,7 @@ export const GlobalSpStorePrice = {
   },
   fromJSON(object: any): GlobalSpStorePrice {
     return {
-      updateTimeSec: isSet(object.updateTimeSec) ? Long.fromValue(object.updateTimeSec) : Long.ZERO,
+      updateTimeSec: isSet(object.updateTimeSec) ? BigInt(object.updateTimeSec.toString()) : BigInt(0),
       readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
       primaryStorePrice: isSet(object.primaryStorePrice) ? String(object.primaryStorePrice) : "",
       secondaryStorePrice: isSet(object.secondaryStorePrice) ? String(object.secondaryStorePrice) : ""
@@ -702,7 +924,7 @@ export const GlobalSpStorePrice = {
   },
   toJSON(message: GlobalSpStorePrice): unknown {
     const obj: any = {};
-    message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || Long.ZERO).toString());
+    message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || BigInt(0)).toString());
     message.readPrice !== undefined && (obj.readPrice = message.readPrice);
     message.primaryStorePrice !== undefined && (obj.primaryStorePrice = message.primaryStorePrice);
     message.secondaryStorePrice !== undefined && (obj.secondaryStorePrice = message.secondaryStorePrice);
@@ -710,7 +932,7 @@ export const GlobalSpStorePrice = {
   },
   fromPartial<I extends Exact<DeepPartial<GlobalSpStorePrice>, I>>(object: I): GlobalSpStorePrice {
     const message = createBaseGlobalSpStorePrice();
-    message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? Long.fromValue(object.updateTimeSec) : Long.ZERO;
+    message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? BigInt(object.updateTimeSec.toString()) : BigInt(0);
     message.readPrice = object.readPrice ?? "";
     message.primaryStorePrice = object.primaryStorePrice ?? "";
     message.secondaryStorePrice = object.secondaryStorePrice ?? "";
@@ -731,6 +953,45 @@ export const GlobalSpStorePrice = {
     obj.primary_store_price = message.primaryStorePrice;
     obj.secondary_store_price = message.secondaryStorePrice;
     return obj;
+  },
+  fromAmino(object: GlobalSpStorePriceAmino): GlobalSpStorePrice {
+    const message = createBaseGlobalSpStorePrice();
+    if (object.update_time_sec !== undefined && object.update_time_sec !== null) {
+      message.updateTimeSec = BigInt(object.update_time_sec);
+    }
+    if (object.read_price !== undefined && object.read_price !== null) {
+      message.readPrice = object.read_price;
+    }
+    if (object.primary_store_price !== undefined && object.primary_store_price !== null) {
+      message.primaryStorePrice = object.primary_store_price;
+    }
+    if (object.secondary_store_price !== undefined && object.secondary_store_price !== null) {
+      message.secondaryStorePrice = object.secondary_store_price;
+    }
+    return message;
+  },
+  toAmino(message: GlobalSpStorePrice): GlobalSpStorePriceAmino {
+    const obj: any = {};
+    obj.update_time_sec = message.updateTimeSec ? message.updateTimeSec.toString() : undefined;
+    obj.read_price = message.readPrice;
+    obj.primary_store_price = message.primaryStorePrice;
+    obj.secondary_store_price = message.secondaryStorePrice;
+    return obj;
+  },
+  fromAminoMsg(object: GlobalSpStorePriceAminoMsg): GlobalSpStorePrice {
+    return GlobalSpStorePrice.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GlobalSpStorePriceProtoMsg): GlobalSpStorePrice {
+    return GlobalSpStorePrice.decode(message.value);
+  },
+  toProto(message: GlobalSpStorePrice): Uint8Array {
+    return GlobalSpStorePrice.encode(message).finish();
+  },
+  toProtoMsg(message: GlobalSpStorePrice): GlobalSpStorePriceProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.GlobalSpStorePrice",
+      value: GlobalSpStorePrice.encode(message).finish()
+    };
   }
 };
 function createBaseSpMaintenanceStats(): SpMaintenanceStats {
@@ -739,14 +1000,15 @@ function createBaseSpMaintenanceStats(): SpMaintenanceStats {
   };
 }
 export const SpMaintenanceStats = {
-  encode(message: SpMaintenanceStats, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.SpMaintenanceStats",
+  encode(message: SpMaintenanceStats, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.records) {
       MaintenanceRecord.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SpMaintenanceStats {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SpMaintenanceStats {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSpMaintenanceStats();
     while (reader.pos < end) {
@@ -794,50 +1056,80 @@ export const SpMaintenanceStats = {
       obj.records = [];
     }
     return obj;
+  },
+  fromAmino(object: SpMaintenanceStatsAmino): SpMaintenanceStats {
+    const message = createBaseSpMaintenanceStats();
+    message.records = object.records?.map(e => MaintenanceRecord.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: SpMaintenanceStats): SpMaintenanceStatsAmino {
+    const obj: any = {};
+    if (message.records) {
+      obj.records = message.records.map(e => e ? MaintenanceRecord.toAmino(e) : undefined);
+    } else {
+      obj.records = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: SpMaintenanceStatsAminoMsg): SpMaintenanceStats {
+    return SpMaintenanceStats.fromAmino(object.value);
+  },
+  fromProtoMsg(message: SpMaintenanceStatsProtoMsg): SpMaintenanceStats {
+    return SpMaintenanceStats.decode(message.value);
+  },
+  toProto(message: SpMaintenanceStats): Uint8Array {
+    return SpMaintenanceStats.encode(message).finish();
+  },
+  toProtoMsg(message: SpMaintenanceStats): SpMaintenanceStatsProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.SpMaintenanceStats",
+      value: SpMaintenanceStats.encode(message).finish()
+    };
   }
 };
 function createBaseMaintenanceRecord(): MaintenanceRecord {
   return {
-    height: Long.ZERO,
-    requestDuration: Long.ZERO,
-    actualDuration: Long.ZERO,
-    requestAt: Long.ZERO
+    height: BigInt(0),
+    requestDuration: BigInt(0),
+    actualDuration: BigInt(0),
+    requestAt: BigInt(0)
   };
 }
 export const MaintenanceRecord = {
-  encode(message: MaintenanceRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.height.isZero()) {
+  typeUrl: "/greenfield.sp.MaintenanceRecord",
+  encode(message: MaintenanceRecord, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.height !== BigInt(0)) {
       writer.uint32(8).int64(message.height);
     }
-    if (!message.requestDuration.isZero()) {
+    if (message.requestDuration !== BigInt(0)) {
       writer.uint32(16).int64(message.requestDuration);
     }
-    if (!message.actualDuration.isZero()) {
+    if (message.actualDuration !== BigInt(0)) {
       writer.uint32(24).int64(message.actualDuration);
     }
-    if (!message.requestAt.isZero()) {
+    if (message.requestAt !== BigInt(0)) {
       writer.uint32(32).int64(message.requestAt);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MaintenanceRecord {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MaintenanceRecord {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMaintenanceRecord();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.height = (reader.int64() as Long);
+          message.height = reader.int64();
           break;
         case 2:
-          message.requestDuration = (reader.int64() as Long);
+          message.requestDuration = reader.int64();
           break;
         case 3:
-          message.actualDuration = (reader.int64() as Long);
+          message.actualDuration = reader.int64();
           break;
         case 4:
-          message.requestAt = (reader.int64() as Long);
+          message.requestAt = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -848,26 +1140,26 @@ export const MaintenanceRecord = {
   },
   fromJSON(object: any): MaintenanceRecord {
     return {
-      height: isSet(object.height) ? Long.fromValue(object.height) : Long.ZERO,
-      requestDuration: isSet(object.requestDuration) ? Long.fromValue(object.requestDuration) : Long.ZERO,
-      actualDuration: isSet(object.actualDuration) ? Long.fromValue(object.actualDuration) : Long.ZERO,
-      requestAt: isSet(object.requestAt) ? Long.fromValue(object.requestAt) : Long.ZERO
+      height: isSet(object.height) ? BigInt(object.height.toString()) : BigInt(0),
+      requestDuration: isSet(object.requestDuration) ? BigInt(object.requestDuration.toString()) : BigInt(0),
+      actualDuration: isSet(object.actualDuration) ? BigInt(object.actualDuration.toString()) : BigInt(0),
+      requestAt: isSet(object.requestAt) ? BigInt(object.requestAt.toString()) : BigInt(0)
     };
   },
   toJSON(message: MaintenanceRecord): unknown {
     const obj: any = {};
-    message.height !== undefined && (obj.height = (message.height || Long.ZERO).toString());
-    message.requestDuration !== undefined && (obj.requestDuration = (message.requestDuration || Long.ZERO).toString());
-    message.actualDuration !== undefined && (obj.actualDuration = (message.actualDuration || Long.ZERO).toString());
-    message.requestAt !== undefined && (obj.requestAt = (message.requestAt || Long.ZERO).toString());
+    message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
+    message.requestDuration !== undefined && (obj.requestDuration = (message.requestDuration || BigInt(0)).toString());
+    message.actualDuration !== undefined && (obj.actualDuration = (message.actualDuration || BigInt(0)).toString());
+    message.requestAt !== undefined && (obj.requestAt = (message.requestAt || BigInt(0)).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MaintenanceRecord>, I>>(object: I): MaintenanceRecord {
     const message = createBaseMaintenanceRecord();
-    message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
-    message.requestDuration = object.requestDuration !== undefined && object.requestDuration !== null ? Long.fromValue(object.requestDuration) : Long.ZERO;
-    message.actualDuration = object.actualDuration !== undefined && object.actualDuration !== null ? Long.fromValue(object.actualDuration) : Long.ZERO;
-    message.requestAt = object.requestAt !== undefined && object.requestAt !== null ? Long.fromValue(object.requestAt) : Long.ZERO;
+    message.height = object.height !== undefined && object.height !== null ? BigInt(object.height.toString()) : BigInt(0);
+    message.requestDuration = object.requestDuration !== undefined && object.requestDuration !== null ? BigInt(object.requestDuration.toString()) : BigInt(0);
+    message.actualDuration = object.actualDuration !== undefined && object.actualDuration !== null ? BigInt(object.actualDuration.toString()) : BigInt(0);
+    message.requestAt = object.requestAt !== undefined && object.requestAt !== null ? BigInt(object.requestAt.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: MaintenanceRecordSDKType): MaintenanceRecord {
@@ -885,5 +1177,44 @@ export const MaintenanceRecord = {
     obj.actual_duration = message.actualDuration;
     obj.request_at = message.requestAt;
     return obj;
+  },
+  fromAmino(object: MaintenanceRecordAmino): MaintenanceRecord {
+    const message = createBaseMaintenanceRecord();
+    if (object.height !== undefined && object.height !== null) {
+      message.height = BigInt(object.height);
+    }
+    if (object.request_duration !== undefined && object.request_duration !== null) {
+      message.requestDuration = BigInt(object.request_duration);
+    }
+    if (object.actual_duration !== undefined && object.actual_duration !== null) {
+      message.actualDuration = BigInt(object.actual_duration);
+    }
+    if (object.request_at !== undefined && object.request_at !== null) {
+      message.requestAt = BigInt(object.request_at);
+    }
+    return message;
+  },
+  toAmino(message: MaintenanceRecord): MaintenanceRecordAmino {
+    const obj: any = {};
+    obj.height = message.height ? message.height.toString() : undefined;
+    obj.request_duration = message.requestDuration ? message.requestDuration.toString() : undefined;
+    obj.actual_duration = message.actualDuration ? message.actualDuration.toString() : undefined;
+    obj.request_at = message.requestAt ? message.requestAt.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MaintenanceRecordAminoMsg): MaintenanceRecord {
+    return MaintenanceRecord.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MaintenanceRecordProtoMsg): MaintenanceRecord {
+    return MaintenanceRecord.decode(message.value);
+  },
+  toProto(message: MaintenanceRecord): Uint8Array {
+    return MaintenanceRecord.encode(message).finish();
+  },
+  toProtoMsg(message: MaintenanceRecord): MaintenanceRecordProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.MaintenanceRecord",
+      value: MaintenanceRecord.encode(message).finish()
+    };
   }
 };

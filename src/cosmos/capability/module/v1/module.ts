@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, DeepPartial, Exact } from "../../../../helpers";
 export const protobufPackage = "cosmos.capability.module.v1";
 /** Module is the config object of the capability module. */
@@ -10,6 +10,10 @@ export interface Module {
    * keeper. For more details check x/capability/keeper.go.
    */
   sealKeeper: boolean;
+}
+export interface ModuleProtoMsg {
+  typeUrl: "/cosmos.capability.module.v1.Module";
+  value: Uint8Array;
 }
 /** Module is the config object of the capability module. */
 export interface ModuleSDKType {
@@ -21,14 +25,15 @@ function createBaseModule(): Module {
   };
 }
 export const Module = {
-  encode(message: Module, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.capability.module.v1.Module",
+  encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.sealKeeper === true) {
       writer.uint32(8).bool(message.sealKeeper);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Module {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Module {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseModule();
     while (reader.pos < end) {
@@ -68,5 +73,38 @@ export const Module = {
     const obj: any = {};
     obj.seal_keeper = message.sealKeeper;
     return obj;
+  },
+  fromAmino(object: ModuleAmino): Module {
+    const message = createBaseModule();
+    if (object.seal_keeper !== undefined && object.seal_keeper !== null) {
+      message.sealKeeper = object.seal_keeper;
+    }
+    return message;
+  },
+  toAmino(message: Module): ModuleAmino {
+    const obj: any = {};
+    obj.seal_keeper = message.sealKeeper;
+    return obj;
+  },
+  fromAminoMsg(object: ModuleAminoMsg): Module {
+    return Module.fromAmino(object.value);
+  },
+  toAminoMsg(message: Module): ModuleAminoMsg {
+    return {
+      type: "cosmos-sdk/Module",
+      value: Module.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: ModuleProtoMsg): Module {
+    return Module.decode(message.value);
+  },
+  toProto(message: Module): Uint8Array {
+    return Module.encode(message).finish();
+  },
+  toProtoMsg(message: Module): ModuleProtoMsg {
+    return {
+      typeUrl: "/cosmos.capability.module.v1.Module",
+      value: Module.encode(message).finish()
+    };
   }
 };

@@ -3,8 +3,8 @@
 import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { ResourceTags, ResourceTagsSDKType, DeleteInfo, DeleteInfoSDKType } from "./types";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers";
 export const protobufPackage = "greenfield.storage";
 /** EventCreateBucket is emitted on MsgCreateBucket */
 export interface EventCreateBucket {
@@ -15,13 +15,13 @@ export interface EventCreateBucket {
   /** visibility defines the highest permissions for bucket. When a bucket is public, everyone can get the object under it. */
   visibility: VisibilityType;
   /** create_at define the block timestamp when the bucket has been created */
-  createAt: Long;
+  createAt: bigint;
   /** bucket_id is the unique u256 for bucket. Not global, only unique in buckets. */
   bucketId: string;
   /** source_type define the source of the bucket. CrossChain or Greenfield origin */
   sourceType: SourceType;
   /** read_quota defines the charged traffic quota for read, not include free quota which provided by each storage provider */
-  chargedReadQuota: Long;
+  chargedReadQuota: bigint;
   /** payment_address is the address of the payment account */
   paymentAddress: string;
   /** primary_sp_id is the unique id of primary sp. */
@@ -31,22 +31,26 @@ export interface EventCreateBucket {
   /** status define the status of the bucket. */
   status: BucketStatus;
   /** tags define the tag of the bucket */
-  tags: ResourceTags;
+  tags?: ResourceTags;
+}
+export interface EventCreateBucketProtoMsg {
+  typeUrl: "/greenfield.storage.EventCreateBucket";
+  value: Uint8Array;
 }
 /** EventCreateBucket is emitted on MsgCreateBucket */
 export interface EventCreateBucketSDKType {
   owner: string;
   bucket_name: string;
   visibility: VisibilityType;
-  create_at: Long;
+  create_at: bigint;
   bucket_id: string;
   source_type: SourceType;
-  charged_read_quota: Long;
+  charged_read_quota: bigint;
   payment_address: string;
   primary_sp_id: number;
   global_virtual_group_family_id: number;
   status: BucketStatus;
-  tags: ResourceTagsSDKType;
+  tags?: ResourceTagsSDKType;
 }
 /** EventDeleteBucket is emitted on MsgDeleteBucket */
 export interface EventDeleteBucket {
@@ -60,6 +64,10 @@ export interface EventDeleteBucket {
   bucketId: string;
   /** global_virtual_group_family_id defines the unique id of gvg family */
   globalVirtualGroupFamilyId: number;
+}
+export interface EventDeleteBucketProtoMsg {
+  typeUrl: "/greenfield.storage.EventDeleteBucket";
+  value: Uint8Array;
 }
 /** EventDeleteBucket is emitted on MsgDeleteBucket */
 export interface EventDeleteBucketSDKType {
@@ -78,7 +86,7 @@ export interface EventUpdateBucketInfo {
   /** bucket_id define an u256 id for bucket */
   bucketId: string;
   /** charged_read_quota_after define the read quota after updated */
-  chargedReadQuota: Long;
+  chargedReadQuota: bigint;
   /** payment_address define the payment address after updated */
   paymentAddress: string;
   /** visibility defines the highest permission of object. */
@@ -86,12 +94,16 @@ export interface EventUpdateBucketInfo {
   /** global_virtual_group_family_id defines the gvg family id after migrated. */
   globalVirtualGroupFamilyId: number;
 }
+export interface EventUpdateBucketInfoProtoMsg {
+  typeUrl: "/greenfield.storage.EventUpdateBucketInfo";
+  value: Uint8Array;
+}
 /** EventUpdateBucketInfo is emitted on MsgUpdateBucketInfo */
 export interface EventUpdateBucketInfoSDKType {
   operator: string;
   bucket_name: string;
   bucket_id: string;
-  charged_read_quota: Long;
+  charged_read_quota: bigint;
   payment_address: string;
   visibility: VisibilityType;
   global_virtual_group_family_id: number;
@@ -105,14 +117,18 @@ export interface EventDiscontinueBucket {
   /** the reason */
   reason: string;
   /** the timestamp after which the metadata will be deleted */
-  deleteAt: Long;
+  deleteAt: bigint;
+}
+export interface EventDiscontinueBucketProtoMsg {
+  typeUrl: "/greenfield.storage.EventDiscontinueBucket";
+  value: Uint8Array;
 }
 /** EventDiscontinueBucket is emitted on MsgDiscontinueBucket */
 export interface EventDiscontinueBucketSDKType {
   bucket_id: string;
   bucket_name: string;
   reason: string;
-  delete_at: Long;
+  delete_at: bigint;
 }
 /** EventCreateObject is emitted on MsgCreateObject */
 export interface EventCreateObject {
@@ -131,13 +147,13 @@ export interface EventCreateObject {
   /** primary_sp_id define the unique id of primary sp */
   primarySpId: number;
   /** payload_size define the size of payload data which you want upload */
-  payloadSize: Long;
+  payloadSize: bigint;
   /** visibility defines the highest permission of object. */
   visibility: VisibilityType;
   /** content_type define the content type of the payload data */
   contentType: string;
   /** create_at define the block timestamp when the object created */
-  createAt: Long;
+  createAt: bigint;
   /** status define the status of the object. INIT or IN_SERVICE or others */
   status: ObjectStatus;
   /** redundancy_type define the type of redundancy. Replication or EC */
@@ -149,7 +165,11 @@ export interface EventCreateObject {
   /** local_virtual_group_id defines the unique id of lvg which the object stored */
   localVirtualGroupId: number;
   /** tags define the tag of the object */
-  tags: ResourceTags;
+  tags?: ResourceTags;
+}
+export interface EventCreateObjectProtoMsg {
+  typeUrl: "/greenfield.storage.EventCreateObject";
+  value: Uint8Array;
 }
 /** EventCreateObject is emitted on MsgCreateObject */
 export interface EventCreateObjectSDKType {
@@ -160,16 +180,16 @@ export interface EventCreateObjectSDKType {
   bucket_id: string;
   object_id: string;
   primary_sp_id: number;
-  payload_size: Long;
+  payload_size: bigint;
   visibility: VisibilityType;
   content_type: string;
-  create_at: Long;
+  create_at: bigint;
   status: ObjectStatus;
   redundancy_type: RedundancyType;
   source_type: SourceType;
   checksums: Uint8Array[];
   local_virtual_group_id: number;
-  tags: ResourceTagsSDKType;
+  tags?: ResourceTagsSDKType;
 }
 /** EventCancelCreateObject is emitted on MsgCancelCreateObject */
 export interface EventCancelCreateObject {
@@ -183,6 +203,10 @@ export interface EventCancelCreateObject {
   primarySpId: number;
   /** id define an u256 id for object */
   objectId: string;
+}
+export interface EventCancelCreateObjectProtoMsg {
+  typeUrl: "/greenfield.storage.EventCancelCreateObject";
+  value: Uint8Array;
 }
 /** EventCancelCreateObject is emitted on MsgCancelCreateObject */
 export interface EventCancelCreateObjectSDKType {
@@ -208,6 +232,10 @@ export interface EventSealObject {
   globalVirtualGroupId: number;
   /** local_virtual_group_id defines the unique id of lvg which the object stored */
   localVirtualGroupId: number;
+}
+export interface EventSealObjectProtoMsg {
+  typeUrl: "/greenfield.storage.EventSealObject";
+  value: Uint8Array;
 }
 /** EventSealObject is emitted on MsgSealObject */
 export interface EventSealObjectSDKType {
@@ -238,6 +266,10 @@ export interface EventCopyObject {
   /** local_virtual_group_id defines the unique id of lvg which the object stored */
   localVirtualGroupId: number;
 }
+export interface EventCopyObjectProtoMsg {
+  typeUrl: "/greenfield.storage.EventCopyObject";
+  value: Uint8Array;
+}
 /** EventCopyObject is emitted on MsgCopyObject */
 export interface EventCopyObjectSDKType {
   operator: string;
@@ -262,6 +294,10 @@ export interface EventDeleteObject {
   /** local_virtual_group_id defines the unique id of lvg which the object stored */
   localVirtualGroupId: number;
 }
+export interface EventDeleteObjectProtoMsg {
+  typeUrl: "/greenfield.storage.EventDeleteObject";
+  value: Uint8Array;
+}
 /** EventDeleteObject is emitted on MsgDeleteObject */
 export interface EventDeleteObjectSDKType {
   operator: string;
@@ -281,6 +317,10 @@ export interface EventRejectSealObject {
   /** id define an u256 id for object */
   objectId: string;
 }
+export interface EventRejectSealObjectProtoMsg {
+  typeUrl: "/greenfield.storage.EventRejectSealObject";
+  value: Uint8Array;
+}
 /** EventRejectSealObject is emitted on MsgRejectSealObject */
 export interface EventRejectSealObjectSDKType {
   operator: string;
@@ -297,14 +337,18 @@ export interface EventDiscontinueObject {
   /** the reason */
   reason: string;
   /** the timestamp after which the metadata will be deleted */
-  deleteAt: Long;
+  deleteAt: bigint;
+}
+export interface EventDiscontinueObjectProtoMsg {
+  typeUrl: "/greenfield.storage.EventDiscontinueObject";
+  value: Uint8Array;
 }
 /** EventDiscontinueObject is emitted on MsgDiscontinueObject */
 export interface EventDiscontinueObjectSDKType {
   bucket_name: string;
   object_id: string;
   reason: string;
-  delete_at: Long;
+  delete_at: bigint;
 }
 /** EventUpdateObjectInfo is emitted on MsgUpdateObjectInfo */
 export interface EventUpdateObjectInfo {
@@ -318,6 +362,10 @@ export interface EventUpdateObjectInfo {
   objectId: string;
   /** visibility defines the highest permission of object. */
   visibility: VisibilityType;
+}
+export interface EventUpdateObjectInfoProtoMsg {
+  typeUrl: "/greenfield.storage.EventUpdateObjectInfo";
+  value: Uint8Array;
 }
 /** EventUpdateObjectInfo is emitted on MsgUpdateObjectInfo */
 export interface EventUpdateObjectInfoSDKType {
@@ -340,7 +388,11 @@ export interface EventCreateGroup {
   /** extra defines extra info for the group */
   extra: string;
   /** tags define the tag of the group */
-  tags: ResourceTags;
+  tags?: ResourceTags;
+}
+export interface EventCreateGroupProtoMsg {
+  typeUrl: "/greenfield.storage.EventCreateGroup";
+  value: Uint8Array;
 }
 /** EventCreateGroup is emitted on MsgCreateGroup */
 export interface EventCreateGroupSDKType {
@@ -349,7 +401,7 @@ export interface EventCreateGroupSDKType {
   group_id: string;
   source_type: SourceType;
   extra: string;
-  tags: ResourceTagsSDKType;
+  tags?: ResourceTagsSDKType;
 }
 /** EventDeleteGroup is emitted on MsgDeleteGroup */
 export interface EventDeleteGroup {
@@ -359,6 +411,10 @@ export interface EventDeleteGroup {
   groupName: string;
   /** id define an u256 id for group */
   groupId: string;
+}
+export interface EventDeleteGroupProtoMsg {
+  typeUrl: "/greenfield.storage.EventDeleteGroup";
+  value: Uint8Array;
 }
 /** EventDeleteGroup is emitted on MsgDeleteGroup */
 export interface EventDeleteGroupSDKType {
@@ -376,6 +432,10 @@ export interface EventLeaveGroup {
   groupName: string;
   /** id define an u256 id for group */
   groupId: string;
+}
+export interface EventLeaveGroupProtoMsg {
+  typeUrl: "/greenfield.storage.EventLeaveGroup";
+  value: Uint8Array;
 }
 /** EventLeaveGroup is emitted on MsgLeaveGroup */
 export interface EventLeaveGroupSDKType {
@@ -398,6 +458,10 @@ export interface EventUpdateGroupMember {
   membersToAdd: EventGroupMemberDetail[];
   /** members_to_add defines all the members to be deleted from the group */
   membersToDelete: string[];
+}
+export interface EventUpdateGroupMemberProtoMsg {
+  typeUrl: "/greenfield.storage.EventUpdateGroupMember";
+  value: Uint8Array;
 }
 /** EventUpdateGroupMember is emitted on MsgUpdateGroupMember */
 export interface EventUpdateGroupMemberSDKType {
@@ -422,6 +486,10 @@ export interface EventRenewGroupMember {
   /** members define the all the address of the members. */
   members: EventGroupMemberDetail[];
 }
+export interface EventRenewGroupMemberProtoMsg {
+  typeUrl: "/greenfield.storage.EventRenewGroupMember";
+  value: Uint8Array;
+}
 export interface EventRenewGroupMemberSDKType {
   operator: string;
   owner: string;
@@ -434,11 +502,15 @@ export interface EventGroupMemberDetail {
   /** member defines the account address of the group member */
   member: string;
   /** expiration_time defines the expiration time of the group member */
-  expirationTime: Timestamp;
+  expirationTime?: Timestamp;
+}
+export interface EventGroupMemberDetailProtoMsg {
+  typeUrl: "/greenfield.storage.EventGroupMemberDetail";
+  value: Uint8Array;
 }
 export interface EventGroupMemberDetailSDKType {
   member: string;
-  expiration_time: TimestampSDKType;
+  expiration_time?: TimestampSDKType;
 }
 /** EventUpdateGroupExtra is emitted on MsgUpdateGroupExtra */
 export interface EventUpdateGroupExtra {
@@ -452,6 +524,10 @@ export interface EventUpdateGroupExtra {
   groupId: string;
   /** extra defines extra info for the group to update */
   extra: string;
+}
+export interface EventUpdateGroupExtraProtoMsg {
+  typeUrl: "/greenfield.storage.EventUpdateGroupExtra";
+  value: Uint8Array;
 }
 /** EventUpdateGroupExtra is emitted on MsgUpdateGroupExtra */
 export interface EventUpdateGroupExtraSDKType {
@@ -472,6 +548,10 @@ export interface EventMirrorBucket {
   /** chain id of the destination chain */
   destChainId: number;
 }
+export interface EventMirrorBucketProtoMsg {
+  typeUrl: "/greenfield.storage.EventMirrorBucket";
+  value: Uint8Array;
+}
 /** EventMirrorBucket is emitted on MirrorBucket */
 export interface EventMirrorBucketSDKType {
   operator: string;
@@ -489,6 +569,10 @@ export interface EventMirrorBucketResult {
   bucketId: string;
   /** chain id of the destination chain */
   destChainId: number;
+}
+export interface EventMirrorBucketResultProtoMsg {
+  typeUrl: "/greenfield.storage.EventMirrorBucketResult";
+  value: Uint8Array;
 }
 /** EventMirrorBucketResult is emitted on receiving ack package from destination chain */
 export interface EventMirrorBucketResultSDKType {
@@ -509,6 +593,10 @@ export interface EventMirrorObject {
   objectId: string;
   /** chain id of the destination chain */
   destChainId: number;
+}
+export interface EventMirrorObjectProtoMsg {
+  typeUrl: "/greenfield.storage.EventMirrorObject";
+  value: Uint8Array;
 }
 /** EventMirrorObject is emitted on MirrorObject */
 export interface EventMirrorObjectSDKType {
@@ -531,6 +619,10 @@ export interface EventMirrorObjectResult {
   /** chain id of the destination chain */
   destChainId: number;
 }
+export interface EventMirrorObjectResultProtoMsg {
+  typeUrl: "/greenfield.storage.EventMirrorObjectResult";
+  value: Uint8Array;
+}
 /** EventMirrorObjectResult is emitted on receiving ack package from destination chain */
 export interface EventMirrorObjectResultSDKType {
   status: number;
@@ -550,6 +642,10 @@ export interface EventMirrorGroup {
   /** chain id of the destination chain */
   destChainId: number;
 }
+export interface EventMirrorGroupProtoMsg {
+  typeUrl: "/greenfield.storage.EventMirrorGroup";
+  value: Uint8Array;
+}
 /** EventMirrorGroup is emitted on MirrorGroup */
 export interface EventMirrorGroupSDKType {
   owner: string;
@@ -568,6 +664,10 @@ export interface EventMirrorGroupResult {
   /** chain id of the destination chain */
   destChainId: number;
 }
+export interface EventMirrorGroupResultProtoMsg {
+  typeUrl: "/greenfield.storage.EventMirrorGroupResult";
+  value: Uint8Array;
+}
 /** EventMirrorGroupResult is emitted on receiving ack package from destination chain */
 export interface EventMirrorGroupResultSDKType {
   status: number;
@@ -577,13 +677,17 @@ export interface EventMirrorGroupResultSDKType {
 }
 /** EventStalePolicyCleanup is emitted when specified block height's stale policies need to be Garbage collected */
 export interface EventStalePolicyCleanup {
-  blockNum: Long;
-  deleteInfo: DeleteInfo;
+  blockNum: bigint;
+  deleteInfo?: DeleteInfo;
+}
+export interface EventStalePolicyCleanupProtoMsg {
+  typeUrl: "/greenfield.storage.EventStalePolicyCleanup";
+  value: Uint8Array;
 }
 /** EventStalePolicyCleanup is emitted when specified block height's stale policies need to be Garbage collected */
 export interface EventStalePolicyCleanupSDKType {
-  blockNum: Long;
-  delete_info: DeleteInfoSDKType;
+  blockNum: bigint;
+  delete_info?: DeleteInfoSDKType;
 }
 export interface EventMigrationBucket {
   /**
@@ -597,6 +701,10 @@ export interface EventMigrationBucket {
   bucketId: string;
   /** The id of the destination primary sp */
   dstPrimarySpId: number;
+}
+export interface EventMigrationBucketProtoMsg {
+  typeUrl: "/greenfield.storage.EventMigrationBucket";
+  value: Uint8Array;
 }
 export interface EventMigrationBucketSDKType {
   operator: string;
@@ -615,6 +723,10 @@ export interface EventCancelMigrationBucket {
   /** bucket_id define an u256 id for bucket */
   bucketId: string;
 }
+export interface EventCancelMigrationBucketProtoMsg {
+  typeUrl: "/greenfield.storage.EventCancelMigrationBucket";
+  value: Uint8Array;
+}
 export interface EventCancelMigrationBucketSDKType {
   operator: string;
   bucket_name: string;
@@ -627,6 +739,10 @@ export interface EventRejectMigrateBucket {
   bucketName: string;
   /** bucket_id define an u256 id for bucket */
   bucketId: string;
+}
+export interface EventRejectMigrateBucketProtoMsg {
+  typeUrl: "/greenfield.storage.EventRejectMigrateBucket";
+  value: Uint8Array;
 }
 export interface EventRejectMigrateBucketSDKType {
   operator: string;
@@ -648,6 +764,10 @@ export interface EventCompleteMigrationBucket {
   /** The src_primary_sp_id defines the primary sp id of the bucket before migrate. */
   srcPrimarySpId: number;
 }
+export interface EventCompleteMigrationBucketProtoMsg {
+  typeUrl: "/greenfield.storage.EventCompleteMigrationBucket";
+  value: Uint8Array;
+}
 export interface EventCompleteMigrationBucketSDKType {
   operator: string;
   bucket_name: string;
@@ -659,30 +779,35 @@ export interface EventSetTag {
   /** resource defines a greenfield standard resource name that can be generated by GRN structure */
   resource: string;
   /** tags define the tag of the source */
-  tags: ResourceTags;
+  tags?: ResourceTags;
+}
+export interface EventSetTagProtoMsg {
+  typeUrl: "/greenfield.storage.EventSetTag";
+  value: Uint8Array;
 }
 export interface EventSetTagSDKType {
   resource: string;
-  tags: ResourceTagsSDKType;
+  tags?: ResourceTagsSDKType;
 }
 function createBaseEventCreateBucket(): EventCreateBucket {
   return {
     owner: "",
     bucketName: "",
     visibility: 0,
-    createAt: Long.ZERO,
+    createAt: BigInt(0),
     bucketId: "",
     sourceType: 0,
-    chargedReadQuota: Long.UZERO,
+    chargedReadQuota: BigInt(0),
     paymentAddress: "",
     primarySpId: 0,
     globalVirtualGroupFamilyId: 0,
     status: 0,
-    tags: ResourceTags.fromPartial({})
+    tags: undefined
   };
 }
 export const EventCreateBucket = {
-  encode(message: EventCreateBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventCreateBucket",
+  encode(message: EventCreateBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -692,7 +817,7 @@ export const EventCreateBucket = {
     if (message.visibility !== 0) {
       writer.uint32(24).int32(message.visibility);
     }
-    if (!message.createAt.isZero()) {
+    if (message.createAt !== BigInt(0)) {
       writer.uint32(32).int64(message.createAt);
     }
     if (message.bucketId !== "") {
@@ -701,7 +826,7 @@ export const EventCreateBucket = {
     if (message.sourceType !== 0) {
       writer.uint32(48).int32(message.sourceType);
     }
-    if (!message.chargedReadQuota.isZero()) {
+    if (message.chargedReadQuota !== BigInt(0)) {
       writer.uint32(56).uint64(message.chargedReadQuota);
     }
     if (message.paymentAddress !== "") {
@@ -721,8 +846,8 @@ export const EventCreateBucket = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventCreateBucket {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateBucket {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCreateBucket();
     while (reader.pos < end) {
@@ -738,7 +863,7 @@ export const EventCreateBucket = {
           message.visibility = (reader.int32() as any);
           break;
         case 4:
-          message.createAt = (reader.int64() as Long);
+          message.createAt = reader.int64();
           break;
         case 5:
           message.bucketId = reader.string();
@@ -747,7 +872,7 @@ export const EventCreateBucket = {
           message.sourceType = (reader.int32() as any);
           break;
         case 7:
-          message.chargedReadQuota = (reader.uint64() as Long);
+          message.chargedReadQuota = reader.uint64();
           break;
         case 8:
           message.paymentAddress = reader.string();
@@ -776,10 +901,10 @@ export const EventCreateBucket = {
       owner: isSet(object.owner) ? String(object.owner) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : -1,
-      createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
+      createAt: isSet(object.createAt) ? BigInt(object.createAt.toString()) : BigInt(0),
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : -1,
-      chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
+      chargedReadQuota: isSet(object.chargedReadQuota) ? BigInt(object.chargedReadQuota.toString()) : BigInt(0),
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0,
       globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
@@ -792,10 +917,10 @@ export const EventCreateBucket = {
     message.owner !== undefined && (obj.owner = message.owner);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
-    message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
+    message.createAt !== undefined && (obj.createAt = (message.createAt || BigInt(0)).toString());
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
-    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
+    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || BigInt(0)).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.primarySpId !== undefined && (obj.primarySpId = Math.round(message.primarySpId));
     message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
@@ -808,10 +933,10 @@ export const EventCreateBucket = {
     message.owner = object.owner ?? "";
     message.bucketName = object.bucketName ?? "";
     message.visibility = object.visibility ?? 0;
-    message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
+    message.createAt = object.createAt !== undefined && object.createAt !== null ? BigInt(object.createAt.toString()) : BigInt(0);
     message.bucketId = object.bucketId ?? "";
     message.sourceType = object.sourceType ?? 0;
-    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
+    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? BigInt(object.chargedReadQuota.toString()) : BigInt(0);
     message.paymentAddress = object.paymentAddress ?? "";
     message.primarySpId = object.primarySpId ?? 0;
     message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
@@ -850,6 +975,77 @@ export const EventCreateBucket = {
     message.status !== undefined && (obj.status = bucketStatusToJSON(message.status));
     message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
+  },
+  fromAmino(object: EventCreateBucketAmino): EventCreateBucket {
+    const message = createBaseEventCreateBucket();
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.visibility !== undefined && object.visibility !== null) {
+      message.visibility = visibilityTypeFromJSON(object.visibility);
+    }
+    if (object.create_at !== undefined && object.create_at !== null) {
+      message.createAt = BigInt(object.create_at);
+    }
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    if (object.source_type !== undefined && object.source_type !== null) {
+      message.sourceType = sourceTypeFromJSON(object.source_type);
+    }
+    if (object.charged_read_quota !== undefined && object.charged_read_quota !== null) {
+      message.chargedReadQuota = BigInt(object.charged_read_quota);
+    }
+    if (object.payment_address !== undefined && object.payment_address !== null) {
+      message.paymentAddress = object.payment_address;
+    }
+    if (object.primary_sp_id !== undefined && object.primary_sp_id !== null) {
+      message.primarySpId = object.primary_sp_id;
+    }
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = bucketStatusFromJSON(object.status);
+    }
+    if (object.tags !== undefined && object.tags !== null) {
+      message.tags = ResourceTags.fromAmino(object.tags);
+    }
+    return message;
+  },
+  toAmino(message: EventCreateBucket): EventCreateBucketAmino {
+    const obj: any = {};
+    obj.owner = message.owner;
+    obj.bucket_name = message.bucketName;
+    obj.visibility = visibilityTypeToJSON(message.visibility);
+    obj.create_at = message.createAt ? message.createAt.toString() : undefined;
+    obj.bucket_id = message.bucketId;
+    obj.source_type = sourceTypeToJSON(message.sourceType);
+    obj.charged_read_quota = message.chargedReadQuota ? message.chargedReadQuota.toString() : undefined;
+    obj.payment_address = message.paymentAddress;
+    obj.primary_sp_id = message.primarySpId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.status = bucketStatusToJSON(message.status);
+    obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventCreateBucketAminoMsg): EventCreateBucket {
+    return EventCreateBucket.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventCreateBucketProtoMsg): EventCreateBucket {
+    return EventCreateBucket.decode(message.value);
+  },
+  toProto(message: EventCreateBucket): Uint8Array {
+    return EventCreateBucket.encode(message).finish();
+  },
+  toProtoMsg(message: EventCreateBucket): EventCreateBucketProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventCreateBucket",
+      value: EventCreateBucket.encode(message).finish()
+    };
   }
 };
 function createBaseEventDeleteBucket(): EventDeleteBucket {
@@ -862,7 +1058,8 @@ function createBaseEventDeleteBucket(): EventDeleteBucket {
   };
 }
 export const EventDeleteBucket = {
-  encode(message: EventDeleteBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventDeleteBucket",
+  encode(message: EventDeleteBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -880,8 +1077,8 @@ export const EventDeleteBucket = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventDeleteBucket {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventDeleteBucket {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDeleteBucket();
     while (reader.pos < end) {
@@ -953,6 +1150,49 @@ export const EventDeleteBucket = {
     obj.bucket_id = message.bucketId;
     obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
     return obj;
+  },
+  fromAmino(object: EventDeleteBucketAmino): EventDeleteBucket {
+    const message = createBaseEventDeleteBucket();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    return message;
+  },
+  toAmino(message: EventDeleteBucket): EventDeleteBucketAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.owner = message.owner;
+    obj.bucket_name = message.bucketName;
+    obj.bucket_id = message.bucketId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    return obj;
+  },
+  fromAminoMsg(object: EventDeleteBucketAminoMsg): EventDeleteBucket {
+    return EventDeleteBucket.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventDeleteBucketProtoMsg): EventDeleteBucket {
+    return EventDeleteBucket.decode(message.value);
+  },
+  toProto(message: EventDeleteBucket): Uint8Array {
+    return EventDeleteBucket.encode(message).finish();
+  },
+  toProtoMsg(message: EventDeleteBucket): EventDeleteBucketProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventDeleteBucket",
+      value: EventDeleteBucket.encode(message).finish()
+    };
   }
 };
 function createBaseEventUpdateBucketInfo(): EventUpdateBucketInfo {
@@ -960,14 +1200,15 @@ function createBaseEventUpdateBucketInfo(): EventUpdateBucketInfo {
     operator: "",
     bucketName: "",
     bucketId: "",
-    chargedReadQuota: Long.UZERO,
+    chargedReadQuota: BigInt(0),
     paymentAddress: "",
     visibility: 0,
     globalVirtualGroupFamilyId: 0
   };
 }
 export const EventUpdateBucketInfo = {
-  encode(message: EventUpdateBucketInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventUpdateBucketInfo",
+  encode(message: EventUpdateBucketInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -977,7 +1218,7 @@ export const EventUpdateBucketInfo = {
     if (message.bucketId !== "") {
       writer.uint32(26).string(message.bucketId);
     }
-    if (!message.chargedReadQuota.isZero()) {
+    if (message.chargedReadQuota !== BigInt(0)) {
       writer.uint32(32).uint64(message.chargedReadQuota);
     }
     if (message.paymentAddress !== "") {
@@ -991,8 +1232,8 @@ export const EventUpdateBucketInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateBucketInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateBucketInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventUpdateBucketInfo();
     while (reader.pos < end) {
@@ -1008,7 +1249,7 @@ export const EventUpdateBucketInfo = {
           message.bucketId = reader.string();
           break;
         case 4:
-          message.chargedReadQuota = (reader.uint64() as Long);
+          message.chargedReadQuota = reader.uint64();
           break;
         case 5:
           message.paymentAddress = reader.string();
@@ -1031,7 +1272,7 @@ export const EventUpdateBucketInfo = {
       operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
-      chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
+      chargedReadQuota: isSet(object.chargedReadQuota) ? BigInt(object.chargedReadQuota.toString()) : BigInt(0),
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : -1,
       globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0
@@ -1042,7 +1283,7 @@ export const EventUpdateBucketInfo = {
     message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
-    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
+    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || BigInt(0)).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
@@ -1053,7 +1294,7 @@ export const EventUpdateBucketInfo = {
     message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.bucketId = object.bucketId ?? "";
-    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
+    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? BigInt(object.chargedReadQuota.toString()) : BigInt(0);
     message.paymentAddress = object.paymentAddress ?? "";
     message.visibility = object.visibility ?? 0;
     message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
@@ -1080,6 +1321,57 @@ export const EventUpdateBucketInfo = {
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
     return obj;
+  },
+  fromAmino(object: EventUpdateBucketInfoAmino): EventUpdateBucketInfo {
+    const message = createBaseEventUpdateBucketInfo();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    if (object.charged_read_quota !== undefined && object.charged_read_quota !== null) {
+      message.chargedReadQuota = BigInt(object.charged_read_quota);
+    }
+    if (object.payment_address !== undefined && object.payment_address !== null) {
+      message.paymentAddress = object.payment_address;
+    }
+    if (object.visibility !== undefined && object.visibility !== null) {
+      message.visibility = visibilityTypeFromJSON(object.visibility);
+    }
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    return message;
+  },
+  toAmino(message: EventUpdateBucketInfo): EventUpdateBucketInfoAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.bucket_id = message.bucketId;
+    obj.charged_read_quota = message.chargedReadQuota ? message.chargedReadQuota.toString() : undefined;
+    obj.payment_address = message.paymentAddress;
+    obj.visibility = visibilityTypeToJSON(message.visibility);
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    return obj;
+  },
+  fromAminoMsg(object: EventUpdateBucketInfoAminoMsg): EventUpdateBucketInfo {
+    return EventUpdateBucketInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventUpdateBucketInfoProtoMsg): EventUpdateBucketInfo {
+    return EventUpdateBucketInfo.decode(message.value);
+  },
+  toProto(message: EventUpdateBucketInfo): Uint8Array {
+    return EventUpdateBucketInfo.encode(message).finish();
+  },
+  toProtoMsg(message: EventUpdateBucketInfo): EventUpdateBucketInfoProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventUpdateBucketInfo",
+      value: EventUpdateBucketInfo.encode(message).finish()
+    };
   }
 };
 function createBaseEventDiscontinueBucket(): EventDiscontinueBucket {
@@ -1087,11 +1379,12 @@ function createBaseEventDiscontinueBucket(): EventDiscontinueBucket {
     bucketId: "",
     bucketName: "",
     reason: "",
-    deleteAt: Long.ZERO
+    deleteAt: BigInt(0)
   };
 }
 export const EventDiscontinueBucket = {
-  encode(message: EventDiscontinueBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventDiscontinueBucket",
+  encode(message: EventDiscontinueBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bucketId !== "") {
       writer.uint32(10).string(message.bucketId);
     }
@@ -1101,13 +1394,13 @@ export const EventDiscontinueBucket = {
     if (message.reason !== "") {
       writer.uint32(26).string(message.reason);
     }
-    if (!message.deleteAt.isZero()) {
+    if (message.deleteAt !== BigInt(0)) {
       writer.uint32(32).int64(message.deleteAt);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventDiscontinueBucket {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventDiscontinueBucket {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDiscontinueBucket();
     while (reader.pos < end) {
@@ -1123,7 +1416,7 @@ export const EventDiscontinueBucket = {
           message.reason = reader.string();
           break;
         case 4:
-          message.deleteAt = (reader.int64() as Long);
+          message.deleteAt = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1137,7 +1430,7 @@ export const EventDiscontinueBucket = {
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       reason: isSet(object.reason) ? String(object.reason) : "",
-      deleteAt: isSet(object.deleteAt) ? Long.fromValue(object.deleteAt) : Long.ZERO
+      deleteAt: isSet(object.deleteAt) ? BigInt(object.deleteAt.toString()) : BigInt(0)
     };
   },
   toJSON(message: EventDiscontinueBucket): unknown {
@@ -1145,7 +1438,7 @@ export const EventDiscontinueBucket = {
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.reason !== undefined && (obj.reason = message.reason);
-    message.deleteAt !== undefined && (obj.deleteAt = (message.deleteAt || Long.ZERO).toString());
+    message.deleteAt !== undefined && (obj.deleteAt = (message.deleteAt || BigInt(0)).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventDiscontinueBucket>, I>>(object: I): EventDiscontinueBucket {
@@ -1153,7 +1446,7 @@ export const EventDiscontinueBucket = {
     message.bucketId = object.bucketId ?? "";
     message.bucketName = object.bucketName ?? "";
     message.reason = object.reason ?? "";
-    message.deleteAt = object.deleteAt !== undefined && object.deleteAt !== null ? Long.fromValue(object.deleteAt) : Long.ZERO;
+    message.deleteAt = object.deleteAt !== undefined && object.deleteAt !== null ? BigInt(object.deleteAt.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: EventDiscontinueBucketSDKType): EventDiscontinueBucket {
@@ -1171,6 +1464,45 @@ export const EventDiscontinueBucket = {
     obj.reason = message.reason;
     obj.delete_at = message.deleteAt;
     return obj;
+  },
+  fromAmino(object: EventDiscontinueBucketAmino): EventDiscontinueBucket {
+    const message = createBaseEventDiscontinueBucket();
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.reason !== undefined && object.reason !== null) {
+      message.reason = object.reason;
+    }
+    if (object.delete_at !== undefined && object.delete_at !== null) {
+      message.deleteAt = BigInt(object.delete_at);
+    }
+    return message;
+  },
+  toAmino(message: EventDiscontinueBucket): EventDiscontinueBucketAmino {
+    const obj: any = {};
+    obj.bucket_id = message.bucketId;
+    obj.bucket_name = message.bucketName;
+    obj.reason = message.reason;
+    obj.delete_at = message.deleteAt ? message.deleteAt.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventDiscontinueBucketAminoMsg): EventDiscontinueBucket {
+    return EventDiscontinueBucket.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventDiscontinueBucketProtoMsg): EventDiscontinueBucket {
+    return EventDiscontinueBucket.decode(message.value);
+  },
+  toProto(message: EventDiscontinueBucket): Uint8Array {
+    return EventDiscontinueBucket.encode(message).finish();
+  },
+  toProtoMsg(message: EventDiscontinueBucket): EventDiscontinueBucketProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventDiscontinueBucket",
+      value: EventDiscontinueBucket.encode(message).finish()
+    };
   }
 };
 function createBaseEventCreateObject(): EventCreateObject {
@@ -1182,20 +1514,21 @@ function createBaseEventCreateObject(): EventCreateObject {
     bucketId: "",
     objectId: "",
     primarySpId: 0,
-    payloadSize: Long.UZERO,
+    payloadSize: BigInt(0),
     visibility: 0,
     contentType: "",
-    createAt: Long.ZERO,
+    createAt: BigInt(0),
     status: 0,
     redundancyType: 0,
     sourceType: 0,
     checksums: [],
     localVirtualGroupId: 0,
-    tags: ResourceTags.fromPartial({})
+    tags: undefined
   };
 }
 export const EventCreateObject = {
-  encode(message: EventCreateObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventCreateObject",
+  encode(message: EventCreateObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -1217,7 +1550,7 @@ export const EventCreateObject = {
     if (message.primarySpId !== 0) {
       writer.uint32(64).uint32(message.primarySpId);
     }
-    if (!message.payloadSize.isZero()) {
+    if (message.payloadSize !== BigInt(0)) {
       writer.uint32(72).uint64(message.payloadSize);
     }
     if (message.visibility !== 0) {
@@ -1226,7 +1559,7 @@ export const EventCreateObject = {
     if (message.contentType !== "") {
       writer.uint32(90).string(message.contentType);
     }
-    if (!message.createAt.isZero()) {
+    if (message.createAt !== BigInt(0)) {
       writer.uint32(96).int64(message.createAt);
     }
     if (message.status !== 0) {
@@ -1249,8 +1582,8 @@ export const EventCreateObject = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventCreateObject {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateObject {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCreateObject();
     while (reader.pos < end) {
@@ -1278,7 +1611,7 @@ export const EventCreateObject = {
           message.primarySpId = reader.uint32();
           break;
         case 9:
-          message.payloadSize = (reader.uint64() as Long);
+          message.payloadSize = reader.uint64();
           break;
         case 10:
           message.visibility = (reader.int32() as any);
@@ -1287,7 +1620,7 @@ export const EventCreateObject = {
           message.contentType = reader.string();
           break;
         case 12:
-          message.createAt = (reader.int64() as Long);
+          message.createAt = reader.int64();
           break;
         case 13:
           message.status = (reader.int32() as any);
@@ -1323,10 +1656,10 @@ export const EventCreateObject = {
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
       primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0,
-      payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO,
+      payloadSize: isSet(object.payloadSize) ? BigInt(object.payloadSize.toString()) : BigInt(0),
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : -1,
       contentType: isSet(object.contentType) ? String(object.contentType) : "",
-      createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
+      createAt: isSet(object.createAt) ? BigInt(object.createAt.toString()) : BigInt(0),
       status: isSet(object.status) ? objectStatusFromJSON(object.status) : -1,
       redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : -1,
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : -1,
@@ -1344,10 +1677,10 @@ export const EventCreateObject = {
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     message.objectId !== undefined && (obj.objectId = message.objectId);
     message.primarySpId !== undefined && (obj.primarySpId = Math.round(message.primarySpId));
-    message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
+    message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || BigInt(0)).toString());
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.contentType !== undefined && (obj.contentType = message.contentType);
-    message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
+    message.createAt !== undefined && (obj.createAt = (message.createAt || BigInt(0)).toString());
     message.status !== undefined && (obj.status = objectStatusToJSON(message.status));
     message.redundancyType !== undefined && (obj.redundancyType = redundancyTypeToJSON(message.redundancyType));
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
@@ -1369,10 +1702,10 @@ export const EventCreateObject = {
     message.bucketId = object.bucketId ?? "";
     message.objectId = object.objectId ?? "";
     message.primarySpId = object.primarySpId ?? 0;
-    message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
+    message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? BigInt(object.payloadSize.toString()) : BigInt(0);
     message.visibility = object.visibility ?? 0;
     message.contentType = object.contentType ?? "";
-    message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
+    message.createAt = object.createAt !== undefined && object.createAt !== null ? BigInt(object.createAt.toString()) : BigInt(0);
     message.status = object.status ?? 0;
     message.redundancyType = object.redundancyType ?? 0;
     message.sourceType = object.sourceType ?? 0;
@@ -1426,6 +1759,99 @@ export const EventCreateObject = {
     obj.local_virtual_group_id = message.localVirtualGroupId;
     message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
+  },
+  fromAmino(object: EventCreateObjectAmino): EventCreateObject {
+    const message = createBaseEventCreateObject();
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.object_name !== undefined && object.object_name !== null) {
+      message.objectName = object.object_name;
+    }
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    if (object.object_id !== undefined && object.object_id !== null) {
+      message.objectId = object.object_id;
+    }
+    if (object.primary_sp_id !== undefined && object.primary_sp_id !== null) {
+      message.primarySpId = object.primary_sp_id;
+    }
+    if (object.payload_size !== undefined && object.payload_size !== null) {
+      message.payloadSize = BigInt(object.payload_size);
+    }
+    if (object.visibility !== undefined && object.visibility !== null) {
+      message.visibility = visibilityTypeFromJSON(object.visibility);
+    }
+    if (object.content_type !== undefined && object.content_type !== null) {
+      message.contentType = object.content_type;
+    }
+    if (object.create_at !== undefined && object.create_at !== null) {
+      message.createAt = BigInt(object.create_at);
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = objectStatusFromJSON(object.status);
+    }
+    if (object.redundancy_type !== undefined && object.redundancy_type !== null) {
+      message.redundancyType = redundancyTypeFromJSON(object.redundancy_type);
+    }
+    if (object.source_type !== undefined && object.source_type !== null) {
+      message.sourceType = sourceTypeFromJSON(object.source_type);
+    }
+    message.checksums = object.checksums?.map(e => bytesFromBase64(e)) || [];
+    if (object.local_virtual_group_id !== undefined && object.local_virtual_group_id !== null) {
+      message.localVirtualGroupId = object.local_virtual_group_id;
+    }
+    if (object.tags !== undefined && object.tags !== null) {
+      message.tags = ResourceTags.fromAmino(object.tags);
+    }
+    return message;
+  },
+  toAmino(message: EventCreateObject): EventCreateObjectAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.owner = message.owner;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.bucket_id = message.bucketId;
+    obj.object_id = message.objectId;
+    obj.primary_sp_id = message.primarySpId;
+    obj.payload_size = message.payloadSize ? message.payloadSize.toString() : undefined;
+    obj.visibility = visibilityTypeToJSON(message.visibility);
+    obj.content_type = message.contentType;
+    obj.create_at = message.createAt ? message.createAt.toString() : undefined;
+    obj.status = objectStatusToJSON(message.status);
+    obj.redundancy_type = redundancyTypeToJSON(message.redundancyType);
+    obj.source_type = sourceTypeToJSON(message.sourceType);
+    if (message.checksums) {
+      obj.checksums = message.checksums.map(e => base64FromBytes(e));
+    } else {
+      obj.checksums = [];
+    }
+    obj.local_virtual_group_id = message.localVirtualGroupId;
+    obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventCreateObjectAminoMsg): EventCreateObject {
+    return EventCreateObject.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventCreateObjectProtoMsg): EventCreateObject {
+    return EventCreateObject.decode(message.value);
+  },
+  toProto(message: EventCreateObject): Uint8Array {
+    return EventCreateObject.encode(message).finish();
+  },
+  toProtoMsg(message: EventCreateObject): EventCreateObjectProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventCreateObject",
+      value: EventCreateObject.encode(message).finish()
+    };
   }
 };
 function createBaseEventCancelCreateObject(): EventCancelCreateObject {
@@ -1438,7 +1864,8 @@ function createBaseEventCancelCreateObject(): EventCancelCreateObject {
   };
 }
 export const EventCancelCreateObject = {
-  encode(message: EventCancelCreateObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventCancelCreateObject",
+  encode(message: EventCancelCreateObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -1456,8 +1883,8 @@ export const EventCancelCreateObject = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventCancelCreateObject {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventCancelCreateObject {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCancelCreateObject();
     while (reader.pos < end) {
@@ -1529,6 +1956,49 @@ export const EventCancelCreateObject = {
     obj.primary_sp_id = message.primarySpId;
     obj.object_id = message.objectId;
     return obj;
+  },
+  fromAmino(object: EventCancelCreateObjectAmino): EventCancelCreateObject {
+    const message = createBaseEventCancelCreateObject();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.object_name !== undefined && object.object_name !== null) {
+      message.objectName = object.object_name;
+    }
+    if (object.primary_sp_id !== undefined && object.primary_sp_id !== null) {
+      message.primarySpId = object.primary_sp_id;
+    }
+    if (object.object_id !== undefined && object.object_id !== null) {
+      message.objectId = object.object_id;
+    }
+    return message;
+  },
+  toAmino(message: EventCancelCreateObject): EventCancelCreateObjectAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.primary_sp_id = message.primarySpId;
+    obj.object_id = message.objectId;
+    return obj;
+  },
+  fromAminoMsg(object: EventCancelCreateObjectAminoMsg): EventCancelCreateObject {
+    return EventCancelCreateObject.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventCancelCreateObjectProtoMsg): EventCancelCreateObject {
+    return EventCancelCreateObject.decode(message.value);
+  },
+  toProto(message: EventCancelCreateObject): Uint8Array {
+    return EventCancelCreateObject.encode(message).finish();
+  },
+  toProtoMsg(message: EventCancelCreateObject): EventCancelCreateObjectProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventCancelCreateObject",
+      value: EventCancelCreateObject.encode(message).finish()
+    };
   }
 };
 function createBaseEventSealObject(): EventSealObject {
@@ -1543,7 +2013,8 @@ function createBaseEventSealObject(): EventSealObject {
   };
 }
 export const EventSealObject = {
-  encode(message: EventSealObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventSealObject",
+  encode(message: EventSealObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -1567,8 +2038,8 @@ export const EventSealObject = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventSealObject {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventSealObject {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventSealObject();
     while (reader.pos < end) {
@@ -1656,6 +2127,57 @@ export const EventSealObject = {
     obj.global_virtual_group_id = message.globalVirtualGroupId;
     obj.local_virtual_group_id = message.localVirtualGroupId;
     return obj;
+  },
+  fromAmino(object: EventSealObjectAmino): EventSealObject {
+    const message = createBaseEventSealObject();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.object_name !== undefined && object.object_name !== null) {
+      message.objectName = object.object_name;
+    }
+    if (object.object_id !== undefined && object.object_id !== null) {
+      message.objectId = object.object_id;
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = objectStatusFromJSON(object.status);
+    }
+    if (object.global_virtual_group_id !== undefined && object.global_virtual_group_id !== null) {
+      message.globalVirtualGroupId = object.global_virtual_group_id;
+    }
+    if (object.local_virtual_group_id !== undefined && object.local_virtual_group_id !== null) {
+      message.localVirtualGroupId = object.local_virtual_group_id;
+    }
+    return message;
+  },
+  toAmino(message: EventSealObject): EventSealObjectAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.object_id = message.objectId;
+    obj.status = objectStatusToJSON(message.status);
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    obj.local_virtual_group_id = message.localVirtualGroupId;
+    return obj;
+  },
+  fromAminoMsg(object: EventSealObjectAminoMsg): EventSealObject {
+    return EventSealObject.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventSealObjectProtoMsg): EventSealObject {
+    return EventSealObject.decode(message.value);
+  },
+  toProto(message: EventSealObject): Uint8Array {
+    return EventSealObject.encode(message).finish();
+  },
+  toProtoMsg(message: EventSealObject): EventSealObjectProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventSealObject",
+      value: EventSealObject.encode(message).finish()
+    };
   }
 };
 function createBaseEventCopyObject(): EventCopyObject {
@@ -1671,7 +2193,8 @@ function createBaseEventCopyObject(): EventCopyObject {
   };
 }
 export const EventCopyObject = {
-  encode(message: EventCopyObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventCopyObject",
+  encode(message: EventCopyObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -1698,8 +2221,8 @@ export const EventCopyObject = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventCopyObject {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventCopyObject {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCopyObject();
     while (reader.pos < end) {
@@ -1795,6 +2318,61 @@ export const EventCopyObject = {
     obj.dst_object_id = message.dstObjectId;
     obj.local_virtual_group_id = message.localVirtualGroupId;
     return obj;
+  },
+  fromAmino(object: EventCopyObjectAmino): EventCopyObject {
+    const message = createBaseEventCopyObject();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.src_bucket_name !== undefined && object.src_bucket_name !== null) {
+      message.srcBucketName = object.src_bucket_name;
+    }
+    if (object.src_object_name !== undefined && object.src_object_name !== null) {
+      message.srcObjectName = object.src_object_name;
+    }
+    if (object.dst_bucket_name !== undefined && object.dst_bucket_name !== null) {
+      message.dstBucketName = object.dst_bucket_name;
+    }
+    if (object.dst_object_name !== undefined && object.dst_object_name !== null) {
+      message.dstObjectName = object.dst_object_name;
+    }
+    if (object.src_object_id !== undefined && object.src_object_id !== null) {
+      message.srcObjectId = object.src_object_id;
+    }
+    if (object.dst_object_id !== undefined && object.dst_object_id !== null) {
+      message.dstObjectId = object.dst_object_id;
+    }
+    if (object.local_virtual_group_id !== undefined && object.local_virtual_group_id !== null) {
+      message.localVirtualGroupId = object.local_virtual_group_id;
+    }
+    return message;
+  },
+  toAmino(message: EventCopyObject): EventCopyObjectAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.src_bucket_name = message.srcBucketName;
+    obj.src_object_name = message.srcObjectName;
+    obj.dst_bucket_name = message.dstBucketName;
+    obj.dst_object_name = message.dstObjectName;
+    obj.src_object_id = message.srcObjectId;
+    obj.dst_object_id = message.dstObjectId;
+    obj.local_virtual_group_id = message.localVirtualGroupId;
+    return obj;
+  },
+  fromAminoMsg(object: EventCopyObjectAminoMsg): EventCopyObject {
+    return EventCopyObject.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventCopyObjectProtoMsg): EventCopyObject {
+    return EventCopyObject.decode(message.value);
+  },
+  toProto(message: EventCopyObject): Uint8Array {
+    return EventCopyObject.encode(message).finish();
+  },
+  toProtoMsg(message: EventCopyObject): EventCopyObjectProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventCopyObject",
+      value: EventCopyObject.encode(message).finish()
+    };
   }
 };
 function createBaseEventDeleteObject(): EventDeleteObject {
@@ -1807,7 +2385,8 @@ function createBaseEventDeleteObject(): EventDeleteObject {
   };
 }
 export const EventDeleteObject = {
-  encode(message: EventDeleteObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventDeleteObject",
+  encode(message: EventDeleteObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -1825,8 +2404,8 @@ export const EventDeleteObject = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventDeleteObject {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventDeleteObject {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDeleteObject();
     while (reader.pos < end) {
@@ -1898,6 +2477,49 @@ export const EventDeleteObject = {
     obj.object_id = message.objectId;
     obj.local_virtual_group_id = message.localVirtualGroupId;
     return obj;
+  },
+  fromAmino(object: EventDeleteObjectAmino): EventDeleteObject {
+    const message = createBaseEventDeleteObject();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.object_name !== undefined && object.object_name !== null) {
+      message.objectName = object.object_name;
+    }
+    if (object.object_id !== undefined && object.object_id !== null) {
+      message.objectId = object.object_id;
+    }
+    if (object.local_virtual_group_id !== undefined && object.local_virtual_group_id !== null) {
+      message.localVirtualGroupId = object.local_virtual_group_id;
+    }
+    return message;
+  },
+  toAmino(message: EventDeleteObject): EventDeleteObjectAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.object_id = message.objectId;
+    obj.local_virtual_group_id = message.localVirtualGroupId;
+    return obj;
+  },
+  fromAminoMsg(object: EventDeleteObjectAminoMsg): EventDeleteObject {
+    return EventDeleteObject.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventDeleteObjectProtoMsg): EventDeleteObject {
+    return EventDeleteObject.decode(message.value);
+  },
+  toProto(message: EventDeleteObject): Uint8Array {
+    return EventDeleteObject.encode(message).finish();
+  },
+  toProtoMsg(message: EventDeleteObject): EventDeleteObjectProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventDeleteObject",
+      value: EventDeleteObject.encode(message).finish()
+    };
   }
 };
 function createBaseEventRejectSealObject(): EventRejectSealObject {
@@ -1909,7 +2531,8 @@ function createBaseEventRejectSealObject(): EventRejectSealObject {
   };
 }
 export const EventRejectSealObject = {
-  encode(message: EventRejectSealObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventRejectSealObject",
+  encode(message: EventRejectSealObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -1924,8 +2547,8 @@ export const EventRejectSealObject = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventRejectSealObject {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventRejectSealObject {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventRejectSealObject();
     while (reader.pos < end) {
@@ -1989,6 +2612,45 @@ export const EventRejectSealObject = {
     obj.object_name = message.objectName;
     obj.object_id = message.objectId;
     return obj;
+  },
+  fromAmino(object: EventRejectSealObjectAmino): EventRejectSealObject {
+    const message = createBaseEventRejectSealObject();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.object_name !== undefined && object.object_name !== null) {
+      message.objectName = object.object_name;
+    }
+    if (object.object_id !== undefined && object.object_id !== null) {
+      message.objectId = object.object_id;
+    }
+    return message;
+  },
+  toAmino(message: EventRejectSealObject): EventRejectSealObjectAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.object_id = message.objectId;
+    return obj;
+  },
+  fromAminoMsg(object: EventRejectSealObjectAminoMsg): EventRejectSealObject {
+    return EventRejectSealObject.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventRejectSealObjectProtoMsg): EventRejectSealObject {
+    return EventRejectSealObject.decode(message.value);
+  },
+  toProto(message: EventRejectSealObject): Uint8Array {
+    return EventRejectSealObject.encode(message).finish();
+  },
+  toProtoMsg(message: EventRejectSealObject): EventRejectSealObjectProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventRejectSealObject",
+      value: EventRejectSealObject.encode(message).finish()
+    };
   }
 };
 function createBaseEventDiscontinueObject(): EventDiscontinueObject {
@@ -1996,11 +2658,12 @@ function createBaseEventDiscontinueObject(): EventDiscontinueObject {
     bucketName: "",
     objectId: "",
     reason: "",
-    deleteAt: Long.ZERO
+    deleteAt: BigInt(0)
   };
 }
 export const EventDiscontinueObject = {
-  encode(message: EventDiscontinueObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventDiscontinueObject",
+  encode(message: EventDiscontinueObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bucketName !== "") {
       writer.uint32(10).string(message.bucketName);
     }
@@ -2010,13 +2673,13 @@ export const EventDiscontinueObject = {
     if (message.reason !== "") {
       writer.uint32(26).string(message.reason);
     }
-    if (!message.deleteAt.isZero()) {
+    if (message.deleteAt !== BigInt(0)) {
       writer.uint32(32).int64(message.deleteAt);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventDiscontinueObject {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventDiscontinueObject {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDiscontinueObject();
     while (reader.pos < end) {
@@ -2032,7 +2695,7 @@ export const EventDiscontinueObject = {
           message.reason = reader.string();
           break;
         case 4:
-          message.deleteAt = (reader.int64() as Long);
+          message.deleteAt = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2046,7 +2709,7 @@ export const EventDiscontinueObject = {
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
       reason: isSet(object.reason) ? String(object.reason) : "",
-      deleteAt: isSet(object.deleteAt) ? Long.fromValue(object.deleteAt) : Long.ZERO
+      deleteAt: isSet(object.deleteAt) ? BigInt(object.deleteAt.toString()) : BigInt(0)
     };
   },
   toJSON(message: EventDiscontinueObject): unknown {
@@ -2054,7 +2717,7 @@ export const EventDiscontinueObject = {
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectId !== undefined && (obj.objectId = message.objectId);
     message.reason !== undefined && (obj.reason = message.reason);
-    message.deleteAt !== undefined && (obj.deleteAt = (message.deleteAt || Long.ZERO).toString());
+    message.deleteAt !== undefined && (obj.deleteAt = (message.deleteAt || BigInt(0)).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventDiscontinueObject>, I>>(object: I): EventDiscontinueObject {
@@ -2062,7 +2725,7 @@ export const EventDiscontinueObject = {
     message.bucketName = object.bucketName ?? "";
     message.objectId = object.objectId ?? "";
     message.reason = object.reason ?? "";
-    message.deleteAt = object.deleteAt !== undefined && object.deleteAt !== null ? Long.fromValue(object.deleteAt) : Long.ZERO;
+    message.deleteAt = object.deleteAt !== undefined && object.deleteAt !== null ? BigInt(object.deleteAt.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: EventDiscontinueObjectSDKType): EventDiscontinueObject {
@@ -2080,6 +2743,45 @@ export const EventDiscontinueObject = {
     obj.reason = message.reason;
     obj.delete_at = message.deleteAt;
     return obj;
+  },
+  fromAmino(object: EventDiscontinueObjectAmino): EventDiscontinueObject {
+    const message = createBaseEventDiscontinueObject();
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.object_id !== undefined && object.object_id !== null) {
+      message.objectId = object.object_id;
+    }
+    if (object.reason !== undefined && object.reason !== null) {
+      message.reason = object.reason;
+    }
+    if (object.delete_at !== undefined && object.delete_at !== null) {
+      message.deleteAt = BigInt(object.delete_at);
+    }
+    return message;
+  },
+  toAmino(message: EventDiscontinueObject): EventDiscontinueObjectAmino {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    obj.object_id = message.objectId;
+    obj.reason = message.reason;
+    obj.delete_at = message.deleteAt ? message.deleteAt.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventDiscontinueObjectAminoMsg): EventDiscontinueObject {
+    return EventDiscontinueObject.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventDiscontinueObjectProtoMsg): EventDiscontinueObject {
+    return EventDiscontinueObject.decode(message.value);
+  },
+  toProto(message: EventDiscontinueObject): Uint8Array {
+    return EventDiscontinueObject.encode(message).finish();
+  },
+  toProtoMsg(message: EventDiscontinueObject): EventDiscontinueObjectProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventDiscontinueObject",
+      value: EventDiscontinueObject.encode(message).finish()
+    };
   }
 };
 function createBaseEventUpdateObjectInfo(): EventUpdateObjectInfo {
@@ -2092,7 +2794,8 @@ function createBaseEventUpdateObjectInfo(): EventUpdateObjectInfo {
   };
 }
 export const EventUpdateObjectInfo = {
-  encode(message: EventUpdateObjectInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventUpdateObjectInfo",
+  encode(message: EventUpdateObjectInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -2110,8 +2813,8 @@ export const EventUpdateObjectInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateObjectInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateObjectInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventUpdateObjectInfo();
     while (reader.pos < end) {
@@ -2183,6 +2886,49 @@ export const EventUpdateObjectInfo = {
     obj.object_id = message.objectId;
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     return obj;
+  },
+  fromAmino(object: EventUpdateObjectInfoAmino): EventUpdateObjectInfo {
+    const message = createBaseEventUpdateObjectInfo();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.object_name !== undefined && object.object_name !== null) {
+      message.objectName = object.object_name;
+    }
+    if (object.object_id !== undefined && object.object_id !== null) {
+      message.objectId = object.object_id;
+    }
+    if (object.visibility !== undefined && object.visibility !== null) {
+      message.visibility = visibilityTypeFromJSON(object.visibility);
+    }
+    return message;
+  },
+  toAmino(message: EventUpdateObjectInfo): EventUpdateObjectInfoAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.object_id = message.objectId;
+    obj.visibility = visibilityTypeToJSON(message.visibility);
+    return obj;
+  },
+  fromAminoMsg(object: EventUpdateObjectInfoAminoMsg): EventUpdateObjectInfo {
+    return EventUpdateObjectInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventUpdateObjectInfoProtoMsg): EventUpdateObjectInfo {
+    return EventUpdateObjectInfo.decode(message.value);
+  },
+  toProto(message: EventUpdateObjectInfo): Uint8Array {
+    return EventUpdateObjectInfo.encode(message).finish();
+  },
+  toProtoMsg(message: EventUpdateObjectInfo): EventUpdateObjectInfoProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventUpdateObjectInfo",
+      value: EventUpdateObjectInfo.encode(message).finish()
+    };
   }
 };
 function createBaseEventCreateGroup(): EventCreateGroup {
@@ -2192,11 +2938,12 @@ function createBaseEventCreateGroup(): EventCreateGroup {
     groupId: "",
     sourceType: 0,
     extra: "",
-    tags: ResourceTags.fromPartial({})
+    tags: undefined
   };
 }
 export const EventCreateGroup = {
-  encode(message: EventCreateGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventCreateGroup",
+  encode(message: EventCreateGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -2217,8 +2964,8 @@ export const EventCreateGroup = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventCreateGroup {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateGroup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCreateGroup();
     while (reader.pos < end) {
@@ -2298,6 +3045,53 @@ export const EventCreateGroup = {
     obj.extra = message.extra;
     message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
+  },
+  fromAmino(object: EventCreateGroupAmino): EventCreateGroup {
+    const message = createBaseEventCreateGroup();
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.group_name !== undefined && object.group_name !== null) {
+      message.groupName = object.group_name;
+    }
+    if (object.group_id !== undefined && object.group_id !== null) {
+      message.groupId = object.group_id;
+    }
+    if (object.source_type !== undefined && object.source_type !== null) {
+      message.sourceType = sourceTypeFromJSON(object.source_type);
+    }
+    if (object.extra !== undefined && object.extra !== null) {
+      message.extra = object.extra;
+    }
+    if (object.tags !== undefined && object.tags !== null) {
+      message.tags = ResourceTags.fromAmino(object.tags);
+    }
+    return message;
+  },
+  toAmino(message: EventCreateGroup): EventCreateGroupAmino {
+    const obj: any = {};
+    obj.owner = message.owner;
+    obj.group_name = message.groupName;
+    obj.group_id = message.groupId;
+    obj.source_type = sourceTypeToJSON(message.sourceType);
+    obj.extra = message.extra;
+    obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventCreateGroupAminoMsg): EventCreateGroup {
+    return EventCreateGroup.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventCreateGroupProtoMsg): EventCreateGroup {
+    return EventCreateGroup.decode(message.value);
+  },
+  toProto(message: EventCreateGroup): Uint8Array {
+    return EventCreateGroup.encode(message).finish();
+  },
+  toProtoMsg(message: EventCreateGroup): EventCreateGroupProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventCreateGroup",
+      value: EventCreateGroup.encode(message).finish()
+    };
   }
 };
 function createBaseEventDeleteGroup(): EventDeleteGroup {
@@ -2308,7 +3102,8 @@ function createBaseEventDeleteGroup(): EventDeleteGroup {
   };
 }
 export const EventDeleteGroup = {
-  encode(message: EventDeleteGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventDeleteGroup",
+  encode(message: EventDeleteGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(18).string(message.owner);
     }
@@ -2320,8 +3115,8 @@ export const EventDeleteGroup = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventDeleteGroup {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventDeleteGroup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDeleteGroup();
     while (reader.pos < end) {
@@ -2377,6 +3172,41 @@ export const EventDeleteGroup = {
     obj.group_name = message.groupName;
     obj.group_id = message.groupId;
     return obj;
+  },
+  fromAmino(object: EventDeleteGroupAmino): EventDeleteGroup {
+    const message = createBaseEventDeleteGroup();
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.group_name !== undefined && object.group_name !== null) {
+      message.groupName = object.group_name;
+    }
+    if (object.group_id !== undefined && object.group_id !== null) {
+      message.groupId = object.group_id;
+    }
+    return message;
+  },
+  toAmino(message: EventDeleteGroup): EventDeleteGroupAmino {
+    const obj: any = {};
+    obj.owner = message.owner;
+    obj.group_name = message.groupName;
+    obj.group_id = message.groupId;
+    return obj;
+  },
+  fromAminoMsg(object: EventDeleteGroupAminoMsg): EventDeleteGroup {
+    return EventDeleteGroup.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventDeleteGroupProtoMsg): EventDeleteGroup {
+    return EventDeleteGroup.decode(message.value);
+  },
+  toProto(message: EventDeleteGroup): Uint8Array {
+    return EventDeleteGroup.encode(message).finish();
+  },
+  toProtoMsg(message: EventDeleteGroup): EventDeleteGroupProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventDeleteGroup",
+      value: EventDeleteGroup.encode(message).finish()
+    };
   }
 };
 function createBaseEventLeaveGroup(): EventLeaveGroup {
@@ -2388,7 +3218,8 @@ function createBaseEventLeaveGroup(): EventLeaveGroup {
   };
 }
 export const EventLeaveGroup = {
-  encode(message: EventLeaveGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventLeaveGroup",
+  encode(message: EventLeaveGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.memberAddress !== "") {
       writer.uint32(10).string(message.memberAddress);
     }
@@ -2403,8 +3234,8 @@ export const EventLeaveGroup = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventLeaveGroup {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventLeaveGroup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventLeaveGroup();
     while (reader.pos < end) {
@@ -2468,6 +3299,45 @@ export const EventLeaveGroup = {
     obj.group_name = message.groupName;
     obj.group_id = message.groupId;
     return obj;
+  },
+  fromAmino(object: EventLeaveGroupAmino): EventLeaveGroup {
+    const message = createBaseEventLeaveGroup();
+    if (object.member_address !== undefined && object.member_address !== null) {
+      message.memberAddress = object.member_address;
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.group_name !== undefined && object.group_name !== null) {
+      message.groupName = object.group_name;
+    }
+    if (object.group_id !== undefined && object.group_id !== null) {
+      message.groupId = object.group_id;
+    }
+    return message;
+  },
+  toAmino(message: EventLeaveGroup): EventLeaveGroupAmino {
+    const obj: any = {};
+    obj.member_address = message.memberAddress;
+    obj.owner = message.owner;
+    obj.group_name = message.groupName;
+    obj.group_id = message.groupId;
+    return obj;
+  },
+  fromAminoMsg(object: EventLeaveGroupAminoMsg): EventLeaveGroup {
+    return EventLeaveGroup.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventLeaveGroupProtoMsg): EventLeaveGroup {
+    return EventLeaveGroup.decode(message.value);
+  },
+  toProto(message: EventLeaveGroup): Uint8Array {
+    return EventLeaveGroup.encode(message).finish();
+  },
+  toProtoMsg(message: EventLeaveGroup): EventLeaveGroupProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventLeaveGroup",
+      value: EventLeaveGroup.encode(message).finish()
+    };
   }
 };
 function createBaseEventUpdateGroupMember(): EventUpdateGroupMember {
@@ -2481,7 +3351,8 @@ function createBaseEventUpdateGroupMember(): EventUpdateGroupMember {
   };
 }
 export const EventUpdateGroupMember = {
-  encode(message: EventUpdateGroupMember, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventUpdateGroupMember",
+  encode(message: EventUpdateGroupMember, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -2502,8 +3373,8 @@ export const EventUpdateGroupMember = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateGroupMember {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateGroupMember {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventUpdateGroupMember();
     while (reader.pos < end) {
@@ -2599,6 +3470,57 @@ export const EventUpdateGroupMember = {
       obj.members_to_delete = [];
     }
     return obj;
+  },
+  fromAmino(object: EventUpdateGroupMemberAmino): EventUpdateGroupMember {
+    const message = createBaseEventUpdateGroupMember();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.group_name !== undefined && object.group_name !== null) {
+      message.groupName = object.group_name;
+    }
+    if (object.group_id !== undefined && object.group_id !== null) {
+      message.groupId = object.group_id;
+    }
+    message.membersToAdd = object.members_to_add?.map(e => EventGroupMemberDetail.fromAmino(e)) || [];
+    message.membersToDelete = object.members_to_delete?.map(e => e) || [];
+    return message;
+  },
+  toAmino(message: EventUpdateGroupMember): EventUpdateGroupMemberAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.owner = message.owner;
+    obj.group_name = message.groupName;
+    obj.group_id = message.groupId;
+    if (message.membersToAdd) {
+      obj.members_to_add = message.membersToAdd.map(e => e ? EventGroupMemberDetail.toAmino(e) : undefined);
+    } else {
+      obj.members_to_add = [];
+    }
+    if (message.membersToDelete) {
+      obj.members_to_delete = message.membersToDelete.map(e => e);
+    } else {
+      obj.members_to_delete = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: EventUpdateGroupMemberAminoMsg): EventUpdateGroupMember {
+    return EventUpdateGroupMember.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventUpdateGroupMemberProtoMsg): EventUpdateGroupMember {
+    return EventUpdateGroupMember.decode(message.value);
+  },
+  toProto(message: EventUpdateGroupMember): Uint8Array {
+    return EventUpdateGroupMember.encode(message).finish();
+  },
+  toProtoMsg(message: EventUpdateGroupMember): EventUpdateGroupMemberProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventUpdateGroupMember",
+      value: EventUpdateGroupMember.encode(message).finish()
+    };
   }
 };
 function createBaseEventRenewGroupMember(): EventRenewGroupMember {
@@ -2612,7 +3534,8 @@ function createBaseEventRenewGroupMember(): EventRenewGroupMember {
   };
 }
 export const EventRenewGroupMember = {
-  encode(message: EventRenewGroupMember, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventRenewGroupMember",
+  encode(message: EventRenewGroupMember, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -2633,8 +3556,8 @@ export const EventRenewGroupMember = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventRenewGroupMember {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventRenewGroupMember {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventRenewGroupMember();
     while (reader.pos < end) {
@@ -2722,16 +3645,66 @@ export const EventRenewGroupMember = {
       obj.members = [];
     }
     return obj;
+  },
+  fromAmino(object: EventRenewGroupMemberAmino): EventRenewGroupMember {
+    const message = createBaseEventRenewGroupMember();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.group_name !== undefined && object.group_name !== null) {
+      message.groupName = object.group_name;
+    }
+    if (object.group_id !== undefined && object.group_id !== null) {
+      message.groupId = object.group_id;
+    }
+    if (object.source_type !== undefined && object.source_type !== null) {
+      message.sourceType = sourceTypeFromJSON(object.source_type);
+    }
+    message.members = object.members?.map(e => EventGroupMemberDetail.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: EventRenewGroupMember): EventRenewGroupMemberAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.owner = message.owner;
+    obj.group_name = message.groupName;
+    obj.group_id = message.groupId;
+    obj.source_type = sourceTypeToJSON(message.sourceType);
+    if (message.members) {
+      obj.members = message.members.map(e => e ? EventGroupMemberDetail.toAmino(e) : undefined);
+    } else {
+      obj.members = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: EventRenewGroupMemberAminoMsg): EventRenewGroupMember {
+    return EventRenewGroupMember.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventRenewGroupMemberProtoMsg): EventRenewGroupMember {
+    return EventRenewGroupMember.decode(message.value);
+  },
+  toProto(message: EventRenewGroupMember): Uint8Array {
+    return EventRenewGroupMember.encode(message).finish();
+  },
+  toProtoMsg(message: EventRenewGroupMember): EventRenewGroupMemberProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventRenewGroupMember",
+      value: EventRenewGroupMember.encode(message).finish()
+    };
   }
 };
 function createBaseEventGroupMemberDetail(): EventGroupMemberDetail {
   return {
     member: "",
-    expirationTime: Timestamp.fromPartial({})
+    expirationTime: undefined
   };
 }
 export const EventGroupMemberDetail = {
-  encode(message: EventGroupMemberDetail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventGroupMemberDetail",
+  encode(message: EventGroupMemberDetail, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.member !== "") {
       writer.uint32(10).string(message.member);
     }
@@ -2740,8 +3713,8 @@ export const EventGroupMemberDetail = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventGroupMemberDetail {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventGroupMemberDetail {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventGroupMemberDetail();
     while (reader.pos < end) {
@@ -2789,6 +3762,37 @@ export const EventGroupMemberDetail = {
     obj.member = message.member;
     message.expirationTime !== undefined && (obj.expiration_time = message.expirationTime ? Timestamp.toSDK(message.expirationTime) : undefined);
     return obj;
+  },
+  fromAmino(object: EventGroupMemberDetailAmino): EventGroupMemberDetail {
+    const message = createBaseEventGroupMemberDetail();
+    if (object.member !== undefined && object.member !== null) {
+      message.member = object.member;
+    }
+    if (object.expiration_time !== undefined && object.expiration_time !== null) {
+      message.expirationTime = Timestamp.fromAmino(object.expiration_time);
+    }
+    return message;
+  },
+  toAmino(message: EventGroupMemberDetail): EventGroupMemberDetailAmino {
+    const obj: any = {};
+    obj.member = message.member;
+    obj.expiration_time = message.expirationTime ? Timestamp.toAmino(message.expirationTime) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventGroupMemberDetailAminoMsg): EventGroupMemberDetail {
+    return EventGroupMemberDetail.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventGroupMemberDetailProtoMsg): EventGroupMemberDetail {
+    return EventGroupMemberDetail.decode(message.value);
+  },
+  toProto(message: EventGroupMemberDetail): Uint8Array {
+    return EventGroupMemberDetail.encode(message).finish();
+  },
+  toProtoMsg(message: EventGroupMemberDetail): EventGroupMemberDetailProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventGroupMemberDetail",
+      value: EventGroupMemberDetail.encode(message).finish()
+    };
   }
 };
 function createBaseEventUpdateGroupExtra(): EventUpdateGroupExtra {
@@ -2801,7 +3805,8 @@ function createBaseEventUpdateGroupExtra(): EventUpdateGroupExtra {
   };
 }
 export const EventUpdateGroupExtra = {
-  encode(message: EventUpdateGroupExtra, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventUpdateGroupExtra",
+  encode(message: EventUpdateGroupExtra, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -2819,8 +3824,8 @@ export const EventUpdateGroupExtra = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateGroupExtra {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateGroupExtra {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventUpdateGroupExtra();
     while (reader.pos < end) {
@@ -2892,6 +3897,49 @@ export const EventUpdateGroupExtra = {
     obj.group_id = message.groupId;
     obj.extra = message.extra;
     return obj;
+  },
+  fromAmino(object: EventUpdateGroupExtraAmino): EventUpdateGroupExtra {
+    const message = createBaseEventUpdateGroupExtra();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.group_name !== undefined && object.group_name !== null) {
+      message.groupName = object.group_name;
+    }
+    if (object.group_id !== undefined && object.group_id !== null) {
+      message.groupId = object.group_id;
+    }
+    if (object.extra !== undefined && object.extra !== null) {
+      message.extra = object.extra;
+    }
+    return message;
+  },
+  toAmino(message: EventUpdateGroupExtra): EventUpdateGroupExtraAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.owner = message.owner;
+    obj.group_name = message.groupName;
+    obj.group_id = message.groupId;
+    obj.extra = message.extra;
+    return obj;
+  },
+  fromAminoMsg(object: EventUpdateGroupExtraAminoMsg): EventUpdateGroupExtra {
+    return EventUpdateGroupExtra.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventUpdateGroupExtraProtoMsg): EventUpdateGroupExtra {
+    return EventUpdateGroupExtra.decode(message.value);
+  },
+  toProto(message: EventUpdateGroupExtra): Uint8Array {
+    return EventUpdateGroupExtra.encode(message).finish();
+  },
+  toProtoMsg(message: EventUpdateGroupExtra): EventUpdateGroupExtraProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventUpdateGroupExtra",
+      value: EventUpdateGroupExtra.encode(message).finish()
+    };
   }
 };
 function createBaseEventMirrorBucket(): EventMirrorBucket {
@@ -2903,7 +3951,8 @@ function createBaseEventMirrorBucket(): EventMirrorBucket {
   };
 }
 export const EventMirrorBucket = {
-  encode(message: EventMirrorBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventMirrorBucket",
+  encode(message: EventMirrorBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -2918,8 +3967,8 @@ export const EventMirrorBucket = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventMirrorBucket {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventMirrorBucket {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMirrorBucket();
     while (reader.pos < end) {
@@ -2983,6 +4032,45 @@ export const EventMirrorBucket = {
     obj.bucket_id = message.bucketId;
     obj.dest_chain_id = message.destChainId;
     return obj;
+  },
+  fromAmino(object: EventMirrorBucketAmino): EventMirrorBucket {
+    const message = createBaseEventMirrorBucket();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    if (object.dest_chain_id !== undefined && object.dest_chain_id !== null) {
+      message.destChainId = object.dest_chain_id;
+    }
+    return message;
+  },
+  toAmino(message: EventMirrorBucket): EventMirrorBucketAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.bucket_id = message.bucketId;
+    obj.dest_chain_id = message.destChainId;
+    return obj;
+  },
+  fromAminoMsg(object: EventMirrorBucketAminoMsg): EventMirrorBucket {
+    return EventMirrorBucket.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventMirrorBucketProtoMsg): EventMirrorBucket {
+    return EventMirrorBucket.decode(message.value);
+  },
+  toProto(message: EventMirrorBucket): Uint8Array {
+    return EventMirrorBucket.encode(message).finish();
+  },
+  toProtoMsg(message: EventMirrorBucket): EventMirrorBucketProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventMirrorBucket",
+      value: EventMirrorBucket.encode(message).finish()
+    };
   }
 };
 function createBaseEventMirrorBucketResult(): EventMirrorBucketResult {
@@ -2994,7 +4082,8 @@ function createBaseEventMirrorBucketResult(): EventMirrorBucketResult {
   };
 }
 export const EventMirrorBucketResult = {
-  encode(message: EventMirrorBucketResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventMirrorBucketResult",
+  encode(message: EventMirrorBucketResult, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.status !== 0) {
       writer.uint32(8).uint32(message.status);
     }
@@ -3009,8 +4098,8 @@ export const EventMirrorBucketResult = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventMirrorBucketResult {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventMirrorBucketResult {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMirrorBucketResult();
     while (reader.pos < end) {
@@ -3074,6 +4163,45 @@ export const EventMirrorBucketResult = {
     obj.bucket_id = message.bucketId;
     obj.dest_chain_id = message.destChainId;
     return obj;
+  },
+  fromAmino(object: EventMirrorBucketResultAmino): EventMirrorBucketResult {
+    const message = createBaseEventMirrorBucketResult();
+    if (object.status !== undefined && object.status !== null) {
+      message.status = object.status;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    if (object.dest_chain_id !== undefined && object.dest_chain_id !== null) {
+      message.destChainId = object.dest_chain_id;
+    }
+    return message;
+  },
+  toAmino(message: EventMirrorBucketResult): EventMirrorBucketResultAmino {
+    const obj: any = {};
+    obj.status = message.status;
+    obj.bucket_name = message.bucketName;
+    obj.bucket_id = message.bucketId;
+    obj.dest_chain_id = message.destChainId;
+    return obj;
+  },
+  fromAminoMsg(object: EventMirrorBucketResultAminoMsg): EventMirrorBucketResult {
+    return EventMirrorBucketResult.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventMirrorBucketResultProtoMsg): EventMirrorBucketResult {
+    return EventMirrorBucketResult.decode(message.value);
+  },
+  toProto(message: EventMirrorBucketResult): Uint8Array {
+    return EventMirrorBucketResult.encode(message).finish();
+  },
+  toProtoMsg(message: EventMirrorBucketResult): EventMirrorBucketResultProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventMirrorBucketResult",
+      value: EventMirrorBucketResult.encode(message).finish()
+    };
   }
 };
 function createBaseEventMirrorObject(): EventMirrorObject {
@@ -3086,7 +4214,8 @@ function createBaseEventMirrorObject(): EventMirrorObject {
   };
 }
 export const EventMirrorObject = {
-  encode(message: EventMirrorObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventMirrorObject",
+  encode(message: EventMirrorObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -3104,8 +4233,8 @@ export const EventMirrorObject = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventMirrorObject {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventMirrorObject {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMirrorObject();
     while (reader.pos < end) {
@@ -3177,6 +4306,49 @@ export const EventMirrorObject = {
     obj.object_id = message.objectId;
     obj.dest_chain_id = message.destChainId;
     return obj;
+  },
+  fromAmino(object: EventMirrorObjectAmino): EventMirrorObject {
+    const message = createBaseEventMirrorObject();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.object_name !== undefined && object.object_name !== null) {
+      message.objectName = object.object_name;
+    }
+    if (object.object_id !== undefined && object.object_id !== null) {
+      message.objectId = object.object_id;
+    }
+    if (object.dest_chain_id !== undefined && object.dest_chain_id !== null) {
+      message.destChainId = object.dest_chain_id;
+    }
+    return message;
+  },
+  toAmino(message: EventMirrorObject): EventMirrorObjectAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.object_id = message.objectId;
+    obj.dest_chain_id = message.destChainId;
+    return obj;
+  },
+  fromAminoMsg(object: EventMirrorObjectAminoMsg): EventMirrorObject {
+    return EventMirrorObject.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventMirrorObjectProtoMsg): EventMirrorObject {
+    return EventMirrorObject.decode(message.value);
+  },
+  toProto(message: EventMirrorObject): Uint8Array {
+    return EventMirrorObject.encode(message).finish();
+  },
+  toProtoMsg(message: EventMirrorObject): EventMirrorObjectProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventMirrorObject",
+      value: EventMirrorObject.encode(message).finish()
+    };
   }
 };
 function createBaseEventMirrorObjectResult(): EventMirrorObjectResult {
@@ -3189,7 +4361,8 @@ function createBaseEventMirrorObjectResult(): EventMirrorObjectResult {
   };
 }
 export const EventMirrorObjectResult = {
-  encode(message: EventMirrorObjectResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventMirrorObjectResult",
+  encode(message: EventMirrorObjectResult, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.status !== 0) {
       writer.uint32(8).uint32(message.status);
     }
@@ -3207,8 +4380,8 @@ export const EventMirrorObjectResult = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventMirrorObjectResult {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventMirrorObjectResult {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMirrorObjectResult();
     while (reader.pos < end) {
@@ -3280,6 +4453,49 @@ export const EventMirrorObjectResult = {
     obj.object_id = message.objectId;
     obj.dest_chain_id = message.destChainId;
     return obj;
+  },
+  fromAmino(object: EventMirrorObjectResultAmino): EventMirrorObjectResult {
+    const message = createBaseEventMirrorObjectResult();
+    if (object.status !== undefined && object.status !== null) {
+      message.status = object.status;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.object_name !== undefined && object.object_name !== null) {
+      message.objectName = object.object_name;
+    }
+    if (object.object_id !== undefined && object.object_id !== null) {
+      message.objectId = object.object_id;
+    }
+    if (object.dest_chain_id !== undefined && object.dest_chain_id !== null) {
+      message.destChainId = object.dest_chain_id;
+    }
+    return message;
+  },
+  toAmino(message: EventMirrorObjectResult): EventMirrorObjectResultAmino {
+    const obj: any = {};
+    obj.status = message.status;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.object_id = message.objectId;
+    obj.dest_chain_id = message.destChainId;
+    return obj;
+  },
+  fromAminoMsg(object: EventMirrorObjectResultAminoMsg): EventMirrorObjectResult {
+    return EventMirrorObjectResult.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventMirrorObjectResultProtoMsg): EventMirrorObjectResult {
+    return EventMirrorObjectResult.decode(message.value);
+  },
+  toProto(message: EventMirrorObjectResult): Uint8Array {
+    return EventMirrorObjectResult.encode(message).finish();
+  },
+  toProtoMsg(message: EventMirrorObjectResult): EventMirrorObjectResultProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventMirrorObjectResult",
+      value: EventMirrorObjectResult.encode(message).finish()
+    };
   }
 };
 function createBaseEventMirrorGroup(): EventMirrorGroup {
@@ -3291,7 +4507,8 @@ function createBaseEventMirrorGroup(): EventMirrorGroup {
   };
 }
 export const EventMirrorGroup = {
-  encode(message: EventMirrorGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventMirrorGroup",
+  encode(message: EventMirrorGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -3306,8 +4523,8 @@ export const EventMirrorGroup = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventMirrorGroup {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventMirrorGroup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMirrorGroup();
     while (reader.pos < end) {
@@ -3371,6 +4588,45 @@ export const EventMirrorGroup = {
     obj.group_id = message.groupId;
     obj.dest_chain_id = message.destChainId;
     return obj;
+  },
+  fromAmino(object: EventMirrorGroupAmino): EventMirrorGroup {
+    const message = createBaseEventMirrorGroup();
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.group_name !== undefined && object.group_name !== null) {
+      message.groupName = object.group_name;
+    }
+    if (object.group_id !== undefined && object.group_id !== null) {
+      message.groupId = object.group_id;
+    }
+    if (object.dest_chain_id !== undefined && object.dest_chain_id !== null) {
+      message.destChainId = object.dest_chain_id;
+    }
+    return message;
+  },
+  toAmino(message: EventMirrorGroup): EventMirrorGroupAmino {
+    const obj: any = {};
+    obj.owner = message.owner;
+    obj.group_name = message.groupName;
+    obj.group_id = message.groupId;
+    obj.dest_chain_id = message.destChainId;
+    return obj;
+  },
+  fromAminoMsg(object: EventMirrorGroupAminoMsg): EventMirrorGroup {
+    return EventMirrorGroup.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventMirrorGroupProtoMsg): EventMirrorGroup {
+    return EventMirrorGroup.decode(message.value);
+  },
+  toProto(message: EventMirrorGroup): Uint8Array {
+    return EventMirrorGroup.encode(message).finish();
+  },
+  toProtoMsg(message: EventMirrorGroup): EventMirrorGroupProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventMirrorGroup",
+      value: EventMirrorGroup.encode(message).finish()
+    };
   }
 };
 function createBaseEventMirrorGroupResult(): EventMirrorGroupResult {
@@ -3382,7 +4638,8 @@ function createBaseEventMirrorGroupResult(): EventMirrorGroupResult {
   };
 }
 export const EventMirrorGroupResult = {
-  encode(message: EventMirrorGroupResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventMirrorGroupResult",
+  encode(message: EventMirrorGroupResult, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.status !== 0) {
       writer.uint32(8).uint32(message.status);
     }
@@ -3397,8 +4654,8 @@ export const EventMirrorGroupResult = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventMirrorGroupResult {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventMirrorGroupResult {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMirrorGroupResult();
     while (reader.pos < end) {
@@ -3462,17 +4719,57 @@ export const EventMirrorGroupResult = {
     obj.group_id = message.groupId;
     obj.dest_chain_id = message.destChainId;
     return obj;
+  },
+  fromAmino(object: EventMirrorGroupResultAmino): EventMirrorGroupResult {
+    const message = createBaseEventMirrorGroupResult();
+    if (object.status !== undefined && object.status !== null) {
+      message.status = object.status;
+    }
+    if (object.group_name !== undefined && object.group_name !== null) {
+      message.groupName = object.group_name;
+    }
+    if (object.group_id !== undefined && object.group_id !== null) {
+      message.groupId = object.group_id;
+    }
+    if (object.dest_chain_id !== undefined && object.dest_chain_id !== null) {
+      message.destChainId = object.dest_chain_id;
+    }
+    return message;
+  },
+  toAmino(message: EventMirrorGroupResult): EventMirrorGroupResultAmino {
+    const obj: any = {};
+    obj.status = message.status;
+    obj.group_name = message.groupName;
+    obj.group_id = message.groupId;
+    obj.dest_chain_id = message.destChainId;
+    return obj;
+  },
+  fromAminoMsg(object: EventMirrorGroupResultAminoMsg): EventMirrorGroupResult {
+    return EventMirrorGroupResult.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventMirrorGroupResultProtoMsg): EventMirrorGroupResult {
+    return EventMirrorGroupResult.decode(message.value);
+  },
+  toProto(message: EventMirrorGroupResult): Uint8Array {
+    return EventMirrorGroupResult.encode(message).finish();
+  },
+  toProtoMsg(message: EventMirrorGroupResult): EventMirrorGroupResultProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventMirrorGroupResult",
+      value: EventMirrorGroupResult.encode(message).finish()
+    };
   }
 };
 function createBaseEventStalePolicyCleanup(): EventStalePolicyCleanup {
   return {
-    blockNum: Long.ZERO,
-    deleteInfo: DeleteInfo.fromPartial({})
+    blockNum: BigInt(0),
+    deleteInfo: undefined
   };
 }
 export const EventStalePolicyCleanup = {
-  encode(message: EventStalePolicyCleanup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.blockNum.isZero()) {
+  typeUrl: "/greenfield.storage.EventStalePolicyCleanup",
+  encode(message: EventStalePolicyCleanup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.blockNum !== BigInt(0)) {
       writer.uint32(8).int64(message.blockNum);
     }
     if (message.deleteInfo !== undefined) {
@@ -3480,15 +4777,15 @@ export const EventStalePolicyCleanup = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventStalePolicyCleanup {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventStalePolicyCleanup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventStalePolicyCleanup();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.blockNum = (reader.int64() as Long);
+          message.blockNum = reader.int64();
           break;
         case 2:
           message.deleteInfo = DeleteInfo.decode(reader, reader.uint32());
@@ -3502,19 +4799,19 @@ export const EventStalePolicyCleanup = {
   },
   fromJSON(object: any): EventStalePolicyCleanup {
     return {
-      blockNum: isSet(object.blockNum) ? Long.fromValue(object.blockNum) : Long.ZERO,
+      blockNum: isSet(object.blockNum) ? BigInt(object.blockNum.toString()) : BigInt(0),
       deleteInfo: isSet(object.deleteInfo) ? DeleteInfo.fromJSON(object.deleteInfo) : undefined
     };
   },
   toJSON(message: EventStalePolicyCleanup): unknown {
     const obj: any = {};
-    message.blockNum !== undefined && (obj.blockNum = (message.blockNum || Long.ZERO).toString());
+    message.blockNum !== undefined && (obj.blockNum = (message.blockNum || BigInt(0)).toString());
     message.deleteInfo !== undefined && (obj.deleteInfo = message.deleteInfo ? DeleteInfo.toJSON(message.deleteInfo) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventStalePolicyCleanup>, I>>(object: I): EventStalePolicyCleanup {
     const message = createBaseEventStalePolicyCleanup();
-    message.blockNum = object.blockNum !== undefined && object.blockNum !== null ? Long.fromValue(object.blockNum) : Long.ZERO;
+    message.blockNum = object.blockNum !== undefined && object.blockNum !== null ? BigInt(object.blockNum.toString()) : BigInt(0);
     message.deleteInfo = object.deleteInfo !== undefined && object.deleteInfo !== null ? DeleteInfo.fromPartial(object.deleteInfo) : undefined;
     return message;
   },
@@ -3529,6 +4826,37 @@ export const EventStalePolicyCleanup = {
     obj.blockNum = message.blockNum;
     message.deleteInfo !== undefined && (obj.delete_info = message.deleteInfo ? DeleteInfo.toSDK(message.deleteInfo) : undefined);
     return obj;
+  },
+  fromAmino(object: EventStalePolicyCleanupAmino): EventStalePolicyCleanup {
+    const message = createBaseEventStalePolicyCleanup();
+    if (object.blockNum !== undefined && object.blockNum !== null) {
+      message.blockNum = BigInt(object.blockNum);
+    }
+    if (object.delete_info !== undefined && object.delete_info !== null) {
+      message.deleteInfo = DeleteInfo.fromAmino(object.delete_info);
+    }
+    return message;
+  },
+  toAmino(message: EventStalePolicyCleanup): EventStalePolicyCleanupAmino {
+    const obj: any = {};
+    obj.blockNum = message.blockNum ? message.blockNum.toString() : undefined;
+    obj.delete_info = message.deleteInfo ? DeleteInfo.toAmino(message.deleteInfo) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventStalePolicyCleanupAminoMsg): EventStalePolicyCleanup {
+    return EventStalePolicyCleanup.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventStalePolicyCleanupProtoMsg): EventStalePolicyCleanup {
+    return EventStalePolicyCleanup.decode(message.value);
+  },
+  toProto(message: EventStalePolicyCleanup): Uint8Array {
+    return EventStalePolicyCleanup.encode(message).finish();
+  },
+  toProtoMsg(message: EventStalePolicyCleanup): EventStalePolicyCleanupProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventStalePolicyCleanup",
+      value: EventStalePolicyCleanup.encode(message).finish()
+    };
   }
 };
 function createBaseEventMigrationBucket(): EventMigrationBucket {
@@ -3540,7 +4868,8 @@ function createBaseEventMigrationBucket(): EventMigrationBucket {
   };
 }
 export const EventMigrationBucket = {
-  encode(message: EventMigrationBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventMigrationBucket",
+  encode(message: EventMigrationBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -3555,8 +4884,8 @@ export const EventMigrationBucket = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventMigrationBucket {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventMigrationBucket {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMigrationBucket();
     while (reader.pos < end) {
@@ -3620,6 +4949,45 @@ export const EventMigrationBucket = {
     obj.bucket_id = message.bucketId;
     obj.dst_primary_sp_id = message.dstPrimarySpId;
     return obj;
+  },
+  fromAmino(object: EventMigrationBucketAmino): EventMigrationBucket {
+    const message = createBaseEventMigrationBucket();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    if (object.dst_primary_sp_id !== undefined && object.dst_primary_sp_id !== null) {
+      message.dstPrimarySpId = object.dst_primary_sp_id;
+    }
+    return message;
+  },
+  toAmino(message: EventMigrationBucket): EventMigrationBucketAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.bucket_id = message.bucketId;
+    obj.dst_primary_sp_id = message.dstPrimarySpId;
+    return obj;
+  },
+  fromAminoMsg(object: EventMigrationBucketAminoMsg): EventMigrationBucket {
+    return EventMigrationBucket.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventMigrationBucketProtoMsg): EventMigrationBucket {
+    return EventMigrationBucket.decode(message.value);
+  },
+  toProto(message: EventMigrationBucket): Uint8Array {
+    return EventMigrationBucket.encode(message).finish();
+  },
+  toProtoMsg(message: EventMigrationBucket): EventMigrationBucketProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventMigrationBucket",
+      value: EventMigrationBucket.encode(message).finish()
+    };
   }
 };
 function createBaseEventCancelMigrationBucket(): EventCancelMigrationBucket {
@@ -3630,7 +4998,8 @@ function createBaseEventCancelMigrationBucket(): EventCancelMigrationBucket {
   };
 }
 export const EventCancelMigrationBucket = {
-  encode(message: EventCancelMigrationBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventCancelMigrationBucket",
+  encode(message: EventCancelMigrationBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -3642,8 +5011,8 @@ export const EventCancelMigrationBucket = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventCancelMigrationBucket {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventCancelMigrationBucket {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCancelMigrationBucket();
     while (reader.pos < end) {
@@ -3699,6 +5068,41 @@ export const EventCancelMigrationBucket = {
     obj.bucket_name = message.bucketName;
     obj.bucket_id = message.bucketId;
     return obj;
+  },
+  fromAmino(object: EventCancelMigrationBucketAmino): EventCancelMigrationBucket {
+    const message = createBaseEventCancelMigrationBucket();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    return message;
+  },
+  toAmino(message: EventCancelMigrationBucket): EventCancelMigrationBucketAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.bucket_id = message.bucketId;
+    return obj;
+  },
+  fromAminoMsg(object: EventCancelMigrationBucketAminoMsg): EventCancelMigrationBucket {
+    return EventCancelMigrationBucket.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventCancelMigrationBucketProtoMsg): EventCancelMigrationBucket {
+    return EventCancelMigrationBucket.decode(message.value);
+  },
+  toProto(message: EventCancelMigrationBucket): Uint8Array {
+    return EventCancelMigrationBucket.encode(message).finish();
+  },
+  toProtoMsg(message: EventCancelMigrationBucket): EventCancelMigrationBucketProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventCancelMigrationBucket",
+      value: EventCancelMigrationBucket.encode(message).finish()
+    };
   }
 };
 function createBaseEventRejectMigrateBucket(): EventRejectMigrateBucket {
@@ -3709,7 +5113,8 @@ function createBaseEventRejectMigrateBucket(): EventRejectMigrateBucket {
   };
 }
 export const EventRejectMigrateBucket = {
-  encode(message: EventRejectMigrateBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventRejectMigrateBucket",
+  encode(message: EventRejectMigrateBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -3721,8 +5126,8 @@ export const EventRejectMigrateBucket = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventRejectMigrateBucket {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventRejectMigrateBucket {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventRejectMigrateBucket();
     while (reader.pos < end) {
@@ -3778,6 +5183,41 @@ export const EventRejectMigrateBucket = {
     obj.bucket_name = message.bucketName;
     obj.bucket_id = message.bucketId;
     return obj;
+  },
+  fromAmino(object: EventRejectMigrateBucketAmino): EventRejectMigrateBucket {
+    const message = createBaseEventRejectMigrateBucket();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    return message;
+  },
+  toAmino(message: EventRejectMigrateBucket): EventRejectMigrateBucketAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.bucket_id = message.bucketId;
+    return obj;
+  },
+  fromAminoMsg(object: EventRejectMigrateBucketAminoMsg): EventRejectMigrateBucket {
+    return EventRejectMigrateBucket.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventRejectMigrateBucketProtoMsg): EventRejectMigrateBucket {
+    return EventRejectMigrateBucket.decode(message.value);
+  },
+  toProto(message: EventRejectMigrateBucket): Uint8Array {
+    return EventRejectMigrateBucket.encode(message).finish();
+  },
+  toProtoMsg(message: EventRejectMigrateBucket): EventRejectMigrateBucketProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventRejectMigrateBucket",
+      value: EventRejectMigrateBucket.encode(message).finish()
+    };
   }
 };
 function createBaseEventCompleteMigrationBucket(): EventCompleteMigrationBucket {
@@ -3790,7 +5230,8 @@ function createBaseEventCompleteMigrationBucket(): EventCompleteMigrationBucket 
   };
 }
 export const EventCompleteMigrationBucket = {
-  encode(message: EventCompleteMigrationBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventCompleteMigrationBucket",
+  encode(message: EventCompleteMigrationBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -3808,8 +5249,8 @@ export const EventCompleteMigrationBucket = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventCompleteMigrationBucket {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventCompleteMigrationBucket {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCompleteMigrationBucket();
     while (reader.pos < end) {
@@ -3881,16 +5322,60 @@ export const EventCompleteMigrationBucket = {
     obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
     obj.src_primary_sp_id = message.srcPrimarySpId;
     return obj;
+  },
+  fromAmino(object: EventCompleteMigrationBucketAmino): EventCompleteMigrationBucket {
+    const message = createBaseEventCompleteMigrationBucket();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    if (object.src_primary_sp_id !== undefined && object.src_primary_sp_id !== null) {
+      message.srcPrimarySpId = object.src_primary_sp_id;
+    }
+    return message;
+  },
+  toAmino(message: EventCompleteMigrationBucket): EventCompleteMigrationBucketAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.bucket_id = message.bucketId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.src_primary_sp_id = message.srcPrimarySpId;
+    return obj;
+  },
+  fromAminoMsg(object: EventCompleteMigrationBucketAminoMsg): EventCompleteMigrationBucket {
+    return EventCompleteMigrationBucket.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventCompleteMigrationBucketProtoMsg): EventCompleteMigrationBucket {
+    return EventCompleteMigrationBucket.decode(message.value);
+  },
+  toProto(message: EventCompleteMigrationBucket): Uint8Array {
+    return EventCompleteMigrationBucket.encode(message).finish();
+  },
+  toProtoMsg(message: EventCompleteMigrationBucket): EventCompleteMigrationBucketProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventCompleteMigrationBucket",
+      value: EventCompleteMigrationBucket.encode(message).finish()
+    };
   }
 };
 function createBaseEventSetTag(): EventSetTag {
   return {
     resource: "",
-    tags: ResourceTags.fromPartial({})
+    tags: undefined
   };
 }
 export const EventSetTag = {
-  encode(message: EventSetTag, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.EventSetTag",
+  encode(message: EventSetTag, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.resource !== "") {
       writer.uint32(10).string(message.resource);
     }
@@ -3899,8 +5384,8 @@ export const EventSetTag = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventSetTag {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventSetTag {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventSetTag();
     while (reader.pos < end) {
@@ -3948,5 +5433,36 @@ export const EventSetTag = {
     obj.resource = message.resource;
     message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
+  },
+  fromAmino(object: EventSetTagAmino): EventSetTag {
+    const message = createBaseEventSetTag();
+    if (object.resource !== undefined && object.resource !== null) {
+      message.resource = object.resource;
+    }
+    if (object.tags !== undefined && object.tags !== null) {
+      message.tags = ResourceTags.fromAmino(object.tags);
+    }
+    return message;
+  },
+  toAmino(message: EventSetTag): EventSetTagAmino {
+    const obj: any = {};
+    obj.resource = message.resource;
+    obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventSetTagAminoMsg): EventSetTag {
+    return EventSetTag.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventSetTagProtoMsg): EventSetTag {
+    return EventSetTag.decode(message.value);
+  },
+  toProto(message: EventSetTag): Uint8Array {
+    return EventSetTag.encode(message).finish();
+  },
+  toProtoMsg(message: EventSetTag): EventSetTagProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.EventSetTag",
+      value: EventSetTag.encode(message).finish()
+    };
   }
 };

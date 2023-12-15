@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Params, ParamsSDKType } from "./params";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, DeepPartial, Exact, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.payment";
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
@@ -14,6 +14,10 @@ export interface MsgUpdateParams {
    */
   params: Params;
 }
+export interface MsgUpdateParamsProtoMsg {
+  typeUrl: "/greenfield.payment.MsgUpdateParams";
+  value: Uint8Array;
+}
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
@@ -21,16 +25,28 @@ export interface MsgUpdateParamsSDKType {
 }
 /** MsgUpdateParamsResponse defines the response structure for executing a MsgUpdateParams message. */
 export interface MsgUpdateParamsResponse {}
+export interface MsgUpdateParamsResponseProtoMsg {
+  typeUrl: "/greenfield.payment.MsgUpdateParamsResponse";
+  value: Uint8Array;
+}
 /** MsgUpdateParamsResponse defines the response structure for executing a MsgUpdateParams message. */
 export interface MsgUpdateParamsResponseSDKType {}
 export interface MsgCreatePaymentAccount {
   /** creator is the address of the stream account that created the payment account */
   creator: string;
 }
+export interface MsgCreatePaymentAccountProtoMsg {
+  typeUrl: "/greenfield.payment.MsgCreatePaymentAccount";
+  value: Uint8Array;
+}
 export interface MsgCreatePaymentAccountSDKType {
   creator: string;
 }
 export interface MsgCreatePaymentAccountResponse {}
+export interface MsgCreatePaymentAccountResponseProtoMsg {
+  typeUrl: "/greenfield.payment.MsgCreatePaymentAccountResponse";
+  value: Uint8Array;
+}
 export interface MsgCreatePaymentAccountResponseSDKType {}
 export interface MsgDeposit {
   /** creator is the message signer for MsgDeposit and the address of the account to deposit from */
@@ -40,12 +56,20 @@ export interface MsgDeposit {
   /** amount is the amount to deposit */
   amount: string;
 }
+export interface MsgDepositProtoMsg {
+  typeUrl: "/greenfield.payment.MsgDeposit";
+  value: Uint8Array;
+}
 export interface MsgDepositSDKType {
   creator: string;
   to: string;
   amount: string;
 }
 export interface MsgDepositResponse {}
+export interface MsgDepositResponseProtoMsg {
+  typeUrl: "/greenfield.payment.MsgDepositResponse";
+  value: Uint8Array;
+}
 export interface MsgDepositResponseSDKType {}
 export interface MsgWithdraw {
   /** creator is the message signer for MsgWithdraw and the address of the receive account */
@@ -55,12 +79,20 @@ export interface MsgWithdraw {
   /** amount is the amount to withdraw */
   amount: string;
 }
+export interface MsgWithdrawProtoMsg {
+  typeUrl: "/greenfield.payment.MsgWithdraw";
+  value: Uint8Array;
+}
 export interface MsgWithdrawSDKType {
   creator: string;
   from: string;
   amount: string;
 }
 export interface MsgWithdrawResponse {}
+export interface MsgWithdrawResponseProtoMsg {
+  typeUrl: "/greenfield.payment.MsgWithdrawResponse";
+  value: Uint8Array;
+}
 export interface MsgWithdrawResponseSDKType {}
 export interface MsgDisableRefund {
   /** owner is the message signer for MsgDisableRefund and the address of the payment account owner */
@@ -68,11 +100,19 @@ export interface MsgDisableRefund {
   /** addr is the address of the payment account to disable refund */
   addr: string;
 }
+export interface MsgDisableRefundProtoMsg {
+  typeUrl: "/greenfield.payment.MsgDisableRefund";
+  value: Uint8Array;
+}
 export interface MsgDisableRefundSDKType {
   owner: string;
   addr: string;
 }
 export interface MsgDisableRefundResponse {}
+export interface MsgDisableRefundResponseProtoMsg {
+  typeUrl: "/greenfield.payment.MsgDisableRefundResponse";
+  value: Uint8Array;
+}
 export interface MsgDisableRefundResponseSDKType {}
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
@@ -81,7 +121,8 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
   };
 }
 export const MsgUpdateParams = {
-  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.MsgUpdateParams",
+  encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -90,8 +131,8 @@ export const MsgUpdateParams = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParams();
     while (reader.pos < end) {
@@ -139,17 +180,49 @@ export const MsgUpdateParams = {
     obj.authority = message.authority;
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: MsgUpdateParamsAmino): MsgUpdateParams {
+    const message = createBaseMsgUpdateParams();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
+    const obj: any = {};
+    obj.authority = message.authority;
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateParamsAminoMsg): MsgUpdateParams {
+    return MsgUpdateParams.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateParamsProtoMsg): MsgUpdateParams {
+    return MsgUpdateParams.decode(message.value);
+  },
+  toProto(message: MsgUpdateParams): Uint8Array {
+    return MsgUpdateParams.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateParams): MsgUpdateParamsProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.MsgUpdateParams",
+      value: MsgUpdateParams.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
-  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.MsgUpdateParamsResponse",
+  encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParamsResponse();
     while (reader.pos < end) {
@@ -179,6 +252,29 @@ export const MsgUpdateParamsResponse = {
   toSDK(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgUpdateParamsResponseAmino): MsgUpdateParamsResponse {
+    const message = createBaseMsgUpdateParamsResponse();
+    return message;
+  },
+  toAmino(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateParamsResponseAminoMsg): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateParamsResponseProtoMsg): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.decode(message.value);
+  },
+  toProto(message: MsgUpdateParamsResponse): Uint8Array {
+    return MsgUpdateParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.MsgUpdateParamsResponse",
+      value: MsgUpdateParamsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgCreatePaymentAccount(): MsgCreatePaymentAccount {
@@ -187,14 +283,15 @@ function createBaseMsgCreatePaymentAccount(): MsgCreatePaymentAccount {
   };
 }
 export const MsgCreatePaymentAccount = {
-  encode(message: MsgCreatePaymentAccount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.MsgCreatePaymentAccount",
+  encode(message: MsgCreatePaymentAccount, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreatePaymentAccount {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreatePaymentAccount {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreatePaymentAccount();
     while (reader.pos < end) {
@@ -234,17 +331,45 @@ export const MsgCreatePaymentAccount = {
     const obj: any = {};
     obj.creator = message.creator;
     return obj;
+  },
+  fromAmino(object: MsgCreatePaymentAccountAmino): MsgCreatePaymentAccount {
+    const message = createBaseMsgCreatePaymentAccount();
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    }
+    return message;
+  },
+  toAmino(message: MsgCreatePaymentAccount): MsgCreatePaymentAccountAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    return obj;
+  },
+  fromAminoMsg(object: MsgCreatePaymentAccountAminoMsg): MsgCreatePaymentAccount {
+    return MsgCreatePaymentAccount.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCreatePaymentAccountProtoMsg): MsgCreatePaymentAccount {
+    return MsgCreatePaymentAccount.decode(message.value);
+  },
+  toProto(message: MsgCreatePaymentAccount): Uint8Array {
+    return MsgCreatePaymentAccount.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCreatePaymentAccount): MsgCreatePaymentAccountProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.MsgCreatePaymentAccount",
+      value: MsgCreatePaymentAccount.encode(message).finish()
+    };
   }
 };
 function createBaseMsgCreatePaymentAccountResponse(): MsgCreatePaymentAccountResponse {
   return {};
 }
 export const MsgCreatePaymentAccountResponse = {
-  encode(_: MsgCreatePaymentAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.MsgCreatePaymentAccountResponse",
+  encode(_: MsgCreatePaymentAccountResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreatePaymentAccountResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreatePaymentAccountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreatePaymentAccountResponse();
     while (reader.pos < end) {
@@ -274,6 +399,29 @@ export const MsgCreatePaymentAccountResponse = {
   toSDK(_: MsgCreatePaymentAccountResponse): MsgCreatePaymentAccountResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgCreatePaymentAccountResponseAmino): MsgCreatePaymentAccountResponse {
+    const message = createBaseMsgCreatePaymentAccountResponse();
+    return message;
+  },
+  toAmino(_: MsgCreatePaymentAccountResponse): MsgCreatePaymentAccountResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgCreatePaymentAccountResponseAminoMsg): MsgCreatePaymentAccountResponse {
+    return MsgCreatePaymentAccountResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCreatePaymentAccountResponseProtoMsg): MsgCreatePaymentAccountResponse {
+    return MsgCreatePaymentAccountResponse.decode(message.value);
+  },
+  toProto(message: MsgCreatePaymentAccountResponse): Uint8Array {
+    return MsgCreatePaymentAccountResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCreatePaymentAccountResponse): MsgCreatePaymentAccountResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.MsgCreatePaymentAccountResponse",
+      value: MsgCreatePaymentAccountResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgDeposit(): MsgDeposit {
@@ -284,7 +432,8 @@ function createBaseMsgDeposit(): MsgDeposit {
   };
 }
 export const MsgDeposit = {
-  encode(message: MsgDeposit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.MsgDeposit",
+  encode(message: MsgDeposit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -296,8 +445,8 @@ export const MsgDeposit = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeposit {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDeposit {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeposit();
     while (reader.pos < end) {
@@ -353,17 +502,53 @@ export const MsgDeposit = {
     obj.to = message.to;
     obj.amount = message.amount;
     return obj;
+  },
+  fromAmino(object: MsgDepositAmino): MsgDeposit {
+    const message = createBaseMsgDeposit();
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    }
+    if (object.to !== undefined && object.to !== null) {
+      message.to = object.to;
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
+    }
+    return message;
+  },
+  toAmino(message: MsgDeposit): MsgDepositAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.to = message.to;
+    obj.amount = message.amount;
+    return obj;
+  },
+  fromAminoMsg(object: MsgDepositAminoMsg): MsgDeposit {
+    return MsgDeposit.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgDepositProtoMsg): MsgDeposit {
+    return MsgDeposit.decode(message.value);
+  },
+  toProto(message: MsgDeposit): Uint8Array {
+    return MsgDeposit.encode(message).finish();
+  },
+  toProtoMsg(message: MsgDeposit): MsgDepositProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.MsgDeposit",
+      value: MsgDeposit.encode(message).finish()
+    };
   }
 };
 function createBaseMsgDepositResponse(): MsgDepositResponse {
   return {};
 }
 export const MsgDepositResponse = {
-  encode(_: MsgDepositResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.MsgDepositResponse",
+  encode(_: MsgDepositResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDepositResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDepositResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDepositResponse();
     while (reader.pos < end) {
@@ -393,6 +578,29 @@ export const MsgDepositResponse = {
   toSDK(_: MsgDepositResponse): MsgDepositResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgDepositResponseAmino): MsgDepositResponse {
+    const message = createBaseMsgDepositResponse();
+    return message;
+  },
+  toAmino(_: MsgDepositResponse): MsgDepositResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgDepositResponseAminoMsg): MsgDepositResponse {
+    return MsgDepositResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgDepositResponseProtoMsg): MsgDepositResponse {
+    return MsgDepositResponse.decode(message.value);
+  },
+  toProto(message: MsgDepositResponse): Uint8Array {
+    return MsgDepositResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgDepositResponse): MsgDepositResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.MsgDepositResponse",
+      value: MsgDepositResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgWithdraw(): MsgWithdraw {
@@ -403,7 +611,8 @@ function createBaseMsgWithdraw(): MsgWithdraw {
   };
 }
 export const MsgWithdraw = {
-  encode(message: MsgWithdraw, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.MsgWithdraw",
+  encode(message: MsgWithdraw, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -415,8 +624,8 @@ export const MsgWithdraw = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgWithdraw {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgWithdraw {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgWithdraw();
     while (reader.pos < end) {
@@ -472,17 +681,53 @@ export const MsgWithdraw = {
     obj.from = message.from;
     obj.amount = message.amount;
     return obj;
+  },
+  fromAmino(object: MsgWithdrawAmino): MsgWithdraw {
+    const message = createBaseMsgWithdraw();
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    }
+    if (object.from !== undefined && object.from !== null) {
+      message.from = object.from;
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
+    }
+    return message;
+  },
+  toAmino(message: MsgWithdraw): MsgWithdrawAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.from = message.from;
+    obj.amount = message.amount;
+    return obj;
+  },
+  fromAminoMsg(object: MsgWithdrawAminoMsg): MsgWithdraw {
+    return MsgWithdraw.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgWithdrawProtoMsg): MsgWithdraw {
+    return MsgWithdraw.decode(message.value);
+  },
+  toProto(message: MsgWithdraw): Uint8Array {
+    return MsgWithdraw.encode(message).finish();
+  },
+  toProtoMsg(message: MsgWithdraw): MsgWithdrawProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.MsgWithdraw",
+      value: MsgWithdraw.encode(message).finish()
+    };
   }
 };
 function createBaseMsgWithdrawResponse(): MsgWithdrawResponse {
   return {};
 }
 export const MsgWithdrawResponse = {
-  encode(_: MsgWithdrawResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.MsgWithdrawResponse",
+  encode(_: MsgWithdrawResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgWithdrawResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgWithdrawResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgWithdrawResponse();
     while (reader.pos < end) {
@@ -512,6 +757,29 @@ export const MsgWithdrawResponse = {
   toSDK(_: MsgWithdrawResponse): MsgWithdrawResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgWithdrawResponseAmino): MsgWithdrawResponse {
+    const message = createBaseMsgWithdrawResponse();
+    return message;
+  },
+  toAmino(_: MsgWithdrawResponse): MsgWithdrawResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgWithdrawResponseAminoMsg): MsgWithdrawResponse {
+    return MsgWithdrawResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgWithdrawResponseProtoMsg): MsgWithdrawResponse {
+    return MsgWithdrawResponse.decode(message.value);
+  },
+  toProto(message: MsgWithdrawResponse): Uint8Array {
+    return MsgWithdrawResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgWithdrawResponse): MsgWithdrawResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.MsgWithdrawResponse",
+      value: MsgWithdrawResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgDisableRefund(): MsgDisableRefund {
@@ -521,7 +789,8 @@ function createBaseMsgDisableRefund(): MsgDisableRefund {
   };
 }
 export const MsgDisableRefund = {
-  encode(message: MsgDisableRefund, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.MsgDisableRefund",
+  encode(message: MsgDisableRefund, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -530,8 +799,8 @@ export const MsgDisableRefund = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDisableRefund {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDisableRefund {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDisableRefund();
     while (reader.pos < end) {
@@ -579,17 +848,49 @@ export const MsgDisableRefund = {
     obj.owner = message.owner;
     obj.addr = message.addr;
     return obj;
+  },
+  fromAmino(object: MsgDisableRefundAmino): MsgDisableRefund {
+    const message = createBaseMsgDisableRefund();
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.addr !== undefined && object.addr !== null) {
+      message.addr = object.addr;
+    }
+    return message;
+  },
+  toAmino(message: MsgDisableRefund): MsgDisableRefundAmino {
+    const obj: any = {};
+    obj.owner = message.owner;
+    obj.addr = message.addr;
+    return obj;
+  },
+  fromAminoMsg(object: MsgDisableRefundAminoMsg): MsgDisableRefund {
+    return MsgDisableRefund.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgDisableRefundProtoMsg): MsgDisableRefund {
+    return MsgDisableRefund.decode(message.value);
+  },
+  toProto(message: MsgDisableRefund): Uint8Array {
+    return MsgDisableRefund.encode(message).finish();
+  },
+  toProtoMsg(message: MsgDisableRefund): MsgDisableRefundProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.MsgDisableRefund",
+      value: MsgDisableRefund.encode(message).finish()
+    };
   }
 };
 function createBaseMsgDisableRefundResponse(): MsgDisableRefundResponse {
   return {};
 }
 export const MsgDisableRefundResponse = {
-  encode(_: MsgDisableRefundResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.MsgDisableRefundResponse",
+  encode(_: MsgDisableRefundResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDisableRefundResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDisableRefundResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDisableRefundResponse();
     while (reader.pos < end) {
@@ -619,6 +920,29 @@ export const MsgDisableRefundResponse = {
   toSDK(_: MsgDisableRefundResponse): MsgDisableRefundResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgDisableRefundResponseAmino): MsgDisableRefundResponse {
+    const message = createBaseMsgDisableRefundResponse();
+    return message;
+  },
+  toAmino(_: MsgDisableRefundResponse): MsgDisableRefundResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgDisableRefundResponseAminoMsg): MsgDisableRefundResponse {
+    return MsgDisableRefundResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgDisableRefundResponseProtoMsg): MsgDisableRefundResponse {
+    return MsgDisableRefundResponse.decode(message.value);
+  },
+  toProto(message: MsgDisableRefundResponse): Uint8Array {
+    return MsgDisableRefundResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgDisableRefundResponse): MsgDisableRefundResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.MsgDisableRefundResponse",
+      value: MsgDisableRefundResponse.encode(message).finish()
+    };
   }
 };
 /** Msg defines the Msg service. */
@@ -648,26 +972,26 @@ export class MsgClientImpl implements Msg {
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Msg", "UpdateParams", data);
-    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
   }
   CreatePaymentAccount(request: MsgCreatePaymentAccount): Promise<MsgCreatePaymentAccountResponse> {
     const data = MsgCreatePaymentAccount.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Msg", "CreatePaymentAccount", data);
-    return promise.then(data => MsgCreatePaymentAccountResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgCreatePaymentAccountResponse.decode(new BinaryReader(data)));
   }
   Deposit(request: MsgDeposit): Promise<MsgDepositResponse> {
     const data = MsgDeposit.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Msg", "Deposit", data);
-    return promise.then(data => MsgDepositResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgDepositResponse.decode(new BinaryReader(data)));
   }
   Withdraw(request: MsgWithdraw): Promise<MsgWithdrawResponse> {
     const data = MsgWithdraw.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Msg", "Withdraw", data);
-    return promise.then(data => MsgWithdrawResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgWithdrawResponse.decode(new BinaryReader(data)));
   }
   DisableRefund(request: MsgDisableRefund): Promise<MsgDisableRefundResponse> {
     const data = MsgDisableRefund.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Msg", "DisableRefund", data);
-    return promise.then(data => MsgDisableRefundResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgDisableRefundResponse.decode(new BinaryReader(data)));
   }
 }

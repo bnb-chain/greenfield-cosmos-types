@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
 import { bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.gensp";
 /**
@@ -10,6 +10,10 @@ export const protobufPackage = "greenfield.gensp";
 export interface GenesisState {
   /** gen_txs defines the genesis transactions. */
   genspTxs: Uint8Array[];
+}
+export interface GenesisStateProtoMsg {
+  typeUrl: "/greenfield.gensp.GenesisState";
+  value: Uint8Array;
 }
 /**
  * GenesisState defines the gensp module's genesis state.
@@ -24,14 +28,15 @@ function createBaseGenesisState(): GenesisState {
   };
 }
 export const GenesisState = {
-  encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.gensp.GenesisState",
+  encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.genspTxs) {
       writer.uint32(10).bytes(v!);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GenesisState {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
@@ -79,5 +84,34 @@ export const GenesisState = {
       obj.gensp_txs = [];
     }
     return obj;
+  },
+  fromAmino(object: GenesisStateAmino): GenesisState {
+    const message = createBaseGenesisState();
+    message.genspTxs = object.gensp_txs?.map(e => bytesFromBase64(e)) || [];
+    return message;
+  },
+  toAmino(message: GenesisState): GenesisStateAmino {
+    const obj: any = {};
+    if (message.genspTxs) {
+      obj.gensp_txs = message.genspTxs.map(e => base64FromBytes(e));
+    } else {
+      obj.gensp_txs = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {
+    return GenesisState.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
+    return GenesisState.decode(message.value);
+  },
+  toProto(message: GenesisState): Uint8Array {
+    return GenesisState.encode(message).finish();
+  },
+  toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
+    return {
+      typeUrl: "/greenfield.gensp.GenesisState",
+      value: GenesisState.encode(message).finish()
+    };
   }
 };

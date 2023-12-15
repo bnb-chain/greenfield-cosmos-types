@@ -3,14 +3,14 @@
 import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "./common";
 import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from "../resource/types";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.permission";
 export interface EventPutPolicy {
   /** policy_id is an unique u256 sequence for each policy. It also be used as NFT tokenID */
   policyId: string;
   /** principal defines the accounts/group which the permission grants to */
-  principal: Principal;
+  principal?: Principal;
   /** resource_type defines the type of resource that grants permission for */
   resourceType: ResourceType;
   /** resource_id defines the bucket/object/group id of the resource that grants permission for */
@@ -23,9 +23,13 @@ export interface EventPutPolicy {
    */
   expirationTime?: Timestamp;
 }
+export interface EventPutPolicyProtoMsg {
+  typeUrl: "/greenfield.permission.EventPutPolicy";
+  value: Uint8Array;
+}
 export interface EventPutPolicySDKType {
   policy_id: string;
-  principal: PrincipalSDKType;
+  principal?: PrincipalSDKType;
   resource_type: ResourceType;
   resource_id: string;
   statements: StatementSDKType[];
@@ -35,13 +39,17 @@ export interface EventDeletePolicy {
   /** policy_id is an unique u256 sequence for each policy. It also be used as NFT tokenID */
   policyId: string;
 }
+export interface EventDeletePolicyProtoMsg {
+  typeUrl: "/greenfield.permission.EventDeletePolicy";
+  value: Uint8Array;
+}
 export interface EventDeletePolicySDKType {
   policy_id: string;
 }
 function createBaseEventPutPolicy(): EventPutPolicy {
   return {
     policyId: "",
-    principal: Principal.fromPartial({}),
+    principal: undefined,
     resourceType: 0,
     resourceId: "",
     statements: [],
@@ -49,7 +57,8 @@ function createBaseEventPutPolicy(): EventPutPolicy {
   };
 }
 export const EventPutPolicy = {
-  encode(message: EventPutPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.permission.EventPutPolicy",
+  encode(message: EventPutPolicy, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.policyId !== "") {
       writer.uint32(10).string(message.policyId);
     }
@@ -70,8 +79,8 @@ export const EventPutPolicy = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventPutPolicy {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventPutPolicy {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventPutPolicy();
     while (reader.pos < end) {
@@ -159,6 +168,55 @@ export const EventPutPolicy = {
     }
     message.expirationTime !== undefined && (obj.expiration_time = message.expirationTime ? Timestamp.toSDK(message.expirationTime) : undefined);
     return obj;
+  },
+  fromAmino(object: EventPutPolicyAmino): EventPutPolicy {
+    const message = createBaseEventPutPolicy();
+    if (object.policy_id !== undefined && object.policy_id !== null) {
+      message.policyId = object.policy_id;
+    }
+    if (object.principal !== undefined && object.principal !== null) {
+      message.principal = Principal.fromAmino(object.principal);
+    }
+    if (object.resource_type !== undefined && object.resource_type !== null) {
+      message.resourceType = resourceTypeFromJSON(object.resource_type);
+    }
+    if (object.resource_id !== undefined && object.resource_id !== null) {
+      message.resourceId = object.resource_id;
+    }
+    message.statements = object.statements?.map(e => Statement.fromAmino(e)) || [];
+    if (object.expiration_time !== undefined && object.expiration_time !== null) {
+      message.expirationTime = Timestamp.fromAmino(object.expiration_time);
+    }
+    return message;
+  },
+  toAmino(message: EventPutPolicy): EventPutPolicyAmino {
+    const obj: any = {};
+    obj.policy_id = message.policyId;
+    obj.principal = message.principal ? Principal.toAmino(message.principal) : undefined;
+    obj.resource_type = resourceTypeToJSON(message.resourceType);
+    obj.resource_id = message.resourceId;
+    if (message.statements) {
+      obj.statements = message.statements.map(e => e ? Statement.toAmino(e) : undefined);
+    } else {
+      obj.statements = [];
+    }
+    obj.expiration_time = message.expirationTime ? Timestamp.toAmino(message.expirationTime) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventPutPolicyAminoMsg): EventPutPolicy {
+    return EventPutPolicy.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventPutPolicyProtoMsg): EventPutPolicy {
+    return EventPutPolicy.decode(message.value);
+  },
+  toProto(message: EventPutPolicy): Uint8Array {
+    return EventPutPolicy.encode(message).finish();
+  },
+  toProtoMsg(message: EventPutPolicy): EventPutPolicyProtoMsg {
+    return {
+      typeUrl: "/greenfield.permission.EventPutPolicy",
+      value: EventPutPolicy.encode(message).finish()
+    };
   }
 };
 function createBaseEventDeletePolicy(): EventDeletePolicy {
@@ -167,14 +225,15 @@ function createBaseEventDeletePolicy(): EventDeletePolicy {
   };
 }
 export const EventDeletePolicy = {
-  encode(message: EventDeletePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.permission.EventDeletePolicy",
+  encode(message: EventDeletePolicy, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.policyId !== "") {
       writer.uint32(10).string(message.policyId);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventDeletePolicy {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventDeletePolicy {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDeletePolicy();
     while (reader.pos < end) {
@@ -214,5 +273,32 @@ export const EventDeletePolicy = {
     const obj: any = {};
     obj.policy_id = message.policyId;
     return obj;
+  },
+  fromAmino(object: EventDeletePolicyAmino): EventDeletePolicy {
+    const message = createBaseEventDeletePolicy();
+    if (object.policy_id !== undefined && object.policy_id !== null) {
+      message.policyId = object.policy_id;
+    }
+    return message;
+  },
+  toAmino(message: EventDeletePolicy): EventDeletePolicyAmino {
+    const obj: any = {};
+    obj.policy_id = message.policyId;
+    return obj;
+  },
+  fromAminoMsg(object: EventDeletePolicyAminoMsg): EventDeletePolicy {
+    return EventDeletePolicy.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventDeletePolicyProtoMsg): EventDeletePolicy {
+    return EventDeletePolicy.decode(message.value);
+  },
+  toProto(message: EventDeletePolicy): Uint8Array {
+    return EventDeletePolicy.encode(message).finish();
+  },
+  toProtoMsg(message: EventDeletePolicy): EventDeletePolicyProtoMsg {
+    return {
+      typeUrl: "/greenfield.permission.EventDeletePolicy",
+      value: EventDeletePolicy.encode(message).finish()
+    };
   }
 };

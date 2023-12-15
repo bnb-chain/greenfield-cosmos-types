@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.payment";
 /** PaymentAccount defines a payment account */
@@ -11,6 +11,10 @@ export interface PaymentAccount {
   owner: string;
   /** whether the payment account is refundable */
   refundable: boolean;
+}
+export interface PaymentAccountProtoMsg {
+  typeUrl: "/greenfield.payment.PaymentAccount";
+  value: Uint8Array;
 }
 /** PaymentAccount defines a payment account */
 export interface PaymentAccountSDKType {
@@ -26,7 +30,8 @@ function createBasePaymentAccount(): PaymentAccount {
   };
 }
 export const PaymentAccount = {
-  encode(message: PaymentAccount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.PaymentAccount",
+  encode(message: PaymentAccount, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.addr !== "") {
       writer.uint32(10).string(message.addr);
     }
@@ -38,8 +43,8 @@ export const PaymentAccount = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PaymentAccount {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PaymentAccount {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePaymentAccount();
     while (reader.pos < end) {
@@ -95,5 +100,40 @@ export const PaymentAccount = {
     obj.owner = message.owner;
     obj.refundable = message.refundable;
     return obj;
+  },
+  fromAmino(object: PaymentAccountAmino): PaymentAccount {
+    const message = createBasePaymentAccount();
+    if (object.addr !== undefined && object.addr !== null) {
+      message.addr = object.addr;
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.refundable !== undefined && object.refundable !== null) {
+      message.refundable = object.refundable;
+    }
+    return message;
+  },
+  toAmino(message: PaymentAccount): PaymentAccountAmino {
+    const obj: any = {};
+    obj.addr = message.addr;
+    obj.owner = message.owner;
+    obj.refundable = message.refundable;
+    return obj;
+  },
+  fromAminoMsg(object: PaymentAccountAminoMsg): PaymentAccount {
+    return PaymentAccount.fromAmino(object.value);
+  },
+  fromProtoMsg(message: PaymentAccountProtoMsg): PaymentAccount {
+    return PaymentAccount.decode(message.value);
+  },
+  toProto(message: PaymentAccount): Uint8Array {
+    return PaymentAccount.encode(message).finish();
+  },
+  toProtoMsg(message: PaymentAccount): PaymentAccountProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.PaymentAccount",
+      value: PaymentAccount.encode(message).finish()
+    };
   }
 };

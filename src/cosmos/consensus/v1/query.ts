@@ -1,11 +1,15 @@
 //@ts-nocheck
 /* eslint-disable */
 import { ConsensusParams, ConsensusParamsSDKType } from "../../../tendermint/types/params";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { DeepPartial, Exact, isSet, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.consensus.v1";
 /** QueryParamsRequest defines the request type for querying x/consensus parameters. */
 export interface QueryParamsRequest {}
+export interface QueryParamsRequestProtoMsg {
+  typeUrl: "/cosmos.consensus.v1.QueryParamsRequest";
+  value: Uint8Array;
+}
 /** QueryParamsRequest defines the request type for querying x/consensus parameters. */
 export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse defines the response type for querying x/consensus parameters. */
@@ -15,21 +19,26 @@ export interface QueryParamsResponse {
    * Please note that `params.version` is not populated in this response, it is
    * tracked separately in the x/upgrade module.
    */
-  params: ConsensusParams;
+  params?: ConsensusParams;
+}
+export interface QueryParamsResponseProtoMsg {
+  typeUrl: "/cosmos.consensus.v1.QueryParamsResponse";
+  value: Uint8Array;
 }
 /** QueryParamsResponse defines the response type for querying x/consensus parameters. */
 export interface QueryParamsResponseSDKType {
-  params: ConsensusParamsSDKType;
+  params?: ConsensusParamsSDKType;
 }
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
 export const QueryParamsRequest = {
-  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.consensus.v1.QueryParamsRequest",
+  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -59,22 +68,52 @@ export const QueryParamsRequest = {
   toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: QueryParamsRequestAmino): QueryParamsRequest {
+    const message = createBaseQueryParamsRequest();
+    return message;
+  },
+  toAmino(_: QueryParamsRequest): QueryParamsRequestAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsRequestAminoMsg): QueryParamsRequest {
+    return QueryParamsRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryParamsRequest): QueryParamsRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryParamsRequest",
+      value: QueryParamsRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryParamsRequestProtoMsg): QueryParamsRequest {
+    return QueryParamsRequest.decode(message.value);
+  },
+  toProto(message: QueryParamsRequest): Uint8Array {
+    return QueryParamsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.consensus.v1.QueryParamsRequest",
+      value: QueryParamsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryParamsResponse(): QueryParamsResponse {
   return {
-    params: ConsensusParams.fromPartial({})
+    params: undefined
   };
 }
 export const QueryParamsResponse = {
-  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.consensus.v1.QueryParamsResponse",
+  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       ConsensusParams.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -114,6 +153,39 @@ export const QueryParamsResponse = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? ConsensusParams.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryParamsResponseAmino): QueryParamsResponse {
+    const message = createBaseQueryParamsResponse();
+    if (object.params !== undefined && object.params !== null) {
+      message.params = ConsensusParams.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
+    const obj: any = {};
+    obj.params = message.params ? ConsensusParams.toAmino(message.params) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
+    return QueryParamsResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryParamsResponse): QueryParamsResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryParamsResponse",
+      value: QueryParamsResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryParamsResponseProtoMsg): QueryParamsResponse {
+    return QueryParamsResponse.decode(message.value);
+  },
+  toProto(message: QueryParamsResponse): Uint8Array {
+    return QueryParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.consensus.v1.QueryParamsResponse",
+      value: QueryParamsResponse.encode(message).finish()
+    };
   }
 };
 /** Query defines the gRPC querier service. */
@@ -130,6 +202,6 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.consensus.v1.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
 }

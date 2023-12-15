@@ -1,8 +1,8 @@
 //@ts-nocheck
 /* eslint-disable */
 import { StreamAccountStatus, streamAccountStatusFromJSON, streamAccountStatusToJSON } from "./stream_record";
-import { Long, isSet, DeepPartial, Exact } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.payment";
 export enum FeePreviewType {
   FEE_PREVIEW_TYPE_PRELOCKED_FEE = 0,
@@ -43,6 +43,10 @@ export interface EventPaymentAccountUpdate {
   /** whether the payment account is refundable */
   refundable: boolean;
 }
+export interface EventPaymentAccountUpdateProtoMsg {
+  typeUrl: "/greenfield.payment.EventPaymentAccountUpdate";
+  value: Uint8Array;
+}
 export interface EventPaymentAccountUpdateSDKType {
   addr: string;
   owner: string;
@@ -53,7 +57,7 @@ export interface EventStreamRecordUpdate {
   /** account address */
   account: string;
   /** latest update timestamp of the stream record */
-  crudTimestamp: Long;
+  crudTimestamp: bigint;
   /**
    * The per-second rate that an account's balance is changing.
    * It is the sum of the account's inbound and outbound flow rates.
@@ -73,19 +77,23 @@ export interface EventStreamRecordUpdate {
   /** the status of the stream account */
   status: StreamAccountStatus;
   /** the unix timestamp when the stream account will be settled */
-  settleTimestamp: Long;
+  settleTimestamp: bigint;
+}
+export interface EventStreamRecordUpdateProtoMsg {
+  typeUrl: "/greenfield.payment.EventStreamRecordUpdate";
+  value: Uint8Array;
 }
 /** Stream Payment Record of a stream account */
 export interface EventStreamRecordUpdateSDKType {
   account: string;
-  crud_timestamp: Long;
+  crud_timestamp: bigint;
   netflow_rate: string;
   frozen_netflow_rate: string;
   static_balance: string;
   buffer_balance: string;
   lock_balance: string;
   status: StreamAccountStatus;
-  settle_timestamp: Long;
+  settle_timestamp: bigint;
 }
 /**
  * EventForceSettle may be emitted on all Msgs and EndBlocker when a payment account's
@@ -100,6 +108,10 @@ export interface EventForceSettle {
    * if the balance is negative, it's the debt of the system, which will be paid by the governance stream account
    */
   settledBalance: string;
+}
+export interface EventForceSettleProtoMsg {
+  typeUrl: "/greenfield.payment.EventForceSettle";
+  value: Uint8Array;
 }
 /**
  * EventForceSettle may be emitted on all Msgs and EndBlocker when a payment account's
@@ -117,6 +129,10 @@ export interface EventDeposit {
   /** amount is the amount to deposit */
   amount: string;
 }
+export interface EventDepositProtoMsg {
+  typeUrl: "/greenfield.payment.EventDeposit";
+  value: Uint8Array;
+}
 export interface EventDepositSDKType {
   from: string;
   to: string;
@@ -129,6 +145,10 @@ export interface EventWithdraw {
   from: string;
   /** amount is the amount to withdraw */
   amount: string;
+}
+export interface EventWithdrawProtoMsg {
+  typeUrl: "/greenfield.payment.EventWithdraw";
+  value: Uint8Array;
 }
 export interface EventWithdrawSDKType {
   to: string;
@@ -143,6 +163,10 @@ export interface EventFeePreview {
   account: string;
   feePreviewType: FeePreviewType;
   amount: string;
+}
+export interface EventFeePreviewProtoMsg {
+  typeUrl: "/greenfield.payment.EventFeePreview";
+  value: Uint8Array;
 }
 /**
  * emit when upload/cancel/delete object, used for frontend to preview the fee changed
@@ -161,7 +185,8 @@ function createBaseEventPaymentAccountUpdate(): EventPaymentAccountUpdate {
   };
 }
 export const EventPaymentAccountUpdate = {
-  encode(message: EventPaymentAccountUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.EventPaymentAccountUpdate",
+  encode(message: EventPaymentAccountUpdate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.addr !== "") {
       writer.uint32(10).string(message.addr);
     }
@@ -173,8 +198,8 @@ export const EventPaymentAccountUpdate = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventPaymentAccountUpdate {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventPaymentAccountUpdate {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventPaymentAccountUpdate();
     while (reader.pos < end) {
@@ -230,27 +255,63 @@ export const EventPaymentAccountUpdate = {
     obj.owner = message.owner;
     obj.refundable = message.refundable;
     return obj;
+  },
+  fromAmino(object: EventPaymentAccountUpdateAmino): EventPaymentAccountUpdate {
+    const message = createBaseEventPaymentAccountUpdate();
+    if (object.addr !== undefined && object.addr !== null) {
+      message.addr = object.addr;
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.refundable !== undefined && object.refundable !== null) {
+      message.refundable = object.refundable;
+    }
+    return message;
+  },
+  toAmino(message: EventPaymentAccountUpdate): EventPaymentAccountUpdateAmino {
+    const obj: any = {};
+    obj.addr = message.addr;
+    obj.owner = message.owner;
+    obj.refundable = message.refundable;
+    return obj;
+  },
+  fromAminoMsg(object: EventPaymentAccountUpdateAminoMsg): EventPaymentAccountUpdate {
+    return EventPaymentAccountUpdate.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventPaymentAccountUpdateProtoMsg): EventPaymentAccountUpdate {
+    return EventPaymentAccountUpdate.decode(message.value);
+  },
+  toProto(message: EventPaymentAccountUpdate): Uint8Array {
+    return EventPaymentAccountUpdate.encode(message).finish();
+  },
+  toProtoMsg(message: EventPaymentAccountUpdate): EventPaymentAccountUpdateProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.EventPaymentAccountUpdate",
+      value: EventPaymentAccountUpdate.encode(message).finish()
+    };
   }
 };
 function createBaseEventStreamRecordUpdate(): EventStreamRecordUpdate {
   return {
     account: "",
-    crudTimestamp: Long.ZERO,
+    crudTimestamp: BigInt(0),
     netflowRate: "",
     frozenNetflowRate: "",
     staticBalance: "",
     bufferBalance: "",
     lockBalance: "",
     status: 0,
-    settleTimestamp: Long.ZERO
+    settleTimestamp: BigInt(0)
   };
 }
 export const EventStreamRecordUpdate = {
-  encode(message: EventStreamRecordUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.EventStreamRecordUpdate",
+  encode(message: EventStreamRecordUpdate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.account !== "") {
       writer.uint32(10).string(message.account);
     }
-    if (!message.crudTimestamp.isZero()) {
+    if (message.crudTimestamp !== BigInt(0)) {
       writer.uint32(16).int64(message.crudTimestamp);
     }
     if (message.netflowRate !== "") {
@@ -271,13 +332,13 @@ export const EventStreamRecordUpdate = {
     if (message.status !== 0) {
       writer.uint32(64).int32(message.status);
     }
-    if (!message.settleTimestamp.isZero()) {
+    if (message.settleTimestamp !== BigInt(0)) {
       writer.uint32(72).int64(message.settleTimestamp);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventStreamRecordUpdate {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventStreamRecordUpdate {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventStreamRecordUpdate();
     while (reader.pos < end) {
@@ -287,7 +348,7 @@ export const EventStreamRecordUpdate = {
           message.account = reader.string();
           break;
         case 2:
-          message.crudTimestamp = (reader.int64() as Long);
+          message.crudTimestamp = reader.int64();
           break;
         case 3:
           message.netflowRate = reader.string();
@@ -308,7 +369,7 @@ export const EventStreamRecordUpdate = {
           message.status = (reader.int32() as any);
           break;
         case 9:
-          message.settleTimestamp = (reader.int64() as Long);
+          message.settleTimestamp = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -320,40 +381,40 @@ export const EventStreamRecordUpdate = {
   fromJSON(object: any): EventStreamRecordUpdate {
     return {
       account: isSet(object.account) ? String(object.account) : "",
-      crudTimestamp: isSet(object.crudTimestamp) ? Long.fromValue(object.crudTimestamp) : Long.ZERO,
+      crudTimestamp: isSet(object.crudTimestamp) ? BigInt(object.crudTimestamp.toString()) : BigInt(0),
       netflowRate: isSet(object.netflowRate) ? String(object.netflowRate) : "",
       frozenNetflowRate: isSet(object.frozenNetflowRate) ? String(object.frozenNetflowRate) : "",
       staticBalance: isSet(object.staticBalance) ? String(object.staticBalance) : "",
       bufferBalance: isSet(object.bufferBalance) ? String(object.bufferBalance) : "",
       lockBalance: isSet(object.lockBalance) ? String(object.lockBalance) : "",
       status: isSet(object.status) ? streamAccountStatusFromJSON(object.status) : -1,
-      settleTimestamp: isSet(object.settleTimestamp) ? Long.fromValue(object.settleTimestamp) : Long.ZERO
+      settleTimestamp: isSet(object.settleTimestamp) ? BigInt(object.settleTimestamp.toString()) : BigInt(0)
     };
   },
   toJSON(message: EventStreamRecordUpdate): unknown {
     const obj: any = {};
     message.account !== undefined && (obj.account = message.account);
-    message.crudTimestamp !== undefined && (obj.crudTimestamp = (message.crudTimestamp || Long.ZERO).toString());
+    message.crudTimestamp !== undefined && (obj.crudTimestamp = (message.crudTimestamp || BigInt(0)).toString());
     message.netflowRate !== undefined && (obj.netflowRate = message.netflowRate);
     message.frozenNetflowRate !== undefined && (obj.frozenNetflowRate = message.frozenNetflowRate);
     message.staticBalance !== undefined && (obj.staticBalance = message.staticBalance);
     message.bufferBalance !== undefined && (obj.bufferBalance = message.bufferBalance);
     message.lockBalance !== undefined && (obj.lockBalance = message.lockBalance);
     message.status !== undefined && (obj.status = streamAccountStatusToJSON(message.status));
-    message.settleTimestamp !== undefined && (obj.settleTimestamp = (message.settleTimestamp || Long.ZERO).toString());
+    message.settleTimestamp !== undefined && (obj.settleTimestamp = (message.settleTimestamp || BigInt(0)).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventStreamRecordUpdate>, I>>(object: I): EventStreamRecordUpdate {
     const message = createBaseEventStreamRecordUpdate();
     message.account = object.account ?? "";
-    message.crudTimestamp = object.crudTimestamp !== undefined && object.crudTimestamp !== null ? Long.fromValue(object.crudTimestamp) : Long.ZERO;
+    message.crudTimestamp = object.crudTimestamp !== undefined && object.crudTimestamp !== null ? BigInt(object.crudTimestamp.toString()) : BigInt(0);
     message.netflowRate = object.netflowRate ?? "";
     message.frozenNetflowRate = object.frozenNetflowRate ?? "";
     message.staticBalance = object.staticBalance ?? "";
     message.bufferBalance = object.bufferBalance ?? "";
     message.lockBalance = object.lockBalance ?? "";
     message.status = object.status ?? 0;
-    message.settleTimestamp = object.settleTimestamp !== undefined && object.settleTimestamp !== null ? Long.fromValue(object.settleTimestamp) : Long.ZERO;
+    message.settleTimestamp = object.settleTimestamp !== undefined && object.settleTimestamp !== null ? BigInt(object.settleTimestamp.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: EventStreamRecordUpdateSDKType): EventStreamRecordUpdate {
@@ -381,6 +442,65 @@ export const EventStreamRecordUpdate = {
     message.status !== undefined && (obj.status = streamAccountStatusToJSON(message.status));
     obj.settle_timestamp = message.settleTimestamp;
     return obj;
+  },
+  fromAmino(object: EventStreamRecordUpdateAmino): EventStreamRecordUpdate {
+    const message = createBaseEventStreamRecordUpdate();
+    if (object.account !== undefined && object.account !== null) {
+      message.account = object.account;
+    }
+    if (object.crud_timestamp !== undefined && object.crud_timestamp !== null) {
+      message.crudTimestamp = BigInt(object.crud_timestamp);
+    }
+    if (object.netflow_rate !== undefined && object.netflow_rate !== null) {
+      message.netflowRate = object.netflow_rate;
+    }
+    if (object.frozen_netflow_rate !== undefined && object.frozen_netflow_rate !== null) {
+      message.frozenNetflowRate = object.frozen_netflow_rate;
+    }
+    if (object.static_balance !== undefined && object.static_balance !== null) {
+      message.staticBalance = object.static_balance;
+    }
+    if (object.buffer_balance !== undefined && object.buffer_balance !== null) {
+      message.bufferBalance = object.buffer_balance;
+    }
+    if (object.lock_balance !== undefined && object.lock_balance !== null) {
+      message.lockBalance = object.lock_balance;
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = streamAccountStatusFromJSON(object.status);
+    }
+    if (object.settle_timestamp !== undefined && object.settle_timestamp !== null) {
+      message.settleTimestamp = BigInt(object.settle_timestamp);
+    }
+    return message;
+  },
+  toAmino(message: EventStreamRecordUpdate): EventStreamRecordUpdateAmino {
+    const obj: any = {};
+    obj.account = message.account;
+    obj.crud_timestamp = message.crudTimestamp ? message.crudTimestamp.toString() : undefined;
+    obj.netflow_rate = message.netflowRate;
+    obj.frozen_netflow_rate = message.frozenNetflowRate;
+    obj.static_balance = message.staticBalance;
+    obj.buffer_balance = message.bufferBalance;
+    obj.lock_balance = message.lockBalance;
+    obj.status = streamAccountStatusToJSON(message.status);
+    obj.settle_timestamp = message.settleTimestamp ? message.settleTimestamp.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventStreamRecordUpdateAminoMsg): EventStreamRecordUpdate {
+    return EventStreamRecordUpdate.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventStreamRecordUpdateProtoMsg): EventStreamRecordUpdate {
+    return EventStreamRecordUpdate.decode(message.value);
+  },
+  toProto(message: EventStreamRecordUpdate): Uint8Array {
+    return EventStreamRecordUpdate.encode(message).finish();
+  },
+  toProtoMsg(message: EventStreamRecordUpdate): EventStreamRecordUpdateProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.EventStreamRecordUpdate",
+      value: EventStreamRecordUpdate.encode(message).finish()
+    };
   }
 };
 function createBaseEventForceSettle(): EventForceSettle {
@@ -390,7 +510,8 @@ function createBaseEventForceSettle(): EventForceSettle {
   };
 }
 export const EventForceSettle = {
-  encode(message: EventForceSettle, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.EventForceSettle",
+  encode(message: EventForceSettle, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.addr !== "") {
       writer.uint32(10).string(message.addr);
     }
@@ -399,8 +520,8 @@ export const EventForceSettle = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventForceSettle {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventForceSettle {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventForceSettle();
     while (reader.pos < end) {
@@ -448,6 +569,37 @@ export const EventForceSettle = {
     obj.addr = message.addr;
     obj.settled_balance = message.settledBalance;
     return obj;
+  },
+  fromAmino(object: EventForceSettleAmino): EventForceSettle {
+    const message = createBaseEventForceSettle();
+    if (object.addr !== undefined && object.addr !== null) {
+      message.addr = object.addr;
+    }
+    if (object.settled_balance !== undefined && object.settled_balance !== null) {
+      message.settledBalance = object.settled_balance;
+    }
+    return message;
+  },
+  toAmino(message: EventForceSettle): EventForceSettleAmino {
+    const obj: any = {};
+    obj.addr = message.addr;
+    obj.settled_balance = message.settledBalance;
+    return obj;
+  },
+  fromAminoMsg(object: EventForceSettleAminoMsg): EventForceSettle {
+    return EventForceSettle.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventForceSettleProtoMsg): EventForceSettle {
+    return EventForceSettle.decode(message.value);
+  },
+  toProto(message: EventForceSettle): Uint8Array {
+    return EventForceSettle.encode(message).finish();
+  },
+  toProtoMsg(message: EventForceSettle): EventForceSettleProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.EventForceSettle",
+      value: EventForceSettle.encode(message).finish()
+    };
   }
 };
 function createBaseEventDeposit(): EventDeposit {
@@ -458,7 +610,8 @@ function createBaseEventDeposit(): EventDeposit {
   };
 }
 export const EventDeposit = {
-  encode(message: EventDeposit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.EventDeposit",
+  encode(message: EventDeposit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.from !== "") {
       writer.uint32(10).string(message.from);
     }
@@ -470,8 +623,8 @@ export const EventDeposit = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventDeposit {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventDeposit {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDeposit();
     while (reader.pos < end) {
@@ -527,6 +680,41 @@ export const EventDeposit = {
     obj.to = message.to;
     obj.amount = message.amount;
     return obj;
+  },
+  fromAmino(object: EventDepositAmino): EventDeposit {
+    const message = createBaseEventDeposit();
+    if (object.from !== undefined && object.from !== null) {
+      message.from = object.from;
+    }
+    if (object.to !== undefined && object.to !== null) {
+      message.to = object.to;
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
+    }
+    return message;
+  },
+  toAmino(message: EventDeposit): EventDepositAmino {
+    const obj: any = {};
+    obj.from = message.from;
+    obj.to = message.to;
+    obj.amount = message.amount;
+    return obj;
+  },
+  fromAminoMsg(object: EventDepositAminoMsg): EventDeposit {
+    return EventDeposit.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventDepositProtoMsg): EventDeposit {
+    return EventDeposit.decode(message.value);
+  },
+  toProto(message: EventDeposit): Uint8Array {
+    return EventDeposit.encode(message).finish();
+  },
+  toProtoMsg(message: EventDeposit): EventDepositProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.EventDeposit",
+      value: EventDeposit.encode(message).finish()
+    };
   }
 };
 function createBaseEventWithdraw(): EventWithdraw {
@@ -537,7 +725,8 @@ function createBaseEventWithdraw(): EventWithdraw {
   };
 }
 export const EventWithdraw = {
-  encode(message: EventWithdraw, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.EventWithdraw",
+  encode(message: EventWithdraw, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.to !== "") {
       writer.uint32(10).string(message.to);
     }
@@ -549,8 +738,8 @@ export const EventWithdraw = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventWithdraw {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventWithdraw {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventWithdraw();
     while (reader.pos < end) {
@@ -606,6 +795,41 @@ export const EventWithdraw = {
     obj.from = message.from;
     obj.amount = message.amount;
     return obj;
+  },
+  fromAmino(object: EventWithdrawAmino): EventWithdraw {
+    const message = createBaseEventWithdraw();
+    if (object.to !== undefined && object.to !== null) {
+      message.to = object.to;
+    }
+    if (object.from !== undefined && object.from !== null) {
+      message.from = object.from;
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
+    }
+    return message;
+  },
+  toAmino(message: EventWithdraw): EventWithdrawAmino {
+    const obj: any = {};
+    obj.to = message.to;
+    obj.from = message.from;
+    obj.amount = message.amount;
+    return obj;
+  },
+  fromAminoMsg(object: EventWithdrawAminoMsg): EventWithdraw {
+    return EventWithdraw.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventWithdrawProtoMsg): EventWithdraw {
+    return EventWithdraw.decode(message.value);
+  },
+  toProto(message: EventWithdraw): Uint8Array {
+    return EventWithdraw.encode(message).finish();
+  },
+  toProtoMsg(message: EventWithdraw): EventWithdrawProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.EventWithdraw",
+      value: EventWithdraw.encode(message).finish()
+    };
   }
 };
 function createBaseEventFeePreview(): EventFeePreview {
@@ -616,7 +840,8 @@ function createBaseEventFeePreview(): EventFeePreview {
   };
 }
 export const EventFeePreview = {
-  encode(message: EventFeePreview, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.EventFeePreview",
+  encode(message: EventFeePreview, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.account !== "") {
       writer.uint32(10).string(message.account);
     }
@@ -628,8 +853,8 @@ export const EventFeePreview = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventFeePreview {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventFeePreview {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventFeePreview();
     while (reader.pos < end) {
@@ -685,5 +910,40 @@ export const EventFeePreview = {
     message.feePreviewType !== undefined && (obj.fee_preview_type = feePreviewTypeToJSON(message.feePreviewType));
     obj.amount = message.amount;
     return obj;
+  },
+  fromAmino(object: EventFeePreviewAmino): EventFeePreview {
+    const message = createBaseEventFeePreview();
+    if (object.account !== undefined && object.account !== null) {
+      message.account = object.account;
+    }
+    if (object.fee_preview_type !== undefined && object.fee_preview_type !== null) {
+      message.feePreviewType = feePreviewTypeFromJSON(object.fee_preview_type);
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
+    }
+    return message;
+  },
+  toAmino(message: EventFeePreview): EventFeePreviewAmino {
+    const obj: any = {};
+    obj.account = message.account;
+    obj.fee_preview_type = feePreviewTypeToJSON(message.feePreviewType);
+    obj.amount = message.amount;
+    return obj;
+  },
+  fromAminoMsg(object: EventFeePreviewAminoMsg): EventFeePreview {
+    return EventFeePreview.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventFeePreviewProtoMsg): EventFeePreview {
+    return EventFeePreview.decode(message.value);
+  },
+  toProto(message: EventFeePreview): Uint8Array {
+    return EventFeePreview.encode(message).finish();
+  },
+  toProtoMsg(message: EventFeePreview): EventFeePreviewProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.EventFeePreview",
+      value: EventFeePreview.encode(message).finish()
+    };
   }
 };

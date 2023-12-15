@@ -6,17 +6,26 @@ import { Params, ParamsSDKType } from "./params";
 import { BucketInfo, BucketInfoSDKType, ObjectInfo, ObjectInfoSDKType, BucketMetaData, BucketMetaDataSDKType, ObjectMetaData, ObjectMetaDataSDKType, GroupMetaData, GroupMetaDataSDKType, GroupInfo, GroupInfoSDKType, InternalBucketInfo, InternalBucketInfoSDKType } from "./types";
 import { GlobalVirtualGroup, GlobalVirtualGroupSDKType } from "../virtualgroup/types";
 import { Policy, PolicySDKType, GroupMember, GroupMemberSDKType } from "../permission/types";
-import { Long, DeepPartial, Exact, isSet, isObject, Rpc } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { DeepPartial, Exact, isSet, isObject, Rpc } from "../../helpers";
+import { Decimal } from "@cosmjs/math";
 export const protobufPackage = "greenfield.storage";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
+export interface QueryParamsRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryParamsRequest";
+  value: Uint8Array;
+}
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponse {
   /** params holds all the parameters of this module. */
   params: Params;
+}
+export interface QueryParamsResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryParamsResponse";
+  value: Uint8Array;
 }
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
@@ -25,16 +34,24 @@ export interface QueryParamsResponseSDKType {
 /** QueryVersionedParamsRequest is request type for the Query/Params RPC method with timestamp. */
 export interface QueryParamsByTimestampRequest {
   /** the timestamp of the block time you want to query */
-  timestamp: Long;
+  timestamp: bigint;
+}
+export interface QueryParamsByTimestampRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryParamsByTimestampRequest";
+  value: Uint8Array;
 }
 /** QueryVersionedParamsRequest is request type for the Query/Params RPC method with timestamp. */
 export interface QueryParamsByTimestampRequestSDKType {
-  timestamp: Long;
+  timestamp: bigint;
 }
 /** QueryVersionedParamsResponse is response type for the Query/Params RPC method with timestamp. */
 export interface QueryParamsByTimestampResponse {
   /** params holds all the parameters of this module. */
   params: Params;
+}
+export interface QueryParamsByTimestampResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryParamsByTimestampResponse";
+  value: Uint8Array;
 }
 /** QueryVersionedParamsResponse is response type for the Query/Params RPC method with timestamp. */
 export interface QueryParamsByTimestampResponseSDKType {
@@ -43,24 +60,40 @@ export interface QueryParamsByTimestampResponseSDKType {
 export interface QueryHeadBucketRequest {
   bucketName: string;
 }
+export interface QueryHeadBucketRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadBucketRequest";
+  value: Uint8Array;
+}
 export interface QueryHeadBucketRequestSDKType {
   bucket_name: string;
 }
 export interface QueryHeadBucketByIdRequest {
   bucketId: string;
 }
+export interface QueryHeadBucketByIdRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadBucketByIdRequest";
+  value: Uint8Array;
+}
 export interface QueryHeadBucketByIdRequestSDKType {
   bucket_id: string;
 }
 export interface QueryHeadBucketResponse {
-  bucketInfo: BucketInfo;
+  bucketInfo?: BucketInfo;
+}
+export interface QueryHeadBucketResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadBucketResponse";
+  value: Uint8Array;
 }
 export interface QueryHeadBucketResponseSDKType {
-  bucket_info: BucketInfoSDKType;
+  bucket_info?: BucketInfoSDKType;
 }
 export interface QueryHeadObjectRequest {
   bucketName: string;
   objectName: string;
+}
+export interface QueryHeadObjectRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadObjectRequest";
+  value: Uint8Array;
 }
 export interface QueryHeadObjectRequestSDKType {
   bucket_name: string;
@@ -69,98 +102,154 @@ export interface QueryHeadObjectRequestSDKType {
 export interface QueryHeadObjectByIdRequest {
   objectId: string;
 }
+export interface QueryHeadObjectByIdRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadObjectByIdRequest";
+  value: Uint8Array;
+}
 export interface QueryHeadObjectByIdRequestSDKType {
   object_id: string;
 }
 export interface QueryHeadObjectResponse {
-  objectInfo: ObjectInfo;
-  globalVirtualGroup: GlobalVirtualGroup;
+  objectInfo?: ObjectInfo;
+  globalVirtualGroup?: GlobalVirtualGroup;
+}
+export interface QueryHeadObjectResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadObjectResponse";
+  value: Uint8Array;
 }
 export interface QueryHeadObjectResponseSDKType {
-  object_info: ObjectInfoSDKType;
-  global_virtual_group: GlobalVirtualGroupSDKType;
+  object_info?: ObjectInfoSDKType;
+  global_virtual_group?: GlobalVirtualGroupSDKType;
 }
 export interface QueryListBucketsRequest {
-  pagination: PageRequest;
+  pagination?: PageRequest;
+}
+export interface QueryListBucketsRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryListBucketsRequest";
+  value: Uint8Array;
 }
 export interface QueryListBucketsRequestSDKType {
-  pagination: PageRequestSDKType;
+  pagination?: PageRequestSDKType;
 }
 export interface QueryListBucketsResponse {
   bucketInfos: BucketInfo[];
-  pagination: PageResponse;
+  pagination?: PageResponse;
+}
+export interface QueryListBucketsResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryListBucketsResponse";
+  value: Uint8Array;
 }
 export interface QueryListBucketsResponseSDKType {
   bucket_infos: BucketInfoSDKType[];
-  pagination: PageResponseSDKType;
+  pagination?: PageResponseSDKType;
 }
 export interface QueryListObjectsRequest {
-  pagination: PageRequest;
+  pagination?: PageRequest;
   bucketName: string;
 }
+export interface QueryListObjectsRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryListObjectsRequest";
+  value: Uint8Array;
+}
 export interface QueryListObjectsRequestSDKType {
-  pagination: PageRequestSDKType;
+  pagination?: PageRequestSDKType;
   bucket_name: string;
 }
 export interface QueryListObjectsByBucketIdRequest {
-  pagination: PageRequest;
+  pagination?: PageRequest;
   bucketId: string;
 }
+export interface QueryListObjectsByBucketIdRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryListObjectsByBucketIdRequest";
+  value: Uint8Array;
+}
 export interface QueryListObjectsByBucketIdRequestSDKType {
-  pagination: PageRequestSDKType;
+  pagination?: PageRequestSDKType;
   bucket_id: string;
 }
 export interface QueryListObjectsResponse {
   objectInfos: ObjectInfo[];
-  pagination: PageResponse;
+  pagination?: PageResponse;
+}
+export interface QueryListObjectsResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryListObjectsResponse";
+  value: Uint8Array;
 }
 export interface QueryListObjectsResponseSDKType {
   object_infos: ObjectInfoSDKType[];
-  pagination: PageResponseSDKType;
+  pagination?: PageResponseSDKType;
 }
 export interface QueryNFTRequest {
   tokenId: string;
+}
+export interface QueryNFTRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryNFTRequest";
+  value: Uint8Array;
 }
 export interface QueryNFTRequestSDKType {
   token_id: string;
 }
 export interface QueryBucketNFTResponse {
-  metaData: BucketMetaData;
+  metaData?: BucketMetaData;
+}
+export interface QueryBucketNFTResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryBucketNFTResponse";
+  value: Uint8Array;
 }
 export interface QueryBucketNFTResponseSDKType {
-  meta_data: BucketMetaDataSDKType;
+  meta_data?: BucketMetaDataSDKType;
 }
 export interface QueryObjectNFTResponse {
-  metaData: ObjectMetaData;
+  metaData?: ObjectMetaData;
+}
+export interface QueryObjectNFTResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryObjectNFTResponse";
+  value: Uint8Array;
 }
 export interface QueryObjectNFTResponseSDKType {
-  meta_data: ObjectMetaDataSDKType;
+  meta_data?: ObjectMetaDataSDKType;
 }
 export interface QueryGroupNFTResponse {
-  metaData: GroupMetaData;
+  metaData?: GroupMetaData;
+}
+export interface QueryGroupNFTResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryGroupNFTResponse";
+  value: Uint8Array;
 }
 export interface QueryGroupNFTResponseSDKType {
-  meta_data: GroupMetaDataSDKType;
+  meta_data?: GroupMetaDataSDKType;
 }
 export interface QueryPolicyForAccountRequest {
   resource: string;
   principalAddress: string;
+}
+export interface QueryPolicyForAccountRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryPolicyForAccountRequest";
+  value: Uint8Array;
 }
 export interface QueryPolicyForAccountRequestSDKType {
   resource: string;
   principal_address: string;
 }
 export interface QueryPolicyForAccountResponse {
-  policy: Policy;
+  policy?: Policy;
+}
+export interface QueryPolicyForAccountResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryPolicyForAccountResponse";
+  value: Uint8Array;
 }
 export interface QueryPolicyForAccountResponseSDKType {
-  policy: PolicySDKType;
+  policy?: PolicySDKType;
 }
 export interface QueryVerifyPermissionRequest {
   operator: string;
   bucketName: string;
   objectName: string;
   actionType: ActionType;
+}
+export interface QueryVerifyPermissionRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryVerifyPermissionRequest";
+  value: Uint8Array;
 }
 export interface QueryVerifyPermissionRequestSDKType {
   operator: string;
@@ -171,6 +260,10 @@ export interface QueryVerifyPermissionRequestSDKType {
 export interface QueryVerifyPermissionResponse {
   effect: Effect;
 }
+export interface QueryVerifyPermissionResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryVerifyPermissionResponse";
+  value: Uint8Array;
+}
 export interface QueryVerifyPermissionResponseSDKType {
   effect: Effect;
 }
@@ -178,30 +271,46 @@ export interface QueryHeadGroupRequest {
   groupOwner: string;
   groupName: string;
 }
+export interface QueryHeadGroupRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadGroupRequest";
+  value: Uint8Array;
+}
 export interface QueryHeadGroupRequestSDKType {
   group_owner: string;
   group_name: string;
 }
 export interface QueryHeadGroupResponse {
-  groupInfo: GroupInfo;
+  groupInfo?: GroupInfo;
+}
+export interface QueryHeadGroupResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadGroupResponse";
+  value: Uint8Array;
 }
 export interface QueryHeadGroupResponseSDKType {
-  group_info: GroupInfoSDKType;
+  group_info?: GroupInfoSDKType;
 }
 export interface QueryListGroupsRequest {
-  pagination: PageRequest;
+  pagination?: PageRequest;
   groupOwner: string;
 }
+export interface QueryListGroupsRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryListGroupsRequest";
+  value: Uint8Array;
+}
 export interface QueryListGroupsRequestSDKType {
-  pagination: PageRequestSDKType;
+  pagination?: PageRequestSDKType;
   group_owner: string;
 }
 export interface QueryListGroupsResponse {
-  pagination: PageResponse;
+  pagination?: PageResponse;
   groupInfos: GroupInfo[];
 }
+export interface QueryListGroupsResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryListGroupsResponse";
+  value: Uint8Array;
+}
 export interface QueryListGroupsResponseSDKType {
-  pagination: PageResponseSDKType;
+  pagination?: PageResponseSDKType;
   group_infos: GroupInfoSDKType[];
 }
 export interface QueryHeadGroupMemberRequest {
@@ -209,58 +318,90 @@ export interface QueryHeadGroupMemberRequest {
   groupOwner: string;
   groupName: string;
 }
+export interface QueryHeadGroupMemberRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadGroupMemberRequest";
+  value: Uint8Array;
+}
 export interface QueryHeadGroupMemberRequestSDKType {
   member: string;
   group_owner: string;
   group_name: string;
 }
 export interface QueryHeadGroupMemberResponse {
-  groupMember: GroupMember;
+  groupMember?: GroupMember;
+}
+export interface QueryHeadGroupMemberResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadGroupMemberResponse";
+  value: Uint8Array;
 }
 export interface QueryHeadGroupMemberResponseSDKType {
-  group_member: GroupMemberSDKType;
+  group_member?: GroupMemberSDKType;
 }
 export interface QueryPolicyForGroupRequest {
   resource: string;
   principalGroupId: string;
+}
+export interface QueryPolicyForGroupRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryPolicyForGroupRequest";
+  value: Uint8Array;
 }
 export interface QueryPolicyForGroupRequestSDKType {
   resource: string;
   principal_group_id: string;
 }
 export interface QueryPolicyForGroupResponse {
-  policy: Policy;
+  policy?: Policy;
+}
+export interface QueryPolicyForGroupResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryPolicyForGroupResponse";
+  value: Uint8Array;
 }
 export interface QueryPolicyForGroupResponseSDKType {
-  policy: PolicySDKType;
+  policy?: PolicySDKType;
 }
 export interface QueryPolicyByIdRequest {
   policyId: string;
+}
+export interface QueryPolicyByIdRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryPolicyByIdRequest";
+  value: Uint8Array;
 }
 export interface QueryPolicyByIdRequestSDKType {
   policy_id: string;
 }
 export interface QueryPolicyByIdResponse {
-  policy: Policy;
+  policy?: Policy;
+}
+export interface QueryPolicyByIdResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryPolicyByIdResponse";
+  value: Uint8Array;
 }
 export interface QueryPolicyByIdResponseSDKType {
-  policy: PolicySDKType;
+  policy?: PolicySDKType;
 }
 export interface QueryLockFeeRequest {
   /** primary_sp_address is the address of the primary sp. */
   primarySpAddress: string;
   /** create_at define the block timestamp when the object created. */
-  createAt: Long;
+  createAt: bigint;
   /** payloadSize is the total size of the object payload */
-  payloadSize: Long;
+  payloadSize: bigint;
+}
+export interface QueryLockFeeRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryLockFeeRequest";
+  value: Uint8Array;
 }
 export interface QueryLockFeeRequestSDKType {
   primary_sp_address: string;
-  create_at: Long;
-  payload_size: Long;
+  create_at: bigint;
+  payload_size: bigint;
 }
 export interface QueryLockFeeResponse {
   amount: string;
+}
+export interface QueryLockFeeResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryLockFeeResponse";
+  value: Uint8Array;
 }
 export interface QueryLockFeeResponseSDKType {
   amount: string;
@@ -268,17 +409,29 @@ export interface QueryLockFeeResponseSDKType {
 export interface QueryHeadBucketExtraRequest {
   bucketName: string;
 }
+export interface QueryHeadBucketExtraRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadBucketExtraRequest";
+  value: Uint8Array;
+}
 export interface QueryHeadBucketExtraRequestSDKType {
   bucket_name: string;
 }
 export interface QueryHeadBucketExtraResponse {
-  extraInfo: InternalBucketInfo;
+  extraInfo?: InternalBucketInfo;
+}
+export interface QueryHeadBucketExtraResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadBucketExtraResponse";
+  value: Uint8Array;
 }
 export interface QueryHeadBucketExtraResponseSDKType {
-  extra_info: InternalBucketInfoSDKType;
+  extra_info?: InternalBucketInfoSDKType;
 }
 export interface QueryIsPriceChangedRequest {
   bucketName: string;
+}
+export interface QueryIsPriceChangedRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryIsPriceChangedRequest";
+  value: Uint8Array;
 }
 export interface QueryIsPriceChangedRequestSDKType {
   bucket_name: string;
@@ -294,6 +447,10 @@ export interface QueryIsPriceChangedResponse {
   newSecondaryStorePrice: string;
   newValidatorTaxRate: string;
 }
+export interface QueryIsPriceChangedResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryIsPriceChangedResponse";
+  value: Uint8Array;
+}
 export interface QueryIsPriceChangedResponseSDKType {
   changed: boolean;
   current_read_price: string;
@@ -308,18 +465,30 @@ export interface QueryIsPriceChangedResponseSDKType {
 export interface QueryQuoteUpdateTimeRequest {
   bucketName: string;
 }
+export interface QueryQuoteUpdateTimeRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryQuoteUpdateTimeRequest";
+  value: Uint8Array;
+}
 export interface QueryQuoteUpdateTimeRequestSDKType {
   bucket_name: string;
 }
 export interface QueryQuoteUpdateTimeResponse {
-  updateAt: Long;
+  updateAt: bigint;
+}
+export interface QueryQuoteUpdateTimeResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryQuoteUpdateTimeResponse";
+  value: Uint8Array;
 }
 export interface QueryQuoteUpdateTimeResponseSDKType {
-  update_at: Long;
+  update_at: bigint;
 }
 export interface QueryGroupMembersExistRequest {
   groupId: string;
   members: string[];
+}
+export interface QueryGroupMembersExistRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryGroupMembersExistRequest";
+  value: Uint8Array;
 }
 export interface QueryGroupMembersExistRequestSDKType {
   group_id: string;
@@ -328,6 +497,10 @@ export interface QueryGroupMembersExistRequestSDKType {
 export interface QueryGroupMembersExistResponse_ExistsEntry {
   key: string;
   value: boolean;
+}
+export interface QueryGroupMembersExistResponse_ExistsEntryProtoMsg {
+  typeUrl: string;
+  value: Uint8Array;
 }
 export interface QueryGroupMembersExistResponse_ExistsEntrySDKType {
   key: string;
@@ -338,6 +511,10 @@ export interface QueryGroupMembersExistResponse {
     [key: string]: boolean;
   };
 }
+export interface QueryGroupMembersExistResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryGroupMembersExistResponse";
+  value: Uint8Array;
+}
 export interface QueryGroupMembersExistResponseSDKType {
   exists: {
     [key: string]: boolean;
@@ -347,6 +524,10 @@ export interface QueryGroupsExistRequest {
   groupOwner: string;
   groupNames: string[];
 }
+export interface QueryGroupsExistRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryGroupsExistRequest";
+  value: Uint8Array;
+}
 export interface QueryGroupsExistRequestSDKType {
   group_owner: string;
   group_names: string[];
@@ -354,12 +535,20 @@ export interface QueryGroupsExistRequestSDKType {
 export interface QueryGroupsExistByIdRequest {
   groupIds: string[];
 }
+export interface QueryGroupsExistByIdRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryGroupsExistByIdRequest";
+  value: Uint8Array;
+}
 export interface QueryGroupsExistByIdRequestSDKType {
   group_ids: string[];
 }
 export interface QueryGroupsExistResponse_ExistsEntry {
   key: string;
   value: boolean;
+}
+export interface QueryGroupsExistResponse_ExistsEntryProtoMsg {
+  typeUrl: string;
+  value: Uint8Array;
 }
 export interface QueryGroupsExistResponse_ExistsEntrySDKType {
   key: string;
@@ -370,6 +559,10 @@ export interface QueryGroupsExistResponse {
     [key: string]: boolean;
   };
 }
+export interface QueryGroupsExistResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryGroupsExistResponse";
+  value: Uint8Array;
+}
 export interface QueryGroupsExistResponseSDKType {
   exists: {
     [key: string]: boolean;
@@ -379,11 +572,12 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
 export const QueryParamsRequest = {
-  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryParamsRequest",
+  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -413,6 +607,29 @@ export const QueryParamsRequest = {
   toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: QueryParamsRequestAmino): QueryParamsRequest {
+    const message = createBaseQueryParamsRequest();
+    return message;
+  },
+  toAmino(_: QueryParamsRequest): QueryParamsRequestAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsRequestAminoMsg): QueryParamsRequest {
+    return QueryParamsRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryParamsRequestProtoMsg): QueryParamsRequest {
+    return QueryParamsRequest.decode(message.value);
+  },
+  toProto(message: QueryParamsRequest): Uint8Array {
+    return QueryParamsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryParamsRequest",
+      value: QueryParamsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryParamsResponse(): QueryParamsResponse {
@@ -421,14 +638,15 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
   };
 }
 export const QueryParamsResponse = {
-  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryParamsResponse",
+  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -468,29 +686,57 @@ export const QueryParamsResponse = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryParamsResponseAmino): QueryParamsResponse {
+    const message = createBaseQueryParamsResponse();
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
+    const obj: any = {};
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
+    return QueryParamsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryParamsResponseProtoMsg): QueryParamsResponse {
+    return QueryParamsResponse.decode(message.value);
+  },
+  toProto(message: QueryParamsResponse): Uint8Array {
+    return QueryParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryParamsResponse",
+      value: QueryParamsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryParamsByTimestampRequest(): QueryParamsByTimestampRequest {
   return {
-    timestamp: Long.ZERO
+    timestamp: BigInt(0)
   };
 }
 export const QueryParamsByTimestampRequest = {
-  encode(message: QueryParamsByTimestampRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.timestamp.isZero()) {
+  typeUrl: "/greenfield.storage.QueryParamsByTimestampRequest",
+  encode(message: QueryParamsByTimestampRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.timestamp !== BigInt(0)) {
       writer.uint32(8).int64(message.timestamp);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsByTimestampRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsByTimestampRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsByTimestampRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.timestamp = (reader.int64() as Long);
+          message.timestamp = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -501,17 +747,17 @@ export const QueryParamsByTimestampRequest = {
   },
   fromJSON(object: any): QueryParamsByTimestampRequest {
     return {
-      timestamp: isSet(object.timestamp) ? Long.fromValue(object.timestamp) : Long.ZERO
+      timestamp: isSet(object.timestamp) ? BigInt(object.timestamp.toString()) : BigInt(0)
     };
   },
   toJSON(message: QueryParamsByTimestampRequest): unknown {
     const obj: any = {};
-    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || Long.ZERO).toString());
+    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || BigInt(0)).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<QueryParamsByTimestampRequest>, I>>(object: I): QueryParamsByTimestampRequest {
     const message = createBaseQueryParamsByTimestampRequest();
-    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
+    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? BigInt(object.timestamp.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: QueryParamsByTimestampRequestSDKType): QueryParamsByTimestampRequest {
@@ -523,6 +769,33 @@ export const QueryParamsByTimestampRequest = {
     const obj: any = {};
     obj.timestamp = message.timestamp;
     return obj;
+  },
+  fromAmino(object: QueryParamsByTimestampRequestAmino): QueryParamsByTimestampRequest {
+    const message = createBaseQueryParamsByTimestampRequest();
+    if (object.timestamp !== undefined && object.timestamp !== null) {
+      message.timestamp = BigInt(object.timestamp);
+    }
+    return message;
+  },
+  toAmino(message: QueryParamsByTimestampRequest): QueryParamsByTimestampRequestAmino {
+    const obj: any = {};
+    obj.timestamp = message.timestamp ? message.timestamp.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsByTimestampRequestAminoMsg): QueryParamsByTimestampRequest {
+    return QueryParamsByTimestampRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryParamsByTimestampRequestProtoMsg): QueryParamsByTimestampRequest {
+    return QueryParamsByTimestampRequest.decode(message.value);
+  },
+  toProto(message: QueryParamsByTimestampRequest): Uint8Array {
+    return QueryParamsByTimestampRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsByTimestampRequest): QueryParamsByTimestampRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryParamsByTimestampRequest",
+      value: QueryParamsByTimestampRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryParamsByTimestampResponse(): QueryParamsByTimestampResponse {
@@ -531,14 +804,15 @@ function createBaseQueryParamsByTimestampResponse(): QueryParamsByTimestampRespo
   };
 }
 export const QueryParamsByTimestampResponse = {
-  encode(message: QueryParamsByTimestampResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryParamsByTimestampResponse",
+  encode(message: QueryParamsByTimestampResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsByTimestampResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsByTimestampResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsByTimestampResponse();
     while (reader.pos < end) {
@@ -578,6 +852,33 @@ export const QueryParamsByTimestampResponse = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryParamsByTimestampResponseAmino): QueryParamsByTimestampResponse {
+    const message = createBaseQueryParamsByTimestampResponse();
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: QueryParamsByTimestampResponse): QueryParamsByTimestampResponseAmino {
+    const obj: any = {};
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsByTimestampResponseAminoMsg): QueryParamsByTimestampResponse {
+    return QueryParamsByTimestampResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryParamsByTimestampResponseProtoMsg): QueryParamsByTimestampResponse {
+    return QueryParamsByTimestampResponse.decode(message.value);
+  },
+  toProto(message: QueryParamsByTimestampResponse): Uint8Array {
+    return QueryParamsByTimestampResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsByTimestampResponse): QueryParamsByTimestampResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryParamsByTimestampResponse",
+      value: QueryParamsByTimestampResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryHeadBucketRequest(): QueryHeadBucketRequest {
@@ -586,14 +887,15 @@ function createBaseQueryHeadBucketRequest(): QueryHeadBucketRequest {
   };
 }
 export const QueryHeadBucketRequest = {
-  encode(message: QueryHeadBucketRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryHeadBucketRequest",
+  encode(message: QueryHeadBucketRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bucketName !== "") {
       writer.uint32(10).string(message.bucketName);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadBucketRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryHeadBucketRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryHeadBucketRequest();
     while (reader.pos < end) {
@@ -633,6 +935,33 @@ export const QueryHeadBucketRequest = {
     const obj: any = {};
     obj.bucket_name = message.bucketName;
     return obj;
+  },
+  fromAmino(object: QueryHeadBucketRequestAmino): QueryHeadBucketRequest {
+    const message = createBaseQueryHeadBucketRequest();
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadBucketRequest): QueryHeadBucketRequestAmino {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadBucketRequestAminoMsg): QueryHeadBucketRequest {
+    return QueryHeadBucketRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadBucketRequestProtoMsg): QueryHeadBucketRequest {
+    return QueryHeadBucketRequest.decode(message.value);
+  },
+  toProto(message: QueryHeadBucketRequest): Uint8Array {
+    return QueryHeadBucketRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadBucketRequest): QueryHeadBucketRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadBucketRequest",
+      value: QueryHeadBucketRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryHeadBucketByIdRequest(): QueryHeadBucketByIdRequest {
@@ -641,14 +970,15 @@ function createBaseQueryHeadBucketByIdRequest(): QueryHeadBucketByIdRequest {
   };
 }
 export const QueryHeadBucketByIdRequest = {
-  encode(message: QueryHeadBucketByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryHeadBucketByIdRequest",
+  encode(message: QueryHeadBucketByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bucketId !== "") {
       writer.uint32(10).string(message.bucketId);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadBucketByIdRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryHeadBucketByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryHeadBucketByIdRequest();
     while (reader.pos < end) {
@@ -688,22 +1018,50 @@ export const QueryHeadBucketByIdRequest = {
     const obj: any = {};
     obj.bucket_id = message.bucketId;
     return obj;
+  },
+  fromAmino(object: QueryHeadBucketByIdRequestAmino): QueryHeadBucketByIdRequest {
+    const message = createBaseQueryHeadBucketByIdRequest();
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadBucketByIdRequest): QueryHeadBucketByIdRequestAmino {
+    const obj: any = {};
+    obj.bucket_id = message.bucketId;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadBucketByIdRequestAminoMsg): QueryHeadBucketByIdRequest {
+    return QueryHeadBucketByIdRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadBucketByIdRequestProtoMsg): QueryHeadBucketByIdRequest {
+    return QueryHeadBucketByIdRequest.decode(message.value);
+  },
+  toProto(message: QueryHeadBucketByIdRequest): Uint8Array {
+    return QueryHeadBucketByIdRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadBucketByIdRequest): QueryHeadBucketByIdRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadBucketByIdRequest",
+      value: QueryHeadBucketByIdRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryHeadBucketResponse(): QueryHeadBucketResponse {
   return {
-    bucketInfo: BucketInfo.fromPartial({})
+    bucketInfo: undefined
   };
 }
 export const QueryHeadBucketResponse = {
-  encode(message: QueryHeadBucketResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryHeadBucketResponse",
+  encode(message: QueryHeadBucketResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bucketInfo !== undefined) {
       BucketInfo.encode(message.bucketInfo, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadBucketResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryHeadBucketResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryHeadBucketResponse();
     while (reader.pos < end) {
@@ -743,6 +1101,33 @@ export const QueryHeadBucketResponse = {
     const obj: any = {};
     message.bucketInfo !== undefined && (obj.bucket_info = message.bucketInfo ? BucketInfo.toSDK(message.bucketInfo) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryHeadBucketResponseAmino): QueryHeadBucketResponse {
+    const message = createBaseQueryHeadBucketResponse();
+    if (object.bucket_info !== undefined && object.bucket_info !== null) {
+      message.bucketInfo = BucketInfo.fromAmino(object.bucket_info);
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadBucketResponse): QueryHeadBucketResponseAmino {
+    const obj: any = {};
+    obj.bucket_info = message.bucketInfo ? BucketInfo.toAmino(message.bucketInfo) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadBucketResponseAminoMsg): QueryHeadBucketResponse {
+    return QueryHeadBucketResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadBucketResponseProtoMsg): QueryHeadBucketResponse {
+    return QueryHeadBucketResponse.decode(message.value);
+  },
+  toProto(message: QueryHeadBucketResponse): Uint8Array {
+    return QueryHeadBucketResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadBucketResponse): QueryHeadBucketResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadBucketResponse",
+      value: QueryHeadBucketResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryHeadObjectRequest(): QueryHeadObjectRequest {
@@ -752,7 +1137,8 @@ function createBaseQueryHeadObjectRequest(): QueryHeadObjectRequest {
   };
 }
 export const QueryHeadObjectRequest = {
-  encode(message: QueryHeadObjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryHeadObjectRequest",
+  encode(message: QueryHeadObjectRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bucketName !== "") {
       writer.uint32(10).string(message.bucketName);
     }
@@ -761,8 +1147,8 @@ export const QueryHeadObjectRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadObjectRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryHeadObjectRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryHeadObjectRequest();
     while (reader.pos < end) {
@@ -810,6 +1196,37 @@ export const QueryHeadObjectRequest = {
     obj.bucket_name = message.bucketName;
     obj.object_name = message.objectName;
     return obj;
+  },
+  fromAmino(object: QueryHeadObjectRequestAmino): QueryHeadObjectRequest {
+    const message = createBaseQueryHeadObjectRequest();
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.object_name !== undefined && object.object_name !== null) {
+      message.objectName = object.object_name;
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadObjectRequest): QueryHeadObjectRequestAmino {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadObjectRequestAminoMsg): QueryHeadObjectRequest {
+    return QueryHeadObjectRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadObjectRequestProtoMsg): QueryHeadObjectRequest {
+    return QueryHeadObjectRequest.decode(message.value);
+  },
+  toProto(message: QueryHeadObjectRequest): Uint8Array {
+    return QueryHeadObjectRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadObjectRequest): QueryHeadObjectRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadObjectRequest",
+      value: QueryHeadObjectRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryHeadObjectByIdRequest(): QueryHeadObjectByIdRequest {
@@ -818,14 +1235,15 @@ function createBaseQueryHeadObjectByIdRequest(): QueryHeadObjectByIdRequest {
   };
 }
 export const QueryHeadObjectByIdRequest = {
-  encode(message: QueryHeadObjectByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryHeadObjectByIdRequest",
+  encode(message: QueryHeadObjectByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.objectId !== "") {
       writer.uint32(10).string(message.objectId);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadObjectByIdRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryHeadObjectByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryHeadObjectByIdRequest();
     while (reader.pos < end) {
@@ -865,16 +1283,44 @@ export const QueryHeadObjectByIdRequest = {
     const obj: any = {};
     obj.object_id = message.objectId;
     return obj;
+  },
+  fromAmino(object: QueryHeadObjectByIdRequestAmino): QueryHeadObjectByIdRequest {
+    const message = createBaseQueryHeadObjectByIdRequest();
+    if (object.object_id !== undefined && object.object_id !== null) {
+      message.objectId = object.object_id;
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadObjectByIdRequest): QueryHeadObjectByIdRequestAmino {
+    const obj: any = {};
+    obj.object_id = message.objectId;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadObjectByIdRequestAminoMsg): QueryHeadObjectByIdRequest {
+    return QueryHeadObjectByIdRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadObjectByIdRequestProtoMsg): QueryHeadObjectByIdRequest {
+    return QueryHeadObjectByIdRequest.decode(message.value);
+  },
+  toProto(message: QueryHeadObjectByIdRequest): Uint8Array {
+    return QueryHeadObjectByIdRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadObjectByIdRequest): QueryHeadObjectByIdRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadObjectByIdRequest",
+      value: QueryHeadObjectByIdRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryHeadObjectResponse(): QueryHeadObjectResponse {
   return {
-    objectInfo: ObjectInfo.fromPartial({}),
-    globalVirtualGroup: GlobalVirtualGroup.fromPartial({})
+    objectInfo: undefined,
+    globalVirtualGroup: undefined
   };
 }
 export const QueryHeadObjectResponse = {
-  encode(message: QueryHeadObjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryHeadObjectResponse",
+  encode(message: QueryHeadObjectResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.objectInfo !== undefined) {
       ObjectInfo.encode(message.objectInfo, writer.uint32(10).fork()).ldelim();
     }
@@ -883,8 +1329,8 @@ export const QueryHeadObjectResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadObjectResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryHeadObjectResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryHeadObjectResponse();
     while (reader.pos < end) {
@@ -932,22 +1378,54 @@ export const QueryHeadObjectResponse = {
     message.objectInfo !== undefined && (obj.object_info = message.objectInfo ? ObjectInfo.toSDK(message.objectInfo) : undefined);
     message.globalVirtualGroup !== undefined && (obj.global_virtual_group = message.globalVirtualGroup ? GlobalVirtualGroup.toSDK(message.globalVirtualGroup) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryHeadObjectResponseAmino): QueryHeadObjectResponse {
+    const message = createBaseQueryHeadObjectResponse();
+    if (object.object_info !== undefined && object.object_info !== null) {
+      message.objectInfo = ObjectInfo.fromAmino(object.object_info);
+    }
+    if (object.global_virtual_group !== undefined && object.global_virtual_group !== null) {
+      message.globalVirtualGroup = GlobalVirtualGroup.fromAmino(object.global_virtual_group);
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadObjectResponse): QueryHeadObjectResponseAmino {
+    const obj: any = {};
+    obj.object_info = message.objectInfo ? ObjectInfo.toAmino(message.objectInfo) : undefined;
+    obj.global_virtual_group = message.globalVirtualGroup ? GlobalVirtualGroup.toAmino(message.globalVirtualGroup) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadObjectResponseAminoMsg): QueryHeadObjectResponse {
+    return QueryHeadObjectResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadObjectResponseProtoMsg): QueryHeadObjectResponse {
+    return QueryHeadObjectResponse.decode(message.value);
+  },
+  toProto(message: QueryHeadObjectResponse): Uint8Array {
+    return QueryHeadObjectResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadObjectResponse): QueryHeadObjectResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadObjectResponse",
+      value: QueryHeadObjectResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryListBucketsRequest(): QueryListBucketsRequest {
   return {
-    pagination: PageRequest.fromPartial({})
+    pagination: undefined
   };
 }
 export const QueryListBucketsRequest = {
-  encode(message: QueryListBucketsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryListBucketsRequest",
+  encode(message: QueryListBucketsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListBucketsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryListBucketsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryListBucketsRequest();
     while (reader.pos < end) {
@@ -987,16 +1465,44 @@ export const QueryListBucketsRequest = {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryListBucketsRequestAmino): QueryListBucketsRequest {
+    const message = createBaseQueryListBucketsRequest();
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryListBucketsRequest): QueryListBucketsRequestAmino {
+    const obj: any = {};
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryListBucketsRequestAminoMsg): QueryListBucketsRequest {
+    return QueryListBucketsRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryListBucketsRequestProtoMsg): QueryListBucketsRequest {
+    return QueryListBucketsRequest.decode(message.value);
+  },
+  toProto(message: QueryListBucketsRequest): Uint8Array {
+    return QueryListBucketsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryListBucketsRequest): QueryListBucketsRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryListBucketsRequest",
+      value: QueryListBucketsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryListBucketsResponse(): QueryListBucketsResponse {
   return {
     bucketInfos: [],
-    pagination: PageResponse.fromPartial({})
+    pagination: undefined
   };
 }
 export const QueryListBucketsResponse = {
-  encode(message: QueryListBucketsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryListBucketsResponse",
+  encode(message: QueryListBucketsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.bucketInfos) {
       BucketInfo.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1005,8 +1511,8 @@ export const QueryListBucketsResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListBucketsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryListBucketsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryListBucketsResponse();
     while (reader.pos < end) {
@@ -1062,16 +1568,50 @@ export const QueryListBucketsResponse = {
     }
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryListBucketsResponseAmino): QueryListBucketsResponse {
+    const message = createBaseQueryListBucketsResponse();
+    message.bucketInfos = object.bucket_infos?.map(e => BucketInfo.fromAmino(e)) || [];
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryListBucketsResponse): QueryListBucketsResponseAmino {
+    const obj: any = {};
+    if (message.bucketInfos) {
+      obj.bucket_infos = message.bucketInfos.map(e => e ? BucketInfo.toAmino(e) : undefined);
+    } else {
+      obj.bucket_infos = [];
+    }
+    obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryListBucketsResponseAminoMsg): QueryListBucketsResponse {
+    return QueryListBucketsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryListBucketsResponseProtoMsg): QueryListBucketsResponse {
+    return QueryListBucketsResponse.decode(message.value);
+  },
+  toProto(message: QueryListBucketsResponse): Uint8Array {
+    return QueryListBucketsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryListBucketsResponse): QueryListBucketsResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryListBucketsResponse",
+      value: QueryListBucketsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryListObjectsRequest(): QueryListObjectsRequest {
   return {
-    pagination: PageRequest.fromPartial({}),
+    pagination: undefined,
     bucketName: ""
   };
 }
 export const QueryListObjectsRequest = {
-  encode(message: QueryListObjectsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryListObjectsRequest",
+  encode(message: QueryListObjectsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -1080,8 +1620,8 @@ export const QueryListObjectsRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListObjectsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryListObjectsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryListObjectsRequest();
     while (reader.pos < end) {
@@ -1129,16 +1669,48 @@ export const QueryListObjectsRequest = {
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
     obj.bucket_name = message.bucketName;
     return obj;
+  },
+  fromAmino(object: QueryListObjectsRequestAmino): QueryListObjectsRequest {
+    const message = createBaseQueryListObjectsRequest();
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    return message;
+  },
+  toAmino(message: QueryListObjectsRequest): QueryListObjectsRequestAmino {
+    const obj: any = {};
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
+    obj.bucket_name = message.bucketName;
+    return obj;
+  },
+  fromAminoMsg(object: QueryListObjectsRequestAminoMsg): QueryListObjectsRequest {
+    return QueryListObjectsRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryListObjectsRequestProtoMsg): QueryListObjectsRequest {
+    return QueryListObjectsRequest.decode(message.value);
+  },
+  toProto(message: QueryListObjectsRequest): Uint8Array {
+    return QueryListObjectsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryListObjectsRequest): QueryListObjectsRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryListObjectsRequest",
+      value: QueryListObjectsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryListObjectsByBucketIdRequest(): QueryListObjectsByBucketIdRequest {
   return {
-    pagination: PageRequest.fromPartial({}),
+    pagination: undefined,
     bucketId: ""
   };
 }
 export const QueryListObjectsByBucketIdRequest = {
-  encode(message: QueryListObjectsByBucketIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryListObjectsByBucketIdRequest",
+  encode(message: QueryListObjectsByBucketIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -1147,8 +1719,8 @@ export const QueryListObjectsByBucketIdRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListObjectsByBucketIdRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryListObjectsByBucketIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryListObjectsByBucketIdRequest();
     while (reader.pos < end) {
@@ -1196,16 +1768,48 @@ export const QueryListObjectsByBucketIdRequest = {
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
     obj.bucket_id = message.bucketId;
     return obj;
+  },
+  fromAmino(object: QueryListObjectsByBucketIdRequestAmino): QueryListObjectsByBucketIdRequest {
+    const message = createBaseQueryListObjectsByBucketIdRequest();
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    return message;
+  },
+  toAmino(message: QueryListObjectsByBucketIdRequest): QueryListObjectsByBucketIdRequestAmino {
+    const obj: any = {};
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
+    obj.bucket_id = message.bucketId;
+    return obj;
+  },
+  fromAminoMsg(object: QueryListObjectsByBucketIdRequestAminoMsg): QueryListObjectsByBucketIdRequest {
+    return QueryListObjectsByBucketIdRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryListObjectsByBucketIdRequestProtoMsg): QueryListObjectsByBucketIdRequest {
+    return QueryListObjectsByBucketIdRequest.decode(message.value);
+  },
+  toProto(message: QueryListObjectsByBucketIdRequest): Uint8Array {
+    return QueryListObjectsByBucketIdRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryListObjectsByBucketIdRequest): QueryListObjectsByBucketIdRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryListObjectsByBucketIdRequest",
+      value: QueryListObjectsByBucketIdRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryListObjectsResponse(): QueryListObjectsResponse {
   return {
     objectInfos: [],
-    pagination: PageResponse.fromPartial({})
+    pagination: undefined
   };
 }
 export const QueryListObjectsResponse = {
-  encode(message: QueryListObjectsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryListObjectsResponse",
+  encode(message: QueryListObjectsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.objectInfos) {
       ObjectInfo.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1214,8 +1818,8 @@ export const QueryListObjectsResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListObjectsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryListObjectsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryListObjectsResponse();
     while (reader.pos < end) {
@@ -1271,6 +1875,39 @@ export const QueryListObjectsResponse = {
     }
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryListObjectsResponseAmino): QueryListObjectsResponse {
+    const message = createBaseQueryListObjectsResponse();
+    message.objectInfos = object.object_infos?.map(e => ObjectInfo.fromAmino(e)) || [];
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryListObjectsResponse): QueryListObjectsResponseAmino {
+    const obj: any = {};
+    if (message.objectInfos) {
+      obj.object_infos = message.objectInfos.map(e => e ? ObjectInfo.toAmino(e) : undefined);
+    } else {
+      obj.object_infos = [];
+    }
+    obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryListObjectsResponseAminoMsg): QueryListObjectsResponse {
+    return QueryListObjectsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryListObjectsResponseProtoMsg): QueryListObjectsResponse {
+    return QueryListObjectsResponse.decode(message.value);
+  },
+  toProto(message: QueryListObjectsResponse): Uint8Array {
+    return QueryListObjectsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryListObjectsResponse): QueryListObjectsResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryListObjectsResponse",
+      value: QueryListObjectsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryNFTRequest(): QueryNFTRequest {
@@ -1279,14 +1916,15 @@ function createBaseQueryNFTRequest(): QueryNFTRequest {
   };
 }
 export const QueryNFTRequest = {
-  encode(message: QueryNFTRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryNFTRequest",
+  encode(message: QueryNFTRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.tokenId !== "") {
       writer.uint32(10).string(message.tokenId);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryNFTRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryNFTRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryNFTRequest();
     while (reader.pos < end) {
@@ -1326,22 +1964,50 @@ export const QueryNFTRequest = {
     const obj: any = {};
     obj.token_id = message.tokenId;
     return obj;
+  },
+  fromAmino(object: QueryNFTRequestAmino): QueryNFTRequest {
+    const message = createBaseQueryNFTRequest();
+    if (object.token_id !== undefined && object.token_id !== null) {
+      message.tokenId = object.token_id;
+    }
+    return message;
+  },
+  toAmino(message: QueryNFTRequest): QueryNFTRequestAmino {
+    const obj: any = {};
+    obj.token_id = message.tokenId;
+    return obj;
+  },
+  fromAminoMsg(object: QueryNFTRequestAminoMsg): QueryNFTRequest {
+    return QueryNFTRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryNFTRequestProtoMsg): QueryNFTRequest {
+    return QueryNFTRequest.decode(message.value);
+  },
+  toProto(message: QueryNFTRequest): Uint8Array {
+    return QueryNFTRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryNFTRequest): QueryNFTRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryNFTRequest",
+      value: QueryNFTRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryBucketNFTResponse(): QueryBucketNFTResponse {
   return {
-    metaData: BucketMetaData.fromPartial({})
+    metaData: undefined
   };
 }
 export const QueryBucketNFTResponse = {
-  encode(message: QueryBucketNFTResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryBucketNFTResponse",
+  encode(message: QueryBucketNFTResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.metaData !== undefined) {
       BucketMetaData.encode(message.metaData, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryBucketNFTResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryBucketNFTResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryBucketNFTResponse();
     while (reader.pos < end) {
@@ -1381,22 +2047,50 @@ export const QueryBucketNFTResponse = {
     const obj: any = {};
     message.metaData !== undefined && (obj.meta_data = message.metaData ? BucketMetaData.toSDK(message.metaData) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryBucketNFTResponseAmino): QueryBucketNFTResponse {
+    const message = createBaseQueryBucketNFTResponse();
+    if (object.meta_data !== undefined && object.meta_data !== null) {
+      message.metaData = BucketMetaData.fromAmino(object.meta_data);
+    }
+    return message;
+  },
+  toAmino(message: QueryBucketNFTResponse): QueryBucketNFTResponseAmino {
+    const obj: any = {};
+    obj.meta_data = message.metaData ? BucketMetaData.toAmino(message.metaData) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryBucketNFTResponseAminoMsg): QueryBucketNFTResponse {
+    return QueryBucketNFTResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryBucketNFTResponseProtoMsg): QueryBucketNFTResponse {
+    return QueryBucketNFTResponse.decode(message.value);
+  },
+  toProto(message: QueryBucketNFTResponse): Uint8Array {
+    return QueryBucketNFTResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryBucketNFTResponse): QueryBucketNFTResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryBucketNFTResponse",
+      value: QueryBucketNFTResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryObjectNFTResponse(): QueryObjectNFTResponse {
   return {
-    metaData: ObjectMetaData.fromPartial({})
+    metaData: undefined
   };
 }
 export const QueryObjectNFTResponse = {
-  encode(message: QueryObjectNFTResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryObjectNFTResponse",
+  encode(message: QueryObjectNFTResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.metaData !== undefined) {
       ObjectMetaData.encode(message.metaData, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryObjectNFTResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryObjectNFTResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryObjectNFTResponse();
     while (reader.pos < end) {
@@ -1436,22 +2130,50 @@ export const QueryObjectNFTResponse = {
     const obj: any = {};
     message.metaData !== undefined && (obj.meta_data = message.metaData ? ObjectMetaData.toSDK(message.metaData) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryObjectNFTResponseAmino): QueryObjectNFTResponse {
+    const message = createBaseQueryObjectNFTResponse();
+    if (object.meta_data !== undefined && object.meta_data !== null) {
+      message.metaData = ObjectMetaData.fromAmino(object.meta_data);
+    }
+    return message;
+  },
+  toAmino(message: QueryObjectNFTResponse): QueryObjectNFTResponseAmino {
+    const obj: any = {};
+    obj.meta_data = message.metaData ? ObjectMetaData.toAmino(message.metaData) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryObjectNFTResponseAminoMsg): QueryObjectNFTResponse {
+    return QueryObjectNFTResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryObjectNFTResponseProtoMsg): QueryObjectNFTResponse {
+    return QueryObjectNFTResponse.decode(message.value);
+  },
+  toProto(message: QueryObjectNFTResponse): Uint8Array {
+    return QueryObjectNFTResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryObjectNFTResponse): QueryObjectNFTResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryObjectNFTResponse",
+      value: QueryObjectNFTResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGroupNFTResponse(): QueryGroupNFTResponse {
   return {
-    metaData: GroupMetaData.fromPartial({})
+    metaData: undefined
   };
 }
 export const QueryGroupNFTResponse = {
-  encode(message: QueryGroupNFTResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryGroupNFTResponse",
+  encode(message: QueryGroupNFTResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.metaData !== undefined) {
       GroupMetaData.encode(message.metaData, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupNFTResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGroupNFTResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGroupNFTResponse();
     while (reader.pos < end) {
@@ -1491,6 +2213,33 @@ export const QueryGroupNFTResponse = {
     const obj: any = {};
     message.metaData !== undefined && (obj.meta_data = message.metaData ? GroupMetaData.toSDK(message.metaData) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryGroupNFTResponseAmino): QueryGroupNFTResponse {
+    const message = createBaseQueryGroupNFTResponse();
+    if (object.meta_data !== undefined && object.meta_data !== null) {
+      message.metaData = GroupMetaData.fromAmino(object.meta_data);
+    }
+    return message;
+  },
+  toAmino(message: QueryGroupNFTResponse): QueryGroupNFTResponseAmino {
+    const obj: any = {};
+    obj.meta_data = message.metaData ? GroupMetaData.toAmino(message.metaData) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryGroupNFTResponseAminoMsg): QueryGroupNFTResponse {
+    return QueryGroupNFTResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGroupNFTResponseProtoMsg): QueryGroupNFTResponse {
+    return QueryGroupNFTResponse.decode(message.value);
+  },
+  toProto(message: QueryGroupNFTResponse): Uint8Array {
+    return QueryGroupNFTResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGroupNFTResponse): QueryGroupNFTResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryGroupNFTResponse",
+      value: QueryGroupNFTResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryPolicyForAccountRequest(): QueryPolicyForAccountRequest {
@@ -1500,7 +2249,8 @@ function createBaseQueryPolicyForAccountRequest(): QueryPolicyForAccountRequest 
   };
 }
 export const QueryPolicyForAccountRequest = {
-  encode(message: QueryPolicyForAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryPolicyForAccountRequest",
+  encode(message: QueryPolicyForAccountRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.resource !== "") {
       writer.uint32(10).string(message.resource);
     }
@@ -1509,8 +2259,8 @@ export const QueryPolicyForAccountRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPolicyForAccountRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryPolicyForAccountRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPolicyForAccountRequest();
     while (reader.pos < end) {
@@ -1558,22 +2308,54 @@ export const QueryPolicyForAccountRequest = {
     obj.resource = message.resource;
     obj.principal_address = message.principalAddress;
     return obj;
+  },
+  fromAmino(object: QueryPolicyForAccountRequestAmino): QueryPolicyForAccountRequest {
+    const message = createBaseQueryPolicyForAccountRequest();
+    if (object.resource !== undefined && object.resource !== null) {
+      message.resource = object.resource;
+    }
+    if (object.principal_address !== undefined && object.principal_address !== null) {
+      message.principalAddress = object.principal_address;
+    }
+    return message;
+  },
+  toAmino(message: QueryPolicyForAccountRequest): QueryPolicyForAccountRequestAmino {
+    const obj: any = {};
+    obj.resource = message.resource;
+    obj.principal_address = message.principalAddress;
+    return obj;
+  },
+  fromAminoMsg(object: QueryPolicyForAccountRequestAminoMsg): QueryPolicyForAccountRequest {
+    return QueryPolicyForAccountRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryPolicyForAccountRequestProtoMsg): QueryPolicyForAccountRequest {
+    return QueryPolicyForAccountRequest.decode(message.value);
+  },
+  toProto(message: QueryPolicyForAccountRequest): Uint8Array {
+    return QueryPolicyForAccountRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryPolicyForAccountRequest): QueryPolicyForAccountRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryPolicyForAccountRequest",
+      value: QueryPolicyForAccountRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryPolicyForAccountResponse(): QueryPolicyForAccountResponse {
   return {
-    policy: Policy.fromPartial({})
+    policy: undefined
   };
 }
 export const QueryPolicyForAccountResponse = {
-  encode(message: QueryPolicyForAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryPolicyForAccountResponse",
+  encode(message: QueryPolicyForAccountResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.policy !== undefined) {
       Policy.encode(message.policy, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPolicyForAccountResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryPolicyForAccountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPolicyForAccountResponse();
     while (reader.pos < end) {
@@ -1613,6 +2395,33 @@ export const QueryPolicyForAccountResponse = {
     const obj: any = {};
     message.policy !== undefined && (obj.policy = message.policy ? Policy.toSDK(message.policy) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryPolicyForAccountResponseAmino): QueryPolicyForAccountResponse {
+    const message = createBaseQueryPolicyForAccountResponse();
+    if (object.policy !== undefined && object.policy !== null) {
+      message.policy = Policy.fromAmino(object.policy);
+    }
+    return message;
+  },
+  toAmino(message: QueryPolicyForAccountResponse): QueryPolicyForAccountResponseAmino {
+    const obj: any = {};
+    obj.policy = message.policy ? Policy.toAmino(message.policy) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryPolicyForAccountResponseAminoMsg): QueryPolicyForAccountResponse {
+    return QueryPolicyForAccountResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryPolicyForAccountResponseProtoMsg): QueryPolicyForAccountResponse {
+    return QueryPolicyForAccountResponse.decode(message.value);
+  },
+  toProto(message: QueryPolicyForAccountResponse): Uint8Array {
+    return QueryPolicyForAccountResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryPolicyForAccountResponse): QueryPolicyForAccountResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryPolicyForAccountResponse",
+      value: QueryPolicyForAccountResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryVerifyPermissionRequest(): QueryVerifyPermissionRequest {
@@ -1624,7 +2433,8 @@ function createBaseQueryVerifyPermissionRequest(): QueryVerifyPermissionRequest 
   };
 }
 export const QueryVerifyPermissionRequest = {
-  encode(message: QueryVerifyPermissionRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryVerifyPermissionRequest",
+  encode(message: QueryVerifyPermissionRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -1639,8 +2449,8 @@ export const QueryVerifyPermissionRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryVerifyPermissionRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryVerifyPermissionRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryVerifyPermissionRequest();
     while (reader.pos < end) {
@@ -1704,6 +2514,45 @@ export const QueryVerifyPermissionRequest = {
     obj.object_name = message.objectName;
     message.actionType !== undefined && (obj.action_type = actionTypeToJSON(message.actionType));
     return obj;
+  },
+  fromAmino(object: QueryVerifyPermissionRequestAmino): QueryVerifyPermissionRequest {
+    const message = createBaseQueryVerifyPermissionRequest();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.object_name !== undefined && object.object_name !== null) {
+      message.objectName = object.object_name;
+    }
+    if (object.action_type !== undefined && object.action_type !== null) {
+      message.actionType = actionTypeFromJSON(object.action_type);
+    }
+    return message;
+  },
+  toAmino(message: QueryVerifyPermissionRequest): QueryVerifyPermissionRequestAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.action_type = actionTypeToJSON(message.actionType);
+    return obj;
+  },
+  fromAminoMsg(object: QueryVerifyPermissionRequestAminoMsg): QueryVerifyPermissionRequest {
+    return QueryVerifyPermissionRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryVerifyPermissionRequestProtoMsg): QueryVerifyPermissionRequest {
+    return QueryVerifyPermissionRequest.decode(message.value);
+  },
+  toProto(message: QueryVerifyPermissionRequest): Uint8Array {
+    return QueryVerifyPermissionRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryVerifyPermissionRequest): QueryVerifyPermissionRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryVerifyPermissionRequest",
+      value: QueryVerifyPermissionRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryVerifyPermissionResponse(): QueryVerifyPermissionResponse {
@@ -1712,14 +2561,15 @@ function createBaseQueryVerifyPermissionResponse(): QueryVerifyPermissionRespons
   };
 }
 export const QueryVerifyPermissionResponse = {
-  encode(message: QueryVerifyPermissionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryVerifyPermissionResponse",
+  encode(message: QueryVerifyPermissionResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.effect !== 0) {
       writer.uint32(8).int32(message.effect);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryVerifyPermissionResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryVerifyPermissionResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryVerifyPermissionResponse();
     while (reader.pos < end) {
@@ -1759,6 +2609,33 @@ export const QueryVerifyPermissionResponse = {
     const obj: any = {};
     message.effect !== undefined && (obj.effect = effectToJSON(message.effect));
     return obj;
+  },
+  fromAmino(object: QueryVerifyPermissionResponseAmino): QueryVerifyPermissionResponse {
+    const message = createBaseQueryVerifyPermissionResponse();
+    if (object.effect !== undefined && object.effect !== null) {
+      message.effect = effectFromJSON(object.effect);
+    }
+    return message;
+  },
+  toAmino(message: QueryVerifyPermissionResponse): QueryVerifyPermissionResponseAmino {
+    const obj: any = {};
+    obj.effect = effectToJSON(message.effect);
+    return obj;
+  },
+  fromAminoMsg(object: QueryVerifyPermissionResponseAminoMsg): QueryVerifyPermissionResponse {
+    return QueryVerifyPermissionResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryVerifyPermissionResponseProtoMsg): QueryVerifyPermissionResponse {
+    return QueryVerifyPermissionResponse.decode(message.value);
+  },
+  toProto(message: QueryVerifyPermissionResponse): Uint8Array {
+    return QueryVerifyPermissionResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryVerifyPermissionResponse): QueryVerifyPermissionResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryVerifyPermissionResponse",
+      value: QueryVerifyPermissionResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryHeadGroupRequest(): QueryHeadGroupRequest {
@@ -1768,7 +2645,8 @@ function createBaseQueryHeadGroupRequest(): QueryHeadGroupRequest {
   };
 }
 export const QueryHeadGroupRequest = {
-  encode(message: QueryHeadGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryHeadGroupRequest",
+  encode(message: QueryHeadGroupRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.groupOwner !== "") {
       writer.uint32(10).string(message.groupOwner);
     }
@@ -1777,8 +2655,8 @@ export const QueryHeadGroupRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadGroupRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryHeadGroupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryHeadGroupRequest();
     while (reader.pos < end) {
@@ -1826,22 +2704,54 @@ export const QueryHeadGroupRequest = {
     obj.group_owner = message.groupOwner;
     obj.group_name = message.groupName;
     return obj;
+  },
+  fromAmino(object: QueryHeadGroupRequestAmino): QueryHeadGroupRequest {
+    const message = createBaseQueryHeadGroupRequest();
+    if (object.group_owner !== undefined && object.group_owner !== null) {
+      message.groupOwner = object.group_owner;
+    }
+    if (object.group_name !== undefined && object.group_name !== null) {
+      message.groupName = object.group_name;
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadGroupRequest): QueryHeadGroupRequestAmino {
+    const obj: any = {};
+    obj.group_owner = message.groupOwner;
+    obj.group_name = message.groupName;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadGroupRequestAminoMsg): QueryHeadGroupRequest {
+    return QueryHeadGroupRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadGroupRequestProtoMsg): QueryHeadGroupRequest {
+    return QueryHeadGroupRequest.decode(message.value);
+  },
+  toProto(message: QueryHeadGroupRequest): Uint8Array {
+    return QueryHeadGroupRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadGroupRequest): QueryHeadGroupRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadGroupRequest",
+      value: QueryHeadGroupRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryHeadGroupResponse(): QueryHeadGroupResponse {
   return {
-    groupInfo: GroupInfo.fromPartial({})
+    groupInfo: undefined
   };
 }
 export const QueryHeadGroupResponse = {
-  encode(message: QueryHeadGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryHeadGroupResponse",
+  encode(message: QueryHeadGroupResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.groupInfo !== undefined) {
       GroupInfo.encode(message.groupInfo, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadGroupResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryHeadGroupResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryHeadGroupResponse();
     while (reader.pos < end) {
@@ -1881,16 +2791,44 @@ export const QueryHeadGroupResponse = {
     const obj: any = {};
     message.groupInfo !== undefined && (obj.group_info = message.groupInfo ? GroupInfo.toSDK(message.groupInfo) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryHeadGroupResponseAmino): QueryHeadGroupResponse {
+    const message = createBaseQueryHeadGroupResponse();
+    if (object.group_info !== undefined && object.group_info !== null) {
+      message.groupInfo = GroupInfo.fromAmino(object.group_info);
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadGroupResponse): QueryHeadGroupResponseAmino {
+    const obj: any = {};
+    obj.group_info = message.groupInfo ? GroupInfo.toAmino(message.groupInfo) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadGroupResponseAminoMsg): QueryHeadGroupResponse {
+    return QueryHeadGroupResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadGroupResponseProtoMsg): QueryHeadGroupResponse {
+    return QueryHeadGroupResponse.decode(message.value);
+  },
+  toProto(message: QueryHeadGroupResponse): Uint8Array {
+    return QueryHeadGroupResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadGroupResponse): QueryHeadGroupResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadGroupResponse",
+      value: QueryHeadGroupResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryListGroupsRequest(): QueryListGroupsRequest {
   return {
-    pagination: PageRequest.fromPartial({}),
+    pagination: undefined,
     groupOwner: ""
   };
 }
 export const QueryListGroupsRequest = {
-  encode(message: QueryListGroupsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryListGroupsRequest",
+  encode(message: QueryListGroupsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -1899,8 +2837,8 @@ export const QueryListGroupsRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListGroupsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryListGroupsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryListGroupsRequest();
     while (reader.pos < end) {
@@ -1948,16 +2886,48 @@ export const QueryListGroupsRequest = {
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
     obj.group_owner = message.groupOwner;
     return obj;
+  },
+  fromAmino(object: QueryListGroupsRequestAmino): QueryListGroupsRequest {
+    const message = createBaseQueryListGroupsRequest();
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    if (object.group_owner !== undefined && object.group_owner !== null) {
+      message.groupOwner = object.group_owner;
+    }
+    return message;
+  },
+  toAmino(message: QueryListGroupsRequest): QueryListGroupsRequestAmino {
+    const obj: any = {};
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
+    obj.group_owner = message.groupOwner;
+    return obj;
+  },
+  fromAminoMsg(object: QueryListGroupsRequestAminoMsg): QueryListGroupsRequest {
+    return QueryListGroupsRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryListGroupsRequestProtoMsg): QueryListGroupsRequest {
+    return QueryListGroupsRequest.decode(message.value);
+  },
+  toProto(message: QueryListGroupsRequest): Uint8Array {
+    return QueryListGroupsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryListGroupsRequest): QueryListGroupsRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryListGroupsRequest",
+      value: QueryListGroupsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryListGroupsResponse(): QueryListGroupsResponse {
   return {
-    pagination: PageResponse.fromPartial({}),
+    pagination: undefined,
     groupInfos: []
   };
 }
 export const QueryListGroupsResponse = {
-  encode(message: QueryListGroupsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryListGroupsResponse",
+  encode(message: QueryListGroupsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
@@ -1966,8 +2936,8 @@ export const QueryListGroupsResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryListGroupsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryListGroupsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryListGroupsResponse();
     while (reader.pos < end) {
@@ -2023,6 +2993,39 @@ export const QueryListGroupsResponse = {
       obj.group_infos = [];
     }
     return obj;
+  },
+  fromAmino(object: QueryListGroupsResponseAmino): QueryListGroupsResponse {
+    const message = createBaseQueryListGroupsResponse();
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromAmino(object.pagination);
+    }
+    message.groupInfos = object.group_infos?.map(e => GroupInfo.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: QueryListGroupsResponse): QueryListGroupsResponseAmino {
+    const obj: any = {};
+    obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
+    if (message.groupInfos) {
+      obj.group_infos = message.groupInfos.map(e => e ? GroupInfo.toAmino(e) : undefined);
+    } else {
+      obj.group_infos = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: QueryListGroupsResponseAminoMsg): QueryListGroupsResponse {
+    return QueryListGroupsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryListGroupsResponseProtoMsg): QueryListGroupsResponse {
+    return QueryListGroupsResponse.decode(message.value);
+  },
+  toProto(message: QueryListGroupsResponse): Uint8Array {
+    return QueryListGroupsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryListGroupsResponse): QueryListGroupsResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryListGroupsResponse",
+      value: QueryListGroupsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryHeadGroupMemberRequest(): QueryHeadGroupMemberRequest {
@@ -2033,7 +3036,8 @@ function createBaseQueryHeadGroupMemberRequest(): QueryHeadGroupMemberRequest {
   };
 }
 export const QueryHeadGroupMemberRequest = {
-  encode(message: QueryHeadGroupMemberRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryHeadGroupMemberRequest",
+  encode(message: QueryHeadGroupMemberRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.member !== "") {
       writer.uint32(10).string(message.member);
     }
@@ -2045,8 +3049,8 @@ export const QueryHeadGroupMemberRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadGroupMemberRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryHeadGroupMemberRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryHeadGroupMemberRequest();
     while (reader.pos < end) {
@@ -2102,22 +3106,58 @@ export const QueryHeadGroupMemberRequest = {
     obj.group_owner = message.groupOwner;
     obj.group_name = message.groupName;
     return obj;
+  },
+  fromAmino(object: QueryHeadGroupMemberRequestAmino): QueryHeadGroupMemberRequest {
+    const message = createBaseQueryHeadGroupMemberRequest();
+    if (object.member !== undefined && object.member !== null) {
+      message.member = object.member;
+    }
+    if (object.group_owner !== undefined && object.group_owner !== null) {
+      message.groupOwner = object.group_owner;
+    }
+    if (object.group_name !== undefined && object.group_name !== null) {
+      message.groupName = object.group_name;
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadGroupMemberRequest): QueryHeadGroupMemberRequestAmino {
+    const obj: any = {};
+    obj.member = message.member;
+    obj.group_owner = message.groupOwner;
+    obj.group_name = message.groupName;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadGroupMemberRequestAminoMsg): QueryHeadGroupMemberRequest {
+    return QueryHeadGroupMemberRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadGroupMemberRequestProtoMsg): QueryHeadGroupMemberRequest {
+    return QueryHeadGroupMemberRequest.decode(message.value);
+  },
+  toProto(message: QueryHeadGroupMemberRequest): Uint8Array {
+    return QueryHeadGroupMemberRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadGroupMemberRequest): QueryHeadGroupMemberRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadGroupMemberRequest",
+      value: QueryHeadGroupMemberRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryHeadGroupMemberResponse(): QueryHeadGroupMemberResponse {
   return {
-    groupMember: GroupMember.fromPartial({})
+    groupMember: undefined
   };
 }
 export const QueryHeadGroupMemberResponse = {
-  encode(message: QueryHeadGroupMemberResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryHeadGroupMemberResponse",
+  encode(message: QueryHeadGroupMemberResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.groupMember !== undefined) {
       GroupMember.encode(message.groupMember, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadGroupMemberResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryHeadGroupMemberResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryHeadGroupMemberResponse();
     while (reader.pos < end) {
@@ -2157,6 +3197,33 @@ export const QueryHeadGroupMemberResponse = {
     const obj: any = {};
     message.groupMember !== undefined && (obj.group_member = message.groupMember ? GroupMember.toSDK(message.groupMember) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryHeadGroupMemberResponseAmino): QueryHeadGroupMemberResponse {
+    const message = createBaseQueryHeadGroupMemberResponse();
+    if (object.group_member !== undefined && object.group_member !== null) {
+      message.groupMember = GroupMember.fromAmino(object.group_member);
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadGroupMemberResponse): QueryHeadGroupMemberResponseAmino {
+    const obj: any = {};
+    obj.group_member = message.groupMember ? GroupMember.toAmino(message.groupMember) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadGroupMemberResponseAminoMsg): QueryHeadGroupMemberResponse {
+    return QueryHeadGroupMemberResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadGroupMemberResponseProtoMsg): QueryHeadGroupMemberResponse {
+    return QueryHeadGroupMemberResponse.decode(message.value);
+  },
+  toProto(message: QueryHeadGroupMemberResponse): Uint8Array {
+    return QueryHeadGroupMemberResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadGroupMemberResponse): QueryHeadGroupMemberResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadGroupMemberResponse",
+      value: QueryHeadGroupMemberResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryPolicyForGroupRequest(): QueryPolicyForGroupRequest {
@@ -2166,7 +3233,8 @@ function createBaseQueryPolicyForGroupRequest(): QueryPolicyForGroupRequest {
   };
 }
 export const QueryPolicyForGroupRequest = {
-  encode(message: QueryPolicyForGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryPolicyForGroupRequest",
+  encode(message: QueryPolicyForGroupRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.resource !== "") {
       writer.uint32(10).string(message.resource);
     }
@@ -2175,8 +3243,8 @@ export const QueryPolicyForGroupRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPolicyForGroupRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryPolicyForGroupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPolicyForGroupRequest();
     while (reader.pos < end) {
@@ -2224,22 +3292,54 @@ export const QueryPolicyForGroupRequest = {
     obj.resource = message.resource;
     obj.principal_group_id = message.principalGroupId;
     return obj;
+  },
+  fromAmino(object: QueryPolicyForGroupRequestAmino): QueryPolicyForGroupRequest {
+    const message = createBaseQueryPolicyForGroupRequest();
+    if (object.resource !== undefined && object.resource !== null) {
+      message.resource = object.resource;
+    }
+    if (object.principal_group_id !== undefined && object.principal_group_id !== null) {
+      message.principalGroupId = object.principal_group_id;
+    }
+    return message;
+  },
+  toAmino(message: QueryPolicyForGroupRequest): QueryPolicyForGroupRequestAmino {
+    const obj: any = {};
+    obj.resource = message.resource;
+    obj.principal_group_id = message.principalGroupId;
+    return obj;
+  },
+  fromAminoMsg(object: QueryPolicyForGroupRequestAminoMsg): QueryPolicyForGroupRequest {
+    return QueryPolicyForGroupRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryPolicyForGroupRequestProtoMsg): QueryPolicyForGroupRequest {
+    return QueryPolicyForGroupRequest.decode(message.value);
+  },
+  toProto(message: QueryPolicyForGroupRequest): Uint8Array {
+    return QueryPolicyForGroupRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryPolicyForGroupRequest): QueryPolicyForGroupRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryPolicyForGroupRequest",
+      value: QueryPolicyForGroupRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryPolicyForGroupResponse(): QueryPolicyForGroupResponse {
   return {
-    policy: Policy.fromPartial({})
+    policy: undefined
   };
 }
 export const QueryPolicyForGroupResponse = {
-  encode(message: QueryPolicyForGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryPolicyForGroupResponse",
+  encode(message: QueryPolicyForGroupResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.policy !== undefined) {
       Policy.encode(message.policy, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPolicyForGroupResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryPolicyForGroupResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPolicyForGroupResponse();
     while (reader.pos < end) {
@@ -2279,6 +3379,33 @@ export const QueryPolicyForGroupResponse = {
     const obj: any = {};
     message.policy !== undefined && (obj.policy = message.policy ? Policy.toSDK(message.policy) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryPolicyForGroupResponseAmino): QueryPolicyForGroupResponse {
+    const message = createBaseQueryPolicyForGroupResponse();
+    if (object.policy !== undefined && object.policy !== null) {
+      message.policy = Policy.fromAmino(object.policy);
+    }
+    return message;
+  },
+  toAmino(message: QueryPolicyForGroupResponse): QueryPolicyForGroupResponseAmino {
+    const obj: any = {};
+    obj.policy = message.policy ? Policy.toAmino(message.policy) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryPolicyForGroupResponseAminoMsg): QueryPolicyForGroupResponse {
+    return QueryPolicyForGroupResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryPolicyForGroupResponseProtoMsg): QueryPolicyForGroupResponse {
+    return QueryPolicyForGroupResponse.decode(message.value);
+  },
+  toProto(message: QueryPolicyForGroupResponse): Uint8Array {
+    return QueryPolicyForGroupResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryPolicyForGroupResponse): QueryPolicyForGroupResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryPolicyForGroupResponse",
+      value: QueryPolicyForGroupResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryPolicyByIdRequest(): QueryPolicyByIdRequest {
@@ -2287,14 +3414,15 @@ function createBaseQueryPolicyByIdRequest(): QueryPolicyByIdRequest {
   };
 }
 export const QueryPolicyByIdRequest = {
-  encode(message: QueryPolicyByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryPolicyByIdRequest",
+  encode(message: QueryPolicyByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.policyId !== "") {
       writer.uint32(10).string(message.policyId);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPolicyByIdRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryPolicyByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPolicyByIdRequest();
     while (reader.pos < end) {
@@ -2334,22 +3462,50 @@ export const QueryPolicyByIdRequest = {
     const obj: any = {};
     obj.policy_id = message.policyId;
     return obj;
+  },
+  fromAmino(object: QueryPolicyByIdRequestAmino): QueryPolicyByIdRequest {
+    const message = createBaseQueryPolicyByIdRequest();
+    if (object.policy_id !== undefined && object.policy_id !== null) {
+      message.policyId = object.policy_id;
+    }
+    return message;
+  },
+  toAmino(message: QueryPolicyByIdRequest): QueryPolicyByIdRequestAmino {
+    const obj: any = {};
+    obj.policy_id = message.policyId;
+    return obj;
+  },
+  fromAminoMsg(object: QueryPolicyByIdRequestAminoMsg): QueryPolicyByIdRequest {
+    return QueryPolicyByIdRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryPolicyByIdRequestProtoMsg): QueryPolicyByIdRequest {
+    return QueryPolicyByIdRequest.decode(message.value);
+  },
+  toProto(message: QueryPolicyByIdRequest): Uint8Array {
+    return QueryPolicyByIdRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryPolicyByIdRequest): QueryPolicyByIdRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryPolicyByIdRequest",
+      value: QueryPolicyByIdRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryPolicyByIdResponse(): QueryPolicyByIdResponse {
   return {
-    policy: Policy.fromPartial({})
+    policy: undefined
   };
 }
 export const QueryPolicyByIdResponse = {
-  encode(message: QueryPolicyByIdResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryPolicyByIdResponse",
+  encode(message: QueryPolicyByIdResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.policy !== undefined) {
       Policy.encode(message.policy, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPolicyByIdResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryPolicyByIdResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPolicyByIdResponse();
     while (reader.pos < end) {
@@ -2389,30 +3545,58 @@ export const QueryPolicyByIdResponse = {
     const obj: any = {};
     message.policy !== undefined && (obj.policy = message.policy ? Policy.toSDK(message.policy) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryPolicyByIdResponseAmino): QueryPolicyByIdResponse {
+    const message = createBaseQueryPolicyByIdResponse();
+    if (object.policy !== undefined && object.policy !== null) {
+      message.policy = Policy.fromAmino(object.policy);
+    }
+    return message;
+  },
+  toAmino(message: QueryPolicyByIdResponse): QueryPolicyByIdResponseAmino {
+    const obj: any = {};
+    obj.policy = message.policy ? Policy.toAmino(message.policy) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryPolicyByIdResponseAminoMsg): QueryPolicyByIdResponse {
+    return QueryPolicyByIdResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryPolicyByIdResponseProtoMsg): QueryPolicyByIdResponse {
+    return QueryPolicyByIdResponse.decode(message.value);
+  },
+  toProto(message: QueryPolicyByIdResponse): Uint8Array {
+    return QueryPolicyByIdResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryPolicyByIdResponse): QueryPolicyByIdResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryPolicyByIdResponse",
+      value: QueryPolicyByIdResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryLockFeeRequest(): QueryLockFeeRequest {
   return {
     primarySpAddress: "",
-    createAt: Long.ZERO,
-    payloadSize: Long.UZERO
+    createAt: BigInt(0),
+    payloadSize: BigInt(0)
   };
 }
 export const QueryLockFeeRequest = {
-  encode(message: QueryLockFeeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryLockFeeRequest",
+  encode(message: QueryLockFeeRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.primarySpAddress !== "") {
       writer.uint32(10).string(message.primarySpAddress);
     }
-    if (!message.createAt.isZero()) {
+    if (message.createAt !== BigInt(0)) {
       writer.uint32(16).int64(message.createAt);
     }
-    if (!message.payloadSize.isZero()) {
+    if (message.payloadSize !== BigInt(0)) {
       writer.uint32(24).uint64(message.payloadSize);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLockFeeRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryLockFeeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryLockFeeRequest();
     while (reader.pos < end) {
@@ -2422,10 +3606,10 @@ export const QueryLockFeeRequest = {
           message.primarySpAddress = reader.string();
           break;
         case 2:
-          message.createAt = (reader.int64() as Long);
+          message.createAt = reader.int64();
           break;
         case 3:
-          message.payloadSize = (reader.uint64() as Long);
+          message.payloadSize = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2437,22 +3621,22 @@ export const QueryLockFeeRequest = {
   fromJSON(object: any): QueryLockFeeRequest {
     return {
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
-      createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
-      payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO
+      createAt: isSet(object.createAt) ? BigInt(object.createAt.toString()) : BigInt(0),
+      payloadSize: isSet(object.payloadSize) ? BigInt(object.payloadSize.toString()) : BigInt(0)
     };
   },
   toJSON(message: QueryLockFeeRequest): unknown {
     const obj: any = {};
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
-    message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
-    message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
+    message.createAt !== undefined && (obj.createAt = (message.createAt || BigInt(0)).toString());
+    message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || BigInt(0)).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<QueryLockFeeRequest>, I>>(object: I): QueryLockFeeRequest {
     const message = createBaseQueryLockFeeRequest();
     message.primarySpAddress = object.primarySpAddress ?? "";
-    message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
-    message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
+    message.createAt = object.createAt !== undefined && object.createAt !== null ? BigInt(object.createAt.toString()) : BigInt(0);
+    message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? BigInt(object.payloadSize.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: QueryLockFeeRequestSDKType): QueryLockFeeRequest {
@@ -2468,6 +3652,41 @@ export const QueryLockFeeRequest = {
     obj.create_at = message.createAt;
     obj.payload_size = message.payloadSize;
     return obj;
+  },
+  fromAmino(object: QueryLockFeeRequestAmino): QueryLockFeeRequest {
+    const message = createBaseQueryLockFeeRequest();
+    if (object.primary_sp_address !== undefined && object.primary_sp_address !== null) {
+      message.primarySpAddress = object.primary_sp_address;
+    }
+    if (object.create_at !== undefined && object.create_at !== null) {
+      message.createAt = BigInt(object.create_at);
+    }
+    if (object.payload_size !== undefined && object.payload_size !== null) {
+      message.payloadSize = BigInt(object.payload_size);
+    }
+    return message;
+  },
+  toAmino(message: QueryLockFeeRequest): QueryLockFeeRequestAmino {
+    const obj: any = {};
+    obj.primary_sp_address = message.primarySpAddress;
+    obj.create_at = message.createAt ? message.createAt.toString() : undefined;
+    obj.payload_size = message.payloadSize ? message.payloadSize.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryLockFeeRequestAminoMsg): QueryLockFeeRequest {
+    return QueryLockFeeRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryLockFeeRequestProtoMsg): QueryLockFeeRequest {
+    return QueryLockFeeRequest.decode(message.value);
+  },
+  toProto(message: QueryLockFeeRequest): Uint8Array {
+    return QueryLockFeeRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryLockFeeRequest): QueryLockFeeRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryLockFeeRequest",
+      value: QueryLockFeeRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryLockFeeResponse(): QueryLockFeeResponse {
@@ -2476,14 +3695,15 @@ function createBaseQueryLockFeeResponse(): QueryLockFeeResponse {
   };
 }
 export const QueryLockFeeResponse = {
-  encode(message: QueryLockFeeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryLockFeeResponse",
+  encode(message: QueryLockFeeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.amount !== "") {
       writer.uint32(10).string(message.amount);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLockFeeResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryLockFeeResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryLockFeeResponse();
     while (reader.pos < end) {
@@ -2523,6 +3743,33 @@ export const QueryLockFeeResponse = {
     const obj: any = {};
     obj.amount = message.amount;
     return obj;
+  },
+  fromAmino(object: QueryLockFeeResponseAmino): QueryLockFeeResponse {
+    const message = createBaseQueryLockFeeResponse();
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
+    }
+    return message;
+  },
+  toAmino(message: QueryLockFeeResponse): QueryLockFeeResponseAmino {
+    const obj: any = {};
+    obj.amount = message.amount;
+    return obj;
+  },
+  fromAminoMsg(object: QueryLockFeeResponseAminoMsg): QueryLockFeeResponse {
+    return QueryLockFeeResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryLockFeeResponseProtoMsg): QueryLockFeeResponse {
+    return QueryLockFeeResponse.decode(message.value);
+  },
+  toProto(message: QueryLockFeeResponse): Uint8Array {
+    return QueryLockFeeResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryLockFeeResponse): QueryLockFeeResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryLockFeeResponse",
+      value: QueryLockFeeResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryHeadBucketExtraRequest(): QueryHeadBucketExtraRequest {
@@ -2531,14 +3778,15 @@ function createBaseQueryHeadBucketExtraRequest(): QueryHeadBucketExtraRequest {
   };
 }
 export const QueryHeadBucketExtraRequest = {
-  encode(message: QueryHeadBucketExtraRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryHeadBucketExtraRequest",
+  encode(message: QueryHeadBucketExtraRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bucketName !== "") {
       writer.uint32(10).string(message.bucketName);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadBucketExtraRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryHeadBucketExtraRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryHeadBucketExtraRequest();
     while (reader.pos < end) {
@@ -2578,22 +3826,50 @@ export const QueryHeadBucketExtraRequest = {
     const obj: any = {};
     obj.bucket_name = message.bucketName;
     return obj;
+  },
+  fromAmino(object: QueryHeadBucketExtraRequestAmino): QueryHeadBucketExtraRequest {
+    const message = createBaseQueryHeadBucketExtraRequest();
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadBucketExtraRequest): QueryHeadBucketExtraRequestAmino {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadBucketExtraRequestAminoMsg): QueryHeadBucketExtraRequest {
+    return QueryHeadBucketExtraRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadBucketExtraRequestProtoMsg): QueryHeadBucketExtraRequest {
+    return QueryHeadBucketExtraRequest.decode(message.value);
+  },
+  toProto(message: QueryHeadBucketExtraRequest): Uint8Array {
+    return QueryHeadBucketExtraRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadBucketExtraRequest): QueryHeadBucketExtraRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadBucketExtraRequest",
+      value: QueryHeadBucketExtraRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryHeadBucketExtraResponse(): QueryHeadBucketExtraResponse {
   return {
-    extraInfo: InternalBucketInfo.fromPartial({})
+    extraInfo: undefined
   };
 }
 export const QueryHeadBucketExtraResponse = {
-  encode(message: QueryHeadBucketExtraResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryHeadBucketExtraResponse",
+  encode(message: QueryHeadBucketExtraResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.extraInfo !== undefined) {
       InternalBucketInfo.encode(message.extraInfo, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadBucketExtraResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryHeadBucketExtraResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryHeadBucketExtraResponse();
     while (reader.pos < end) {
@@ -2633,6 +3909,33 @@ export const QueryHeadBucketExtraResponse = {
     const obj: any = {};
     message.extraInfo !== undefined && (obj.extra_info = message.extraInfo ? InternalBucketInfo.toSDK(message.extraInfo) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryHeadBucketExtraResponseAmino): QueryHeadBucketExtraResponse {
+    const message = createBaseQueryHeadBucketExtraResponse();
+    if (object.extra_info !== undefined && object.extra_info !== null) {
+      message.extraInfo = InternalBucketInfo.fromAmino(object.extra_info);
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadBucketExtraResponse): QueryHeadBucketExtraResponseAmino {
+    const obj: any = {};
+    obj.extra_info = message.extraInfo ? InternalBucketInfo.toAmino(message.extraInfo) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadBucketExtraResponseAminoMsg): QueryHeadBucketExtraResponse {
+    return QueryHeadBucketExtraResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadBucketExtraResponseProtoMsg): QueryHeadBucketExtraResponse {
+    return QueryHeadBucketExtraResponse.decode(message.value);
+  },
+  toProto(message: QueryHeadBucketExtraResponse): Uint8Array {
+    return QueryHeadBucketExtraResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadBucketExtraResponse): QueryHeadBucketExtraResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadBucketExtraResponse",
+      value: QueryHeadBucketExtraResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryIsPriceChangedRequest(): QueryIsPriceChangedRequest {
@@ -2641,14 +3944,15 @@ function createBaseQueryIsPriceChangedRequest(): QueryIsPriceChangedRequest {
   };
 }
 export const QueryIsPriceChangedRequest = {
-  encode(message: QueryIsPriceChangedRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryIsPriceChangedRequest",
+  encode(message: QueryIsPriceChangedRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bucketName !== "") {
       writer.uint32(10).string(message.bucketName);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryIsPriceChangedRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryIsPriceChangedRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryIsPriceChangedRequest();
     while (reader.pos < end) {
@@ -2688,6 +3992,33 @@ export const QueryIsPriceChangedRequest = {
     const obj: any = {};
     obj.bucket_name = message.bucketName;
     return obj;
+  },
+  fromAmino(object: QueryIsPriceChangedRequestAmino): QueryIsPriceChangedRequest {
+    const message = createBaseQueryIsPriceChangedRequest();
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    return message;
+  },
+  toAmino(message: QueryIsPriceChangedRequest): QueryIsPriceChangedRequestAmino {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    return obj;
+  },
+  fromAminoMsg(object: QueryIsPriceChangedRequestAminoMsg): QueryIsPriceChangedRequest {
+    return QueryIsPriceChangedRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryIsPriceChangedRequestProtoMsg): QueryIsPriceChangedRequest {
+    return QueryIsPriceChangedRequest.decode(message.value);
+  },
+  toProto(message: QueryIsPriceChangedRequest): Uint8Array {
+    return QueryIsPriceChangedRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryIsPriceChangedRequest): QueryIsPriceChangedRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryIsPriceChangedRequest",
+      value: QueryIsPriceChangedRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryIsPriceChangedResponse(): QueryIsPriceChangedResponse {
@@ -2704,38 +4035,39 @@ function createBaseQueryIsPriceChangedResponse(): QueryIsPriceChangedResponse {
   };
 }
 export const QueryIsPriceChangedResponse = {
-  encode(message: QueryIsPriceChangedResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryIsPriceChangedResponse",
+  encode(message: QueryIsPriceChangedResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.changed === true) {
       writer.uint32(8).bool(message.changed);
     }
     if (message.currentReadPrice !== "") {
-      writer.uint32(18).string(message.currentReadPrice);
+      writer.uint32(18).string(Decimal.fromUserInput(message.currentReadPrice, 18).atomics);
     }
     if (message.currentPrimaryStorePrice !== "") {
-      writer.uint32(26).string(message.currentPrimaryStorePrice);
+      writer.uint32(26).string(Decimal.fromUserInput(message.currentPrimaryStorePrice, 18).atomics);
     }
     if (message.currentSecondaryStorePrice !== "") {
-      writer.uint32(34).string(message.currentSecondaryStorePrice);
+      writer.uint32(34).string(Decimal.fromUserInput(message.currentSecondaryStorePrice, 18).atomics);
     }
     if (message.currentValidatorTaxRate !== "") {
-      writer.uint32(42).string(message.currentValidatorTaxRate);
+      writer.uint32(42).string(Decimal.fromUserInput(message.currentValidatorTaxRate, 18).atomics);
     }
     if (message.newReadPrice !== "") {
-      writer.uint32(50).string(message.newReadPrice);
+      writer.uint32(50).string(Decimal.fromUserInput(message.newReadPrice, 18).atomics);
     }
     if (message.newPrimaryStorePrice !== "") {
-      writer.uint32(58).string(message.newPrimaryStorePrice);
+      writer.uint32(58).string(Decimal.fromUserInput(message.newPrimaryStorePrice, 18).atomics);
     }
     if (message.newSecondaryStorePrice !== "") {
-      writer.uint32(66).string(message.newSecondaryStorePrice);
+      writer.uint32(66).string(Decimal.fromUserInput(message.newSecondaryStorePrice, 18).atomics);
     }
     if (message.newValidatorTaxRate !== "") {
-      writer.uint32(74).string(message.newValidatorTaxRate);
+      writer.uint32(74).string(Decimal.fromUserInput(message.newValidatorTaxRate, 18).atomics);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryIsPriceChangedResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryIsPriceChangedResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryIsPriceChangedResponse();
     while (reader.pos < end) {
@@ -2745,28 +4077,28 @@ export const QueryIsPriceChangedResponse = {
           message.changed = reader.bool();
           break;
         case 2:
-          message.currentReadPrice = reader.string();
+          message.currentReadPrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 3:
-          message.currentPrimaryStorePrice = reader.string();
+          message.currentPrimaryStorePrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 4:
-          message.currentSecondaryStorePrice = reader.string();
+          message.currentSecondaryStorePrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 5:
-          message.currentValidatorTaxRate = reader.string();
+          message.currentValidatorTaxRate = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 6:
-          message.newReadPrice = reader.string();
+          message.newReadPrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 7:
-          message.newPrimaryStorePrice = reader.string();
+          message.newPrimaryStorePrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 8:
-          message.newSecondaryStorePrice = reader.string();
+          message.newSecondaryStorePrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 9:
-          message.newValidatorTaxRate = reader.string();
+          message.newValidatorTaxRate = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2839,6 +4171,65 @@ export const QueryIsPriceChangedResponse = {
     obj.new_secondary_store_price = message.newSecondaryStorePrice;
     obj.new_validator_tax_rate = message.newValidatorTaxRate;
     return obj;
+  },
+  fromAmino(object: QueryIsPriceChangedResponseAmino): QueryIsPriceChangedResponse {
+    const message = createBaseQueryIsPriceChangedResponse();
+    if (object.changed !== undefined && object.changed !== null) {
+      message.changed = object.changed;
+    }
+    if (object.current_read_price !== undefined && object.current_read_price !== null) {
+      message.currentReadPrice = object.current_read_price;
+    }
+    if (object.current_primary_store_price !== undefined && object.current_primary_store_price !== null) {
+      message.currentPrimaryStorePrice = object.current_primary_store_price;
+    }
+    if (object.current_secondary_store_price !== undefined && object.current_secondary_store_price !== null) {
+      message.currentSecondaryStorePrice = object.current_secondary_store_price;
+    }
+    if (object.current_validator_tax_rate !== undefined && object.current_validator_tax_rate !== null) {
+      message.currentValidatorTaxRate = object.current_validator_tax_rate;
+    }
+    if (object.new_read_price !== undefined && object.new_read_price !== null) {
+      message.newReadPrice = object.new_read_price;
+    }
+    if (object.new_primary_store_price !== undefined && object.new_primary_store_price !== null) {
+      message.newPrimaryStorePrice = object.new_primary_store_price;
+    }
+    if (object.new_secondary_store_price !== undefined && object.new_secondary_store_price !== null) {
+      message.newSecondaryStorePrice = object.new_secondary_store_price;
+    }
+    if (object.new_validator_tax_rate !== undefined && object.new_validator_tax_rate !== null) {
+      message.newValidatorTaxRate = object.new_validator_tax_rate;
+    }
+    return message;
+  },
+  toAmino(message: QueryIsPriceChangedResponse): QueryIsPriceChangedResponseAmino {
+    const obj: any = {};
+    obj.changed = message.changed;
+    obj.current_read_price = message.currentReadPrice;
+    obj.current_primary_store_price = message.currentPrimaryStorePrice;
+    obj.current_secondary_store_price = message.currentSecondaryStorePrice;
+    obj.current_validator_tax_rate = message.currentValidatorTaxRate;
+    obj.new_read_price = message.newReadPrice;
+    obj.new_primary_store_price = message.newPrimaryStorePrice;
+    obj.new_secondary_store_price = message.newSecondaryStorePrice;
+    obj.new_validator_tax_rate = message.newValidatorTaxRate;
+    return obj;
+  },
+  fromAminoMsg(object: QueryIsPriceChangedResponseAminoMsg): QueryIsPriceChangedResponse {
+    return QueryIsPriceChangedResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryIsPriceChangedResponseProtoMsg): QueryIsPriceChangedResponse {
+    return QueryIsPriceChangedResponse.decode(message.value);
+  },
+  toProto(message: QueryIsPriceChangedResponse): Uint8Array {
+    return QueryIsPriceChangedResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryIsPriceChangedResponse): QueryIsPriceChangedResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryIsPriceChangedResponse",
+      value: QueryIsPriceChangedResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryQuoteUpdateTimeRequest(): QueryQuoteUpdateTimeRequest {
@@ -2847,14 +4238,15 @@ function createBaseQueryQuoteUpdateTimeRequest(): QueryQuoteUpdateTimeRequest {
   };
 }
 export const QueryQuoteUpdateTimeRequest = {
-  encode(message: QueryQuoteUpdateTimeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryQuoteUpdateTimeRequest",
+  encode(message: QueryQuoteUpdateTimeRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bucketName !== "") {
       writer.uint32(10).string(message.bucketName);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryQuoteUpdateTimeRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryQuoteUpdateTimeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryQuoteUpdateTimeRequest();
     while (reader.pos < end) {
@@ -2894,29 +4286,57 @@ export const QueryQuoteUpdateTimeRequest = {
     const obj: any = {};
     obj.bucket_name = message.bucketName;
     return obj;
+  },
+  fromAmino(object: QueryQuoteUpdateTimeRequestAmino): QueryQuoteUpdateTimeRequest {
+    const message = createBaseQueryQuoteUpdateTimeRequest();
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    return message;
+  },
+  toAmino(message: QueryQuoteUpdateTimeRequest): QueryQuoteUpdateTimeRequestAmino {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    return obj;
+  },
+  fromAminoMsg(object: QueryQuoteUpdateTimeRequestAminoMsg): QueryQuoteUpdateTimeRequest {
+    return QueryQuoteUpdateTimeRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryQuoteUpdateTimeRequestProtoMsg): QueryQuoteUpdateTimeRequest {
+    return QueryQuoteUpdateTimeRequest.decode(message.value);
+  },
+  toProto(message: QueryQuoteUpdateTimeRequest): Uint8Array {
+    return QueryQuoteUpdateTimeRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryQuoteUpdateTimeRequest): QueryQuoteUpdateTimeRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryQuoteUpdateTimeRequest",
+      value: QueryQuoteUpdateTimeRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryQuoteUpdateTimeResponse(): QueryQuoteUpdateTimeResponse {
   return {
-    updateAt: Long.ZERO
+    updateAt: BigInt(0)
   };
 }
 export const QueryQuoteUpdateTimeResponse = {
-  encode(message: QueryQuoteUpdateTimeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.updateAt.isZero()) {
+  typeUrl: "/greenfield.storage.QueryQuoteUpdateTimeResponse",
+  encode(message: QueryQuoteUpdateTimeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.updateAt !== BigInt(0)) {
       writer.uint32(48).int64(message.updateAt);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryQuoteUpdateTimeResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryQuoteUpdateTimeResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryQuoteUpdateTimeResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 6:
-          message.updateAt = (reader.int64() as Long);
+          message.updateAt = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2927,17 +4347,17 @@ export const QueryQuoteUpdateTimeResponse = {
   },
   fromJSON(object: any): QueryQuoteUpdateTimeResponse {
     return {
-      updateAt: isSet(object.updateAt) ? Long.fromValue(object.updateAt) : Long.ZERO
+      updateAt: isSet(object.updateAt) ? BigInt(object.updateAt.toString()) : BigInt(0)
     };
   },
   toJSON(message: QueryQuoteUpdateTimeResponse): unknown {
     const obj: any = {};
-    message.updateAt !== undefined && (obj.updateAt = (message.updateAt || Long.ZERO).toString());
+    message.updateAt !== undefined && (obj.updateAt = (message.updateAt || BigInt(0)).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<QueryQuoteUpdateTimeResponse>, I>>(object: I): QueryQuoteUpdateTimeResponse {
     const message = createBaseQueryQuoteUpdateTimeResponse();
-    message.updateAt = object.updateAt !== undefined && object.updateAt !== null ? Long.fromValue(object.updateAt) : Long.ZERO;
+    message.updateAt = object.updateAt !== undefined && object.updateAt !== null ? BigInt(object.updateAt.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: QueryQuoteUpdateTimeResponseSDKType): QueryQuoteUpdateTimeResponse {
@@ -2949,6 +4369,33 @@ export const QueryQuoteUpdateTimeResponse = {
     const obj: any = {};
     obj.update_at = message.updateAt;
     return obj;
+  },
+  fromAmino(object: QueryQuoteUpdateTimeResponseAmino): QueryQuoteUpdateTimeResponse {
+    const message = createBaseQueryQuoteUpdateTimeResponse();
+    if (object.update_at !== undefined && object.update_at !== null) {
+      message.updateAt = BigInt(object.update_at);
+    }
+    return message;
+  },
+  toAmino(message: QueryQuoteUpdateTimeResponse): QueryQuoteUpdateTimeResponseAmino {
+    const obj: any = {};
+    obj.update_at = message.updateAt ? message.updateAt.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryQuoteUpdateTimeResponseAminoMsg): QueryQuoteUpdateTimeResponse {
+    return QueryQuoteUpdateTimeResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryQuoteUpdateTimeResponseProtoMsg): QueryQuoteUpdateTimeResponse {
+    return QueryQuoteUpdateTimeResponse.decode(message.value);
+  },
+  toProto(message: QueryQuoteUpdateTimeResponse): Uint8Array {
+    return QueryQuoteUpdateTimeResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryQuoteUpdateTimeResponse): QueryQuoteUpdateTimeResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryQuoteUpdateTimeResponse",
+      value: QueryQuoteUpdateTimeResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGroupMembersExistRequest(): QueryGroupMembersExistRequest {
@@ -2958,7 +4405,8 @@ function createBaseQueryGroupMembersExistRequest(): QueryGroupMembersExistReques
   };
 }
 export const QueryGroupMembersExistRequest = {
-  encode(message: QueryGroupMembersExistRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryGroupMembersExistRequest",
+  encode(message: QueryGroupMembersExistRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.groupId !== "") {
       writer.uint32(10).string(message.groupId);
     }
@@ -2967,8 +4415,8 @@ export const QueryGroupMembersExistRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupMembersExistRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGroupMembersExistRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGroupMembersExistRequest();
     while (reader.pos < end) {
@@ -3024,6 +4472,39 @@ export const QueryGroupMembersExistRequest = {
       obj.members = [];
     }
     return obj;
+  },
+  fromAmino(object: QueryGroupMembersExistRequestAmino): QueryGroupMembersExistRequest {
+    const message = createBaseQueryGroupMembersExistRequest();
+    if (object.group_id !== undefined && object.group_id !== null) {
+      message.groupId = object.group_id;
+    }
+    message.members = object.members?.map(e => e) || [];
+    return message;
+  },
+  toAmino(message: QueryGroupMembersExistRequest): QueryGroupMembersExistRequestAmino {
+    const obj: any = {};
+    obj.group_id = message.groupId;
+    if (message.members) {
+      obj.members = message.members.map(e => e);
+    } else {
+      obj.members = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: QueryGroupMembersExistRequestAminoMsg): QueryGroupMembersExistRequest {
+    return QueryGroupMembersExistRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGroupMembersExistRequestProtoMsg): QueryGroupMembersExistRequest {
+    return QueryGroupMembersExistRequest.decode(message.value);
+  },
+  toProto(message: QueryGroupMembersExistRequest): Uint8Array {
+    return QueryGroupMembersExistRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGroupMembersExistRequest): QueryGroupMembersExistRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryGroupMembersExistRequest",
+      value: QueryGroupMembersExistRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGroupMembersExistResponse_ExistsEntry(): QueryGroupMembersExistResponse_ExistsEntry {
@@ -3033,7 +4514,7 @@ function createBaseQueryGroupMembersExistResponse_ExistsEntry(): QueryGroupMembe
   };
 }
 export const QueryGroupMembersExistResponse_ExistsEntry = {
-  encode(message: QueryGroupMembersExistResponse_ExistsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryGroupMembersExistResponse_ExistsEntry, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
@@ -3042,8 +4523,8 @@ export const QueryGroupMembersExistResponse_ExistsEntry = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupMembersExistResponse_ExistsEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGroupMembersExistResponse_ExistsEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGroupMembersExistResponse_ExistsEntry();
     while (reader.pos < end) {
@@ -3091,6 +4572,31 @@ export const QueryGroupMembersExistResponse_ExistsEntry = {
     obj.key = message.key;
     obj.value = message.value;
     return obj;
+  },
+  fromAmino(object: QueryGroupMembersExistResponse_ExistsEntryAmino): QueryGroupMembersExistResponse_ExistsEntry {
+    const message = createBaseQueryGroupMembersExistResponse_ExistsEntry();
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    }
+    return message;
+  },
+  toAmino(message: QueryGroupMembersExistResponse_ExistsEntry): QueryGroupMembersExistResponse_ExistsEntryAmino {
+    const obj: any = {};
+    obj.key = message.key;
+    obj.value = message.value;
+    return obj;
+  },
+  fromAminoMsg(object: QueryGroupMembersExistResponse_ExistsEntryAminoMsg): QueryGroupMembersExistResponse_ExistsEntry {
+    return QueryGroupMembersExistResponse_ExistsEntry.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGroupMembersExistResponse_ExistsEntryProtoMsg): QueryGroupMembersExistResponse_ExistsEntry {
+    return QueryGroupMembersExistResponse_ExistsEntry.decode(message.value);
+  },
+  toProto(message: QueryGroupMembersExistResponse_ExistsEntry): Uint8Array {
+    return QueryGroupMembersExistResponse_ExistsEntry.encode(message).finish();
   }
 };
 function createBaseQueryGroupMembersExistResponse(): QueryGroupMembersExistResponse {
@@ -3099,7 +4605,8 @@ function createBaseQueryGroupMembersExistResponse(): QueryGroupMembersExistRespo
   };
 }
 export const QueryGroupMembersExistResponse = {
-  encode(message: QueryGroupMembersExistResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryGroupMembersExistResponse",
+  encode(message: QueryGroupMembersExistResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     Object.entries(message.exists).forEach(([key, value]) => {
       QueryGroupMembersExistResponse_ExistsEntry.encode({
         key: (key as any),
@@ -3108,8 +4615,8 @@ export const QueryGroupMembersExistResponse = {
     });
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupMembersExistResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGroupMembersExistResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGroupMembersExistResponse();
     while (reader.pos < end) {
@@ -3179,6 +4686,43 @@ export const QueryGroupMembersExistResponse = {
       });
     }
     return obj;
+  },
+  fromAmino(object: QueryGroupMembersExistResponseAmino): QueryGroupMembersExistResponse {
+    const message = createBaseQueryGroupMembersExistResponse();
+    message.exists = Object.entries(object.exists ?? {}).reduce<{
+      [key: string]: bool;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = bool.fromAmino(value);
+      }
+      return acc;
+    }, {});
+    return message;
+  },
+  toAmino(message: QueryGroupMembersExistResponse): QueryGroupMembersExistResponseAmino {
+    const obj: any = {};
+    obj.exists = {};
+    if (message.exists) {
+      Object.entries(message.exists).forEach(([k, v]) => {
+        obj.exists[k] = bool.toAmino(v);
+      });
+    }
+    return obj;
+  },
+  fromAminoMsg(object: QueryGroupMembersExistResponseAminoMsg): QueryGroupMembersExistResponse {
+    return QueryGroupMembersExistResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGroupMembersExistResponseProtoMsg): QueryGroupMembersExistResponse {
+    return QueryGroupMembersExistResponse.decode(message.value);
+  },
+  toProto(message: QueryGroupMembersExistResponse): Uint8Array {
+    return QueryGroupMembersExistResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGroupMembersExistResponse): QueryGroupMembersExistResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryGroupMembersExistResponse",
+      value: QueryGroupMembersExistResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGroupsExistRequest(): QueryGroupsExistRequest {
@@ -3188,7 +4732,8 @@ function createBaseQueryGroupsExistRequest(): QueryGroupsExistRequest {
   };
 }
 export const QueryGroupsExistRequest = {
-  encode(message: QueryGroupsExistRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryGroupsExistRequest",
+  encode(message: QueryGroupsExistRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.groupOwner !== "") {
       writer.uint32(10).string(message.groupOwner);
     }
@@ -3197,8 +4742,8 @@ export const QueryGroupsExistRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupsExistRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGroupsExistRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGroupsExistRequest();
     while (reader.pos < end) {
@@ -3254,6 +4799,39 @@ export const QueryGroupsExistRequest = {
       obj.group_names = [];
     }
     return obj;
+  },
+  fromAmino(object: QueryGroupsExistRequestAmino): QueryGroupsExistRequest {
+    const message = createBaseQueryGroupsExistRequest();
+    if (object.group_owner !== undefined && object.group_owner !== null) {
+      message.groupOwner = object.group_owner;
+    }
+    message.groupNames = object.group_names?.map(e => e) || [];
+    return message;
+  },
+  toAmino(message: QueryGroupsExistRequest): QueryGroupsExistRequestAmino {
+    const obj: any = {};
+    obj.group_owner = message.groupOwner;
+    if (message.groupNames) {
+      obj.group_names = message.groupNames.map(e => e);
+    } else {
+      obj.group_names = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: QueryGroupsExistRequestAminoMsg): QueryGroupsExistRequest {
+    return QueryGroupsExistRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGroupsExistRequestProtoMsg): QueryGroupsExistRequest {
+    return QueryGroupsExistRequest.decode(message.value);
+  },
+  toProto(message: QueryGroupsExistRequest): Uint8Array {
+    return QueryGroupsExistRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGroupsExistRequest): QueryGroupsExistRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryGroupsExistRequest",
+      value: QueryGroupsExistRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGroupsExistByIdRequest(): QueryGroupsExistByIdRequest {
@@ -3262,14 +4840,15 @@ function createBaseQueryGroupsExistByIdRequest(): QueryGroupsExistByIdRequest {
   };
 }
 export const QueryGroupsExistByIdRequest = {
-  encode(message: QueryGroupsExistByIdRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryGroupsExistByIdRequest",
+  encode(message: QueryGroupsExistByIdRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.groupIds) {
       writer.uint32(10).string(v!);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupsExistByIdRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGroupsExistByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGroupsExistByIdRequest();
     while (reader.pos < end) {
@@ -3317,6 +4896,35 @@ export const QueryGroupsExistByIdRequest = {
       obj.group_ids = [];
     }
     return obj;
+  },
+  fromAmino(object: QueryGroupsExistByIdRequestAmino): QueryGroupsExistByIdRequest {
+    const message = createBaseQueryGroupsExistByIdRequest();
+    message.groupIds = object.group_ids?.map(e => e) || [];
+    return message;
+  },
+  toAmino(message: QueryGroupsExistByIdRequest): QueryGroupsExistByIdRequestAmino {
+    const obj: any = {};
+    if (message.groupIds) {
+      obj.group_ids = message.groupIds.map(e => e);
+    } else {
+      obj.group_ids = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: QueryGroupsExistByIdRequestAminoMsg): QueryGroupsExistByIdRequest {
+    return QueryGroupsExistByIdRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGroupsExistByIdRequestProtoMsg): QueryGroupsExistByIdRequest {
+    return QueryGroupsExistByIdRequest.decode(message.value);
+  },
+  toProto(message: QueryGroupsExistByIdRequest): Uint8Array {
+    return QueryGroupsExistByIdRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGroupsExistByIdRequest): QueryGroupsExistByIdRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryGroupsExistByIdRequest",
+      value: QueryGroupsExistByIdRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGroupsExistResponse_ExistsEntry(): QueryGroupsExistResponse_ExistsEntry {
@@ -3326,7 +4934,7 @@ function createBaseQueryGroupsExistResponse_ExistsEntry(): QueryGroupsExistRespo
   };
 }
 export const QueryGroupsExistResponse_ExistsEntry = {
-  encode(message: QueryGroupsExistResponse_ExistsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryGroupsExistResponse_ExistsEntry, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
@@ -3335,8 +4943,8 @@ export const QueryGroupsExistResponse_ExistsEntry = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupsExistResponse_ExistsEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGroupsExistResponse_ExistsEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGroupsExistResponse_ExistsEntry();
     while (reader.pos < end) {
@@ -3384,6 +4992,31 @@ export const QueryGroupsExistResponse_ExistsEntry = {
     obj.key = message.key;
     obj.value = message.value;
     return obj;
+  },
+  fromAmino(object: QueryGroupsExistResponse_ExistsEntryAmino): QueryGroupsExistResponse_ExistsEntry {
+    const message = createBaseQueryGroupsExistResponse_ExistsEntry();
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    }
+    return message;
+  },
+  toAmino(message: QueryGroupsExistResponse_ExistsEntry): QueryGroupsExistResponse_ExistsEntryAmino {
+    const obj: any = {};
+    obj.key = message.key;
+    obj.value = message.value;
+    return obj;
+  },
+  fromAminoMsg(object: QueryGroupsExistResponse_ExistsEntryAminoMsg): QueryGroupsExistResponse_ExistsEntry {
+    return QueryGroupsExistResponse_ExistsEntry.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGroupsExistResponse_ExistsEntryProtoMsg): QueryGroupsExistResponse_ExistsEntry {
+    return QueryGroupsExistResponse_ExistsEntry.decode(message.value);
+  },
+  toProto(message: QueryGroupsExistResponse_ExistsEntry): Uint8Array {
+    return QueryGroupsExistResponse_ExistsEntry.encode(message).finish();
   }
 };
 function createBaseQueryGroupsExistResponse(): QueryGroupsExistResponse {
@@ -3392,7 +5025,8 @@ function createBaseQueryGroupsExistResponse(): QueryGroupsExistResponse {
   };
 }
 export const QueryGroupsExistResponse = {
-  encode(message: QueryGroupsExistResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.QueryGroupsExistResponse",
+  encode(message: QueryGroupsExistResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     Object.entries(message.exists).forEach(([key, value]) => {
       QueryGroupsExistResponse_ExistsEntry.encode({
         key: (key as any),
@@ -3401,8 +5035,8 @@ export const QueryGroupsExistResponse = {
     });
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGroupsExistResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGroupsExistResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGroupsExistResponse();
     while (reader.pos < end) {
@@ -3472,6 +5106,43 @@ export const QueryGroupsExistResponse = {
       });
     }
     return obj;
+  },
+  fromAmino(object: QueryGroupsExistResponseAmino): QueryGroupsExistResponse {
+    const message = createBaseQueryGroupsExistResponse();
+    message.exists = Object.entries(object.exists ?? {}).reduce<{
+      [key: string]: bool;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = bool.fromAmino(value);
+      }
+      return acc;
+    }, {});
+    return message;
+  },
+  toAmino(message: QueryGroupsExistResponse): QueryGroupsExistResponseAmino {
+    const obj: any = {};
+    obj.exists = {};
+    if (message.exists) {
+      Object.entries(message.exists).forEach(([k, v]) => {
+        obj.exists[k] = bool.toAmino(v);
+      });
+    }
+    return obj;
+  },
+  fromAminoMsg(object: QueryGroupsExistResponseAminoMsg): QueryGroupsExistResponse {
+    return QueryGroupsExistResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGroupsExistResponseProtoMsg): QueryGroupsExistResponse {
+    return QueryGroupsExistResponse.decode(message.value);
+  },
+  toProto(message: QueryGroupsExistResponse): Uint8Array {
+    return QueryGroupsExistResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGroupsExistResponse): QueryGroupsExistResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryGroupsExistResponse",
+      value: QueryGroupsExistResponse.encode(message).finish()
+    };
   }
 };
 /** Query defines the gRPC querier service. */
@@ -3563,133 +5234,133 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   QueryParamsByTimestamp(request: QueryParamsByTimestampRequest): Promise<QueryParamsByTimestampResponse> {
     const data = QueryParamsByTimestampRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryParamsByTimestamp", data);
-    return promise.then(data => QueryParamsByTimestampResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsByTimestampResponse.decode(new BinaryReader(data)));
   }
   HeadBucket(request: QueryHeadBucketRequest): Promise<QueryHeadBucketResponse> {
     const data = QueryHeadBucketRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "HeadBucket", data);
-    return promise.then(data => QueryHeadBucketResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryHeadBucketResponse.decode(new BinaryReader(data)));
   }
   HeadBucketById(request: QueryHeadBucketByIdRequest): Promise<QueryHeadBucketResponse> {
     const data = QueryHeadBucketByIdRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "HeadBucketById", data);
-    return promise.then(data => QueryHeadBucketResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryHeadBucketResponse.decode(new BinaryReader(data)));
   }
   HeadBucketNFT(request: QueryNFTRequest): Promise<QueryBucketNFTResponse> {
     const data = QueryNFTRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "HeadBucketNFT", data);
-    return promise.then(data => QueryBucketNFTResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryBucketNFTResponse.decode(new BinaryReader(data)));
   }
   HeadObject(request: QueryHeadObjectRequest): Promise<QueryHeadObjectResponse> {
     const data = QueryHeadObjectRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "HeadObject", data);
-    return promise.then(data => QueryHeadObjectResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryHeadObjectResponse.decode(new BinaryReader(data)));
   }
   HeadObjectById(request: QueryHeadObjectByIdRequest): Promise<QueryHeadObjectResponse> {
     const data = QueryHeadObjectByIdRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "HeadObjectById", data);
-    return promise.then(data => QueryHeadObjectResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryHeadObjectResponse.decode(new BinaryReader(data)));
   }
   HeadObjectNFT(request: QueryNFTRequest): Promise<QueryObjectNFTResponse> {
     const data = QueryNFTRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "HeadObjectNFT", data);
-    return promise.then(data => QueryObjectNFTResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryObjectNFTResponse.decode(new BinaryReader(data)));
   }
   ListBuckets(request: QueryListBucketsRequest = {
     pagination: undefined
   }): Promise<QueryListBucketsResponse> {
     const data = QueryListBucketsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "ListBuckets", data);
-    return promise.then(data => QueryListBucketsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryListBucketsResponse.decode(new BinaryReader(data)));
   }
   ListObjects(request: QueryListObjectsRequest): Promise<QueryListObjectsResponse> {
     const data = QueryListObjectsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "ListObjects", data);
-    return promise.then(data => QueryListObjectsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryListObjectsResponse.decode(new BinaryReader(data)));
   }
   ListObjectsByBucketId(request: QueryListObjectsByBucketIdRequest): Promise<QueryListObjectsResponse> {
     const data = QueryListObjectsByBucketIdRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "ListObjectsByBucketId", data);
-    return promise.then(data => QueryListObjectsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryListObjectsResponse.decode(new BinaryReader(data)));
   }
   HeadGroupNFT(request: QueryNFTRequest): Promise<QueryGroupNFTResponse> {
     const data = QueryNFTRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "HeadGroupNFT", data);
-    return promise.then(data => QueryGroupNFTResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGroupNFTResponse.decode(new BinaryReader(data)));
   }
   QueryPolicyForAccount(request: QueryPolicyForAccountRequest): Promise<QueryPolicyForAccountResponse> {
     const data = QueryPolicyForAccountRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryPolicyForAccount", data);
-    return promise.then(data => QueryPolicyForAccountResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryPolicyForAccountResponse.decode(new BinaryReader(data)));
   }
   VerifyPermission(request: QueryVerifyPermissionRequest): Promise<QueryVerifyPermissionResponse> {
     const data = QueryVerifyPermissionRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "VerifyPermission", data);
-    return promise.then(data => QueryVerifyPermissionResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryVerifyPermissionResponse.decode(new BinaryReader(data)));
   }
   HeadGroup(request: QueryHeadGroupRequest): Promise<QueryHeadGroupResponse> {
     const data = QueryHeadGroupRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "HeadGroup", data);
-    return promise.then(data => QueryHeadGroupResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryHeadGroupResponse.decode(new BinaryReader(data)));
   }
   ListGroups(request: QueryListGroupsRequest): Promise<QueryListGroupsResponse> {
     const data = QueryListGroupsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "ListGroups", data);
-    return promise.then(data => QueryListGroupsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryListGroupsResponse.decode(new BinaryReader(data)));
   }
   HeadGroupMember(request: QueryHeadGroupMemberRequest): Promise<QueryHeadGroupMemberResponse> {
     const data = QueryHeadGroupMemberRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "HeadGroupMember", data);
-    return promise.then(data => QueryHeadGroupMemberResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryHeadGroupMemberResponse.decode(new BinaryReader(data)));
   }
   QueryPolicyForGroup(request: QueryPolicyForGroupRequest): Promise<QueryPolicyForGroupResponse> {
     const data = QueryPolicyForGroupRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryPolicyForGroup", data);
-    return promise.then(data => QueryPolicyForGroupResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryPolicyForGroupResponse.decode(new BinaryReader(data)));
   }
   QueryPolicyById(request: QueryPolicyByIdRequest): Promise<QueryPolicyByIdResponse> {
     const data = QueryPolicyByIdRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryPolicyById", data);
-    return promise.then(data => QueryPolicyByIdResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryPolicyByIdResponse.decode(new BinaryReader(data)));
   }
   QueryLockFee(request: QueryLockFeeRequest): Promise<QueryLockFeeResponse> {
     const data = QueryLockFeeRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryLockFee", data);
-    return promise.then(data => QueryLockFeeResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryLockFeeResponse.decode(new BinaryReader(data)));
   }
   HeadBucketExtra(request: QueryHeadBucketExtraRequest): Promise<QueryHeadBucketExtraResponse> {
     const data = QueryHeadBucketExtraRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "HeadBucketExtra", data);
-    return promise.then(data => QueryHeadBucketExtraResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryHeadBucketExtraResponse.decode(new BinaryReader(data)));
   }
   QueryIsPriceChanged(request: QueryIsPriceChangedRequest): Promise<QueryIsPriceChangedResponse> {
     const data = QueryIsPriceChangedRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryIsPriceChanged", data);
-    return promise.then(data => QueryIsPriceChangedResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryIsPriceChangedResponse.decode(new BinaryReader(data)));
   }
   QueryQuotaUpdateTime(request: QueryQuoteUpdateTimeRequest): Promise<QueryQuoteUpdateTimeResponse> {
     const data = QueryQuoteUpdateTimeRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryQuotaUpdateTime", data);
-    return promise.then(data => QueryQuoteUpdateTimeResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryQuoteUpdateTimeResponse.decode(new BinaryReader(data)));
   }
   QueryGroupMembersExist(request: QueryGroupMembersExistRequest): Promise<QueryGroupMembersExistResponse> {
     const data = QueryGroupMembersExistRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryGroupMembersExist", data);
-    return promise.then(data => QueryGroupMembersExistResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGroupMembersExistResponse.decode(new BinaryReader(data)));
   }
   QueryGroupsExist(request: QueryGroupsExistRequest): Promise<QueryGroupsExistResponse> {
     const data = QueryGroupsExistRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryGroupsExist", data);
-    return promise.then(data => QueryGroupsExistResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGroupsExistResponse.decode(new BinaryReader(data)));
   }
   QueryGroupsExistById(request: QueryGroupsExistByIdRequest): Promise<QueryGroupsExistResponse> {
     const data = QueryGroupsExistByIdRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "QueryGroupsExistById", data);
-    return promise.then(data => QueryGroupsExistResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGroupsExistResponse.decode(new BinaryReader(data)));
   }
 }

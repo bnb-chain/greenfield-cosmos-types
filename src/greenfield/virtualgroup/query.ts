@@ -3,17 +3,25 @@
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
 import { Params, ParamsSDKType } from "./params";
 import { GlobalVirtualGroup, GlobalVirtualGroupSDKType, GlobalVirtualGroupFamily, GlobalVirtualGroupFamilySDKType } from "./types";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
 import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.virtualgroup";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
+export interface QueryParamsRequestProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QueryParamsRequest";
+  value: Uint8Array;
+}
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponse {
   /** params holds all the parameters of this module. */
   params: Params;
+}
+export interface QueryParamsResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QueryParamsResponse";
+  value: Uint8Array;
 }
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
@@ -22,17 +30,29 @@ export interface QueryParamsResponseSDKType {
 export interface QueryGlobalVirtualGroupRequest {
   globalVirtualGroupId: number;
 }
+export interface QueryGlobalVirtualGroupRequestProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupRequest";
+  value: Uint8Array;
+}
 export interface QueryGlobalVirtualGroupRequestSDKType {
   global_virtual_group_id: number;
 }
 export interface QueryGlobalVirtualGroupResponse {
-  globalVirtualGroup: GlobalVirtualGroup;
+  globalVirtualGroup?: GlobalVirtualGroup;
+}
+export interface QueryGlobalVirtualGroupResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupResponse";
+  value: Uint8Array;
 }
 export interface QueryGlobalVirtualGroupResponseSDKType {
-  global_virtual_group: GlobalVirtualGroupSDKType;
+  global_virtual_group?: GlobalVirtualGroupSDKType;
 }
 export interface QueryGlobalVirtualGroupByFamilyIDRequest {
   globalVirtualGroupFamilyId: number;
+}
+export interface QueryGlobalVirtualGroupByFamilyIDRequestProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupByFamilyIDRequest";
+  value: Uint8Array;
 }
 export interface QueryGlobalVirtualGroupByFamilyIDRequestSDKType {
   global_virtual_group_family_id: number;
@@ -40,43 +60,71 @@ export interface QueryGlobalVirtualGroupByFamilyIDRequestSDKType {
 export interface QueryGlobalVirtualGroupByFamilyIDResponse {
   globalVirtualGroups: GlobalVirtualGroup[];
 }
+export interface QueryGlobalVirtualGroupByFamilyIDResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupByFamilyIDResponse";
+  value: Uint8Array;
+}
 export interface QueryGlobalVirtualGroupByFamilyIDResponseSDKType {
   global_virtual_groups: GlobalVirtualGroupSDKType[];
 }
 export interface QueryGlobalVirtualGroupFamilyRequest {
   familyId: number;
 }
+export interface QueryGlobalVirtualGroupFamilyRequestProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamilyRequest";
+  value: Uint8Array;
+}
 export interface QueryGlobalVirtualGroupFamilyRequestSDKType {
   family_id: number;
 }
 export interface QueryGlobalVirtualGroupFamilyResponse {
-  globalVirtualGroupFamily: GlobalVirtualGroupFamily;
+  globalVirtualGroupFamily?: GlobalVirtualGroupFamily;
+}
+export interface QueryGlobalVirtualGroupFamilyResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamilyResponse";
+  value: Uint8Array;
 }
 export interface QueryGlobalVirtualGroupFamilyResponseSDKType {
-  global_virtual_group_family: GlobalVirtualGroupFamilySDKType;
+  global_virtual_group_family?: GlobalVirtualGroupFamilySDKType;
 }
 export interface QueryGlobalVirtualGroupFamiliesRequest {
-  pagination: PageRequest;
+  pagination?: PageRequest;
+}
+export interface QueryGlobalVirtualGroupFamiliesRequestProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamiliesRequest";
+  value: Uint8Array;
 }
 export interface QueryGlobalVirtualGroupFamiliesRequestSDKType {
-  pagination: PageRequestSDKType;
+  pagination?: PageRequestSDKType;
 }
 export interface QueryGlobalVirtualGroupFamiliesResponse {
   gvgFamilies: GlobalVirtualGroupFamily[];
-  pagination: PageResponse;
+  pagination?: PageResponse;
+}
+export interface QueryGlobalVirtualGroupFamiliesResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamiliesResponse";
+  value: Uint8Array;
 }
 export interface QueryGlobalVirtualGroupFamiliesResponseSDKType {
   gvg_families: GlobalVirtualGroupFamilySDKType[];
-  pagination: PageResponseSDKType;
+  pagination?: PageResponseSDKType;
 }
 export interface AvailableGlobalVirtualGroupFamiliesRequest {
   globalVirtualGroupFamilyIds: number[];
+}
+export interface AvailableGlobalVirtualGroupFamiliesRequestProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.AvailableGlobalVirtualGroupFamiliesRequest";
+  value: Uint8Array;
 }
 export interface AvailableGlobalVirtualGroupFamiliesRequestSDKType {
   global_virtual_group_family_ids: number[];
 }
 export interface AvailableGlobalVirtualGroupFamiliesResponse {
   globalVirtualGroupFamilyIds: number[];
+}
+export interface AvailableGlobalVirtualGroupFamiliesResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.AvailableGlobalVirtualGroupFamiliesResponse";
+  value: Uint8Array;
 }
 export interface AvailableGlobalVirtualGroupFamiliesResponseSDKType {
   global_virtual_group_family_ids: number[];
@@ -85,11 +133,12 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
 export const QueryParamsRequest = {
-  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.QueryParamsRequest",
+  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -119,6 +168,29 @@ export const QueryParamsRequest = {
   toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: QueryParamsRequestAmino): QueryParamsRequest {
+    const message = createBaseQueryParamsRequest();
+    return message;
+  },
+  toAmino(_: QueryParamsRequest): QueryParamsRequestAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsRequestAminoMsg): QueryParamsRequest {
+    return QueryParamsRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryParamsRequestProtoMsg): QueryParamsRequest {
+    return QueryParamsRequest.decode(message.value);
+  },
+  toProto(message: QueryParamsRequest): Uint8Array {
+    return QueryParamsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QueryParamsRequest",
+      value: QueryParamsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryParamsResponse(): QueryParamsResponse {
@@ -127,14 +199,15 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
   };
 }
 export const QueryParamsResponse = {
-  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.QueryParamsResponse",
+  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -174,6 +247,33 @@ export const QueryParamsResponse = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryParamsResponseAmino): QueryParamsResponse {
+    const message = createBaseQueryParamsResponse();
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
+    const obj: any = {};
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
+    return QueryParamsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryParamsResponseProtoMsg): QueryParamsResponse {
+    return QueryParamsResponse.decode(message.value);
+  },
+  toProto(message: QueryParamsResponse): Uint8Array {
+    return QueryParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QueryParamsResponse",
+      value: QueryParamsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGlobalVirtualGroupRequest(): QueryGlobalVirtualGroupRequest {
@@ -182,14 +282,15 @@ function createBaseQueryGlobalVirtualGroupRequest(): QueryGlobalVirtualGroupRequ
   };
 }
 export const QueryGlobalVirtualGroupRequest = {
-  encode(message: QueryGlobalVirtualGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupRequest",
+  encode(message: QueryGlobalVirtualGroupRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.globalVirtualGroupId !== 0) {
       writer.uint32(8).uint32(message.globalVirtualGroupId);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupRequest();
     while (reader.pos < end) {
@@ -229,22 +330,50 @@ export const QueryGlobalVirtualGroupRequest = {
     const obj: any = {};
     obj.global_virtual_group_id = message.globalVirtualGroupId;
     return obj;
+  },
+  fromAmino(object: QueryGlobalVirtualGroupRequestAmino): QueryGlobalVirtualGroupRequest {
+    const message = createBaseQueryGlobalVirtualGroupRequest();
+    if (object.global_virtual_group_id !== undefined && object.global_virtual_group_id !== null) {
+      message.globalVirtualGroupId = object.global_virtual_group_id;
+    }
+    return message;
+  },
+  toAmino(message: QueryGlobalVirtualGroupRequest): QueryGlobalVirtualGroupRequestAmino {
+    const obj: any = {};
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    return obj;
+  },
+  fromAminoMsg(object: QueryGlobalVirtualGroupRequestAminoMsg): QueryGlobalVirtualGroupRequest {
+    return QueryGlobalVirtualGroupRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGlobalVirtualGroupRequestProtoMsg): QueryGlobalVirtualGroupRequest {
+    return QueryGlobalVirtualGroupRequest.decode(message.value);
+  },
+  toProto(message: QueryGlobalVirtualGroupRequest): Uint8Array {
+    return QueryGlobalVirtualGroupRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGlobalVirtualGroupRequest): QueryGlobalVirtualGroupRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupRequest",
+      value: QueryGlobalVirtualGroupRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGlobalVirtualGroupResponse(): QueryGlobalVirtualGroupResponse {
   return {
-    globalVirtualGroup: GlobalVirtualGroup.fromPartial({})
+    globalVirtualGroup: undefined
   };
 }
 export const QueryGlobalVirtualGroupResponse = {
-  encode(message: QueryGlobalVirtualGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupResponse",
+  encode(message: QueryGlobalVirtualGroupResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.globalVirtualGroup !== undefined) {
       GlobalVirtualGroup.encode(message.globalVirtualGroup, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupResponse();
     while (reader.pos < end) {
@@ -284,6 +413,33 @@ export const QueryGlobalVirtualGroupResponse = {
     const obj: any = {};
     message.globalVirtualGroup !== undefined && (obj.global_virtual_group = message.globalVirtualGroup ? GlobalVirtualGroup.toSDK(message.globalVirtualGroup) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryGlobalVirtualGroupResponseAmino): QueryGlobalVirtualGroupResponse {
+    const message = createBaseQueryGlobalVirtualGroupResponse();
+    if (object.global_virtual_group !== undefined && object.global_virtual_group !== null) {
+      message.globalVirtualGroup = GlobalVirtualGroup.fromAmino(object.global_virtual_group);
+    }
+    return message;
+  },
+  toAmino(message: QueryGlobalVirtualGroupResponse): QueryGlobalVirtualGroupResponseAmino {
+    const obj: any = {};
+    obj.global_virtual_group = message.globalVirtualGroup ? GlobalVirtualGroup.toAmino(message.globalVirtualGroup) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryGlobalVirtualGroupResponseAminoMsg): QueryGlobalVirtualGroupResponse {
+    return QueryGlobalVirtualGroupResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGlobalVirtualGroupResponseProtoMsg): QueryGlobalVirtualGroupResponse {
+    return QueryGlobalVirtualGroupResponse.decode(message.value);
+  },
+  toProto(message: QueryGlobalVirtualGroupResponse): Uint8Array {
+    return QueryGlobalVirtualGroupResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGlobalVirtualGroupResponse): QueryGlobalVirtualGroupResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupResponse",
+      value: QueryGlobalVirtualGroupResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGlobalVirtualGroupByFamilyIDRequest(): QueryGlobalVirtualGroupByFamilyIDRequest {
@@ -292,14 +448,15 @@ function createBaseQueryGlobalVirtualGroupByFamilyIDRequest(): QueryGlobalVirtua
   };
 }
 export const QueryGlobalVirtualGroupByFamilyIDRequest = {
-  encode(message: QueryGlobalVirtualGroupByFamilyIDRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupByFamilyIDRequest",
+  encode(message: QueryGlobalVirtualGroupByFamilyIDRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.globalVirtualGroupFamilyId !== 0) {
       writer.uint32(8).uint32(message.globalVirtualGroupFamilyId);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupByFamilyIDRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupByFamilyIDRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupByFamilyIDRequest();
     while (reader.pos < end) {
@@ -339,6 +496,33 @@ export const QueryGlobalVirtualGroupByFamilyIDRequest = {
     const obj: any = {};
     obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
     return obj;
+  },
+  fromAmino(object: QueryGlobalVirtualGroupByFamilyIDRequestAmino): QueryGlobalVirtualGroupByFamilyIDRequest {
+    const message = createBaseQueryGlobalVirtualGroupByFamilyIDRequest();
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    return message;
+  },
+  toAmino(message: QueryGlobalVirtualGroupByFamilyIDRequest): QueryGlobalVirtualGroupByFamilyIDRequestAmino {
+    const obj: any = {};
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    return obj;
+  },
+  fromAminoMsg(object: QueryGlobalVirtualGroupByFamilyIDRequestAminoMsg): QueryGlobalVirtualGroupByFamilyIDRequest {
+    return QueryGlobalVirtualGroupByFamilyIDRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGlobalVirtualGroupByFamilyIDRequestProtoMsg): QueryGlobalVirtualGroupByFamilyIDRequest {
+    return QueryGlobalVirtualGroupByFamilyIDRequest.decode(message.value);
+  },
+  toProto(message: QueryGlobalVirtualGroupByFamilyIDRequest): Uint8Array {
+    return QueryGlobalVirtualGroupByFamilyIDRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGlobalVirtualGroupByFamilyIDRequest): QueryGlobalVirtualGroupByFamilyIDRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupByFamilyIDRequest",
+      value: QueryGlobalVirtualGroupByFamilyIDRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGlobalVirtualGroupByFamilyIDResponse(): QueryGlobalVirtualGroupByFamilyIDResponse {
@@ -347,14 +531,15 @@ function createBaseQueryGlobalVirtualGroupByFamilyIDResponse(): QueryGlobalVirtu
   };
 }
 export const QueryGlobalVirtualGroupByFamilyIDResponse = {
-  encode(message: QueryGlobalVirtualGroupByFamilyIDResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupByFamilyIDResponse",
+  encode(message: QueryGlobalVirtualGroupByFamilyIDResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.globalVirtualGroups) {
       GlobalVirtualGroup.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupByFamilyIDResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupByFamilyIDResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupByFamilyIDResponse();
     while (reader.pos < end) {
@@ -402,6 +587,35 @@ export const QueryGlobalVirtualGroupByFamilyIDResponse = {
       obj.global_virtual_groups = [];
     }
     return obj;
+  },
+  fromAmino(object: QueryGlobalVirtualGroupByFamilyIDResponseAmino): QueryGlobalVirtualGroupByFamilyIDResponse {
+    const message = createBaseQueryGlobalVirtualGroupByFamilyIDResponse();
+    message.globalVirtualGroups = object.global_virtual_groups?.map(e => GlobalVirtualGroup.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: QueryGlobalVirtualGroupByFamilyIDResponse): QueryGlobalVirtualGroupByFamilyIDResponseAmino {
+    const obj: any = {};
+    if (message.globalVirtualGroups) {
+      obj.global_virtual_groups = message.globalVirtualGroups.map(e => e ? GlobalVirtualGroup.toAmino(e) : undefined);
+    } else {
+      obj.global_virtual_groups = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: QueryGlobalVirtualGroupByFamilyIDResponseAminoMsg): QueryGlobalVirtualGroupByFamilyIDResponse {
+    return QueryGlobalVirtualGroupByFamilyIDResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGlobalVirtualGroupByFamilyIDResponseProtoMsg): QueryGlobalVirtualGroupByFamilyIDResponse {
+    return QueryGlobalVirtualGroupByFamilyIDResponse.decode(message.value);
+  },
+  toProto(message: QueryGlobalVirtualGroupByFamilyIDResponse): Uint8Array {
+    return QueryGlobalVirtualGroupByFamilyIDResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGlobalVirtualGroupByFamilyIDResponse): QueryGlobalVirtualGroupByFamilyIDResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupByFamilyIDResponse",
+      value: QueryGlobalVirtualGroupByFamilyIDResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGlobalVirtualGroupFamilyRequest(): QueryGlobalVirtualGroupFamilyRequest {
@@ -410,14 +624,15 @@ function createBaseQueryGlobalVirtualGroupFamilyRequest(): QueryGlobalVirtualGro
   };
 }
 export const QueryGlobalVirtualGroupFamilyRequest = {
-  encode(message: QueryGlobalVirtualGroupFamilyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamilyRequest",
+  encode(message: QueryGlobalVirtualGroupFamilyRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.familyId !== 0) {
       writer.uint32(8).uint32(message.familyId);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamilyRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamilyRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupFamilyRequest();
     while (reader.pos < end) {
@@ -457,22 +672,50 @@ export const QueryGlobalVirtualGroupFamilyRequest = {
     const obj: any = {};
     obj.family_id = message.familyId;
     return obj;
+  },
+  fromAmino(object: QueryGlobalVirtualGroupFamilyRequestAmino): QueryGlobalVirtualGroupFamilyRequest {
+    const message = createBaseQueryGlobalVirtualGroupFamilyRequest();
+    if (object.family_id !== undefined && object.family_id !== null) {
+      message.familyId = object.family_id;
+    }
+    return message;
+  },
+  toAmino(message: QueryGlobalVirtualGroupFamilyRequest): QueryGlobalVirtualGroupFamilyRequestAmino {
+    const obj: any = {};
+    obj.family_id = message.familyId;
+    return obj;
+  },
+  fromAminoMsg(object: QueryGlobalVirtualGroupFamilyRequestAminoMsg): QueryGlobalVirtualGroupFamilyRequest {
+    return QueryGlobalVirtualGroupFamilyRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGlobalVirtualGroupFamilyRequestProtoMsg): QueryGlobalVirtualGroupFamilyRequest {
+    return QueryGlobalVirtualGroupFamilyRequest.decode(message.value);
+  },
+  toProto(message: QueryGlobalVirtualGroupFamilyRequest): Uint8Array {
+    return QueryGlobalVirtualGroupFamilyRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGlobalVirtualGroupFamilyRequest): QueryGlobalVirtualGroupFamilyRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamilyRequest",
+      value: QueryGlobalVirtualGroupFamilyRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGlobalVirtualGroupFamilyResponse(): QueryGlobalVirtualGroupFamilyResponse {
   return {
-    globalVirtualGroupFamily: GlobalVirtualGroupFamily.fromPartial({})
+    globalVirtualGroupFamily: undefined
   };
 }
 export const QueryGlobalVirtualGroupFamilyResponse = {
-  encode(message: QueryGlobalVirtualGroupFamilyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamilyResponse",
+  encode(message: QueryGlobalVirtualGroupFamilyResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.globalVirtualGroupFamily !== undefined) {
       GlobalVirtualGroupFamily.encode(message.globalVirtualGroupFamily, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamilyResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamilyResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupFamilyResponse();
     while (reader.pos < end) {
@@ -512,22 +755,50 @@ export const QueryGlobalVirtualGroupFamilyResponse = {
     const obj: any = {};
     message.globalVirtualGroupFamily !== undefined && (obj.global_virtual_group_family = message.globalVirtualGroupFamily ? GlobalVirtualGroupFamily.toSDK(message.globalVirtualGroupFamily) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryGlobalVirtualGroupFamilyResponseAmino): QueryGlobalVirtualGroupFamilyResponse {
+    const message = createBaseQueryGlobalVirtualGroupFamilyResponse();
+    if (object.global_virtual_group_family !== undefined && object.global_virtual_group_family !== null) {
+      message.globalVirtualGroupFamily = GlobalVirtualGroupFamily.fromAmino(object.global_virtual_group_family);
+    }
+    return message;
+  },
+  toAmino(message: QueryGlobalVirtualGroupFamilyResponse): QueryGlobalVirtualGroupFamilyResponseAmino {
+    const obj: any = {};
+    obj.global_virtual_group_family = message.globalVirtualGroupFamily ? GlobalVirtualGroupFamily.toAmino(message.globalVirtualGroupFamily) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryGlobalVirtualGroupFamilyResponseAminoMsg): QueryGlobalVirtualGroupFamilyResponse {
+    return QueryGlobalVirtualGroupFamilyResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGlobalVirtualGroupFamilyResponseProtoMsg): QueryGlobalVirtualGroupFamilyResponse {
+    return QueryGlobalVirtualGroupFamilyResponse.decode(message.value);
+  },
+  toProto(message: QueryGlobalVirtualGroupFamilyResponse): Uint8Array {
+    return QueryGlobalVirtualGroupFamilyResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGlobalVirtualGroupFamilyResponse): QueryGlobalVirtualGroupFamilyResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamilyResponse",
+      value: QueryGlobalVirtualGroupFamilyResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGlobalVirtualGroupFamiliesRequest(): QueryGlobalVirtualGroupFamiliesRequest {
   return {
-    pagination: PageRequest.fromPartial({})
+    pagination: undefined
   };
 }
 export const QueryGlobalVirtualGroupFamiliesRequest = {
-  encode(message: QueryGlobalVirtualGroupFamiliesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamiliesRequest",
+  encode(message: QueryGlobalVirtualGroupFamiliesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamiliesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamiliesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupFamiliesRequest();
     while (reader.pos < end) {
@@ -567,16 +838,44 @@ export const QueryGlobalVirtualGroupFamiliesRequest = {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryGlobalVirtualGroupFamiliesRequestAmino): QueryGlobalVirtualGroupFamiliesRequest {
+    const message = createBaseQueryGlobalVirtualGroupFamiliesRequest();
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryGlobalVirtualGroupFamiliesRequest): QueryGlobalVirtualGroupFamiliesRequestAmino {
+    const obj: any = {};
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryGlobalVirtualGroupFamiliesRequestAminoMsg): QueryGlobalVirtualGroupFamiliesRequest {
+    return QueryGlobalVirtualGroupFamiliesRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGlobalVirtualGroupFamiliesRequestProtoMsg): QueryGlobalVirtualGroupFamiliesRequest {
+    return QueryGlobalVirtualGroupFamiliesRequest.decode(message.value);
+  },
+  toProto(message: QueryGlobalVirtualGroupFamiliesRequest): Uint8Array {
+    return QueryGlobalVirtualGroupFamiliesRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGlobalVirtualGroupFamiliesRequest): QueryGlobalVirtualGroupFamiliesRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamiliesRequest",
+      value: QueryGlobalVirtualGroupFamiliesRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGlobalVirtualGroupFamiliesResponse(): QueryGlobalVirtualGroupFamiliesResponse {
   return {
     gvgFamilies: [],
-    pagination: PageResponse.fromPartial({})
+    pagination: undefined
   };
 }
 export const QueryGlobalVirtualGroupFamiliesResponse = {
-  encode(message: QueryGlobalVirtualGroupFamiliesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamiliesResponse",
+  encode(message: QueryGlobalVirtualGroupFamiliesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.gvgFamilies) {
       GlobalVirtualGroupFamily.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -585,8 +884,8 @@ export const QueryGlobalVirtualGroupFamiliesResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamiliesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamiliesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupFamiliesResponse();
     while (reader.pos < end) {
@@ -642,6 +941,39 @@ export const QueryGlobalVirtualGroupFamiliesResponse = {
     }
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryGlobalVirtualGroupFamiliesResponseAmino): QueryGlobalVirtualGroupFamiliesResponse {
+    const message = createBaseQueryGlobalVirtualGroupFamiliesResponse();
+    message.gvgFamilies = object.gvg_families?.map(e => GlobalVirtualGroupFamily.fromAmino(e)) || [];
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryGlobalVirtualGroupFamiliesResponse): QueryGlobalVirtualGroupFamiliesResponseAmino {
+    const obj: any = {};
+    if (message.gvgFamilies) {
+      obj.gvg_families = message.gvgFamilies.map(e => e ? GlobalVirtualGroupFamily.toAmino(e) : undefined);
+    } else {
+      obj.gvg_families = [];
+    }
+    obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryGlobalVirtualGroupFamiliesResponseAminoMsg): QueryGlobalVirtualGroupFamiliesResponse {
+    return QueryGlobalVirtualGroupFamiliesResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGlobalVirtualGroupFamiliesResponseProtoMsg): QueryGlobalVirtualGroupFamiliesResponse {
+    return QueryGlobalVirtualGroupFamiliesResponse.decode(message.value);
+  },
+  toProto(message: QueryGlobalVirtualGroupFamiliesResponse): Uint8Array {
+    return QueryGlobalVirtualGroupFamiliesResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGlobalVirtualGroupFamiliesResponse): QueryGlobalVirtualGroupFamiliesResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamiliesResponse",
+      value: QueryGlobalVirtualGroupFamiliesResponse.encode(message).finish()
+    };
   }
 };
 function createBaseAvailableGlobalVirtualGroupFamiliesRequest(): AvailableGlobalVirtualGroupFamiliesRequest {
@@ -650,7 +982,8 @@ function createBaseAvailableGlobalVirtualGroupFamiliesRequest(): AvailableGlobal
   };
 }
 export const AvailableGlobalVirtualGroupFamiliesRequest = {
-  encode(message: AvailableGlobalVirtualGroupFamiliesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.AvailableGlobalVirtualGroupFamiliesRequest",
+  encode(message: AvailableGlobalVirtualGroupFamiliesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     writer.uint32(10).fork();
     for (const v of message.globalVirtualGroupFamilyIds) {
       writer.uint32(v);
@@ -658,8 +991,8 @@ export const AvailableGlobalVirtualGroupFamiliesRequest = {
     writer.ldelim();
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AvailableGlobalVirtualGroupFamiliesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AvailableGlobalVirtualGroupFamiliesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAvailableGlobalVirtualGroupFamiliesRequest();
     while (reader.pos < end) {
@@ -714,6 +1047,35 @@ export const AvailableGlobalVirtualGroupFamiliesRequest = {
       obj.global_virtual_group_family_ids = [];
     }
     return obj;
+  },
+  fromAmino(object: AvailableGlobalVirtualGroupFamiliesRequestAmino): AvailableGlobalVirtualGroupFamiliesRequest {
+    const message = createBaseAvailableGlobalVirtualGroupFamiliesRequest();
+    message.globalVirtualGroupFamilyIds = object.global_virtual_group_family_ids?.map(e => e) || [];
+    return message;
+  },
+  toAmino(message: AvailableGlobalVirtualGroupFamiliesRequest): AvailableGlobalVirtualGroupFamiliesRequestAmino {
+    const obj: any = {};
+    if (message.globalVirtualGroupFamilyIds) {
+      obj.global_virtual_group_family_ids = message.globalVirtualGroupFamilyIds.map(e => e);
+    } else {
+      obj.global_virtual_group_family_ids = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: AvailableGlobalVirtualGroupFamiliesRequestAminoMsg): AvailableGlobalVirtualGroupFamiliesRequest {
+    return AvailableGlobalVirtualGroupFamiliesRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: AvailableGlobalVirtualGroupFamiliesRequestProtoMsg): AvailableGlobalVirtualGroupFamiliesRequest {
+    return AvailableGlobalVirtualGroupFamiliesRequest.decode(message.value);
+  },
+  toProto(message: AvailableGlobalVirtualGroupFamiliesRequest): Uint8Array {
+    return AvailableGlobalVirtualGroupFamiliesRequest.encode(message).finish();
+  },
+  toProtoMsg(message: AvailableGlobalVirtualGroupFamiliesRequest): AvailableGlobalVirtualGroupFamiliesRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.AvailableGlobalVirtualGroupFamiliesRequest",
+      value: AvailableGlobalVirtualGroupFamiliesRequest.encode(message).finish()
+    };
   }
 };
 function createBaseAvailableGlobalVirtualGroupFamiliesResponse(): AvailableGlobalVirtualGroupFamiliesResponse {
@@ -722,7 +1084,8 @@ function createBaseAvailableGlobalVirtualGroupFamiliesResponse(): AvailableGloba
   };
 }
 export const AvailableGlobalVirtualGroupFamiliesResponse = {
-  encode(message: AvailableGlobalVirtualGroupFamiliesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.AvailableGlobalVirtualGroupFamiliesResponse",
+  encode(message: AvailableGlobalVirtualGroupFamiliesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     writer.uint32(10).fork();
     for (const v of message.globalVirtualGroupFamilyIds) {
       writer.uint32(v);
@@ -730,8 +1093,8 @@ export const AvailableGlobalVirtualGroupFamiliesResponse = {
     writer.ldelim();
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AvailableGlobalVirtualGroupFamiliesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AvailableGlobalVirtualGroupFamiliesResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAvailableGlobalVirtualGroupFamiliesResponse();
     while (reader.pos < end) {
@@ -786,6 +1149,35 @@ export const AvailableGlobalVirtualGroupFamiliesResponse = {
       obj.global_virtual_group_family_ids = [];
     }
     return obj;
+  },
+  fromAmino(object: AvailableGlobalVirtualGroupFamiliesResponseAmino): AvailableGlobalVirtualGroupFamiliesResponse {
+    const message = createBaseAvailableGlobalVirtualGroupFamiliesResponse();
+    message.globalVirtualGroupFamilyIds = object.global_virtual_group_family_ids?.map(e => e) || [];
+    return message;
+  },
+  toAmino(message: AvailableGlobalVirtualGroupFamiliesResponse): AvailableGlobalVirtualGroupFamiliesResponseAmino {
+    const obj: any = {};
+    if (message.globalVirtualGroupFamilyIds) {
+      obj.global_virtual_group_family_ids = message.globalVirtualGroupFamilyIds.map(e => e);
+    } else {
+      obj.global_virtual_group_family_ids = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: AvailableGlobalVirtualGroupFamiliesResponseAminoMsg): AvailableGlobalVirtualGroupFamiliesResponse {
+    return AvailableGlobalVirtualGroupFamiliesResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: AvailableGlobalVirtualGroupFamiliesResponseProtoMsg): AvailableGlobalVirtualGroupFamiliesResponse {
+    return AvailableGlobalVirtualGroupFamiliesResponse.decode(message.value);
+  },
+  toProto(message: AvailableGlobalVirtualGroupFamiliesResponse): Uint8Array {
+    return AvailableGlobalVirtualGroupFamiliesResponse.encode(message).finish();
+  },
+  toProtoMsg(message: AvailableGlobalVirtualGroupFamiliesResponse): AvailableGlobalVirtualGroupFamiliesResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.AvailableGlobalVirtualGroupFamiliesResponse",
+      value: AvailableGlobalVirtualGroupFamiliesResponse.encode(message).finish()
+    };
   }
 };
 /** Query defines the gRPC query service. */
@@ -817,33 +1209,33 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   GlobalVirtualGroup(request: QueryGlobalVirtualGroupRequest): Promise<QueryGlobalVirtualGroupResponse> {
     const data = QueryGlobalVirtualGroupRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Query", "GlobalVirtualGroup", data);
-    return promise.then(data => QueryGlobalVirtualGroupResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGlobalVirtualGroupResponse.decode(new BinaryReader(data)));
   }
   GlobalVirtualGroupByFamilyID(request: QueryGlobalVirtualGroupByFamilyIDRequest): Promise<QueryGlobalVirtualGroupByFamilyIDResponse> {
     const data = QueryGlobalVirtualGroupByFamilyIDRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Query", "GlobalVirtualGroupByFamilyID", data);
-    return promise.then(data => QueryGlobalVirtualGroupByFamilyIDResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGlobalVirtualGroupByFamilyIDResponse.decode(new BinaryReader(data)));
   }
   GlobalVirtualGroupFamily(request: QueryGlobalVirtualGroupFamilyRequest): Promise<QueryGlobalVirtualGroupFamilyResponse> {
     const data = QueryGlobalVirtualGroupFamilyRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Query", "GlobalVirtualGroupFamily", data);
-    return promise.then(data => QueryGlobalVirtualGroupFamilyResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGlobalVirtualGroupFamilyResponse.decode(new BinaryReader(data)));
   }
   GlobalVirtualGroupFamilies(request: QueryGlobalVirtualGroupFamiliesRequest = {
     pagination: undefined
   }): Promise<QueryGlobalVirtualGroupFamiliesResponse> {
     const data = QueryGlobalVirtualGroupFamiliesRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Query", "GlobalVirtualGroupFamilies", data);
-    return promise.then(data => QueryGlobalVirtualGroupFamiliesResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGlobalVirtualGroupFamiliesResponse.decode(new BinaryReader(data)));
   }
   AvailableGlobalVirtualGroupFamilies(request: AvailableGlobalVirtualGroupFamiliesRequest): Promise<AvailableGlobalVirtualGroupFamiliesResponse> {
     const data = AvailableGlobalVirtualGroupFamiliesRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Query", "AvailableGlobalVirtualGroupFamilies", data);
-    return promise.then(data => AvailableGlobalVirtualGroupFamiliesResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => AvailableGlobalVirtualGroupFamiliesResponse.decode(new BinaryReader(data)));
   }
 }

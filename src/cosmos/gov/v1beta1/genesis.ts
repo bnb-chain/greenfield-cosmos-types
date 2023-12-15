@@ -1,13 +1,13 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Deposit, DepositSDKType, Vote, VoteSDKType, Proposal, ProposalSDKType, DepositParams, DepositParamsSDKType, VotingParams, VotingParamsSDKType, TallyParams, TallyParamsSDKType } from "./gov";
-import { Long, isSet, DeepPartial, Exact } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.gov.v1beta1";
 /** GenesisState defines the gov module's genesis state. */
 export interface GenesisState {
   /** starting_proposal_id is the ID of the starting proposal. */
-  startingProposalId: Long;
+  startingProposalId: bigint;
   /** deposits defines all the deposits present at genesis. */
   deposits: Deposit[];
   /** votes defines all the votes present at genesis. */
@@ -21,9 +21,13 @@ export interface GenesisState {
   /** params defines all the parameters of related to tally. */
   tallyParams: TallyParams;
 }
+export interface GenesisStateProtoMsg {
+  typeUrl: "/cosmos.gov.v1beta1.GenesisState";
+  value: Uint8Array;
+}
 /** GenesisState defines the gov module's genesis state. */
 export interface GenesisStateSDKType {
-  starting_proposal_id: Long;
+  starting_proposal_id: bigint;
   deposits: DepositSDKType[];
   votes: VoteSDKType[];
   proposals: ProposalSDKType[];
@@ -33,7 +37,7 @@ export interface GenesisStateSDKType {
 }
 function createBaseGenesisState(): GenesisState {
   return {
-    startingProposalId: Long.UZERO,
+    startingProposalId: BigInt(0),
     deposits: [],
     votes: [],
     proposals: [],
@@ -43,8 +47,9 @@ function createBaseGenesisState(): GenesisState {
   };
 }
 export const GenesisState = {
-  encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.startingProposalId.isZero()) {
+  typeUrl: "/cosmos.gov.v1beta1.GenesisState",
+  encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.startingProposalId !== BigInt(0)) {
       writer.uint32(8).uint64(message.startingProposalId);
     }
     for (const v of message.deposits) {
@@ -67,15 +72,15 @@ export const GenesisState = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GenesisState {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.startingProposalId = (reader.uint64() as Long);
+          message.startingProposalId = reader.uint64();
           break;
         case 2:
           message.deposits.push(Deposit.decode(reader, reader.uint32()));
@@ -104,7 +109,7 @@ export const GenesisState = {
   },
   fromJSON(object: any): GenesisState {
     return {
-      startingProposalId: isSet(object.startingProposalId) ? Long.fromValue(object.startingProposalId) : Long.UZERO,
+      startingProposalId: isSet(object.startingProposalId) ? BigInt(object.startingProposalId.toString()) : BigInt(0),
       deposits: Array.isArray(object?.deposits) ? object.deposits.map((e: any) => Deposit.fromJSON(e)) : [],
       votes: Array.isArray(object?.votes) ? object.votes.map((e: any) => Vote.fromJSON(e)) : [],
       proposals: Array.isArray(object?.proposals) ? object.proposals.map((e: any) => Proposal.fromJSON(e)) : [],
@@ -115,7 +120,7 @@ export const GenesisState = {
   },
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
-    message.startingProposalId !== undefined && (obj.startingProposalId = (message.startingProposalId || Long.UZERO).toString());
+    message.startingProposalId !== undefined && (obj.startingProposalId = (message.startingProposalId || BigInt(0)).toString());
     if (message.deposits) {
       obj.deposits = message.deposits.map(e => e ? Deposit.toJSON(e) : undefined);
     } else {
@@ -138,7 +143,7 @@ export const GenesisState = {
   },
   fromPartial<I extends Exact<DeepPartial<GenesisState>, I>>(object: I): GenesisState {
     const message = createBaseGenesisState();
-    message.startingProposalId = object.startingProposalId !== undefined && object.startingProposalId !== null ? Long.fromValue(object.startingProposalId) : Long.UZERO;
+    message.startingProposalId = object.startingProposalId !== undefined && object.startingProposalId !== null ? BigInt(object.startingProposalId.toString()) : BigInt(0);
     message.deposits = object.deposits?.map(e => Deposit.fromPartial(e)) || [];
     message.votes = object.votes?.map(e => Vote.fromPartial(e)) || [];
     message.proposals = object.proposals?.map(e => Proposal.fromPartial(e)) || [];
@@ -180,5 +185,68 @@ export const GenesisState = {
     message.votingParams !== undefined && (obj.voting_params = message.votingParams ? VotingParams.toSDK(message.votingParams) : undefined);
     message.tallyParams !== undefined && (obj.tally_params = message.tallyParams ? TallyParams.toSDK(message.tallyParams) : undefined);
     return obj;
+  },
+  fromAmino(object: GenesisStateAmino): GenesisState {
+    const message = createBaseGenesisState();
+    if (object.starting_proposal_id !== undefined && object.starting_proposal_id !== null) {
+      message.startingProposalId = BigInt(object.starting_proposal_id);
+    }
+    message.deposits = object.deposits?.map(e => Deposit.fromAmino(e)) || [];
+    message.votes = object.votes?.map(e => Vote.fromAmino(e)) || [];
+    message.proposals = object.proposals?.map(e => Proposal.fromAmino(e)) || [];
+    if (object.deposit_params !== undefined && object.deposit_params !== null) {
+      message.depositParams = DepositParams.fromAmino(object.deposit_params);
+    }
+    if (object.voting_params !== undefined && object.voting_params !== null) {
+      message.votingParams = VotingParams.fromAmino(object.voting_params);
+    }
+    if (object.tally_params !== undefined && object.tally_params !== null) {
+      message.tallyParams = TallyParams.fromAmino(object.tally_params);
+    }
+    return message;
+  },
+  toAmino(message: GenesisState): GenesisStateAmino {
+    const obj: any = {};
+    obj.starting_proposal_id = message.startingProposalId ? message.startingProposalId.toString() : undefined;
+    if (message.deposits) {
+      obj.deposits = message.deposits.map(e => e ? Deposit.toAmino(e) : undefined);
+    } else {
+      obj.deposits = [];
+    }
+    if (message.votes) {
+      obj.votes = message.votes.map(e => e ? Vote.toAmino(e) : undefined);
+    } else {
+      obj.votes = [];
+    }
+    if (message.proposals) {
+      obj.proposals = message.proposals.map(e => e ? Proposal.toAmino(e) : undefined);
+    } else {
+      obj.proposals = [];
+    }
+    obj.deposit_params = message.depositParams ? DepositParams.toAmino(message.depositParams) : DepositParams.fromPartial({});
+    obj.voting_params = message.votingParams ? VotingParams.toAmino(message.votingParams) : VotingParams.fromPartial({});
+    obj.tally_params = message.tallyParams ? TallyParams.toAmino(message.tallyParams) : TallyParams.fromPartial({});
+    return obj;
+  },
+  fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {
+    return GenesisState.fromAmino(object.value);
+  },
+  toAminoMsg(message: GenesisState): GenesisStateAminoMsg {
+    return {
+      type: "cosmos-sdk/GenesisState",
+      value: GenesisState.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
+    return GenesisState.decode(message.value);
+  },
+  toProto(message: GenesisState): Uint8Array {
+    return GenesisState.encode(message).finish();
+  },
+  toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
+    return {
+      typeUrl: "/cosmos.gov.v1beta1.GenesisState",
+      value: GenesisState.encode(message).finish()
+    };
   }
 };

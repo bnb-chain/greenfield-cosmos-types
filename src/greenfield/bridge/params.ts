@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.bridge";
 /** Params defines the parameters for the module. */
@@ -9,6 +9,10 @@ export interface Params {
   bscTransferOutRelayerFee: string;
   /** Relayer fee for the ACK or FAIL_ACK package of the cross chain transfer out tx to bsc */
   bscTransferOutAckRelayerFee: string;
+}
+export interface ParamsProtoMsg {
+  typeUrl: "/greenfield.bridge.Params";
+  value: Uint8Array;
 }
 /** Params defines the parameters for the module. */
 export interface ParamsSDKType {
@@ -22,7 +26,8 @@ function createBaseParams(): Params {
   };
 }
 export const Params = {
-  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.bridge.Params",
+  encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bscTransferOutRelayerFee !== "") {
       writer.uint32(10).string(message.bscTransferOutRelayerFee);
     }
@@ -31,8 +36,8 @@ export const Params = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Params {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
@@ -80,5 +85,36 @@ export const Params = {
     obj.bsc_transfer_out_relayer_fee = message.bscTransferOutRelayerFee;
     obj.bsc_transfer_out_ack_relayer_fee = message.bscTransferOutAckRelayerFee;
     return obj;
+  },
+  fromAmino(object: ParamsAmino): Params {
+    const message = createBaseParams();
+    if (object.bsc_transfer_out_relayer_fee !== undefined && object.bsc_transfer_out_relayer_fee !== null) {
+      message.bscTransferOutRelayerFee = object.bsc_transfer_out_relayer_fee;
+    }
+    if (object.bsc_transfer_out_ack_relayer_fee !== undefined && object.bsc_transfer_out_ack_relayer_fee !== null) {
+      message.bscTransferOutAckRelayerFee = object.bsc_transfer_out_ack_relayer_fee;
+    }
+    return message;
+  },
+  toAmino(message: Params): ParamsAmino {
+    const obj: any = {};
+    obj.bsc_transfer_out_relayer_fee = message.bscTransferOutRelayerFee;
+    obj.bsc_transfer_out_ack_relayer_fee = message.bscTransferOutAckRelayerFee;
+    return obj;
+  },
+  fromAminoMsg(object: ParamsAminoMsg): Params {
+    return Params.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ParamsProtoMsg): Params {
+    return Params.decode(message.value);
+  },
+  toProto(message: Params): Uint8Array {
+    return Params.encode(message).finish();
+  },
+  toProtoMsg(message: Params): ParamsProtoMsg {
+    return {
+      typeUrl: "/greenfield.bridge.Params",
+      value: Params.encode(message).finish()
+    };
   }
 };
