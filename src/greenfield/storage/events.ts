@@ -1,8 +1,8 @@
 //@ts-nocheck
 /* eslint-disable */
 import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
-import { ResourceTags, ResourceTagsSDKType, DeleteInfo, DeleteInfoSDKType } from "./types";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
+import { DeleteInfo, DeleteInfoSDKType, ResourceTags, ResourceTagsSDKType } from "./types";
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers";
 export const protobufPackage = "greenfield.storage";
@@ -30,8 +30,6 @@ export interface EventCreateBucket {
   globalVirtualGroupFamilyId: number;
   /** status define the status of the bucket. */
   status: BucketStatus;
-  /** tags define the tag of the bucket */
-  tags?: ResourceTags;
 }
 export interface EventCreateBucketProtoMsg {
   typeUrl: "/greenfield.storage.EventCreateBucket";
@@ -50,7 +48,6 @@ export interface EventCreateBucketSDKType {
   primary_sp_id: number;
   global_virtual_group_family_id: number;
   status: BucketStatus;
-  tags?: ResourceTagsSDKType;
 }
 /** EventDeleteBucket is emitted on MsgDeleteBucket */
 export interface EventDeleteBucket {
@@ -164,8 +161,6 @@ export interface EventCreateObject {
   checksums: Uint8Array[];
   /** local_virtual_group_id defines the unique id of lvg which the object stored */
   localVirtualGroupId: number;
-  /** tags define the tag of the object */
-  tags?: ResourceTags;
 }
 export interface EventCreateObjectProtoMsg {
   typeUrl: "/greenfield.storage.EventCreateObject";
@@ -189,7 +184,6 @@ export interface EventCreateObjectSDKType {
   source_type: SourceType;
   checksums: Uint8Array[];
   local_virtual_group_id: number;
-  tags?: ResourceTagsSDKType;
 }
 /** EventCancelCreateObject is emitted on MsgCancelCreateObject */
 export interface EventCancelCreateObject {
@@ -387,8 +381,6 @@ export interface EventCreateGroup {
   sourceType: SourceType;
   /** extra defines extra info for the group */
   extra: string;
-  /** tags define the tag of the group */
-  tags?: ResourceTags;
 }
 export interface EventCreateGroupProtoMsg {
   typeUrl: "/greenfield.storage.EventCreateGroup";
@@ -401,7 +393,6 @@ export interface EventCreateGroupSDKType {
   group_id: string;
   source_type: SourceType;
   extra: string;
-  tags?: ResourceTagsSDKType;
 }
 /** EventDeleteGroup is emitted on MsgDeleteGroup */
 export interface EventDeleteGroup {
@@ -801,8 +792,7 @@ function createBaseEventCreateBucket(): EventCreateBucket {
     paymentAddress: "",
     primarySpId: 0,
     globalVirtualGroupFamilyId: 0,
-    status: 0,
-    tags: undefined
+    status: 0
   };
 }
 export const EventCreateBucket = {
@@ -840,9 +830,6 @@ export const EventCreateBucket = {
     }
     if (message.status !== 0) {
       writer.uint32(88).int32(message.status);
-    }
-    if (message.tags !== undefined) {
-      ResourceTags.encode(message.tags, writer.uint32(98).fork()).ldelim();
     }
     return writer;
   },
@@ -886,9 +873,6 @@ export const EventCreateBucket = {
         case 11:
           message.status = (reader.int32() as any);
           break;
-        case 12:
-          message.tags = ResourceTags.decode(reader, reader.uint32());
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -908,8 +892,7 @@ export const EventCreateBucket = {
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0,
       globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
-      status: isSet(object.status) ? bucketStatusFromJSON(object.status) : -1,
-      tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined
+      status: isSet(object.status) ? bucketStatusFromJSON(object.status) : -1
     };
   },
   toJSON(message: EventCreateBucket): unknown {
@@ -925,7 +908,6 @@ export const EventCreateBucket = {
     message.primarySpId !== undefined && (obj.primarySpId = Math.round(message.primarySpId));
     message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
     message.status !== undefined && (obj.status = bucketStatusToJSON(message.status));
-    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toJSON(message.tags) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventCreateBucket>, I>>(object: I): EventCreateBucket {
@@ -941,7 +923,6 @@ export const EventCreateBucket = {
     message.primarySpId = object.primarySpId ?? 0;
     message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
     message.status = object.status ?? 0;
-    message.tags = object.tags !== undefined && object.tags !== null ? ResourceTags.fromPartial(object.tags) : undefined;
     return message;
   },
   fromSDK(object: EventCreateBucketSDKType): EventCreateBucket {
@@ -956,8 +937,7 @@ export const EventCreateBucket = {
       paymentAddress: object?.payment_address,
       primarySpId: object?.primary_sp_id,
       globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
-      status: isSet(object.status) ? bucketStatusFromJSON(object.status) : -1,
-      tags: object.tags ? ResourceTags.fromSDK(object.tags) : undefined
+      status: isSet(object.status) ? bucketStatusFromJSON(object.status) : -1
     };
   },
   toSDK(message: EventCreateBucket): EventCreateBucketSDKType {
@@ -973,7 +953,6 @@ export const EventCreateBucket = {
     obj.primary_sp_id = message.primarySpId;
     obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
     message.status !== undefined && (obj.status = bucketStatusToJSON(message.status));
-    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
   },
   fromAmino(object: EventCreateBucketAmino): EventCreateBucket {
@@ -1011,9 +990,6 @@ export const EventCreateBucket = {
     if (object.status !== undefined && object.status !== null) {
       message.status = bucketStatusFromJSON(object.status);
     }
-    if (object.tags !== undefined && object.tags !== null) {
-      message.tags = ResourceTags.fromAmino(object.tags);
-    }
     return message;
   },
   toAmino(message: EventCreateBucket): EventCreateBucketAmino {
@@ -1029,7 +1005,6 @@ export const EventCreateBucket = {
     obj.primary_sp_id = message.primarySpId;
     obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
     obj.status = bucketStatusToJSON(message.status);
-    obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
     return obj;
   },
   fromAminoMsg(object: EventCreateBucketAminoMsg): EventCreateBucket {
@@ -1522,8 +1497,7 @@ function createBaseEventCreateObject(): EventCreateObject {
     redundancyType: 0,
     sourceType: 0,
     checksums: [],
-    localVirtualGroupId: 0,
-    tags: undefined
+    localVirtualGroupId: 0
   };
 }
 export const EventCreateObject = {
@@ -1576,9 +1550,6 @@ export const EventCreateObject = {
     }
     if (message.localVirtualGroupId !== 0) {
       writer.uint32(136).uint32(message.localVirtualGroupId);
-    }
-    if (message.tags !== undefined) {
-      ResourceTags.encode(message.tags, writer.uint32(146).fork()).ldelim();
     }
     return writer;
   },
@@ -1637,9 +1608,6 @@ export const EventCreateObject = {
         case 17:
           message.localVirtualGroupId = reader.uint32();
           break;
-        case 18:
-          message.tags = ResourceTags.decode(reader, reader.uint32());
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1664,8 +1632,7 @@ export const EventCreateObject = {
       redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : -1,
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : -1,
       checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => bytesFromBase64(e)) : [],
-      localVirtualGroupId: isSet(object.localVirtualGroupId) ? Number(object.localVirtualGroupId) : 0,
-      tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined
+      localVirtualGroupId: isSet(object.localVirtualGroupId) ? Number(object.localVirtualGroupId) : 0
     };
   },
   toJSON(message: EventCreateObject): unknown {
@@ -1690,7 +1657,6 @@ export const EventCreateObject = {
       obj.checksums = [];
     }
     message.localVirtualGroupId !== undefined && (obj.localVirtualGroupId = Math.round(message.localVirtualGroupId));
-    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toJSON(message.tags) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventCreateObject>, I>>(object: I): EventCreateObject {
@@ -1711,7 +1677,6 @@ export const EventCreateObject = {
     message.sourceType = object.sourceType ?? 0;
     message.checksums = object.checksums?.map(e => e) || [];
     message.localVirtualGroupId = object.localVirtualGroupId ?? 0;
-    message.tags = object.tags !== undefined && object.tags !== null ? ResourceTags.fromPartial(object.tags) : undefined;
     return message;
   },
   fromSDK(object: EventCreateObjectSDKType): EventCreateObject {
@@ -1731,8 +1696,7 @@ export const EventCreateObject = {
       redundancyType: isSet(object.redundancy_type) ? redundancyTypeFromJSON(object.redundancy_type) : -1,
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : -1,
       checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => e) : [],
-      localVirtualGroupId: object?.local_virtual_group_id,
-      tags: object.tags ? ResourceTags.fromSDK(object.tags) : undefined
+      localVirtualGroupId: object?.local_virtual_group_id
     };
   },
   toSDK(message: EventCreateObject): EventCreateObjectSDKType {
@@ -1757,7 +1721,6 @@ export const EventCreateObject = {
       obj.checksums = [];
     }
     obj.local_virtual_group_id = message.localVirtualGroupId;
-    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
   },
   fromAmino(object: EventCreateObjectAmino): EventCreateObject {
@@ -1808,9 +1771,6 @@ export const EventCreateObject = {
     if (object.local_virtual_group_id !== undefined && object.local_virtual_group_id !== null) {
       message.localVirtualGroupId = object.local_virtual_group_id;
     }
-    if (object.tags !== undefined && object.tags !== null) {
-      message.tags = ResourceTags.fromAmino(object.tags);
-    }
     return message;
   },
   toAmino(message: EventCreateObject): EventCreateObjectAmino {
@@ -1835,7 +1795,6 @@ export const EventCreateObject = {
       obj.checksums = [];
     }
     obj.local_virtual_group_id = message.localVirtualGroupId;
-    obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
     return obj;
   },
   fromAminoMsg(object: EventCreateObjectAminoMsg): EventCreateObject {
@@ -2937,8 +2896,7 @@ function createBaseEventCreateGroup(): EventCreateGroup {
     groupName: "",
     groupId: "",
     sourceType: 0,
-    extra: "",
-    tags: undefined
+    extra: ""
   };
 }
 export const EventCreateGroup = {
@@ -2958,9 +2916,6 @@ export const EventCreateGroup = {
     }
     if (message.extra !== "") {
       writer.uint32(42).string(message.extra);
-    }
-    if (message.tags !== undefined) {
-      ResourceTags.encode(message.tags, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -2986,9 +2941,6 @@ export const EventCreateGroup = {
         case 5:
           message.extra = reader.string();
           break;
-        case 6:
-          message.tags = ResourceTags.decode(reader, reader.uint32());
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -3002,8 +2954,7 @@ export const EventCreateGroup = {
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
       groupId: isSet(object.groupId) ? String(object.groupId) : "",
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : -1,
-      extra: isSet(object.extra) ? String(object.extra) : "",
-      tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined
+      extra: isSet(object.extra) ? String(object.extra) : ""
     };
   },
   toJSON(message: EventCreateGroup): unknown {
@@ -3013,7 +2964,6 @@ export const EventCreateGroup = {
     message.groupId !== undefined && (obj.groupId = message.groupId);
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
     message.extra !== undefined && (obj.extra = message.extra);
-    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toJSON(message.tags) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventCreateGroup>, I>>(object: I): EventCreateGroup {
@@ -3023,7 +2973,6 @@ export const EventCreateGroup = {
     message.groupId = object.groupId ?? "";
     message.sourceType = object.sourceType ?? 0;
     message.extra = object.extra ?? "";
-    message.tags = object.tags !== undefined && object.tags !== null ? ResourceTags.fromPartial(object.tags) : undefined;
     return message;
   },
   fromSDK(object: EventCreateGroupSDKType): EventCreateGroup {
@@ -3032,8 +2981,7 @@ export const EventCreateGroup = {
       groupName: object?.group_name,
       groupId: object?.group_id,
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : -1,
-      extra: object?.extra,
-      tags: object.tags ? ResourceTags.fromSDK(object.tags) : undefined
+      extra: object?.extra
     };
   },
   toSDK(message: EventCreateGroup): EventCreateGroupSDKType {
@@ -3043,7 +2991,6 @@ export const EventCreateGroup = {
     obj.group_id = message.groupId;
     message.sourceType !== undefined && (obj.source_type = sourceTypeToJSON(message.sourceType));
     obj.extra = message.extra;
-    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
   },
   fromAmino(object: EventCreateGroupAmino): EventCreateGroup {
@@ -3063,9 +3010,6 @@ export const EventCreateGroup = {
     if (object.extra !== undefined && object.extra !== null) {
       message.extra = object.extra;
     }
-    if (object.tags !== undefined && object.tags !== null) {
-      message.tags = ResourceTags.fromAmino(object.tags);
-    }
     return message;
   },
   toAmino(message: EventCreateGroup): EventCreateGroupAmino {
@@ -3075,7 +3019,6 @@ export const EventCreateGroup = {
     obj.group_id = message.groupId;
     obj.source_type = sourceTypeToJSON(message.sourceType);
     obj.extra = message.extra;
-    obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
     return obj;
   },
   fromAminoMsg(object: EventCreateGroupAminoMsg): EventCreateGroup {

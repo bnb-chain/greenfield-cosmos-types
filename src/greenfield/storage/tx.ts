@@ -2,11 +2,11 @@
 /* eslint-disable */
 import { VisibilityType, RedundancyType, GVGMapping, GVGMappingSDKType, visibilityTypeFromJSON, visibilityTypeToJSON, redundancyTypeFromJSON, redundancyTypeToJSON } from "./common";
 import { Approval, ApprovalSDKType } from "../common/approval";
-import { ResourceTags, ResourceTagsSDKType } from "./types";
 import { UInt64Value, UInt64ValueSDKType } from "../common/wrapper";
 import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "../permission/common";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import { Params, ParamsSDKType } from "./params";
+import { ResourceTags, ResourceTagsSDKType } from "./types";
 import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.storage";
@@ -32,8 +32,6 @@ export interface MsgCreateBucket {
    * the ChargeReadQuota specified here.
    */
   chargedReadQuota: bigint;
-  /** tags defines a list of tags which will be set to the bucket */
-  tags: ResourceTags;
 }
 export interface MsgCreateBucketProtoMsg {
   typeUrl: "/greenfield.storage.MsgCreateBucket";
@@ -47,7 +45,6 @@ export interface MsgCreateBucketSDKType {
   primary_sp_address: string;
   primary_sp_approval?: ApprovalSDKType;
   charged_read_quota: bigint;
-  tags: ResourceTagsSDKType;
 }
 export interface MsgCreateBucketResponse {
   bucketId: string;
@@ -124,8 +121,6 @@ export interface MsgCreateObject {
   expectChecksums: Uint8Array[];
   /** redundancy_type can be ec or replica */
   redundancyType: RedundancyType;
-  /** tags defines a list of tags which will be set to the object */
-  tags: ResourceTags;
 }
 export interface MsgCreateObjectProtoMsg {
   typeUrl: "/greenfield.storage.MsgCreateObject";
@@ -141,7 +136,6 @@ export interface MsgCreateObjectSDKType {
   primary_sp_approval?: ApprovalSDKType;
   expect_checksums: Uint8Array[];
   redundancy_type: RedundancyType;
-  tags: ResourceTagsSDKType;
 }
 export interface MsgCreateObjectResponse {
   objectId: string;
@@ -300,8 +294,6 @@ export interface MsgCreateGroup {
   groupName: string;
   /** extra defines extra info for the group */
   extra: string;
-  /** tags defines a list of tags which will be set to the group */
-  tags: ResourceTags;
 }
 export interface MsgCreateGroupProtoMsg {
   typeUrl: "/greenfield.storage.MsgCreateGroup";
@@ -311,7 +303,6 @@ export interface MsgCreateGroupSDKType {
   creator: string;
   group_name: string;
   extra: string;
-  tags: ResourceTagsSDKType;
 }
 export interface MsgCreateGroupResponse {
   groupId: string;
@@ -854,8 +845,7 @@ function createBaseMsgCreateBucket(): MsgCreateBucket {
     paymentAddress: "",
     primarySpAddress: "",
     primarySpApproval: undefined,
-    chargedReadQuota: BigInt(0),
-    tags: ResourceTags.fromPartial({})
+    chargedReadQuota: BigInt(0)
   };
 }
 export const MsgCreateBucket = {
@@ -881,9 +871,6 @@ export const MsgCreateBucket = {
     }
     if (message.chargedReadQuota !== BigInt(0)) {
       writer.uint32(56).uint64(message.chargedReadQuota);
-    }
-    if (message.tags !== undefined) {
-      ResourceTags.encode(message.tags, writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -915,9 +902,6 @@ export const MsgCreateBucket = {
         case 7:
           message.chargedReadQuota = reader.uint64();
           break;
-        case 8:
-          message.tags = ResourceTags.decode(reader, reader.uint32());
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -933,8 +917,7 @@ export const MsgCreateBucket = {
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       primarySpAddress: isSet(object.primarySpAddress) ? String(object.primarySpAddress) : "",
       primarySpApproval: isSet(object.primarySpApproval) ? Approval.fromJSON(object.primarySpApproval) : undefined,
-      chargedReadQuota: isSet(object.chargedReadQuota) ? BigInt(object.chargedReadQuota.toString()) : BigInt(0),
-      tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined
+      chargedReadQuota: isSet(object.chargedReadQuota) ? BigInt(object.chargedReadQuota.toString()) : BigInt(0)
     };
   },
   toJSON(message: MsgCreateBucket): unknown {
@@ -946,7 +929,6 @@ export const MsgCreateBucket = {
     message.primarySpAddress !== undefined && (obj.primarySpAddress = message.primarySpAddress);
     message.primarySpApproval !== undefined && (obj.primarySpApproval = message.primarySpApproval ? Approval.toJSON(message.primarySpApproval) : undefined);
     message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || BigInt(0)).toString());
-    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toJSON(message.tags) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MsgCreateBucket>, I>>(object: I): MsgCreateBucket {
@@ -958,7 +940,6 @@ export const MsgCreateBucket = {
     message.primarySpAddress = object.primarySpAddress ?? "";
     message.primarySpApproval = object.primarySpApproval !== undefined && object.primarySpApproval !== null ? Approval.fromPartial(object.primarySpApproval) : undefined;
     message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? BigInt(object.chargedReadQuota.toString()) : BigInt(0);
-    message.tags = object.tags !== undefined && object.tags !== null ? ResourceTags.fromPartial(object.tags) : undefined;
     return message;
   },
   fromSDK(object: MsgCreateBucketSDKType): MsgCreateBucket {
@@ -969,8 +950,7 @@ export const MsgCreateBucket = {
       paymentAddress: object?.payment_address,
       primarySpAddress: object?.primary_sp_address,
       primarySpApproval: object.primary_sp_approval ? Approval.fromSDK(object.primary_sp_approval) : undefined,
-      chargedReadQuota: object?.charged_read_quota,
-      tags: object.tags ? ResourceTags.fromSDK(object.tags) : undefined
+      chargedReadQuota: object?.charged_read_quota
     };
   },
   toSDK(message: MsgCreateBucket): MsgCreateBucketSDKType {
@@ -982,7 +962,6 @@ export const MsgCreateBucket = {
     obj.primary_sp_address = message.primarySpAddress;
     message.primarySpApproval !== undefined && (obj.primary_sp_approval = message.primarySpApproval ? Approval.toSDK(message.primarySpApproval) : undefined);
     obj.charged_read_quota = message.chargedReadQuota;
-    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
   },
   fromAmino(object: MsgCreateBucketAmino): MsgCreateBucket {
@@ -1008,9 +987,6 @@ export const MsgCreateBucket = {
     if (object.charged_read_quota !== undefined && object.charged_read_quota !== null) {
       message.chargedReadQuota = BigInt(object.charged_read_quota);
     }
-    if (object.tags !== undefined && object.tags !== null) {
-      message.tags = ResourceTags.fromAmino(object.tags);
-    }
     return message;
   },
   toAmino(message: MsgCreateBucket): MsgCreateBucketAmino {
@@ -1022,7 +998,6 @@ export const MsgCreateBucket = {
     obj.primary_sp_address = message.primarySpAddress;
     obj.primary_sp_approval = message.primarySpApproval ? Approval.toAmino(message.primarySpApproval) : undefined;
     obj.charged_read_quota = message.chargedReadQuota ? message.chargedReadQuota.toString() : undefined;
-    obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgCreateBucketAminoMsg): MsgCreateBucket {
@@ -1476,8 +1451,7 @@ function createBaseMsgCreateObject(): MsgCreateObject {
     contentType: "",
     primarySpApproval: undefined,
     expectChecksums: [],
-    redundancyType: 0,
-    tags: ResourceTags.fromPartial({})
+    redundancyType: 0
   };
 }
 export const MsgCreateObject = {
@@ -1509,9 +1483,6 @@ export const MsgCreateObject = {
     }
     if (message.redundancyType !== 0) {
       writer.uint32(72).int32(message.redundancyType);
-    }
-    if (message.tags !== undefined) {
-      ResourceTags.encode(message.tags, writer.uint32(82).fork()).ldelim();
     }
     return writer;
   },
@@ -1549,9 +1520,6 @@ export const MsgCreateObject = {
         case 9:
           message.redundancyType = (reader.int32() as any);
           break;
-        case 10:
-          message.tags = ResourceTags.decode(reader, reader.uint32());
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1569,8 +1537,7 @@ export const MsgCreateObject = {
       contentType: isSet(object.contentType) ? String(object.contentType) : "",
       primarySpApproval: isSet(object.primarySpApproval) ? Approval.fromJSON(object.primarySpApproval) : undefined,
       expectChecksums: Array.isArray(object?.expectChecksums) ? object.expectChecksums.map((e: any) => bytesFromBase64(e)) : [],
-      redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : -1,
-      tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined
+      redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : -1
     };
   },
   toJSON(message: MsgCreateObject): unknown {
@@ -1588,7 +1555,6 @@ export const MsgCreateObject = {
       obj.expectChecksums = [];
     }
     message.redundancyType !== undefined && (obj.redundancyType = redundancyTypeToJSON(message.redundancyType));
-    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toJSON(message.tags) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MsgCreateObject>, I>>(object: I): MsgCreateObject {
@@ -1602,7 +1568,6 @@ export const MsgCreateObject = {
     message.primarySpApproval = object.primarySpApproval !== undefined && object.primarySpApproval !== null ? Approval.fromPartial(object.primarySpApproval) : undefined;
     message.expectChecksums = object.expectChecksums?.map(e => e) || [];
     message.redundancyType = object.redundancyType ?? 0;
-    message.tags = object.tags !== undefined && object.tags !== null ? ResourceTags.fromPartial(object.tags) : undefined;
     return message;
   },
   fromSDK(object: MsgCreateObjectSDKType): MsgCreateObject {
@@ -1615,8 +1580,7 @@ export const MsgCreateObject = {
       contentType: object?.content_type,
       primarySpApproval: object.primary_sp_approval ? Approval.fromSDK(object.primary_sp_approval) : undefined,
       expectChecksums: Array.isArray(object?.expect_checksums) ? object.expect_checksums.map((e: any) => e) : [],
-      redundancyType: isSet(object.redundancy_type) ? redundancyTypeFromJSON(object.redundancy_type) : -1,
-      tags: object.tags ? ResourceTags.fromSDK(object.tags) : undefined
+      redundancyType: isSet(object.redundancy_type) ? redundancyTypeFromJSON(object.redundancy_type) : -1
     };
   },
   toSDK(message: MsgCreateObject): MsgCreateObjectSDKType {
@@ -1634,7 +1598,6 @@ export const MsgCreateObject = {
       obj.expect_checksums = [];
     }
     message.redundancyType !== undefined && (obj.redundancy_type = redundancyTypeToJSON(message.redundancyType));
-    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
   },
   fromAmino(object: MsgCreateObjectAmino): MsgCreateObject {
@@ -1664,9 +1627,6 @@ export const MsgCreateObject = {
     if (object.redundancy_type !== undefined && object.redundancy_type !== null) {
       message.redundancyType = redundancyTypeFromJSON(object.redundancy_type);
     }
-    if (object.tags !== undefined && object.tags !== null) {
-      message.tags = ResourceTags.fromAmino(object.tags);
-    }
     return message;
   },
   toAmino(message: MsgCreateObject): MsgCreateObjectAmino {
@@ -1684,7 +1644,6 @@ export const MsgCreateObject = {
       obj.expect_checksums = [];
     }
     obj.redundancy_type = redundancyTypeToJSON(message.redundancyType);
-    obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgCreateObjectAminoMsg): MsgCreateObject {
@@ -2810,8 +2769,7 @@ function createBaseMsgCreateGroup(): MsgCreateGroup {
   return {
     creator: "",
     groupName: "",
-    extra: "",
-    tags: ResourceTags.fromPartial({})
+    extra: ""
   };
 }
 export const MsgCreateGroup = {
@@ -2825,9 +2783,6 @@ export const MsgCreateGroup = {
     }
     if (message.extra !== "") {
       writer.uint32(26).string(message.extra);
-    }
-    if (message.tags !== undefined) {
-      ResourceTags.encode(message.tags, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -2847,9 +2802,6 @@ export const MsgCreateGroup = {
         case 3:
           message.extra = reader.string();
           break;
-        case 4:
-          message.tags = ResourceTags.decode(reader, reader.uint32());
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2861,8 +2813,7 @@ export const MsgCreateGroup = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       groupName: isSet(object.groupName) ? String(object.groupName) : "",
-      extra: isSet(object.extra) ? String(object.extra) : "",
-      tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined
+      extra: isSet(object.extra) ? String(object.extra) : ""
     };
   },
   toJSON(message: MsgCreateGroup): unknown {
@@ -2870,7 +2821,6 @@ export const MsgCreateGroup = {
     message.creator !== undefined && (obj.creator = message.creator);
     message.groupName !== undefined && (obj.groupName = message.groupName);
     message.extra !== undefined && (obj.extra = message.extra);
-    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toJSON(message.tags) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MsgCreateGroup>, I>>(object: I): MsgCreateGroup {
@@ -2878,15 +2828,13 @@ export const MsgCreateGroup = {
     message.creator = object.creator ?? "";
     message.groupName = object.groupName ?? "";
     message.extra = object.extra ?? "";
-    message.tags = object.tags !== undefined && object.tags !== null ? ResourceTags.fromPartial(object.tags) : undefined;
     return message;
   },
   fromSDK(object: MsgCreateGroupSDKType): MsgCreateGroup {
     return {
       creator: object?.creator,
       groupName: object?.group_name,
-      extra: object?.extra,
-      tags: object.tags ? ResourceTags.fromSDK(object.tags) : undefined
+      extra: object?.extra
     };
   },
   toSDK(message: MsgCreateGroup): MsgCreateGroupSDKType {
@@ -2894,7 +2842,6 @@ export const MsgCreateGroup = {
     obj.creator = message.creator;
     obj.group_name = message.groupName;
     obj.extra = message.extra;
-    message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
   },
   fromAmino(object: MsgCreateGroupAmino): MsgCreateGroup {
@@ -2908,9 +2855,6 @@ export const MsgCreateGroup = {
     if (object.extra !== undefined && object.extra !== null) {
       message.extra = object.extra;
     }
-    if (object.tags !== undefined && object.tags !== null) {
-      message.tags = ResourceTags.fromAmino(object.tags);
-    }
     return message;
   },
   toAmino(message: MsgCreateGroup): MsgCreateGroupAmino {
@@ -2918,7 +2862,6 @@ export const MsgCreateGroup = {
     obj.creator = message.creator;
     obj.group_name = message.groupName;
     obj.extra = message.extra;
-    obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgCreateGroupAminoMsg): MsgCreateGroup {
