@@ -20,6 +20,22 @@ export interface ParamsProtoMsg {
   value: Uint8Array;
 }
 /** Params holds parameters for the oracle module. */
+export interface ParamsAmino {
+  /** Timeout for the in turn relayer in seconds */
+  relayer_timeout?: string;
+  /** RelayInterval is for in-turn relayer in seconds */
+  relayer_interval?: string;
+  /**
+   * Reward share for the relayer sends the claim message,
+   * the other relayers signed the bls message will share the reward evenly.
+   */
+  relayer_reward_share?: number;
+}
+export interface ParamsAminoMsg {
+  type: "cosmos-sdk/Params";
+  value: ParamsAmino;
+}
+/** Params holds parameters for the oracle module. */
 export interface ParamsSDKType {
   relayer_timeout: Long;
   relayer_interval: Long;
@@ -33,6 +49,15 @@ export interface RelayInterval {
 export interface RelayIntervalProtoMsg {
   typeUrl: "/cosmos.oracle.v1.RelayInterval";
   value: Uint8Array;
+}
+/** RelayInterval holds start and end(exclusive) time of in-turn relayer, [start, end) */
+export interface RelayIntervalAmino {
+  start?: string;
+  end?: string;
+}
+export interface RelayIntervalAminoMsg {
+  type: "cosmos-sdk/RelayInterval";
+  value: RelayIntervalAmino;
 }
 /** RelayInterval holds start and end(exclusive) time of in-turn relayer, [start, end) */
 export interface RelayIntervalSDKType {

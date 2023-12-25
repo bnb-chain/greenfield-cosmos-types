@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./slashing";
+import { Params, ParamsAmino, ParamsSDKType } from "./slashing";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.slashing.v1beta1";
@@ -13,6 +13,14 @@ export interface MsgUnjailProtoMsg {
   value: Uint8Array;
 }
 /** MsgUnjail defines the Msg/Unjail request type */
+export interface MsgUnjailAmino {
+  validator_addr: string;
+}
+export interface MsgUnjailAminoMsg {
+  type: "cosmos-sdk/MsgUnjail";
+  value: MsgUnjailAmino;
+}
+/** MsgUnjail defines the Msg/Unjail request type */
 export interface MsgUnjailSDKType {
   validator_addr: string;
 }
@@ -21,6 +29,12 @@ export interface MsgUnjailResponse {}
 export interface MsgUnjailResponseProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.MsgUnjailResponse";
   value: Uint8Array;
+}
+/** MsgUnjailResponse defines the Msg/Unjail response type */
+export interface MsgUnjailResponseAmino {}
+export interface MsgUnjailResponseAminoMsg {
+  type: "cosmos-sdk/MsgUnjailResponse";
+  value: MsgUnjailResponseAmino;
 }
 /** MsgUnjailResponse defines the Msg/Unjail response type */
 export interface MsgUnjailResponseSDKType {}
@@ -48,6 +62,25 @@ export interface MsgUpdateParamsProtoMsg {
  * 
  * Since: cosmos-sdk 0.47
  */
+export interface MsgUpdateParamsAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /**
+   * params defines the x/slashing parameters to update.
+   * 
+   * NOTE: All parameters must be supplied.
+   */
+  params: ParamsAmino;
+}
+export interface MsgUpdateParamsAminoMsg {
+  type: "cosmos-sdk/x/slashing/MsgUpdateParams";
+  value: MsgUpdateParamsAmino;
+}
+/**
+ * MsgUpdateParams is the Msg/UpdateParams request type.
+ * 
+ * Since: cosmos-sdk 0.47
+ */
 export interface MsgUpdateParamsSDKType {
   authority: string;
   params: ParamsSDKType;
@@ -69,6 +102,17 @@ export interface MsgUpdateParamsResponseProtoMsg {
  * 
  * Since: cosmos-sdk 0.47
  */
+export interface MsgUpdateParamsResponseAmino {}
+export interface MsgUpdateParamsResponseAminoMsg {
+  type: "cosmos-sdk/MsgUpdateParamsResponse";
+  value: MsgUpdateParamsResponseAmino;
+}
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ * 
+ * Since: cosmos-sdk 0.47
+ */
 export interface MsgUpdateParamsResponseSDKType {}
 /** MsgImpeach defines the Msg/Impeach request type */
 export interface MsgImpeach {
@@ -80,6 +124,15 @@ export interface MsgImpeachProtoMsg {
   value: Uint8Array;
 }
 /** MsgImpeach defines the Msg/Impeach request type */
+export interface MsgImpeachAmino {
+  from?: string;
+  validator_address?: string;
+}
+export interface MsgImpeachAminoMsg {
+  type: "cosmos-sdk/MsgImpeach";
+  value: MsgImpeachAmino;
+}
+/** MsgImpeach defines the Msg/Impeach request type */
 export interface MsgImpeachSDKType {
   from: string;
   validator_address: string;
@@ -89,6 +142,12 @@ export interface MsgImpeachResponse {}
 export interface MsgImpeachResponseProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.MsgImpeachResponse";
   value: Uint8Array;
+}
+/** MsgImpeachResponse defines the Msg/Impeach response type. */
+export interface MsgImpeachResponseAmino {}
+export interface MsgImpeachResponseAminoMsg {
+  type: "cosmos-sdk/MsgImpeachResponse";
+  value: MsgImpeachResponseAmino;
 }
 /** MsgImpeachResponse defines the Msg/Impeach response type. */
 export interface MsgImpeachResponseSDKType {}

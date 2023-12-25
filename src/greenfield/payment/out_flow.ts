@@ -12,6 +12,7 @@ export enum OutFlowStatus {
   UNRECOGNIZED = -1,
 }
 export const OutFlowStatusSDKType = OutFlowStatus;
+export const OutFlowStatusAmino = OutFlowStatus;
 export function outFlowStatusFromJSON(object: any): OutFlowStatus {
   switch (object) {
     case 0:
@@ -52,6 +53,22 @@ export interface OutFlow {
 export interface OutFlowProtoMsg {
   typeUrl: "/greenfield.payment.OutFlow";
   value: Uint8Array;
+}
+/**
+ * OutFlow defines the accumulative outflow stream rate in BNB
+ * from a stream account to a Storage Provider
+ */
+export interface OutFlowAmino {
+  /** stream account address who receives the flow, usually SP(service provider) */
+  to_address?: string;
+  /** flow rate */
+  rate?: string;
+  /** status */
+  status?: OutFlowStatus;
+}
+export interface OutFlowAminoMsg {
+  type: "/greenfield.payment.OutFlow";
+  value: OutFlowAmino;
 }
 /**
  * OutFlow defines the accumulative outflow stream rate in BNB

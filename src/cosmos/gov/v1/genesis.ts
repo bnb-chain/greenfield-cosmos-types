@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Deposit, DepositSDKType, Vote, VoteSDKType, Proposal, ProposalSDKType, DepositParams, DepositParamsSDKType, VotingParams, VotingParamsSDKType, TallyParams, TallyParamsSDKType, Params, ParamsSDKType } from "./gov";
+import { Deposit, DepositAmino, DepositSDKType, Vote, VoteAmino, VoteSDKType, Proposal, ProposalAmino, ProposalSDKType, DepositParams, DepositParamsAmino, DepositParamsSDKType, VotingParams, VotingParamsAmino, VotingParamsSDKType, TallyParams, TallyParamsAmino, TallyParamsSDKType, Params, ParamsAmino, ParamsSDKType } from "./gov";
 import { Long, isSet, DeepPartial, Exact } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.gov.v1";
@@ -42,6 +42,45 @@ export interface GenesisState {
 export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.gov.v1.GenesisState";
   value: Uint8Array;
+}
+/** GenesisState defines the gov module's genesis state. */
+export interface GenesisStateAmino {
+  /** starting_proposal_id is the ID of the starting proposal. */
+  starting_proposal_id?: string;
+  /** deposits defines all the deposits present at genesis. */
+  deposits?: DepositAmino[];
+  /** votes defines all the votes present at genesis. */
+  votes?: VoteAmino[];
+  /** proposals defines all the proposals present at genesis. */
+  proposals?: ProposalAmino[];
+  /**
+   * Deprecated: Prefer to use `params` instead.
+   * deposit_params defines all the paramaters of related to deposit.
+   */
+  /** @deprecated */
+  deposit_params?: DepositParamsAmino;
+  /**
+   * Deprecated: Prefer to use `params` instead.
+   * voting_params defines all the paramaters of related to voting.
+   */
+  /** @deprecated */
+  voting_params?: VotingParamsAmino;
+  /**
+   * Deprecated: Prefer to use `params` instead.
+   * tally_params defines all the paramaters of related to tally.
+   */
+  /** @deprecated */
+  tally_params?: TallyParamsAmino;
+  /**
+   * params defines all the paramaters of x/gov module.
+   * 
+   * Since: cosmos-sdk 0.47
+   */
+  params?: ParamsAmino;
+}
+export interface GenesisStateAminoMsg {
+  type: "cosmos-sdk/v1/GenesisState";
+  value: GenesisStateAmino;
 }
 /** GenesisState defines the gov module's genesis state. */
 export interface GenesisStateSDKType {

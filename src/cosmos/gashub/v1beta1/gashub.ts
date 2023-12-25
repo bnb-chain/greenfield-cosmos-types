@@ -15,6 +15,17 @@ export interface ParamsProtoMsg {
   value: Uint8Array;
 }
 /** Params defines the parameters for the gashub module. */
+export interface ParamsAmino {
+  /** max_tx_size is the maximum size of a transaction's bytes. */
+  max_tx_size?: string;
+  /** min_gas_per_byte is the minimum gas to be paid per byte of a transaction's */
+  min_gas_per_byte?: string;
+}
+export interface ParamsAminoMsg {
+  type: "cosmos-sdk/x/gashub/Params";
+  value: ParamsAmino;
+}
+/** Params defines the parameters for the gashub module. */
 export interface ParamsSDKType {
   max_tx_size: Long;
   min_gas_per_byte: Long;
@@ -36,6 +47,22 @@ export interface MsgGasParamsProtoMsg {
   value: Uint8Array;
 }
 /** MsgGasParams defines gas consumption for a msg type */
+export interface MsgGasParamsAmino {
+  msg_type_url?: string;
+  /** fixed_type specifies fixed type gas params. */
+  fixed_type?: MsgGasParams_FixedGasParamsAmino;
+  /** grant_type specifies dynamic type gas params for msg/grant. */
+  grant_type?: MsgGasParams_DynamicGasParamsAmino;
+  /** grant_type specifies dynamic type gas params for msg/multiSend. */
+  multi_send_type?: MsgGasParams_DynamicGasParamsAmino;
+  /** grant_type specifies dynamic type gas params for msg/grantAllowance. */
+  grant_allowance_type?: MsgGasParams_DynamicGasParamsAmino;
+}
+export interface MsgGasParamsAminoMsg {
+  type: "cosmos-sdk/MsgGasParams";
+  value: MsgGasParamsAmino;
+}
+/** MsgGasParams defines gas consumption for a msg type */
 export interface MsgGasParamsSDKType {
   msg_type_url: string;
   fixed_type?: MsgGasParams_FixedGasParamsSDKType;
@@ -53,6 +80,15 @@ export interface MsgGasParams_FixedGasParamsProtoMsg {
   value: Uint8Array;
 }
 /** FixedGasParams defines the parameters for fixed gas type. */
+export interface MsgGasParams_FixedGasParamsAmino {
+  /** fixed_gas is the gas cost for a fixed type msg */
+  fixed_gas?: string;
+}
+export interface MsgGasParams_FixedGasParamsAminoMsg {
+  type: "cosmos-sdk/FixedGasParams";
+  value: MsgGasParams_FixedGasParamsAmino;
+}
+/** FixedGasParams defines the parameters for fixed gas type. */
 export interface MsgGasParams_FixedGasParamsSDKType {
   fixed_gas: Long;
 }
@@ -66,6 +102,17 @@ export interface MsgGasParams_DynamicGasParams {
 export interface MsgGasParams_DynamicGasParamsProtoMsg {
   typeUrl: "/cosmos.gashub.v1beta1.DynamicGasParams";
   value: Uint8Array;
+}
+/** DynamicGasParams defines the parameters for dynamic gas type. */
+export interface MsgGasParams_DynamicGasParamsAmino {
+  /** fixed_gas is the base gas cost for a dynamic type msg */
+  fixed_gas?: string;
+  /** gas_per_item is the gas cost for a dynamic type msg per item */
+  gas_per_item?: string;
+}
+export interface MsgGasParams_DynamicGasParamsAminoMsg {
+  type: "cosmos-sdk/DynamicGasParams";
+  value: MsgGasParams_DynamicGasParamsAmino;
 }
 /** DynamicGasParams defines the parameters for dynamic gas type. */
 export interface MsgGasParams_DynamicGasParamsSDKType {

@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./params";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.payment";
@@ -19,6 +19,20 @@ export interface MsgUpdateParamsProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
+export interface MsgUpdateParamsAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /**
+   * params defines the x/payment parameters to update.
+   * NOTE: All parameters must be supplied.
+   */
+  params?: ParamsAmino;
+}
+export interface MsgUpdateParamsAminoMsg {
+  type: "/greenfield.payment.MsgUpdateParams";
+  value: MsgUpdateParamsAmino;
+}
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
   params: ParamsSDKType;
@@ -30,6 +44,12 @@ export interface MsgUpdateParamsResponseProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateParamsResponse defines the response structure for executing a MsgUpdateParams message. */
+export interface MsgUpdateParamsResponseAmino {}
+export interface MsgUpdateParamsResponseAminoMsg {
+  type: "/greenfield.payment.MsgUpdateParamsResponse";
+  value: MsgUpdateParamsResponseAmino;
+}
+/** MsgUpdateParamsResponse defines the response structure for executing a MsgUpdateParams message. */
 export interface MsgUpdateParamsResponseSDKType {}
 export interface MsgCreatePaymentAccount {
   /** creator is the address of the stream account that created the payment account */
@@ -39,6 +59,14 @@ export interface MsgCreatePaymentAccountProtoMsg {
   typeUrl: "/greenfield.payment.MsgCreatePaymentAccount";
   value: Uint8Array;
 }
+export interface MsgCreatePaymentAccountAmino {
+  /** creator is the address of the stream account that created the payment account */
+  creator?: string;
+}
+export interface MsgCreatePaymentAccountAminoMsg {
+  type: "/greenfield.payment.MsgCreatePaymentAccount";
+  value: MsgCreatePaymentAccountAmino;
+}
 export interface MsgCreatePaymentAccountSDKType {
   creator: string;
 }
@@ -46,6 +74,11 @@ export interface MsgCreatePaymentAccountResponse {}
 export interface MsgCreatePaymentAccountResponseProtoMsg {
   typeUrl: "/greenfield.payment.MsgCreatePaymentAccountResponse";
   value: Uint8Array;
+}
+export interface MsgCreatePaymentAccountResponseAmino {}
+export interface MsgCreatePaymentAccountResponseAminoMsg {
+  type: "/greenfield.payment.MsgCreatePaymentAccountResponse";
+  value: MsgCreatePaymentAccountResponseAmino;
 }
 export interface MsgCreatePaymentAccountResponseSDKType {}
 export interface MsgDeposit {
@@ -60,6 +93,18 @@ export interface MsgDepositProtoMsg {
   typeUrl: "/greenfield.payment.MsgDeposit";
   value: Uint8Array;
 }
+export interface MsgDepositAmino {
+  /** creator is the message signer for MsgDeposit and the address of the account to deposit from */
+  creator?: string;
+  /** to is the address of the account to deposit to */
+  to?: string;
+  /** amount is the amount to deposit */
+  amount?: string;
+}
+export interface MsgDepositAminoMsg {
+  type: "/greenfield.payment.MsgDeposit";
+  value: MsgDepositAmino;
+}
 export interface MsgDepositSDKType {
   creator: string;
   to: string;
@@ -69,6 +114,11 @@ export interface MsgDepositResponse {}
 export interface MsgDepositResponseProtoMsg {
   typeUrl: "/greenfield.payment.MsgDepositResponse";
   value: Uint8Array;
+}
+export interface MsgDepositResponseAmino {}
+export interface MsgDepositResponseAminoMsg {
+  type: "/greenfield.payment.MsgDepositResponse";
+  value: MsgDepositResponseAmino;
 }
 export interface MsgDepositResponseSDKType {}
 export interface MsgWithdraw {
@@ -83,6 +133,18 @@ export interface MsgWithdrawProtoMsg {
   typeUrl: "/greenfield.payment.MsgWithdraw";
   value: Uint8Array;
 }
+export interface MsgWithdrawAmino {
+  /** creator is the message signer for MsgWithdraw and the address of the receive account */
+  creator?: string;
+  /** from is the address of the account to withdraw from */
+  from?: string;
+  /** amount is the amount to withdraw */
+  amount?: string;
+}
+export interface MsgWithdrawAminoMsg {
+  type: "/greenfield.payment.MsgWithdraw";
+  value: MsgWithdrawAmino;
+}
 export interface MsgWithdrawSDKType {
   creator: string;
   from: string;
@@ -92,6 +154,11 @@ export interface MsgWithdrawResponse {}
 export interface MsgWithdrawResponseProtoMsg {
   typeUrl: "/greenfield.payment.MsgWithdrawResponse";
   value: Uint8Array;
+}
+export interface MsgWithdrawResponseAmino {}
+export interface MsgWithdrawResponseAminoMsg {
+  type: "/greenfield.payment.MsgWithdrawResponse";
+  value: MsgWithdrawResponseAmino;
 }
 export interface MsgWithdrawResponseSDKType {}
 export interface MsgDisableRefund {
@@ -104,6 +171,16 @@ export interface MsgDisableRefundProtoMsg {
   typeUrl: "/greenfield.payment.MsgDisableRefund";
   value: Uint8Array;
 }
+export interface MsgDisableRefundAmino {
+  /** owner is the message signer for MsgDisableRefund and the address of the payment account owner */
+  owner?: string;
+  /** addr is the address of the payment account to disable refund */
+  addr?: string;
+}
+export interface MsgDisableRefundAminoMsg {
+  type: "/greenfield.payment.MsgDisableRefund";
+  value: MsgDisableRefundAmino;
+}
 export interface MsgDisableRefundSDKType {
   owner: string;
   addr: string;
@@ -112,6 +189,11 @@ export interface MsgDisableRefundResponse {}
 export interface MsgDisableRefundResponseProtoMsg {
   typeUrl: "/greenfield.payment.MsgDisableRefundResponse";
   value: Uint8Array;
+}
+export interface MsgDisableRefundResponseAmino {}
+export interface MsgDisableRefundResponseAminoMsg {
+  type: "/greenfield.payment.MsgDisableRefundResponse";
+  value: MsgDisableRefundResponseAmino;
 }
 export interface MsgDisableRefundResponseSDKType {}
 function createBaseMsgUpdateParams(): MsgUpdateParams {

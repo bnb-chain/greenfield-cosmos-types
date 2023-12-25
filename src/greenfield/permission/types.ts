@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "./common";
+import { Principal, PrincipalAmino, PrincipalSDKType, Statement, StatementAmino, StatementSDKType } from "./common";
 import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from "../resource/types";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import * as _m0 from "protobufjs/minimal";
@@ -26,6 +26,27 @@ export interface Policy {
 export interface PolicyProtoMsg {
   typeUrl: "/greenfield.permission.Policy";
   value: Uint8Array;
+}
+export interface PolicyAmino {
+  /** id is an unique u256 sequence for each policy. It also be used as NFT tokenID */
+  id?: string;
+  /** principal defines the accounts/group which the permission grants to */
+  principal?: PrincipalAmino;
+  /** resource_type defines the type of resource that grants permission for */
+  resource_type?: ResourceType;
+  /** resource_id defines the bucket/object/group id of the resource that grants permission for */
+  resource_id?: string;
+  /** statements defines the details content of the permission, including effect/actions/sub-resources */
+  statements?: StatementAmino[];
+  /**
+   * expiration_time defines the whole expiration time of all the statements.
+   * Notices: Its priority is higher than the expiration time inside the Statement
+   */
+  expiration_time?: string;
+}
+export interface PolicyAminoMsg {
+  type: "/greenfield.permission.Policy";
+  value: PolicyAmino;
 }
 export interface PolicySDKType {
   id: string;
@@ -53,6 +74,19 @@ export interface PolicyGroupProtoMsg {
  * This means that a single resource can only grant permission to 10 groups. The reason for
  * this is to enable on-chain determination of whether an operator has permission within a limited time.
  */
+export interface PolicyGroupAmino {
+  /** items define a pair of policy_id and group_id. Each resource can only grant its own permissions to a limited number of groups */
+  items?: PolicyGroup_ItemAmino[];
+}
+export interface PolicyGroupAminoMsg {
+  type: "/greenfield.permission.PolicyGroup";
+  value: PolicyGroupAmino;
+}
+/**
+ * PolicyGroup refers to a group of policies which grant permission to Group, which is limited to MaxGroupNum (default 10).
+ * This means that a single resource can only grant permission to 10 groups. The reason for
+ * this is to enable on-chain determination of whether an operator has permission within a limited time.
+ */
 export interface PolicyGroupSDKType {
   items: PolicyGroup_ItemSDKType[];
 }
@@ -63,6 +97,14 @@ export interface PolicyGroup_Item {
 export interface PolicyGroup_ItemProtoMsg {
   typeUrl: "/greenfield.permission.Item";
   value: Uint8Array;
+}
+export interface PolicyGroup_ItemAmino {
+  policy_id?: string;
+  group_id?: string;
+}
+export interface PolicyGroup_ItemAminoMsg {
+  type: "/greenfield.permission.Item";
+  value: PolicyGroup_ItemAmino;
 }
 export interface PolicyGroup_ItemSDKType {
   policy_id: string;
@@ -81,6 +123,20 @@ export interface GroupMember {
 export interface GroupMemberProtoMsg {
   typeUrl: "/greenfield.permission.GroupMember";
   value: Uint8Array;
+}
+export interface GroupMemberAmino {
+  /** id is an unique u256 sequence for each group member. It also be used as NFT tokenID */
+  id?: string;
+  /** group_id is the unique id of the group */
+  group_id?: string;
+  /** member is the account address of the member */
+  member?: string;
+  /** expiration_time defines the expiration time of the group member */
+  expiration_time?: string;
+}
+export interface GroupMemberAminoMsg {
+  type: "/greenfield.permission.GroupMember";
+  value: GroupMemberAmino;
 }
 export interface GroupMemberSDKType {
   id: string;

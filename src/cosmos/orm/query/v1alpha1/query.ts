@@ -1,9 +1,9 @@
 //@ts-nocheck
 /* eslint-disable */
-import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../../base/query/v1beta1/pagination";
-import { Any, AnySDKType } from "../../../../google/protobuf/any";
+import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../../base/query/v1beta1/pagination";
+import { Any, AnyAmino, AnySDKType } from "../../../../google/protobuf/any";
 import { Timestamp, TimestampSDKType } from "../../../../google/protobuf/timestamp";
-import { Duration, DurationSDKType } from "../../../../google/protobuf/duration";
+import { Duration, DurationAmino, DurationSDKType } from "../../../../google/protobuf/duration";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, fromJsonTimestamp, base64FromBytes, fromTimestamp, Rpc } from "../../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.orm.query.v1alpha1";
@@ -29,6 +29,27 @@ export interface GetRequestProtoMsg {
   value: Uint8Array;
 }
 /** GetRequest is the Query/Get request type. */
+export interface GetRequestAmino {
+  /** message_name is the fully-qualified message name of the ORM table being queried. */
+  message_name?: string;
+  /**
+   * index is the index fields expression used in orm definitions. If it
+   * is empty, the table's primary key is assumed. If it is non-empty, it must
+   * refer to an unique index.
+   */
+  index?: string;
+  /**
+   * values are the values of the fields corresponding to the requested index.
+   * There must be as many values provided as there are fields in the index and
+   * these values must correspond to the index field types.
+   */
+  values?: IndexValueAmino[];
+}
+export interface GetRequestAminoMsg {
+  type: "cosmos-sdk/GetRequest";
+  value: GetRequestAmino;
+}
+/** GetRequest is the Query/Get request type. */
 export interface GetRequestSDKType {
   message_name: string;
   index: string;
@@ -45,6 +66,18 @@ export interface GetResponse {
 export interface GetResponseProtoMsg {
   typeUrl: "/cosmos.orm.query.v1alpha1.GetResponse";
   value: Uint8Array;
+}
+/** GetResponse is the Query/Get response type. */
+export interface GetResponseAmino {
+  /**
+   * result is the result of the get query. If no value is found, the gRPC
+   * status code NOT_FOUND will be returned.
+   */
+  result?: AnyAmino;
+}
+export interface GetResponseAminoMsg {
+  type: "cosmos-sdk/GetResponse";
+  value: GetResponseAmino;
 }
 /** GetResponse is the Query/Get response type. */
 export interface GetResponseSDKType {
@@ -71,6 +104,26 @@ export interface ListRequestProtoMsg {
   value: Uint8Array;
 }
 /** ListRequest is the Query/List request type. */
+export interface ListRequestAmino {
+  /** message_name is the fully-qualified message name of the ORM table being queried. */
+  message_name?: string;
+  /**
+   * index is the index fields expression used in orm definitions. If it
+   * is empty, the table's primary key is assumed.
+   */
+  index?: string;
+  /** prefix defines a prefix query. */
+  prefix?: ListRequest_PrefixAmino;
+  /** range defines a range query. */
+  range?: ListRequest_RangeAmino;
+  /** pagination is the pagination request. */
+  pagination?: PageRequestAmino;
+}
+export interface ListRequestAminoMsg {
+  type: "cosmos-sdk/ListRequest";
+  value: ListRequestAmino;
+}
+/** ListRequest is the Query/List request type. */
 export interface ListRequestSDKType {
   message_name: string;
   index: string;
@@ -90,6 +143,19 @@ export interface ListRequest_Prefix {
 export interface ListRequest_PrefixProtoMsg {
   typeUrl: "/cosmos.orm.query.v1alpha1.Prefix";
   value: Uint8Array;
+}
+/** Prefix specifies the arguments to a prefix query. */
+export interface ListRequest_PrefixAmino {
+  /**
+   * values specifies the index values for the prefix query.
+   * It is valid to special a partial prefix with fewer values than
+   * the number of fields in the index.
+   */
+  values?: IndexValueAmino[];
+}
+export interface ListRequest_PrefixAminoMsg {
+  type: "cosmos-sdk/Prefix";
+  value: ListRequest_PrefixAmino;
 }
 /** Prefix specifies the arguments to a prefix query. */
 export interface ListRequest_PrefixSDKType {
@@ -115,6 +181,25 @@ export interface ListRequest_RangeProtoMsg {
   value: Uint8Array;
 }
 /** Range specifies the arguments to a range query. */
+export interface ListRequest_RangeAmino {
+  /**
+   * start specifies the starting index values for the range query.
+   * It is valid to provide fewer values than the number of fields in the
+   * index.
+   */
+  start?: IndexValueAmino[];
+  /**
+   * end specifies the inclusive ending index values for the range query.
+   * It is valid to provide fewer values than the number of fields in the
+   * index.
+   */
+  end?: IndexValueAmino[];
+}
+export interface ListRequest_RangeAminoMsg {
+  type: "cosmos-sdk/Range";
+  value: ListRequest_RangeAmino;
+}
+/** Range specifies the arguments to a range query. */
 export interface ListRequest_RangeSDKType {
   start: IndexValueSDKType[];
   end: IndexValueSDKType[];
@@ -129,6 +214,17 @@ export interface ListResponse {
 export interface ListResponseProtoMsg {
   typeUrl: "/cosmos.orm.query.v1alpha1.ListResponse";
   value: Uint8Array;
+}
+/** ListResponse is the Query/List response type. */
+export interface ListResponseAmino {
+  /** results are the results of the query. */
+  results?: AnyAmino[];
+  /** pagination is the pagination response. */
+  pagination?: PageResponseAmino;
+}
+export interface ListResponseAminoMsg {
+  type: "cosmos-sdk/ListResponse";
+  value: ListResponseAmino;
 }
 /** ListResponse is the Query/List response type. */
 export interface ListResponseSDKType {
@@ -163,6 +259,35 @@ export interface IndexValue {
 export interface IndexValueProtoMsg {
   typeUrl: "/cosmos.orm.query.v1alpha1.IndexValue";
   value: Uint8Array;
+}
+/** IndexValue represents the value of a field in an ORM index expression. */
+export interface IndexValueAmino {
+  /**
+   * uint specifies a value for an uint32, fixed32, uint64, or fixed64
+   * index field.
+   */
+  uint?: string;
+  /**
+   * int64 specifies a value for an int32, sfixed32, int64, or sfixed64
+   * index field.
+   */
+  int?: string;
+  /** str specifies a value for a string index field. */
+  str?: string;
+  /** bytes specifies a value for a bytes index field. */
+  bytes?: string;
+  /** enum specifies a value for an enum index field. */
+  enum?: string;
+  /** bool specifies a value for a bool index field. */
+  bool?: boolean;
+  /** timestamp specifies a value for a timestamp index field. */
+  timestamp?: string;
+  /** duration specifies a value for a duration index field. */
+  duration?: DurationAmino;
+}
+export interface IndexValueAminoMsg {
+  type: "cosmos-sdk/IndexValue";
+  value: IndexValueAmino;
 }
 /** IndexValue represents the value of a field in an ORM index expression. */
 export interface IndexValueSDKType {

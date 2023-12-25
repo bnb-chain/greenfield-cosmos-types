@@ -19,6 +19,18 @@ export interface PubKeyProtoMsg {
  * PubKey defines a bls public key
  * Key is the compressed form of the pubkey.
  */
+export interface PubKeyAmino {
+  /** key is the public key in byte form */
+  key?: string;
+}
+export interface PubKeyAminoMsg {
+  type: "cosmos-sdk/PubKey";
+  value: PubKeyAmino;
+}
+/**
+ * PubKey defines a bls public key
+ * Key is the compressed form of the pubkey.
+ */
 export interface PubKeySDKType {
   key: Uint8Array;
 }
@@ -30,6 +42,15 @@ export interface PrivKey {
 export interface PrivKeyProtoMsg {
   typeUrl: "/cosmos.crypto.eth.bls.PrivKey";
   value: Uint8Array;
+}
+/** PrivKey defines a bls private key. */
+export interface PrivKeyAmino {
+  /** key is the private key in byte form */
+  key?: string;
+}
+export interface PrivKeyAminoMsg {
+  type: "cosmos-sdk/PrivKey";
+  value: PrivKeyAmino;
 }
 /** PrivKey defines a bls private key. */
 export interface PrivKeySDKType {

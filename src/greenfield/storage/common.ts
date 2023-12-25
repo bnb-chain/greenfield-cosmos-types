@@ -15,6 +15,7 @@ export enum SourceType {
   UNRECOGNIZED = -1,
 }
 export const SourceTypeSDKType = SourceType;
+export const SourceTypeAmino = SourceType;
 export function sourceTypeFromJSON(object: any): SourceType {
   switch (object) {
     case 0:
@@ -62,6 +63,7 @@ export enum BucketStatus {
   UNRECOGNIZED = -1,
 }
 export const BucketStatusSDKType = BucketStatus;
+export const BucketStatusAmino = BucketStatus;
 export function bucketStatusFromJSON(object: any): BucketStatus {
   switch (object) {
     case 0:
@@ -102,6 +104,7 @@ export enum RedundancyType {
   UNRECOGNIZED = -1,
 }
 export const RedundancyTypeSDKType = RedundancyType;
+export const RedundancyTypeAmino = RedundancyType;
 export function redundancyTypeFromJSON(object: any): RedundancyType {
   switch (object) {
     case 0:
@@ -141,6 +144,7 @@ export enum ObjectStatus {
   UNRECOGNIZED = -1,
 }
 export const ObjectStatusSDKType = ObjectStatus;
+export const ObjectStatusAmino = ObjectStatus;
 export function objectStatusFromJSON(object: any): ObjectStatus {
   switch (object) {
     case 0:
@@ -181,6 +185,7 @@ export enum VisibilityType {
   UNRECOGNIZED = -1,
 }
 export const VisibilityTypeSDKType = VisibilityType;
+export const VisibilityTypeAmino = VisibilityType;
 export function visibilityTypeFromJSON(object: any): VisibilityType {
   switch (object) {
     case 0:
@@ -241,6 +246,24 @@ export interface SecondarySpSealObjectSignDocProtoMsg {
  * Then the primary SP can challenge and slash the secondary SP.
  * So the id of the object is needed to prevent this.
  */
+export interface SecondarySpSealObjectSignDocAmino {
+  chain_id?: string;
+  global_virtual_group_id?: number;
+  object_id?: string;
+  /** checksum is the sha256 hash of slice of integrity hash from secondary sps */
+  checksum?: string;
+}
+export interface SecondarySpSealObjectSignDocAminoMsg {
+  type: "/greenfield.storage.SecondarySpSealObjectSignDoc";
+  value: SecondarySpSealObjectSignDocAmino;
+}
+/**
+ * SecondarySpSealObjectSignDoc used to generate seal signature of secondary SP
+ * If the secondary SP only signs the checksum to declare the object pieces are saved,
+ * it might be reused by the primary SP to fake it's declaration.
+ * Then the primary SP can challenge and slash the secondary SP.
+ * So the id of the object is needed to prevent this.
+ */
 export interface SecondarySpSealObjectSignDocSDKType {
   chain_id: string;
   global_virtual_group_id: number;
@@ -255,6 +278,15 @@ export interface GVGMapping {
 export interface GVGMappingProtoMsg {
   typeUrl: "/greenfield.storage.GVGMapping";
   value: Uint8Array;
+}
+export interface GVGMappingAmino {
+  src_global_virtual_group_id?: number;
+  dst_global_virtual_group_id?: number;
+  secondary_sp_bls_signature?: string;
+}
+export interface GVGMappingAminoMsg {
+  type: "/greenfield.storage.GVGMapping";
+  value: GVGMappingAmino;
 }
 export interface GVGMappingSDKType {
   src_global_virtual_group_id: number;
@@ -271,6 +303,17 @@ export interface SecondarySpMigrationBucketSignDoc {
 export interface SecondarySpMigrationBucketSignDocProtoMsg {
   typeUrl: "/greenfield.storage.SecondarySpMigrationBucketSignDoc";
   value: Uint8Array;
+}
+export interface SecondarySpMigrationBucketSignDocAmino {
+  chain_id?: string;
+  dst_primary_sp_id?: number;
+  src_global_virtual_group_id?: number;
+  dst_global_virtual_group_id?: number;
+  bucket_id?: string;
+}
+export interface SecondarySpMigrationBucketSignDocAminoMsg {
+  type: "/greenfield.storage.SecondarySpMigrationBucketSignDoc";
+  value: SecondarySpMigrationBucketSignDocAmino;
 }
 export interface SecondarySpMigrationBucketSignDocSDKType {
   chain_id: string;
@@ -301,6 +344,29 @@ export interface LocalVirtualGroup {
 export interface LocalVirtualGroupProtoMsg {
   typeUrl: "/greenfield.storage.LocalVirtualGroup";
   value: Uint8Array;
+}
+/**
+ * Local virtual group(LVG) uniquely associated with a global virtual group.
+ * Each bucket maintains a mapping from local virtual group to global virtual group
+ * Each local virtual group is associated with a unique virtual payment account,
+ * where all object fees are streamed to.
+ */
+export interface LocalVirtualGroupAmino {
+  /** id is the identifier of the local virtual group. */
+  id?: number;
+  /** global_virtual_group_id is the identifier of the global virtual group. */
+  global_virtual_group_id?: number;
+  /** stored_size is the size of the stored data in the local virtual group. */
+  stored_size?: string;
+  /**
+   * total_charge_size is the total charged size of the objects in the LVG.
+   * Notice that the minimum unit of charge is 128K
+   */
+  total_charge_size?: string;
+}
+export interface LocalVirtualGroupAminoMsg {
+  type: "/greenfield.storage.LocalVirtualGroup";
+  value: LocalVirtualGroupAmino;
 }
 /**
  * Local virtual group(LVG) uniquely associated with a global virtual group.

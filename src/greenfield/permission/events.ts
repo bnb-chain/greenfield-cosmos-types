@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "./common";
+import { Principal, PrincipalAmino, PrincipalSDKType, Statement, StatementAmino, StatementSDKType } from "./common";
 import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from "../resource/types";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import * as _m0 from "protobufjs/minimal";
@@ -27,6 +27,27 @@ export interface EventPutPolicyProtoMsg {
   typeUrl: "/greenfield.permission.EventPutPolicy";
   value: Uint8Array;
 }
+export interface EventPutPolicyAmino {
+  /** policy_id is an unique u256 sequence for each policy. It also be used as NFT tokenID */
+  policy_id?: string;
+  /** principal defines the accounts/group which the permission grants to */
+  principal?: PrincipalAmino;
+  /** resource_type defines the type of resource that grants permission for */
+  resource_type?: ResourceType;
+  /** resource_id defines the bucket/object/group id of the resource that grants permission for */
+  resource_id?: string;
+  /** statements defines the details content of the permission, include effect/actions/sub-resources */
+  statements?: StatementAmino[];
+  /**
+   * expiration_time defines the whole expiration time of all the statements.
+   * Notices: Its priority is higher than the expiration time inside the Statement
+   */
+  expiration_time?: string;
+}
+export interface EventPutPolicyAminoMsg {
+  type: "/greenfield.permission.EventPutPolicy";
+  value: EventPutPolicyAmino;
+}
 export interface EventPutPolicySDKType {
   policy_id: string;
   principal?: PrincipalSDKType;
@@ -42,6 +63,14 @@ export interface EventDeletePolicy {
 export interface EventDeletePolicyProtoMsg {
   typeUrl: "/greenfield.permission.EventDeletePolicy";
   value: Uint8Array;
+}
+export interface EventDeletePolicyAmino {
+  /** policy_id is an unique u256 sequence for each policy. It also be used as NFT tokenID */
+  policy_id?: string;
+}
+export interface EventDeletePolicyAminoMsg {
+  type: "/greenfield.permission.EventDeletePolicy";
+  value: EventDeletePolicyAmino;
 }
 export interface EventDeletePolicySDKType {
   policy_id: string;

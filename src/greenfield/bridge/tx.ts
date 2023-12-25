@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
-import { Params, ParamsSDKType } from "./params";
+import { Coin, CoinAmino, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.bridge";
@@ -19,6 +19,19 @@ export interface MsgTransferOutProtoMsg {
   value: Uint8Array;
 }
 /** MsgTransferOut is the Msg/TransferOut request type. */
+export interface MsgTransferOutAmino {
+  /** from address */
+  from?: string;
+  /** to address */
+  to?: string;
+  /** transfer token amount */
+  amount?: CoinAmino;
+}
+export interface MsgTransferOutAminoMsg {
+  type: "/greenfield.bridge.MsgTransferOut";
+  value: MsgTransferOutAmino;
+}
+/** MsgTransferOut is the Msg/TransferOut request type. */
 export interface MsgTransferOutSDKType {
   from: string;
   to: string;
@@ -29,6 +42,12 @@ export interface MsgTransferOutResponse {}
 export interface MsgTransferOutResponseProtoMsg {
   typeUrl: "/greenfield.bridge.MsgTransferOutResponse";
   value: Uint8Array;
+}
+/** MsgTransferOutResponse is the Msg/TransferOut response type. */
+export interface MsgTransferOutResponseAmino {}
+export interface MsgTransferOutResponseAminoMsg {
+  type: "/greenfield.bridge.MsgTransferOutResponse";
+  value: MsgTransferOutResponseAmino;
 }
 /** MsgTransferOutResponse is the Msg/TransferOut response type. */
 export interface MsgTransferOutResponseSDKType {}
@@ -48,6 +67,21 @@ export interface MsgUpdateParamsProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
+export interface MsgUpdateParamsAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /**
+   * params defines the x/crosschain parameters to update.
+   * 
+   * NOTE: All parameters must be supplied.
+   */
+  params?: ParamsAmino;
+}
+export interface MsgUpdateParamsAminoMsg {
+  type: "/greenfield.bridge.MsgUpdateParams";
+  value: MsgUpdateParamsAmino;
+}
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
   params: ParamsSDKType;
@@ -60,6 +94,15 @@ export interface MsgUpdateParamsResponse {}
 export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/greenfield.bridge.MsgUpdateParamsResponse";
   value: Uint8Array;
+}
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ */
+export interface MsgUpdateParamsResponseAmino {}
+export interface MsgUpdateParamsResponseAminoMsg {
+  type: "/greenfield.bridge.MsgUpdateParamsResponse";
+  value: MsgUpdateParamsResponseAmino;
 }
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a

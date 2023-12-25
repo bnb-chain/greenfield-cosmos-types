@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { VisibilityType, SourceType, BucketStatus, LocalVirtualGroup, LocalVirtualGroupSDKType, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
+import { VisibilityType, SourceType, BucketStatus, LocalVirtualGroup, LocalVirtualGroupAmino, LocalVirtualGroupSDKType, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.storage";
@@ -36,6 +36,38 @@ export interface BucketInfoProtoMsg {
   typeUrl: "/greenfield.storage.BucketInfo";
   value: Uint8Array;
 }
+export interface BucketInfoAmino {
+  /** owner is the account address of bucket creator, it is also the bucket owner. */
+  owner?: string;
+  /** bucket_name is a globally unique name of bucket */
+  bucket_name?: string;
+  /** visibility defines the highest permissions for bucket. When a bucket is public, everyone can get storage objects in it. */
+  visibility?: VisibilityType;
+  /** id is the unique identification for bucket. */
+  id?: string;
+  /** source_type defines which chain the user should send the bucket management transactions to */
+  source_type?: SourceType;
+  /** create_at define the block timestamp when the bucket created. */
+  create_at?: string;
+  /** payment_address is the address of the payment account */
+  payment_address?: string;
+  /** global_virtual_group_family_id defines the unique id of gvg family */
+  global_virtual_group_family_id?: number;
+  /**
+   * charged_read_quota defines the traffic quota for read in bytes per month.
+   * The available read data for each user is the sum of the free read data provided by SP and
+   * the ChargeReadQuota specified here.
+   */
+  charged_read_quota?: string;
+  /** bucket_status define the status of the bucket. */
+  bucket_status?: BucketStatus;
+  /** tags defines a list of tags the bucket has */
+  tags?: ResourceTagsAmino;
+}
+export interface BucketInfoAminoMsg {
+  type: "/greenfield.storage.BucketInfo";
+  value: BucketInfoAmino;
+}
 export interface BucketInfoSDKType {
   owner: string;
   bucket_name: string;
@@ -62,6 +94,20 @@ export interface InternalBucketInfo {
 export interface InternalBucketInfoProtoMsg {
   typeUrl: "/greenfield.storage.InternalBucketInfo";
   value: Uint8Array;
+}
+export interface InternalBucketInfoAmino {
+  /** the time of the payment price, used to calculate the charge rate of the bucket */
+  price_time?: string;
+  /** the total size of the objects in the bucket, used to calculate the charge rate of the bucket */
+  total_charge_size?: string;
+  /** local_virtual_groups contains all the lvg of this bucket. */
+  local_virtual_groups?: LocalVirtualGroupAmino[];
+  /** next_local_virtual_group_id store the next id used by local virtual group */
+  next_local_virtual_group_id?: number;
+}
+export interface InternalBucketInfoAminoMsg {
+  type: "/greenfield.storage.InternalBucketInfo";
+  value: InternalBucketInfoAmino;
 }
 export interface InternalBucketInfoSDKType {
   price_time: Long;
@@ -107,6 +153,44 @@ export interface ObjectInfoProtoMsg {
   typeUrl: "/greenfield.storage.ObjectInfo";
   value: Uint8Array;
 }
+export interface ObjectInfoAmino {
+  /** owner is the object owner */
+  owner?: string;
+  /** creator is the address of the uploader, it always be same as owner address */
+  creator?: string;
+  /** bucket_name is the name of the bucket */
+  bucket_name?: string;
+  /** object_name is the name of object */
+  object_name?: string;
+  /** id is the unique identifier of object */
+  id?: string;
+  local_virtual_group_id?: number;
+  /** payloadSize is the total size of the object payload */
+  payload_size?: string;
+  /** visibility defines the highest permissions for object. When an object is public, everyone can access it. */
+  visibility?: VisibilityType;
+  /** content_type define the format of the object which should be a standard MIME type. */
+  content_type?: string;
+  /** create_at define the block timestamp when the object is created */
+  create_at?: string;
+  /** object_status define the upload status of the object. */
+  object_status?: ObjectStatus;
+  /** redundancy_type define the type of the redundancy which can be multi-replication or EC. */
+  redundancy_type?: RedundancyType;
+  /** source_type define the source of the object. */
+  source_type?: SourceType;
+  /**
+   * checksums define the root hash of the pieces which stored in a SP.
+   * add omit tag to omit the field when converting to NFT metadata
+   */
+  checksums?: string[];
+  /** tags defines a list of tags the object has */
+  tags?: ResourceTagsAmino;
+}
+export interface ObjectInfoAminoMsg {
+  type: "/greenfield.storage.ObjectInfo";
+  value: ObjectInfoAmino;
+}
 export interface ObjectInfoSDKType {
   owner: string;
   creator: string;
@@ -142,6 +226,24 @@ export interface GroupInfoProtoMsg {
   typeUrl: "/greenfield.storage.GroupInfo";
   value: Uint8Array;
 }
+export interface GroupInfoAmino {
+  /** owner is the owner of the group. It can not changed once it created. */
+  owner?: string;
+  /** group_name is the name of group which is unique under an account. */
+  group_name?: string;
+  /** source_type */
+  source_type?: SourceType;
+  /** id is the unique identifier of group */
+  id?: string;
+  /** extra is used to store extra info for the group */
+  extra?: string;
+  /** tags defines a list of tags the group has */
+  tags?: ResourceTagsAmino;
+}
+export interface GroupInfoAminoMsg {
+  type: "/greenfield.storage.GroupInfo";
+  value: GroupInfoAmino;
+}
 export interface GroupInfoSDKType {
   owner: string;
   group_name: string;
@@ -157,6 +259,14 @@ export interface Trait {
 export interface TraitProtoMsg {
   typeUrl: "/greenfield.storage.Trait";
   value: Uint8Array;
+}
+export interface TraitAmino {
+  trait_type?: string;
+  value?: string;
+}
+export interface TraitAminoMsg {
+  type: "/greenfield.storage.Trait";
+  value: TraitAmino;
 }
 export interface TraitSDKType {
   trait_type: string;
@@ -177,6 +287,22 @@ export interface BucketMetaData {
 export interface BucketMetaDataProtoMsg {
   typeUrl: "/greenfield.storage.BucketMetaData";
   value: Uint8Array;
+}
+export interface BucketMetaDataAmino {
+  /** description */
+  description?: string;
+  /** externalUrl a link to external site to view NFT */
+  external_url?: string;
+  /** name of bucket NFT */
+  bucket_name?: string;
+  /** image is the link to image */
+  image?: string;
+  /** attributes */
+  attributes?: TraitAmino[];
+}
+export interface BucketMetaDataAminoMsg {
+  type: "/greenfield.storage.BucketMetaData";
+  value: BucketMetaDataAmino;
 }
 export interface BucketMetaDataSDKType {
   description: string;
@@ -201,6 +327,22 @@ export interface ObjectMetaDataProtoMsg {
   typeUrl: "/greenfield.storage.ObjectMetaData";
   value: Uint8Array;
 }
+export interface ObjectMetaDataAmino {
+  /** description */
+  description?: string;
+  /** externalUrl a link to external site to view NFT */
+  external_url?: string;
+  /** name of object NFT */
+  object_name?: string;
+  /** image is the link to image */
+  image?: string;
+  /** attributes */
+  attributes?: TraitAmino[];
+}
+export interface ObjectMetaDataAminoMsg {
+  type: "/greenfield.storage.ObjectMetaData";
+  value: ObjectMetaDataAmino;
+}
 export interface ObjectMetaDataSDKType {
   description: string;
   external_url: string;
@@ -224,6 +366,22 @@ export interface GroupMetaDataProtoMsg {
   typeUrl: "/greenfield.storage.GroupMetaData";
   value: Uint8Array;
 }
+export interface GroupMetaDataAmino {
+  /** description */
+  description?: string;
+  /** externalUrl a link to external site to view NFT */
+  external_url?: string;
+  /** name of group NFT */
+  group_name?: string;
+  /** image is the link to image */
+  image?: string;
+  /** attributes */
+  attributes?: TraitAmino[];
+}
+export interface GroupMetaDataAminoMsg {
+  type: "/greenfield.storage.GroupMetaData";
+  value: GroupMetaDataAmino;
+}
 export interface GroupMetaDataSDKType {
   description: string;
   external_url: string;
@@ -239,6 +397,14 @@ export interface IdsProtoMsg {
   typeUrl: "/greenfield.storage.Ids";
   value: Uint8Array;
 }
+export interface IdsAmino {
+  /** ids of the objects or buckets */
+  id?: string[];
+}
+export interface IdsAminoMsg {
+  type: "/greenfield.storage.Ids";
+  value: IdsAmino;
+}
 export interface IdsSDKType {
   id: string[];
 }
@@ -250,6 +416,15 @@ export interface DeleteInfo {
 export interface DeleteInfoProtoMsg {
   typeUrl: "/greenfield.storage.DeleteInfo";
   value: Uint8Array;
+}
+export interface DeleteInfoAmino {
+  bucket_ids?: IdsAmino;
+  object_ids?: IdsAmino;
+  group_ids?: IdsAmino;
+}
+export interface DeleteInfoAminoMsg {
+  type: "/greenfield.storage.DeleteInfo";
+  value: DeleteInfoAmino;
 }
 export interface DeleteInfoSDKType {
   bucket_ids?: IdsSDKType;
@@ -267,6 +442,17 @@ export interface MigrationBucketInfoProtoMsg {
   typeUrl: "/greenfield.storage.MigrationBucketInfo";
   value: Uint8Array;
 }
+export interface MigrationBucketInfoAmino {
+  src_sp_id?: number;
+  src_global_virtual_group_family_id?: number;
+  dst_sp_id?: number;
+  /** id is the unique identifier of bucket */
+  bucket_id?: string;
+}
+export interface MigrationBucketInfoAminoMsg {
+  type: "/greenfield.storage.MigrationBucketInfo";
+  value: MigrationBucketInfoAmino;
+}
 export interface MigrationBucketInfoSDKType {
   src_sp_id: number;
   src_global_virtual_group_family_id: number;
@@ -281,6 +467,14 @@ export interface ResourceTagsProtoMsg {
   typeUrl: "/greenfield.storage.ResourceTags";
   value: Uint8Array;
 }
+export interface ResourceTagsAmino {
+  /** tags defines a list of tags the resource has */
+  tags?: ResourceTags_TagAmino[];
+}
+export interface ResourceTagsAminoMsg {
+  type: "/greenfield.storage.ResourceTags";
+  value: ResourceTagsAmino;
+}
 export interface ResourceTagsSDKType {
   tags: ResourceTags_TagSDKType[];
 }
@@ -291,6 +485,14 @@ export interface ResourceTags_Tag {
 export interface ResourceTags_TagProtoMsg {
   typeUrl: "/greenfield.storage.Tag";
   value: Uint8Array;
+}
+export interface ResourceTags_TagAmino {
+  key?: string;
+  value?: string;
+}
+export interface ResourceTags_TagAminoMsg {
+  type: "/greenfield.storage.Tag";
+  value: ResourceTags_TagAmino;
 }
 export interface ResourceTags_TagSDKType {
   key: string;

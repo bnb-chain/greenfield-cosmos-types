@@ -1,8 +1,8 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
-import { Approval, ApprovalSDKType } from "../common/approval";
-import { Params, ParamsSDKType } from "./params";
+import { Coin, CoinAmino, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
+import { Approval, ApprovalAmino, ApprovalSDKType } from "../common/approval";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.virtualgroup";
@@ -21,6 +21,20 @@ export interface MsgUpdateParamsProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
+export interface MsgUpdateParamsAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /**
+   * params defines the x/virtualgroup parameters to update.
+   * NOTE: All parameters must be supplied.
+   */
+  params?: ParamsAmino;
+}
+export interface MsgUpdateParamsAminoMsg {
+  type: "/greenfield.virtualgroup.MsgUpdateParams";
+  value: MsgUpdateParamsAmino;
+}
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
   params: ParamsSDKType;
@@ -33,6 +47,15 @@ export interface MsgUpdateParamsResponse {}
 export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgUpdateParamsResponse";
   value: Uint8Array;
+}
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ */
+export interface MsgUpdateParamsResponseAmino {}
+export interface MsgUpdateParamsResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgUpdateParamsResponse";
+  value: MsgUpdateParamsResponseAmino;
 }
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
@@ -56,6 +79,23 @@ export interface MsgCreateGlobalVirtualGroupProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgCreateGlobalVirtualGroup";
   value: Uint8Array;
 }
+export interface MsgCreateGlobalVirtualGroupAmino {
+  /** storage_provider defines the operator account address of the storage provider who create the global virtual group. */
+  storage_provider?: string;
+  /** family_id is the identifier for the virtual group's family. */
+  family_id?: number;
+  /** secondary_sp_id is a list of secondary storage provider IDs associated with the virtual group. */
+  secondary_sp_ids?: number[];
+  /**
+   * total_deposit is the total deposit amount required for the virtual group.
+   * The tokens needs deposited and the size of storage are correlated.
+   */
+  deposit?: CoinAmino;
+}
+export interface MsgCreateGlobalVirtualGroupAminoMsg {
+  type: "/greenfield.virtualgroup.MsgCreateGlobalVirtualGroup";
+  value: MsgCreateGlobalVirtualGroupAmino;
+}
 export interface MsgCreateGlobalVirtualGroupSDKType {
   storage_provider: string;
   family_id: number;
@@ -66,6 +106,11 @@ export interface MsgCreateGlobalVirtualGroupResponse {}
 export interface MsgCreateGlobalVirtualGroupResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgCreateGlobalVirtualGroupResponse";
   value: Uint8Array;
+}
+export interface MsgCreateGlobalVirtualGroupResponseAmino {}
+export interface MsgCreateGlobalVirtualGroupResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgCreateGlobalVirtualGroupResponse";
+  value: MsgCreateGlobalVirtualGroupResponseAmino;
 }
 export interface MsgCreateGlobalVirtualGroupResponseSDKType {}
 export interface MsgDeleteGlobalVirtualGroup {
@@ -78,6 +123,16 @@ export interface MsgDeleteGlobalVirtualGroupProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgDeleteGlobalVirtualGroup";
   value: Uint8Array;
 }
+export interface MsgDeleteGlobalVirtualGroupAmino {
+  /** storage_provider defines the operator account address of the storage provider who delete the global virtual group. */
+  storage_provider?: string;
+  /** global_virtual_group_id is the identifier of the global virtual group. */
+  global_virtual_group_id?: number;
+}
+export interface MsgDeleteGlobalVirtualGroupAminoMsg {
+  type: "/greenfield.virtualgroup.MsgDeleteGlobalVirtualGroup";
+  value: MsgDeleteGlobalVirtualGroupAmino;
+}
 export interface MsgDeleteGlobalVirtualGroupSDKType {
   storage_provider: string;
   global_virtual_group_id: number;
@@ -86,6 +141,11 @@ export interface MsgDeleteGlobalVirtualGroupResponse {}
 export interface MsgDeleteGlobalVirtualGroupResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgDeleteGlobalVirtualGroupResponse";
   value: Uint8Array;
+}
+export interface MsgDeleteGlobalVirtualGroupResponseAmino {}
+export interface MsgDeleteGlobalVirtualGroupResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgDeleteGlobalVirtualGroupResponse";
+  value: MsgDeleteGlobalVirtualGroupResponseAmino;
 }
 export interface MsgDeleteGlobalVirtualGroupResponseSDKType {}
 export interface MsgDeposit {
@@ -100,6 +160,18 @@ export interface MsgDepositProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgDeposit";
   value: Uint8Array;
 }
+export interface MsgDepositAmino {
+  /** storage_provider defines the operator/funding account address of the storage provider who deposit to the global virtual group. */
+  storage_provider?: string;
+  /** global_virtual_group_id is the identifier of the global virtual group. */
+  global_virtual_group_id?: number;
+  /** deposit is the amount of tokens being deposited for the global virtual group. */
+  deposit?: CoinAmino;
+}
+export interface MsgDepositAminoMsg {
+  type: "/greenfield.virtualgroup.MsgDeposit";
+  value: MsgDepositAmino;
+}
 export interface MsgDepositSDKType {
   storage_provider: string;
   global_virtual_group_id: number;
@@ -109,6 +181,11 @@ export interface MsgDepositResponse {}
 export interface MsgDepositResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgDepositResponse";
   value: Uint8Array;
+}
+export interface MsgDepositResponseAmino {}
+export interface MsgDepositResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgDepositResponse";
+  value: MsgDepositResponseAmino;
 }
 export interface MsgDepositResponseSDKType {}
 export interface MsgWithdraw {
@@ -126,6 +203,21 @@ export interface MsgWithdrawProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgWithdraw";
   value: Uint8Array;
 }
+export interface MsgWithdrawAmino {
+  /** storage_provider defines the operator/funding account address of the storage provider who withdraw from the global virtual group. */
+  storage_provider?: string;
+  /** global_virtual_group_id is the identifier of the global virtual group. */
+  global_virtual_group_id?: number;
+  /**
+   * withdraw is the amount of coins to be withdrawn.
+   * The amount needs to be smaller than stored_size * storage_staking_price
+   */
+  withdraw?: CoinAmino;
+}
+export interface MsgWithdrawAminoMsg {
+  type: "/greenfield.virtualgroup.MsgWithdraw";
+  value: MsgWithdrawAmino;
+}
 export interface MsgWithdrawSDKType {
   storage_provider: string;
   global_virtual_group_id: number;
@@ -135,6 +227,11 @@ export interface MsgWithdrawResponse {}
 export interface MsgWithdrawResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgWithdrawResponse";
   value: Uint8Array;
+}
+export interface MsgWithdrawResponseAmino {}
+export interface MsgWithdrawResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgWithdrawResponse";
+  value: MsgWithdrawResponseAmino;
 }
 export interface MsgWithdrawResponseSDKType {}
 export interface MsgSwapOut {
@@ -163,6 +260,32 @@ export interface MsgSwapOutProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgSwapOut";
   value: Uint8Array;
 }
+export interface MsgSwapOutAmino {
+  /** storage_provider defines the operator account address of the storage provider who want to swap out from the global virtual group. */
+  storage_provider?: string;
+  /**
+   * virtual_group_family_id is the identifier of the virtual group family.
+   * if it set to non-zero, it represents that the operator swap out as the primary storage provider
+   * it it set to zero, it represents that the operator swap out as the secondary storage provider.
+   */
+  global_virtual_group_family_id?: number;
+  /**
+   * global_virtual_group_ids is a list of global virtual group IDs associated with the swap out.
+   * It allows to be empty only when the operator is the primary storage provider.
+   */
+  global_virtual_group_ids?: number[];
+  /** successor_sp_id is the unique id of the successor storage provider. */
+  successor_sp_id?: number;
+  /**
+   * approval includes an expiration time and a signature.
+   * The fields to be signed with contains the necessary information of the successor.
+   */
+  successor_sp_approval?: ApprovalAmino;
+}
+export interface MsgSwapOutAminoMsg {
+  type: "/greenfield.virtualgroup.MsgSwapOut";
+  value: MsgSwapOutAmino;
+}
 export interface MsgSwapOutSDKType {
   storage_provider: string;
   global_virtual_group_family_id: number;
@@ -174,6 +297,11 @@ export interface MsgSwapOutResponse {}
 export interface MsgSwapOutResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgSwapOutResponse";
   value: Uint8Array;
+}
+export interface MsgSwapOutResponseAmino {}
+export interface MsgSwapOutResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgSwapOutResponse";
+  value: MsgSwapOutResponseAmino;
 }
 export interface MsgSwapOutResponseSDKType {}
 export interface MsgCompleteSwapOut {
@@ -195,6 +323,25 @@ export interface MsgCompleteSwapOutProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapOut";
   value: Uint8Array;
 }
+export interface MsgCompleteSwapOutAmino {
+  /** storage_provider defines the operator account address of the storage provider who complete swap out task. */
+  storage_provider?: string;
+  /**
+   * virtual_group_family_id is the identifier of the virtual group family.
+   * if it set to non-zero, it represents that the operator swap out as the primary storage provider
+   * it it set to zero, it represents that the operator swap out as the secondary storage provider.
+   */
+  global_virtual_group_family_id?: number;
+  /**
+   * global_virtual_group_ids is a list of global virtual group IDs associated with the swap out.
+   * It allows to be empty only when the operator is the primary storage provider.
+   */
+  global_virtual_group_ids?: number[];
+}
+export interface MsgCompleteSwapOutAminoMsg {
+  type: "/greenfield.virtualgroup.MsgCompleteSwapOut";
+  value: MsgCompleteSwapOutAmino;
+}
 export interface MsgCompleteSwapOutSDKType {
   storage_provider: string;
   global_virtual_group_family_id: number;
@@ -204,6 +351,11 @@ export interface MsgCompleteSwapOutResponse {}
 export interface MsgCompleteSwapOutResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapOutResponse";
   value: Uint8Array;
+}
+export interface MsgCompleteSwapOutResponseAmino {}
+export interface MsgCompleteSwapOutResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgCompleteSwapOutResponse";
+  value: MsgCompleteSwapOutResponseAmino;
 }
 export interface MsgCompleteSwapOutResponseSDKType {}
 export interface MsgCancelSwapOut {
@@ -225,6 +377,25 @@ export interface MsgCancelSwapOutProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgCancelSwapOut";
   value: Uint8Array;
 }
+export interface MsgCancelSwapOutAmino {
+  /** storage_provider defines the operator account address of the storage provider who cancel the swap out task. */
+  storage_provider?: string;
+  /**
+   * virtual_group_family_id is the identifier of the virtual group family.
+   * if it set to non-zero, it represents that the operator swap out as the primary storage provider
+   * it it set to zero, it represents that the operator swap out as the secondary storage provider.
+   */
+  global_virtual_group_family_id?: number;
+  /**
+   * global_virtual_group_ids is a list of global virtual group IDs associated with the swap out.
+   * It allows to be empty only when the operator is the primary storage provider.
+   */
+  global_virtual_group_ids?: number[];
+}
+export interface MsgCancelSwapOutAminoMsg {
+  type: "/greenfield.virtualgroup.MsgCancelSwapOut";
+  value: MsgCancelSwapOutAmino;
+}
 export interface MsgCancelSwapOutSDKType {
   storage_provider: string;
   global_virtual_group_family_id: number;
@@ -234,6 +405,11 @@ export interface MsgCancelSwapOutResponse {}
 export interface MsgCancelSwapOutResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgCancelSwapOutResponse";
   value: Uint8Array;
+}
+export interface MsgCancelSwapOutResponseAmino {}
+export interface MsgCancelSwapOutResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgCancelSwapOutResponse";
+  value: MsgCancelSwapOutResponseAmino;
 }
 export interface MsgCancelSwapOutResponseSDKType {}
 /**
@@ -261,6 +437,26 @@ export interface MsgSettleProtoMsg {
  * Firstly, the handler will do stream settlement for the payment account; and
  * secondly, the income will be distributed to related storage providers.
  */
+export interface MsgSettleAmino {
+  /**
+   * storage_provider defines the account address who initiates the settle request.
+   * After Pampas upgrade, not only storage provider, anyone can submit this message.
+   */
+  storage_provider?: string;
+  /** global_virtual_group_family_id is the identifier of the global virtual group family. */
+  global_virtual_group_family_id?: number;
+  /** global_virtual_group_id is the identifier of the global virtual group. */
+  global_virtual_group_ids?: number[];
+}
+export interface MsgSettleAminoMsg {
+  type: "/greenfield.virtualgroup.MsgSettle";
+  value: MsgSettleAmino;
+}
+/**
+ * MsgSettle define the message for settling storage income of GVG family or several GVGs.
+ * Firstly, the handler will do stream settlement for the payment account; and
+ * secondly, the income will be distributed to related storage providers.
+ */
 export interface MsgSettleSDKType {
   storage_provider: string;
   global_virtual_group_family_id: number;
@@ -271,6 +467,11 @@ export interface MsgSettleResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgSettleResponse";
   value: Uint8Array;
 }
+export interface MsgSettleResponseAmino {}
+export interface MsgSettleResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgSettleResponse";
+  value: MsgSettleResponseAmino;
+}
 export interface MsgSettleResponseSDKType {}
 export interface MsgStorageProviderExit {
   /** storage_provider defines the operator account address of the storage provider who want to exit from the greenfield storage network. */
@@ -280,6 +481,14 @@ export interface MsgStorageProviderExitProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgStorageProviderExit";
   value: Uint8Array;
 }
+export interface MsgStorageProviderExitAmino {
+  /** storage_provider defines the operator account address of the storage provider who want to exit from the greenfield storage network. */
+  storage_provider?: string;
+}
+export interface MsgStorageProviderExitAminoMsg {
+  type: "/greenfield.virtualgroup.MsgStorageProviderExit";
+  value: MsgStorageProviderExitAmino;
+}
 export interface MsgStorageProviderExitSDKType {
   storage_provider: string;
 }
@@ -287,6 +496,11 @@ export interface MsgStorageProviderExitResponse {}
 export interface MsgStorageProviderExitResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgStorageProviderExitResponse";
   value: Uint8Array;
+}
+export interface MsgStorageProviderExitResponseAmino {}
+export interface MsgStorageProviderExitResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgStorageProviderExitResponse";
+  value: MsgStorageProviderExitResponseAmino;
 }
 export interface MsgStorageProviderExitResponseSDKType {}
 export interface MsgCompleteStorageProviderExit {
@@ -297,6 +511,14 @@ export interface MsgCompleteStorageProviderExitProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgCompleteStorageProviderExit";
   value: Uint8Array;
 }
+export interface MsgCompleteStorageProviderExitAmino {
+  /** storage_provider defines the operator account address of the storage provider who want to exit from the greenfield storage network. */
+  storage_provider?: string;
+}
+export interface MsgCompleteStorageProviderExitAminoMsg {
+  type: "/greenfield.virtualgroup.MsgCompleteStorageProviderExit";
+  value: MsgCompleteStorageProviderExitAmino;
+}
 export interface MsgCompleteStorageProviderExitSDKType {
   storage_provider: string;
 }
@@ -304,6 +526,11 @@ export interface MsgCompleteStorageProviderExitResponse {}
 export interface MsgCompleteStorageProviderExitResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgCompleteStorageProviderExitResponse";
   value: Uint8Array;
+}
+export interface MsgCompleteStorageProviderExitResponseAmino {}
+export interface MsgCompleteStorageProviderExitResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgCompleteStorageProviderExitResponse";
+  value: MsgCompleteStorageProviderExitResponseAmino;
 }
 export interface MsgCompleteStorageProviderExitResponseSDKType {}
 function createBaseMsgUpdateParams(): MsgUpdateParams {

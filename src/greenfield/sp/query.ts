@@ -1,8 +1,8 @@
 //@ts-nocheck
 /* eslint-disable */
-import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
-import { Params, ParamsSDKType } from "./params";
-import { StorageProvider, StorageProviderSDKType, SpStoragePrice, SpStoragePriceSDKType, GlobalSpStorePrice, GlobalSpStorePriceSDKType, MaintenanceRecord, MaintenanceRecordSDKType } from "./types";
+import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
+import { StorageProvider, StorageProviderAmino, StorageProviderSDKType, SpStoragePrice, SpStoragePriceAmino, SpStoragePriceSDKType, GlobalSpStorePrice, GlobalSpStorePriceAmino, GlobalSpStorePriceSDKType, MaintenanceRecord, MaintenanceRecordAmino, MaintenanceRecordSDKType } from "./types";
 import { Long, DeepPartial, Exact, isSet, Rpc } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.sp";
@@ -11,6 +11,12 @@ export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {
   typeUrl: "/greenfield.sp.QueryParamsRequest";
   value: Uint8Array;
+}
+/** QueryParamsRequest is request type for the Query/Params RPC method. */
+export interface QueryParamsRequestAmino {}
+export interface QueryParamsRequestAminoMsg {
+  type: "/greenfield.sp.QueryParamsRequest";
+  value: QueryParamsRequestAmino;
 }
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
@@ -24,6 +30,15 @@ export interface QueryParamsResponseProtoMsg {
   value: Uint8Array;
 }
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
+export interface QueryParamsResponseAmino {
+  /** params holds all the parameters of this module. */
+  params?: ParamsAmino;
+}
+export interface QueryParamsResponseAminoMsg {
+  type: "/greenfield.sp.QueryParamsResponse";
+  value: QueryParamsResponseAmino;
+}
+/** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
   params: ParamsSDKType;
 }
@@ -34,6 +49,14 @@ export interface QueryStorageProvidersRequest {
 export interface QueryStorageProvidersRequestProtoMsg {
   typeUrl: "/greenfield.sp.QueryStorageProvidersRequest";
   value: Uint8Array;
+}
+export interface QueryStorageProvidersRequestAmino {
+  /** pagination defines an optional pagination for the request. */
+  pagination?: PageRequestAmino;
+}
+export interface QueryStorageProvidersRequestAminoMsg {
+  type: "/greenfield.sp.QueryStorageProvidersRequest";
+  value: QueryStorageProvidersRequestAmino;
 }
 export interface QueryStorageProvidersRequestSDKType {
   pagination?: PageRequestSDKType;
@@ -47,6 +70,15 @@ export interface QueryStorageProvidersResponseProtoMsg {
   typeUrl: "/greenfield.sp.QueryStorageProvidersResponse";
   value: Uint8Array;
 }
+export interface QueryStorageProvidersResponseAmino {
+  sps?: StorageProviderAmino[];
+  /** pagination defines the pagination in the response. */
+  pagination?: PageResponseAmino;
+}
+export interface QueryStorageProvidersResponseAminoMsg {
+  type: "/greenfield.sp.QueryStorageProvidersResponse";
+  value: QueryStorageProvidersResponseAmino;
+}
 export interface QueryStorageProvidersResponseSDKType {
   sps: StorageProviderSDKType[];
   pagination?: PageResponseSDKType;
@@ -59,6 +91,14 @@ export interface QuerySpStoragePriceRequestProtoMsg {
   typeUrl: "/greenfield.sp.QuerySpStoragePriceRequest";
   value: Uint8Array;
 }
+export interface QuerySpStoragePriceRequestAmino {
+  /** operator address of sp */
+  sp_addr?: string;
+}
+export interface QuerySpStoragePriceRequestAminoMsg {
+  type: "/greenfield.sp.QuerySpStoragePriceRequest";
+  value: QuerySpStoragePriceRequestAmino;
+}
 export interface QuerySpStoragePriceRequestSDKType {
   sp_addr: string;
 }
@@ -68,6 +108,13 @@ export interface QuerySpStoragePriceResponse {
 export interface QuerySpStoragePriceResponseProtoMsg {
   typeUrl: "/greenfield.sp.QuerySpStoragePriceResponse";
   value: Uint8Array;
+}
+export interface QuerySpStoragePriceResponseAmino {
+  sp_storage_price?: SpStoragePriceAmino;
+}
+export interface QuerySpStoragePriceResponseAminoMsg {
+  type: "/greenfield.sp.QuerySpStoragePriceResponse";
+  value: QuerySpStoragePriceResponseAmino;
 }
 export interface QuerySpStoragePriceResponseSDKType {
   sp_storage_price: SpStoragePriceSDKType;
@@ -80,6 +127,14 @@ export interface QueryGlobalSpStorePriceByTimeRequestProtoMsg {
   typeUrl: "/greenfield.sp.QueryGlobalSpStorePriceByTimeRequest";
   value: Uint8Array;
 }
+export interface QueryGlobalSpStorePriceByTimeRequestAmino {
+  /** unix timestamp in seconds. If it's 0, it will return the latest price. */
+  timestamp?: string;
+}
+export interface QueryGlobalSpStorePriceByTimeRequestAminoMsg {
+  type: "/greenfield.sp.QueryGlobalSpStorePriceByTimeRequest";
+  value: QueryGlobalSpStorePriceByTimeRequestAmino;
+}
 export interface QueryGlobalSpStorePriceByTimeRequestSDKType {
   timestamp: Long;
 }
@@ -89,6 +144,13 @@ export interface QueryGlobalSpStorePriceByTimeResponse {
 export interface QueryGlobalSpStorePriceByTimeResponseProtoMsg {
   typeUrl: "/greenfield.sp.QueryGlobalSpStorePriceByTimeResponse";
   value: Uint8Array;
+}
+export interface QueryGlobalSpStorePriceByTimeResponseAmino {
+  global_sp_store_price?: GlobalSpStorePriceAmino;
+}
+export interface QueryGlobalSpStorePriceByTimeResponseAminoMsg {
+  type: "/greenfield.sp.QueryGlobalSpStorePriceByTimeResponse";
+  value: QueryGlobalSpStorePriceByTimeResponseAmino;
 }
 export interface QueryGlobalSpStorePriceByTimeResponseSDKType {
   global_sp_store_price: GlobalSpStorePriceSDKType;
@@ -100,6 +162,13 @@ export interface QueryStorageProviderRequestProtoMsg {
   typeUrl: "/greenfield.sp.QueryStorageProviderRequest";
   value: Uint8Array;
 }
+export interface QueryStorageProviderRequestAmino {
+  id?: number;
+}
+export interface QueryStorageProviderRequestAminoMsg {
+  type: "/greenfield.sp.QueryStorageProviderRequest";
+  value: QueryStorageProviderRequestAmino;
+}
 export interface QueryStorageProviderRequestSDKType {
   id: number;
 }
@@ -109,6 +178,13 @@ export interface QueryStorageProviderResponse {
 export interface QueryStorageProviderResponseProtoMsg {
   typeUrl: "/greenfield.sp.QueryStorageProviderResponse";
   value: Uint8Array;
+}
+export interface QueryStorageProviderResponseAmino {
+  storageProvider?: StorageProviderAmino;
+}
+export interface QueryStorageProviderResponseAminoMsg {
+  type: "/greenfield.sp.QueryStorageProviderResponse";
+  value: QueryStorageProviderResponseAmino;
 }
 export interface QueryStorageProviderResponseSDKType {
   storageProvider?: StorageProviderSDKType;
@@ -120,6 +196,13 @@ export interface QueryStorageProviderByOperatorAddressRequestProtoMsg {
   typeUrl: "/greenfield.sp.QueryStorageProviderByOperatorAddressRequest";
   value: Uint8Array;
 }
+export interface QueryStorageProviderByOperatorAddressRequestAmino {
+  operator_address?: string;
+}
+export interface QueryStorageProviderByOperatorAddressRequestAminoMsg {
+  type: "/greenfield.sp.QueryStorageProviderByOperatorAddressRequest";
+  value: QueryStorageProviderByOperatorAddressRequestAmino;
+}
 export interface QueryStorageProviderByOperatorAddressRequestSDKType {
   operator_address: string;
 }
@@ -129,6 +212,13 @@ export interface QueryStorageProviderByOperatorAddressResponse {
 export interface QueryStorageProviderByOperatorAddressResponseProtoMsg {
   typeUrl: "/greenfield.sp.QueryStorageProviderByOperatorAddressResponse";
   value: Uint8Array;
+}
+export interface QueryStorageProviderByOperatorAddressResponseAmino {
+  storageProvider?: StorageProviderAmino;
+}
+export interface QueryStorageProviderByOperatorAddressResponseAminoMsg {
+  type: "/greenfield.sp.QueryStorageProviderByOperatorAddressResponse";
+  value: QueryStorageProviderByOperatorAddressResponseAmino;
 }
 export interface QueryStorageProviderByOperatorAddressResponseSDKType {
   storageProvider?: StorageProviderSDKType;
@@ -140,6 +230,13 @@ export interface QueryStorageProviderMaintenanceRecordsRequestProtoMsg {
   typeUrl: "/greenfield.sp.QueryStorageProviderMaintenanceRecordsRequest";
   value: Uint8Array;
 }
+export interface QueryStorageProviderMaintenanceRecordsRequestAmino {
+  operator_address?: string;
+}
+export interface QueryStorageProviderMaintenanceRecordsRequestAminoMsg {
+  type: "/greenfield.sp.QueryStorageProviderMaintenanceRecordsRequest";
+  value: QueryStorageProviderMaintenanceRecordsRequestAmino;
+}
 export interface QueryStorageProviderMaintenanceRecordsRequestSDKType {
   operator_address: string;
 }
@@ -149,6 +246,13 @@ export interface QueryStorageProviderMaintenanceRecordsResponse {
 export interface QueryStorageProviderMaintenanceRecordsResponseProtoMsg {
   typeUrl: "/greenfield.sp.QueryStorageProviderMaintenanceRecordsResponse";
   value: Uint8Array;
+}
+export interface QueryStorageProviderMaintenanceRecordsResponseAmino {
+  records?: MaintenanceRecordAmino[];
+}
+export interface QueryStorageProviderMaintenanceRecordsResponseAminoMsg {
+  type: "/greenfield.sp.QueryStorageProviderMaintenanceRecordsResponse";
+  value: QueryStorageProviderMaintenanceRecordsResponseAmino;
 }
 export interface QueryStorageProviderMaintenanceRecordsResponseSDKType {
   records: MaintenanceRecordSDKType[];

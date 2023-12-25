@@ -16,6 +16,7 @@ export enum StreamAccountStatus {
   UNRECOGNIZED = -1,
 }
 export const StreamAccountStatusSDKType = StreamAccountStatus;
+export const StreamAccountStatusAmino = StreamAccountStatus;
 export function streamAccountStatusFromJSON(object: any): StreamAccountStatus {
   switch (object) {
     case 0:
@@ -73,6 +74,39 @@ export interface StreamRecord {
 export interface StreamRecordProtoMsg {
   typeUrl: "/greenfield.payment.StreamRecord";
   value: Uint8Array;
+}
+/** Stream Payment Record of a stream account */
+export interface StreamRecordAmino {
+  /** account address */
+  account?: string;
+  /** latest update timestamp of the stream record */
+  crud_timestamp?: string;
+  /**
+   * The per-second rate that an account's balance is changing.
+   * It is the sum of the account's inbound and outbound flow rates.
+   */
+  netflow_rate?: string;
+  /** The balance of the stream account at the latest CRUD timestamp. */
+  static_balance?: string;
+  /**
+   * reserved balance of the stream account
+   * If the netflow rate is negative, the reserved balance is `netflow_rate * reserve_time`
+   */
+  buffer_balance?: string;
+  /** the locked balance of the stream account after it puts a new object and before the object is sealed */
+  lock_balance?: string;
+  /** the status of the stream account */
+  status?: StreamAccountStatus;
+  /** the unix timestamp when the stream account will be settled */
+  settle_timestamp?: string;
+  /** the count of its out flows */
+  out_flow_count?: string;
+  /** the frozen netflow rate, which is used when resuming stream account */
+  frozen_netflow_rate?: string;
+}
+export interface StreamRecordAminoMsg {
+  type: "/greenfield.payment.StreamRecord";
+  value: StreamRecordAmino;
 }
 /** Stream Payment Record of a stream account */
 export interface StreamRecordSDKType {

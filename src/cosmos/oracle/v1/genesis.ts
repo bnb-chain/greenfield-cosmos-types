@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./oracle";
+import { Params, ParamsAmino, ParamsSDKType } from "./oracle";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.oracle.v1";
@@ -12,6 +12,15 @@ export interface GenesisState {
 export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.oracle.v1.GenesisState";
   value: Uint8Array;
+}
+/** GenesisState defines the oracle module's genesis state. */
+export interface GenesisStateAmino {
+  /** params defines all the parameters of related to oracle module. */
+  params?: ParamsAmino;
+}
+export interface GenesisStateAminoMsg {
+  type: "cosmos-sdk/GenesisState";
+  value: GenesisStateAmino;
 }
 /** GenesisState defines the oracle module's genesis state. */
 export interface GenesisStateSDKType {

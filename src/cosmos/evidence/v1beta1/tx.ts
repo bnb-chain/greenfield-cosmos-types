@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Any, AnySDKType } from "../../../google/protobuf/any";
+import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.evidence.v1beta1";
@@ -12,11 +12,28 @@ export interface MsgSubmitEvidence {
   /** submitter is the signer account address of evidence. */
   submitter: string;
   /** evidence defines the evidence of misbehavior. */
-  evidence?: (Any) | undefined;
+  evidence?: Any | undefined;
 }
 export interface MsgSubmitEvidenceProtoMsg {
   typeUrl: "/cosmos.evidence.v1beta1.MsgSubmitEvidence";
   value: Uint8Array;
+}
+export type MsgSubmitEvidenceEncoded = Omit<MsgSubmitEvidence, "evidence"> & {
+  /** evidence defines the evidence of misbehavior. */evidence?: AnyProtoMsg | undefined;
+};
+/**
+ * MsgSubmitEvidence represents a message that supports submitting arbitrary
+ * Evidence of misbehavior such as equivocation or counterfactual signing.
+ */
+export interface MsgSubmitEvidenceAmino {
+  /** submitter is the signer account address of evidence. */
+  submitter?: string;
+  /** evidence defines the evidence of misbehavior. */
+  evidence?: AnyAmino;
+}
+export interface MsgSubmitEvidenceAminoMsg {
+  type: "cosmos-sdk/MsgSubmitEvidence";
+  value: MsgSubmitEvidenceAmino;
 }
 /**
  * MsgSubmitEvidence represents a message that supports submitting arbitrary
@@ -34,6 +51,15 @@ export interface MsgSubmitEvidenceResponse {
 export interface MsgSubmitEvidenceResponseProtoMsg {
   typeUrl: "/cosmos.evidence.v1beta1.MsgSubmitEvidenceResponse";
   value: Uint8Array;
+}
+/** MsgSubmitEvidenceResponse defines the Msg/SubmitEvidence response type. */
+export interface MsgSubmitEvidenceResponseAmino {
+  /** hash defines the hash of the evidence. */
+  hash?: string;
+}
+export interface MsgSubmitEvidenceResponseAminoMsg {
+  type: "cosmos-sdk/MsgSubmitEvidenceResponse";
+  value: MsgSubmitEvidenceResponseAmino;
 }
 /** MsgSubmitEvidenceResponse defines the Msg/SubmitEvidence response type. */
 export interface MsgSubmitEvidenceResponseSDKType {
@@ -240,6 +266,12 @@ export const Cosmos_evidencev1beta1Evidence_InterfaceDecoder = (input: _m0.Reade
     default:
       return data;
   }
+};
+export const Cosmos_evidencev1beta1Evidence_FromAmino = (content: AnyAmino) => {
+  return Any.fromAmino(content);
+};
+export const Cosmos_evidencev1beta1Evidence_ToAmino = (content: Any) => {
+  return Any.toAmino(content);
 };
 /** Msg defines the evidence Msg service. */
 export interface Msg {

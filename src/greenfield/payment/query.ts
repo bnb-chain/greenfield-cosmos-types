@@ -1,13 +1,13 @@
 //@ts-nocheck
 /* eslint-disable */
-import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
-import { Params, ParamsSDKType } from "./params";
-import { OutFlow, OutFlowSDKType } from "./out_flow";
-import { StreamRecord, StreamRecordSDKType } from "./stream_record";
-import { PaymentAccountCount, PaymentAccountCountSDKType } from "./payment_account_count";
-import { PaymentAccount, PaymentAccountSDKType } from "./payment_account";
-import { AutoSettleRecord, AutoSettleRecordSDKType } from "./auto_settle_record";
-import { DelayedWithdrawalRecord, DelayedWithdrawalRecordSDKType } from "./delayed_withdrawal_record";
+import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
+import { OutFlow, OutFlowAmino, OutFlowSDKType } from "./out_flow";
+import { StreamRecord, StreamRecordAmino, StreamRecordSDKType } from "./stream_record";
+import { PaymentAccountCount, PaymentAccountCountAmino, PaymentAccountCountSDKType } from "./payment_account_count";
+import { PaymentAccount, PaymentAccountAmino, PaymentAccountSDKType } from "./payment_account";
+import { AutoSettleRecord, AutoSettleRecordAmino, AutoSettleRecordSDKType } from "./auto_settle_record";
+import { DelayedWithdrawalRecord, DelayedWithdrawalRecordAmino, DelayedWithdrawalRecordSDKType } from "./delayed_withdrawal_record";
 import { Long, DeepPartial, Exact, isSet, Rpc } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.payment";
@@ -16,6 +16,12 @@ export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {
   typeUrl: "/greenfield.payment.QueryParamsRequest";
   value: Uint8Array;
+}
+/** QueryParamsRequest is request type for the Query/Params RPC method. */
+export interface QueryParamsRequestAmino {}
+export interface QueryParamsRequestAminoMsg {
+  type: "/greenfield.payment.QueryParamsRequest";
+  value: QueryParamsRequestAmino;
 }
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
@@ -27,6 +33,15 @@ export interface QueryParamsResponse {
 export interface QueryParamsResponseProtoMsg {
   typeUrl: "/greenfield.payment.QueryParamsResponse";
   value: Uint8Array;
+}
+/** QueryParamsResponse is response type for the Query/Params RPC method. */
+export interface QueryParamsResponseAmino {
+  /** params holds all the parameters of this module. */
+  params?: ParamsAmino;
+}
+export interface QueryParamsResponseAminoMsg {
+  type: "/greenfield.payment.QueryParamsResponse";
+  value: QueryParamsResponseAmino;
 }
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
@@ -42,6 +57,15 @@ export interface QueryParamsByTimestampRequestProtoMsg {
   value: Uint8Array;
 }
 /** QueryParamsByTimestampRequest is request type for the Query/ParamsByTimestamp RPC method with timestamp. */
+export interface QueryParamsByTimestampRequestAmino {
+  /** the timestamp of the block time you want to query */
+  timestamp?: string;
+}
+export interface QueryParamsByTimestampRequestAminoMsg {
+  type: "/greenfield.payment.QueryParamsByTimestampRequest";
+  value: QueryParamsByTimestampRequestAmino;
+}
+/** QueryParamsByTimestampRequest is request type for the Query/ParamsByTimestamp RPC method with timestamp. */
 export interface QueryParamsByTimestampRequestSDKType {
   timestamp: Long;
 }
@@ -55,6 +79,15 @@ export interface QueryParamsByTimestampResponseProtoMsg {
   value: Uint8Array;
 }
 /** QueryParamsByTimestampResponse is response type for the Query/ParamsByTimestamp RPC method with timestamp. */
+export interface QueryParamsByTimestampResponseAmino {
+  /** params holds all the parameters of this module. */
+  params?: ParamsAmino;
+}
+export interface QueryParamsByTimestampResponseAminoMsg {
+  type: "/greenfield.payment.QueryParamsByTimestampResponse";
+  value: QueryParamsByTimestampResponseAmino;
+}
+/** QueryParamsByTimestampResponse is response type for the Query/ParamsByTimestamp RPC method with timestamp. */
 export interface QueryParamsByTimestampResponseSDKType {
   params: ParamsSDKType;
 }
@@ -64,6 +97,13 @@ export interface QueryOutFlowsRequest {
 export interface QueryOutFlowsRequestProtoMsg {
   typeUrl: "/greenfield.payment.QueryOutFlowsRequest";
   value: Uint8Array;
+}
+export interface QueryOutFlowsRequestAmino {
+  account?: string;
+}
+export interface QueryOutFlowsRequestAminoMsg {
+  type: "/greenfield.payment.QueryOutFlowsRequest";
+  value: QueryOutFlowsRequestAmino;
 }
 export interface QueryOutFlowsRequestSDKType {
   account: string;
@@ -75,6 +115,13 @@ export interface QueryOutFlowsResponseProtoMsg {
   typeUrl: "/greenfield.payment.QueryOutFlowsResponse";
   value: Uint8Array;
 }
+export interface QueryOutFlowsResponseAmino {
+  out_flows?: OutFlowAmino[];
+}
+export interface QueryOutFlowsResponseAminoMsg {
+  type: "/greenfield.payment.QueryOutFlowsResponse";
+  value: QueryOutFlowsResponseAmino;
+}
 export interface QueryOutFlowsResponseSDKType {
   out_flows: OutFlowSDKType[];
 }
@@ -84,6 +131,13 @@ export interface QueryGetStreamRecordRequest {
 export interface QueryGetStreamRecordRequestProtoMsg {
   typeUrl: "/greenfield.payment.QueryGetStreamRecordRequest";
   value: Uint8Array;
+}
+export interface QueryGetStreamRecordRequestAmino {
+  account?: string;
+}
+export interface QueryGetStreamRecordRequestAminoMsg {
+  type: "/greenfield.payment.QueryGetStreamRecordRequest";
+  value: QueryGetStreamRecordRequestAmino;
 }
 export interface QueryGetStreamRecordRequestSDKType {
   account: string;
@@ -95,6 +149,13 @@ export interface QueryGetStreamRecordResponseProtoMsg {
   typeUrl: "/greenfield.payment.QueryGetStreamRecordResponse";
   value: Uint8Array;
 }
+export interface QueryGetStreamRecordResponseAmino {
+  stream_record?: StreamRecordAmino;
+}
+export interface QueryGetStreamRecordResponseAminoMsg {
+  type: "/greenfield.payment.QueryGetStreamRecordResponse";
+  value: QueryGetStreamRecordResponseAmino;
+}
 export interface QueryGetStreamRecordResponseSDKType {
   stream_record: StreamRecordSDKType;
 }
@@ -104,6 +165,13 @@ export interface QueryStreamRecordsRequest {
 export interface QueryStreamRecordsRequestProtoMsg {
   typeUrl: "/greenfield.payment.QueryStreamRecordsRequest";
   value: Uint8Array;
+}
+export interface QueryStreamRecordsRequestAmino {
+  pagination?: PageRequestAmino;
+}
+export interface QueryStreamRecordsRequestAminoMsg {
+  type: "/greenfield.payment.QueryStreamRecordsRequest";
+  value: QueryStreamRecordsRequestAmino;
 }
 export interface QueryStreamRecordsRequestSDKType {
   pagination?: PageRequestSDKType;
@@ -116,6 +184,14 @@ export interface QueryStreamRecordsResponseProtoMsg {
   typeUrl: "/greenfield.payment.QueryStreamRecordsResponse";
   value: Uint8Array;
 }
+export interface QueryStreamRecordsResponseAmino {
+  stream_records?: StreamRecordAmino[];
+  pagination?: PageResponseAmino;
+}
+export interface QueryStreamRecordsResponseAminoMsg {
+  type: "/greenfield.payment.QueryStreamRecordsResponse";
+  value: QueryStreamRecordsResponseAmino;
+}
 export interface QueryStreamRecordsResponseSDKType {
   stream_records: StreamRecordSDKType[];
   pagination?: PageResponseSDKType;
@@ -127,6 +203,13 @@ export interface QueryPaymentAccountCountRequestProtoMsg {
   typeUrl: "/greenfield.payment.QueryPaymentAccountCountRequest";
   value: Uint8Array;
 }
+export interface QueryPaymentAccountCountRequestAmino {
+  owner?: string;
+}
+export interface QueryPaymentAccountCountRequestAminoMsg {
+  type: "/greenfield.payment.QueryPaymentAccountCountRequest";
+  value: QueryPaymentAccountCountRequestAmino;
+}
 export interface QueryPaymentAccountCountRequestSDKType {
   owner: string;
 }
@@ -137,6 +220,13 @@ export interface QueryPaymentAccountCountResponseProtoMsg {
   typeUrl: "/greenfield.payment.QueryPaymentAccountCountResponse";
   value: Uint8Array;
 }
+export interface QueryPaymentAccountCountResponseAmino {
+  payment_account_count?: PaymentAccountCountAmino;
+}
+export interface QueryPaymentAccountCountResponseAminoMsg {
+  type: "/greenfield.payment.QueryPaymentAccountCountResponse";
+  value: QueryPaymentAccountCountResponseAmino;
+}
 export interface QueryPaymentAccountCountResponseSDKType {
   payment_account_count: PaymentAccountCountSDKType;
 }
@@ -146,6 +236,13 @@ export interface QueryPaymentAccountCountsRequest {
 export interface QueryPaymentAccountCountsRequestProtoMsg {
   typeUrl: "/greenfield.payment.QueryPaymentAccountCountsRequest";
   value: Uint8Array;
+}
+export interface QueryPaymentAccountCountsRequestAmino {
+  pagination?: PageRequestAmino;
+}
+export interface QueryPaymentAccountCountsRequestAminoMsg {
+  type: "/greenfield.payment.QueryPaymentAccountCountsRequest";
+  value: QueryPaymentAccountCountsRequestAmino;
 }
 export interface QueryPaymentAccountCountsRequestSDKType {
   pagination?: PageRequestSDKType;
@@ -158,6 +255,14 @@ export interface QueryPaymentAccountCountsResponseProtoMsg {
   typeUrl: "/greenfield.payment.QueryPaymentAccountCountsResponse";
   value: Uint8Array;
 }
+export interface QueryPaymentAccountCountsResponseAmino {
+  payment_account_counts?: PaymentAccountCountAmino[];
+  pagination?: PageResponseAmino;
+}
+export interface QueryPaymentAccountCountsResponseAminoMsg {
+  type: "/greenfield.payment.QueryPaymentAccountCountsResponse";
+  value: QueryPaymentAccountCountsResponseAmino;
+}
 export interface QueryPaymentAccountCountsResponseSDKType {
   payment_account_counts: PaymentAccountCountSDKType[];
   pagination?: PageResponseSDKType;
@@ -169,6 +274,13 @@ export interface QueryPaymentAccountRequestProtoMsg {
   typeUrl: "/greenfield.payment.QueryPaymentAccountRequest";
   value: Uint8Array;
 }
+export interface QueryPaymentAccountRequestAmino {
+  addr?: string;
+}
+export interface QueryPaymentAccountRequestAminoMsg {
+  type: "/greenfield.payment.QueryPaymentAccountRequest";
+  value: QueryPaymentAccountRequestAmino;
+}
 export interface QueryPaymentAccountRequestSDKType {
   addr: string;
 }
@@ -179,6 +291,13 @@ export interface QueryPaymentAccountResponseProtoMsg {
   typeUrl: "/greenfield.payment.QueryPaymentAccountResponse";
   value: Uint8Array;
 }
+export interface QueryPaymentAccountResponseAmino {
+  payment_account?: PaymentAccountAmino;
+}
+export interface QueryPaymentAccountResponseAminoMsg {
+  type: "/greenfield.payment.QueryPaymentAccountResponse";
+  value: QueryPaymentAccountResponseAmino;
+}
 export interface QueryPaymentAccountResponseSDKType {
   payment_account: PaymentAccountSDKType;
 }
@@ -188,6 +307,13 @@ export interface QueryPaymentAccountsRequest {
 export interface QueryPaymentAccountsRequestProtoMsg {
   typeUrl: "/greenfield.payment.QueryPaymentAccountsRequest";
   value: Uint8Array;
+}
+export interface QueryPaymentAccountsRequestAmino {
+  pagination?: PageRequestAmino;
+}
+export interface QueryPaymentAccountsRequestAminoMsg {
+  type: "/greenfield.payment.QueryPaymentAccountsRequest";
+  value: QueryPaymentAccountsRequestAmino;
 }
 export interface QueryPaymentAccountsRequestSDKType {
   pagination?: PageRequestSDKType;
@@ -200,6 +326,14 @@ export interface QueryPaymentAccountsResponseProtoMsg {
   typeUrl: "/greenfield.payment.QueryPaymentAccountsResponse";
   value: Uint8Array;
 }
+export interface QueryPaymentAccountsResponseAmino {
+  payment_accounts?: PaymentAccountAmino[];
+  pagination?: PageResponseAmino;
+}
+export interface QueryPaymentAccountsResponseAminoMsg {
+  type: "/greenfield.payment.QueryPaymentAccountsResponse";
+  value: QueryPaymentAccountsResponseAmino;
+}
 export interface QueryPaymentAccountsResponseSDKType {
   payment_accounts: PaymentAccountSDKType[];
   pagination?: PageResponseSDKType;
@@ -210,6 +344,13 @@ export interface QueryDynamicBalanceRequest {
 export interface QueryDynamicBalanceRequestProtoMsg {
   typeUrl: "/greenfield.payment.QueryDynamicBalanceRequest";
   value: Uint8Array;
+}
+export interface QueryDynamicBalanceRequestAmino {
+  account?: string;
+}
+export interface QueryDynamicBalanceRequestAminoMsg {
+  type: "/greenfield.payment.QueryDynamicBalanceRequest";
+  value: QueryDynamicBalanceRequestAmino;
 }
 export interface QueryDynamicBalanceRequestSDKType {
   account: string;
@@ -234,6 +375,26 @@ export interface QueryDynamicBalanceResponseProtoMsg {
   typeUrl: "/greenfield.payment.QueryDynamicBalanceResponse";
   value: Uint8Array;
 }
+export interface QueryDynamicBalanceResponseAmino {
+  /** dynamic balance is static balance + flowDelta */
+  dynamic_balance?: string;
+  /** the stream record of the given account, if it does not exist, it will be default values */
+  stream_record?: StreamRecordAmino;
+  /** the timestamp of the current block */
+  current_timestamp?: string;
+  /** bank_balance is the BNB balance of the bank module */
+  bank_balance?: string;
+  /** available_balance is bank balance + static balance */
+  available_balance?: string;
+  /** locked_fee is buffer balance + locked balance */
+  locked_fee?: string;
+  /** change_rate is the netflow rate of the given account */
+  change_rate?: string;
+}
+export interface QueryDynamicBalanceResponseAminoMsg {
+  type: "/greenfield.payment.QueryDynamicBalanceResponse";
+  value: QueryDynamicBalanceResponseAmino;
+}
 export interface QueryDynamicBalanceResponseSDKType {
   dynamic_balance: string;
   stream_record: StreamRecordSDKType;
@@ -250,6 +411,13 @@ export interface QueryPaymentAccountsByOwnerRequestProtoMsg {
   typeUrl: "/greenfield.payment.QueryPaymentAccountsByOwnerRequest";
   value: Uint8Array;
 }
+export interface QueryPaymentAccountsByOwnerRequestAmino {
+  owner?: string;
+}
+export interface QueryPaymentAccountsByOwnerRequestAminoMsg {
+  type: "/greenfield.payment.QueryPaymentAccountsByOwnerRequest";
+  value: QueryPaymentAccountsByOwnerRequestAmino;
+}
 export interface QueryPaymentAccountsByOwnerRequestSDKType {
   owner: string;
 }
@@ -260,6 +428,13 @@ export interface QueryPaymentAccountsByOwnerResponseProtoMsg {
   typeUrl: "/greenfield.payment.QueryPaymentAccountsByOwnerResponse";
   value: Uint8Array;
 }
+export interface QueryPaymentAccountsByOwnerResponseAmino {
+  paymentAccounts?: string[];
+}
+export interface QueryPaymentAccountsByOwnerResponseAminoMsg {
+  type: "/greenfield.payment.QueryPaymentAccountsByOwnerResponse";
+  value: QueryPaymentAccountsByOwnerResponseAmino;
+}
 export interface QueryPaymentAccountsByOwnerResponseSDKType {
   paymentAccounts: string[];
 }
@@ -269,6 +444,13 @@ export interface QueryAutoSettleRecordsRequest {
 export interface QueryAutoSettleRecordsRequestProtoMsg {
   typeUrl: "/greenfield.payment.QueryAutoSettleRecordsRequest";
   value: Uint8Array;
+}
+export interface QueryAutoSettleRecordsRequestAmino {
+  pagination?: PageRequestAmino;
+}
+export interface QueryAutoSettleRecordsRequestAminoMsg {
+  type: "/greenfield.payment.QueryAutoSettleRecordsRequest";
+  value: QueryAutoSettleRecordsRequestAmino;
 }
 export interface QueryAutoSettleRecordsRequestSDKType {
   pagination?: PageRequestSDKType;
@@ -281,6 +463,14 @@ export interface QueryAutoSettleRecordsResponseProtoMsg {
   typeUrl: "/greenfield.payment.QueryAutoSettleRecordsResponse";
   value: Uint8Array;
 }
+export interface QueryAutoSettleRecordsResponseAmino {
+  auto_settle_records?: AutoSettleRecordAmino[];
+  pagination?: PageResponseAmino;
+}
+export interface QueryAutoSettleRecordsResponseAminoMsg {
+  type: "/greenfield.payment.QueryAutoSettleRecordsResponse";
+  value: QueryAutoSettleRecordsResponseAmino;
+}
 export interface QueryAutoSettleRecordsResponseSDKType {
   auto_settle_records: AutoSettleRecordSDKType[];
   pagination?: PageResponseSDKType;
@@ -292,6 +482,13 @@ export interface QueryDelayedWithdrawalRequestProtoMsg {
   typeUrl: "/greenfield.payment.QueryDelayedWithdrawalRequest";
   value: Uint8Array;
 }
+export interface QueryDelayedWithdrawalRequestAmino {
+  account?: string;
+}
+export interface QueryDelayedWithdrawalRequestAminoMsg {
+  type: "/greenfield.payment.QueryDelayedWithdrawalRequest";
+  value: QueryDelayedWithdrawalRequestAmino;
+}
 export interface QueryDelayedWithdrawalRequestSDKType {
   account: string;
 }
@@ -301,6 +498,13 @@ export interface QueryDelayedWithdrawalResponse {
 export interface QueryDelayedWithdrawalResponseProtoMsg {
   typeUrl: "/greenfield.payment.QueryDelayedWithdrawalResponse";
   value: Uint8Array;
+}
+export interface QueryDelayedWithdrawalResponseAmino {
+  delayed_withdrawal?: DelayedWithdrawalRecordAmino;
+}
+export interface QueryDelayedWithdrawalResponseAminoMsg {
+  type: "/greenfield.payment.QueryDelayedWithdrawalResponse";
+  value: QueryDelayedWithdrawalResponseAmino;
 }
 export interface QueryDelayedWithdrawalResponseSDKType {
   delayed_withdrawal: DelayedWithdrawalRecordSDKType;

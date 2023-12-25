@@ -1,8 +1,8 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Description, DescriptionSDKType, Status, statusFromJSON, statusToJSON } from "./types";
-import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
-import { Params, ParamsSDKType } from "./params";
+import { Description, DescriptionAmino, DescriptionSDKType, Status, statusFromJSON, statusToJSON } from "./types";
+import { Coin, CoinAmino, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
 import { Long, isSet, DeepPartial, Exact, Rpc } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 import { Decimal } from "@cosmjs/math";
@@ -44,6 +44,42 @@ export interface MsgCreateStorageProviderProtoMsg {
   value: Uint8Array;
 }
 /** MsgCreateStorageProvider defines message for creating a new storage provider. */
+export interface MsgCreateStorageProviderAmino {
+  /** creator is the msg signer */
+  creator?: string;
+  /** description defines the description terms for the storage provider. */
+  description?: DescriptionAmino;
+  /** sp_address defines the address of the sp's operator; It also is the unqiue index key of sp. */
+  sp_address?: string;
+  /** fund_address is the account address of the storage provider for deposit, remuneration. */
+  funding_address?: string;
+  /** seal_address is the account address of the storage provider for sealObject */
+  seal_address?: string;
+  /** approval_address is the account address of the storage provider for ack CreateBucket/Object. */
+  approval_address?: string;
+  /** gc_address defines one of the storage provider's accounts which is used for gc purpose. */
+  gc_address?: string;
+  /** maintenance_address defines one of the storage provider's accounts which is used for testing while in maintenance mode */
+  maintenance_address?: string;
+  /** endpoint is the service address of the storage provider */
+  endpoint?: string;
+  /** deposit define the deposit token */
+  deposit?: CoinAmino;
+  /** read price, in bnb wei per charge byte */
+  read_price?: string;
+  /** free read quota, in byte */
+  free_read_quota?: string;
+  /** store price, in bnb wei per charge byte */
+  store_price?: string;
+  /** bls_key defines the bls pub key of the Storage provider for sealing object */
+  bls_key?: string;
+  bls_proof?: string;
+}
+export interface MsgCreateStorageProviderAminoMsg {
+  type: "/greenfield.sp.MsgCreateStorageProvider";
+  value: MsgCreateStorageProviderAmino;
+}
+/** MsgCreateStorageProvider defines message for creating a new storage provider. */
 export interface MsgCreateStorageProviderSDKType {
   creator: string;
   description: DescriptionSDKType;
@@ -68,6 +104,12 @@ export interface MsgCreateStorageProviderResponseProtoMsg {
   value: Uint8Array;
 }
 /** MsgCreateStorageProviderResponse defines the Msg/CreateStorageProvider response type. */
+export interface MsgCreateStorageProviderResponseAmino {}
+export interface MsgCreateStorageProviderResponseAminoMsg {
+  type: "/greenfield.sp.MsgCreateStorageProviderResponse";
+  value: MsgCreateStorageProviderResponseAmino;
+}
+/** MsgCreateStorageProviderResponse defines the Msg/CreateStorageProvider response type. */
 export interface MsgCreateStorageProviderResponseSDKType {}
 /** MsgDeposit defines a SDK message for deposit token for sp. */
 export interface MsgDeposit {
@@ -83,6 +125,19 @@ export interface MsgDepositProtoMsg {
   value: Uint8Array;
 }
 /** MsgDeposit defines a SDK message for deposit token for sp. */
+export interface MsgDepositAmino {
+  /** creator is the msg signer, it should be sp's fund address */
+  creator?: string;
+  /** sp_address is the operator address of sp */
+  sp_address?: string;
+  /** deposit is a mount of token which used to deposit for SP */
+  deposit?: CoinAmino;
+}
+export interface MsgDepositAminoMsg {
+  type: "/greenfield.sp.MsgDeposit";
+  value: MsgDepositAmino;
+}
+/** MsgDeposit defines a SDK message for deposit token for sp. */
 export interface MsgDepositSDKType {
   creator: string;
   sp_address: string;
@@ -93,6 +148,12 @@ export interface MsgDepositResponse {}
 export interface MsgDepositResponseProtoMsg {
   typeUrl: "/greenfield.sp.MsgDepositResponse";
   value: Uint8Array;
+}
+/** MsgDepositResponse defines the Msg/Deposit response type. */
+export interface MsgDepositResponseAmino {}
+export interface MsgDepositResponseAminoMsg {
+  type: "/greenfield.sp.MsgDepositResponse";
+  value: MsgDepositResponseAmino;
 }
 /** MsgDepositResponse defines the Msg/Deposit response type. */
 export interface MsgDepositResponseSDKType {}
@@ -124,6 +185,30 @@ export interface MsgEditStorageProviderProtoMsg {
  * MsgEditStorageProvider defines a SDK message for editing an existing sp.
  * TODO: use sp id to edit the storage provider.
  */
+export interface MsgEditStorageProviderAmino {
+  sp_address?: string;
+  endpoint?: string;
+  description?: DescriptionAmino;
+  /** seal_address is the account address of the storage provider for sealObject */
+  seal_address?: string;
+  /** approval_address is the account address of the storage provider for ack CreateBucket/Object */
+  approval_address?: string;
+  /** gc_address defines one of the storage provider's accounts which is used for gc purpose */
+  gc_address?: string;
+  /** maintenance_address defines one of the storage provider's accounts which is used for testing while in maintenance mode */
+  maintenance_address?: string;
+  /** bls_key defines the bls pub key of the Storage provider for sealing object */
+  bls_key?: string;
+  bls_proof?: string;
+}
+export interface MsgEditStorageProviderAminoMsg {
+  type: "/greenfield.sp.MsgEditStorageProvider";
+  value: MsgEditStorageProviderAmino;
+}
+/**
+ * MsgEditStorageProvider defines a SDK message for editing an existing sp.
+ * TODO: use sp id to edit the storage provider.
+ */
 export interface MsgEditStorageProviderSDKType {
   sp_address: string;
   endpoint: string;
@@ -142,6 +227,12 @@ export interface MsgEditStorageProviderResponseProtoMsg {
   value: Uint8Array;
 }
 /** MsgEditStorageProviderResponse defines the Msg/EditStorageProvider response type. */
+export interface MsgEditStorageProviderResponseAmino {}
+export interface MsgEditStorageProviderResponseAminoMsg {
+  type: "/greenfield.sp.MsgEditStorageProviderResponse";
+  value: MsgEditStorageProviderResponseAmino;
+}
+/** MsgEditStorageProviderResponse defines the Msg/EditStorageProvider response type. */
 export interface MsgEditStorageProviderResponseSDKType {}
 export interface MsgUpdateSpStoragePrice {
   /** sp address */
@@ -157,6 +248,20 @@ export interface MsgUpdateSpStoragePriceProtoMsg {
   typeUrl: "/greenfield.sp.MsgUpdateSpStoragePrice";
   value: Uint8Array;
 }
+export interface MsgUpdateSpStoragePriceAmino {
+  /** sp address */
+  sp_address?: string;
+  /** read price, in bnb wei per charge byte */
+  read_price?: string;
+  /** free read quota, in byte */
+  free_read_quota?: string;
+  /** store price, in bnb wei per charge byte */
+  store_price?: string;
+}
+export interface MsgUpdateSpStoragePriceAminoMsg {
+  type: "/greenfield.sp.MsgUpdateSpStoragePrice";
+  value: MsgUpdateSpStoragePriceAmino;
+}
 export interface MsgUpdateSpStoragePriceSDKType {
   sp_address: string;
   read_price: string;
@@ -167,6 +272,11 @@ export interface MsgUpdateSpStoragePriceResponse {}
 export interface MsgUpdateSpStoragePriceResponseProtoMsg {
   typeUrl: "/greenfield.sp.MsgUpdateSpStoragePriceResponse";
   value: Uint8Array;
+}
+export interface MsgUpdateSpStoragePriceResponseAmino {}
+export interface MsgUpdateSpStoragePriceResponseAminoMsg {
+  type: "/greenfield.sp.MsgUpdateSpStoragePriceResponse";
+  value: MsgUpdateSpStoragePriceResponseAmino;
 }
 export interface MsgUpdateSpStoragePriceResponseSDKType {}
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
@@ -185,6 +295,21 @@ export interface MsgUpdateParamsProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
+export interface MsgUpdateParamsAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /**
+   * params defines the x/sp parameters to update.
+   * 
+   * NOTE: All parameters must be supplied.
+   */
+  params?: ParamsAmino;
+}
+export interface MsgUpdateParamsAminoMsg {
+  type: "/greenfield.sp.MsgUpdateParams";
+  value: MsgUpdateParamsAmino;
+}
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
   params: ParamsSDKType;
@@ -197,6 +322,15 @@ export interface MsgUpdateParamsResponse {}
 export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/greenfield.sp.MsgUpdateParamsResponse";
   value: Uint8Array;
+}
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ */
+export interface MsgUpdateParamsResponseAmino {}
+export interface MsgUpdateParamsResponseAminoMsg {
+  type: "/greenfield.sp.MsgUpdateParamsResponse";
+  value: MsgUpdateParamsResponseAmino;
 }
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
@@ -217,6 +351,19 @@ export interface MsgUpdateStorageProviderStatusProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateStorageProviderStatus is used to update the status of a SP by itself */
+export interface MsgUpdateStorageProviderStatusAmino {
+  /** sp_address defines the operator address */
+  sp_address?: string;
+  /** status defines the desired status be update to. */
+  status?: Status;
+  /** duration defines the time requested in desired status */
+  duration?: string;
+}
+export interface MsgUpdateStorageProviderStatusAminoMsg {
+  type: "/greenfield.sp.MsgUpdateStorageProviderStatus";
+  value: MsgUpdateStorageProviderStatusAmino;
+}
+/** MsgUpdateStorageProviderStatus is used to update the status of a SP by itself */
 export interface MsgUpdateStorageProviderStatusSDKType {
   sp_address: string;
   status: Status;
@@ -227,6 +374,12 @@ export interface MsgUpdateStorageProviderStatusResponse {}
 export interface MsgUpdateStorageProviderStatusResponseProtoMsg {
   typeUrl: "/greenfield.sp.MsgUpdateStorageProviderStatusResponse";
   value: Uint8Array;
+}
+/** MsgUpdateStorageProviderStatusResponse defines the MsgUpdateStorageProviderStatus response type. */
+export interface MsgUpdateStorageProviderStatusResponseAmino {}
+export interface MsgUpdateStorageProviderStatusResponseAminoMsg {
+  type: "/greenfield.sp.MsgUpdateStorageProviderStatusResponse";
+  value: MsgUpdateStorageProviderStatusResponseAmino;
 }
 /** MsgUpdateStorageProviderStatusResponse defines the MsgUpdateStorageProviderStatus response type. */
 export interface MsgUpdateStorageProviderStatusResponseSDKType {}

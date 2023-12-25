@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./params";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.bridge";
@@ -12,6 +12,15 @@ export interface GenesisState {
 export interface GenesisStateProtoMsg {
   typeUrl: "/greenfield.bridge.GenesisState";
   value: Uint8Array;
+}
+/** GenesisState defines the bridge module's genesis state. */
+export interface GenesisStateAmino {
+  /** Params defines all the paramaters of the module. */
+  params?: ParamsAmino;
+}
+export interface GenesisStateAminoMsg {
+  type: "/greenfield.bridge.GenesisState";
+  value: GenesisStateAmino;
 }
 /** GenesisState defines the bridge module's genesis state. */
 export interface GenesisStateSDKType {

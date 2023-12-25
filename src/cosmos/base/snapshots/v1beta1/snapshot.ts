@@ -16,6 +16,18 @@ export interface SnapshotProtoMsg {
   value: Uint8Array;
 }
 /** Snapshot contains Tendermint state sync snapshot info. */
+export interface SnapshotAmino {
+  height?: string;
+  format?: number;
+  chunks?: number;
+  hash?: string;
+  metadata?: MetadataAmino;
+}
+export interface SnapshotAminoMsg {
+  type: "cosmos-sdk/Snapshot";
+  value: SnapshotAmino;
+}
+/** Snapshot contains Tendermint state sync snapshot info. */
 export interface SnapshotSDKType {
   height: Long;
   format: number;
@@ -31,6 +43,15 @@ export interface Metadata {
 export interface MetadataProtoMsg {
   typeUrl: "/cosmos.base.snapshots.v1beta1.Metadata";
   value: Uint8Array;
+}
+/** Metadata contains SDK-specific snapshot metadata. */
+export interface MetadataAmino {
+  /** SHA-256 chunk hashes */
+  chunk_hashes?: string[];
+}
+export interface MetadataAminoMsg {
+  type: "cosmos-sdk/Metadata";
+  value: MetadataAmino;
 }
 /** Metadata contains SDK-specific snapshot metadata. */
 export interface MetadataSDKType {
@@ -54,6 +75,25 @@ export interface SnapshotItem {
 export interface SnapshotItemProtoMsg {
   typeUrl: "/cosmos.base.snapshots.v1beta1.SnapshotItem";
   value: Uint8Array;
+}
+/**
+ * SnapshotItem is an item contained in a rootmulti.Store snapshot.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+export interface SnapshotItemAmino {
+  store?: SnapshotStoreItemAmino;
+  iavl?: SnapshotIAVLItemAmino;
+  extension?: SnapshotExtensionMetaAmino;
+  extension_payload?: SnapshotExtensionPayloadAmino;
+  /** @deprecated */
+  kv?: SnapshotKVItemAmino;
+  /** @deprecated */
+  schema?: SnapshotSchemaAmino;
+}
+export interface SnapshotItemAminoMsg {
+  type: "cosmos-sdk/SnapshotItem";
+  value: SnapshotItemAmino;
 }
 /**
  * SnapshotItem is an item contained in a rootmulti.Store snapshot.
@@ -87,6 +127,18 @@ export interface SnapshotStoreItemProtoMsg {
  * 
  * Since: cosmos-sdk 0.46
  */
+export interface SnapshotStoreItemAmino {
+  name?: string;
+}
+export interface SnapshotStoreItemAminoMsg {
+  type: "cosmos-sdk/SnapshotStoreItem";
+  value: SnapshotStoreItemAmino;
+}
+/**
+ * SnapshotStoreItem contains metadata about a snapshotted store.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
 export interface SnapshotStoreItemSDKType {
   name: string;
 }
@@ -106,6 +158,23 @@ export interface SnapshotIAVLItem {
 export interface SnapshotIAVLItemProtoMsg {
   typeUrl: "/cosmos.base.snapshots.v1beta1.SnapshotIAVLItem";
   value: Uint8Array;
+}
+/**
+ * SnapshotIAVLItem is an exported IAVL node.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+export interface SnapshotIAVLItemAmino {
+  key?: string;
+  value?: string;
+  /** version is block height */
+  version?: string;
+  /** height is depth of the tree. */
+  height?: number;
+}
+export interface SnapshotIAVLItemAminoMsg {
+  type: "cosmos-sdk/SnapshotIAVLItem";
+  value: SnapshotIAVLItemAmino;
 }
 /**
  * SnapshotIAVLItem is an exported IAVL node.
@@ -136,6 +205,19 @@ export interface SnapshotExtensionMetaProtoMsg {
  * 
  * Since: cosmos-sdk 0.46
  */
+export interface SnapshotExtensionMetaAmino {
+  name?: string;
+  format?: number;
+}
+export interface SnapshotExtensionMetaAminoMsg {
+  type: "cosmos-sdk/SnapshotExtensionMeta";
+  value: SnapshotExtensionMetaAmino;
+}
+/**
+ * SnapshotExtensionMeta contains metadata about an external snapshotter.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
 export interface SnapshotExtensionMetaSDKType {
   name: string;
   format: number;
@@ -151,6 +233,18 @@ export interface SnapshotExtensionPayload {
 export interface SnapshotExtensionPayloadProtoMsg {
   typeUrl: "/cosmos.base.snapshots.v1beta1.SnapshotExtensionPayload";
   value: Uint8Array;
+}
+/**
+ * SnapshotExtensionPayload contains payloads of an external snapshotter.
+ * 
+ * Since: cosmos-sdk 0.46
+ */
+export interface SnapshotExtensionPayloadAmino {
+  payload?: string;
+}
+export interface SnapshotExtensionPayloadAminoMsg {
+  type: "cosmos-sdk/SnapshotExtensionPayload";
+  value: SnapshotExtensionPayloadAmino;
 }
 /**
  * SnapshotExtensionPayload contains payloads of an external snapshotter.
@@ -182,6 +276,21 @@ export interface SnapshotKVItemProtoMsg {
  * Deprecated: This message was part of store/v2alpha1 which has been deleted from v0.47.
  */
 /** @deprecated */
+export interface SnapshotKVItemAmino {
+  key?: string;
+  value?: string;
+}
+export interface SnapshotKVItemAminoMsg {
+  type: "cosmos-sdk/SnapshotKVItem";
+  value: SnapshotKVItemAmino;
+}
+/**
+ * SnapshotKVItem is an exported Key/Value Pair
+ * 
+ * Since: cosmos-sdk 0.46
+ * Deprecated: This message was part of store/v2alpha1 which has been deleted from v0.47.
+ */
+/** @deprecated */
 export interface SnapshotKVItemSDKType {
   key: Uint8Array;
   value: Uint8Array;
@@ -199,6 +308,20 @@ export interface SnapshotSchema {
 export interface SnapshotSchemaProtoMsg {
   typeUrl: "/cosmos.base.snapshots.v1beta1.SnapshotSchema";
   value: Uint8Array;
+}
+/**
+ * SnapshotSchema is an exported schema of smt store
+ * 
+ * Since: cosmos-sdk 0.46
+ * Deprecated: This message was part of store/v2alpha1 which has been deleted from v0.47.
+ */
+/** @deprecated */
+export interface SnapshotSchemaAmino {
+  keys?: string[];
+}
+export interface SnapshotSchemaAminoMsg {
+  type: "cosmos-sdk/SnapshotSchema";
+  value: SnapshotSchemaAmino;
 }
 /**
  * SnapshotSchema is an exported schema of smt store

@@ -56,6 +56,58 @@ export interface ParamsProtoMsg {
   value: Uint8Array;
 }
 /** Params defines the parameters for the module. */
+export interface ParamsAmino {
+  versioned_params?: VersionedParamsAmino;
+  /** max_payload_size is the maximum size of the payload, default: 2G */
+  max_payload_size?: string;
+  /** relayer fee for the mirror bucket tx to bsc */
+  bsc_mirror_bucket_relayer_fee?: string;
+  /** relayer fee for the ACK or FAIL_ACK package of the mirror bucket tx to bsc */
+  bsc_mirror_bucket_ack_relayer_fee?: string;
+  /** relayer fee for the mirror object tx to bsc */
+  bsc_mirror_object_relayer_fee?: string;
+  /** Relayer fee for the ACK or FAIL_ACK package of the mirror object tx to bsc */
+  bsc_mirror_object_ack_relayer_fee?: string;
+  /** relayer fee for the mirror object tx to bsc */
+  bsc_mirror_group_relayer_fee?: string;
+  /** Relayer fee for the ACK or FAIL_ACK package of the mirror object tx to bsc */
+  bsc_mirror_group_ack_relayer_fee?: string;
+  /** The maximum number of buckets that can be created per account */
+  max_buckets_per_account?: number;
+  /** The window to count the discontinued objects or buckets */
+  discontinue_counting_window?: string;
+  /** The max objects can be requested in a window */
+  discontinue_object_max?: string;
+  /** The max buckets can be requested in a window */
+  discontinue_bucket_max?: string;
+  /** The object will be deleted after the confirm period in seconds */
+  discontinue_confirm_period?: string;
+  /** The max delete objects in each end block */
+  discontinue_deletion_max?: string;
+  /** The max number for deleting policy in each end block */
+  stale_policy_cleanup_max?: string;
+  /** The min interval for making quota smaller in seconds */
+  min_quota_update_interval?: string;
+  /** the max number of local virtual group per bucket */
+  max_local_virtual_group_num_per_bucket?: number;
+  /** relayer fee for the mirror bucket tx to op chain */
+  op_mirror_bucket_relayer_fee?: string;
+  /** relayer fee for the ACK or FAIL_ACK package of the mirror bucket tx to op chain */
+  op_mirror_bucket_ack_relayer_fee?: string;
+  /** relayer fee for the mirror object tx to op chain */
+  op_mirror_object_relayer_fee?: string;
+  /** Relayer fee for the ACK or FAIL_ACK package of the mirror object tx to op chain */
+  op_mirror_object_ack_relayer_fee?: string;
+  /** relayer fee for the mirror object tx to op chain */
+  op_mirror_group_relayer_fee?: string;
+  /** Relayer fee for the ACK or FAIL_ACK package of the mirror object tx to op chain */
+  op_mirror_group_ack_relayer_fee?: string;
+}
+export interface ParamsAminoMsg {
+  type: "/greenfield.storage.Params";
+  value: ParamsAmino;
+}
+/** Params defines the parameters for the module. */
 export interface ParamsSDKType {
   versioned_params: VersionedParamsSDKType;
   max_payload_size: Long;
@@ -95,6 +147,21 @@ export interface VersionedParams {
 export interface VersionedParamsProtoMsg {
   typeUrl: "/greenfield.storage.VersionedParams";
   value: Uint8Array;
+}
+/** VersionedParams defines the parameters for the storage module with multi version, each version store with different timestamp. */
+export interface VersionedParamsAmino {
+  /** max_segment_size is the maximum size of a segment. default: 16M */
+  max_segment_size?: string;
+  /** redundant_data_check_num is the num of data chunks of EC redundancy algorithm */
+  redundant_data_chunk_num?: number;
+  /** redundant_data_check_num is the num of parity chunks of EC redundancy algorithm */
+  redundant_parity_chunk_num?: number;
+  /** min_charge_size is the minimum charge size of the payload, objects smaller than this size will be charged as this size */
+  min_charge_size?: string;
+}
+export interface VersionedParamsAminoMsg {
+  type: "/greenfield.storage.VersionedParams";
+  value: VersionedParamsAmino;
 }
 /** VersionedParams defines the parameters for the storage module with multi version, each version store with different timestamp. */
 export interface VersionedParamsSDKType {

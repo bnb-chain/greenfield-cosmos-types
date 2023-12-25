@@ -31,6 +31,33 @@ export interface EventPackageClaimProtoMsg {
   value: Uint8Array;
 }
 /** EventPackageClaim is emitted when a cross chain package is processed */
+export interface EventPackageClaimAmino {
+  /** Source chain id of the package */
+  src_chain_id?: number;
+  /** Destination chain id of the package */
+  dest_chain_id?: number;
+  /** Channel id of the package */
+  channel_id?: number;
+  /** Package type of the package, like SYN, ACK and FAIL_ACK */
+  package_type?: number;
+  /** Receive sequence of the package */
+  receive_sequence?: string;
+  /** Send sequence of the corresponding ACK package or FAIL_ACK package */
+  send_sequence?: string;
+  /** Crash status for the handle of this package */
+  crash?: boolean;
+  /** Error message for the handle of this package */
+  error_msg?: string;
+  /** Relayer fee paid for this package */
+  relayer_fee?: string;
+  /** Relayer fee paid for the ACK or FAIL_ACK package */
+  ack_relayer_fee?: string;
+}
+export interface EventPackageClaimAminoMsg {
+  type: "cosmos-sdk/EventPackageClaim";
+  value: EventPackageClaimAmino;
+}
+/** EventPackageClaim is emitted when a cross chain package is processed */
 export interface EventPackageClaimSDKType {
   src_chain_id: number;
   dest_chain_id: number;

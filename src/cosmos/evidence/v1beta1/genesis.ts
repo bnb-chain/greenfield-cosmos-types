@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Any, AnySDKType } from "../../../google/protobuf/any";
+import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.evidence.v1beta1";
@@ -12,6 +12,15 @@ export interface GenesisState {
 export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.evidence.v1beta1.GenesisState";
   value: Uint8Array;
+}
+/** GenesisState defines the evidence module's genesis state. */
+export interface GenesisStateAmino {
+  /** evidence defines all the evidence at genesis. */
+  evidence?: AnyAmino[];
+}
+export interface GenesisStateAminoMsg {
+  type: "cosmos-sdk/GenesisState";
+  value: GenesisStateAmino;
 }
 /** GenesisState defines the evidence module's genesis state. */
 export interface GenesisStateSDKType {

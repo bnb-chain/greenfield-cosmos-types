@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./oracle";
+import { Params, ParamsAmino, ParamsSDKType } from "./oracle";
 import { Long, isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact, Rpc } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.oracle.v1";
@@ -28,6 +28,29 @@ export interface MsgClaimProtoMsg {
   value: Uint8Array;
 }
 /** MsgClaim defines the Msg/Claim request type */
+export interface MsgClaimAmino {
+  /** sender address of the msg */
+  from_address?: string;
+  /** source chain id */
+  src_chain_id?: number;
+  /** destination chain id */
+  dest_chain_id?: number;
+  /** sequence of the oracle channel */
+  sequence?: string;
+  /** timestamp of the claim */
+  timestamp?: string;
+  /** payload of the claim */
+  payload?: string;
+  /** bit map of the voted validators */
+  vote_address_set?: string[];
+  /** bls signature of the claim */
+  agg_signature?: string;
+}
+export interface MsgClaimAminoMsg {
+  type: "cosmos-sdk/MsgClaim";
+  value: MsgClaimAmino;
+}
+/** MsgClaim defines the Msg/Claim request type */
 export interface MsgClaimSDKType {
   from_address: string;
   src_chain_id: number;
@@ -43,6 +66,12 @@ export interface MsgClaimResponse {}
 export interface MsgClaimResponseProtoMsg {
   typeUrl: "/cosmos.oracle.v1.MsgClaimResponse";
   value: Uint8Array;
+}
+/** MsgClaimResponse defines the Msg/Claim response type */
+export interface MsgClaimResponseAmino {}
+export interface MsgClaimResponseAminoMsg {
+  type: "cosmos-sdk/MsgClaimResponse";
+  value: MsgClaimResponseAmino;
 }
 /** MsgClaimResponse defines the Msg/Claim response type */
 export interface MsgClaimResponseSDKType {}
@@ -62,6 +91,21 @@ export interface MsgUpdateParamsProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
+export interface MsgUpdateParamsAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /**
+   * params defines the x/crosschain parameters to update.
+   * 
+   * NOTE: All parameters must be supplied.
+   */
+  params: ParamsAmino;
+}
+export interface MsgUpdateParamsAminoMsg {
+  type: "cosmos-sdk/MsgUpdateParams";
+  value: MsgUpdateParamsAmino;
+}
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
   params: ParamsSDKType;
@@ -74,6 +118,15 @@ export interface MsgUpdateParamsResponse {}
 export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/cosmos.oracle.v1.MsgUpdateParamsResponse";
   value: Uint8Array;
+}
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ */
+export interface MsgUpdateParamsResponseAmino {}
+export interface MsgUpdateParamsResponseAminoMsg {
+  type: "cosmos-sdk/MsgUpdateParamsResponse";
+  value: MsgUpdateParamsResponseAmino;
 }
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a

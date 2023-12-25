@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
+import { Coin, CoinAmino, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 import { Decimal } from "@cosmjs/math";
@@ -14,6 +14,7 @@ export enum Status {
   UNRECOGNIZED = -1,
 }
 export const StatusSDKType = Status;
+export const StatusAmino = Status;
 export function statusFromJSON(object: any): Status {
   switch (object) {
     case 0:
@@ -67,6 +68,23 @@ export interface DescriptionProtoMsg {
   value: Uint8Array;
 }
 /** Description defines a storage provider description. */
+export interface DescriptionAmino {
+  /** moniker defines a human-readable name for the storage provider */
+  moniker?: string;
+  /** identity defines an optional identity signature (ex. UPort or Keybase). */
+  identity?: string;
+  /** website defines an optional website link. */
+  website?: string;
+  /** security_contact defines an optional email for security contact. */
+  security_contact?: string;
+  /** details define other optional details. */
+  details?: string;
+}
+export interface DescriptionAminoMsg {
+  type: "/greenfield.sp.Description";
+  value: DescriptionAmino;
+}
+/** Description defines a storage provider description. */
 export interface DescriptionSDKType {
   moniker: string;
   identity: string;
@@ -106,6 +124,37 @@ export interface StorageProviderProtoMsg {
   value: Uint8Array;
 }
 /** StorageProvider defines the meta info of storage provider */
+export interface StorageProviderAmino {
+  /** id is the identifier of the storage provider, used in virtual group */
+  id?: number;
+  /** operator_address defines the account address of the storage provider's operator; It also is the unique index key of sp. */
+  operator_address?: string;
+  /** funding_address defines one of the storage provider's accounts which is used to deposit and reward. */
+  funding_address?: string;
+  /** seal_address defines one of the storage provider's accounts which is used to SealObject */
+  seal_address?: string;
+  /** approval_address defines one of the storage provider's accounts which is used to approve use's createBucket/createObject request */
+  approval_address?: string;
+  /** gc_address defines one of the storage provider's accounts which is used for gc purpose. */
+  gc_address?: string;
+  /** maintenance_address defines one of the storage provider's accounts which is used for testing while in maintenance mode */
+  maintenance_address?: string;
+  /** total_deposit defines the number of tokens deposited by this storage provider for staking. */
+  total_deposit?: string;
+  /** status defines the current service status of this storage provider */
+  status?: Status;
+  /** endpoint define the storage provider's network service address */
+  endpoint?: string;
+  /** description defines the description terms for the storage provider. */
+  description?: DescriptionAmino;
+  /** bls_key defines the bls pub key of the Storage provider for sealing object and completing migration */
+  bls_key?: string;
+}
+export interface StorageProviderAminoMsg {
+  type: "/greenfield.sp.StorageProvider";
+  value: StorageProviderAmino;
+}
+/** StorageProvider defines the meta info of storage provider */
 export interface StorageProviderSDKType {
   id: number;
   operator_address: string;
@@ -128,6 +177,14 @@ export interface RewardInfoProtoMsg {
   typeUrl: "/greenfield.sp.RewardInfo";
   value: Uint8Array;
 }
+export interface RewardInfoAmino {
+  address?: string;
+  amount?: CoinAmino;
+}
+export interface RewardInfoAminoMsg {
+  type: "/greenfield.sp.RewardInfo";
+  value: RewardInfoAmino;
+}
 export interface RewardInfoSDKType {
   address: string;
   amount: CoinSDKType;
@@ -148,6 +205,23 @@ export interface SpStoragePrice {
 export interface SpStoragePriceProtoMsg {
   typeUrl: "/greenfield.sp.SpStoragePrice";
   value: Uint8Array;
+}
+/** storage price of a specific sp */
+export interface SpStoragePriceAmino {
+  /** sp id */
+  sp_id?: number;
+  /** update time, unix timestamp in seconds */
+  update_time_sec?: string;
+  /** read price, in bnb wei per charge byte */
+  read_price?: string;
+  /** free read quota, in byte */
+  free_read_quota?: string;
+  /** store price, in bnb wei per charge byte */
+  store_price?: string;
+}
+export interface SpStoragePriceAminoMsg {
+  type: "/greenfield.sp.SpStoragePrice";
+  value: SpStoragePriceAmino;
 }
 /** storage price of a specific sp */
 export interface SpStoragePriceSDKType {
@@ -173,6 +247,21 @@ export interface GlobalSpStorePriceProtoMsg {
   value: Uint8Array;
 }
 /** global sp store price, the price for all sps */
+export interface GlobalSpStorePriceAmino {
+  /** update time, unix timestamp in seconds */
+  update_time_sec?: string;
+  /** read price, in bnb wei per charge byte */
+  read_price?: string;
+  /** primary store price, in bnb wei per charge byte */
+  primary_store_price?: string;
+  /** secondary store price, in bnb wei per charge byte */
+  secondary_store_price?: string;
+}
+export interface GlobalSpStorePriceAminoMsg {
+  type: "/greenfield.sp.GlobalSpStorePrice";
+  value: GlobalSpStorePriceAmino;
+}
+/** global sp store price, the price for all sps */
 export interface GlobalSpStorePriceSDKType {
   update_time_sec: Long;
   read_price: string;
@@ -185,6 +274,13 @@ export interface SpMaintenanceStats {
 export interface SpMaintenanceStatsProtoMsg {
   typeUrl: "/greenfield.sp.SpMaintenanceStats";
   value: Uint8Array;
+}
+export interface SpMaintenanceStatsAmino {
+  records?: MaintenanceRecordAmino[];
+}
+export interface SpMaintenanceStatsAminoMsg {
+  type: "/greenfield.sp.SpMaintenanceStats";
+  value: SpMaintenanceStatsAmino;
 }
 export interface SpMaintenanceStatsSDKType {
   records: MaintenanceRecordSDKType[];
@@ -203,6 +299,21 @@ export interface MaintenanceRecord {
 export interface MaintenanceRecordProtoMsg {
   typeUrl: "/greenfield.sp.MaintenanceRecord";
   value: Uint8Array;
+}
+/** MaintenanceRecord is to keep track of every time a sp request to be in Maintenance mode */
+export interface MaintenanceRecordAmino {
+  /** block height that request to be in Maintenance mode */
+  height?: string;
+  /** request duration */
+  request_duration?: string;
+  /** actual duration */
+  actual_duration?: string;
+  /** request timestamp */
+  request_at?: string;
+}
+export interface MaintenanceRecordAminoMsg {
+  type: "/greenfield.sp.MaintenanceRecord";
+  value: MaintenanceRecordAmino;
 }
 /** MaintenanceRecord is to keep track of every time a sp request to be in Maintenance mode */
 export interface MaintenanceRecordSDKType {

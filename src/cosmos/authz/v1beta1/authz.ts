@@ -1,9 +1,9 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Any, AnySDKType } from "../../../google/protobuf/any";
+import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
 import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
-import { SendAuthorization, SendAuthorizationSDKType } from "../../bank/v1beta1/authz";
-import { StakeAuthorization, StakeAuthorizationSDKType } from "../../staking/v1beta1/authz";
+import { SendAuthorization, SendAuthorizationProtoMsg, SendAuthorizationSDKType } from "../../bank/v1beta1/authz";
+import { StakeAuthorization, StakeAuthorizationProtoMsg, StakeAuthorizationSDKType } from "../../staking/v1beta1/authz";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
 export const protobufPackage = "cosmos.authz.v1beta1";
@@ -24,6 +24,18 @@ export interface GenericAuthorizationProtoMsg {
  * GenericAuthorization gives the grantee unrestricted permissions to execute
  * the provided method on behalf of the granter's account.
  */
+export interface GenericAuthorizationAmino {
+  /** Msg, identified by it's type URL, to grant unrestricted permissions to execute */
+  msg?: string;
+}
+export interface GenericAuthorizationAminoMsg {
+  type: "cosmos-sdk/GenericAuthorization";
+  value: GenericAuthorizationAmino;
+}
+/**
+ * GenericAuthorization gives the grantee unrestricted permissions to execute
+ * the provided method on behalf of the granter's account.
+ */
 export interface GenericAuthorizationSDKType {
   $typeUrl?: "/cosmos.authz.v1beta1.GenericAuthorization";
   msg: string;
@@ -33,7 +45,7 @@ export interface GenericAuthorizationSDKType {
  * the provide method with expiration time.
  */
 export interface Grant {
-  authorization?: (GenericAuthorization & SendAuthorization & StakeAuthorization & Any) | undefined;
+  authorization?: GenericAuthorization | SendAuthorization | StakeAuthorization | Any | undefined;
   /**
    * time when the grant will expire and will be pruned. If null, then the grant
    * doesn't have a time expiration (other conditions  in `authorization`
@@ -44,6 +56,26 @@ export interface Grant {
 export interface GrantProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.Grant";
   value: Uint8Array;
+}
+export type GrantEncoded = Omit<Grant, "authorization"> & {
+  authorization?: GenericAuthorizationProtoMsg | SendAuthorizationProtoMsg | StakeAuthorizationProtoMsg | AnyProtoMsg | undefined;
+};
+/**
+ * Grant gives permissions to execute
+ * the provide method with expiration time.
+ */
+export interface GrantAmino {
+  authorization?: AnyAmino;
+  /**
+   * time when the grant will expire and will be pruned. If null, then the grant
+   * doesn't have a time expiration (other conditions  in `authorization`
+   * may apply to invalidate the grant)
+   */
+  expiration?: string;
+}
+export interface GrantAminoMsg {
+  type: "cosmos-sdk/Grant";
+  value: GrantAmino;
 }
 /**
  * Grant gives permissions to execute
@@ -60,12 +92,29 @@ export interface GrantSDKType {
 export interface GrantAuthorization {
   granter: string;
   grantee: string;
-  authorization?: (GenericAuthorization & SendAuthorization & StakeAuthorization & Any) | undefined;
+  authorization?: GenericAuthorization | SendAuthorization | StakeAuthorization | Any | undefined;
   expiration?: Timestamp;
 }
 export interface GrantAuthorizationProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.GrantAuthorization";
   value: Uint8Array;
+}
+export type GrantAuthorizationEncoded = Omit<GrantAuthorization, "authorization"> & {
+  authorization?: GenericAuthorizationProtoMsg | SendAuthorizationProtoMsg | StakeAuthorizationProtoMsg | AnyProtoMsg | undefined;
+};
+/**
+ * GrantAuthorization extends a grant with both the addresses of the grantee and granter.
+ * It is used in genesis.proto and query.proto
+ */
+export interface GrantAuthorizationAmino {
+  granter?: string;
+  grantee?: string;
+  authorization?: AnyAmino;
+  expiration?: string;
+}
+export interface GrantAuthorizationAminoMsg {
+  type: "cosmos-sdk/GrantAuthorization";
+  value: GrantAuthorizationAmino;
 }
 /**
  * GrantAuthorization extends a grant with both the addresses of the grantee and granter.
@@ -85,6 +134,15 @@ export interface GrantQueueItem {
 export interface GrantQueueItemProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.GrantQueueItem";
   value: Uint8Array;
+}
+/** GrantQueueItem contains the list of TypeURL of a sdk.Msg. */
+export interface GrantQueueItemAmino {
+  /** msg_type_urls contains the list of TypeURL of a sdk.Msg. */
+  msg_type_urls?: string[];
+}
+export interface GrantQueueItemAminoMsg {
+  type: "cosmos-sdk/GrantQueueItem";
+  value: GrantQueueItemAmino;
 }
 /** GrantQueueItem contains the list of TypeURL of a sdk.Msg. */
 export interface GrantQueueItemSDKType {
@@ -533,5 +591,47 @@ export const Cosmos_authzv1beta1Authorization_InterfaceDecoder = (input: _m0.Rea
       return StakeAuthorization.decode(data.value, undefined, true);
     default:
       return data;
+  }
+};
+export const Cosmos_authzv1beta1Authorization_FromAmino = (content: AnyAmino) => {
+  switch (content.type) {
+    case "cosmos-sdk/GenericAuthorization":
+      return Any.fromPartial({
+        typeUrl: "/cosmos.authz.v1beta1.GenericAuthorization",
+        value: GenericAuthorization.encode(GenericAuthorization.fromPartial(GenericAuthorization.fromAmino(content.value))).finish()
+      });
+    case "cosmos-sdk/SendAuthorization":
+      return Any.fromPartial({
+        typeUrl: "/cosmos.bank.v1beta1.SendAuthorization",
+        value: SendAuthorization.encode(SendAuthorization.fromPartial(SendAuthorization.fromAmino(content.value))).finish()
+      });
+    case "cosmos-sdk/StakeAuthorization":
+      return Any.fromPartial({
+        typeUrl: "/cosmos.staking.v1beta1.StakeAuthorization",
+        value: StakeAuthorization.encode(StakeAuthorization.fromPartial(StakeAuthorization.fromAmino(content.value))).finish()
+      });
+    default:
+      return Any.fromAmino(content);
+  }
+};
+export const Cosmos_authzv1beta1Authorization_ToAmino = (content: Any) => {
+  switch (content.typeUrl) {
+    case "/cosmos.authz.v1beta1.GenericAuthorization":
+      return {
+        type: "cosmos-sdk/GenericAuthorization",
+        value: GenericAuthorization.toAmino(GenericAuthorization.decode(content.value, undefined))
+      };
+    case "/cosmos.bank.v1beta1.SendAuthorization":
+      return {
+        type: "cosmos-sdk/SendAuthorization",
+        value: SendAuthorization.toAmino(SendAuthorization.decode(content.value, undefined))
+      };
+    case "/cosmos.staking.v1beta1.StakeAuthorization":
+      return {
+        type: "cosmos-sdk/StakeAuthorization",
+        value: StakeAuthorization.toAmino(StakeAuthorization.decode(content.value, undefined))
+      };
+    default:
+      return Any.toAmino(content);
   }
 };

@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { ProposalExecutorResult, ProposalStatus, TallyResult, TallyResultSDKType, proposalExecutorResultFromJSON, proposalExecutorResultToJSON, proposalStatusFromJSON, proposalStatusToJSON } from "./types";
+import { ProposalExecutorResult, ProposalStatus, TallyResult, TallyResultAmino, TallyResultSDKType, proposalExecutorResultFromJSON, proposalExecutorResultToJSON, proposalStatusFromJSON, proposalStatusToJSON } from "./types";
 import { Long, isSet, DeepPartial, Exact } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.group.v1";
@@ -12,6 +12,15 @@ export interface EventCreateGroup {
 export interface EventCreateGroupProtoMsg {
   typeUrl: "/cosmos.group.v1.EventCreateGroup";
   value: Uint8Array;
+}
+/** EventCreateGroup is an event emitted when a group is created. */
+export interface EventCreateGroupAmino {
+  /** group_id is the unique ID of the group. */
+  group_id?: string;
+}
+export interface EventCreateGroupAminoMsg {
+  type: "cosmos-sdk/EventCreateGroup";
+  value: EventCreateGroupAmino;
 }
 /** EventCreateGroup is an event emitted when a group is created. */
 export interface EventCreateGroupSDKType {
@@ -27,6 +36,15 @@ export interface EventUpdateGroupProtoMsg {
   value: Uint8Array;
 }
 /** EventUpdateGroup is an event emitted when a group is updated. */
+export interface EventUpdateGroupAmino {
+  /** group_id is the unique ID of the group. */
+  group_id?: string;
+}
+export interface EventUpdateGroupAminoMsg {
+  type: "cosmos-sdk/EventUpdateGroup";
+  value: EventUpdateGroupAmino;
+}
+/** EventUpdateGroup is an event emitted when a group is updated. */
 export interface EventUpdateGroupSDKType {
   group_id: Long;
 }
@@ -38,6 +56,15 @@ export interface EventCreateGroupPolicy {
 export interface EventCreateGroupPolicyProtoMsg {
   typeUrl: "/cosmos.group.v1.EventCreateGroupPolicy";
   value: Uint8Array;
+}
+/** EventCreateGroupPolicy is an event emitted when a group policy is created. */
+export interface EventCreateGroupPolicyAmino {
+  /** address is the account address of the group policy. */
+  address?: string;
+}
+export interface EventCreateGroupPolicyAminoMsg {
+  type: "cosmos-sdk/EventCreateGroupPolicy";
+  value: EventCreateGroupPolicyAmino;
 }
 /** EventCreateGroupPolicy is an event emitted when a group policy is created. */
 export interface EventCreateGroupPolicySDKType {
@@ -53,6 +80,15 @@ export interface EventUpdateGroupPolicyProtoMsg {
   value: Uint8Array;
 }
 /** EventUpdateGroupPolicy is an event emitted when a group policy is updated. */
+export interface EventUpdateGroupPolicyAmino {
+  /** address is the account address of the group policy. */
+  address?: string;
+}
+export interface EventUpdateGroupPolicyAminoMsg {
+  type: "cosmos-sdk/EventUpdateGroupPolicy";
+  value: EventUpdateGroupPolicyAmino;
+}
+/** EventUpdateGroupPolicy is an event emitted when a group policy is updated. */
 export interface EventUpdateGroupPolicySDKType {
   address: string;
 }
@@ -64,6 +100,15 @@ export interface EventSubmitProposal {
 export interface EventSubmitProposalProtoMsg {
   typeUrl: "/cosmos.group.v1.EventSubmitProposal";
   value: Uint8Array;
+}
+/** EventSubmitProposal is an event emitted when a proposal is created. */
+export interface EventSubmitProposalAmino {
+  /** proposal_id is the unique ID of the proposal. */
+  proposal_id?: string;
+}
+export interface EventSubmitProposalAminoMsg {
+  type: "cosmos-sdk/EventSubmitProposal";
+  value: EventSubmitProposalAmino;
 }
 /** EventSubmitProposal is an event emitted when a proposal is created. */
 export interface EventSubmitProposalSDKType {
@@ -79,6 +124,15 @@ export interface EventWithdrawProposalProtoMsg {
   value: Uint8Array;
 }
 /** EventWithdrawProposal is an event emitted when a proposal is withdrawn. */
+export interface EventWithdrawProposalAmino {
+  /** proposal_id is the unique ID of the proposal. */
+  proposal_id?: string;
+}
+export interface EventWithdrawProposalAminoMsg {
+  type: "cosmos-sdk/EventWithdrawProposal";
+  value: EventWithdrawProposalAmino;
+}
+/** EventWithdrawProposal is an event emitted when a proposal is withdrawn. */
 export interface EventWithdrawProposalSDKType {
   proposal_id: Long;
 }
@@ -90,6 +144,15 @@ export interface EventVote {
 export interface EventVoteProtoMsg {
   typeUrl: "/cosmos.group.v1.EventVote";
   value: Uint8Array;
+}
+/** EventVote is an event emitted when a voter votes on a proposal. */
+export interface EventVoteAmino {
+  /** proposal_id is the unique ID of the proposal. */
+  proposal_id?: string;
+}
+export interface EventVoteAminoMsg {
+  type: "cosmos-sdk/EventVote";
+  value: EventVoteAmino;
 }
 /** EventVote is an event emitted when a voter votes on a proposal. */
 export interface EventVoteSDKType {
@@ -109,6 +172,19 @@ export interface EventExecProtoMsg {
   value: Uint8Array;
 }
 /** EventExec is an event emitted when a proposal is executed. */
+export interface EventExecAmino {
+  /** proposal_id is the unique ID of the proposal. */
+  proposal_id?: string;
+  /** result is the proposal execution result. */
+  result?: ProposalExecutorResult;
+  /** logs contains error logs in case the execution result is FAILURE. */
+  logs?: string;
+}
+export interface EventExecAminoMsg {
+  type: "cosmos-sdk/EventExec";
+  value: EventExecAmino;
+}
+/** EventExec is an event emitted when a proposal is executed. */
 export interface EventExecSDKType {
   proposal_id: Long;
   result: ProposalExecutorResult;
@@ -124,6 +200,17 @@ export interface EventLeaveGroup {
 export interface EventLeaveGroupProtoMsg {
   typeUrl: "/cosmos.group.v1.EventLeaveGroup";
   value: Uint8Array;
+}
+/** EventLeaveGroup is an event emitted when group member leaves the group. */
+export interface EventLeaveGroupAmino {
+  /** group_id is the unique ID of the group. */
+  group_id?: string;
+  /** address is the account address of the group member. */
+  address?: string;
+}
+export interface EventLeaveGroupAminoMsg {
+  type: "cosmos-sdk/EventLeaveGroup";
+  value: EventLeaveGroupAmino;
 }
 /** EventLeaveGroup is an event emitted when group member leaves the group. */
 export interface EventLeaveGroupSDKType {
@@ -142,6 +229,19 @@ export interface EventProposalPruned {
 export interface EventProposalPrunedProtoMsg {
   typeUrl: "/cosmos.group.v1.EventProposalPruned";
   value: Uint8Array;
+}
+/** EventProposalPruned is an event emitted when a proposal is pruned. */
+export interface EventProposalPrunedAmino {
+  /** proposal_id is the unique ID of the proposal. */
+  proposal_id?: string;
+  /** status is the proposal status (UNSPECIFIED, SUBMITTED, ACCEPTED, REJECTED, ABORTED, WITHDRAWN). */
+  status?: ProposalStatus;
+  /** tally_result is the proposal tally result (when applicable). */
+  tally_result?: TallyResultAmino;
+}
+export interface EventProposalPrunedAminoMsg {
+  type: "cosmos-sdk/EventProposalPruned";
+  value: EventProposalPrunedAmino;
 }
 /** EventProposalPruned is an event emitted when a proposal is pruned. */
 export interface EventProposalPrunedSDKType {

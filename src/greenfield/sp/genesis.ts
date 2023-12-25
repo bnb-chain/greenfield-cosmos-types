@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./params";
-import { StorageProvider, StorageProviderSDKType, SpStoragePrice, SpStoragePriceSDKType } from "./types";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
+import { StorageProvider, StorageProviderAmino, StorageProviderSDKType, SpStoragePrice, SpStoragePriceAmino, SpStoragePriceSDKType } from "./types";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.sp";
@@ -15,6 +15,17 @@ export interface GenesisState {
 export interface GenesisStateProtoMsg {
   typeUrl: "/greenfield.sp.GenesisState";
   value: Uint8Array;
+}
+/** GenesisState defines the sp module's genesis state. */
+export interface GenesisStateAmino {
+  params?: ParamsAmino;
+  /** this used by starport scaffolding # genesis/proto/state */
+  storage_providers?: StorageProviderAmino[];
+  sp_storage_price_list?: SpStoragePriceAmino[];
+}
+export interface GenesisStateAminoMsg {
+  type: "/greenfield.sp.GenesisState";
+  value: GenesisStateAmino;
 }
 /** GenesisState defines the sp module's genesis state. */
 export interface GenesisStateSDKType {

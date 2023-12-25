@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType, MsgGasParams, MsgGasParamsSDKType } from "./gashub";
+import { Params, ParamsAmino, ParamsSDKType, MsgGasParams, MsgGasParamsAmino, MsgGasParamsSDKType } from "./gashub";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.gashub.v1beta1";
@@ -14,6 +14,17 @@ export interface GenesisState {
 export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.gashub.v1beta1.GenesisState";
   value: Uint8Array;
+}
+/** GenesisState defines the gashub module's genesis state. */
+export interface GenesisStateAmino {
+  /** params defines all the parameters of the module. */
+  params: ParamsAmino;
+  /** msg_gas_params defines the gas consumption for a msg type. */
+  msg_gas_params: MsgGasParamsAmino[];
+}
+export interface GenesisStateAminoMsg {
+  type: "cosmos-sdk/GenesisState";
+  value: GenesisStateAmino;
 }
 /** GenesisState defines the gashub module's genesis state. */
 export interface GenesisStateSDKType {

@@ -30,6 +30,31 @@ export interface ParamsProtoMsg {
   value: Uint8Array;
 }
 /** Params defines the parameters for the module. */
+export interface ParamsAmino {
+  versioned_params?: VersionedParamsAmino;
+  /** The maximum number of payment accounts that can be created by one user */
+  payment_account_count_limit?: string;
+  /**
+   * Time duration threshold of forced settlement.
+   * If dynamic balance is less than NetOutFlowRate * forcedSettleTime, the account can be forced settled.
+   */
+  forced_settle_time?: string;
+  /** the maximum number of flows that will be auto forced settled in one block */
+  max_auto_settle_flow_count?: string;
+  /** the maximum number of flows that will be auto resumed in one block */
+  max_auto_resume_flow_count?: string;
+  /** The denom of fee charged in payment module */
+  fee_denom?: string;
+  /** The withdrawal amount threshold to trigger time lock */
+  withdraw_time_lock_threshold?: string;
+  /** The duration of the time lock for a big amount withdrawal */
+  withdraw_time_lock_duration?: string;
+}
+export interface ParamsAminoMsg {
+  type: "/greenfield.payment.Params";
+  value: ParamsAmino;
+}
+/** Params defines the parameters for the module. */
 export interface ParamsSDKType {
   versioned_params: VersionedParamsSDKType;
   payment_account_count_limit: Long;
@@ -50,6 +75,17 @@ export interface VersionedParams {
 export interface VersionedParamsProtoMsg {
   typeUrl: "/greenfield.payment.VersionedParams";
   value: Uint8Array;
+}
+/** VersionedParams defines the parameters with multiple versions, each version is stored with different timestamp. */
+export interface VersionedParamsAmino {
+  /** Time duration which the buffer balance need to be reserved for NetOutFlow e.g. 6 month */
+  reserve_time?: string;
+  /** The tax rate to pay for validators in storage payment. The default value is 1%(0.01) */
+  validator_tax_rate?: string;
+}
+export interface VersionedParamsAminoMsg {
+  type: "/greenfield.payment.VersionedParams";
+  value: VersionedParamsAmino;
 }
 /** VersionedParams defines the parameters with multiple versions, each version is stored with different timestamp. */
 export interface VersionedParamsSDKType {

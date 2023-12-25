@@ -21,6 +21,19 @@ export interface CommitInfoProtoMsg {
  * CommitInfo defines commit information used by the multi-store when committing
  * a version/height.
  */
+export interface CommitInfoAmino {
+  version?: string;
+  store_infos?: StoreInfoAmino[];
+  timestamp?: string;
+}
+export interface CommitInfoAminoMsg {
+  type: "cosmos-sdk/CommitInfo";
+  value: CommitInfoAmino;
+}
+/**
+ * CommitInfo defines commit information used by the multi-store when committing
+ * a version/height.
+ */
 export interface CommitInfoSDKType {
   version: Long;
   store_infos: StoreInfoSDKType[];
@@ -42,6 +55,18 @@ export interface StoreInfoProtoMsg {
  * StoreInfo defines store-specific commit information. It contains a reference
  * between a store name and the commit ID.
  */
+export interface StoreInfoAmino {
+  name?: string;
+  commit_id?: CommitIDAmino;
+}
+export interface StoreInfoAminoMsg {
+  type: "cosmos-sdk/StoreInfo";
+  value: StoreInfoAmino;
+}
+/**
+ * StoreInfo defines store-specific commit information. It contains a reference
+ * between a store name and the commit ID.
+ */
 export interface StoreInfoSDKType {
   name: string;
   commit_id: CommitIDSDKType;
@@ -57,6 +82,18 @@ export interface CommitID {
 export interface CommitIDProtoMsg {
   typeUrl: "/cosmos.base.store.v1beta1.CommitID";
   value: Uint8Array;
+}
+/**
+ * CommitID defines the commitment information when a specific store is
+ * committed.
+ */
+export interface CommitIDAmino {
+  version?: string;
+  hash?: string;
+}
+export interface CommitIDAminoMsg {
+  type: "cosmos-sdk/CommitID";
+  value: CommitIDAmino;
 }
 /**
  * CommitID defines the commitment information when a specific store is

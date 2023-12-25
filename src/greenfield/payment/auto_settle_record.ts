@@ -23,6 +23,21 @@ export interface AutoSettleRecordProtoMsg {
  * The EndBlocker of payment module will scan the list of AutoSettleRecord
  * and settle the stream account if the timestamp is less than the current time.
  */
+export interface AutoSettleRecordAmino {
+  /** timestamp is the unix timestamp when the stream account will be settled. */
+  timestamp?: string;
+  /** A stream account address */
+  addr?: string;
+}
+export interface AutoSettleRecordAminoMsg {
+  type: "/greenfield.payment.AutoSettleRecord";
+  value: AutoSettleRecordAmino;
+}
+/**
+ * AutoSettleRecord is the record keeps the auto settle information.
+ * The EndBlocker of payment module will scan the list of AutoSettleRecord
+ * and settle the stream account if the timestamp is less than the current time.
+ */
 export interface AutoSettleRecordSDKType {
   timestamp: Long;
   addr: string;

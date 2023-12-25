@@ -13,6 +13,15 @@ export interface GenesisStateProtoMsg {
   value: Uint8Array;
 }
 /** GenesisState defines the raw genesis transaction in JSON. */
+export interface GenesisStateAmino {
+  /** gen_txs defines the genesis transactions. */
+  gen_txs: string[];
+}
+export interface GenesisStateAminoMsg {
+  type: "cosmos-sdk/GenesisState";
+  value: GenesisStateAmino;
+}
+/** GenesisState defines the raw genesis transaction in JSON. */
 export interface GenesisStateSDKType {
   gen_txs: Uint8Array[];
 }

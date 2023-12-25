@@ -15,6 +15,17 @@ export interface ParamsProtoMsg {
   value: Uint8Array;
 }
 /** Params defines the parameters for the module. */
+export interface ParamsAmino {
+  /** Relayer fee for the cross chain transfer out tx to bsc */
+  bsc_transfer_out_relayer_fee?: string;
+  /** Relayer fee for the ACK or FAIL_ACK package of the cross chain transfer out tx to bsc */
+  bsc_transfer_out_ack_relayer_fee?: string;
+}
+export interface ParamsAminoMsg {
+  type: "/greenfield.bridge.Params";
+  value: ParamsAmino;
+}
+/** Params defines the parameters for the module. */
 export interface ParamsSDKType {
   bsc_transfer_out_relayer_fee: string;
   bsc_transfer_out_ack_relayer_fee: string;

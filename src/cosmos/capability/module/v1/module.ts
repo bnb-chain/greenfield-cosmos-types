@@ -16,6 +16,18 @@ export interface ModuleProtoMsg {
   value: Uint8Array;
 }
 /** Module is the config object of the capability module. */
+export interface ModuleAmino {
+  /**
+   * seal_keeper defines if keeper.Seal() will run on BeginBlock() to prevent further modules from creating a scoped
+   * keeper. For more details check x/capability/keeper.go.
+   */
+  seal_keeper?: boolean;
+}
+export interface ModuleAminoMsg {
+  type: "cosmos-sdk/Module";
+  value: ModuleAmino;
+}
+/** Module is the config object of the capability module. */
 export interface ModuleSDKType {
   seal_keeper: boolean;
 }

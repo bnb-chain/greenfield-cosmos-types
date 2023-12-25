@@ -29,6 +29,31 @@ export interface EventCrossChainProtoMsg {
   value: Uint8Array;
 }
 /** EventCrossChain is emitted when there is a cross chain package created */
+export interface EventCrossChainAmino {
+  /** Source chain id of the cross chain package */
+  src_chain_id?: number;
+  /** Destination chain id of the cross chainpackage */
+  dest_chain_id?: number;
+  /** Channel id of the cross chain package */
+  channel_id?: number;
+  /** Sequence of the cross chain package */
+  sequence?: string;
+  /** Package type of the cross chain package, like SYN, ACK and FAIL_ACK */
+  package_type?: number;
+  /** Timestamp of the cross chain package */
+  timestamp?: string;
+  /** Payload of the cross chain package */
+  package_load?: string;
+  /** Relayer fee for the cross chain package */
+  relayer_fee?: string;
+  /** Relayer fee for the ACK or FAIL_ACK package of this cross chain package */
+  ack_relayer_fee?: string;
+}
+export interface EventCrossChainAminoMsg {
+  type: "cosmos-sdk/EventCrossChain";
+  value: EventCrossChainAmino;
+}
+/** EventCrossChain is emitted when there is a cross chain package created */
 export interface EventCrossChainSDKType {
   src_chain_id: number;
   dest_chain_id: number;

@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Class, ClassSDKType, NFT, NFTSDKType } from "./nft";
+import { Class, ClassAmino, ClassSDKType, NFT, NFTAmino, NFTSDKType } from "./nft";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet } from "../../../helpers";
 export const protobufPackage = "cosmos.nft.v1beta1";
@@ -14,6 +14,17 @@ export interface GenesisState {
 export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.nft.v1beta1.GenesisState";
   value: Uint8Array;
+}
+/** GenesisState defines the nft module's genesis state. */
+export interface GenesisStateAmino {
+  /** class defines the class of the nft type. */
+  classes?: ClassAmino[];
+  /** entry defines all nft owned by a person. */
+  entries?: EntryAmino[];
+}
+export interface GenesisStateAminoMsg {
+  type: "cosmos-sdk/GenesisState";
+  value: GenesisStateAmino;
 }
 /** GenesisState defines the nft module's genesis state. */
 export interface GenesisStateSDKType {
@@ -30,6 +41,17 @@ export interface Entry {
 export interface EntryProtoMsg {
   typeUrl: "/cosmos.nft.v1beta1.Entry";
   value: Uint8Array;
+}
+/** Entry Defines all nft owned by a person */
+export interface EntryAmino {
+  /** owner is the owner address of the following nft */
+  owner?: string;
+  /** nfts is a group of nfts of the same owner */
+  nfts?: NFTAmino[];
+}
+export interface EntryAminoMsg {
+  type: "cosmos-sdk/Entry";
+  value: EntryAmino;
 }
 /** Entry Defines all nft owned by a person */
 export interface EntrySDKType {

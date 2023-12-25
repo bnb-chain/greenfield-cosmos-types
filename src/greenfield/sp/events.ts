@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
-import { Status, Description, DescriptionSDKType, statusFromJSON, statusToJSON } from "./types";
+import { Coin, CoinAmino, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
+import { Status, Description, DescriptionAmino, DescriptionSDKType, statusFromJSON, statusToJSON } from "./types";
 import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 import { Decimal } from "@cosmjs/math";
@@ -36,6 +36,37 @@ export interface EventCreateStorageProvider {
 export interface EventCreateStorageProviderProtoMsg {
   typeUrl: "/greenfield.sp.EventCreateStorageProvider";
   value: Uint8Array;
+}
+/** EventCreateStorageProvider is emitted when there is a storage provider created */
+export interface EventCreateStorageProviderAmino {
+  /** sp_id defines the identifier of storage provider which generated on-chain */
+  sp_id?: number;
+  /** sp_address is the operator address of the storage provider */
+  sp_address?: string;
+  /** funding_address is the funding account address of the storage provider */
+  funding_address?: string;
+  /** seal_address is the account address for SealObject Tx */
+  seal_address?: string;
+  /** approval_address is the account address for approve create bucket/object signature */
+  approval_address?: string;
+  /** gc_address defines one of the storage provider's accounts which is used for gc purpose */
+  gc_address?: string;
+  /** maintenance_address defines one of the storage provider's accounts which is used for testing while in maintenance mode */
+  maintenance_address?: string;
+  /** endpoint is the domain name address used by SP to provide storage services */
+  endpoint?: string;
+  /** total_deposit is the token coin that the storage provider deposit to the storage module */
+  total_deposit?: CoinAmino;
+  /** status defines the status of the storage provider */
+  status?: Status;
+  /** description defines the description terms for the storage provider */
+  description?: DescriptionAmino;
+  /** bls_key defines the bls pub key owned by storage provider used when sealing object and completing migration */
+  bls_key?: string;
+}
+export interface EventCreateStorageProviderAminoMsg {
+  type: "/greenfield.sp.EventCreateStorageProvider";
+  value: EventCreateStorageProviderAmino;
 }
 /** EventCreateStorageProvider is emitted when there is a storage provider created */
 export interface EventCreateStorageProviderSDKType {
@@ -78,6 +109,31 @@ export interface EventEditStorageProviderProtoMsg {
   value: Uint8Array;
 }
 /** EventEditStorageProvider is emitted when SP's metadata is edited. */
+export interface EventEditStorageProviderAmino {
+  /** sp_id defines the identifier of storage provider which generated on-chain */
+  sp_id?: number;
+  /** sp_address is the operator address of the storage provider */
+  sp_address?: string;
+  /** endpoint is the service endpoint of the storage provider */
+  endpoint?: string;
+  /** description defines the description terms for the storage provider */
+  description?: DescriptionAmino;
+  /** seal_address is the account address for SealObject Tx */
+  seal_address?: string;
+  /** approval_address is the account address for approve create bucket/object signature */
+  approval_address?: string;
+  /** gc_address defines one of the storage provider's accounts which is used for gc purpose */
+  gc_address?: string;
+  /** maintenance_address defines one of the storage provider's accounts which is used for testing while in maintenance mode */
+  maintenance_address?: string;
+  /** bls_key defines the bls pub key owned by storage provider used when sealing object */
+  bls_key?: string;
+}
+export interface EventEditStorageProviderAminoMsg {
+  type: "/greenfield.sp.EventEditStorageProvider";
+  value: EventEditStorageProviderAmino;
+}
+/** EventEditStorageProvider is emitted when SP's metadata is edited. */
 export interface EventEditStorageProviderSDKType {
   sp_id: number;
   sp_address: string;
@@ -103,6 +159,19 @@ export interface EventDepositProtoMsg {
   value: Uint8Array;
 }
 /** EventDeposit is emitted when sp deposit tokens. */
+export interface EventDepositAmino {
+  /** funding_address is the funding account address of the storage provider */
+  funding_address?: string;
+  /** deposit is the token coin deposited this message */
+  deposit?: string;
+  /** total_deposit is the total token coins this storage provider deposited */
+  total_deposit?: string;
+}
+export interface EventDepositAminoMsg {
+  type: "/greenfield.sp.EventDeposit";
+  value: EventDepositAmino;
+}
+/** EventDeposit is emitted when sp deposit tokens. */
 export interface EventDepositSDKType {
   funding_address: string;
   deposit: string;
@@ -123,6 +192,22 @@ export interface EventSpStoragePriceUpdate {
 export interface EventSpStoragePriceUpdateProtoMsg {
   typeUrl: "/greenfield.sp.EventSpStoragePriceUpdate";
   value: Uint8Array;
+}
+export interface EventSpStoragePriceUpdateAmino {
+  /** sp id */
+  sp_id?: number;
+  /** update time, in unix timestamp */
+  update_time_sec?: string;
+  /** read price, in bnb wei per charge byte */
+  read_price?: string;
+  /** free read quota, in byte */
+  free_read_quota?: string;
+  /** store price, in bnb wei per charge byte */
+  store_price?: string;
+}
+export interface EventSpStoragePriceUpdateAminoMsg {
+  type: "/greenfield.sp.EventSpStoragePriceUpdate";
+  value: EventSpStoragePriceUpdateAmino;
 }
 export interface EventSpStoragePriceUpdateSDKType {
   sp_id: number;
@@ -145,6 +230,20 @@ export interface EventGlobalSpStorePriceUpdateProtoMsg {
   typeUrl: "/greenfield.sp.EventGlobalSpStorePriceUpdate";
   value: Uint8Array;
 }
+export interface EventGlobalSpStorePriceUpdateAmino {
+  /** update time, in unix timestamp */
+  update_time_sec?: string;
+  /** read price, in bnb wei per charge byte */
+  read_price?: string;
+  /** primary store price, in bnb wei per charge byte */
+  primary_store_price?: string;
+  /** secondary store price, in bnb wei per charge byte */
+  secondary_store_price?: string;
+}
+export interface EventGlobalSpStorePriceUpdateAminoMsg {
+  type: "/greenfield.sp.EventGlobalSpStorePriceUpdate";
+  value: EventGlobalSpStorePriceUpdateAmino;
+}
 export interface EventGlobalSpStorePriceUpdateSDKType {
   update_time_sec: Long;
   read_price: string;
@@ -165,6 +264,21 @@ export interface EventUpdateStorageProviderStatus {
 export interface EventUpdateStorageProviderStatusProtoMsg {
   typeUrl: "/greenfield.sp.EventUpdateStorageProviderStatus";
   value: Uint8Array;
+}
+/** EventUpdateStorageProviderStatus is emitted when the SP update its status successfully */
+export interface EventUpdateStorageProviderStatusAmino {
+  /** sp_id defines the identifier of storage provider which generated on-chain */
+  sp_id?: number;
+  /** sp_address is the operator address of the storage provider */
+  sp_address?: string;
+  /** pre status */
+  pre_status?: string;
+  /** new status */
+  new_status?: string;
+}
+export interface EventUpdateStorageProviderStatusAminoMsg {
+  type: "/greenfield.sp.EventUpdateStorageProviderStatus";
+  value: EventUpdateStorageProviderStatusAmino;
 }
 /** EventUpdateStorageProviderStatus is emitted when the SP update its status successfully */
 export interface EventUpdateStorageProviderStatusSDKType {

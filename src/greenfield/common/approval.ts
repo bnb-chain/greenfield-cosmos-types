@@ -25,6 +25,23 @@ export interface ApprovalProtoMsg {
  * after allowing them to create a bucket or object, which is then used for verification on the chain
  * to ensure agreement between the Primary SP and the user.
  */
+export interface ApprovalAmino {
+  /** expired_height is the block height at which the signature expires. */
+  expired_height?: string;
+  /** global_virtual_group_family_id is the family id that stored. */
+  global_virtual_group_family_id?: number;
+  /** The signature needs to conform to the EIP 712 specification. */
+  sig?: string;
+}
+export interface ApprovalAminoMsg {
+  type: "/greenfield.common.Approval";
+  value: ApprovalAmino;
+}
+/**
+ * Approval is the signature information returned by the Primary Storage Provider (SP) to the user
+ * after allowing them to create a bucket or object, which is then used for verification on the chain
+ * to ensure agreement between the Primary SP and the user.
+ */
 export interface ApprovalSDKType {
   expired_height: Long;
   global_virtual_group_family_id: number;

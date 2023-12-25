@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./params";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.challenge";
@@ -11,6 +11,14 @@ export interface GenesisState {
 export interface GenesisStateProtoMsg {
   typeUrl: "/greenfield.challenge.GenesisState";
   value: Uint8Array;
+}
+/** GenesisState defines the challenge module's genesis state. */
+export interface GenesisStateAmino {
+  params?: ParamsAmino;
+}
+export interface GenesisStateAminoMsg {
+  type: "/greenfield.challenge.GenesisState";
+  value: GenesisStateAmino;
 }
 /** GenesisState defines the challenge module's genesis state. */
 export interface GenesisStateSDKType {

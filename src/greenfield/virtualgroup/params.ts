@@ -21,6 +21,23 @@ export interface ParamsProtoMsg {
   value: Uint8Array;
 }
 /** Params defines the parameters for the module. */
+export interface ParamsAmino {
+  /** deposit_denom defines the staking coin denomination. */
+  deposit_denom?: string;
+  /** store price, in bnb wei per charge byte */
+  gvg_staking_per_bytes?: string;
+  /** the max number of lvg which allowed in a bucket */
+  max_local_virtual_group_num_per_bucket?: number;
+  /** the max number of gvg which can exist in a family */
+  max_global_virtual_group_num_per_family?: number;
+  /** if the store size reach the exceed, the family is not allowed to sever more buckets */
+  max_store_size_per_family?: string;
+}
+export interface ParamsAminoMsg {
+  type: "/greenfield.virtualgroup.Params";
+  value: ParamsAmino;
+}
+/** Params defines the parameters for the module. */
 export interface ParamsSDKType {
   deposit_denom: string;
   gvg_staking_per_bytes: string;

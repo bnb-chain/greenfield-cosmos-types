@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType, MsgGasParams, MsgGasParamsSDKType } from "./gashub";
+import { Params, ParamsAmino, ParamsSDKType, MsgGasParams, MsgGasParamsAmino, MsgGasParamsSDKType } from "./gashub";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.gashub.v1beta1";
@@ -20,6 +20,21 @@ export interface MsgUpdateParamsProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
+export interface MsgUpdateParamsAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /**
+   * params defines the x/gashub parameters to update.
+   * 
+   * NOTE: All parameters must be supplied.
+   */
+  params: ParamsAmino;
+}
+export interface MsgUpdateParamsAminoMsg {
+  type: "cosmos-sdk/x/gashub/MsgUpdateParams";
+  value: MsgUpdateParamsAmino;
+}
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
   params: ParamsSDKType;
@@ -32,6 +47,15 @@ export interface MsgUpdateParamsResponse {}
 export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/cosmos.gashub.v1beta1.MsgUpdateParamsResponse";
   value: Uint8Array;
+}
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ */
+export interface MsgUpdateParamsResponseAmino {}
+export interface MsgUpdateParamsResponseAminoMsg {
+  type: "cosmos-sdk/MsgUpdateParamsResponse";
+  value: MsgUpdateParamsResponseAmino;
 }
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
@@ -67,6 +91,28 @@ export interface MsgSetMsgGasParamsProtoMsg {
  * Existing MsgGasParams entries that are not included in this
  * message are left unchanged.
  */
+export interface MsgSetMsgGasParamsAmino {
+  authority?: string;
+  /** update_set is the list of entries to add or update. */
+  update_set?: MsgGasParamsAmino[];
+  /**
+   * delete_set is a list of msg types that will have their MsgGasParams entries deleted.
+   * If a msg type is included that doesn't have a MsgGasParams entry,
+   * it will be ignored.
+   */
+  delete_set?: string[];
+}
+export interface MsgSetMsgGasParamsAminoMsg {
+  type: "cosmos-sdk/MsgSetMsgGasParams";
+  value: MsgSetMsgGasParamsAmino;
+}
+/**
+ * MsgSetMsgGasParams is the Msg/SetMsgGasParams request type.
+ * 
+ * Only entries to add/update/delete need to be included.
+ * Existing MsgGasParams entries that are not included in this
+ * message are left unchanged.
+ */
 export interface MsgSetMsgGasParamsSDKType {
   authority: string;
   update_set: MsgGasParamsSDKType[];
@@ -77,6 +123,12 @@ export interface MsgSetMsgGasParamsResponse {}
 export interface MsgSetMsgGasParamsResponseProtoMsg {
   typeUrl: "/cosmos.gashub.v1beta1.MsgSetMsgGasParamsResponse";
   value: Uint8Array;
+}
+/** MsgSetMsgGasParamsResponse defines the Msg/SetMsgGasParams response type. */
+export interface MsgSetMsgGasParamsResponseAmino {}
+export interface MsgSetMsgGasParamsResponseAminoMsg {
+  type: "cosmos-sdk/MsgSetMsgGasParamsResponse";
+  value: MsgSetMsgGasParamsResponseAmino;
 }
 /** MsgSetMsgGasParamsResponse defines the Msg/SetMsgGasParams response type. */
 export interface MsgSetMsgGasParamsResponseSDKType {}

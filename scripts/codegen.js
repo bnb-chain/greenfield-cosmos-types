@@ -85,7 +85,10 @@ telescope({
             ]
         },
         aminoEncoding: {
-            enabled: false
+            enabled: true
+        },
+        interfaces: {
+            useUnionTypes: true,
         }
     }
 }).then(() => {

@@ -10,6 +10,12 @@ export interface ParamsProtoMsg {
   value: Uint8Array;
 }
 /** Params defines the parameters for the module. */
+export interface ParamsAmino {}
+export interface ParamsAminoMsg {
+  type: "/greenfield.gensp.Params";
+  value: ParamsAmino;
+}
+/** Params defines the parameters for the module. */
 export interface ParamsSDKType {}
 function createBaseParams(): Params {
   return {};

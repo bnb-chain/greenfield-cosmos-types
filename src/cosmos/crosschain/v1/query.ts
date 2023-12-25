@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./crosschain";
+import { Params, ParamsAmino, ParamsSDKType } from "./crosschain";
 import { Long, DeepPartial, Exact, isSet, bytesFromBase64, base64FromBytes, Rpc } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.crosschain.v1";
@@ -9,6 +9,12 @@ export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {
   typeUrl: "/cosmos.crosschain.v1.QueryParamsRequest";
   value: Uint8Array;
+}
+/** QueryParamsRequest is the request type for the Query/Params RPC method. */
+export interface QueryParamsRequestAmino {}
+export interface QueryParamsRequestAminoMsg {
+  type: "cosmos-sdk/QueryParamsRequest";
+  value: QueryParamsRequestAmino;
 }
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
@@ -20,6 +26,15 @@ export interface QueryParamsResponse {
 export interface QueryParamsResponseProtoMsg {
   typeUrl: "/cosmos.crosschain.v1.QueryParamsResponse";
   value: Uint8Array;
+}
+/** QueryParamsResponse is the response type for the Query/Params RPC method. */
+export interface QueryParamsResponseAmino {
+  /** params defines the parameters of the module. */
+  params?: ParamsAmino;
+}
+export interface QueryParamsResponseAminoMsg {
+  type: "cosmos-sdk/QueryParamsResponse";
+  value: QueryParamsResponseAmino;
 }
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
@@ -39,6 +54,19 @@ export interface QueryCrossChainPackageRequestProtoMsg {
   value: Uint8Array;
 }
 /** QueryCrossChainPackageRequest is the request type for the Query/CrossChainPackage RPC method. */
+export interface QueryCrossChainPackageRequestAmino {
+  /** destination chain id */
+  dest_chain_id?: number;
+  /** channel id of the cross chain package */
+  channel_id?: number;
+  /** sequence of the cross chain package */
+  sequence?: string;
+}
+export interface QueryCrossChainPackageRequestAminoMsg {
+  type: "cosmos-sdk/QueryCrossChainPackageRequest";
+  value: QueryCrossChainPackageRequestAmino;
+}
+/** QueryCrossChainPackageRequest is the request type for the Query/CrossChainPackage RPC method. */
 export interface QueryCrossChainPackageRequestSDKType {
   dest_chain_id: number;
   channel_id: number;
@@ -52,6 +80,15 @@ export interface QueryCrossChainPackageResponse {
 export interface QueryCrossChainPackageResponseProtoMsg {
   typeUrl: "/cosmos.crosschain.v1.QueryCrossChainPackageResponse";
   value: Uint8Array;
+}
+/** QueryCrossChainPackageResponse is the response type for the Query/CrossChainPackage RPC method. */
+export interface QueryCrossChainPackageResponseAmino {
+  /** content of the cross chain package */
+  package?: string;
+}
+export interface QueryCrossChainPackageResponseAminoMsg {
+  type: "cosmos-sdk/QueryCrossChainPackageResponse";
+  value: QueryCrossChainPackageResponseAmino;
 }
 /** QueryCrossChainPackageResponse is the response type for the Query/CrossChainPackage RPC method. */
 export interface QueryCrossChainPackageResponseSDKType {
@@ -69,6 +106,17 @@ export interface QuerySendSequenceRequestProtoMsg {
   value: Uint8Array;
 }
 /** QuerySendSequenceRequest is the request type for the Query/SendSequence RPC method. */
+export interface QuerySendSequenceRequestAmino {
+  /** destination chain id */
+  dest_chain_id?: number;
+  /** channel id of the cross chain package */
+  channel_id?: number;
+}
+export interface QuerySendSequenceRequestAminoMsg {
+  type: "cosmos-sdk/QuerySendSequenceRequest";
+  value: QuerySendSequenceRequestAmino;
+}
+/** QuerySendSequenceRequest is the request type for the Query/SendSequence RPC method. */
 export interface QuerySendSequenceRequestSDKType {
   dest_chain_id: number;
   channel_id: number;
@@ -81,6 +129,15 @@ export interface QuerySendSequenceResponse {
 export interface QuerySendSequenceResponseProtoMsg {
   typeUrl: "/cosmos.crosschain.v1.QuerySendSequenceResponse";
   value: Uint8Array;
+}
+/** QuerySendSequenceResponse is the response type for the Query/SendSequence RPC method. */
+export interface QuerySendSequenceResponseAmino {
+  /** sequence of the cross chain package */
+  sequence?: string;
+}
+export interface QuerySendSequenceResponseAminoMsg {
+  type: "cosmos-sdk/QuerySendSequenceResponse";
+  value: QuerySendSequenceResponseAmino;
 }
 /** QuerySendSequenceResponse is the response type for the Query/SendSequence RPC method. */
 export interface QuerySendSequenceResponseSDKType {
@@ -98,6 +155,17 @@ export interface QueryReceiveSequenceRequestProtoMsg {
   value: Uint8Array;
 }
 /** QuerySendSequenceRequest is the request type for the Query/ReceiveSequence RPC method. */
+export interface QueryReceiveSequenceRequestAmino {
+  /** destination chain id */
+  dest_chain_id?: number;
+  /** channel id of the cross chain package */
+  channel_id?: number;
+}
+export interface QueryReceiveSequenceRequestAminoMsg {
+  type: "cosmos-sdk/QueryReceiveSequenceRequest";
+  value: QueryReceiveSequenceRequestAmino;
+}
+/** QuerySendSequenceRequest is the request type for the Query/ReceiveSequence RPC method. */
 export interface QueryReceiveSequenceRequestSDKType {
   dest_chain_id: number;
   channel_id: number;
@@ -110,6 +178,15 @@ export interface QueryReceiveSequenceResponse {
 export interface QueryReceiveSequenceResponseProtoMsg {
   typeUrl: "/cosmos.crosschain.v1.QueryReceiveSequenceResponse";
   value: Uint8Array;
+}
+/** QuerySendSequenceResponse is the response type for the Query/ReceiveSequence RPC method. */
+export interface QueryReceiveSequenceResponseAmino {
+  /** sequence of the cross chain package */
+  sequence?: string;
+}
+export interface QueryReceiveSequenceResponseAminoMsg {
+  type: "cosmos-sdk/QueryReceiveSequenceResponse";
+  value: QueryReceiveSequenceResponseAmino;
 }
 /** QuerySendSequenceResponse is the response type for the Query/ReceiveSequence RPC method. */
 export interface QueryReceiveSequenceResponseSDKType {

@@ -20,6 +20,18 @@ export interface PubKeyProtoMsg {
  * Tendermint's PubKey interface. It represents the 33-byte compressed public
  * key format.
  */
+export interface PubKeyAmino {
+  key?: string;
+}
+export interface PubKeyAminoMsg {
+  type: "cosmos-sdk/PubKey";
+  value: PubKeyAmino;
+}
+/**
+ * PubKey defines a type alias for an ecdsa.PublicKey that implements
+ * Tendermint's PubKey interface. It represents the 33-byte compressed public
+ * key format.
+ */
 export interface PubKeySDKType {
   key: Uint8Array;
 }
@@ -37,6 +49,21 @@ export interface PrivKey {
 export interface PrivKeyProtoMsg {
   typeUrl: "/cosmos.crypto.eth.ethsecp256k1.PrivKey";
   value: Uint8Array;
+}
+/**
+ * PrivKey defines a type alias for an ecdsa.PrivateKey that implements
+ * Tendermint's PrivateKey interface.
+ */
+export interface PrivKeyAmino {
+  /**
+   * PrivKey defines a type alias for an ecdsa.PrivateKey that implements
+   * Tendermint's PrivateKey interface.
+   */
+  key?: string;
+}
+export interface PrivKeyAminoMsg {
+  type: "cosmos-sdk/PrivKey";
+  value: PrivKeyAmino;
 }
 /**
  * PrivKey defines a type alias for an ecdsa.PrivateKey that implements

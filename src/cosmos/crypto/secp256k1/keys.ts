@@ -24,6 +24,20 @@ export interface PubKeyProtoMsg {
  * the x-coordinate. Otherwise the first byte is a 0x03.
  * This prefix is followed with the x-coordinate.
  */
+export interface PubKeyAmino {
+  key?: string;
+}
+export interface PubKeyAminoMsg {
+  type: "tendermint/PubKeySecp256k1";
+  value: PubKeyAmino;
+}
+/**
+ * PubKey defines a secp256k1 public key
+ * Key is the compressed form of the pubkey. The first byte depends is a 0x02 byte
+ * if the y-coordinate is the lexicographically largest of the two associated with
+ * the x-coordinate. Otherwise the first byte is a 0x03.
+ * This prefix is followed with the x-coordinate.
+ */
 export interface PubKeySDKType {
   key: Uint8Array;
 }
@@ -34,6 +48,14 @@ export interface PrivKey {
 export interface PrivKeyProtoMsg {
   typeUrl: "/cosmos.crypto.secp256k1.PrivKey";
   value: Uint8Array;
+}
+/** PrivKey defines a secp256k1 private key. */
+export interface PrivKeyAmino {
+  key?: string;
+}
+export interface PrivKeyAminoMsg {
+  type: "tendermint/PrivKeySecp256k1";
+  value: PrivKeyAmino;
 }
 /** PrivKey defines a secp256k1 private key. */
 export interface PrivKeySDKType {

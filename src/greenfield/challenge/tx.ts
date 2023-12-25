@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { VoteResult, voteResultFromJSON, voteResultToJSON } from "./types";
-import { Params, ParamsSDKType } from "./params";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, Rpc } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.challenge";
@@ -25,6 +25,25 @@ export interface MsgSubmitProtoMsg {
   value: Uint8Array;
 }
 /** MsgSubmit defines the message for submitting challenges. */
+export interface MsgSubmitAmino {
+  /** The challenger address. */
+  challenger?: string;
+  /** The storage provider to be challenged. */
+  sp_operator_address?: string;
+  /** The bucket of the object info to be challenged. */
+  bucket_name?: string;
+  /** The name of the object info to be challenged. */
+  object_name?: string;
+  /** The index of segment/piece to challenge, start from zero. */
+  segment_index?: number;
+  /** Randomly pick a segment/piece to challenge or not. */
+  random_index?: boolean;
+}
+export interface MsgSubmitAminoMsg {
+  type: "/greenfield.challenge.MsgSubmit";
+  value: MsgSubmitAmino;
+}
+/** MsgSubmit defines the message for submitting challenges. */
 export interface MsgSubmitSDKType {
   challenger: string;
   sp_operator_address: string;
@@ -41,6 +60,15 @@ export interface MsgSubmitResponse {
 export interface MsgSubmitResponseProtoMsg {
   typeUrl: "/greenfield.challenge.MsgSubmitResponse";
   value: Uint8Array;
+}
+/** MsgSubmitResponse defines the response of MsgSubmit. */
+export interface MsgSubmitResponseAmino {
+  /** The id of the challenge. */
+  challenge_id?: string;
+}
+export interface MsgSubmitResponseAminoMsg {
+  type: "/greenfield.challenge.MsgSubmitResponse";
+  value: MsgSubmitResponseAmino;
 }
 /** MsgSubmitResponse defines the response of MsgSubmit. */
 export interface MsgSubmitResponseSDKType {
@@ -70,6 +98,29 @@ export interface MsgAttestProtoMsg {
   value: Uint8Array;
 }
 /** MsgSubmit defines the message for attesting challenges. */
+export interface MsgAttestAmino {
+  /** The submitter address. */
+  submitter?: string;
+  /** The id of the challenge. */
+  challenge_id?: string;
+  /** The id of the object info. */
+  object_id?: string;
+  /** The storage provider to be challenged. */
+  sp_operator_address?: string;
+  /** Vote result of the attestation. */
+  vote_result?: VoteResult;
+  /** The challenger who submits the challenge, which can be empty. */
+  challenger_address?: string;
+  /** The validators participated in the attestation. */
+  vote_validator_set?: string[];
+  /** The aggregated BLS signature from the validators. */
+  vote_agg_signature?: string;
+}
+export interface MsgAttestAminoMsg {
+  type: "/greenfield.challenge.MsgAttest";
+  value: MsgAttestAmino;
+}
+/** MsgSubmit defines the message for attesting challenges. */
 export interface MsgAttestSDKType {
   submitter: string;
   challenge_id: Long;
@@ -85,6 +136,12 @@ export interface MsgAttestResponse {}
 export interface MsgAttestResponseProtoMsg {
   typeUrl: "/greenfield.challenge.MsgAttestResponse";
   value: Uint8Array;
+}
+/** MsgAttest defines the response of MsgAttestResponse. */
+export interface MsgAttestResponseAmino {}
+export interface MsgAttestResponseAminoMsg {
+  type: "/greenfield.challenge.MsgAttestResponse";
+  value: MsgAttestResponseAmino;
 }
 /** MsgAttest defines the response of MsgAttestResponse. */
 export interface MsgAttestResponseSDKType {}
@@ -103,6 +160,20 @@ export interface MsgUpdateParamsProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
+export interface MsgUpdateParamsAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /**
+   * params defines the x/challenge parameters to update.
+   * NOTE: All parameters must be supplied.
+   */
+  params?: ParamsAmino;
+}
+export interface MsgUpdateParamsAminoMsg {
+  type: "/greenfield.challenge.MsgUpdateParams";
+  value: MsgUpdateParamsAmino;
+}
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
   params: ParamsSDKType;
@@ -112,6 +183,12 @@ export interface MsgUpdateParamsResponse {}
 export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/greenfield.challenge.MsgUpdateParamsResponse";
   value: Uint8Array;
+}
+/** MsgUpdateParamsResponse defines the response structure for executing a MsgUpdateParams message. */
+export interface MsgUpdateParamsResponseAmino {}
+export interface MsgUpdateParamsResponseAminoMsg {
+  type: "/greenfield.challenge.MsgUpdateParamsResponse";
+  value: MsgUpdateParamsResponseAmino;
 }
 /** MsgUpdateParamsResponse defines the response structure for executing a MsgUpdateParams message. */
 export interface MsgUpdateParamsResponseSDKType {}
