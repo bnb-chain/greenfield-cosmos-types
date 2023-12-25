@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Duration, DurationSDKType } from "../../../../google/protobuf/duration";
+import { Duration, DurationAmino, DurationSDKType } from "../../../../google/protobuf/duration";
 import { Long, isSet, DeepPartial, Exact } from "../../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.group.module.v1";
@@ -20,6 +20,23 @@ export interface Module {
 export interface ModuleProtoMsg {
   typeUrl: "/cosmos.group.module.v1.Module";
   value: Uint8Array;
+}
+/** Module is the config object of the group module. */
+export interface ModuleAmino {
+  /**
+   * max_execution_period defines the max duration after a proposal's voting period ends that members can send a MsgExec
+   * to execute the proposal.
+   */
+  max_execution_period: DurationAmino;
+  /**
+   * max_metadata_len defines the max length of the metadata bytes field for various entities within the group module.
+   * Defaults to 255 if not explicitly set.
+   */
+  max_metadata_len?: string;
+}
+export interface ModuleAminoMsg {
+  type: "cosmos-sdk/Module";
+  value: ModuleAmino;
 }
 /** Module is the config object of the group module. */
 export interface ModuleSDKType {

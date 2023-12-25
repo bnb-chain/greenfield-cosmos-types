@@ -17,6 +17,19 @@ export interface EventUpdateMsgGasParamsProtoMsg {
   value: Uint8Array;
 }
 /** EventUpdateMsgGasParams is emitted when updating a message's gas params */
+export interface EventUpdateMsgGasParamsAmino {
+  /** msg_type_url is the type url of the message */
+  msg_type_url?: string;
+  /** from_value is the previous gas params */
+  from_value?: string;
+  /** to_value is the new gas params */
+  to_value?: string;
+}
+export interface EventUpdateMsgGasParamsAminoMsg {
+  type: "cosmos-sdk/EventUpdateMsgGasParams";
+  value: EventUpdateMsgGasParamsAmino;
+}
+/** EventUpdateMsgGasParams is emitted when updating a message's gas params */
 export interface EventUpdateMsgGasParamsSDKType {
   msg_type_url: string;
   from_value: string;

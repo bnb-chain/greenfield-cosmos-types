@@ -12,6 +12,7 @@ export enum VoteResult {
   UNRECOGNIZED = -1,
 }
 export const VoteResultSDKType = VoteResult;
+export const VoteResultAmino = VoteResult;
 export function voteResultFromJSON(object: any): VoteResult {
   switch (object) {
     case 0:
@@ -51,6 +52,19 @@ export interface SlashProtoMsg {
   value: Uint8Array;
 }
 /** Slash records the storage provider slashes, which will be pruned periodically. */
+export interface SlashAmino {
+  /** The slashed storage provider. */
+  sp_id?: number;
+  /** The slashed object info. */
+  object_id?: string;
+  /** The height when the slash happened, which is used for prune purpose. */
+  height?: string;
+}
+export interface SlashAminoMsg {
+  type: "/greenfield.challenge.Slash";
+  value: SlashAmino;
+}
+/** Slash records the storage provider slashes, which will be pruned periodically. */
 export interface SlashSDKType {
   sp_id: number;
   object_id: string;
@@ -68,6 +82,17 @@ export interface ChallengeProtoMsg {
   value: Uint8Array;
 }
 /** Challenge records the challenge which are not expired yet. */
+export interface ChallengeAmino {
+  /** The id of the challenge. */
+  id?: string;
+  /** The height at which the challenge will be expired. */
+  expired_height?: string;
+}
+export interface ChallengeAminoMsg {
+  type: "/greenfield.challenge.Challenge";
+  value: ChallengeAmino;
+}
+/** Challenge records the challenge which are not expired yet. */
 export interface ChallengeSDKType {
   id: Long;
   expired_height: Long;
@@ -82,6 +107,17 @@ export interface AttestedChallenge {
 export interface AttestedChallengeProtoMsg {
   typeUrl: "/greenfield.challenge.AttestedChallenge";
   value: Uint8Array;
+}
+/** AttestedChallenge records the challenge which are attested. */
+export interface AttestedChallengeAmino {
+  /** The id of the challenge. */
+  id?: string;
+  /** The attestation result of the challenge. */
+  result?: VoteResult;
+}
+export interface AttestedChallengeAminoMsg {
+  type: "/greenfield.challenge.AttestedChallenge";
+  value: AttestedChallengeAmino;
 }
 /** AttestedChallenge records the challenge which are attested. */
 export interface AttestedChallengeSDKType {
@@ -103,6 +139,22 @@ export interface AttestedChallengeIds {
 export interface AttestedChallengeIdsProtoMsg {
   typeUrl: "/greenfield.challenge.AttestedChallengeIds";
   value: Uint8Array;
+}
+/**
+ * AttestedChallengeIds stored fixed number of the latest attested challenge ids.
+ * To use the storage more efficiently, a circular queue will be constructed using these fields.
+ */
+export interface AttestedChallengeIdsAmino {
+  /** The fixed number of challenge ids to save. */
+  size?: string;
+  /** The latest attested challenges. */
+  challenges?: AttestedChallengeAmino[];
+  /** The cursor to retrieve data from the ids field. */
+  cursor?: string;
+}
+export interface AttestedChallengeIdsAminoMsg {
+  type: "/greenfield.challenge.AttestedChallengeIds";
+  value: AttestedChallengeIdsAmino;
 }
 /**
  * AttestedChallengeIds stored fixed number of the latest attested challenge ids.

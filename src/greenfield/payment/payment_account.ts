@@ -17,6 +17,19 @@ export interface PaymentAccountProtoMsg {
   value: Uint8Array;
 }
 /** PaymentAccount defines a payment account */
+export interface PaymentAccountAmino {
+  /** the address of the payment account */
+  addr?: string;
+  /** the owner address of the payment account */
+  owner?: string;
+  /** whether the payment account is refundable */
+  refundable?: boolean;
+}
+export interface PaymentAccountAminoMsg {
+  type: "/greenfield.payment.PaymentAccount";
+  value: PaymentAccountAmino;
+}
+/** PaymentAccount defines a payment account */
 export interface PaymentAccountSDKType {
   addr: string;
   owner: string;

@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../base/query/v1beta1/pagination";
-import { Params, ParamsSDKType, MsgGasParams, MsgGasParamsSDKType } from "./gashub";
+import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../base/query/v1beta1/pagination";
+import { Params, ParamsAmino, ParamsSDKType, MsgGasParams, MsgGasParamsAmino, MsgGasParamsSDKType } from "./gashub";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.gashub.v1beta1";
@@ -12,6 +12,12 @@ export interface QueryParamsRequestProtoMsg {
   value: Uint8Array;
 }
 /** QueryParamsRequest defines the request type for querying x/gashub parameters. */
+export interface QueryParamsRequestAmino {}
+export interface QueryParamsRequestAminoMsg {
+  type: "cosmos-sdk/QueryParamsRequest";
+  value: QueryParamsRequestAmino;
+}
+/** QueryParamsRequest defines the request type for querying x/gashub parameters. */
 export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse defines the response type for querying x/gashub parameters. */
 export interface QueryParamsResponse {
@@ -20,6 +26,14 @@ export interface QueryParamsResponse {
 export interface QueryParamsResponseProtoMsg {
   typeUrl: "/cosmos.gashub.v1beta1.QueryParamsResponse";
   value: Uint8Array;
+}
+/** QueryParamsResponse defines the response type for querying x/gashub parameters. */
+export interface QueryParamsResponseAmino {
+  params: ParamsAmino;
+}
+export interface QueryParamsResponseAminoMsg {
+  type: "cosmos-sdk/QueryParamsResponse";
+  value: QueryParamsResponseAmino;
 }
 /** QueryParamsResponse defines the response type for querying x/gashub parameters. */
 export interface QueryParamsResponseSDKType {
@@ -40,6 +54,20 @@ export interface QueryMsgGasParamsRequestProtoMsg {
   value: Uint8Array;
 }
 /** QueryMsgGasParamsRequest defines the RPC request for looking up MsgGasParams entries. */
+export interface QueryMsgGasParamsRequestAmino {
+  /** msg_type_urls is the specific type urls you want look up. Leave empty to get all entries. */
+  msg_type_urls?: string[];
+  /**
+   * pagination defines an optional pagination for the request. This field is
+   * only read if the msg_type_urls field is empty.
+   */
+  pagination?: PageRequestAmino;
+}
+export interface QueryMsgGasParamsRequestAminoMsg {
+  type: "cosmos-sdk/QueryMsgGasParamsRequest";
+  value: QueryMsgGasParamsRequestAmino;
+}
+/** QueryMsgGasParamsRequest defines the RPC request for looking up MsgGasParams entries. */
 export interface QueryMsgGasParamsRequestSDKType {
   msg_type_urls: string[];
   pagination?: PageRequestSDKType;
@@ -56,6 +84,19 @@ export interface QueryMsgGasParamsResponse {
 export interface QueryMsgGasParamsResponseProtoMsg {
   typeUrl: "/cosmos.gashub.v1beta1.QueryMsgGasParamsResponse";
   value: Uint8Array;
+}
+/** QueryMsgGasParamsResponse defines the RPC response of a MsgGasParams query. */
+export interface QueryMsgGasParamsResponseAmino {
+  msg_gas_params?: MsgGasParamsAmino[];
+  /**
+   * pagination defines the pagination in the response. This field is only
+   * populated if the msg_type_urls field in the request is empty.
+   */
+  pagination?: PageResponseAmino;
+}
+export interface QueryMsgGasParamsResponseAminoMsg {
+  type: "cosmos-sdk/QueryMsgGasParamsResponse";
+  value: QueryMsgGasParamsResponseAmino;
 }
 /** QueryMsgGasParamsResponse defines the RPC response of a MsgGasParams query. */
 export interface QueryMsgGasParamsResponseSDKType {

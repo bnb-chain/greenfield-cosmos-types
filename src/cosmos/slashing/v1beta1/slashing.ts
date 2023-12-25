@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Timestamp, TimestampSDKType } from "../../../google/protobuf/timestamp";
-import { Duration, DurationSDKType } from "../../../google/protobuf/duration";
+import { Duration, DurationAmino, DurationSDKType } from "../../../google/protobuf/duration";
 import { Long, isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.slashing.v1beta1";
@@ -40,6 +40,37 @@ export interface ValidatorSigningInfoProtoMsg {
  * ValidatorSigningInfo defines a validator's signing info for monitoring their
  * liveness activity.
  */
+export interface ValidatorSigningInfoAmino {
+  address?: string;
+  /** Height at which validator was first a candidate OR was unjailed */
+  start_height?: string;
+  /**
+   * Index which is incremented each time the validator was a bonded
+   * in a block and may have signed a precommit or not. This in conjunction with the
+   * `SignedBlocksWindow` param determines the index in the `MissedBlocksBitArray`.
+   */
+  index_offset?: string;
+  /** Timestamp until which the validator is jailed due to liveness downtime. */
+  jailed_until: string;
+  /**
+   * Whether or not a validator has been tombstoned (killed out of validator set). It is set
+   * once the validator commits an equivocation or for any other configured misbehiavor.
+   */
+  tombstoned?: boolean;
+  /**
+   * A counter kept to avoid unnecessary array reads.
+   * Note that `Sum(MissedBlocksBitArray)` always equals `MissedBlocksCounter`.
+   */
+  missed_blocks_counter?: string;
+}
+export interface ValidatorSigningInfoAminoMsg {
+  type: "cosmos-sdk/ValidatorSigningInfo";
+  value: ValidatorSigningInfoAmino;
+}
+/**
+ * ValidatorSigningInfo defines a validator's signing info for monitoring their
+ * liveness activity.
+ */
 export interface ValidatorSigningInfoSDKType {
   address: string;
   start_height: Long;
@@ -59,6 +90,18 @@ export interface Params {
 export interface ParamsProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.Params";
   value: Uint8Array;
+}
+/** Params represents the parameters used for by the slashing module. */
+export interface ParamsAmino {
+  signed_blocks_window?: string;
+  min_signed_per_window: string;
+  downtime_jail_duration: DurationAmino;
+  slash_fraction_double_sign: string;
+  slash_fraction_downtime: string;
+}
+export interface ParamsAminoMsg {
+  type: "cosmos-sdk/x/slashing/Params";
+  value: ParamsAmino;
 }
 /** Params represents the parameters used for by the slashing module. */
 export interface ParamsSDKType {

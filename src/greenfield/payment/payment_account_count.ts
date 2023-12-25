@@ -15,6 +15,17 @@ export interface PaymentAccountCountProtoMsg {
   value: Uint8Array;
 }
 /** PaymentAccountCount defines the state struct which stores the number of payment accounts for an account */
+export interface PaymentAccountCountAmino {
+  /** owner is the account address */
+  owner?: string;
+  /** count is the number of payment accounts for the account */
+  count?: string;
+}
+export interface PaymentAccountCountAminoMsg {
+  type: "/greenfield.payment.PaymentAccountCount";
+  value: PaymentAccountCountAmino;
+}
+/** PaymentAccountCount defines the state struct which stores the number of payment accounts for an account */
 export interface PaymentAccountCountSDKType {
   owner: string;
   count: Long;

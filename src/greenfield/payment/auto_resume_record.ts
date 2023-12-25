@@ -23,6 +23,21 @@ export interface AutoResumeRecordProtoMsg {
  * The EndBlocker of payment module will scan the list of AutoResumeRecord
  * and resume the stream account one by one.
  */
+export interface AutoResumeRecordAmino {
+  /** timestamp is the unix timestamp to order the records */
+  timestamp?: string;
+  /** the stream account address */
+  addr?: string;
+}
+export interface AutoResumeRecordAminoMsg {
+  type: "/greenfield.payment.AutoResumeRecord";
+  value: AutoResumeRecordAmino;
+}
+/**
+ * AutoResumeRecord is the record keeps the auto resume information.
+ * The EndBlocker of payment module will scan the list of AutoResumeRecord
+ * and resume the stream account one by one.
+ */
 export interface AutoResumeRecordSDKType {
   timestamp: Long;
   addr: string;

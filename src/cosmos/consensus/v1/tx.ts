@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BlockParams, BlockParamsSDKType, EvidenceParams, EvidenceParamsSDKType, ValidatorParams, ValidatorParamsSDKType } from "../../../tendermint/types/params";
+import { BlockParams, BlockParamsAmino, BlockParamsSDKType, EvidenceParams, EvidenceParamsAmino, EvidenceParamsSDKType, ValidatorParams, ValidatorParamsAmino, ValidatorParamsSDKType } from "../../../tendermint/types/params";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.consensus.v1";
@@ -24,6 +24,25 @@ export interface MsgUpdateParamsProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
+export interface MsgUpdateParamsAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /**
+   * params defines the x/consensus parameters to update.
+   * VersionsParams is not included in this Msg because it is tracked
+   * separarately in x/upgrade.
+   * 
+   * NOTE: All parameters must be supplied.
+   */
+  block?: BlockParamsAmino;
+  evidence?: EvidenceParamsAmino;
+  validator?: ValidatorParamsAmino;
+}
+export interface MsgUpdateParamsAminoMsg {
+  type: "cosmos-sdk/MsgUpdateParams";
+  value: MsgUpdateParamsAmino;
+}
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
   block?: BlockParamsSDKType;
@@ -38,6 +57,15 @@ export interface MsgUpdateParamsResponse {}
 export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/cosmos.consensus.v1.MsgUpdateParamsResponse";
   value: Uint8Array;
+}
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ */
+export interface MsgUpdateParamsResponseAmino {}
+export interface MsgUpdateParamsResponseAminoMsg {
+  type: "cosmos-sdk/MsgUpdateParamsResponse";
+  value: MsgUpdateParamsResponseAmino;
 }
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a

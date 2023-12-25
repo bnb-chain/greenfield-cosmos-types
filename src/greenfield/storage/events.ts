@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import { DeleteInfo, DeleteInfoSDKType, ResourceTags, ResourceTagsSDKType } from "./types";
+import { DeleteInfo, DeleteInfoAmino, DeleteInfoSDKType, ResourceTags, ResourceTagsAmino, ResourceTagsSDKType } from "./types";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.storage";
@@ -36,6 +36,35 @@ export interface EventCreateBucketProtoMsg {
   value: Uint8Array;
 }
 /** EventCreateBucket is emitted on MsgCreateBucket */
+export interface EventCreateBucketAmino {
+  /** owner define the account address of bucket owner */
+  owner?: string;
+  /** bucket_name is a globally unique name of bucket */
+  bucket_name?: string;
+  /** visibility defines the highest permissions for bucket. When a bucket is public, everyone can get the object under it. */
+  visibility?: VisibilityType;
+  /** create_at define the block timestamp when the bucket has been created */
+  create_at?: string;
+  /** bucket_id is the unique u256 for bucket. Not global, only unique in buckets. */
+  bucket_id?: string;
+  /** source_type define the source of the bucket. CrossChain or Greenfield origin */
+  source_type?: SourceType;
+  /** read_quota defines the charged traffic quota for read, not include free quota which provided by each storage provider */
+  charged_read_quota?: string;
+  /** payment_address is the address of the payment account */
+  payment_address?: string;
+  /** primary_sp_id is the unique id of primary sp. */
+  primary_sp_id?: number;
+  /** global_virtual_group_family_id defines the unique id of gvg family */
+  global_virtual_group_family_id?: number;
+  /** status define the status of the bucket. */
+  status?: BucketStatus;
+}
+export interface EventCreateBucketAminoMsg {
+  type: "/greenfield.storage.EventCreateBucket";
+  value: EventCreateBucketAmino;
+}
+/** EventCreateBucket is emitted on MsgCreateBucket */
 export interface EventCreateBucketSDKType {
   owner: string;
   bucket_name: string;
@@ -67,6 +96,23 @@ export interface EventDeleteBucketProtoMsg {
   value: Uint8Array;
 }
 /** EventDeleteBucket is emitted on MsgDeleteBucket */
+export interface EventDeleteBucketAmino {
+  /** operator define the account address of operator who delete the bucket */
+  operator?: string;
+  /** owner define the account address of the bucket owner */
+  owner?: string;
+  /** bucket_name define the name of the deleted bucket */
+  bucket_name?: string;
+  /** bucket_id define an u256 id for bucket */
+  bucket_id?: string;
+  /** global_virtual_group_family_id defines the unique id of gvg family */
+  global_virtual_group_family_id?: number;
+}
+export interface EventDeleteBucketAminoMsg {
+  type: "/greenfield.storage.EventDeleteBucket";
+  value: EventDeleteBucketAmino;
+}
+/** EventDeleteBucket is emitted on MsgDeleteBucket */
 export interface EventDeleteBucketSDKType {
   operator: string;
   owner: string;
@@ -96,6 +142,27 @@ export interface EventUpdateBucketInfoProtoMsg {
   value: Uint8Array;
 }
 /** EventUpdateBucketInfo is emitted on MsgUpdateBucketInfo */
+export interface EventUpdateBucketInfoAmino {
+  /** operator define the account address of operator who update the bucket */
+  operator?: string;
+  /** bucket_name define the name of the bucket */
+  bucket_name?: string;
+  /** bucket_id define an u256 id for bucket */
+  bucket_id?: string;
+  /** charged_read_quota_after define the read quota after updated */
+  charged_read_quota?: string;
+  /** payment_address define the payment address after updated */
+  payment_address?: string;
+  /** visibility defines the highest permission of object. */
+  visibility?: VisibilityType;
+  /** global_virtual_group_family_id defines the gvg family id after migrated. */
+  global_virtual_group_family_id?: number;
+}
+export interface EventUpdateBucketInfoAminoMsg {
+  type: "/greenfield.storage.EventUpdateBucketInfo";
+  value: EventUpdateBucketInfoAmino;
+}
+/** EventUpdateBucketInfo is emitted on MsgUpdateBucketInfo */
 export interface EventUpdateBucketInfoSDKType {
   operator: string;
   bucket_name: string;
@@ -119,6 +186,21 @@ export interface EventDiscontinueBucket {
 export interface EventDiscontinueBucketProtoMsg {
   typeUrl: "/greenfield.storage.EventDiscontinueBucket";
   value: Uint8Array;
+}
+/** EventDiscontinueBucket is emitted on MsgDiscontinueBucket */
+export interface EventDiscontinueBucketAmino {
+  /** bucket_id define id of the bucket */
+  bucket_id?: string;
+  /** bucket_name define the name of the bucket */
+  bucket_name?: string;
+  /** the reason */
+  reason?: string;
+  /** the timestamp after which the metadata will be deleted */
+  delete_at?: string;
+}
+export interface EventDiscontinueBucketAminoMsg {
+  type: "/greenfield.storage.EventDiscontinueBucket";
+  value: EventDiscontinueBucketAmino;
 }
 /** EventDiscontinueBucket is emitted on MsgDiscontinueBucket */
 export interface EventDiscontinueBucketSDKType {
@@ -167,6 +249,45 @@ export interface EventCreateObjectProtoMsg {
   value: Uint8Array;
 }
 /** EventCreateObject is emitted on MsgCreateObject */
+export interface EventCreateObjectAmino {
+  /** creator define the account address of msg creator */
+  creator?: string;
+  /** owner define the account address of object owner */
+  owner?: string;
+  /** bucket_name define the name of bucket */
+  bucket_name?: string;
+  /** object_name define the name of object */
+  object_name?: string;
+  /** bucket_id define an u256 id for bucket */
+  bucket_id?: string;
+  /** object_id define an u256 id for object */
+  object_id?: string;
+  /** primary_sp_id define the unique id of primary sp */
+  primary_sp_id?: number;
+  /** payload_size define the size of payload data which you want upload */
+  payload_size?: string;
+  /** visibility defines the highest permission of object. */
+  visibility?: VisibilityType;
+  /** content_type define the content type of the payload data */
+  content_type?: string;
+  /** create_at define the block timestamp when the object created */
+  create_at?: string;
+  /** status define the status of the object. INIT or IN_SERVICE or others */
+  status?: ObjectStatus;
+  /** redundancy_type define the type of redundancy. Replication or EC */
+  redundancy_type?: RedundancyType;
+  /** source_type define the source of the object.  CrossChain or Greenfield origin */
+  source_type?: SourceType;
+  /** checksums define the total checksums of the object which generated by redundancy */
+  checksums?: string[];
+  /** local_virtual_group_id defines the unique id of lvg which the object stored */
+  local_virtual_group_id?: number;
+}
+export interface EventCreateObjectAminoMsg {
+  type: "/greenfield.storage.EventCreateObject";
+  value: EventCreateObjectAmino;
+}
+/** EventCreateObject is emitted on MsgCreateObject */
 export interface EventCreateObjectSDKType {
   creator: string;
   owner: string;
@@ -203,6 +324,23 @@ export interface EventCancelCreateObjectProtoMsg {
   value: Uint8Array;
 }
 /** EventCancelCreateObject is emitted on MsgCancelCreateObject */
+export interface EventCancelCreateObjectAmino {
+  /** operator define the account address of operator who cancel create object */
+  operator?: string;
+  /** bucket_name define the name of the bucket */
+  bucket_name?: string;
+  /** object_name define the name of the object */
+  object_name?: string;
+  /** primary_sp_id define the unique id of primary sp */
+  primary_sp_id?: number;
+  /** id define an u256 id for object */
+  object_id?: string;
+}
+export interface EventCancelCreateObjectAminoMsg {
+  type: "/greenfield.storage.EventCancelCreateObject";
+  value: EventCancelCreateObjectAmino;
+}
+/** EventCancelCreateObject is emitted on MsgCancelCreateObject */
 export interface EventCancelCreateObjectSDKType {
   operator: string;
   bucket_name: string;
@@ -230,6 +368,27 @@ export interface EventSealObject {
 export interface EventSealObjectProtoMsg {
   typeUrl: "/greenfield.storage.EventSealObject";
   value: Uint8Array;
+}
+/** EventSealObject is emitted on MsgSealObject */
+export interface EventSealObjectAmino {
+  /** operator define the account address of operator who seal object */
+  operator?: string;
+  /** bucket_name define the name of the bucket */
+  bucket_name?: string;
+  /** object_name define the name of the object */
+  object_name?: string;
+  /** id define an u256 id for object */
+  object_id?: string;
+  /** status define the status of the object. INIT or IN_SERVICE or others */
+  status?: ObjectStatus;
+  /** global_virtual_group_id defines the unique id of gvg which the object stored */
+  global_virtual_group_id?: number;
+  /** local_virtual_group_id defines the unique id of lvg which the object stored */
+  local_virtual_group_id?: number;
+}
+export interface EventSealObjectAminoMsg {
+  type: "/greenfield.storage.EventSealObject";
+  value: EventSealObjectAmino;
 }
 /** EventSealObject is emitted on MsgSealObject */
 export interface EventSealObjectSDKType {
@@ -265,6 +424,29 @@ export interface EventCopyObjectProtoMsg {
   value: Uint8Array;
 }
 /** EventCopyObject is emitted on MsgCopyObject */
+export interface EventCopyObjectAmino {
+  /** operator define the account address of operator who copy the object */
+  operator?: string;
+  /** src_bucket_name define the name of the src bucket */
+  src_bucket_name?: string;
+  /** src_object_name define the name of the src object */
+  src_object_name?: string;
+  /** dst_bucket_name define the name of the dst bucket */
+  dst_bucket_name?: string;
+  /** dst_object_name define the name of the dst object */
+  dst_object_name?: string;
+  /** src_object_id define the u256 id for src object */
+  src_object_id?: string;
+  /** dst_object_id define the u256 id for dst object */
+  dst_object_id?: string;
+  /** local_virtual_group_id defines the unique id of lvg which the object stored */
+  local_virtual_group_id?: number;
+}
+export interface EventCopyObjectAminoMsg {
+  type: "/greenfield.storage.EventCopyObject";
+  value: EventCopyObjectAmino;
+}
+/** EventCopyObject is emitted on MsgCopyObject */
 export interface EventCopyObjectSDKType {
   operator: string;
   src_bucket_name: string;
@@ -293,6 +475,23 @@ export interface EventDeleteObjectProtoMsg {
   value: Uint8Array;
 }
 /** EventDeleteObject is emitted on MsgDeleteObject */
+export interface EventDeleteObjectAmino {
+  /** operator define the account address of operator who delete the object */
+  operator?: string;
+  /** bucket_name define the name of the bucket */
+  bucket_name?: string;
+  /** object_name define the name of the object */
+  object_name?: string;
+  /** id define an u256 id for object */
+  object_id?: string;
+  /** local_virtual_group_id defines the unique id of lvg which the object stored */
+  local_virtual_group_id?: number;
+}
+export interface EventDeleteObjectAminoMsg {
+  type: "/greenfield.storage.EventDeleteObject";
+  value: EventDeleteObjectAmino;
+}
+/** EventDeleteObject is emitted on MsgDeleteObject */
 export interface EventDeleteObjectSDKType {
   operator: string;
   bucket_name: string;
@@ -314,6 +513,21 @@ export interface EventRejectSealObject {
 export interface EventRejectSealObjectProtoMsg {
   typeUrl: "/greenfield.storage.EventRejectSealObject";
   value: Uint8Array;
+}
+/** EventRejectSealObject is emitted on MsgRejectSealObject */
+export interface EventRejectSealObjectAmino {
+  /** operator define the account address of operator who reject seal object */
+  operator?: string;
+  /** bucket_name define the name of the bucket */
+  bucket_name?: string;
+  /** object_name define the name of the object */
+  object_name?: string;
+  /** id define an u256 id for object */
+  object_id?: string;
+}
+export interface EventRejectSealObjectAminoMsg {
+  type: "/greenfield.storage.EventRejectSealObject";
+  value: EventRejectSealObjectAmino;
 }
 /** EventRejectSealObject is emitted on MsgRejectSealObject */
 export interface EventRejectSealObjectSDKType {
@@ -338,6 +552,21 @@ export interface EventDiscontinueObjectProtoMsg {
   value: Uint8Array;
 }
 /** EventDiscontinueObject is emitted on MsgDiscontinueObject */
+export interface EventDiscontinueObjectAmino {
+  /** bucket_name define the name of the bucket */
+  bucket_name?: string;
+  /** object_id defines id of the object */
+  object_id?: string;
+  /** the reason */
+  reason?: string;
+  /** the timestamp after which the metadata will be deleted */
+  delete_at?: string;
+}
+export interface EventDiscontinueObjectAminoMsg {
+  type: "/greenfield.storage.EventDiscontinueObject";
+  value: EventDiscontinueObjectAmino;
+}
+/** EventDiscontinueObject is emitted on MsgDiscontinueObject */
 export interface EventDiscontinueObjectSDKType {
   bucket_name: string;
   object_id: string;
@@ -360,6 +589,23 @@ export interface EventUpdateObjectInfo {
 export interface EventUpdateObjectInfoProtoMsg {
   typeUrl: "/greenfield.storage.EventUpdateObjectInfo";
   value: Uint8Array;
+}
+/** EventUpdateObjectInfo is emitted on MsgUpdateObjectInfo */
+export interface EventUpdateObjectInfoAmino {
+  /** operator define the account address of operator who update the bucket */
+  operator?: string;
+  /** bucket_name define the name of the bucket */
+  bucket_name?: string;
+  /** object_name define the name of the object */
+  object_name?: string;
+  /** object_id define an u256 id for object */
+  object_id?: string;
+  /** visibility defines the highest permission of object. */
+  visibility?: VisibilityType;
+}
+export interface EventUpdateObjectInfoAminoMsg {
+  type: "/greenfield.storage.EventUpdateObjectInfo";
+  value: EventUpdateObjectInfoAmino;
 }
 /** EventUpdateObjectInfo is emitted on MsgUpdateObjectInfo */
 export interface EventUpdateObjectInfoSDKType {
@@ -387,6 +633,23 @@ export interface EventCreateGroupProtoMsg {
   value: Uint8Array;
 }
 /** EventCreateGroup is emitted on MsgCreateGroup */
+export interface EventCreateGroupAmino {
+  /** owner define the account address of group owner */
+  owner?: string;
+  /** group_name define the name of the group */
+  group_name?: string;
+  /** id define an u256 id for group */
+  group_id?: string;
+  /** source_type define the source of the group. CrossChain or Greenfield origin */
+  source_type?: SourceType;
+  /** extra defines extra info for the group */
+  extra?: string;
+}
+export interface EventCreateGroupAminoMsg {
+  type: "/greenfield.storage.EventCreateGroup";
+  value: EventCreateGroupAmino;
+}
+/** EventCreateGroup is emitted on MsgCreateGroup */
 export interface EventCreateGroupSDKType {
   owner: string;
   group_name: string;
@@ -408,6 +671,19 @@ export interface EventDeleteGroupProtoMsg {
   value: Uint8Array;
 }
 /** EventDeleteGroup is emitted on MsgDeleteGroup */
+export interface EventDeleteGroupAmino {
+  /** owner define the account address of group owner */
+  owner?: string;
+  /** group_name define the name of the group */
+  group_name?: string;
+  /** id define an u256 id for group */
+  group_id?: string;
+}
+export interface EventDeleteGroupAminoMsg {
+  type: "/greenfield.storage.EventDeleteGroup";
+  value: EventDeleteGroupAmino;
+}
+/** EventDeleteGroup is emitted on MsgDeleteGroup */
 export interface EventDeleteGroupSDKType {
   owner: string;
   group_name: string;
@@ -427,6 +703,21 @@ export interface EventLeaveGroup {
 export interface EventLeaveGroupProtoMsg {
   typeUrl: "/greenfield.storage.EventLeaveGroup";
   value: Uint8Array;
+}
+/** EventLeaveGroup is emitted on MsgLeaveGroup */
+export interface EventLeaveGroupAmino {
+  /** member_address define the address of the member who leave the group */
+  member_address?: string;
+  /** owner define the account address of group owner */
+  owner?: string;
+  /** group_name define the name of the group */
+  group_name?: string;
+  /** id define an u256 id for group */
+  group_id?: string;
+}
+export interface EventLeaveGroupAminoMsg {
+  type: "/greenfield.storage.EventLeaveGroup";
+  value: EventLeaveGroupAmino;
 }
 /** EventLeaveGroup is emitted on MsgLeaveGroup */
 export interface EventLeaveGroupSDKType {
@@ -455,6 +746,25 @@ export interface EventUpdateGroupMemberProtoMsg {
   value: Uint8Array;
 }
 /** EventUpdateGroupMember is emitted on MsgUpdateGroupMember */
+export interface EventUpdateGroupMemberAmino {
+  /** operator define the account address of operator who update the group member */
+  operator?: string;
+  /** owner define the account address of group owner */
+  owner?: string;
+  /** group_name define the name of the group */
+  group_name?: string;
+  /** id define an u256 id for group */
+  group_id?: string;
+  /** members_to_add defines all the members to be added to the group */
+  members_to_add?: EventGroupMemberDetailAmino[];
+  /** members_to_add defines all the members to be deleted from the group */
+  members_to_delete?: string[];
+}
+export interface EventUpdateGroupMemberAminoMsg {
+  type: "/greenfield.storage.EventUpdateGroupMember";
+  value: EventUpdateGroupMemberAmino;
+}
+/** EventUpdateGroupMember is emitted on MsgUpdateGroupMember */
 export interface EventUpdateGroupMemberSDKType {
   operator: string;
   owner: string;
@@ -481,6 +791,24 @@ export interface EventRenewGroupMemberProtoMsg {
   typeUrl: "/greenfield.storage.EventRenewGroupMember";
   value: Uint8Array;
 }
+export interface EventRenewGroupMemberAmino {
+  /** operator define the account address of operator who update the group member */
+  operator?: string;
+  /** owner define the account address of group owner */
+  owner?: string;
+  /** group_name define the name of the group */
+  group_name?: string;
+  /** id define an u256 id for group */
+  group_id?: string;
+  /** source_type define the source of the group. CrossChain or Greenfield origin */
+  source_type?: SourceType;
+  /** members define the all the address of the members. */
+  members?: EventGroupMemberDetailAmino[];
+}
+export interface EventRenewGroupMemberAminoMsg {
+  type: "/greenfield.storage.EventRenewGroupMember";
+  value: EventRenewGroupMemberAmino;
+}
 export interface EventRenewGroupMemberSDKType {
   operator: string;
   owner: string;
@@ -498,6 +826,16 @@ export interface EventGroupMemberDetail {
 export interface EventGroupMemberDetailProtoMsg {
   typeUrl: "/greenfield.storage.EventGroupMemberDetail";
   value: Uint8Array;
+}
+export interface EventGroupMemberDetailAmino {
+  /** member defines the account address of the group member */
+  member?: string;
+  /** expiration_time defines the expiration time of the group member */
+  expiration_time?: string;
+}
+export interface EventGroupMemberDetailAminoMsg {
+  type: "/greenfield.storage.EventGroupMemberDetail";
+  value: EventGroupMemberDetailAmino;
 }
 export interface EventGroupMemberDetailSDKType {
   member: string;
@@ -519,6 +857,23 @@ export interface EventUpdateGroupExtra {
 export interface EventUpdateGroupExtraProtoMsg {
   typeUrl: "/greenfield.storage.EventUpdateGroupExtra";
   value: Uint8Array;
+}
+/** EventUpdateGroupExtra is emitted on MsgUpdateGroupExtra */
+export interface EventUpdateGroupExtraAmino {
+  /** operator define the account address of operator who update the group member */
+  operator?: string;
+  /** owner define the account address of group owner */
+  owner?: string;
+  /** group_name define the name of the group */
+  group_name?: string;
+  /** id define an u256 id for group */
+  group_id?: string;
+  /** extra defines extra info for the group to update */
+  extra?: string;
+}
+export interface EventUpdateGroupExtraAminoMsg {
+  type: "/greenfield.storage.EventUpdateGroupExtra";
+  value: EventUpdateGroupExtraAmino;
 }
 /** EventUpdateGroupExtra is emitted on MsgUpdateGroupExtra */
 export interface EventUpdateGroupExtraSDKType {
@@ -544,6 +899,21 @@ export interface EventMirrorBucketProtoMsg {
   value: Uint8Array;
 }
 /** EventMirrorBucket is emitted on MirrorBucket */
+export interface EventMirrorBucketAmino {
+  /** operator define the account address of operator who mirror the bucket */
+  operator?: string;
+  /** bucket_name defines the name of the bucket */
+  bucket_name?: string;
+  /** bucket_id define an u256 id for bucket */
+  bucket_id?: string;
+  /** chain id of the destination chain */
+  dest_chain_id?: number;
+}
+export interface EventMirrorBucketAminoMsg {
+  type: "/greenfield.storage.EventMirrorBucket";
+  value: EventMirrorBucketAmino;
+}
+/** EventMirrorBucket is emitted on MirrorBucket */
 export interface EventMirrorBucketSDKType {
   operator: string;
   bucket_name: string;
@@ -564,6 +934,21 @@ export interface EventMirrorBucketResult {
 export interface EventMirrorBucketResultProtoMsg {
   typeUrl: "/greenfield.storage.EventMirrorBucketResult";
   value: Uint8Array;
+}
+/** EventMirrorBucketResult is emitted on receiving ack package from destination chain */
+export interface EventMirrorBucketResultAmino {
+  /** status define the status of the result */
+  status?: number;
+  /** bucket_name defines the name of the bucket */
+  bucket_name?: string;
+  /** bucket_id define an u256 id for bucket */
+  bucket_id?: string;
+  /** chain id of the destination chain */
+  dest_chain_id?: number;
+}
+export interface EventMirrorBucketResultAminoMsg {
+  type: "/greenfield.storage.EventMirrorBucketResult";
+  value: EventMirrorBucketResultAmino;
 }
 /** EventMirrorBucketResult is emitted on receiving ack package from destination chain */
 export interface EventMirrorBucketResultSDKType {
@@ -588,6 +973,23 @@ export interface EventMirrorObject {
 export interface EventMirrorObjectProtoMsg {
   typeUrl: "/greenfield.storage.EventMirrorObject";
   value: Uint8Array;
+}
+/** EventMirrorObject is emitted on MirrorObject */
+export interface EventMirrorObjectAmino {
+  /** operator define the account address of operator who delete the object */
+  operator?: string;
+  /** bucket_name define the name of the bucket */
+  bucket_name?: string;
+  /** object_name define the name of the object */
+  object_name?: string;
+  /** object_id define an u256 id for object */
+  object_id?: string;
+  /** chain id of the destination chain */
+  dest_chain_id?: number;
+}
+export interface EventMirrorObjectAminoMsg {
+  type: "/greenfield.storage.EventMirrorObject";
+  value: EventMirrorObjectAmino;
 }
 /** EventMirrorObject is emitted on MirrorObject */
 export interface EventMirrorObjectSDKType {
@@ -615,6 +1017,23 @@ export interface EventMirrorObjectResultProtoMsg {
   value: Uint8Array;
 }
 /** EventMirrorObjectResult is emitted on receiving ack package from destination chain */
+export interface EventMirrorObjectResultAmino {
+  /** status define the status of the result */
+  status?: number;
+  /** bucket_name define the name of the bucket */
+  bucket_name?: string;
+  /** object_name define the name of the object */
+  object_name?: string;
+  /** object_id define an u256 id for object */
+  object_id?: string;
+  /** chain id of the destination chain */
+  dest_chain_id?: number;
+}
+export interface EventMirrorObjectResultAminoMsg {
+  type: "/greenfield.storage.EventMirrorObjectResult";
+  value: EventMirrorObjectResultAmino;
+}
+/** EventMirrorObjectResult is emitted on receiving ack package from destination chain */
 export interface EventMirrorObjectResultSDKType {
   status: number;
   bucket_name: string;
@@ -636,6 +1055,21 @@ export interface EventMirrorGroup {
 export interface EventMirrorGroupProtoMsg {
   typeUrl: "/greenfield.storage.EventMirrorGroup";
   value: Uint8Array;
+}
+/** EventMirrorGroup is emitted on MirrorGroup */
+export interface EventMirrorGroupAmino {
+  /** owner define the account address of group owner */
+  owner?: string;
+  /** group_name define the name of the group */
+  group_name?: string;
+  /** group_id define an u256 id for group */
+  group_id?: string;
+  /** chain id of the destination chain */
+  dest_chain_id?: number;
+}
+export interface EventMirrorGroupAminoMsg {
+  type: "/greenfield.storage.EventMirrorGroup";
+  value: EventMirrorGroupAmino;
 }
 /** EventMirrorGroup is emitted on MirrorGroup */
 export interface EventMirrorGroupSDKType {
@@ -660,6 +1094,21 @@ export interface EventMirrorGroupResultProtoMsg {
   value: Uint8Array;
 }
 /** EventMirrorGroupResult is emitted on receiving ack package from destination chain */
+export interface EventMirrorGroupResultAmino {
+  /** status define the status of the result */
+  status?: number;
+  /** group_name define the name of the group */
+  group_name?: string;
+  /** group_id define an u256 id for group */
+  group_id?: string;
+  /** chain id of the destination chain */
+  dest_chain_id?: number;
+}
+export interface EventMirrorGroupResultAminoMsg {
+  type: "/greenfield.storage.EventMirrorGroupResult";
+  value: EventMirrorGroupResultAmino;
+}
+/** EventMirrorGroupResult is emitted on receiving ack package from destination chain */
 export interface EventMirrorGroupResultSDKType {
   status: number;
   group_name: string;
@@ -674,6 +1123,15 @@ export interface EventStalePolicyCleanup {
 export interface EventStalePolicyCleanupProtoMsg {
   typeUrl: "/greenfield.storage.EventStalePolicyCleanup";
   value: Uint8Array;
+}
+/** EventStalePolicyCleanup is emitted when specified block height's stale policies need to be Garbage collected */
+export interface EventStalePolicyCleanupAmino {
+  blockNum?: string;
+  delete_info?: DeleteInfoAmino;
+}
+export interface EventStalePolicyCleanupAminoMsg {
+  type: "/greenfield.storage.EventStalePolicyCleanup";
+  value: EventStalePolicyCleanupAmino;
 }
 /** EventStalePolicyCleanup is emitted when specified block height's stale policies need to be Garbage collected */
 export interface EventStalePolicyCleanupSDKType {
@@ -697,6 +1155,23 @@ export interface EventMigrationBucketProtoMsg {
   typeUrl: "/greenfield.storage.EventMigrationBucket";
   value: Uint8Array;
 }
+export interface EventMigrationBucketAmino {
+  /**
+   * The address of the operator that initiated the bucket migration,
+   * usually the owner of the bucket or another account which has permission to operate
+   */
+  operator?: string;
+  /** The name of the bucket to be migrated */
+  bucket_name?: string;
+  /** bucket_id define an u256 id for bucket */
+  bucket_id?: string;
+  /** The id of the destination primary sp */
+  dst_primary_sp_id?: number;
+}
+export interface EventMigrationBucketAminoMsg {
+  type: "/greenfield.storage.EventMigrationBucket";
+  value: EventMigrationBucketAmino;
+}
 export interface EventMigrationBucketSDKType {
   operator: string;
   bucket_name: string;
@@ -718,6 +1193,21 @@ export interface EventCancelMigrationBucketProtoMsg {
   typeUrl: "/greenfield.storage.EventCancelMigrationBucket";
   value: Uint8Array;
 }
+export interface EventCancelMigrationBucketAmino {
+  /**
+   * The address of the operator that canceled the bucket migration,
+   * usually the owner of the bucket or another account which has permission to operate
+   */
+  operator?: string;
+  /** The name of the bucket to be migrated */
+  bucket_name?: string;
+  /** bucket_id define an u256 id for bucket */
+  bucket_id?: string;
+}
+export interface EventCancelMigrationBucketAminoMsg {
+  type: "/greenfield.storage.EventCancelMigrationBucket";
+  value: EventCancelMigrationBucketAmino;
+}
 export interface EventCancelMigrationBucketSDKType {
   operator: string;
   bucket_name: string;
@@ -734,6 +1224,18 @@ export interface EventRejectMigrateBucket {
 export interface EventRejectMigrateBucketProtoMsg {
   typeUrl: "/greenfield.storage.EventRejectMigrateBucket";
   value: Uint8Array;
+}
+export interface EventRejectMigrateBucketAmino {
+  /** The address of the operator that reject the bucket migration, must be the dest SP */
+  operator?: string;
+  /** The name of the bucket to be migrated */
+  bucket_name?: string;
+  /** bucket_id define an u256 id for bucket */
+  bucket_id?: string;
+}
+export interface EventRejectMigrateBucketAminoMsg {
+  type: "/greenfield.storage.EventRejectMigrateBucket";
+  value: EventRejectMigrateBucketAmino;
 }
 export interface EventRejectMigrateBucketSDKType {
   operator: string;
@@ -759,6 +1261,25 @@ export interface EventCompleteMigrationBucketProtoMsg {
   typeUrl: "/greenfield.storage.EventCompleteMigrationBucket";
   value: Uint8Array;
 }
+export interface EventCompleteMigrationBucketAmino {
+  /**
+   * The address of the operator that initiated the bucket migration,
+   * usually the owner of the bucket or another account which has permission to operate
+   */
+  operator?: string;
+  /** The name of the bucket to be migrated */
+  bucket_name?: string;
+  /** bucket_id define an u256 id for bucket */
+  bucket_id?: string;
+  /** The family id that the bucket to be migrated to */
+  global_virtual_group_family_id?: number;
+  /** The src_primary_sp_id defines the primary sp id of the bucket before migrate. */
+  src_primary_sp_id?: number;
+}
+export interface EventCompleteMigrationBucketAminoMsg {
+  type: "/greenfield.storage.EventCompleteMigrationBucket";
+  value: EventCompleteMigrationBucketAmino;
+}
 export interface EventCompleteMigrationBucketSDKType {
   operator: string;
   bucket_name: string;
@@ -775,6 +1296,16 @@ export interface EventSetTag {
 export interface EventSetTagProtoMsg {
   typeUrl: "/greenfield.storage.EventSetTag";
   value: Uint8Array;
+}
+export interface EventSetTagAmino {
+  /** resource defines a greenfield standard resource name that can be generated by GRN structure */
+  resource?: string;
+  /** tags define the tag of the source */
+  tags?: ResourceTagsAmino;
+}
+export interface EventSetTagAminoMsg {
+  type: "/greenfield.storage.EventSetTag";
+  value: EventSetTagAmino;
 }
 export interface EventSetTagSDKType {
   resource: string;

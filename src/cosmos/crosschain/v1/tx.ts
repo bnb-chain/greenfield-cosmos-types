@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType, ChannelPermission, ChannelPermissionSDKType } from "./crosschain";
+import { Params, ParamsAmino, ParamsSDKType, ChannelPermission, ChannelPermissionAmino, ChannelPermissionSDKType } from "./crosschain";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.crosschain.v1";
@@ -20,6 +20,21 @@ export interface MsgUpdateParamsProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
+export interface MsgUpdateParamsAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /**
+   * params defines the x/crosschain parameters to update.
+   * 
+   * NOTE: All parameters must be supplied.
+   */
+  params: ParamsAmino;
+}
+export interface MsgUpdateParamsAminoMsg {
+  type: "cosmos-sdk/MsgUpdateParams";
+  value: MsgUpdateParamsAmino;
+}
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
   params: ParamsSDKType;
@@ -32,6 +47,15 @@ export interface MsgUpdateParamsResponse {}
 export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/cosmos.crosschain.v1.MsgUpdateParamsResponse";
   value: Uint8Array;
+}
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ */
+export interface MsgUpdateParamsResponseAmino {}
+export interface MsgUpdateParamsResponseAminoMsg {
+  type: "cosmos-sdk/MsgUpdateParamsResponse";
+  value: MsgUpdateParamsResponseAmino;
 }
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
@@ -50,6 +74,17 @@ export interface MsgUpdateChannelPermissionsProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateChannelPermissions is the Msg/MsgUpdateChannelPermissions request type. */
+export interface MsgUpdateChannelPermissionsAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /** channel_permissions defines the channel permissions to update */
+  channel_permissions?: ChannelPermissionAmino[];
+}
+export interface MsgUpdateChannelPermissionsAminoMsg {
+  type: "cosmos-sdk/MsgUpdateChannelPermissions";
+  value: MsgUpdateChannelPermissionsAmino;
+}
+/** MsgUpdateChannelPermissions is the Msg/MsgUpdateChannelPermissions request type. */
 export interface MsgUpdateChannelPermissionsSDKType {
   authority: string;
   channel_permissions: ChannelPermissionSDKType[];
@@ -62,6 +97,15 @@ export interface MsgUpdateChannelPermissionsResponse {}
 export interface MsgUpdateChannelPermissionsResponseProtoMsg {
   typeUrl: "/cosmos.crosschain.v1.MsgUpdateChannelPermissionsResponse";
   value: Uint8Array;
+}
+/**
+ * MsgUpdateChannelPermissionsResponse defines the response structure for executing a
+ * MsgUpdateChannelPermissions message.
+ */
+export interface MsgUpdateChannelPermissionsResponseAmino {}
+export interface MsgUpdateChannelPermissionsResponseAminoMsg {
+  type: "cosmos-sdk/MsgUpdateChannelPermissionsResponse";
+  value: MsgUpdateChannelPermissionsResponseAmino;
 }
 /**
  * MsgUpdateChannelPermissionsResponse defines the response structure for executing a
@@ -88,6 +132,21 @@ export interface MsgMintModuleTokensProtoMsg {
  * The Msg is used to mint tokens for the crosschain module.
  * This Only permitted to be called by the authority(gov).
  */
+export interface MsgMintModuleTokensAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /** initial balance to mint for crosschain module when the chain starts */
+  amount?: string;
+}
+export interface MsgMintModuleTokensAminoMsg {
+  type: "cosmos-sdk/MsgMintModuleTokens";
+  value: MsgMintModuleTokensAmino;
+}
+/**
+ * MsgMintModuleTokens is the Msg/MintModuleTokens request type.
+ * The Msg is used to mint tokens for the crosschain module.
+ * This Only permitted to be called by the authority(gov).
+ */
 export interface MsgMintModuleTokensSDKType {
   authority: string;
   amount: string;
@@ -100,6 +159,15 @@ export interface MsgMintModuleTokensResponse {}
 export interface MsgMintModuleTokensResponseProtoMsg {
   typeUrl: "/cosmos.crosschain.v1.MsgMintModuleTokensResponse";
   value: Uint8Array;
+}
+/**
+ * MsgMintModuleTokensResponse defines the response structure for executing a
+ * MsgMintModuleTokens message.
+ */
+export interface MsgMintModuleTokensResponseAmino {}
+export interface MsgMintModuleTokensResponseAminoMsg {
+  type: "cosmos-sdk/MsgMintModuleTokensResponse";
+  value: MsgMintModuleTokensResponseAmino;
 }
 /**
  * MsgMintModuleTokensResponse defines the response structure for executing a

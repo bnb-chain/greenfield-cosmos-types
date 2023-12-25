@@ -31,6 +31,33 @@ export interface PlanProtoMsg {
   value: Uint8Array;
 }
 /** Plan specifies information about a planned upgrade and when it should occur. */
+export interface PlanAmino {
+  /**
+   * Sets the name for the upgrade. This name will be used by the upgraded
+   * version of the software to apply any special "on-upgrade" commands during
+   * the first BeginBlock method after the upgrade is applied. It is also used
+   * to detect whether a software version can handle a given upgrade. If no
+   * upgrade handler with this name has been set in the software, it will be
+   * assumed that the software is out-of-date when the upgrade Time or Height is
+   * reached and the software will exit.
+   */
+  name?: string;
+  /**
+   * The height at which the upgrade must be performed.
+   * Only used if Time is not set.
+   */
+  height?: string;
+  /**
+   * Any application specific upgrade info to be included on-chain
+   * such as a git commit that validators could automatically upgrade to
+   */
+  info?: string;
+}
+export interface PlanAminoMsg {
+  type: "cosmos-sdk/Plan";
+  value: PlanAmino;
+}
+/** Plan specifies information about a planned upgrade and when it should occur. */
 export interface PlanSDKType {
   name: string;
   height: Long;
@@ -50,6 +77,21 @@ export interface ModuleVersion {
 export interface ModuleVersionProtoMsg {
   typeUrl: "/cosmos.upgrade.v1beta1.ModuleVersion";
   value: Uint8Array;
+}
+/**
+ * ModuleVersion specifies a module and its consensus version.
+ * 
+ * Since: cosmos-sdk 0.43
+ */
+export interface ModuleVersionAmino {
+  /** name of the app module */
+  name?: string;
+  /** consensus version of the app module */
+  version?: string;
+}
+export interface ModuleVersionAminoMsg {
+  type: "cosmos-sdk/ModuleVersion";
+  value: ModuleVersionAmino;
 }
 /**
  * ModuleVersion specifies a module and its consensus version.

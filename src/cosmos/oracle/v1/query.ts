@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType, RelayInterval, RelayIntervalSDKType } from "./oracle";
+import { Params, ParamsAmino, ParamsSDKType, RelayInterval, RelayIntervalAmino, RelayIntervalSDKType } from "./oracle";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.oracle.v1";
@@ -15,6 +15,7 @@ export enum ClaimSrcChain {
   UNRECOGNIZED = -1,
 }
 export const ClaimSrcChainSDKType = ClaimSrcChain;
+export const ClaimSrcChainAmino = ClaimSrcChain;
 export function claimSrcChainFromJSON(object: any): ClaimSrcChain {
   switch (object) {
     case 0:
@@ -52,6 +53,12 @@ export interface QueryParamsRequestProtoMsg {
   value: Uint8Array;
 }
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
+export interface QueryParamsRequestAmino {}
+export interface QueryParamsRequestAminoMsg {
+  type: "cosmos-sdk/QueryParamsRequest";
+  value: QueryParamsRequestAmino;
+}
+/** QueryParamsRequest is the request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponse {
@@ -61,6 +68,15 @@ export interface QueryParamsResponse {
 export interface QueryParamsResponseProtoMsg {
   typeUrl: "/cosmos.oracle.v1.QueryParamsResponse";
   value: Uint8Array;
+}
+/** QueryParamsResponse is the response type for the Query/Params RPC method. */
+export interface QueryParamsResponseAmino {
+  /** params defines the parameters of the module. */
+  params?: ParamsAmino;
+}
+export interface QueryParamsResponseAminoMsg {
+  type: "cosmos-sdk/QueryParamsResponse";
+  value: QueryParamsResponseAmino;
 }
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
@@ -76,6 +92,15 @@ export interface QueryInturnRelayerRequestProtoMsg {
   value: Uint8Array;
 }
 /** QueryInturnRelayerRequest is the request type for the Query In-turn relayer RPC method. */
+export interface QueryInturnRelayerRequestAmino {
+  /** ClaimSrcChain defines the src chain of a claim */
+  claim_src_chain?: ClaimSrcChain;
+}
+export interface QueryInturnRelayerRequestAminoMsg {
+  type: "cosmos-sdk/QueryInturnRelayerRequest";
+  value: QueryInturnRelayerRequestAmino;
+}
+/** QueryInturnRelayerRequest is the request type for the Query In-turn relayer RPC method. */
 export interface QueryInturnRelayerRequestSDKType {
   claim_src_chain: ClaimSrcChain;
 }
@@ -87,6 +112,15 @@ export interface QueryInturnRelayerResponse {
 export interface QueryInturnRelayerResponseProtoMsg {
   typeUrl: "/cosmos.oracle.v1.QueryInturnRelayerResponse";
   value: Uint8Array;
+}
+/** QueryInturnRelayerResponse is the response type for the Query In-turn relayer RPC method. */
+export interface QueryInturnRelayerResponseAmino {
+  bls_pub_key?: string;
+  relay_interval?: RelayIntervalAmino;
+}
+export interface QueryInturnRelayerResponseAminoMsg {
+  type: "cosmos-sdk/QueryInturnRelayerResponse";
+  value: QueryInturnRelayerResponseAmino;
 }
 /** QueryInturnRelayerResponse is the response type for the Query In-turn relayer RPC method. */
 export interface QueryInturnRelayerResponseSDKType {

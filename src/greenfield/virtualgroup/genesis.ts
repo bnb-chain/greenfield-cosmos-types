@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./params";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.virtualgroup";
@@ -14,6 +14,17 @@ export interface GenesisState {
 export interface GenesisStateProtoMsg {
   typeUrl: "/greenfield.virtualgroup.GenesisState";
   value: Uint8Array;
+}
+/**
+ * GenesisState defines the virtualgroup module's genesis state.
+ * GenesisState defines the raw genesis transaction in JSON.
+ */
+export interface GenesisStateAmino {
+  params?: ParamsAmino;
+}
+export interface GenesisStateAminoMsg {
+  type: "/greenfield.virtualgroup.GenesisState";
+  value: GenesisStateAmino;
 }
 /**
  * GenesisState defines the virtualgroup module's genesis state.

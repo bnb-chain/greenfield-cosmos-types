@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
+import { Coin, CoinAmino, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.sp";
@@ -17,6 +17,20 @@ export interface DepositAuthorization {
 export interface DepositAuthorizationProtoMsg {
   typeUrl: "/greenfield.sp.DepositAuthorization";
   value: Uint8Array;
+}
+/** DepositAuthorization defines authorization for sp deposit. */
+export interface DepositAuthorizationAmino {
+  /**
+   * max_deposit specifies the maximum amount of tokens can be deposit to a storage provider. If it is
+   * empty, there is no spend limit and any amount of coins can be deposit.
+   */
+  max_deposit?: CoinAmino;
+  /** sp_address is the operator address of storage provider. */
+  sp_address?: string;
+}
+export interface DepositAuthorizationAminoMsg {
+  type: "/greenfield.sp.DepositAuthorization";
+  value: DepositAuthorizationAmino;
 }
 /** DepositAuthorization defines authorization for sp deposit. */
 export interface DepositAuthorizationSDKType {

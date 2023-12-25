@@ -13,6 +13,16 @@ export interface ProofProtoMsg {
   typeUrl: "/tendermint.crypto.Proof";
   value: Uint8Array;
 }
+export interface ProofAmino {
+  total?: string;
+  index?: string;
+  leaf_hash?: string;
+  aunts?: string[];
+}
+export interface ProofAminoMsg {
+  type: "/tendermint.crypto.Proof";
+  value: ProofAmino;
+}
 export interface ProofSDKType {
   total: Long;
   index: Long;
@@ -29,6 +39,16 @@ export interface ValueOpProtoMsg {
   typeUrl: "/tendermint.crypto.ValueOp";
   value: Uint8Array;
 }
+export interface ValueOpAmino {
+  /** Encoded in ProofOp.Key. */
+  key?: string;
+  /** To encode in ProofOp.Data */
+  proof?: ProofAmino;
+}
+export interface ValueOpAminoMsg {
+  type: "/tendermint.crypto.ValueOp";
+  value: ValueOpAmino;
+}
 export interface ValueOpSDKType {
   key: Uint8Array;
   proof?: ProofSDKType;
@@ -41,6 +61,15 @@ export interface DominoOp {
 export interface DominoOpProtoMsg {
   typeUrl: "/tendermint.crypto.DominoOp";
   value: Uint8Array;
+}
+export interface DominoOpAmino {
+  key?: string;
+  input?: string;
+  output?: string;
+}
+export interface DominoOpAminoMsg {
+  type: "/tendermint.crypto.DominoOp";
+  value: DominoOpAmino;
 }
 export interface DominoOpSDKType {
   key: string;
@@ -66,6 +95,20 @@ export interface ProofOpProtoMsg {
  * The data could be arbitrary format, providing nessecary data
  * for example neighbouring node hash
  */
+export interface ProofOpAmino {
+  type?: string;
+  key?: string;
+  data?: string;
+}
+export interface ProofOpAminoMsg {
+  type: "/tendermint.crypto.ProofOp";
+  value: ProofOpAmino;
+}
+/**
+ * ProofOp defines an operation used for calculating Merkle root
+ * The data could be arbitrary format, providing nessecary data
+ * for example neighbouring node hash
+ */
 export interface ProofOpSDKType {
   type: string;
   key: Uint8Array;
@@ -78,6 +121,14 @@ export interface ProofOps {
 export interface ProofOpsProtoMsg {
   typeUrl: "/tendermint.crypto.ProofOps";
   value: Uint8Array;
+}
+/** ProofOps is Merkle proof defined by the list of ProofOps */
+export interface ProofOpsAmino {
+  ops?: ProofOpAmino[];
+}
+export interface ProofOpsAminoMsg {
+  type: "/tendermint.crypto.ProofOps";
+  value: ProofOpsAmino;
 }
 /** ProofOps is Merkle proof defined by the list of ProofOps */
 export interface ProofOpsSDKType {

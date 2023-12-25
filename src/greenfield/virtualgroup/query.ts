@@ -1,8 +1,8 @@
 //@ts-nocheck
 /* eslint-disable */
-import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
-import { Params, ParamsSDKType } from "./params";
-import { GlobalVirtualGroup, GlobalVirtualGroupSDKType, GlobalVirtualGroupFamily, GlobalVirtualGroupFamilySDKType } from "./types";
+import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
+import { GlobalVirtualGroup, GlobalVirtualGroupAmino, GlobalVirtualGroupSDKType, GlobalVirtualGroupFamily, GlobalVirtualGroupFamilyAmino, GlobalVirtualGroupFamilySDKType } from "./types";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.virtualgroup";
@@ -11,6 +11,12 @@ export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {
   typeUrl: "/greenfield.virtualgroup.QueryParamsRequest";
   value: Uint8Array;
+}
+/** QueryParamsRequest is request type for the Query/Params RPC method. */
+export interface QueryParamsRequestAmino {}
+export interface QueryParamsRequestAminoMsg {
+  type: "/greenfield.virtualgroup.QueryParamsRequest";
+  value: QueryParamsRequestAmino;
 }
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
@@ -24,6 +30,15 @@ export interface QueryParamsResponseProtoMsg {
   value: Uint8Array;
 }
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
+export interface QueryParamsResponseAmino {
+  /** params holds all the parameters of this module. */
+  params?: ParamsAmino;
+}
+export interface QueryParamsResponseAminoMsg {
+  type: "/greenfield.virtualgroup.QueryParamsResponse";
+  value: QueryParamsResponseAmino;
+}
+/** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
   params: ParamsSDKType;
 }
@@ -33,6 +48,13 @@ export interface QueryGlobalVirtualGroupRequest {
 export interface QueryGlobalVirtualGroupRequestProtoMsg {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupRequest";
   value: Uint8Array;
+}
+export interface QueryGlobalVirtualGroupRequestAmino {
+  global_virtual_group_id?: number;
+}
+export interface QueryGlobalVirtualGroupRequestAminoMsg {
+  type: "/greenfield.virtualgroup.QueryGlobalVirtualGroupRequest";
+  value: QueryGlobalVirtualGroupRequestAmino;
 }
 export interface QueryGlobalVirtualGroupRequestSDKType {
   global_virtual_group_id: number;
@@ -44,6 +66,13 @@ export interface QueryGlobalVirtualGroupResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupResponse";
   value: Uint8Array;
 }
+export interface QueryGlobalVirtualGroupResponseAmino {
+  global_virtual_group?: GlobalVirtualGroupAmino;
+}
+export interface QueryGlobalVirtualGroupResponseAminoMsg {
+  type: "/greenfield.virtualgroup.QueryGlobalVirtualGroupResponse";
+  value: QueryGlobalVirtualGroupResponseAmino;
+}
 export interface QueryGlobalVirtualGroupResponseSDKType {
   global_virtual_group?: GlobalVirtualGroupSDKType;
 }
@@ -53,6 +82,13 @@ export interface QueryGlobalVirtualGroupByFamilyIDRequest {
 export interface QueryGlobalVirtualGroupByFamilyIDRequestProtoMsg {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupByFamilyIDRequest";
   value: Uint8Array;
+}
+export interface QueryGlobalVirtualGroupByFamilyIDRequestAmino {
+  global_virtual_group_family_id?: number;
+}
+export interface QueryGlobalVirtualGroupByFamilyIDRequestAminoMsg {
+  type: "/greenfield.virtualgroup.QueryGlobalVirtualGroupByFamilyIDRequest";
+  value: QueryGlobalVirtualGroupByFamilyIDRequestAmino;
 }
 export interface QueryGlobalVirtualGroupByFamilyIDRequestSDKType {
   global_virtual_group_family_id: number;
@@ -64,6 +100,13 @@ export interface QueryGlobalVirtualGroupByFamilyIDResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupByFamilyIDResponse";
   value: Uint8Array;
 }
+export interface QueryGlobalVirtualGroupByFamilyIDResponseAmino {
+  global_virtual_groups?: GlobalVirtualGroupAmino[];
+}
+export interface QueryGlobalVirtualGroupByFamilyIDResponseAminoMsg {
+  type: "/greenfield.virtualgroup.QueryGlobalVirtualGroupByFamilyIDResponse";
+  value: QueryGlobalVirtualGroupByFamilyIDResponseAmino;
+}
 export interface QueryGlobalVirtualGroupByFamilyIDResponseSDKType {
   global_virtual_groups: GlobalVirtualGroupSDKType[];
 }
@@ -73,6 +116,13 @@ export interface QueryGlobalVirtualGroupFamilyRequest {
 export interface QueryGlobalVirtualGroupFamilyRequestProtoMsg {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamilyRequest";
   value: Uint8Array;
+}
+export interface QueryGlobalVirtualGroupFamilyRequestAmino {
+  family_id?: number;
+}
+export interface QueryGlobalVirtualGroupFamilyRequestAminoMsg {
+  type: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamilyRequest";
+  value: QueryGlobalVirtualGroupFamilyRequestAmino;
 }
 export interface QueryGlobalVirtualGroupFamilyRequestSDKType {
   family_id: number;
@@ -84,6 +134,13 @@ export interface QueryGlobalVirtualGroupFamilyResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamilyResponse";
   value: Uint8Array;
 }
+export interface QueryGlobalVirtualGroupFamilyResponseAmino {
+  global_virtual_group_family?: GlobalVirtualGroupFamilyAmino;
+}
+export interface QueryGlobalVirtualGroupFamilyResponseAminoMsg {
+  type: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamilyResponse";
+  value: QueryGlobalVirtualGroupFamilyResponseAmino;
+}
 export interface QueryGlobalVirtualGroupFamilyResponseSDKType {
   global_virtual_group_family?: GlobalVirtualGroupFamilySDKType;
 }
@@ -93,6 +150,13 @@ export interface QueryGlobalVirtualGroupFamiliesRequest {
 export interface QueryGlobalVirtualGroupFamiliesRequestProtoMsg {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamiliesRequest";
   value: Uint8Array;
+}
+export interface QueryGlobalVirtualGroupFamiliesRequestAmino {
+  pagination?: PageRequestAmino;
+}
+export interface QueryGlobalVirtualGroupFamiliesRequestAminoMsg {
+  type: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamiliesRequest";
+  value: QueryGlobalVirtualGroupFamiliesRequestAmino;
 }
 export interface QueryGlobalVirtualGroupFamiliesRequestSDKType {
   pagination?: PageRequestSDKType;
@@ -105,6 +169,14 @@ export interface QueryGlobalVirtualGroupFamiliesResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamiliesResponse";
   value: Uint8Array;
 }
+export interface QueryGlobalVirtualGroupFamiliesResponseAmino {
+  gvg_families?: GlobalVirtualGroupFamilyAmino[];
+  pagination?: PageResponseAmino;
+}
+export interface QueryGlobalVirtualGroupFamiliesResponseAminoMsg {
+  type: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamiliesResponse";
+  value: QueryGlobalVirtualGroupFamiliesResponseAmino;
+}
 export interface QueryGlobalVirtualGroupFamiliesResponseSDKType {
   gvg_families: GlobalVirtualGroupFamilySDKType[];
   pagination?: PageResponseSDKType;
@@ -116,6 +188,13 @@ export interface AvailableGlobalVirtualGroupFamiliesRequestProtoMsg {
   typeUrl: "/greenfield.virtualgroup.AvailableGlobalVirtualGroupFamiliesRequest";
   value: Uint8Array;
 }
+export interface AvailableGlobalVirtualGroupFamiliesRequestAmino {
+  global_virtual_group_family_ids?: number[];
+}
+export interface AvailableGlobalVirtualGroupFamiliesRequestAminoMsg {
+  type: "/greenfield.virtualgroup.AvailableGlobalVirtualGroupFamiliesRequest";
+  value: AvailableGlobalVirtualGroupFamiliesRequestAmino;
+}
 export interface AvailableGlobalVirtualGroupFamiliesRequestSDKType {
   global_virtual_group_family_ids: number[];
 }
@@ -125,6 +204,13 @@ export interface AvailableGlobalVirtualGroupFamiliesResponse {
 export interface AvailableGlobalVirtualGroupFamiliesResponseProtoMsg {
   typeUrl: "/greenfield.virtualgroup.AvailableGlobalVirtualGroupFamiliesResponse";
   value: Uint8Array;
+}
+export interface AvailableGlobalVirtualGroupFamiliesResponseAmino {
+  global_virtual_group_family_ids?: number[];
+}
+export interface AvailableGlobalVirtualGroupFamiliesResponseAminoMsg {
+  type: "/greenfield.virtualgroup.AvailableGlobalVirtualGroupFamiliesResponse";
+  value: AvailableGlobalVirtualGroupFamiliesResponseAmino;
 }
 export interface AvailableGlobalVirtualGroupFamiliesResponseSDKType {
   global_virtual_group_family_ids: number[];

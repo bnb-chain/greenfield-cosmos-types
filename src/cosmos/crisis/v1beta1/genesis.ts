@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Coin, CoinSDKType } from "../../base/v1beta1/coin";
+import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.crisis.v1beta1";
@@ -15,6 +15,18 @@ export interface GenesisState {
 export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.crisis.v1beta1.GenesisState";
   value: Uint8Array;
+}
+/** GenesisState defines the crisis module's genesis state. */
+export interface GenesisStateAmino {
+  /**
+   * constant_fee is the fee used to verify the invariant in the crisis
+   * module.
+   */
+  constant_fee: CoinAmino;
+}
+export interface GenesisStateAminoMsg {
+  type: "cosmos-sdk/GenesisState";
+  value: GenesisStateAmino;
 }
 /** GenesisState defines the crisis module's genesis state. */
 export interface GenesisStateSDKType {

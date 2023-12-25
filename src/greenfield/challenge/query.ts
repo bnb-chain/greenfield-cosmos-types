@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./params";
-import { AttestedChallenge, AttestedChallengeSDKType } from "./types";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
+import { AttestedChallenge, AttestedChallengeAmino, AttestedChallengeSDKType } from "./types";
 import { Long, DeepPartial, Exact, isSet, Rpc } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.challenge";
@@ -10,6 +10,12 @@ export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {
   typeUrl: "/greenfield.challenge.QueryParamsRequest";
   value: Uint8Array;
+}
+/** QueryParamsRequest is request type for the Query/Params RPC method. */
+export interface QueryParamsRequestAmino {}
+export interface QueryParamsRequestAminoMsg {
+  type: "/greenfield.challenge.QueryParamsRequest";
+  value: QueryParamsRequestAmino;
 }
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
@@ -21,6 +27,15 @@ export interface QueryParamsResponse {
 export interface QueryParamsResponseProtoMsg {
   typeUrl: "/greenfield.challenge.QueryParamsResponse";
   value: Uint8Array;
+}
+/** QueryParamsResponse is response type for the Query/Params RPC method. */
+export interface QueryParamsResponseAmino {
+  /** params holds all the parameters of this module. */
+  params?: ParamsAmino;
+}
+export interface QueryParamsResponseAminoMsg {
+  type: "/greenfield.challenge.QueryParamsResponse";
+  value: QueryParamsResponseAmino;
 }
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
@@ -36,6 +51,15 @@ export interface QueryAttestedChallengeRequestProtoMsg {
   value: Uint8Array;
 }
 /** QueryAttestedChallengeRequest is request type for the Query/AttestedChallenge RPC method. */
+export interface QueryAttestedChallengeRequestAmino {
+  /** The id of the challenge. */
+  challenge_id?: string;
+}
+export interface QueryAttestedChallengeRequestAminoMsg {
+  type: "/greenfield.challenge.QueryAttestedChallengeRequest";
+  value: QueryAttestedChallengeRequestAmino;
+}
+/** QueryAttestedChallengeRequest is request type for the Query/AttestedChallenge RPC method. */
 export interface QueryAttestedChallengeRequestSDKType {
   challenge_id: Long;
 }
@@ -48,6 +72,14 @@ export interface QueryAttestedChallengeResponseProtoMsg {
   value: Uint8Array;
 }
 /** QueryAttestedChallengeResponse is response type for the Query/AttestedChallenge RPC method. */
+export interface QueryAttestedChallengeResponseAmino {
+  challenge?: AttestedChallengeAmino;
+}
+export interface QueryAttestedChallengeResponseAminoMsg {
+  type: "/greenfield.challenge.QueryAttestedChallengeResponse";
+  value: QueryAttestedChallengeResponseAmino;
+}
+/** QueryAttestedChallengeResponse is response type for the Query/AttestedChallenge RPC method. */
 export interface QueryAttestedChallengeResponseSDKType {
   challenge?: AttestedChallengeSDKType;
 }
@@ -56,6 +88,12 @@ export interface QueryLatestAttestedChallengesRequest {}
 export interface QueryLatestAttestedChallengesRequestProtoMsg {
   typeUrl: "/greenfield.challenge.QueryLatestAttestedChallengesRequest";
   value: Uint8Array;
+}
+/** QueryLatestAttestedChallengesRequest is request type for the Query/LatestAttestedChallenges RPC method. */
+export interface QueryLatestAttestedChallengesRequestAmino {}
+export interface QueryLatestAttestedChallengesRequestAminoMsg {
+  type: "/greenfield.challenge.QueryLatestAttestedChallengesRequest";
+  value: QueryLatestAttestedChallengesRequestAmino;
 }
 /** QueryLatestAttestedChallengesRequest is request type for the Query/LatestAttestedChallenges RPC method. */
 export interface QueryLatestAttestedChallengesRequestSDKType {}
@@ -68,6 +106,14 @@ export interface QueryLatestAttestedChallengesResponseProtoMsg {
   value: Uint8Array;
 }
 /** QueryLatestAttestedChallengesResponse is response type for the Query/LatestAttestedChallenges RPC method. */
+export interface QueryLatestAttestedChallengesResponseAmino {
+  challenges?: AttestedChallengeAmino[];
+}
+export interface QueryLatestAttestedChallengesResponseAminoMsg {
+  type: "/greenfield.challenge.QueryLatestAttestedChallengesResponse";
+  value: QueryLatestAttestedChallengesResponseAmino;
+}
+/** QueryLatestAttestedChallengesResponse is response type for the Query/LatestAttestedChallenges RPC method. */
 export interface QueryLatestAttestedChallengesResponseSDKType {
   challenges: AttestedChallengeSDKType[];
 }
@@ -76,6 +122,12 @@ export interface QueryInturnAttestationSubmitterRequest {}
 export interface QueryInturnAttestationSubmitterRequestProtoMsg {
   typeUrl: "/greenfield.challenge.QueryInturnAttestationSubmitterRequest";
   value: Uint8Array;
+}
+/** QueryInturnAttestationSubmitterRequest is request type for the Query/InturnAttestationSubmitter RPC method. */
+export interface QueryInturnAttestationSubmitterRequestAmino {}
+export interface QueryInturnAttestationSubmitterRequestAminoMsg {
+  type: "/greenfield.challenge.QueryInturnAttestationSubmitterRequest";
+  value: QueryInturnAttestationSubmitterRequestAmino;
 }
 /** QueryInturnAttestationSubmitterRequest is request type for the Query/InturnAttestationSubmitter RPC method. */
 export interface QueryInturnAttestationSubmitterRequestSDKType {}
@@ -87,6 +139,15 @@ export interface QueryInturnAttestationSubmitterResponse {
 export interface QueryInturnAttestationSubmitterResponseProtoMsg {
   typeUrl: "/greenfield.challenge.QueryInturnAttestationSubmitterResponse";
   value: Uint8Array;
+}
+/** QueryInturnAttestationSubmitterResponse is response type for the Query/InturnAttestationSubmitter RPC method. */
+export interface QueryInturnAttestationSubmitterResponseAmino {
+  bls_pub_key?: string;
+  submit_interval?: SubmitIntervalAmino;
+}
+export interface QueryInturnAttestationSubmitterResponseAminoMsg {
+  type: "/greenfield.challenge.QueryInturnAttestationSubmitterResponse";
+  value: QueryInturnAttestationSubmitterResponseAmino;
 }
 /** QueryInturnAttestationSubmitterResponse is response type for the Query/InturnAttestationSubmitter RPC method. */
 export interface QueryInturnAttestationSubmitterResponseSDKType {
@@ -101,6 +162,15 @@ export interface SubmitInterval {
 export interface SubmitIntervalProtoMsg {
   typeUrl: "/greenfield.challenge.SubmitInterval";
   value: Uint8Array;
+}
+/** SubmitInterval holds start and end (exclusive) (i.e., [start, end)) time of in turn attestation. */
+export interface SubmitIntervalAmino {
+  start?: string;
+  end?: string;
+}
+export interface SubmitIntervalAminoMsg {
+  type: "/greenfield.challenge.SubmitInterval";
+  value: SubmitIntervalAmino;
 }
 /** SubmitInterval holds start and end (exclusive) (i.e., [start, end)) time of in turn attestation. */
 export interface SubmitIntervalSDKType {

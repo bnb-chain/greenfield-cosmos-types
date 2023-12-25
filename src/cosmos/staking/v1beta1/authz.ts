@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Coin, CoinSDKType } from "../../base/v1beta1/coin";
+import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.staking.v1beta1";
@@ -21,6 +21,7 @@ export enum AuthorizationType {
   UNRECOGNIZED = -1,
 }
 export const AuthorizationTypeSDKType = AuthorizationType;
+export const AuthorizationTypeAmino = AuthorizationType;
 export function authorizationTypeFromJSON(object: any): AuthorizationType {
   switch (object) {
     case 0:
@@ -87,6 +88,31 @@ export interface StakeAuthorizationProtoMsg {
  * 
  * Since: cosmos-sdk 0.43
  */
+export interface StakeAuthorizationAmino {
+  /**
+   * max_tokens specifies the maximum amount of tokens can be delegate to a validator. If it is
+   * empty, there is no spend limit and any amount of coins can be delegated.
+   */
+  max_tokens?: CoinAmino;
+  /**
+   * allow_list specifies list of validator addresses to whom grantee can delegate tokens on behalf of granter's
+   * account.
+   */
+  allow_list?: StakeAuthorization_ValidatorsAmino;
+  /** deny_list specifies list of validator addresses to whom grantee can not delegate tokens. */
+  deny_list?: StakeAuthorization_ValidatorsAmino;
+  /** authorization_type defines one of AuthorizationType. */
+  authorization_type?: AuthorizationType;
+}
+export interface StakeAuthorizationAminoMsg {
+  type: "cosmos-sdk/StakeAuthorization";
+  value: StakeAuthorizationAmino;
+}
+/**
+ * StakeAuthorization defines authorization for delegate/undelegate/redelegate.
+ * 
+ * Since: cosmos-sdk 0.43
+ */
 export interface StakeAuthorizationSDKType {
   $typeUrl?: "/cosmos.staking.v1beta1.StakeAuthorization";
   max_tokens?: CoinSDKType;
@@ -101,6 +127,14 @@ export interface StakeAuthorization_Validators {
 export interface StakeAuthorization_ValidatorsProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.Validators";
   value: Uint8Array;
+}
+/** Validators defines list of validator addresses. */
+export interface StakeAuthorization_ValidatorsAmino {
+  address?: string[];
+}
+export interface StakeAuthorization_ValidatorsAminoMsg {
+  type: "cosmos-sdk/Validators";
+  value: StakeAuthorization_ValidatorsAmino;
 }
 /** Validators defines list of validator addresses. */
 export interface StakeAuthorization_ValidatorsSDKType {

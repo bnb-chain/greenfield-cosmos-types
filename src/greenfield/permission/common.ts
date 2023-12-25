@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import { UInt64Value, UInt64ValueSDKType } from "../common/wrapper";
+import { UInt64Value, UInt64ValueAmino, UInt64ValueSDKType } from "../common/wrapper";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.permission";
@@ -24,6 +24,7 @@ export enum ActionType {
   UNRECOGNIZED = -1,
 }
 export const ActionTypeSDKType = ActionType;
+export const ActionTypeAmino = ActionType;
 export function actionTypeFromJSON(object: any): ActionType {
   switch (object) {
     case 0:
@@ -117,6 +118,7 @@ export enum Effect {
   UNRECOGNIZED = -1,
 }
 export const EffectSDKType = Effect;
+export const EffectAmino = Effect;
 export function effectFromJSON(object: any): Effect {
   switch (object) {
     case 0:
@@ -158,6 +160,7 @@ export enum PrincipalType {
   UNRECOGNIZED = -1,
 }
 export const PrincipalTypeSDKType = PrincipalType;
+export const PrincipalTypeAmino = PrincipalType;
 export function principalTypeFromJSON(object: any): PrincipalType {
   switch (object) {
     case 0:
@@ -213,6 +216,31 @@ export interface StatementProtoMsg {
   typeUrl: "/greenfield.permission.Statement";
   value: Uint8Array;
 }
+export interface StatementAmino {
+  /** effect define the impact of permissions, which can be Allow/Deny */
+  effect?: Effect;
+  /**
+   * action_type define the operation type you can act. greenfield defines a set of permission
+   * that you can specify in a permissionInfo. see ActionType enum for detail.
+   */
+  actions?: ActionType[];
+  /**
+   * CAN ONLY USED IN bucket level. Support fuzzy match and limit to 5.
+   * The sub-resource name must comply with the standard specified in the greenfield/types/grn.go file for Greenfield resource names.
+   * If the sub-resources include 'grn:o:{bucket_name}/*' in the statement, it indicates that specific permissions is granted to all objects within the specified bucket.
+   * If the sub-resources include 'grn:o:{bucket_name}/test_*' in the statement, it indicates that specific permissions is granted to all objects with the `test_` prefix within the specified bucket.
+   * If the sub-resources is empty, when you need to operate(excluding CreateObject) a specified subresource, it will be denied because it cannot match any subresource.
+   */
+  resources?: string[];
+  /** expiration_time defines how long the permission is valid. If not explicitly specified, it means it will not expire. */
+  expiration_time?: string;
+  /** limit_size defines the total data size that is allowed to operate. If not explicitly specified, it means it will not limit. */
+  limit_size?: UInt64ValueAmino;
+}
+export interface StatementAminoMsg {
+  type: "/greenfield.permission.Statement";
+  value: StatementAmino;
+}
 export interface StatementSDKType {
   effect: Effect;
   actions: ActionType[];
@@ -232,6 +260,19 @@ export interface Principal {
 export interface PrincipalProtoMsg {
   typeUrl: "/greenfield.permission.Principal";
   value: Uint8Array;
+}
+/** Principal define the roles that can be grant permissions to. Currently, it can be account or group. */
+export interface PrincipalAmino {
+  type?: PrincipalType;
+  /**
+   * When the type is an account, its value is sdk.AccAddress().String();
+   * when the type is a group, its value is math.Uint().String()
+   */
+  value?: string;
+}
+export interface PrincipalAminoMsg {
+  type: "/greenfield.permission.Principal";
+  value: PrincipalAmino;
 }
 /** Principal define the roles that can be grant permissions to. Currently, it can be account or group. */
 export interface PrincipalSDKType {

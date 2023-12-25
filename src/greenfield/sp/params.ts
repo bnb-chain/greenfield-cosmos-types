@@ -28,6 +28,29 @@ export interface ParamsProtoMsg {
   value: Uint8Array;
 }
 /** Params defines the parameters for the module. */
+export interface ParamsAmino {
+  /** deposit_denom defines the staking coin denomination. */
+  deposit_denom?: string;
+  /** min_deposit defines the minimum deposit amount for storage providers. */
+  min_deposit?: string;
+  /** the ratio of the store price of the secondary sp to the primary sp, the default value is 80% */
+  secondary_sp_store_price_ratio?: string;
+  /** previous blocks that be traced back to for maintenance_records */
+  num_of_historical_blocks_for_maintenance_records?: string;
+  /** the max duration that a SP can be in_maintenance within num_of_historical_blocks_for_maintenance_records */
+  maintenance_duration_quota?: string;
+  /** the number of blocks to be wait for sp to be in maintenance mode again if already requested */
+  num_of_lockup_blocks_for_maintenance?: string;
+  /** the time interval to update global storage price, if it is not set then the price will be updated at the first block of each natural month */
+  update_global_price_interval?: string;
+  /** the days counting backwards from end of a month in which a sp cannot update its price */
+  update_price_disallowed_days?: number;
+}
+export interface ParamsAminoMsg {
+  type: "/greenfield.sp.Params";
+  value: ParamsAmino;
+}
+/** Params defines the parameters for the module. */
 export interface ParamsSDKType {
   deposit_denom: string;
   min_deposit: string;

@@ -33,6 +33,31 @@ export interface GlobalVirtualGroupProtoMsg {
  * Every global virtual group must belong to a GVG family, and the objects of each
  * bucket must be stored in a GVG within a group family.
  */
+export interface GlobalVirtualGroupAmino {
+  /** ID represents the unique identifier of the global virtual group. */
+  id?: number;
+  /** Family ID represents the identifier of the GVG family that the group belongs to. */
+  family_id?: number;
+  /** Primary SP ID represents the unique identifier of the primary storage provider in the group. */
+  primary_sp_id?: number;
+  /** Secondary SP IDs represents the list of unique identifiers of the secondary storage providers in the group. */
+  secondary_sp_ids?: number[];
+  /** Stored size represents the size of the stored objects within the group. */
+  stored_size?: string;
+  /** Virtual payment address represents the payment address associated with the group. */
+  virtual_payment_address?: string;
+  /** Total deposit represents the number of tokens deposited by this storage provider for staking. */
+  total_deposit?: string;
+}
+export interface GlobalVirtualGroupAminoMsg {
+  type: "/greenfield.virtualgroup.GlobalVirtualGroup";
+  value: GlobalVirtualGroupAmino;
+}
+/**
+ * A global virtual group consists of one primary SP (SP) and multiple secondary SP.
+ * Every global virtual group must belong to a GVG family, and the objects of each
+ * bucket must be stored in a GVG within a group family.
+ */
 export interface GlobalVirtualGroupSDKType {
   id: number;
   family_id: number;
@@ -64,6 +89,24 @@ export interface GlobalVirtualGroupFamilyProtoMsg {
  * Global virtual group family serve as a means of grouping global virtual groups.
  * Each bucket must be associated with a unique global virtual group family and cannot cross families.
  */
+export interface GlobalVirtualGroupFamilyAmino {
+  /** id is the identifier of the global virtual group family. */
+  id?: number;
+  /** primary_sp_id */
+  primary_sp_id?: number;
+  /** global_virtual_group_ids is a list of identifiers of the global virtual groups associated with the family. */
+  global_virtual_group_ids?: number[];
+  /** virtual_payment_address is the payment address associated with the global virtual group family. */
+  virtual_payment_address?: string;
+}
+export interface GlobalVirtualGroupFamilyAminoMsg {
+  type: "/greenfield.virtualgroup.GlobalVirtualGroupFamily";
+  value: GlobalVirtualGroupFamilyAmino;
+}
+/**
+ * Global virtual group family serve as a means of grouping global virtual groups.
+ * Each bucket must be associated with a unique global virtual group family and cannot cross families.
+ */
 export interface GlobalVirtualGroupFamilySDKType {
   id: number;
   primary_sp_id: number;
@@ -81,6 +124,18 @@ export interface GlobalVirtualGroupsBindingOnBucket {
 export interface GlobalVirtualGroupsBindingOnBucketProtoMsg {
   typeUrl: "/greenfield.virtualgroup.GlobalVirtualGroupsBindingOnBucket";
   value: Uint8Array;
+}
+export interface GlobalVirtualGroupsBindingOnBucketAmino {
+  /** bucket_id is the unique identification for the bucket. */
+  bucket_id?: string;
+  /** global_virtual_group_ids is a list of identifiers of the global virtual groups associated with the bucket. */
+  global_virtual_group_ids?: number[];
+  /** local_virtual_group_ids is a list of identifiers of the local virtual groups associated with the bucket. */
+  local_virtual_group_ids?: number[];
+}
+export interface GlobalVirtualGroupsBindingOnBucketAminoMsg {
+  type: "/greenfield.virtualgroup.GlobalVirtualGroupsBindingOnBucket";
+  value: GlobalVirtualGroupsBindingOnBucketAmino;
 }
 export interface GlobalVirtualGroupsBindingOnBucketSDKType {
   bucket_id: string;
@@ -102,6 +157,21 @@ export interface GVGStatisticsWithinSPProtoMsg {
   typeUrl: "/greenfield.virtualgroup.GVGStatisticsWithinSP";
   value: Uint8Array;
 }
+export interface GVGStatisticsWithinSPAmino {
+  /** storage_provider_id defines the id of the sp which the statistics associated to */
+  storage_provider_id?: number;
+  /** primary_sp_family_count defines the number of the family which this sp serves as primary sp */
+  primary_count?: number;
+  /**
+   * secondary_count defines the number of global virtual groups (GVGs) in
+   * which this storage provider serves as a secondary storage provider.
+   */
+  secondary_count?: number;
+}
+export interface GVGStatisticsWithinSPAminoMsg {
+  type: "/greenfield.virtualgroup.GVGStatisticsWithinSP";
+  value: GVGStatisticsWithinSPAmino;
+}
 export interface GVGStatisticsWithinSPSDKType {
   storage_provider_id: number;
   primary_count: number;
@@ -116,6 +186,16 @@ export interface SwapOutInfo {
 export interface SwapOutInfoProtoMsg {
   typeUrl: "/greenfield.virtualgroup.SwapOutInfo";
   value: Uint8Array;
+}
+export interface SwapOutInfoAmino {
+  /** sp_id is the unique id of the storage provider who want to swap out. */
+  sp_id?: number;
+  /** successor_sp_id is the id of the successor storage provider. */
+  successor_sp_id?: number;
+}
+export interface SwapOutInfoAminoMsg {
+  type: "/greenfield.virtualgroup.SwapOutInfo";
+  value: SwapOutInfoAmino;
 }
 export interface SwapOutInfoSDKType {
   sp_id: number;

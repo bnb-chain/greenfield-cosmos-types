@@ -40,6 +40,41 @@ export interface ParamsProtoMsg {
   value: Uint8Array;
 }
 /** Params defines the parameters for the module. */
+export interface ParamsAmino {
+  /** Challenges which will be emitted in each block, including user submitted or randomly triggered. */
+  challenge_count_per_block?: string;
+  /** Challenges will be expired after the period, including user submitted or randomly triggered. */
+  challenge_keep_alive_period?: string;
+  /** The count of blocks to stand for the period in which the same storage and object info cannot be slashed again. */
+  slash_cooling_off_period?: string;
+  /** The slash coin amount will be calculated from the size of object info, and adjusted by this rate. */
+  slash_amount_size_rate?: string;
+  /** The minimal slash amount. */
+  slash_amount_min?: string;
+  /** The maximum slash amount. */
+  slash_amount_max?: string;
+  /** The ratio of slash amount to reward all current validators. */
+  reward_validator_ratio?: string;
+  /** The ratio of reward amount to reward attestation submitter. */
+  reward_submitter_ratio?: string;
+  /** The reward amount to submitter will be adjusted by the threshold. */
+  reward_submitter_threshold?: string;
+  /** Heartbeat interval, based on challenge id, defines the frequency of heartbeat attestation. */
+  heartbeat_interval?: string;
+  /** The time duration for each submitter to submit attestations in turn. */
+  attestation_inturn_interval?: string;
+  /** The number of kept attested challenge ids, which can be queried by clients. */
+  attestation_kept_count?: string;
+  /** The max slash amount for a sp in a counting window. */
+  sp_slash_max_amount?: string;
+  /** The number of blocks to count how much a sp had been slashed. */
+  sp_slash_counting_window?: string;
+}
+export interface ParamsAminoMsg {
+  type: "/greenfield.challenge.Params";
+  value: ParamsAmino;
+}
+/** Params defines the parameters for the module. */
 export interface ParamsSDKType {
   challenge_count_per_block: Long;
   challenge_keep_alive_period: Long;

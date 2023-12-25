@@ -13,6 +13,15 @@ export interface ParamsProtoMsg {
   value: Uint8Array;
 }
 /** Params holds parameters for the cross chain module. */
+export interface ParamsAmino {
+  /** initial balance to mint for crosschain module when the chain starts */
+  init_module_balance?: string;
+}
+export interface ParamsAminoMsg {
+  type: "cosmos-sdk/x/crosschain/Params";
+  value: ParamsAmino;
+}
+/** Params holds parameters for the cross chain module. */
 export interface ParamsSDKType {
   init_module_balance: string;
 }
@@ -28,6 +37,19 @@ export interface ChannelPermission {
 export interface ChannelPermissionProtoMsg {
   typeUrl: "/cosmos.crosschain.v1.ChannelPermission";
   value: Uint8Array;
+}
+/** ChannelPermission defines the fields of the channel permission */
+export interface ChannelPermissionAmino {
+  /** destination chain id */
+  dest_chain_id?: number;
+  /** channel id */
+  channel_id?: number;
+  /** permission status, 1 for allow, 0 for forbidden */
+  permission?: number;
+}
+export interface ChannelPermissionAminoMsg {
+  type: "cosmos-sdk/ChannelPermission";
+  value: ChannelPermissionAmino;
 }
 /** ChannelPermission defines the fields of the channel permission */
 export interface ChannelPermissionSDKType {

@@ -1,10 +1,10 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./params";
-import { StreamRecord, StreamRecordSDKType } from "./stream_record";
-import { PaymentAccountCount, PaymentAccountCountSDKType } from "./payment_account_count";
-import { PaymentAccount, PaymentAccountSDKType } from "./payment_account";
-import { AutoSettleRecord, AutoSettleRecordSDKType } from "./auto_settle_record";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
+import { StreamRecord, StreamRecordAmino, StreamRecordSDKType } from "./stream_record";
+import { PaymentAccountCount, PaymentAccountCountAmino, PaymentAccountCountSDKType } from "./payment_account_count";
+import { PaymentAccount, PaymentAccountAmino, PaymentAccountSDKType } from "./payment_account";
+import { AutoSettleRecord, AutoSettleRecordAmino, AutoSettleRecordSDKType } from "./auto_settle_record";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.payment";
@@ -19,6 +19,18 @@ export interface GenesisState {
 export interface GenesisStateProtoMsg {
   typeUrl: "/greenfield.payment.GenesisState";
   value: Uint8Array;
+}
+/** GenesisState defines the payment module's genesis state. */
+export interface GenesisStateAmino {
+  params?: ParamsAmino;
+  stream_record_list?: StreamRecordAmino[];
+  payment_account_count_list?: PaymentAccountCountAmino[];
+  payment_account_list?: PaymentAccountAmino[];
+  auto_settle_record_list?: AutoSettleRecordAmino[];
+}
+export interface GenesisStateAminoMsg {
+  type: "/greenfield.payment.GenesisState";
+  value: GenesisStateAmino;
 }
 /** GenesisState defines the payment module's genesis state. */
 export interface GenesisStateSDKType {

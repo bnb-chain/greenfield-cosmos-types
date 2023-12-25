@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./params";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.permission";
@@ -20,6 +20,21 @@ export interface MsgUpdateParamsProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
+export interface MsgUpdateParamsAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /**
+   * params defines the x/permission parameters to update.
+   * 
+   * NOTE: All parameters must be supplied.
+   */
+  params?: ParamsAmino;
+}
+export interface MsgUpdateParamsAminoMsg {
+  type: "/greenfield.permission.MsgUpdateParams";
+  value: MsgUpdateParamsAmino;
+}
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
   params: ParamsSDKType;
@@ -32,6 +47,15 @@ export interface MsgUpdateParamsResponse {}
 export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/greenfield.permission.MsgUpdateParamsResponse";
   value: Uint8Array;
+}
+/**
+ * MsgUpdateParamsResponse defines the response structure for executing a
+ * MsgUpdateParams message.
+ */
+export interface MsgUpdateParamsResponseAmino {}
+export interface MsgUpdateParamsResponseAminoMsg {
+  type: "/greenfield.permission.MsgUpdateParamsResponse";
+  value: MsgUpdateParamsResponseAmino;
 }
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a

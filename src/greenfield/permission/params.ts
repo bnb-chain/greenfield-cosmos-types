@@ -21,6 +21,23 @@ export interface ParamsProtoMsg {
   value: Uint8Array;
 }
 /** Params defines the parameters for the module. */
+export interface ParamsAmino {
+  /** maximum_statements_num defines the maximum number of statements allowed in a policy */
+  maximum_statements_num?: string;
+  /**
+   * maximum_group_num used to set the upper limit on the number of groups to which a resource can grant access permissions.
+   * By placing a cap on the number of group permissions, permission control policies can be made more robust and better
+   * enforced, thereby reducing the chances of DDos and other security incidents.
+   */
+  maximum_group_num?: string;
+  /** the maximum iteration number of `RemoveExpiredPolicies` loops in endblocker */
+  maximum_remove_expired_policies_iteration?: string;
+}
+export interface ParamsAminoMsg {
+  type: "/greenfield.permission.Params";
+  value: ParamsAmino;
+}
+/** Params defines the parameters for the module. */
 export interface ParamsSDKType {
   maximum_statements_num: Long;
   maximum_group_num: Long;

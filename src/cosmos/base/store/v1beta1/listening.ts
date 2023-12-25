@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { RequestDeliverTx, RequestDeliverTxSDKType, ResponseDeliverTx, ResponseDeliverTxSDKType, RequestBeginBlock, RequestBeginBlockSDKType, ResponseBeginBlock, ResponseBeginBlockSDKType, RequestEndBlock, RequestEndBlockSDKType, ResponseEndBlock, ResponseEndBlockSDKType, ResponseCommit, ResponseCommitSDKType } from "../../../../tendermint/abci/types";
+import { RequestDeliverTx, RequestDeliverTxAmino, RequestDeliverTxSDKType, ResponseDeliverTx, ResponseDeliverTxAmino, ResponseDeliverTxSDKType, RequestBeginBlock, RequestBeginBlockAmino, RequestBeginBlockSDKType, ResponseBeginBlock, ResponseBeginBlockAmino, ResponseBeginBlockSDKType, RequestEndBlock, RequestEndBlockAmino, RequestEndBlockSDKType, ResponseEndBlock, ResponseEndBlockAmino, ResponseEndBlockSDKType, ResponseCommit, ResponseCommitAmino, ResponseCommitSDKType } from "../../../../tendermint/abci/types";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../../../helpers";
 export const protobufPackage = "cosmos.base.store.v1beta1";
@@ -22,6 +22,25 @@ export interface StoreKVPair {
 export interface StoreKVPairProtoMsg {
   typeUrl: "/cosmos.base.store.v1beta1.StoreKVPair";
   value: Uint8Array;
+}
+/**
+ * StoreKVPair is a KVStore KVPair used for listening to state changes (Sets and Deletes)
+ * It optionally includes the StoreKey for the originating KVStore and a Boolean flag to distinguish between Sets and
+ * Deletes
+ * 
+ * Since: cosmos-sdk 0.43
+ */
+export interface StoreKVPairAmino {
+  /** the store key for the KVStore this pair originates from */
+  store_key?: string;
+  /** true indicates a delete operation, false indicates a set operation */
+  delete?: boolean;
+  key?: string;
+  value?: string;
+}
+export interface StoreKVPairAminoMsg {
+  type: "cosmos-sdk/StoreKVPair";
+  value: StoreKVPairAmino;
 }
 /**
  * StoreKVPair is a KVStore KVPair used for listening to state changes (Sets and Deletes)
@@ -56,6 +75,22 @@ export interface BlockMetadataProtoMsg {
  * BlockMetadata contains all the abci event data of a block
  * the file streamer dump them into files together with the state changes.
  */
+export interface BlockMetadataAmino {
+  request_begin_block?: RequestBeginBlockAmino;
+  response_begin_block?: ResponseBeginBlockAmino;
+  deliver_txs?: BlockMetadata_DeliverTxAmino[];
+  request_end_block?: RequestEndBlockAmino;
+  response_end_block?: ResponseEndBlockAmino;
+  response_commit?: ResponseCommitAmino;
+}
+export interface BlockMetadataAminoMsg {
+  type: "cosmos-sdk/BlockMetadata";
+  value: BlockMetadataAmino;
+}
+/**
+ * BlockMetadata contains all the abci event data of a block
+ * the file streamer dump them into files together with the state changes.
+ */
 export interface BlockMetadataSDKType {
   request_begin_block?: RequestBeginBlockSDKType;
   response_begin_block?: ResponseBeginBlockSDKType;
@@ -72,6 +107,15 @@ export interface BlockMetadata_DeliverTx {
 export interface BlockMetadata_DeliverTxProtoMsg {
   typeUrl: "/cosmos.base.store.v1beta1.DeliverTx";
   value: Uint8Array;
+}
+/** DeliverTx encapulate deliver tx request and response. */
+export interface BlockMetadata_DeliverTxAmino {
+  request?: RequestDeliverTxAmino;
+  response?: ResponseDeliverTxAmino;
+}
+export interface BlockMetadata_DeliverTxAminoMsg {
+  type: "cosmos-sdk/DeliverTx";
+  value: BlockMetadata_DeliverTxAmino;
 }
 /** DeliverTx encapulate deliver tx request and response. */
 export interface BlockMetadata_DeliverTxSDKType {

@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
+import { Coin, CoinAmino, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Long, isSet, DeepPartial, Exact } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.bridge";
@@ -11,6 +11,7 @@ export enum RefundReason {
   UNRECOGNIZED = -1,
 }
 export const RefundReasonSDKType = RefundReason;
+export const RefundReasonAmino = RefundReason;
 export function refundReasonFromJSON(object: any): RefundReason {
   switch (object) {
     case 0:
@@ -61,6 +62,25 @@ export interface EventCrossTransferOutProtoMsg {
   value: Uint8Array;
 }
 /** EventCrossTransferOut is emitted when a cross chain transfer out tx created */
+export interface EventCrossTransferOutAmino {
+  /** From addres of the cross chain transfer tx */
+  from?: string;
+  /** To addres of the cross chain transfer tx */
+  to?: string;
+  /** Amount of the cross chain transfer tx */
+  amount?: CoinAmino;
+  /** Relayer fee of the cross chain transfer tx */
+  relayer_fee?: CoinAmino;
+  /** Sequence of the corresponding cross chain package */
+  sequence?: string;
+  /** Destination chain id of the cross chain transfer tx */
+  dest_chain_id?: number;
+}
+export interface EventCrossTransferOutAminoMsg {
+  type: "/greenfield.bridge.EventCrossTransferOut";
+  value: EventCrossTransferOutAmino;
+}
+/** EventCrossTransferOut is emitted when a cross chain transfer out tx created */
 export interface EventCrossTransferOutSDKType {
   from: string;
   to: string;
@@ -87,6 +107,23 @@ export interface EventCrossTransferOutRefundProtoMsg {
   value: Uint8Array;
 }
 /** EventCrossTransferOutRefund is emitted when a cross chain transfer out tx failed */
+export interface EventCrossTransferOutRefundAmino {
+  /** Refund address of the failed cross chain transfer tx */
+  refund_address?: string;
+  /** Amount of the failed cross chain transfer tx */
+  amount?: CoinAmino;
+  /** Refund reason of the failed cross chain transfer tx */
+  refund_reason?: RefundReason;
+  /** Sequence of the corresponding cross chain package */
+  sequence?: string;
+  /** Destination chain id of the cross chain transfer tx */
+  dest_chain_id?: number;
+}
+export interface EventCrossTransferOutRefundAminoMsg {
+  type: "/greenfield.bridge.EventCrossTransferOutRefund";
+  value: EventCrossTransferOutRefundAmino;
+}
+/** EventCrossTransferOutRefund is emitted when a cross chain transfer out tx failed */
 export interface EventCrossTransferOutRefundSDKType {
   refund_address: string;
   amount?: CoinSDKType;
@@ -110,6 +147,23 @@ export interface EventCrossTransferIn {
 export interface EventCrossTransferInProtoMsg {
   typeUrl: "/greenfield.bridge.EventCrossTransferIn";
   value: Uint8Array;
+}
+/** EventCrossTransferIn is emitted when a cross chain transfer in tx happened */
+export interface EventCrossTransferInAmino {
+  /** Amount of the cross chain transfer tx */
+  amount?: CoinAmino;
+  /** Receiver of the cross chain transfer tx */
+  receiver_address?: string;
+  /** Refund of the cross chain transfer tx in BSC */
+  refund_address?: string;
+  /** Sequence of the corresponding cross chain package */
+  sequence?: string;
+  /** Source chain id of the cross chain transfer tx */
+  src_chain_id?: number;
+}
+export interface EventCrossTransferInAminoMsg {
+  type: "/greenfield.bridge.EventCrossTransferIn";
+  value: EventCrossTransferInAmino;
 }
 /** EventCrossTransferIn is emitted when a cross chain transfer in tx happened */
 export interface EventCrossTransferInSDKType {

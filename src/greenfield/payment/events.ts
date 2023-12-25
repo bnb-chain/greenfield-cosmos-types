@@ -10,6 +10,7 @@ export enum FeePreviewType {
   UNRECOGNIZED = -1,
 }
 export const FeePreviewTypeSDKType = FeePreviewType;
+export const FeePreviewTypeAmino = FeePreviewType;
 export function feePreviewTypeFromJSON(object: any): FeePreviewType {
   switch (object) {
     case 0:
@@ -46,6 +47,18 @@ export interface EventPaymentAccountUpdate {
 export interface EventPaymentAccountUpdateProtoMsg {
   typeUrl: "/greenfield.payment.EventPaymentAccountUpdate";
   value: Uint8Array;
+}
+export interface EventPaymentAccountUpdateAmino {
+  /** address of the payment account */
+  addr?: string;
+  /** owner address of the payment account */
+  owner?: string;
+  /** whether the payment account is refundable */
+  refundable?: boolean;
+}
+export interface EventPaymentAccountUpdateAminoMsg {
+  type: "/greenfield.payment.EventPaymentAccountUpdate";
+  value: EventPaymentAccountUpdateAmino;
 }
 export interface EventPaymentAccountUpdateSDKType {
   addr: string;
@@ -84,6 +97,37 @@ export interface EventStreamRecordUpdateProtoMsg {
   value: Uint8Array;
 }
 /** Stream Payment Record of a stream account */
+export interface EventStreamRecordUpdateAmino {
+  /** account address */
+  account?: string;
+  /** latest update timestamp of the stream record */
+  crud_timestamp?: string;
+  /**
+   * The per-second rate that an account's balance is changing.
+   * It is the sum of the account's inbound and outbound flow rates.
+   */
+  netflow_rate?: string;
+  /** The frozen netflow rate, which is used when resuming stream account */
+  frozen_netflow_rate?: string;
+  /** The balance of the stream account at the latest CRUD timestamp. */
+  static_balance?: string;
+  /**
+   * reserved balance of the stream account
+   * If the netflow rate is negative, the reserved balance is `netflow_rate * reserve_time`
+   */
+  buffer_balance?: string;
+  /** the locked balance of the stream account after it puts a new object and before the object is sealed */
+  lock_balance?: string;
+  /** the status of the stream account */
+  status?: StreamAccountStatus;
+  /** the unix timestamp when the stream account will be settled */
+  settle_timestamp?: string;
+}
+export interface EventStreamRecordUpdateAminoMsg {
+  type: "/greenfield.payment.EventStreamRecordUpdate";
+  value: EventStreamRecordUpdateAmino;
+}
+/** Stream Payment Record of a stream account */
 export interface EventStreamRecordUpdateSDKType {
   account: string;
   crud_timestamp: Long;
@@ -117,6 +161,24 @@ export interface EventForceSettleProtoMsg {
  * EventForceSettle may be emitted on all Msgs and EndBlocker when a payment account's
  * balance or net outflow rate is changed
  */
+export interface EventForceSettleAmino {
+  /** address of the payment account */
+  addr?: string;
+  /**
+   * left balance of the payment account after force settlement
+   * if the balance is positive, it will go to the governance stream account
+   * if the balance is negative, it's the debt of the system, which will be paid by the governance stream account
+   */
+  settled_balance?: string;
+}
+export interface EventForceSettleAminoMsg {
+  type: "/greenfield.payment.EventForceSettle";
+  value: EventForceSettleAmino;
+}
+/**
+ * EventForceSettle may be emitted on all Msgs and EndBlocker when a payment account's
+ * balance or net outflow rate is changed
+ */
 export interface EventForceSettleSDKType {
   addr: string;
   settled_balance: string;
@@ -132,6 +194,18 @@ export interface EventDeposit {
 export interface EventDepositProtoMsg {
   typeUrl: "/greenfield.payment.EventDeposit";
   value: Uint8Array;
+}
+export interface EventDepositAmino {
+  /** from is the the address of the account to deposit from */
+  from?: string;
+  /** to is the address of the stream account to deposit to */
+  to?: string;
+  /** amount is the amount to deposit */
+  amount?: string;
+}
+export interface EventDepositAminoMsg {
+  type: "/greenfield.payment.EventDeposit";
+  value: EventDepositAmino;
 }
 export interface EventDepositSDKType {
   from: string;
@@ -150,6 +224,18 @@ export interface EventWithdrawProtoMsg {
   typeUrl: "/greenfield.payment.EventWithdraw";
   value: Uint8Array;
 }
+export interface EventWithdrawAmino {
+  /** to the address of the receive account */
+  to?: string;
+  /** from is the address of the stream account to withdraw from */
+  from?: string;
+  /** amount is the amount to withdraw */
+  amount?: string;
+}
+export interface EventWithdrawAminoMsg {
+  type: "/greenfield.payment.EventWithdraw";
+  value: EventWithdrawAmino;
+}
 export interface EventWithdrawSDKType {
   to: string;
   from: string;
@@ -167,6 +253,19 @@ export interface EventFeePreview {
 export interface EventFeePreviewProtoMsg {
   typeUrl: "/greenfield.payment.EventFeePreview";
   value: Uint8Array;
+}
+/**
+ * emit when upload/cancel/delete object, used for frontend to preview the fee changed
+ * only emit in tx simulation
+ */
+export interface EventFeePreviewAmino {
+  account?: string;
+  fee_preview_type?: FeePreviewType;
+  amount?: string;
+}
+export interface EventFeePreviewAminoMsg {
+  type: "/greenfield.payment.EventFeePreview";
+  value: EventFeePreviewAmino;
 }
 /**
  * emit when upload/cancel/delete object, used for frontend to preview the fee changed

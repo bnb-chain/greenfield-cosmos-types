@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { CompactBitArray, CompactBitArraySDKType } from "../../../crypto/multisig/v1beta1/multisig";
-import { Any, AnySDKType } from "../../../../google/protobuf/any";
+import { CompactBitArray, CompactBitArrayAmino, CompactBitArraySDKType } from "../../../crypto/multisig/v1beta1/multisig";
+import { Any, AnyAmino, AnySDKType } from "../../../../google/protobuf/any";
 import { Long, DeepPartial, Exact, isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.tx.signing.v1beta1";
@@ -67,6 +67,7 @@ export enum SignMode {
   UNRECOGNIZED = -1,
 }
 export const SignModeSDKType = SignMode;
+export const SignModeAmino = SignMode;
 export function signModeFromJSON(object: any): SignMode {
   switch (object) {
     case 0:
@@ -127,6 +128,15 @@ export interface SignatureDescriptorsProtoMsg {
   value: Uint8Array;
 }
 /** SignatureDescriptors wraps multiple SignatureDescriptor's. */
+export interface SignatureDescriptorsAmino {
+  /** signatures are the signature descriptors */
+  signatures?: SignatureDescriptorAmino[];
+}
+export interface SignatureDescriptorsAminoMsg {
+  type: "cosmos-sdk/SignatureDescriptors";
+  value: SignatureDescriptorsAmino;
+}
+/** SignatureDescriptors wraps multiple SignatureDescriptor's. */
 export interface SignatureDescriptorsSDKType {
   signatures: SignatureDescriptorSDKType[];
 }
@@ -157,6 +167,27 @@ export interface SignatureDescriptorProtoMsg {
  * signature itself. It is primarily used for coordinating signatures between
  * clients.
  */
+export interface SignatureDescriptorAmino {
+  /** public_key is the public key of the signer */
+  public_key?: AnyAmino;
+  data?: SignatureDescriptor_DataAmino;
+  /**
+   * sequence is the sequence of the account, which describes the
+   * number of committed transactions signed by a given address. It is used to prevent
+   * replay attacks.
+   */
+  sequence?: string;
+}
+export interface SignatureDescriptorAminoMsg {
+  type: "cosmos-sdk/SignatureDescriptor";
+  value: SignatureDescriptorAmino;
+}
+/**
+ * SignatureDescriptor is a convenience type which represents the full data for
+ * a signature including the public key of the signer, signing modes and the
+ * signature itself. It is primarily used for coordinating signatures between
+ * clients.
+ */
 export interface SignatureDescriptorSDKType {
   public_key?: AnySDKType;
   data?: SignatureDescriptor_DataSDKType;
@@ -172,6 +203,17 @@ export interface SignatureDescriptor_Data {
 export interface SignatureDescriptor_DataProtoMsg {
   typeUrl: "/cosmos.tx.signing.v1beta1.Data";
   value: Uint8Array;
+}
+/** Data represents signature data */
+export interface SignatureDescriptor_DataAmino {
+  /** single represents a single signer */
+  single?: SignatureDescriptor_Data_SingleAmino;
+  /** multi represents a multisig signer */
+  multi?: SignatureDescriptor_Data_MultiAmino;
+}
+export interface SignatureDescriptor_DataAminoMsg {
+  type: "cosmos-sdk/Data";
+  value: SignatureDescriptor_DataAmino;
 }
 /** Data represents signature data */
 export interface SignatureDescriptor_DataSDKType {
@@ -190,6 +232,17 @@ export interface SignatureDescriptor_Data_SingleProtoMsg {
   value: Uint8Array;
 }
 /** Single is the signature data for a single signer */
+export interface SignatureDescriptor_Data_SingleAmino {
+  /** mode is the signing mode of the single signer */
+  mode?: SignMode;
+  /** signature is the raw signature bytes */
+  signature?: string;
+}
+export interface SignatureDescriptor_Data_SingleAminoMsg {
+  type: "cosmos-sdk/Single";
+  value: SignatureDescriptor_Data_SingleAmino;
+}
+/** Single is the signature data for a single signer */
 export interface SignatureDescriptor_Data_SingleSDKType {
   mode: SignMode;
   signature: Uint8Array;
@@ -204,6 +257,17 @@ export interface SignatureDescriptor_Data_Multi {
 export interface SignatureDescriptor_Data_MultiProtoMsg {
   typeUrl: "/cosmos.tx.signing.v1beta1.Multi";
   value: Uint8Array;
+}
+/** Multi is the signature data for a multisig public key */
+export interface SignatureDescriptor_Data_MultiAmino {
+  /** bitarray specifies which keys within the multisig are signing */
+  bitarray?: CompactBitArrayAmino;
+  /** signatures is the signatures of the multi-signature */
+  signatures?: SignatureDescriptor_DataAmino[];
+}
+export interface SignatureDescriptor_Data_MultiAminoMsg {
+  type: "cosmos-sdk/Multi";
+  value: SignatureDescriptor_Data_MultiAmino;
 }
 /** Multi is the signature data for a multisig public key */
 export interface SignatureDescriptor_Data_MultiSDKType {

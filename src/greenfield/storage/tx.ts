@@ -1,12 +1,12 @@
 //@ts-nocheck
 /* eslint-disable */
-import { VisibilityType, RedundancyType, GVGMapping, GVGMappingSDKType, visibilityTypeFromJSON, visibilityTypeToJSON, redundancyTypeFromJSON, redundancyTypeToJSON } from "./common";
-import { Approval, ApprovalSDKType } from "../common/approval";
-import { UInt64Value, UInt64ValueSDKType } from "../common/wrapper";
-import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "../permission/common";
+import { VisibilityType, RedundancyType, GVGMapping, GVGMappingAmino, GVGMappingSDKType, visibilityTypeFromJSON, visibilityTypeToJSON, redundancyTypeFromJSON, redundancyTypeToJSON } from "./common";
+import { Approval, ApprovalAmino, ApprovalSDKType } from "../common/approval";
+import { UInt64Value, UInt64ValueAmino, UInt64ValueSDKType } from "../common/wrapper";
+import { Principal, PrincipalAmino, PrincipalSDKType, Statement, StatementAmino, StatementSDKType } from "../permission/common";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import { Params, ParamsSDKType } from "./params";
-import { ResourceTags, ResourceTagsSDKType } from "./types";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
+import { ResourceTags, ResourceTagsAmino, ResourceTagsSDKType } from "./types";
 import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp, Rpc } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.storage";
@@ -37,6 +37,33 @@ export interface MsgCreateBucketProtoMsg {
   typeUrl: "/greenfield.storage.MsgCreateBucket";
   value: Uint8Array;
 }
+export interface MsgCreateBucketAmino {
+  /** creator defines the account address of bucket creator, it is also the bucket owner. */
+  creator?: string;
+  /** bucket_name defines a globally unique name of bucket */
+  bucket_name?: string;
+  /**
+   * visibility means the bucket is private or public. if private, only bucket owner or grantee can read it,
+   * otherwise every greenfield user can read it.
+   */
+  visibility?: VisibilityType;
+  /** payment_address defines an account address specified by bucket owner to pay the read fee. Default: creator */
+  payment_address?: string;
+  /** primary_sp_address defines the address of primary sp. */
+  primary_sp_address?: string;
+  /** primary_sp_approval defines the approval info of the primary SP which indicates that primary sp confirm the user's request. */
+  primary_sp_approval?: ApprovalAmino;
+  /**
+   * charged_read_quota defines the read data that users are charged for, measured in bytes.
+   * The available read data for each user is the sum of the free read data provided by SP and
+   * the ChargeReadQuota specified here.
+   */
+  charged_read_quota?: string;
+}
+export interface MsgCreateBucketAminoMsg {
+  type: "/greenfield.storage.MsgCreateBucket";
+  value: MsgCreateBucketAmino;
+}
 export interface MsgCreateBucketSDKType {
   creator: string;
   bucket_name: string;
@@ -53,6 +80,13 @@ export interface MsgCreateBucketResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgCreateBucketResponse";
   value: Uint8Array;
 }
+export interface MsgCreateBucketResponseAmino {
+  bucket_id?: string;
+}
+export interface MsgCreateBucketResponseAminoMsg {
+  type: "/greenfield.storage.MsgCreateBucketResponse";
+  value: MsgCreateBucketResponseAmino;
+}
 export interface MsgCreateBucketResponseSDKType {
   bucket_id: string;
 }
@@ -66,6 +100,16 @@ export interface MsgDeleteBucketProtoMsg {
   typeUrl: "/greenfield.storage.MsgDeleteBucket";
   value: Uint8Array;
 }
+export interface MsgDeleteBucketAmino {
+  /** creator defines the account address of the grantee who has the DeleteBucket permission of the bucket to be deleted. */
+  operator?: string;
+  /** bucket_name defines the name of the bucket to be deleted. */
+  bucket_name?: string;
+}
+export interface MsgDeleteBucketAminoMsg {
+  type: "/greenfield.storage.MsgDeleteBucket";
+  value: MsgDeleteBucketAmino;
+}
 export interface MsgDeleteBucketSDKType {
   operator: string;
   bucket_name: string;
@@ -74,6 +118,11 @@ export interface MsgDeleteBucketResponse {}
 export interface MsgDeleteBucketResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgDeleteBucketResponse";
   value: Uint8Array;
+}
+export interface MsgDeleteBucketResponseAmino {}
+export interface MsgDeleteBucketResponseAminoMsg {
+  type: "/greenfield.storage.MsgDeleteBucketResponse";
+  value: MsgDeleteBucketResponseAmino;
 }
 export interface MsgDeleteBucketResponseSDKType {}
 export interface MsgDiscontinueBucket {
@@ -88,6 +137,18 @@ export interface MsgDiscontinueBucketProtoMsg {
   typeUrl: "/greenfield.storage.MsgDiscontinueBucket";
   value: Uint8Array;
 }
+export interface MsgDiscontinueBucketAmino {
+  /** operator is the sp who wants to stop serving the bucket. */
+  operator?: string;
+  /** bucket_name defines the name of the bucket where the object which to be discontinued is stored. */
+  bucket_name?: string;
+  /** the reason for the request. */
+  reason?: string;
+}
+export interface MsgDiscontinueBucketAminoMsg {
+  type: "/greenfield.storage.MsgDiscontinueBucket";
+  value: MsgDiscontinueBucketAmino;
+}
 export interface MsgDiscontinueBucketSDKType {
   operator: string;
   bucket_name: string;
@@ -97,6 +158,11 @@ export interface MsgDiscontinueBucketResponse {}
 export interface MsgDiscontinueBucketResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgDiscontinueBucketResponse";
   value: Uint8Array;
+}
+export interface MsgDiscontinueBucketResponseAmino {}
+export interface MsgDiscontinueBucketResponseAminoMsg {
+  type: "/greenfield.storage.MsgDiscontinueBucketResponse";
+  value: MsgDiscontinueBucketResponseAmino;
 }
 export interface MsgDiscontinueBucketResponseSDKType {}
 export interface MsgCreateObject {
@@ -126,6 +192,33 @@ export interface MsgCreateObjectProtoMsg {
   typeUrl: "/greenfield.storage.MsgCreateObject";
   value: Uint8Array;
 }
+export interface MsgCreateObjectAmino {
+  /** creator defines the account address of object uploader */
+  creator?: string;
+  /** bucket_name defines the name of the bucket where the object is stored. */
+  bucket_name?: string;
+  /** object_name defines the name of object */
+  object_name?: string;
+  /** payload_size defines size of the object's payload */
+  payload_size?: string;
+  /**
+   * visibility means the object is private or public. if private, only object owner or grantee can access it,
+   * otherwise every greenfield user can access it.
+   */
+  visibility?: VisibilityType;
+  /** content_type defines a standard MIME type describing the format of the object. */
+  content_type?: string;
+  /** primary_sp_approval defines the approval info of the primary SP which indicates that primary sp confirm the user's request. */
+  primary_sp_approval?: ApprovalAmino;
+  /** expect_checksums defines a list of hashes which was generate by redundancy algorithm. */
+  expect_checksums?: string[];
+  /** redundancy_type can be ec or replica */
+  redundancy_type?: RedundancyType;
+}
+export interface MsgCreateObjectAminoMsg {
+  type: "/greenfield.storage.MsgCreateObject";
+  value: MsgCreateObjectAmino;
+}
 export interface MsgCreateObjectSDKType {
   creator: string;
   bucket_name: string;
@@ -143,6 +236,13 @@ export interface MsgCreateObjectResponse {
 export interface MsgCreateObjectResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgCreateObjectResponse";
   value: Uint8Array;
+}
+export interface MsgCreateObjectResponseAmino {
+  object_id?: string;
+}
+export interface MsgCreateObjectResponseAminoMsg {
+  type: "/greenfield.storage.MsgCreateObjectResponse";
+  value: MsgCreateObjectResponseAmino;
 }
 export interface MsgCreateObjectResponseSDKType {
   object_id: string;
@@ -166,6 +266,25 @@ export interface MsgSealObjectProtoMsg {
   typeUrl: "/greenfield.storage.MsgSealObject";
   value: Uint8Array;
 }
+export interface MsgSealObjectAmino {
+  /** operator defines the account address of primary SP */
+  operator?: string;
+  /** bucket_name defines the name of the bucket where the object is stored. */
+  bucket_name?: string;
+  /** object_name defines the name of object to be sealed. */
+  object_name?: string;
+  /** global_virtual_group_id defines the id of global virtual group */
+  global_virtual_group_id?: number;
+  /**
+   * secondary_sp_bls_agg_signatures defines the aggregate bls signature of the secondary sp that can
+   * acknowledge that the payload data has received and stored.
+   */
+  secondary_sp_bls_agg_signatures?: string;
+}
+export interface MsgSealObjectAminoMsg {
+  type: "/greenfield.storage.MsgSealObject";
+  value: MsgSealObjectAmino;
+}
 export interface MsgSealObjectSDKType {
   operator: string;
   bucket_name: string;
@@ -177,6 +296,11 @@ export interface MsgSealObjectResponse {}
 export interface MsgSealObjectResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgSealObjectResponse";
   value: Uint8Array;
+}
+export interface MsgSealObjectResponseAmino {}
+export interface MsgSealObjectResponseAminoMsg {
+  type: "/greenfield.storage.MsgSealObjectResponse";
+  value: MsgSealObjectResponseAmino;
 }
 export interface MsgSealObjectResponseSDKType {}
 export interface MsgRejectSealObject {
@@ -191,6 +315,18 @@ export interface MsgRejectSealObjectProtoMsg {
   typeUrl: "/greenfield.storage.MsgRejectSealObject";
   value: Uint8Array;
 }
+export interface MsgRejectSealObjectAmino {
+  /** operator defines the account address of the object owner */
+  operator?: string;
+  /** bucket_name defines the name of the bucket where the object is stored. */
+  bucket_name?: string;
+  /** object_name defines the name of unsealed object to be reject. */
+  object_name?: string;
+}
+export interface MsgRejectSealObjectAminoMsg {
+  type: "/greenfield.storage.MsgRejectSealObject";
+  value: MsgRejectSealObjectAmino;
+}
 export interface MsgRejectSealObjectSDKType {
   operator: string;
   bucket_name: string;
@@ -200,6 +336,11 @@ export interface MsgRejectSealObjectResponse {}
 export interface MsgRejectSealObjectResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgRejectSealObjectResponse";
   value: Uint8Array;
+}
+export interface MsgRejectSealObjectResponseAmino {}
+export interface MsgRejectSealObjectResponseAminoMsg {
+  type: "/greenfield.storage.MsgRejectSealObjectResponse";
+  value: MsgRejectSealObjectResponseAmino;
 }
 export interface MsgRejectSealObjectResponseSDKType {}
 export interface MsgCopyObject {
@@ -220,6 +361,24 @@ export interface MsgCopyObjectProtoMsg {
   typeUrl: "/greenfield.storage.MsgCopyObject";
   value: Uint8Array;
 }
+export interface MsgCopyObjectAmino {
+  /** operator defines the account address of the operator who has the CopyObject permission. */
+  operator?: string;
+  /** src_bucket_name defines the name of the bucket where the object to be copied is located */
+  src_bucket_name?: string;
+  /** dst_bucket_name defines the name of the bucket where the object is copied to. */
+  dst_bucket_name?: string;
+  /** src_object_name defines the name of the object which to be copied */
+  src_object_name?: string;
+  /** dst_object_name defines the name of the object which is copied to */
+  dst_object_name?: string;
+  /** primary_sp_approval defines the approval info of the primary SP which indicates that primary sp confirm the user's request. */
+  dst_primary_sp_approval?: ApprovalAmino;
+}
+export interface MsgCopyObjectAminoMsg {
+  type: "/greenfield.storage.MsgCopyObject";
+  value: MsgCopyObjectAmino;
+}
 export interface MsgCopyObjectSDKType {
   operator: string;
   src_bucket_name: string;
@@ -234,6 +393,13 @@ export interface MsgCopyObjectResponse {
 export interface MsgCopyObjectResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgCopyObjectResponse";
   value: Uint8Array;
+}
+export interface MsgCopyObjectResponseAmino {
+  object_id?: string;
+}
+export interface MsgCopyObjectResponseAminoMsg {
+  type: "/greenfield.storage.MsgCopyObjectResponse";
+  value: MsgCopyObjectResponseAmino;
 }
 export interface MsgCopyObjectResponseSDKType {
   object_id: string;
@@ -250,6 +416,18 @@ export interface MsgDeleteObjectProtoMsg {
   typeUrl: "/greenfield.storage.MsgDeleteObject";
   value: Uint8Array;
 }
+export interface MsgDeleteObjectAmino {
+  /** operator defines the account address of the operator who has the DeleteObject permission of the object to be deleted. */
+  operator?: string;
+  /** bucket_name defines the name of the bucket where the object which to be deleted is stored. */
+  bucket_name?: string;
+  /** object_name defines the name of the object which to be deleted. */
+  object_name?: string;
+}
+export interface MsgDeleteObjectAminoMsg {
+  type: "/greenfield.storage.MsgDeleteObject";
+  value: MsgDeleteObjectAmino;
+}
 export interface MsgDeleteObjectSDKType {
   operator: string;
   bucket_name: string;
@@ -259,6 +437,11 @@ export interface MsgDeleteObjectResponse {}
 export interface MsgDeleteObjectResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgDeleteObjectResponse";
   value: Uint8Array;
+}
+export interface MsgDeleteObjectResponseAmino {}
+export interface MsgDeleteObjectResponseAminoMsg {
+  type: "/greenfield.storage.MsgDeleteObjectResponse";
+  value: MsgDeleteObjectResponseAmino;
 }
 export interface MsgDeleteObjectResponseSDKType {}
 export interface MsgDiscontinueObject {
@@ -275,6 +458,20 @@ export interface MsgDiscontinueObjectProtoMsg {
   typeUrl: "/greenfield.storage.MsgDiscontinueObject";
   value: Uint8Array;
 }
+export interface MsgDiscontinueObjectAmino {
+  /** operator is the sp who wants to stop serving the objects. */
+  operator?: string;
+  /** bucket_name defines the name of the bucket where the object which to be discontinued is stored. */
+  bucket_name?: string;
+  /** object_ids are the ids of object info. */
+  object_ids?: string[];
+  /** the reason for the request. */
+  reason?: string;
+}
+export interface MsgDiscontinueObjectAminoMsg {
+  type: "/greenfield.storage.MsgDiscontinueObject";
+  value: MsgDiscontinueObjectAmino;
+}
 export interface MsgDiscontinueObjectSDKType {
   operator: string;
   bucket_name: string;
@@ -285,6 +482,11 @@ export interface MsgDiscontinueObjectResponse {}
 export interface MsgDiscontinueObjectResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgDiscontinueObjectResponse";
   value: Uint8Array;
+}
+export interface MsgDiscontinueObjectResponseAmino {}
+export interface MsgDiscontinueObjectResponseAminoMsg {
+  type: "/greenfield.storage.MsgDiscontinueObjectResponse";
+  value: MsgDiscontinueObjectResponseAmino;
 }
 export interface MsgDiscontinueObjectResponseSDKType {}
 export interface MsgCreateGroup {
@@ -299,6 +501,18 @@ export interface MsgCreateGroupProtoMsg {
   typeUrl: "/greenfield.storage.MsgCreateGroup";
   value: Uint8Array;
 }
+export interface MsgCreateGroupAmino {
+  /** owner defines the account address of group owner who create the group */
+  creator?: string;
+  /** group_name defines the name of the group. it's not globally unique. */
+  group_name?: string;
+  /** extra defines extra info for the group */
+  extra?: string;
+}
+export interface MsgCreateGroupAminoMsg {
+  type: "/greenfield.storage.MsgCreateGroup";
+  value: MsgCreateGroupAmino;
+}
 export interface MsgCreateGroupSDKType {
   creator: string;
   group_name: string;
@@ -310,6 +524,13 @@ export interface MsgCreateGroupResponse {
 export interface MsgCreateGroupResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgCreateGroupResponse";
   value: Uint8Array;
+}
+export interface MsgCreateGroupResponseAmino {
+  group_id?: string;
+}
+export interface MsgCreateGroupResponseAminoMsg {
+  type: "/greenfield.storage.MsgCreateGroupResponse";
+  value: MsgCreateGroupResponseAmino;
 }
 export interface MsgCreateGroupResponseSDKType {
   group_id: string;
@@ -324,6 +545,16 @@ export interface MsgDeleteGroupProtoMsg {
   typeUrl: "/greenfield.storage.MsgDeleteGroup";
   value: Uint8Array;
 }
+export interface MsgDeleteGroupAmino {
+  /** operator defines the account address of the operator who has the DeleteGroup permission of the group to be deleted. */
+  operator?: string;
+  /** group_name defines the name of the group which to be deleted */
+  group_name?: string;
+}
+export interface MsgDeleteGroupAminoMsg {
+  type: "/greenfield.storage.MsgDeleteGroup";
+  value: MsgDeleteGroupAmino;
+}
 export interface MsgDeleteGroupSDKType {
   operator: string;
   group_name: string;
@@ -332,6 +563,11 @@ export interface MsgDeleteGroupResponse {}
 export interface MsgDeleteGroupResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgDeleteGroupResponse";
   value: Uint8Array;
+}
+export interface MsgDeleteGroupResponseAmino {}
+export interface MsgDeleteGroupResponseAminoMsg {
+  type: "/greenfield.storage.MsgDeleteGroupResponse";
+  value: MsgDeleteGroupResponseAmino;
 }
 export interface MsgDeleteGroupResponseSDKType {}
 export interface MsgUpdateGroupMember {
@@ -350,6 +586,22 @@ export interface MsgUpdateGroupMemberProtoMsg {
   typeUrl: "/greenfield.storage.MsgUpdateGroupMember";
   value: Uint8Array;
 }
+export interface MsgUpdateGroupMemberAmino {
+  /** operator defines the account address of the operator who has the UpdateGroupMember permission of the group. */
+  operator?: string;
+  /** group_owner defines the account address of the group owner */
+  group_owner?: string;
+  /** group_name defines the name of the group which to be updated */
+  group_name?: string;
+  /** members_to_add defines a list of members account address which will be add to the group */
+  members_to_add?: MsgGroupMemberAmino[];
+  /** members_to_delete defines a list of members account address which will be remove from the group */
+  members_to_delete?: string[];
+}
+export interface MsgUpdateGroupMemberAminoMsg {
+  type: "/greenfield.storage.MsgUpdateGroupMember";
+  value: MsgUpdateGroupMemberAmino;
+}
 export interface MsgUpdateGroupMemberSDKType {
   operator: string;
   group_owner: string;
@@ -361,6 +613,11 @@ export interface MsgUpdateGroupMemberResponse {}
 export interface MsgUpdateGroupMemberResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgUpdateGroupMemberResponse";
   value: Uint8Array;
+}
+export interface MsgUpdateGroupMemberResponseAmino {}
+export interface MsgUpdateGroupMemberResponseAminoMsg {
+  type: "/greenfield.storage.MsgUpdateGroupMemberResponse";
+  value: MsgUpdateGroupMemberResponseAmino;
 }
 export interface MsgUpdateGroupMemberResponseSDKType {}
 export interface MsgRenewGroupMember {
@@ -377,6 +634,20 @@ export interface MsgRenewGroupMemberProtoMsg {
   typeUrl: "/greenfield.storage.MsgRenewGroupMember";
   value: Uint8Array;
 }
+export interface MsgRenewGroupMemberAmino {
+  /** operator defines the account address of the operator who has the UpdateGroupMember permission of the group. */
+  operator?: string;
+  /** group_owner defines the account address of the group owner */
+  group_owner?: string;
+  /** group_name defines the name of the group which to be updated */
+  group_name?: string;
+  /** members defines a list of members which will be renew to the group */
+  members?: MsgGroupMemberAmino[];
+}
+export interface MsgRenewGroupMemberAminoMsg {
+  type: "/greenfield.storage.MsgRenewGroupMember";
+  value: MsgRenewGroupMemberAmino;
+}
 export interface MsgRenewGroupMemberSDKType {
   operator: string;
   group_owner: string;
@@ -388,6 +659,11 @@ export interface MsgRenewGroupMemberResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgRenewGroupMemberResponse";
   value: Uint8Array;
 }
+export interface MsgRenewGroupMemberResponseAmino {}
+export interface MsgRenewGroupMemberResponseAminoMsg {
+  type: "/greenfield.storage.MsgRenewGroupMemberResponse";
+  value: MsgRenewGroupMemberResponseAmino;
+}
 export interface MsgRenewGroupMemberResponseSDKType {}
 export interface MsgGroupMember {
   /** member defines the account address of the group member */
@@ -398,6 +674,16 @@ export interface MsgGroupMember {
 export interface MsgGroupMemberProtoMsg {
   typeUrl: "/greenfield.storage.MsgGroupMember";
   value: Uint8Array;
+}
+export interface MsgGroupMemberAmino {
+  /** member defines the account address of the group member */
+  member?: string;
+  /** expiration_time defines the expiration time of the group member */
+  expiration_time?: string;
+}
+export interface MsgGroupMemberAminoMsg {
+  type: "/greenfield.storage.MsgGroupMember";
+  value: MsgGroupMemberAmino;
 }
 export interface MsgGroupMemberSDKType {
   member: string;
@@ -417,6 +703,20 @@ export interface MsgUpdateGroupExtraProtoMsg {
   typeUrl: "/greenfield.storage.MsgUpdateGroupExtra";
   value: Uint8Array;
 }
+export interface MsgUpdateGroupExtraAmino {
+  /** operator defines the account address of the operator who has the UpdateGroupMember permission of the group. */
+  operator?: string;
+  /** group_owner defines the account address of the group owner */
+  group_owner?: string;
+  /** group_name defines the name of the group which to be updated */
+  group_name?: string;
+  /** extra defines extra info for the group to update */
+  extra?: string;
+}
+export interface MsgUpdateGroupExtraAminoMsg {
+  type: "/greenfield.storage.MsgUpdateGroupExtra";
+  value: MsgUpdateGroupExtraAmino;
+}
 export interface MsgUpdateGroupExtraSDKType {
   operator: string;
   group_owner: string;
@@ -427,6 +727,11 @@ export interface MsgUpdateGroupExtraResponse {}
 export interface MsgUpdateGroupExtraResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgUpdateGroupExtraResponse";
   value: Uint8Array;
+}
+export interface MsgUpdateGroupExtraResponseAmino {}
+export interface MsgUpdateGroupExtraResponseAminoMsg {
+  type: "/greenfield.storage.MsgUpdateGroupExtraResponse";
+  value: MsgUpdateGroupExtraResponseAmino;
 }
 export interface MsgUpdateGroupExtraResponseSDKType {}
 export interface MsgLeaveGroup {
@@ -441,6 +746,18 @@ export interface MsgLeaveGroupProtoMsg {
   typeUrl: "/greenfield.storage.MsgLeaveGroup";
   value: Uint8Array;
 }
+export interface MsgLeaveGroupAmino {
+  /** member defines the account address of the member who want to leave the group */
+  member?: string;
+  /** group_owner defines the owner of the group you want to leave */
+  group_owner?: string;
+  /** group_name defines the name of the group you want to leave */
+  group_name?: string;
+}
+export interface MsgLeaveGroupAminoMsg {
+  type: "/greenfield.storage.MsgLeaveGroup";
+  value: MsgLeaveGroupAmino;
+}
 export interface MsgLeaveGroupSDKType {
   member: string;
   group_owner: string;
@@ -450,6 +767,11 @@ export interface MsgLeaveGroupResponse {}
 export interface MsgLeaveGroupResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgLeaveGroupResponse";
   value: Uint8Array;
+}
+export interface MsgLeaveGroupResponseAmino {}
+export interface MsgLeaveGroupResponseAminoMsg {
+  type: "/greenfield.storage.MsgLeaveGroupResponse";
+  value: MsgLeaveGroupResponseAmino;
 }
 export interface MsgLeaveGroupResponseSDKType {}
 export interface MsgUpdateBucketInfo {
@@ -477,6 +799,31 @@ export interface MsgUpdateBucketInfoProtoMsg {
   typeUrl: "/greenfield.storage.MsgUpdateBucketInfo";
   value: Uint8Array;
 }
+export interface MsgUpdateBucketInfoAmino {
+  /** operator defines the account address of the operator */
+  operator?: string;
+  /** bucket_name defines the name of bucket which you'll update */
+  bucket_name?: string;
+  /**
+   * charged_read_quota defines the traffic quota that you read from primary sp
+   * if read_quota is nil, it means don't change the read_quota
+   */
+  charged_read_quota?: UInt64ValueAmino;
+  /**
+   * payment_address defines the account address of the payment account
+   * if payment_address is empty, it means don't change the payment_address
+   */
+  payment_address?: string;
+  /**
+   * visibility means the bucket is private or public. if private, only bucket owner or grantee can read it,
+   * otherwise every greenfield user can read it.
+   */
+  visibility?: VisibilityType;
+}
+export interface MsgUpdateBucketInfoAminoMsg {
+  type: "/greenfield.storage.MsgUpdateBucketInfo";
+  value: MsgUpdateBucketInfoAmino;
+}
 export interface MsgUpdateBucketInfoSDKType {
   operator: string;
   bucket_name: string;
@@ -488,6 +835,11 @@ export interface MsgUpdateBucketInfoResponse {}
 export interface MsgUpdateBucketInfoResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgUpdateBucketInfoResponse";
   value: Uint8Array;
+}
+export interface MsgUpdateBucketInfoResponseAmino {}
+export interface MsgUpdateBucketInfoResponseAminoMsg {
+  type: "/greenfield.storage.MsgUpdateBucketInfoResponse";
+  value: MsgUpdateBucketInfoResponseAmino;
 }
 export interface MsgUpdateBucketInfoResponseSDKType {}
 export interface MsgCancelCreateObject {
@@ -502,6 +854,18 @@ export interface MsgCancelCreateObjectProtoMsg {
   typeUrl: "/greenfield.storage.MsgCancelCreateObject";
   value: Uint8Array;
 }
+export interface MsgCancelCreateObjectAmino {
+  /** operator defines the account address of the operator */
+  operator?: string;
+  /** bucket_name defines the name of the bucket */
+  bucket_name?: string;
+  /** object_name defines the name of the object */
+  object_name?: string;
+}
+export interface MsgCancelCreateObjectAminoMsg {
+  type: "/greenfield.storage.MsgCancelCreateObject";
+  value: MsgCancelCreateObjectAmino;
+}
 export interface MsgCancelCreateObjectSDKType {
   operator: string;
   bucket_name: string;
@@ -511,6 +875,11 @@ export interface MsgCancelCreateObjectResponse {}
 export interface MsgCancelCreateObjectResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgCancelCreateObjectResponse";
   value: Uint8Array;
+}
+export interface MsgCancelCreateObjectResponseAmino {}
+export interface MsgCancelCreateObjectResponseAminoMsg {
+  type: "/greenfield.storage.MsgCancelCreateObjectResponse";
+  value: MsgCancelCreateObjectResponseAmino;
 }
 export interface MsgCancelCreateObjectResponseSDKType {}
 export interface MsgPutPolicy {
@@ -532,6 +901,25 @@ export interface MsgPutPolicyProtoMsg {
   typeUrl: "/greenfield.storage.MsgPutPolicy";
   value: Uint8Array;
 }
+export interface MsgPutPolicyAmino {
+  /** operator defines the granter who grant the permission to another principal */
+  operator?: string;
+  /** Principal defines the roles that can be grant permissions to. Currently, it can be account or group. */
+  principal?: PrincipalAmino;
+  /** resource defines a greenfield standard resource name that can be generated by GRN structure */
+  resource?: string;
+  /** statements defines a list of individual statement which describe the detail rules of policy */
+  statements?: StatementAmino[];
+  /**
+   * expiration_time defines the whole expiration time of all the statements.
+   * Notices: Its priority is higher than the expiration time inside the Statement
+   */
+  expiration_time?: string;
+}
+export interface MsgPutPolicyAminoMsg {
+  type: "/greenfield.storage.MsgPutPolicy";
+  value: MsgPutPolicyAmino;
+}
 export interface MsgPutPolicySDKType {
   operator: string;
   principal?: PrincipalSDKType;
@@ -545,6 +933,13 @@ export interface MsgPutPolicyResponse {
 export interface MsgPutPolicyResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgPutPolicyResponse";
   value: Uint8Array;
+}
+export interface MsgPutPolicyResponseAmino {
+  policy_id?: string;
+}
+export interface MsgPutPolicyResponseAminoMsg {
+  type: "/greenfield.storage.MsgPutPolicyResponse";
+  value: MsgPutPolicyResponseAmino;
 }
 export interface MsgPutPolicyResponseSDKType {
   policy_id: string;
@@ -561,6 +956,18 @@ export interface MsgDeletePolicyProtoMsg {
   typeUrl: "/greenfield.storage.MsgDeletePolicy";
   value: Uint8Array;
 }
+export interface MsgDeletePolicyAmino {
+  /** operator defines the granter who grant the permission to another principal */
+  operator?: string;
+  /** Principal defines the roles that can grant permissions. Currently, it can be account or group. */
+  principal?: PrincipalAmino;
+  /** resource defines a greenfield standard resource name that can be generated by GRN structure */
+  resource?: string;
+}
+export interface MsgDeletePolicyAminoMsg {
+  type: "/greenfield.storage.MsgDeletePolicy";
+  value: MsgDeletePolicyAmino;
+}
 export interface MsgDeletePolicySDKType {
   operator: string;
   principal?: PrincipalSDKType;
@@ -572,6 +979,13 @@ export interface MsgDeletePolicyResponse {
 export interface MsgDeletePolicyResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgDeletePolicyResponse";
   value: Uint8Array;
+}
+export interface MsgDeletePolicyResponseAmino {
+  policy_id?: string;
+}
+export interface MsgDeletePolicyResponseAminoMsg {
+  type: "/greenfield.storage.MsgDeletePolicyResponse";
+  value: MsgDeletePolicyResponseAmino;
 }
 export interface MsgDeletePolicyResponseSDKType {
   policy_id: string;
@@ -592,6 +1006,22 @@ export interface MsgMirrorObjectProtoMsg {
   typeUrl: "/greenfield.storage.MsgMirrorObject";
   value: Uint8Array;
 }
+export interface MsgMirrorObjectAmino {
+  /** operator defines the account address of the object owner. */
+  operator?: string;
+  /** id defines the unique u256 for object. */
+  id?: string;
+  /** bucket_name defines the name of the bucket where the object is stored */
+  bucket_name?: string;
+  /** object_name defines the name of object */
+  object_name?: string;
+  /** destination chain id */
+  dest_chain_id?: number;
+}
+export interface MsgMirrorObjectAminoMsg {
+  type: "/greenfield.storage.MsgMirrorObject";
+  value: MsgMirrorObjectAmino;
+}
 export interface MsgMirrorObjectSDKType {
   operator: string;
   id: string;
@@ -603,6 +1033,11 @@ export interface MsgMirrorObjectResponse {}
 export interface MsgMirrorObjectResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgMirrorObjectResponse";
   value: Uint8Array;
+}
+export interface MsgMirrorObjectResponseAmino {}
+export interface MsgMirrorObjectResponseAminoMsg {
+  type: "/greenfield.storage.MsgMirrorObjectResponse";
+  value: MsgMirrorObjectResponseAmino;
 }
 export interface MsgMirrorObjectResponseSDKType {}
 export interface MsgMirrorBucket {
@@ -619,6 +1054,20 @@ export interface MsgMirrorBucketProtoMsg {
   typeUrl: "/greenfield.storage.MsgMirrorBucket";
   value: Uint8Array;
 }
+export interface MsgMirrorBucketAmino {
+  /** operator defines the account address of the bucket owner. */
+  operator?: string;
+  /** id defines the unique u256 for bucket. */
+  id?: string;
+  /** bucket_name defines a globally unique name of bucket */
+  bucket_name?: string;
+  /** destination chain id */
+  dest_chain_id?: number;
+}
+export interface MsgMirrorBucketAminoMsg {
+  type: "/greenfield.storage.MsgMirrorBucket";
+  value: MsgMirrorBucketAmino;
+}
 export interface MsgMirrorBucketSDKType {
   operator: string;
   id: string;
@@ -629,6 +1078,11 @@ export interface MsgUpdateObjectInfoResponse {}
 export interface MsgUpdateObjectInfoResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgUpdateObjectInfoResponse";
   value: Uint8Array;
+}
+export interface MsgUpdateObjectInfoResponseAmino {}
+export interface MsgUpdateObjectInfoResponseAminoMsg {
+  type: "/greenfield.storage.MsgUpdateObjectInfoResponse";
+  value: MsgUpdateObjectInfoResponseAmino;
 }
 export interface MsgUpdateObjectInfoResponseSDKType {}
 export interface MsgUpdateObjectInfo {
@@ -648,6 +1102,23 @@ export interface MsgUpdateObjectInfoProtoMsg {
   typeUrl: "/greenfield.storage.MsgUpdateObjectInfo";
   value: Uint8Array;
 }
+export interface MsgUpdateObjectInfoAmino {
+  /** operator defines the account address of the operator */
+  operator?: string;
+  /** bucket_name is the name of the bucket */
+  bucket_name?: string;
+  /** object_name defines the name of bucket which you'll update */
+  object_name?: string;
+  /**
+   * visibility means the object is private or public. if private, only bucket owner or grantee can read it,
+   * otherwise every greenfield user can read it.
+   */
+  visibility?: VisibilityType;
+}
+export interface MsgUpdateObjectInfoAminoMsg {
+  type: "/greenfield.storage.MsgUpdateObjectInfo";
+  value: MsgUpdateObjectInfoAmino;
+}
 export interface MsgUpdateObjectInfoSDKType {
   operator: string;
   bucket_name: string;
@@ -658,6 +1129,11 @@ export interface MsgMirrorBucketResponse {}
 export interface MsgMirrorBucketResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgMirrorBucketResponse";
   value: Uint8Array;
+}
+export interface MsgMirrorBucketResponseAmino {}
+export interface MsgMirrorBucketResponseAminoMsg {
+  type: "/greenfield.storage.MsgMirrorBucketResponse";
+  value: MsgMirrorBucketResponseAmino;
 }
 export interface MsgMirrorBucketResponseSDKType {}
 export interface MsgMirrorGroup {
@@ -674,6 +1150,20 @@ export interface MsgMirrorGroupProtoMsg {
   typeUrl: "/greenfield.storage.MsgMirrorGroup";
   value: Uint8Array;
 }
+export interface MsgMirrorGroupAmino {
+  /** operator defines the account address of the group owner. */
+  operator?: string;
+  /** id defines the unique u256 for group. */
+  id?: string;
+  /** group_name defines the name of the group */
+  group_name?: string;
+  /** destination chain id */
+  dest_chain_id?: number;
+}
+export interface MsgMirrorGroupAminoMsg {
+  type: "/greenfield.storage.MsgMirrorGroup";
+  value: MsgMirrorGroupAmino;
+}
 export interface MsgMirrorGroupSDKType {
   operator: string;
   id: string;
@@ -684,6 +1174,11 @@ export interface MsgMirrorGroupResponse {}
 export interface MsgMirrorGroupResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgMirrorGroupResponse";
   value: Uint8Array;
+}
+export interface MsgMirrorGroupResponseAmino {}
+export interface MsgMirrorGroupResponseAminoMsg {
+  type: "/greenfield.storage.MsgMirrorGroupResponse";
+  value: MsgMirrorGroupResponseAmino;
 }
 export interface MsgMirrorGroupResponseSDKType {}
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
@@ -701,6 +1196,20 @@ export interface MsgUpdateParamsProtoMsg {
   value: Uint8Array;
 }
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
+export interface MsgUpdateParamsAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /**
+   * params defines the x/storage parameters to update.
+   * NOTE: All parameters must be supplied.
+   */
+  params?: ParamsAmino;
+}
+export interface MsgUpdateParamsAminoMsg {
+  type: "/greenfield.storage.MsgUpdateParams";
+  value: MsgUpdateParamsAmino;
+}
+/** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
   params: ParamsSDKType;
@@ -710,6 +1219,12 @@ export interface MsgUpdateParamsResponse {}
 export interface MsgUpdateParamsResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgUpdateParamsResponse";
   value: Uint8Array;
+}
+/** MsgUpdateParamsResponse defines the response structure for executing a */
+export interface MsgUpdateParamsResponseAmino {}
+export interface MsgUpdateParamsResponseAminoMsg {
+  type: "/greenfield.storage.MsgUpdateParamsResponse";
+  value: MsgUpdateParamsResponseAmino;
 }
 /** MsgUpdateParamsResponse defines the response structure for executing a */
 export interface MsgUpdateParamsResponseSDKType {}
@@ -727,6 +1242,20 @@ export interface MsgMigrateBucketProtoMsg {
   typeUrl: "/greenfield.storage.MsgMigrateBucket";
   value: Uint8Array;
 }
+export interface MsgMigrateBucketAmino {
+  /** operator defines the account address of the operator who initial the migrate bucket */
+  operator?: string;
+  /** bucket_name defines the name of the bucket that need to be migrated */
+  bucket_name?: string;
+  /** dst_primary_sp_id defines the destination SP for migration */
+  dst_primary_sp_id?: number;
+  /** dst_primary_sp_approval defines the approval of destination sp */
+  dst_primary_sp_approval?: ApprovalAmino;
+}
+export interface MsgMigrateBucketAminoMsg {
+  type: "/greenfield.storage.MsgMigrateBucket";
+  value: MsgMigrateBucketAmino;
+}
 export interface MsgMigrateBucketSDKType {
   operator: string;
   bucket_name: string;
@@ -737,6 +1266,11 @@ export interface MsgMigrateBucketResponse {}
 export interface MsgMigrateBucketResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgMigrateBucketResponse";
   value: Uint8Array;
+}
+export interface MsgMigrateBucketResponseAmino {}
+export interface MsgMigrateBucketResponseAminoMsg {
+  type: "/greenfield.storage.MsgMigrateBucketResponse";
+  value: MsgMigrateBucketResponseAmino;
 }
 export interface MsgMigrateBucketResponseSDKType {}
 export interface MsgCompleteMigrateBucket {
@@ -756,6 +1290,23 @@ export interface MsgCompleteMigrateBucketProtoMsg {
   typeUrl: "/greenfield.storage.MsgCompleteMigrateBucket";
   value: Uint8Array;
 }
+export interface MsgCompleteMigrateBucketAmino {
+  /**
+   * operator defines the account address of the msg operator.
+   * The CompleteMigrateBucket transaction must be initiated by the destination SP of the migration
+   */
+  operator?: string;
+  /** bucket_name defines the name of the bucket that need to be migrated */
+  bucket_name?: string;
+  /** global_virtual_group_family_id defines the family id which the bucket migrate to */
+  global_virtual_group_family_id?: number;
+  /** gvg_mappings defines the src and dst gvg mapping relationships which the bucket migrate to */
+  gvg_mappings?: GVGMappingAmino[];
+}
+export interface MsgCompleteMigrateBucketAminoMsg {
+  type: "/greenfield.storage.MsgCompleteMigrateBucket";
+  value: MsgCompleteMigrateBucketAmino;
+}
 export interface MsgCompleteMigrateBucketSDKType {
   operator: string;
   bucket_name: string;
@@ -766,6 +1317,11 @@ export interface MsgCompleteMigrateBucketResponse {}
 export interface MsgCompleteMigrateBucketResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgCompleteMigrateBucketResponse";
   value: Uint8Array;
+}
+export interface MsgCompleteMigrateBucketResponseAmino {}
+export interface MsgCompleteMigrateBucketResponseAminoMsg {
+  type: "/greenfield.storage.MsgCompleteMigrateBucketResponse";
+  value: MsgCompleteMigrateBucketResponseAmino;
 }
 export interface MsgCompleteMigrateBucketResponseSDKType {}
 export interface MsgCancelMigrateBucket {
@@ -781,6 +1337,19 @@ export interface MsgCancelMigrateBucketProtoMsg {
   typeUrl: "/greenfield.storage.MsgCancelMigrateBucket";
   value: Uint8Array;
 }
+export interface MsgCancelMigrateBucketAmino {
+  /**
+   * operator defines the account address of the msg operator.
+   * Only the user can send this transaction to cancel the migrate bucket
+   */
+  operator?: string;
+  /** bucket_name defines the name of the bucket that need to be migrated */
+  bucket_name?: string;
+}
+export interface MsgCancelMigrateBucketAminoMsg {
+  type: "/greenfield.storage.MsgCancelMigrateBucket";
+  value: MsgCancelMigrateBucketAmino;
+}
 export interface MsgCancelMigrateBucketSDKType {
   operator: string;
   bucket_name: string;
@@ -789,6 +1358,11 @@ export interface MsgCancelMigrateBucketResponse {}
 export interface MsgCancelMigrateBucketResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgCancelMigrateBucketResponse";
   value: Uint8Array;
+}
+export interface MsgCancelMigrateBucketResponseAmino {}
+export interface MsgCancelMigrateBucketResponseAminoMsg {
+  type: "/greenfield.storage.MsgCancelMigrateBucketResponse";
+  value: MsgCancelMigrateBucketResponseAmino;
 }
 export interface MsgCancelMigrateBucketResponseSDKType {}
 export interface MsgRejectMigrateBucket {
@@ -804,6 +1378,19 @@ export interface MsgRejectMigrateBucketProtoMsg {
   typeUrl: "/greenfield.storage.MsgRejectMigrateBucket";
   value: Uint8Array;
 }
+export interface MsgRejectMigrateBucketAmino {
+  /**
+   * operator defines the account address of the msg operator.
+   * only the Dest SP can send this transaction to reject the bucket migration.
+   */
+  operator?: string;
+  /** bucket_name defines the name of the bucket that need to be migrated */
+  bucket_name?: string;
+}
+export interface MsgRejectMigrateBucketAminoMsg {
+  type: "/greenfield.storage.MsgRejectMigrateBucket";
+  value: MsgRejectMigrateBucketAmino;
+}
 export interface MsgRejectMigrateBucketSDKType {
   operator: string;
   bucket_name: string;
@@ -812,6 +1399,11 @@ export interface MsgRejectMigrateBucketResponse {}
 export interface MsgRejectMigrateBucketResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgRejectMigrateBucketResponse";
   value: Uint8Array;
+}
+export interface MsgRejectMigrateBucketResponseAmino {}
+export interface MsgRejectMigrateBucketResponseAminoMsg {
+  type: "/greenfield.storage.MsgRejectMigrateBucketResponse";
+  value: MsgRejectMigrateBucketResponseAmino;
 }
 export interface MsgRejectMigrateBucketResponseSDKType {}
 export interface MsgSetTag {
@@ -826,6 +1418,18 @@ export interface MsgSetTagProtoMsg {
   typeUrl: "/greenfield.storage.MsgSetTag";
   value: Uint8Array;
 }
+export interface MsgSetTagAmino {
+  /** operator defines the operator who adds the tags */
+  operator?: string;
+  /** resource defines a greenfield standard resource name that can be generated by GRN structure */
+  resource?: string;
+  /** tags defines a list of tags which will be set to the resource */
+  tags?: ResourceTagsAmino;
+}
+export interface MsgSetTagAminoMsg {
+  type: "/greenfield.storage.MsgSetTag";
+  value: MsgSetTagAmino;
+}
 export interface MsgSetTagSDKType {
   operator: string;
   resource: string;
@@ -835,6 +1439,11 @@ export interface MsgSetTagResponse {}
 export interface MsgSetTagResponseProtoMsg {
   typeUrl: "/greenfield.storage.MsgSetTagResponse";
   value: Uint8Array;
+}
+export interface MsgSetTagResponseAmino {}
+export interface MsgSetTagResponseAminoMsg {
+  type: "/greenfield.storage.MsgSetTagResponse";
+  value: MsgSetTagResponseAmino;
 }
 export interface MsgSetTagResponseSDKType {}
 function createBaseMsgCreateBucket(): MsgCreateBucket {

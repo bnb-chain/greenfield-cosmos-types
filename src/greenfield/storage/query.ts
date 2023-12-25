@@ -1,11 +1,11 @@
 //@ts-nocheck
 /* eslint-disable */
-import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
+import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
 import { ActionType, Effect, actionTypeFromJSON, actionTypeToJSON, effectFromJSON, effectToJSON } from "../permission/common";
-import { Params, ParamsSDKType } from "./params";
-import { BucketInfo, BucketInfoSDKType, ObjectInfo, ObjectInfoSDKType, BucketMetaData, BucketMetaDataSDKType, ObjectMetaData, ObjectMetaDataSDKType, GroupMetaData, GroupMetaDataSDKType, GroupInfo, GroupInfoSDKType, InternalBucketInfo, InternalBucketInfoSDKType } from "./types";
-import { GlobalVirtualGroup, GlobalVirtualGroupSDKType } from "../virtualgroup/types";
-import { Policy, PolicySDKType, GroupMember, GroupMemberSDKType } from "../permission/types";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
+import { BucketInfo, BucketInfoAmino, BucketInfoSDKType, ObjectInfo, ObjectInfoAmino, ObjectInfoSDKType, BucketMetaData, BucketMetaDataAmino, BucketMetaDataSDKType, ObjectMetaData, ObjectMetaDataAmino, ObjectMetaDataSDKType, GroupMetaData, GroupMetaDataAmino, GroupMetaDataSDKType, GroupInfo, GroupInfoAmino, GroupInfoSDKType, InternalBucketInfo, InternalBucketInfoAmino, InternalBucketInfoSDKType } from "./types";
+import { GlobalVirtualGroup, GlobalVirtualGroupAmino, GlobalVirtualGroupSDKType } from "../virtualgroup/types";
+import { Policy, PolicyAmino, PolicySDKType, GroupMember, GroupMemberAmino, GroupMemberSDKType } from "../permission/types";
 import { Long, DeepPartial, Exact, isSet, isObject, Rpc } from "../../helpers";
 import * as _m0 from "protobufjs/minimal";
 import { Decimal } from "@cosmjs/math";
@@ -17,6 +17,12 @@ export interface QueryParamsRequestProtoMsg {
   value: Uint8Array;
 }
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
+export interface QueryParamsRequestAmino {}
+export interface QueryParamsRequestAminoMsg {
+  type: "/greenfield.storage.QueryParamsRequest";
+  value: QueryParamsRequestAmino;
+}
+/** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponse {
@@ -26,6 +32,15 @@ export interface QueryParamsResponse {
 export interface QueryParamsResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryParamsResponse";
   value: Uint8Array;
+}
+/** QueryParamsResponse is response type for the Query/Params RPC method. */
+export interface QueryParamsResponseAmino {
+  /** params holds all the parameters of this module. */
+  params?: ParamsAmino;
+}
+export interface QueryParamsResponseAminoMsg {
+  type: "/greenfield.storage.QueryParamsResponse";
+  value: QueryParamsResponseAmino;
 }
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
@@ -41,6 +56,15 @@ export interface QueryParamsByTimestampRequestProtoMsg {
   value: Uint8Array;
 }
 /** QueryVersionedParamsRequest is request type for the Query/Params RPC method with timestamp. */
+export interface QueryParamsByTimestampRequestAmino {
+  /** the timestamp of the block time you want to query */
+  timestamp?: string;
+}
+export interface QueryParamsByTimestampRequestAminoMsg {
+  type: "/greenfield.storage.QueryParamsByTimestampRequest";
+  value: QueryParamsByTimestampRequestAmino;
+}
+/** QueryVersionedParamsRequest is request type for the Query/Params RPC method with timestamp. */
 export interface QueryParamsByTimestampRequestSDKType {
   timestamp: Long;
 }
@@ -54,6 +78,15 @@ export interface QueryParamsByTimestampResponseProtoMsg {
   value: Uint8Array;
 }
 /** QueryVersionedParamsResponse is response type for the Query/Params RPC method with timestamp. */
+export interface QueryParamsByTimestampResponseAmino {
+  /** params holds all the parameters of this module. */
+  params?: ParamsAmino;
+}
+export interface QueryParamsByTimestampResponseAminoMsg {
+  type: "/greenfield.storage.QueryParamsByTimestampResponse";
+  value: QueryParamsByTimestampResponseAmino;
+}
+/** QueryVersionedParamsResponse is response type for the Query/Params RPC method with timestamp. */
 export interface QueryParamsByTimestampResponseSDKType {
   params: ParamsSDKType;
 }
@@ -63,6 +96,13 @@ export interface QueryHeadBucketRequest {
 export interface QueryHeadBucketRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryHeadBucketRequest";
   value: Uint8Array;
+}
+export interface QueryHeadBucketRequestAmino {
+  bucket_name?: string;
+}
+export interface QueryHeadBucketRequestAminoMsg {
+  type: "/greenfield.storage.QueryHeadBucketRequest";
+  value: QueryHeadBucketRequestAmino;
 }
 export interface QueryHeadBucketRequestSDKType {
   bucket_name: string;
@@ -74,6 +114,13 @@ export interface QueryHeadBucketByIdRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryHeadBucketByIdRequest";
   value: Uint8Array;
 }
+export interface QueryHeadBucketByIdRequestAmino {
+  bucket_id?: string;
+}
+export interface QueryHeadBucketByIdRequestAminoMsg {
+  type: "/greenfield.storage.QueryHeadBucketByIdRequest";
+  value: QueryHeadBucketByIdRequestAmino;
+}
 export interface QueryHeadBucketByIdRequestSDKType {
   bucket_id: string;
 }
@@ -83,6 +130,13 @@ export interface QueryHeadBucketResponse {
 export interface QueryHeadBucketResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryHeadBucketResponse";
   value: Uint8Array;
+}
+export interface QueryHeadBucketResponseAmino {
+  bucket_info?: BucketInfoAmino;
+}
+export interface QueryHeadBucketResponseAminoMsg {
+  type: "/greenfield.storage.QueryHeadBucketResponse";
+  value: QueryHeadBucketResponseAmino;
 }
 export interface QueryHeadBucketResponseSDKType {
   bucket_info?: BucketInfoSDKType;
@@ -95,6 +149,14 @@ export interface QueryHeadObjectRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryHeadObjectRequest";
   value: Uint8Array;
 }
+export interface QueryHeadObjectRequestAmino {
+  bucket_name?: string;
+  object_name?: string;
+}
+export interface QueryHeadObjectRequestAminoMsg {
+  type: "/greenfield.storage.QueryHeadObjectRequest";
+  value: QueryHeadObjectRequestAmino;
+}
 export interface QueryHeadObjectRequestSDKType {
   bucket_name: string;
   object_name: string;
@@ -105,6 +167,13 @@ export interface QueryHeadObjectByIdRequest {
 export interface QueryHeadObjectByIdRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryHeadObjectByIdRequest";
   value: Uint8Array;
+}
+export interface QueryHeadObjectByIdRequestAmino {
+  object_id?: string;
+}
+export interface QueryHeadObjectByIdRequestAminoMsg {
+  type: "/greenfield.storage.QueryHeadObjectByIdRequest";
+  value: QueryHeadObjectByIdRequestAmino;
 }
 export interface QueryHeadObjectByIdRequestSDKType {
   object_id: string;
@@ -117,6 +186,14 @@ export interface QueryHeadObjectResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryHeadObjectResponse";
   value: Uint8Array;
 }
+export interface QueryHeadObjectResponseAmino {
+  object_info?: ObjectInfoAmino;
+  global_virtual_group?: GlobalVirtualGroupAmino;
+}
+export interface QueryHeadObjectResponseAminoMsg {
+  type: "/greenfield.storage.QueryHeadObjectResponse";
+  value: QueryHeadObjectResponseAmino;
+}
 export interface QueryHeadObjectResponseSDKType {
   object_info?: ObjectInfoSDKType;
   global_virtual_group?: GlobalVirtualGroupSDKType;
@@ -128,6 +205,13 @@ export interface QueryListBucketsRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryListBucketsRequest";
   value: Uint8Array;
 }
+export interface QueryListBucketsRequestAmino {
+  pagination?: PageRequestAmino;
+}
+export interface QueryListBucketsRequestAminoMsg {
+  type: "/greenfield.storage.QueryListBucketsRequest";
+  value: QueryListBucketsRequestAmino;
+}
 export interface QueryListBucketsRequestSDKType {
   pagination?: PageRequestSDKType;
 }
@@ -138,6 +222,14 @@ export interface QueryListBucketsResponse {
 export interface QueryListBucketsResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryListBucketsResponse";
   value: Uint8Array;
+}
+export interface QueryListBucketsResponseAmino {
+  bucket_infos?: BucketInfoAmino[];
+  pagination?: PageResponseAmino;
+}
+export interface QueryListBucketsResponseAminoMsg {
+  type: "/greenfield.storage.QueryListBucketsResponse";
+  value: QueryListBucketsResponseAmino;
 }
 export interface QueryListBucketsResponseSDKType {
   bucket_infos: BucketInfoSDKType[];
@@ -151,6 +243,14 @@ export interface QueryListObjectsRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryListObjectsRequest";
   value: Uint8Array;
 }
+export interface QueryListObjectsRequestAmino {
+  pagination?: PageRequestAmino;
+  bucket_name?: string;
+}
+export interface QueryListObjectsRequestAminoMsg {
+  type: "/greenfield.storage.QueryListObjectsRequest";
+  value: QueryListObjectsRequestAmino;
+}
 export interface QueryListObjectsRequestSDKType {
   pagination?: PageRequestSDKType;
   bucket_name: string;
@@ -162,6 +262,14 @@ export interface QueryListObjectsByBucketIdRequest {
 export interface QueryListObjectsByBucketIdRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryListObjectsByBucketIdRequest";
   value: Uint8Array;
+}
+export interface QueryListObjectsByBucketIdRequestAmino {
+  pagination?: PageRequestAmino;
+  bucket_id?: string;
+}
+export interface QueryListObjectsByBucketIdRequestAminoMsg {
+  type: "/greenfield.storage.QueryListObjectsByBucketIdRequest";
+  value: QueryListObjectsByBucketIdRequestAmino;
 }
 export interface QueryListObjectsByBucketIdRequestSDKType {
   pagination?: PageRequestSDKType;
@@ -175,6 +283,14 @@ export interface QueryListObjectsResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryListObjectsResponse";
   value: Uint8Array;
 }
+export interface QueryListObjectsResponseAmino {
+  object_infos?: ObjectInfoAmino[];
+  pagination?: PageResponseAmino;
+}
+export interface QueryListObjectsResponseAminoMsg {
+  type: "/greenfield.storage.QueryListObjectsResponse";
+  value: QueryListObjectsResponseAmino;
+}
 export interface QueryListObjectsResponseSDKType {
   object_infos: ObjectInfoSDKType[];
   pagination?: PageResponseSDKType;
@@ -186,6 +302,13 @@ export interface QueryNFTRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryNFTRequest";
   value: Uint8Array;
 }
+export interface QueryNFTRequestAmino {
+  token_id?: string;
+}
+export interface QueryNFTRequestAminoMsg {
+  type: "/greenfield.storage.QueryNFTRequest";
+  value: QueryNFTRequestAmino;
+}
 export interface QueryNFTRequestSDKType {
   token_id: string;
 }
@@ -195,6 +318,13 @@ export interface QueryBucketNFTResponse {
 export interface QueryBucketNFTResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryBucketNFTResponse";
   value: Uint8Array;
+}
+export interface QueryBucketNFTResponseAmino {
+  meta_data?: BucketMetaDataAmino;
+}
+export interface QueryBucketNFTResponseAminoMsg {
+  type: "/greenfield.storage.QueryBucketNFTResponse";
+  value: QueryBucketNFTResponseAmino;
 }
 export interface QueryBucketNFTResponseSDKType {
   meta_data?: BucketMetaDataSDKType;
@@ -206,6 +336,13 @@ export interface QueryObjectNFTResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryObjectNFTResponse";
   value: Uint8Array;
 }
+export interface QueryObjectNFTResponseAmino {
+  meta_data?: ObjectMetaDataAmino;
+}
+export interface QueryObjectNFTResponseAminoMsg {
+  type: "/greenfield.storage.QueryObjectNFTResponse";
+  value: QueryObjectNFTResponseAmino;
+}
 export interface QueryObjectNFTResponseSDKType {
   meta_data?: ObjectMetaDataSDKType;
 }
@@ -215,6 +352,13 @@ export interface QueryGroupNFTResponse {
 export interface QueryGroupNFTResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryGroupNFTResponse";
   value: Uint8Array;
+}
+export interface QueryGroupNFTResponseAmino {
+  meta_data?: GroupMetaDataAmino;
+}
+export interface QueryGroupNFTResponseAminoMsg {
+  type: "/greenfield.storage.QueryGroupNFTResponse";
+  value: QueryGroupNFTResponseAmino;
 }
 export interface QueryGroupNFTResponseSDKType {
   meta_data?: GroupMetaDataSDKType;
@@ -227,6 +371,14 @@ export interface QueryPolicyForAccountRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryPolicyForAccountRequest";
   value: Uint8Array;
 }
+export interface QueryPolicyForAccountRequestAmino {
+  resource?: string;
+  principal_address?: string;
+}
+export interface QueryPolicyForAccountRequestAminoMsg {
+  type: "/greenfield.storage.QueryPolicyForAccountRequest";
+  value: QueryPolicyForAccountRequestAmino;
+}
 export interface QueryPolicyForAccountRequestSDKType {
   resource: string;
   principal_address: string;
@@ -237,6 +389,13 @@ export interface QueryPolicyForAccountResponse {
 export interface QueryPolicyForAccountResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryPolicyForAccountResponse";
   value: Uint8Array;
+}
+export interface QueryPolicyForAccountResponseAmino {
+  policy?: PolicyAmino;
+}
+export interface QueryPolicyForAccountResponseAminoMsg {
+  type: "/greenfield.storage.QueryPolicyForAccountResponse";
+  value: QueryPolicyForAccountResponseAmino;
 }
 export interface QueryPolicyForAccountResponseSDKType {
   policy?: PolicySDKType;
@@ -251,6 +410,16 @@ export interface QueryVerifyPermissionRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryVerifyPermissionRequest";
   value: Uint8Array;
 }
+export interface QueryVerifyPermissionRequestAmino {
+  operator?: string;
+  bucket_name?: string;
+  object_name?: string;
+  action_type?: ActionType;
+}
+export interface QueryVerifyPermissionRequestAminoMsg {
+  type: "/greenfield.storage.QueryVerifyPermissionRequest";
+  value: QueryVerifyPermissionRequestAmino;
+}
 export interface QueryVerifyPermissionRequestSDKType {
   operator: string;
   bucket_name: string;
@@ -264,6 +433,13 @@ export interface QueryVerifyPermissionResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryVerifyPermissionResponse";
   value: Uint8Array;
 }
+export interface QueryVerifyPermissionResponseAmino {
+  effect?: Effect;
+}
+export interface QueryVerifyPermissionResponseAminoMsg {
+  type: "/greenfield.storage.QueryVerifyPermissionResponse";
+  value: QueryVerifyPermissionResponseAmino;
+}
 export interface QueryVerifyPermissionResponseSDKType {
   effect: Effect;
 }
@@ -274,6 +450,14 @@ export interface QueryHeadGroupRequest {
 export interface QueryHeadGroupRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryHeadGroupRequest";
   value: Uint8Array;
+}
+export interface QueryHeadGroupRequestAmino {
+  group_owner?: string;
+  group_name?: string;
+}
+export interface QueryHeadGroupRequestAminoMsg {
+  type: "/greenfield.storage.QueryHeadGroupRequest";
+  value: QueryHeadGroupRequestAmino;
 }
 export interface QueryHeadGroupRequestSDKType {
   group_owner: string;
@@ -286,6 +470,13 @@ export interface QueryHeadGroupResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryHeadGroupResponse";
   value: Uint8Array;
 }
+export interface QueryHeadGroupResponseAmino {
+  group_info?: GroupInfoAmino;
+}
+export interface QueryHeadGroupResponseAminoMsg {
+  type: "/greenfield.storage.QueryHeadGroupResponse";
+  value: QueryHeadGroupResponseAmino;
+}
 export interface QueryHeadGroupResponseSDKType {
   group_info?: GroupInfoSDKType;
 }
@@ -296,6 +487,14 @@ export interface QueryListGroupsRequest {
 export interface QueryListGroupsRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryListGroupsRequest";
   value: Uint8Array;
+}
+export interface QueryListGroupsRequestAmino {
+  pagination?: PageRequestAmino;
+  group_owner?: string;
+}
+export interface QueryListGroupsRequestAminoMsg {
+  type: "/greenfield.storage.QueryListGroupsRequest";
+  value: QueryListGroupsRequestAmino;
 }
 export interface QueryListGroupsRequestSDKType {
   pagination?: PageRequestSDKType;
@@ -308,6 +507,14 @@ export interface QueryListGroupsResponse {
 export interface QueryListGroupsResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryListGroupsResponse";
   value: Uint8Array;
+}
+export interface QueryListGroupsResponseAmino {
+  pagination?: PageResponseAmino;
+  group_infos?: GroupInfoAmino[];
+}
+export interface QueryListGroupsResponseAminoMsg {
+  type: "/greenfield.storage.QueryListGroupsResponse";
+  value: QueryListGroupsResponseAmino;
 }
 export interface QueryListGroupsResponseSDKType {
   pagination?: PageResponseSDKType;
@@ -322,6 +529,15 @@ export interface QueryHeadGroupMemberRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryHeadGroupMemberRequest";
   value: Uint8Array;
 }
+export interface QueryHeadGroupMemberRequestAmino {
+  member?: string;
+  group_owner?: string;
+  group_name?: string;
+}
+export interface QueryHeadGroupMemberRequestAminoMsg {
+  type: "/greenfield.storage.QueryHeadGroupMemberRequest";
+  value: QueryHeadGroupMemberRequestAmino;
+}
 export interface QueryHeadGroupMemberRequestSDKType {
   member: string;
   group_owner: string;
@@ -334,6 +550,13 @@ export interface QueryHeadGroupMemberResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryHeadGroupMemberResponse";
   value: Uint8Array;
 }
+export interface QueryHeadGroupMemberResponseAmino {
+  group_member?: GroupMemberAmino;
+}
+export interface QueryHeadGroupMemberResponseAminoMsg {
+  type: "/greenfield.storage.QueryHeadGroupMemberResponse";
+  value: QueryHeadGroupMemberResponseAmino;
+}
 export interface QueryHeadGroupMemberResponseSDKType {
   group_member?: GroupMemberSDKType;
 }
@@ -344,6 +567,14 @@ export interface QueryPolicyForGroupRequest {
 export interface QueryPolicyForGroupRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryPolicyForGroupRequest";
   value: Uint8Array;
+}
+export interface QueryPolicyForGroupRequestAmino {
+  resource?: string;
+  principal_group_id?: string;
+}
+export interface QueryPolicyForGroupRequestAminoMsg {
+  type: "/greenfield.storage.QueryPolicyForGroupRequest";
+  value: QueryPolicyForGroupRequestAmino;
 }
 export interface QueryPolicyForGroupRequestSDKType {
   resource: string;
@@ -356,6 +587,13 @@ export interface QueryPolicyForGroupResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryPolicyForGroupResponse";
   value: Uint8Array;
 }
+export interface QueryPolicyForGroupResponseAmino {
+  policy?: PolicyAmino;
+}
+export interface QueryPolicyForGroupResponseAminoMsg {
+  type: "/greenfield.storage.QueryPolicyForGroupResponse";
+  value: QueryPolicyForGroupResponseAmino;
+}
 export interface QueryPolicyForGroupResponseSDKType {
   policy?: PolicySDKType;
 }
@@ -366,6 +604,13 @@ export interface QueryPolicyByIdRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryPolicyByIdRequest";
   value: Uint8Array;
 }
+export interface QueryPolicyByIdRequestAmino {
+  policy_id?: string;
+}
+export interface QueryPolicyByIdRequestAminoMsg {
+  type: "/greenfield.storage.QueryPolicyByIdRequest";
+  value: QueryPolicyByIdRequestAmino;
+}
 export interface QueryPolicyByIdRequestSDKType {
   policy_id: string;
 }
@@ -375,6 +620,13 @@ export interface QueryPolicyByIdResponse {
 export interface QueryPolicyByIdResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryPolicyByIdResponse";
   value: Uint8Array;
+}
+export interface QueryPolicyByIdResponseAmino {
+  policy?: PolicyAmino;
+}
+export interface QueryPolicyByIdResponseAminoMsg {
+  type: "/greenfield.storage.QueryPolicyByIdResponse";
+  value: QueryPolicyByIdResponseAmino;
 }
 export interface QueryPolicyByIdResponseSDKType {
   policy?: PolicySDKType;
@@ -391,6 +643,18 @@ export interface QueryLockFeeRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryLockFeeRequest";
   value: Uint8Array;
 }
+export interface QueryLockFeeRequestAmino {
+  /** primary_sp_address is the address of the primary sp. */
+  primary_sp_address?: string;
+  /** create_at define the block timestamp when the object created. */
+  create_at?: string;
+  /** payloadSize is the total size of the object payload */
+  payload_size?: string;
+}
+export interface QueryLockFeeRequestAminoMsg {
+  type: "/greenfield.storage.QueryLockFeeRequest";
+  value: QueryLockFeeRequestAmino;
+}
 export interface QueryLockFeeRequestSDKType {
   primary_sp_address: string;
   create_at: Long;
@@ -403,6 +667,13 @@ export interface QueryLockFeeResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryLockFeeResponse";
   value: Uint8Array;
 }
+export interface QueryLockFeeResponseAmino {
+  amount?: string;
+}
+export interface QueryLockFeeResponseAminoMsg {
+  type: "/greenfield.storage.QueryLockFeeResponse";
+  value: QueryLockFeeResponseAmino;
+}
 export interface QueryLockFeeResponseSDKType {
   amount: string;
 }
@@ -412,6 +683,13 @@ export interface QueryHeadBucketExtraRequest {
 export interface QueryHeadBucketExtraRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryHeadBucketExtraRequest";
   value: Uint8Array;
+}
+export interface QueryHeadBucketExtraRequestAmino {
+  bucket_name?: string;
+}
+export interface QueryHeadBucketExtraRequestAminoMsg {
+  type: "/greenfield.storage.QueryHeadBucketExtraRequest";
+  value: QueryHeadBucketExtraRequestAmino;
 }
 export interface QueryHeadBucketExtraRequestSDKType {
   bucket_name: string;
@@ -423,6 +701,13 @@ export interface QueryHeadBucketExtraResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryHeadBucketExtraResponse";
   value: Uint8Array;
 }
+export interface QueryHeadBucketExtraResponseAmino {
+  extra_info?: InternalBucketInfoAmino;
+}
+export interface QueryHeadBucketExtraResponseAminoMsg {
+  type: "/greenfield.storage.QueryHeadBucketExtraResponse";
+  value: QueryHeadBucketExtraResponseAmino;
+}
 export interface QueryHeadBucketExtraResponseSDKType {
   extra_info?: InternalBucketInfoSDKType;
 }
@@ -432,6 +717,13 @@ export interface QueryIsPriceChangedRequest {
 export interface QueryIsPriceChangedRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryIsPriceChangedRequest";
   value: Uint8Array;
+}
+export interface QueryIsPriceChangedRequestAmino {
+  bucket_name?: string;
+}
+export interface QueryIsPriceChangedRequestAminoMsg {
+  type: "/greenfield.storage.QueryIsPriceChangedRequest";
+  value: QueryIsPriceChangedRequestAmino;
 }
 export interface QueryIsPriceChangedRequestSDKType {
   bucket_name: string;
@@ -451,6 +743,21 @@ export interface QueryIsPriceChangedResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryIsPriceChangedResponse";
   value: Uint8Array;
 }
+export interface QueryIsPriceChangedResponseAmino {
+  changed?: boolean;
+  current_read_price?: string;
+  current_primary_store_price?: string;
+  current_secondary_store_price?: string;
+  current_validator_tax_rate?: string;
+  new_read_price?: string;
+  new_primary_store_price?: string;
+  new_secondary_store_price?: string;
+  new_validator_tax_rate?: string;
+}
+export interface QueryIsPriceChangedResponseAminoMsg {
+  type: "/greenfield.storage.QueryIsPriceChangedResponse";
+  value: QueryIsPriceChangedResponseAmino;
+}
 export interface QueryIsPriceChangedResponseSDKType {
   changed: boolean;
   current_read_price: string;
@@ -469,6 +776,13 @@ export interface QueryQuoteUpdateTimeRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryQuoteUpdateTimeRequest";
   value: Uint8Array;
 }
+export interface QueryQuoteUpdateTimeRequestAmino {
+  bucket_name?: string;
+}
+export interface QueryQuoteUpdateTimeRequestAminoMsg {
+  type: "/greenfield.storage.QueryQuoteUpdateTimeRequest";
+  value: QueryQuoteUpdateTimeRequestAmino;
+}
 export interface QueryQuoteUpdateTimeRequestSDKType {
   bucket_name: string;
 }
@@ -478,6 +792,13 @@ export interface QueryQuoteUpdateTimeResponse {
 export interface QueryQuoteUpdateTimeResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryQuoteUpdateTimeResponse";
   value: Uint8Array;
+}
+export interface QueryQuoteUpdateTimeResponseAmino {
+  update_at?: string;
+}
+export interface QueryQuoteUpdateTimeResponseAminoMsg {
+  type: "/greenfield.storage.QueryQuoteUpdateTimeResponse";
+  value: QueryQuoteUpdateTimeResponseAmino;
 }
 export interface QueryQuoteUpdateTimeResponseSDKType {
   update_at: Long;
@@ -490,6 +811,14 @@ export interface QueryGroupMembersExistRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryGroupMembersExistRequest";
   value: Uint8Array;
 }
+export interface QueryGroupMembersExistRequestAmino {
+  group_id?: string;
+  members?: string[];
+}
+export interface QueryGroupMembersExistRequestAminoMsg {
+  type: "/greenfield.storage.QueryGroupMembersExistRequest";
+  value: QueryGroupMembersExistRequestAmino;
+}
 export interface QueryGroupMembersExistRequestSDKType {
   group_id: string;
   members: string[];
@@ -501,6 +830,14 @@ export interface QueryGroupMembersExistResponse_ExistsEntry {
 export interface QueryGroupMembersExistResponse_ExistsEntryProtoMsg {
   typeUrl: string;
   value: Uint8Array;
+}
+export interface QueryGroupMembersExistResponse_ExistsEntryAmino {
+  key?: string;
+  value?: boolean;
+}
+export interface QueryGroupMembersExistResponse_ExistsEntryAminoMsg {
+  type: string;
+  value: QueryGroupMembersExistResponse_ExistsEntryAmino;
 }
 export interface QueryGroupMembersExistResponse_ExistsEntrySDKType {
   key: string;
@@ -515,6 +852,15 @@ export interface QueryGroupMembersExistResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryGroupMembersExistResponse";
   value: Uint8Array;
 }
+export interface QueryGroupMembersExistResponseAmino {
+  exists?: {
+    [key: string]: boolean;
+  };
+}
+export interface QueryGroupMembersExistResponseAminoMsg {
+  type: "/greenfield.storage.QueryGroupMembersExistResponse";
+  value: QueryGroupMembersExistResponseAmino;
+}
 export interface QueryGroupMembersExistResponseSDKType {
   exists: {
     [key: string]: boolean;
@@ -528,6 +874,14 @@ export interface QueryGroupsExistRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryGroupsExistRequest";
   value: Uint8Array;
 }
+export interface QueryGroupsExistRequestAmino {
+  group_owner?: string;
+  group_names?: string[];
+}
+export interface QueryGroupsExistRequestAminoMsg {
+  type: "/greenfield.storage.QueryGroupsExistRequest";
+  value: QueryGroupsExistRequestAmino;
+}
 export interface QueryGroupsExistRequestSDKType {
   group_owner: string;
   group_names: string[];
@@ -539,6 +893,13 @@ export interface QueryGroupsExistByIdRequestProtoMsg {
   typeUrl: "/greenfield.storage.QueryGroupsExistByIdRequest";
   value: Uint8Array;
 }
+export interface QueryGroupsExistByIdRequestAmino {
+  group_ids?: string[];
+}
+export interface QueryGroupsExistByIdRequestAminoMsg {
+  type: "/greenfield.storage.QueryGroupsExistByIdRequest";
+  value: QueryGroupsExistByIdRequestAmino;
+}
 export interface QueryGroupsExistByIdRequestSDKType {
   group_ids: string[];
 }
@@ -549,6 +910,14 @@ export interface QueryGroupsExistResponse_ExistsEntry {
 export interface QueryGroupsExistResponse_ExistsEntryProtoMsg {
   typeUrl: string;
   value: Uint8Array;
+}
+export interface QueryGroupsExistResponse_ExistsEntryAmino {
+  key?: string;
+  value?: boolean;
+}
+export interface QueryGroupsExistResponse_ExistsEntryAminoMsg {
+  type: string;
+  value: QueryGroupsExistResponse_ExistsEntryAmino;
 }
 export interface QueryGroupsExistResponse_ExistsEntrySDKType {
   key: string;
@@ -562,6 +931,15 @@ export interface QueryGroupsExistResponse {
 export interface QueryGroupsExistResponseProtoMsg {
   typeUrl: "/greenfield.storage.QueryGroupsExistResponse";
   value: Uint8Array;
+}
+export interface QueryGroupsExistResponseAmino {
+  exists?: {
+    [key: string]: boolean;
+  };
+}
+export interface QueryGroupsExistResponseAminoMsg {
+  type: "/greenfield.storage.QueryGroupsExistResponse";
+  value: QueryGroupsExistResponseAmino;
 }
 export interface QueryGroupsExistResponseSDKType {
   exists: {

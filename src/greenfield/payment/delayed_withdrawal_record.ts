@@ -17,6 +17,20 @@ export interface DelayedWithdrawalRecordProtoMsg {
   typeUrl: "/greenfield.payment.DelayedWithdrawalRecord";
   value: Uint8Array;
 }
+export interface DelayedWithdrawalRecordAmino {
+  /** the withdrawal address */
+  addr?: string;
+  /** the withdrawal amount */
+  amount?: string;
+  /** the withdrawal from payment account address */
+  from?: string;
+  /** unlock timestamp is the unix timestamp to unlock the withdrawal */
+  unlock_timestamp?: string;
+}
+export interface DelayedWithdrawalRecordAminoMsg {
+  type: "/greenfield.payment.DelayedWithdrawalRecord";
+  value: DelayedWithdrawalRecordAmino;
+}
 export interface DelayedWithdrawalRecordSDKType {
   addr: string;
   amount: string;

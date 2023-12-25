@@ -21,6 +21,19 @@ export interface DoubleValueProtoMsg {
  * 
  * The JSON representation for `DoubleValue` is JSON number.
  */
+export interface DoubleValueAmino {
+  /** The double value. */
+  value?: number;
+}
+export interface DoubleValueAminoMsg {
+  type: "/greenfield.common.DoubleValue";
+  value: DoubleValueAmino;
+}
+/**
+ * Wrapper message for `double`.
+ * 
+ * The JSON representation for `DoubleValue` is JSON number.
+ */
 export interface DoubleValueSDKType {
   value: number;
 }
@@ -36,6 +49,19 @@ export interface FloatValue {
 export interface FloatValueProtoMsg {
   typeUrl: "/greenfield.common.FloatValue";
   value: Uint8Array;
+}
+/**
+ * Wrapper message for `float`.
+ * 
+ * The JSON representation for `FloatValue` is JSON number.
+ */
+export interface FloatValueAmino {
+  /** The float value. */
+  value?: number;
+}
+export interface FloatValueAminoMsg {
+  type: "/greenfield.common.FloatValue";
+  value: FloatValueAmino;
 }
 /**
  * Wrapper message for `float`.
@@ -63,6 +89,19 @@ export interface Int64ValueProtoMsg {
  * 
  * The JSON representation for `Int64Value` is JSON string.
  */
+export interface Int64ValueAmino {
+  /** The int64 value. */
+  value?: string;
+}
+export interface Int64ValueAminoMsg {
+  type: "/greenfield.common.Int64Value";
+  value: Int64ValueAmino;
+}
+/**
+ * Wrapper message for `int64`.
+ * 
+ * The JSON representation for `Int64Value` is JSON string.
+ */
 export interface Int64ValueSDKType {
   value: Long;
 }
@@ -78,6 +117,19 @@ export interface UInt64Value {
 export interface UInt64ValueProtoMsg {
   typeUrl: "/greenfield.common.UInt64Value";
   value: Uint8Array;
+}
+/**
+ * Wrapper message for `uint64`.
+ * 
+ * The JSON representation for `UInt64Value` is JSON string.
+ */
+export interface UInt64ValueAmino {
+  /** The uint64 value. */
+  value?: string;
+}
+export interface UInt64ValueAminoMsg {
+  type: "/greenfield.common.UInt64Value";
+  value: UInt64ValueAmino;
 }
 /**
  * Wrapper message for `uint64`.
@@ -105,6 +157,19 @@ export interface Int32ValueProtoMsg {
  * 
  * The JSON representation for `Int32Value` is JSON number.
  */
+export interface Int32ValueAmino {
+  /** The int32 value. */
+  value?: number;
+}
+export interface Int32ValueAminoMsg {
+  type: "/greenfield.common.Int32Value";
+  value: Int32ValueAmino;
+}
+/**
+ * Wrapper message for `int32`.
+ * 
+ * The JSON representation for `Int32Value` is JSON number.
+ */
 export interface Int32ValueSDKType {
   value: number;
 }
@@ -120,6 +185,19 @@ export interface UInt32Value {
 export interface UInt32ValueProtoMsg {
   typeUrl: "/greenfield.common.UInt32Value";
   value: Uint8Array;
+}
+/**
+ * Wrapper message for `uint32`.
+ * 
+ * The JSON representation for `UInt32Value` is JSON number.
+ */
+export interface UInt32ValueAmino {
+  /** The uint32 value. */
+  value?: number;
+}
+export interface UInt32ValueAminoMsg {
+  type: "/greenfield.common.UInt32Value";
+  value: UInt32ValueAmino;
 }
 /**
  * Wrapper message for `uint32`.
@@ -147,6 +225,19 @@ export interface BoolValueProtoMsg {
  * 
  * The JSON representation for `BoolValue` is JSON `true` and `false`.
  */
+export interface BoolValueAmino {
+  /** The bool value. */
+  value?: boolean;
+}
+export interface BoolValueAminoMsg {
+  type: "/greenfield.common.BoolValue";
+  value: BoolValueAmino;
+}
+/**
+ * Wrapper message for `bool`.
+ * 
+ * The JSON representation for `BoolValue` is JSON `true` and `false`.
+ */
 export interface BoolValueSDKType {
   value: boolean;
 }
@@ -168,6 +259,19 @@ export interface StringValueProtoMsg {
  * 
  * The JSON representation for `StringValue` is JSON string.
  */
+export interface StringValueAmino {
+  /** The string value. */
+  value?: string;
+}
+export interface StringValueAminoMsg {
+  type: "/greenfield.common.StringValue";
+  value: StringValueAmino;
+}
+/**
+ * Wrapper message for `string`.
+ * 
+ * The JSON representation for `StringValue` is JSON string.
+ */
 export interface StringValueSDKType {
   value: string;
 }
@@ -183,6 +287,19 @@ export interface BytesValue {
 export interface BytesValueProtoMsg {
   typeUrl: "/greenfield.common.BytesValue";
   value: Uint8Array;
+}
+/**
+ * Wrapper message for `bytes`.
+ * 
+ * The JSON representation for `BytesValue` is JSON string.
+ */
+export interface BytesValueAmino {
+  /** The bytes value. */
+  value?: string;
+}
+export interface BytesValueAminoMsg {
+  type: "/greenfield.common.BytesValue";
+  value: BytesValueAmino;
 }
 /**
  * Wrapper message for `bytes`.

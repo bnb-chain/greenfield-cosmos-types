@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./params";
+import { Params, ParamsAmino, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.gensp";
@@ -9,6 +9,12 @@ export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {
   typeUrl: "/greenfield.gensp.QueryParamsRequest";
   value: Uint8Array;
+}
+/** QueryParamsRequest is request type for the Query/Params RPC method. */
+export interface QueryParamsRequestAmino {}
+export interface QueryParamsRequestAminoMsg {
+  type: "/greenfield.gensp.QueryParamsRequest";
+  value: QueryParamsRequestAmino;
 }
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
@@ -20,6 +26,15 @@ export interface QueryParamsResponse {
 export interface QueryParamsResponseProtoMsg {
   typeUrl: "/greenfield.gensp.QueryParamsResponse";
   value: Uint8Array;
+}
+/** QueryParamsResponse is response type for the Query/Params RPC method. */
+export interface QueryParamsResponseAmino {
+  /** params holds all the parameters of this module. */
+  params?: ParamsAmino;
+}
+export interface QueryParamsResponseAminoMsg {
+  type: "/greenfield.gensp.QueryParamsResponse";
+  value: QueryParamsResponseAmino;
 }
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {

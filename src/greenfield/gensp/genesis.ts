@@ -19,6 +19,18 @@ export interface GenesisStateProtoMsg {
  * GenesisState defines the gensp module's genesis state.
  * GenesisState defines the raw genesis transaction in JSON.
  */
+export interface GenesisStateAmino {
+  /** gen_txs defines the genesis transactions. */
+  gensp_txs?: string[];
+}
+export interface GenesisStateAminoMsg {
+  type: "/greenfield.gensp.GenesisState";
+  value: GenesisStateAmino;
+}
+/**
+ * GenesisState defines the gensp module's genesis state.
+ * GenesisState defines the raw genesis transaction in JSON.
+ */
 export interface GenesisStateSDKType {
   gensp_txs: Uint8Array[];
 }

@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Params, ParamsSDKType } from "./mint";
+import { Params, ParamsAmino, ParamsSDKType } from "./mint";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, bytesFromBase64, base64FromBytes, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.mint.v1beta1";
@@ -9,6 +9,12 @@ export interface QueryParamsRequest {}
 export interface QueryParamsRequestProtoMsg {
   typeUrl: "/cosmos.mint.v1beta1.QueryParamsRequest";
   value: Uint8Array;
+}
+/** QueryParamsRequest is the request type for the Query/Params RPC method. */
+export interface QueryParamsRequestAmino {}
+export interface QueryParamsRequestAminoMsg {
+  type: "cosmos-sdk/QueryParamsRequest";
+  value: QueryParamsRequestAmino;
 }
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
@@ -22,6 +28,15 @@ export interface QueryParamsResponseProtoMsg {
   value: Uint8Array;
 }
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
+export interface QueryParamsResponseAmino {
+  /** params defines the parameters of the module. */
+  params: ParamsAmino;
+}
+export interface QueryParamsResponseAminoMsg {
+  type: "cosmos-sdk/QueryParamsResponse";
+  value: QueryParamsResponseAmino;
+}
+/** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
   params: ParamsSDKType;
 }
@@ -30,6 +45,12 @@ export interface QueryInflationRequest {}
 export interface QueryInflationRequestProtoMsg {
   typeUrl: "/cosmos.mint.v1beta1.QueryInflationRequest";
   value: Uint8Array;
+}
+/** QueryInflationRequest is the request type for the Query/Inflation RPC method. */
+export interface QueryInflationRequestAmino {}
+export interface QueryInflationRequestAminoMsg {
+  type: "cosmos-sdk/QueryInflationRequest";
+  value: QueryInflationRequestAmino;
 }
 /** QueryInflationRequest is the request type for the Query/Inflation RPC method. */
 export interface QueryInflationRequestSDKType {}
@@ -44,6 +65,18 @@ export interface QueryInflationResponse {
 export interface QueryInflationResponseProtoMsg {
   typeUrl: "/cosmos.mint.v1beta1.QueryInflationResponse";
   value: Uint8Array;
+}
+/**
+ * QueryInflationResponse is the response type for the Query/Inflation RPC
+ * method.
+ */
+export interface QueryInflationResponseAmino {
+  /** inflation is the current minting inflation value. */
+  inflation: string;
+}
+export interface QueryInflationResponseAminoMsg {
+  type: "cosmos-sdk/QueryInflationResponse";
+  value: QueryInflationResponseAmino;
 }
 /**
  * QueryInflationResponse is the response type for the Query/Inflation RPC
@@ -65,6 +98,15 @@ export interface QueryAnnualProvisionsRequestProtoMsg {
  * QueryAnnualProvisionsRequest is the request type for the
  * Query/AnnualProvisions RPC method.
  */
+export interface QueryAnnualProvisionsRequestAmino {}
+export interface QueryAnnualProvisionsRequestAminoMsg {
+  type: "cosmos-sdk/QueryAnnualProvisionsRequest";
+  value: QueryAnnualProvisionsRequestAmino;
+}
+/**
+ * QueryAnnualProvisionsRequest is the request type for the
+ * Query/AnnualProvisions RPC method.
+ */
 export interface QueryAnnualProvisionsRequestSDKType {}
 /**
  * QueryAnnualProvisionsResponse is the response type for the
@@ -77,6 +119,18 @@ export interface QueryAnnualProvisionsResponse {
 export interface QueryAnnualProvisionsResponseProtoMsg {
   typeUrl: "/cosmos.mint.v1beta1.QueryAnnualProvisionsResponse";
   value: Uint8Array;
+}
+/**
+ * QueryAnnualProvisionsResponse is the response type for the
+ * Query/AnnualProvisions RPC method.
+ */
+export interface QueryAnnualProvisionsResponseAmino {
+  /** annual_provisions is the current minting annual provisions value. */
+  annual_provisions: string;
+}
+export interface QueryAnnualProvisionsResponseAminoMsg {
+  type: "cosmos-sdk/QueryAnnualProvisionsResponse";
+  value: QueryAnnualProvisionsResponseAmino;
 }
 /**
  * QueryAnnualProvisionsResponse is the response type for the

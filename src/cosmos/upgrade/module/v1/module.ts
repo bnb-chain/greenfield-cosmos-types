@@ -10,6 +10,12 @@ export interface ModuleProtoMsg {
   value: Uint8Array;
 }
 /** Module is the config object of the upgrade module. */
+export interface ModuleAmino {}
+export interface ModuleAminoMsg {
+  type: "cosmos-sdk/Module";
+  value: ModuleAmino;
+}
+/** Module is the config object of the upgrade module. */
 export interface ModuleSDKType {}
 function createBaseModule(): Module {
   return {};
