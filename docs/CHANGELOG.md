@@ -1,3 +1,10 @@
+# [0.4.0-alpha.28](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.27...v0.4.0-alpha.28) (2023-12-25)
+
+
+### Features
+
+* Upgrade cosmos telescope ([6ecbd2a](https://github.com/bnb-chain/greenfield-cosmos-types/commit/6ecbd2a73e7a53a4d4a01d5b147dbc3b327145f9))
+
 # [0.4.0-alpha.27](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.26...v0.4.0-alpha.27) (2023-12-25)
 
 
