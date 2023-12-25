@@ -5,7 +5,7 @@
   "scripts": {
     "codegen": "rimraf ./src && node ./scripts/codegen.js",
     "convert": "rimraf ./eip712 && node scripts/convert.js",
-    "clean": "rimraf confio cosmos cosmos_proto gogoproto google greenfield tendermint index.* helpers.*",
+    "clean": "rimraf amino confio cosmos cosmos_proto gogoproto google greenfield tendermint index.* helpers.* varint.* utf8.* binary.*",
     "prepare-publishing": "cp -r dist/* .",
     "build": "tsc"
   },
@@ -19,6 +19,7 @@
   "author": "",
   "license": "MIT",
   "files": [
+    "amino/",
     "confio/",
     "cosmos/",
     "cosmos_proto/",
@@ -28,7 +29,10 @@
     "tendermint/",
     "eip712/",
     "/index.*",
-    "/helpers.*"
+    "/helpers.*",
+    "/utf8.*",
+    "/varint.*",
+    "/binary.*"
   ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
