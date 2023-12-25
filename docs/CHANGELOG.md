@@ -1,3 +1,10 @@
+# [0.4.0-alpha.29](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.28...v0.4.0-alpha.29) (2023-12-25)
+
+
+### Features
+
+* Set num64 as long ([ab03d29](https://github.com/bnb-chain/greenfield-cosmos-types/commit/ab03d29c1975b7d2334ad695e472d123cdc0a3d1))
+
 # [0.4.0-alpha.28](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.27...v0.4.0-alpha.28) (2023-12-25)
 
 
