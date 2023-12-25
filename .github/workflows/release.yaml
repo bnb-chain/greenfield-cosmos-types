@@ -19,7 +19,7 @@ jobs:
       - uses: ./.github/actions/ci-setup
 
       - run: npm run build
-      - run: npm run convert
+      # - run: npm run convert
       - run: npm run prepare-publishing
       - run: npx semantic-release
         env:
