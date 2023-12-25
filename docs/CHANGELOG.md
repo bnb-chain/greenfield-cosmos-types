@@ -1,3 +1,12 @@
+# [0.4.0-alpha.27](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.26...v0.4.0-alpha.27) (2023-12-25)
+
+
+### Features
+
+* Codegen ([9a0c18b](https://github.com/bnb-chain/greenfield-cosmos-types/commit/9a0c18b1e358914c8525f1ba8c57f357f802b40f))
+* Set Tags ([5aa7268](https://github.com/bnb-chain/greenfield-cosmos-types/commit/5aa7268a4805387de759a488de5220673264d366))
+* Upgrade @cosmology/telescope ([6caae2c](https://github.com/bnb-chain/greenfield-cosmos-types/commit/6caae2cc05636045f913f50b67932f223f3cc354))
+
 # [0.4.0-alpha.26](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.25...v0.4.0-alpha.26) (2023-12-15)
 
 
