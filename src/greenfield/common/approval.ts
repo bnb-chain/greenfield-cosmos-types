@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
+import { Long, isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.common";
 /**
  * Approval is the signature information returned by the Primary Storage Provider (SP) to the user
@@ -10,7 +10,7 @@ export const protobufPackage = "greenfield.common";
  */
 export interface Approval {
   /** expired_height is the block height at which the signature expires. */
-  expiredHeight: bigint;
+  expiredHeight: Long;
   /** global_virtual_group_family_id is the family id that stored. */
   globalVirtualGroupFamilyId: number;
   /** The signature needs to conform to the EIP 712 specification. */
@@ -26,21 +26,21 @@ export interface ApprovalProtoMsg {
  * to ensure agreement between the Primary SP and the user.
  */
 export interface ApprovalSDKType {
-  expired_height: bigint;
+  expired_height: Long;
   global_virtual_group_family_id: number;
   sig: Uint8Array;
 }
 function createBaseApproval(): Approval {
   return {
-    expiredHeight: BigInt(0),
+    expiredHeight: Long.UZERO,
     globalVirtualGroupFamilyId: 0,
     sig: new Uint8Array()
   };
 }
 export const Approval = {
   typeUrl: "/greenfield.common.Approval",
-  encode(message: Approval, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.expiredHeight !== BigInt(0)) {
+  encode(message: Approval, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.expiredHeight.isZero()) {
       writer.uint32(8).uint64(message.expiredHeight);
     }
     if (message.globalVirtualGroupFamilyId !== 0) {
@@ -51,15 +51,15 @@ export const Approval = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Approval {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Approval {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseApproval();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.expiredHeight = reader.uint64();
+          message.expiredHeight = (reader.uint64() as Long);
           break;
         case 2:
           message.globalVirtualGroupFamilyId = reader.uint32();
@@ -76,21 +76,21 @@ export const Approval = {
   },
   fromJSON(object: any): Approval {
     return {
-      expiredHeight: isSet(object.expiredHeight) ? BigInt(object.expiredHeight.toString()) : BigInt(0),
+      expiredHeight: isSet(object.expiredHeight) ? Long.fromValue(object.expiredHeight) : Long.UZERO,
       globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
       sig: isSet(object.sig) ? bytesFromBase64(object.sig) : new Uint8Array()
     };
   },
   toJSON(message: Approval): unknown {
     const obj: any = {};
-    message.expiredHeight !== undefined && (obj.expiredHeight = (message.expiredHeight || BigInt(0)).toString());
+    message.expiredHeight !== undefined && (obj.expiredHeight = (message.expiredHeight || Long.UZERO).toString());
     message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
     message.sig !== undefined && (obj.sig = base64FromBytes(message.sig !== undefined ? message.sig : new Uint8Array()));
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Approval>, I>>(object: I): Approval {
     const message = createBaseApproval();
-    message.expiredHeight = object.expiredHeight !== undefined && object.expiredHeight !== null ? BigInt(object.expiredHeight.toString()) : BigInt(0);
+    message.expiredHeight = object.expiredHeight !== undefined && object.expiredHeight !== null ? Long.fromValue(object.expiredHeight) : Long.UZERO;
     message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
     message.sig = object.sig ?? new Uint8Array();
     return message;
@@ -112,7 +112,7 @@ export const Approval = {
   fromAmino(object: ApprovalAmino): Approval {
     const message = createBaseApproval();
     if (object.expired_height !== undefined && object.expired_height !== null) {
-      message.expiredHeight = BigInt(object.expired_height);
+      message.expiredHeight = Long.fromString(object.expired_height);
     }
     if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
       message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;

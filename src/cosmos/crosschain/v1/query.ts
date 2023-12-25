@@ -1,8 +1,8 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Params, ParamsSDKType } from "./crosschain";
-import { BinaryReader, BinaryWriter } from "../../../binary";
-import { DeepPartial, Exact, isSet, bytesFromBase64, base64FromBytes, Rpc } from "../../../helpers";
+import { Long, DeepPartial, Exact, isSet, bytesFromBase64, base64FromBytes, Rpc } from "../../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.crosschain.v1";
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
@@ -32,7 +32,7 @@ export interface QueryCrossChainPackageRequest {
   /** channel id of the cross chain package */
   channelId: number;
   /** sequence of the cross chain package */
-  sequence: bigint;
+  sequence: Long;
 }
 export interface QueryCrossChainPackageRequestProtoMsg {
   typeUrl: "/cosmos.crosschain.v1.QueryCrossChainPackageRequest";
@@ -42,7 +42,7 @@ export interface QueryCrossChainPackageRequestProtoMsg {
 export interface QueryCrossChainPackageRequestSDKType {
   dest_chain_id: number;
   channel_id: number;
-  sequence: bigint;
+  sequence: Long;
 }
 /** QueryCrossChainPackageResponse is the response type for the Query/CrossChainPackage RPC method. */
 export interface QueryCrossChainPackageResponse {
@@ -76,7 +76,7 @@ export interface QuerySendSequenceRequestSDKType {
 /** QuerySendSequenceResponse is the response type for the Query/SendSequence RPC method. */
 export interface QuerySendSequenceResponse {
   /** sequence of the cross chain package */
-  sequence: bigint;
+  sequence: Long;
 }
 export interface QuerySendSequenceResponseProtoMsg {
   typeUrl: "/cosmos.crosschain.v1.QuerySendSequenceResponse";
@@ -84,7 +84,7 @@ export interface QuerySendSequenceResponseProtoMsg {
 }
 /** QuerySendSequenceResponse is the response type for the Query/SendSequence RPC method. */
 export interface QuerySendSequenceResponseSDKType {
-  sequence: bigint;
+  sequence: Long;
 }
 /** QuerySendSequenceRequest is the request type for the Query/ReceiveSequence RPC method. */
 export interface QueryReceiveSequenceRequest {
@@ -105,7 +105,7 @@ export interface QueryReceiveSequenceRequestSDKType {
 /** QuerySendSequenceResponse is the response type for the Query/ReceiveSequence RPC method. */
 export interface QueryReceiveSequenceResponse {
   /** sequence of the cross chain package */
-  sequence: bigint;
+  sequence: Long;
 }
 export interface QueryReceiveSequenceResponseProtoMsg {
   typeUrl: "/cosmos.crosschain.v1.QueryReceiveSequenceResponse";
@@ -113,18 +113,18 @@ export interface QueryReceiveSequenceResponseProtoMsg {
 }
 /** QuerySendSequenceResponse is the response type for the Query/ReceiveSequence RPC method. */
 export interface QueryReceiveSequenceResponseSDKType {
-  sequence: bigint;
+  sequence: Long;
 }
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
 export const QueryParamsRequest = {
   typeUrl: "/cosmos.crosschain.v1.QueryParamsRequest",
-  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -192,14 +192,14 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
 }
 export const QueryParamsResponse = {
   typeUrl: "/cosmos.crosschain.v1.QueryParamsResponse",
-  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -278,25 +278,25 @@ function createBaseQueryCrossChainPackageRequest(): QueryCrossChainPackageReques
   return {
     destChainId: 0,
     channelId: 0,
-    sequence: BigInt(0)
+    sequence: Long.UZERO
   };
 }
 export const QueryCrossChainPackageRequest = {
   typeUrl: "/cosmos.crosschain.v1.QueryCrossChainPackageRequest",
-  encode(message: QueryCrossChainPackageRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryCrossChainPackageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.destChainId !== 0) {
       writer.uint32(8).uint32(message.destChainId);
     }
     if (message.channelId !== 0) {
       writer.uint32(16).uint32(message.channelId);
     }
-    if (message.sequence !== BigInt(0)) {
+    if (!message.sequence.isZero()) {
       writer.uint32(24).uint64(message.sequence);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryCrossChainPackageRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryCrossChainPackageRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryCrossChainPackageRequest();
     while (reader.pos < end) {
@@ -309,7 +309,7 @@ export const QueryCrossChainPackageRequest = {
           message.channelId = reader.uint32();
           break;
         case 3:
-          message.sequence = reader.uint64();
+          message.sequence = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -322,21 +322,21 @@ export const QueryCrossChainPackageRequest = {
     return {
       destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0,
       channelId: isSet(object.channelId) ? Number(object.channelId) : 0,
-      sequence: isSet(object.sequence) ? BigInt(object.sequence.toString()) : BigInt(0)
+      sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO
     };
   },
   toJSON(message: QueryCrossChainPackageRequest): unknown {
     const obj: any = {};
     message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
     message.channelId !== undefined && (obj.channelId = Math.round(message.channelId));
-    message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
+    message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<QueryCrossChainPackageRequest>, I>>(object: I): QueryCrossChainPackageRequest {
     const message = createBaseQueryCrossChainPackageRequest();
     message.destChainId = object.destChainId ?? 0;
     message.channelId = object.channelId ?? 0;
-    message.sequence = object.sequence !== undefined && object.sequence !== null ? BigInt(object.sequence.toString()) : BigInt(0);
+    message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
   },
   fromSDK(object: QueryCrossChainPackageRequestSDKType): QueryCrossChainPackageRequest {
@@ -362,7 +362,7 @@ export const QueryCrossChainPackageRequest = {
       message.channelId = object.channel_id;
     }
     if (object.sequence !== undefined && object.sequence !== null) {
-      message.sequence = BigInt(object.sequence);
+      message.sequence = Long.fromString(object.sequence);
     }
     return message;
   },
@@ -402,14 +402,14 @@ function createBaseQueryCrossChainPackageResponse(): QueryCrossChainPackageRespo
 }
 export const QueryCrossChainPackageResponse = {
   typeUrl: "/cosmos.crosschain.v1.QueryCrossChainPackageResponse",
-  encode(message: QueryCrossChainPackageResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryCrossChainPackageResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.package.length !== 0) {
       writer.uint32(10).bytes(message.package);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryCrossChainPackageResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryCrossChainPackageResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryCrossChainPackageResponse();
     while (reader.pos < end) {
@@ -492,7 +492,7 @@ function createBaseQuerySendSequenceRequest(): QuerySendSequenceRequest {
 }
 export const QuerySendSequenceRequest = {
   typeUrl: "/cosmos.crosschain.v1.QuerySendSequenceRequest",
-  encode(message: QuerySendSequenceRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QuerySendSequenceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.destChainId !== 0) {
       writer.uint32(8).uint32(message.destChainId);
     }
@@ -501,8 +501,8 @@ export const QuerySendSequenceRequest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QuerySendSequenceRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySendSequenceRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySendSequenceRequest();
     while (reader.pos < end) {
@@ -591,26 +591,26 @@ export const QuerySendSequenceRequest = {
 };
 function createBaseQuerySendSequenceResponse(): QuerySendSequenceResponse {
   return {
-    sequence: BigInt(0)
+    sequence: Long.UZERO
   };
 }
 export const QuerySendSequenceResponse = {
   typeUrl: "/cosmos.crosschain.v1.QuerySendSequenceResponse",
-  encode(message: QuerySendSequenceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.sequence !== BigInt(0)) {
+  encode(message: QuerySendSequenceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.sequence.isZero()) {
       writer.uint32(8).uint64(message.sequence);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QuerySendSequenceResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySendSequenceResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySendSequenceResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.sequence = reader.uint64();
+          message.sequence = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -621,17 +621,17 @@ export const QuerySendSequenceResponse = {
   },
   fromJSON(object: any): QuerySendSequenceResponse {
     return {
-      sequence: isSet(object.sequence) ? BigInt(object.sequence.toString()) : BigInt(0)
+      sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO
     };
   },
   toJSON(message: QuerySendSequenceResponse): unknown {
     const obj: any = {};
-    message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
+    message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<QuerySendSequenceResponse>, I>>(object: I): QuerySendSequenceResponse {
     const message = createBaseQuerySendSequenceResponse();
-    message.sequence = object.sequence !== undefined && object.sequence !== null ? BigInt(object.sequence.toString()) : BigInt(0);
+    message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
   },
   fromSDK(object: QuerySendSequenceResponseSDKType): QuerySendSequenceResponse {
@@ -647,7 +647,7 @@ export const QuerySendSequenceResponse = {
   fromAmino(object: QuerySendSequenceResponseAmino): QuerySendSequenceResponse {
     const message = createBaseQuerySendSequenceResponse();
     if (object.sequence !== undefined && object.sequence !== null) {
-      message.sequence = BigInt(object.sequence);
+      message.sequence = Long.fromString(object.sequence);
     }
     return message;
   },
@@ -686,7 +686,7 @@ function createBaseQueryReceiveSequenceRequest(): QueryReceiveSequenceRequest {
 }
 export const QueryReceiveSequenceRequest = {
   typeUrl: "/cosmos.crosschain.v1.QueryReceiveSequenceRequest",
-  encode(message: QueryReceiveSequenceRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryReceiveSequenceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.destChainId !== 0) {
       writer.uint32(8).uint32(message.destChainId);
     }
@@ -695,8 +695,8 @@ export const QueryReceiveSequenceRequest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryReceiveSequenceRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryReceiveSequenceRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryReceiveSequenceRequest();
     while (reader.pos < end) {
@@ -785,26 +785,26 @@ export const QueryReceiveSequenceRequest = {
 };
 function createBaseQueryReceiveSequenceResponse(): QueryReceiveSequenceResponse {
   return {
-    sequence: BigInt(0)
+    sequence: Long.UZERO
   };
 }
 export const QueryReceiveSequenceResponse = {
   typeUrl: "/cosmos.crosschain.v1.QueryReceiveSequenceResponse",
-  encode(message: QueryReceiveSequenceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.sequence !== BigInt(0)) {
+  encode(message: QueryReceiveSequenceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.sequence.isZero()) {
       writer.uint32(8).uint64(message.sequence);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryReceiveSequenceResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryReceiveSequenceResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryReceiveSequenceResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.sequence = reader.uint64();
+          message.sequence = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -815,17 +815,17 @@ export const QueryReceiveSequenceResponse = {
   },
   fromJSON(object: any): QueryReceiveSequenceResponse {
     return {
-      sequence: isSet(object.sequence) ? BigInt(object.sequence.toString()) : BigInt(0)
+      sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO
     };
   },
   toJSON(message: QueryReceiveSequenceResponse): unknown {
     const obj: any = {};
-    message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
+    message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<QueryReceiveSequenceResponse>, I>>(object: I): QueryReceiveSequenceResponse {
     const message = createBaseQueryReceiveSequenceResponse();
-    message.sequence = object.sequence !== undefined && object.sequence !== null ? BigInt(object.sequence.toString()) : BigInt(0);
+    message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
     return message;
   },
   fromSDK(object: QueryReceiveSequenceResponseSDKType): QueryReceiveSequenceResponse {
@@ -841,7 +841,7 @@ export const QueryReceiveSequenceResponse = {
   fromAmino(object: QueryReceiveSequenceResponseAmino): QueryReceiveSequenceResponse {
     const message = createBaseQueryReceiveSequenceResponse();
     if (object.sequence !== undefined && object.sequence !== null) {
-      message.sequence = BigInt(object.sequence);
+      message.sequence = Long.fromString(object.sequence);
     }
     return message;
   },
@@ -895,21 +895,21 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.crosschain.v1.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
   CrossChainPackage(request: QueryCrossChainPackageRequest): Promise<QueryCrossChainPackageResponse> {
     const data = QueryCrossChainPackageRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.crosschain.v1.Query", "CrossChainPackage", data);
-    return promise.then(data => QueryCrossChainPackageResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryCrossChainPackageResponse.decode(new _m0.Reader(data)));
   }
   SendSequence(request: QuerySendSequenceRequest): Promise<QuerySendSequenceResponse> {
     const data = QuerySendSequenceRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.crosschain.v1.Query", "SendSequence", data);
-    return promise.then(data => QuerySendSequenceResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QuerySendSequenceResponse.decode(new _m0.Reader(data)));
   }
   ReceiveSequence(request: QueryReceiveSequenceRequest): Promise<QueryReceiveSequenceResponse> {
     const data = QueryReceiveSequenceRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.crosschain.v1.Query", "ReceiveSequence", data);
-    return promise.then(data => QueryReceiveSequenceResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryReceiveSequenceResponse.decode(new _m0.Reader(data)));
   }
 }

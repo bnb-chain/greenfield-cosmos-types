@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Any, AnySDKType } from "../../../google/protobuf/any";
-import { BinaryReader, BinaryWriter } from "../../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet } from "../../../helpers";
 export const protobufPackage = "cosmos.app.v1alpha1";
 /**
@@ -101,7 +101,7 @@ function createBaseConfig(): Config {
 }
 export const Config = {
   typeUrl: "/cosmos.app.v1alpha1.Config",
-  encode(message: Config, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Config, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.modules) {
       ModuleConfig.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -110,8 +110,8 @@ export const Config = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Config {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Config {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseConfig();
     while (reader.pos < end) {
@@ -227,7 +227,7 @@ function createBaseModuleConfig(): ModuleConfig {
 }
 export const ModuleConfig = {
   typeUrl: "/cosmos.app.v1alpha1.ModuleConfig",
-  encode(message: ModuleConfig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: ModuleConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -239,8 +239,8 @@ export const ModuleConfig = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): ModuleConfig {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): ModuleConfig {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseModuleConfig();
     while (reader.pos < end) {
@@ -357,7 +357,7 @@ function createBaseGolangBinding(): GolangBinding {
 }
 export const GolangBinding = {
   typeUrl: "/cosmos.app.v1alpha1.GolangBinding",
-  encode(message: GolangBinding, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: GolangBinding, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.interfaceType !== "") {
       writer.uint32(10).string(message.interfaceType);
     }
@@ -366,8 +366,8 @@ export const GolangBinding = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): GolangBinding {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GolangBinding {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGolangBinding();
     while (reader.pos < end) {

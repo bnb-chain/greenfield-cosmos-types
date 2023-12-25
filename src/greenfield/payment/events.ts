@@ -1,8 +1,8 @@
 //@ts-nocheck
 /* eslint-disable */
 import { StreamAccountStatus, streamAccountStatusFromJSON, streamAccountStatusToJSON } from "./stream_record";
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { isSet, DeepPartial, Exact } from "../../helpers";
+import { Long, isSet, DeepPartial, Exact } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.payment";
 export enum FeePreviewType {
   FEE_PREVIEW_TYPE_PRELOCKED_FEE = 0,
@@ -57,7 +57,7 @@ export interface EventStreamRecordUpdate {
   /** account address */
   account: string;
   /** latest update timestamp of the stream record */
-  crudTimestamp: bigint;
+  crudTimestamp: Long;
   /**
    * The per-second rate that an account's balance is changing.
    * It is the sum of the account's inbound and outbound flow rates.
@@ -77,7 +77,7 @@ export interface EventStreamRecordUpdate {
   /** the status of the stream account */
   status: StreamAccountStatus;
   /** the unix timestamp when the stream account will be settled */
-  settleTimestamp: bigint;
+  settleTimestamp: Long;
 }
 export interface EventStreamRecordUpdateProtoMsg {
   typeUrl: "/greenfield.payment.EventStreamRecordUpdate";
@@ -86,14 +86,14 @@ export interface EventStreamRecordUpdateProtoMsg {
 /** Stream Payment Record of a stream account */
 export interface EventStreamRecordUpdateSDKType {
   account: string;
-  crud_timestamp: bigint;
+  crud_timestamp: Long;
   netflow_rate: string;
   frozen_netflow_rate: string;
   static_balance: string;
   buffer_balance: string;
   lock_balance: string;
   status: StreamAccountStatus;
-  settle_timestamp: bigint;
+  settle_timestamp: Long;
 }
 /**
  * EventForceSettle may be emitted on all Msgs and EndBlocker when a payment account's
@@ -186,7 +186,7 @@ function createBaseEventPaymentAccountUpdate(): EventPaymentAccountUpdate {
 }
 export const EventPaymentAccountUpdate = {
   typeUrl: "/greenfield.payment.EventPaymentAccountUpdate",
-  encode(message: EventPaymentAccountUpdate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventPaymentAccountUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.addr !== "") {
       writer.uint32(10).string(message.addr);
     }
@@ -198,8 +198,8 @@ export const EventPaymentAccountUpdate = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventPaymentAccountUpdate {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventPaymentAccountUpdate {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventPaymentAccountUpdate();
     while (reader.pos < end) {
@@ -295,23 +295,23 @@ export const EventPaymentAccountUpdate = {
 function createBaseEventStreamRecordUpdate(): EventStreamRecordUpdate {
   return {
     account: "",
-    crudTimestamp: BigInt(0),
+    crudTimestamp: Long.ZERO,
     netflowRate: "",
     frozenNetflowRate: "",
     staticBalance: "",
     bufferBalance: "",
     lockBalance: "",
     status: 0,
-    settleTimestamp: BigInt(0)
+    settleTimestamp: Long.ZERO
   };
 }
 export const EventStreamRecordUpdate = {
   typeUrl: "/greenfield.payment.EventStreamRecordUpdate",
-  encode(message: EventStreamRecordUpdate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventStreamRecordUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.account !== "") {
       writer.uint32(10).string(message.account);
     }
-    if (message.crudTimestamp !== BigInt(0)) {
+    if (!message.crudTimestamp.isZero()) {
       writer.uint32(16).int64(message.crudTimestamp);
     }
     if (message.netflowRate !== "") {
@@ -332,13 +332,13 @@ export const EventStreamRecordUpdate = {
     if (message.status !== 0) {
       writer.uint32(64).int32(message.status);
     }
-    if (message.settleTimestamp !== BigInt(0)) {
+    if (!message.settleTimestamp.isZero()) {
       writer.uint32(72).int64(message.settleTimestamp);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventStreamRecordUpdate {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventStreamRecordUpdate {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventStreamRecordUpdate();
     while (reader.pos < end) {
@@ -348,7 +348,7 @@ export const EventStreamRecordUpdate = {
           message.account = reader.string();
           break;
         case 2:
-          message.crudTimestamp = reader.int64();
+          message.crudTimestamp = (reader.int64() as Long);
           break;
         case 3:
           message.netflowRate = reader.string();
@@ -369,7 +369,7 @@ export const EventStreamRecordUpdate = {
           message.status = (reader.int32() as any);
           break;
         case 9:
-          message.settleTimestamp = reader.int64();
+          message.settleTimestamp = (reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -381,40 +381,40 @@ export const EventStreamRecordUpdate = {
   fromJSON(object: any): EventStreamRecordUpdate {
     return {
       account: isSet(object.account) ? String(object.account) : "",
-      crudTimestamp: isSet(object.crudTimestamp) ? BigInt(object.crudTimestamp.toString()) : BigInt(0),
+      crudTimestamp: isSet(object.crudTimestamp) ? Long.fromValue(object.crudTimestamp) : Long.ZERO,
       netflowRate: isSet(object.netflowRate) ? String(object.netflowRate) : "",
       frozenNetflowRate: isSet(object.frozenNetflowRate) ? String(object.frozenNetflowRate) : "",
       staticBalance: isSet(object.staticBalance) ? String(object.staticBalance) : "",
       bufferBalance: isSet(object.bufferBalance) ? String(object.bufferBalance) : "",
       lockBalance: isSet(object.lockBalance) ? String(object.lockBalance) : "",
       status: isSet(object.status) ? streamAccountStatusFromJSON(object.status) : -1,
-      settleTimestamp: isSet(object.settleTimestamp) ? BigInt(object.settleTimestamp.toString()) : BigInt(0)
+      settleTimestamp: isSet(object.settleTimestamp) ? Long.fromValue(object.settleTimestamp) : Long.ZERO
     };
   },
   toJSON(message: EventStreamRecordUpdate): unknown {
     const obj: any = {};
     message.account !== undefined && (obj.account = message.account);
-    message.crudTimestamp !== undefined && (obj.crudTimestamp = (message.crudTimestamp || BigInt(0)).toString());
+    message.crudTimestamp !== undefined && (obj.crudTimestamp = (message.crudTimestamp || Long.ZERO).toString());
     message.netflowRate !== undefined && (obj.netflowRate = message.netflowRate);
     message.frozenNetflowRate !== undefined && (obj.frozenNetflowRate = message.frozenNetflowRate);
     message.staticBalance !== undefined && (obj.staticBalance = message.staticBalance);
     message.bufferBalance !== undefined && (obj.bufferBalance = message.bufferBalance);
     message.lockBalance !== undefined && (obj.lockBalance = message.lockBalance);
     message.status !== undefined && (obj.status = streamAccountStatusToJSON(message.status));
-    message.settleTimestamp !== undefined && (obj.settleTimestamp = (message.settleTimestamp || BigInt(0)).toString());
+    message.settleTimestamp !== undefined && (obj.settleTimestamp = (message.settleTimestamp || Long.ZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventStreamRecordUpdate>, I>>(object: I): EventStreamRecordUpdate {
     const message = createBaseEventStreamRecordUpdate();
     message.account = object.account ?? "";
-    message.crudTimestamp = object.crudTimestamp !== undefined && object.crudTimestamp !== null ? BigInt(object.crudTimestamp.toString()) : BigInt(0);
+    message.crudTimestamp = object.crudTimestamp !== undefined && object.crudTimestamp !== null ? Long.fromValue(object.crudTimestamp) : Long.ZERO;
     message.netflowRate = object.netflowRate ?? "";
     message.frozenNetflowRate = object.frozenNetflowRate ?? "";
     message.staticBalance = object.staticBalance ?? "";
     message.bufferBalance = object.bufferBalance ?? "";
     message.lockBalance = object.lockBalance ?? "";
     message.status = object.status ?? 0;
-    message.settleTimestamp = object.settleTimestamp !== undefined && object.settleTimestamp !== null ? BigInt(object.settleTimestamp.toString()) : BigInt(0);
+    message.settleTimestamp = object.settleTimestamp !== undefined && object.settleTimestamp !== null ? Long.fromValue(object.settleTimestamp) : Long.ZERO;
     return message;
   },
   fromSDK(object: EventStreamRecordUpdateSDKType): EventStreamRecordUpdate {
@@ -449,7 +449,7 @@ export const EventStreamRecordUpdate = {
       message.account = object.account;
     }
     if (object.crud_timestamp !== undefined && object.crud_timestamp !== null) {
-      message.crudTimestamp = BigInt(object.crud_timestamp);
+      message.crudTimestamp = Long.fromString(object.crud_timestamp);
     }
     if (object.netflow_rate !== undefined && object.netflow_rate !== null) {
       message.netflowRate = object.netflow_rate;
@@ -470,7 +470,7 @@ export const EventStreamRecordUpdate = {
       message.status = streamAccountStatusFromJSON(object.status);
     }
     if (object.settle_timestamp !== undefined && object.settle_timestamp !== null) {
-      message.settleTimestamp = BigInt(object.settle_timestamp);
+      message.settleTimestamp = Long.fromString(object.settle_timestamp);
     }
     return message;
   },
@@ -511,7 +511,7 @@ function createBaseEventForceSettle(): EventForceSettle {
 }
 export const EventForceSettle = {
   typeUrl: "/greenfield.payment.EventForceSettle",
-  encode(message: EventForceSettle, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventForceSettle, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.addr !== "") {
       writer.uint32(10).string(message.addr);
     }
@@ -520,8 +520,8 @@ export const EventForceSettle = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventForceSettle {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventForceSettle {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventForceSettle();
     while (reader.pos < end) {
@@ -611,7 +611,7 @@ function createBaseEventDeposit(): EventDeposit {
 }
 export const EventDeposit = {
   typeUrl: "/greenfield.payment.EventDeposit",
-  encode(message: EventDeposit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventDeposit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.from !== "") {
       writer.uint32(10).string(message.from);
     }
@@ -623,8 +623,8 @@ export const EventDeposit = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventDeposit {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventDeposit {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDeposit();
     while (reader.pos < end) {
@@ -726,7 +726,7 @@ function createBaseEventWithdraw(): EventWithdraw {
 }
 export const EventWithdraw = {
   typeUrl: "/greenfield.payment.EventWithdraw",
-  encode(message: EventWithdraw, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventWithdraw, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.to !== "") {
       writer.uint32(10).string(message.to);
     }
@@ -738,8 +738,8 @@ export const EventWithdraw = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventWithdraw {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventWithdraw {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventWithdraw();
     while (reader.pos < end) {
@@ -841,7 +841,7 @@ function createBaseEventFeePreview(): EventFeePreview {
 }
 export const EventFeePreview = {
   typeUrl: "/greenfield.payment.EventFeePreview",
-  encode(message: EventFeePreview, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventFeePreview, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.account !== "") {
       writer.uint32(10).string(message.account);
     }
@@ -853,8 +853,8 @@ export const EventFeePreview = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventFeePreview {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventFeePreview {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventFeePreview();
     while (reader.pos < end) {

@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../../../binary";
-import { isSet, DeepPartial, Exact } from "../../../../helpers";
+import { Long, isSet, DeepPartial, Exact } from "../../../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.gov.module.v1";
 /** Module is the config object of the gov module. */
 export interface Module {
@@ -9,7 +9,7 @@ export interface Module {
    * max_metadata_len defines the maximum proposal metadata length.
    * Defaults to 255 if not explicitly set.
    */
-  maxMetadataLen: bigint;
+  maxMetadataLen: Long;
   /** authority defines the custom module authority. If not set, defaults to the governance module. */
   authority: string;
 }
@@ -19,19 +19,19 @@ export interface ModuleProtoMsg {
 }
 /** Module is the config object of the gov module. */
 export interface ModuleSDKType {
-  max_metadata_len: bigint;
+  max_metadata_len: Long;
   authority: string;
 }
 function createBaseModule(): Module {
   return {
-    maxMetadataLen: BigInt(0),
+    maxMetadataLen: Long.UZERO,
     authority: ""
   };
 }
 export const Module = {
   typeUrl: "/cosmos.gov.module.v1.Module",
-  encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.maxMetadataLen !== BigInt(0)) {
+  encode(message: Module, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.maxMetadataLen.isZero()) {
       writer.uint32(8).uint64(message.maxMetadataLen);
     }
     if (message.authority !== "") {
@@ -39,15 +39,15 @@ export const Module = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Module {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Module {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseModule();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.maxMetadataLen = reader.uint64();
+          message.maxMetadataLen = (reader.uint64() as Long);
           break;
         case 2:
           message.authority = reader.string();
@@ -61,19 +61,19 @@ export const Module = {
   },
   fromJSON(object: any): Module {
     return {
-      maxMetadataLen: isSet(object.maxMetadataLen) ? BigInt(object.maxMetadataLen.toString()) : BigInt(0),
+      maxMetadataLen: isSet(object.maxMetadataLen) ? Long.fromValue(object.maxMetadataLen) : Long.UZERO,
       authority: isSet(object.authority) ? String(object.authority) : ""
     };
   },
   toJSON(message: Module): unknown {
     const obj: any = {};
-    message.maxMetadataLen !== undefined && (obj.maxMetadataLen = (message.maxMetadataLen || BigInt(0)).toString());
+    message.maxMetadataLen !== undefined && (obj.maxMetadataLen = (message.maxMetadataLen || Long.UZERO).toString());
     message.authority !== undefined && (obj.authority = message.authority);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Module>, I>>(object: I): Module {
     const message = createBaseModule();
-    message.maxMetadataLen = object.maxMetadataLen !== undefined && object.maxMetadataLen !== null ? BigInt(object.maxMetadataLen.toString()) : BigInt(0);
+    message.maxMetadataLen = object.maxMetadataLen !== undefined && object.maxMetadataLen !== null ? Long.fromValue(object.maxMetadataLen) : Long.UZERO;
     message.authority = object.authority ?? "";
     return message;
   },
@@ -92,7 +92,7 @@ export const Module = {
   fromAmino(object: ModuleAmino): Module {
     const message = createBaseModule();
     if (object.max_metadata_len !== undefined && object.max_metadata_len !== null) {
-      message.maxMetadataLen = BigInt(object.max_metadata_len);
+      message.maxMetadataLen = Long.fromString(object.max_metadata_len);
     }
     if (object.authority !== undefined && object.authority !== null) {
       message.authority = object.authority;

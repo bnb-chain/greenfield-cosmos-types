@@ -1,8 +1,8 @@
 //@ts-nocheck
 /* eslint-disable */
 import { VisibilityType, SourceType, BucketStatus, LocalVirtualGroup, LocalVirtualGroupSDKType, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
+import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.storage";
 export interface BucketInfo {
   /** owner is the account address of bucket creator, it is also the bucket owner. */
@@ -16,7 +16,7 @@ export interface BucketInfo {
   /** source_type defines which chain the user should send the bucket management transactions to */
   sourceType: SourceType;
   /** create_at define the block timestamp when the bucket created. */
-  createAt: bigint;
+  createAt: Long;
   /** payment_address is the address of the payment account */
   paymentAddress: string;
   /** global_virtual_group_family_id defines the unique id of gvg family */
@@ -26,7 +26,7 @@ export interface BucketInfo {
    * The available read data for each user is the sum of the free read data provided by SP and
    * the ChargeReadQuota specified here.
    */
-  chargedReadQuota: bigint;
+  chargedReadQuota: Long;
   /** bucket_status define the status of the bucket. */
   bucketStatus: BucketStatus;
   /** tags defines a list of tags the bucket has */
@@ -42,18 +42,18 @@ export interface BucketInfoSDKType {
   visibility: VisibilityType;
   id: string;
   source_type: SourceType;
-  create_at: bigint;
+  create_at: Long;
   payment_address: string;
   global_virtual_group_family_id: number;
-  charged_read_quota: bigint;
+  charged_read_quota: Long;
   bucket_status: BucketStatus;
   tags?: ResourceTagsSDKType;
 }
 export interface InternalBucketInfo {
   /** the time of the payment price, used to calculate the charge rate of the bucket */
-  priceTime: bigint;
+  priceTime: Long;
   /** the total size of the objects in the bucket, used to calculate the charge rate of the bucket */
-  totalChargeSize: bigint;
+  totalChargeSize: Long;
   /** local_virtual_groups contains all the lvg of this bucket. */
   localVirtualGroups: LocalVirtualGroup[];
   /** next_local_virtual_group_id store the next id used by local virtual group */
@@ -64,8 +64,8 @@ export interface InternalBucketInfoProtoMsg {
   value: Uint8Array;
 }
 export interface InternalBucketInfoSDKType {
-  price_time: bigint;
-  total_charge_size: bigint;
+  price_time: Long;
+  total_charge_size: Long;
   local_virtual_groups: LocalVirtualGroupSDKType[];
   next_local_virtual_group_id: number;
 }
@@ -82,13 +82,13 @@ export interface ObjectInfo {
   id: string;
   localVirtualGroupId: number;
   /** payloadSize is the total size of the object payload */
-  payloadSize: bigint;
+  payloadSize: Long;
   /** visibility defines the highest permissions for object. When an object is public, everyone can access it. */
   visibility: VisibilityType;
   /** content_type define the format of the object which should be a standard MIME type. */
   contentType: string;
   /** create_at define the block timestamp when the object is created */
-  createAt: bigint;
+  createAt: Long;
   /** object_status define the upload status of the object. */
   objectStatus: ObjectStatus;
   /** redundancy_type define the type of the redundancy which can be multi-replication or EC. */
@@ -114,10 +114,10 @@ export interface ObjectInfoSDKType {
   object_name: string;
   id: string;
   local_virtual_group_id: number;
-  payload_size: bigint;
+  payload_size: Long;
   visibility: VisibilityType;
   content_type: string;
-  create_at: bigint;
+  create_at: Long;
   object_status: ObjectStatus;
   redundancy_type: RedundancyType;
   source_type: SourceType;
@@ -303,17 +303,17 @@ function createBaseBucketInfo(): BucketInfo {
     visibility: 0,
     id: "",
     sourceType: 0,
-    createAt: BigInt(0),
+    createAt: Long.ZERO,
     paymentAddress: "",
     globalVirtualGroupFamilyId: 0,
-    chargedReadQuota: BigInt(0),
+    chargedReadQuota: Long.UZERO,
     bucketStatus: 0,
     tags: undefined
   };
 }
 export const BucketInfo = {
   typeUrl: "/greenfield.storage.BucketInfo",
-  encode(message: BucketInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: BucketInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -329,7 +329,7 @@ export const BucketInfo = {
     if (message.sourceType !== 0) {
       writer.uint32(40).int32(message.sourceType);
     }
-    if (message.createAt !== BigInt(0)) {
+    if (!message.createAt.isZero()) {
       writer.uint32(48).int64(message.createAt);
     }
     if (message.paymentAddress !== "") {
@@ -338,7 +338,7 @@ export const BucketInfo = {
     if (message.globalVirtualGroupFamilyId !== 0) {
       writer.uint32(64).uint32(message.globalVirtualGroupFamilyId);
     }
-    if (message.chargedReadQuota !== BigInt(0)) {
+    if (!message.chargedReadQuota.isZero()) {
       writer.uint32(72).uint64(message.chargedReadQuota);
     }
     if (message.bucketStatus !== 0) {
@@ -349,8 +349,8 @@ export const BucketInfo = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): BucketInfo {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): BucketInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBucketInfo();
     while (reader.pos < end) {
@@ -372,7 +372,7 @@ export const BucketInfo = {
           message.sourceType = (reader.int32() as any);
           break;
         case 6:
-          message.createAt = reader.int64();
+          message.createAt = (reader.int64() as Long);
           break;
         case 7:
           message.paymentAddress = reader.string();
@@ -381,7 +381,7 @@ export const BucketInfo = {
           message.globalVirtualGroupFamilyId = reader.uint32();
           break;
         case 9:
-          message.chargedReadQuota = reader.uint64();
+          message.chargedReadQuota = (reader.uint64() as Long);
           break;
         case 10:
           message.bucketStatus = (reader.int32() as any);
@@ -403,10 +403,10 @@ export const BucketInfo = {
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : -1,
       id: isSet(object.id) ? String(object.id) : "",
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : -1,
-      createAt: isSet(object.createAt) ? BigInt(object.createAt.toString()) : BigInt(0),
+      createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
-      chargedReadQuota: isSet(object.chargedReadQuota) ? BigInt(object.chargedReadQuota.toString()) : BigInt(0),
+      chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
       bucketStatus: isSet(object.bucketStatus) ? bucketStatusFromJSON(object.bucketStatus) : -1,
       tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined
     };
@@ -418,10 +418,10 @@ export const BucketInfo = {
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.id !== undefined && (obj.id = message.id);
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
-    message.createAt !== undefined && (obj.createAt = (message.createAt || BigInt(0)).toString());
+    message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
-    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || BigInt(0)).toString());
+    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
     message.bucketStatus !== undefined && (obj.bucketStatus = bucketStatusToJSON(message.bucketStatus));
     message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toJSON(message.tags) : undefined);
     return obj;
@@ -433,10 +433,10 @@ export const BucketInfo = {
     message.visibility = object.visibility ?? 0;
     message.id = object.id ?? "";
     message.sourceType = object.sourceType ?? 0;
-    message.createAt = object.createAt !== undefined && object.createAt !== null ? BigInt(object.createAt.toString()) : BigInt(0);
+    message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
     message.paymentAddress = object.paymentAddress ?? "";
     message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
-    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? BigInt(object.chargedReadQuota.toString()) : BigInt(0);
+    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
     message.bucketStatus = object.bucketStatus ?? 0;
     message.tags = object.tags !== undefined && object.tags !== null ? ResourceTags.fromPartial(object.tags) : undefined;
     return message;
@@ -489,7 +489,7 @@ export const BucketInfo = {
       message.sourceType = sourceTypeFromJSON(object.source_type);
     }
     if (object.create_at !== undefined && object.create_at !== null) {
-      message.createAt = BigInt(object.create_at);
+      message.createAt = Long.fromString(object.create_at);
     }
     if (object.payment_address !== undefined && object.payment_address !== null) {
       message.paymentAddress = object.payment_address;
@@ -498,7 +498,7 @@ export const BucketInfo = {
       message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
     }
     if (object.charged_read_quota !== undefined && object.charged_read_quota !== null) {
-      message.chargedReadQuota = BigInt(object.charged_read_quota);
+      message.chargedReadQuota = Long.fromString(object.charged_read_quota);
     }
     if (object.bucket_status !== undefined && object.bucket_status !== null) {
       message.bucketStatus = bucketStatusFromJSON(object.bucket_status);
@@ -541,19 +541,19 @@ export const BucketInfo = {
 };
 function createBaseInternalBucketInfo(): InternalBucketInfo {
   return {
-    priceTime: BigInt(0),
-    totalChargeSize: BigInt(0),
+    priceTime: Long.ZERO,
+    totalChargeSize: Long.UZERO,
     localVirtualGroups: [],
     nextLocalVirtualGroupId: 0
   };
 }
 export const InternalBucketInfo = {
   typeUrl: "/greenfield.storage.InternalBucketInfo",
-  encode(message: InternalBucketInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.priceTime !== BigInt(0)) {
+  encode(message: InternalBucketInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.priceTime.isZero()) {
       writer.uint32(8).int64(message.priceTime);
     }
-    if (message.totalChargeSize !== BigInt(0)) {
+    if (!message.totalChargeSize.isZero()) {
       writer.uint32(16).uint64(message.totalChargeSize);
     }
     for (const v of message.localVirtualGroups) {
@@ -564,18 +564,18 @@ export const InternalBucketInfo = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): InternalBucketInfo {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): InternalBucketInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInternalBucketInfo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.priceTime = reader.int64();
+          message.priceTime = (reader.int64() as Long);
           break;
         case 2:
-          message.totalChargeSize = reader.uint64();
+          message.totalChargeSize = (reader.uint64() as Long);
           break;
         case 3:
           message.localVirtualGroups.push(LocalVirtualGroup.decode(reader, reader.uint32()));
@@ -592,16 +592,16 @@ export const InternalBucketInfo = {
   },
   fromJSON(object: any): InternalBucketInfo {
     return {
-      priceTime: isSet(object.priceTime) ? BigInt(object.priceTime.toString()) : BigInt(0),
-      totalChargeSize: isSet(object.totalChargeSize) ? BigInt(object.totalChargeSize.toString()) : BigInt(0),
+      priceTime: isSet(object.priceTime) ? Long.fromValue(object.priceTime) : Long.ZERO,
+      totalChargeSize: isSet(object.totalChargeSize) ? Long.fromValue(object.totalChargeSize) : Long.UZERO,
       localVirtualGroups: Array.isArray(object?.localVirtualGroups) ? object.localVirtualGroups.map((e: any) => LocalVirtualGroup.fromJSON(e)) : [],
       nextLocalVirtualGroupId: isSet(object.nextLocalVirtualGroupId) ? Number(object.nextLocalVirtualGroupId) : 0
     };
   },
   toJSON(message: InternalBucketInfo): unknown {
     const obj: any = {};
-    message.priceTime !== undefined && (obj.priceTime = (message.priceTime || BigInt(0)).toString());
-    message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || BigInt(0)).toString());
+    message.priceTime !== undefined && (obj.priceTime = (message.priceTime || Long.ZERO).toString());
+    message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || Long.UZERO).toString());
     if (message.localVirtualGroups) {
       obj.localVirtualGroups = message.localVirtualGroups.map(e => e ? LocalVirtualGroup.toJSON(e) : undefined);
     } else {
@@ -612,8 +612,8 @@ export const InternalBucketInfo = {
   },
   fromPartial<I extends Exact<DeepPartial<InternalBucketInfo>, I>>(object: I): InternalBucketInfo {
     const message = createBaseInternalBucketInfo();
-    message.priceTime = object.priceTime !== undefined && object.priceTime !== null ? BigInt(object.priceTime.toString()) : BigInt(0);
-    message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? BigInt(object.totalChargeSize.toString()) : BigInt(0);
+    message.priceTime = object.priceTime !== undefined && object.priceTime !== null ? Long.fromValue(object.priceTime) : Long.ZERO;
+    message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? Long.fromValue(object.totalChargeSize) : Long.UZERO;
     message.localVirtualGroups = object.localVirtualGroups?.map(e => LocalVirtualGroup.fromPartial(e)) || [];
     message.nextLocalVirtualGroupId = object.nextLocalVirtualGroupId ?? 0;
     return message;
@@ -641,10 +641,10 @@ export const InternalBucketInfo = {
   fromAmino(object: InternalBucketInfoAmino): InternalBucketInfo {
     const message = createBaseInternalBucketInfo();
     if (object.price_time !== undefined && object.price_time !== null) {
-      message.priceTime = BigInt(object.price_time);
+      message.priceTime = Long.fromString(object.price_time);
     }
     if (object.total_charge_size !== undefined && object.total_charge_size !== null) {
-      message.totalChargeSize = BigInt(object.total_charge_size);
+      message.totalChargeSize = Long.fromString(object.total_charge_size);
     }
     message.localVirtualGroups = object.local_virtual_groups?.map(e => LocalVirtualGroup.fromAmino(e)) || [];
     if (object.next_local_virtual_group_id !== undefined && object.next_local_virtual_group_id !== null) {
@@ -688,10 +688,10 @@ function createBaseObjectInfo(): ObjectInfo {
     objectName: "",
     id: "",
     localVirtualGroupId: 0,
-    payloadSize: BigInt(0),
+    payloadSize: Long.UZERO,
     visibility: 0,
     contentType: "",
-    createAt: BigInt(0),
+    createAt: Long.ZERO,
     objectStatus: 0,
     redundancyType: 0,
     sourceType: 0,
@@ -701,7 +701,7 @@ function createBaseObjectInfo(): ObjectInfo {
 }
 export const ObjectInfo = {
   typeUrl: "/greenfield.storage.ObjectInfo",
-  encode(message: ObjectInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: ObjectInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -720,7 +720,7 @@ export const ObjectInfo = {
     if (message.localVirtualGroupId !== 0) {
       writer.uint32(48).uint32(message.localVirtualGroupId);
     }
-    if (message.payloadSize !== BigInt(0)) {
+    if (!message.payloadSize.isZero()) {
       writer.uint32(56).uint64(message.payloadSize);
     }
     if (message.visibility !== 0) {
@@ -729,7 +729,7 @@ export const ObjectInfo = {
     if (message.contentType !== "") {
       writer.uint32(74).string(message.contentType);
     }
-    if (message.createAt !== BigInt(0)) {
+    if (!message.createAt.isZero()) {
       writer.uint32(80).int64(message.createAt);
     }
     if (message.objectStatus !== 0) {
@@ -749,8 +749,8 @@ export const ObjectInfo = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): ObjectInfo {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): ObjectInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseObjectInfo();
     while (reader.pos < end) {
@@ -775,7 +775,7 @@ export const ObjectInfo = {
           message.localVirtualGroupId = reader.uint32();
           break;
         case 7:
-          message.payloadSize = reader.uint64();
+          message.payloadSize = (reader.uint64() as Long);
           break;
         case 8:
           message.visibility = (reader.int32() as any);
@@ -784,7 +784,7 @@ export const ObjectInfo = {
           message.contentType = reader.string();
           break;
         case 10:
-          message.createAt = reader.int64();
+          message.createAt = (reader.int64() as Long);
           break;
         case 11:
           message.objectStatus = (reader.int32() as any);
@@ -816,10 +816,10 @@ export const ObjectInfo = {
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       id: isSet(object.id) ? String(object.id) : "",
       localVirtualGroupId: isSet(object.localVirtualGroupId) ? Number(object.localVirtualGroupId) : 0,
-      payloadSize: isSet(object.payloadSize) ? BigInt(object.payloadSize.toString()) : BigInt(0),
+      payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO,
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : -1,
       contentType: isSet(object.contentType) ? String(object.contentType) : "",
-      createAt: isSet(object.createAt) ? BigInt(object.createAt.toString()) : BigInt(0),
+      createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
       objectStatus: isSet(object.objectStatus) ? objectStatusFromJSON(object.objectStatus) : -1,
       redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : -1,
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : -1,
@@ -835,10 +835,10 @@ export const ObjectInfo = {
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.id !== undefined && (obj.id = message.id);
     message.localVirtualGroupId !== undefined && (obj.localVirtualGroupId = Math.round(message.localVirtualGroupId));
-    message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || BigInt(0)).toString());
+    message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.contentType !== undefined && (obj.contentType = message.contentType);
-    message.createAt !== undefined && (obj.createAt = (message.createAt || BigInt(0)).toString());
+    message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
     message.objectStatus !== undefined && (obj.objectStatus = objectStatusToJSON(message.objectStatus));
     message.redundancyType !== undefined && (obj.redundancyType = redundancyTypeToJSON(message.redundancyType));
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
@@ -858,10 +858,10 @@ export const ObjectInfo = {
     message.objectName = object.objectName ?? "";
     message.id = object.id ?? "";
     message.localVirtualGroupId = object.localVirtualGroupId ?? 0;
-    message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? BigInt(object.payloadSize.toString()) : BigInt(0);
+    message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
     message.visibility = object.visibility ?? 0;
     message.contentType = object.contentType ?? "";
-    message.createAt = object.createAt !== undefined && object.createAt !== null ? BigInt(object.createAt.toString()) : BigInt(0);
+    message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
     message.objectStatus = object.objectStatus ?? 0;
     message.redundancyType = object.redundancyType ?? 0;
     message.sourceType = object.sourceType ?? 0;
@@ -932,7 +932,7 @@ export const ObjectInfo = {
       message.localVirtualGroupId = object.local_virtual_group_id;
     }
     if (object.payload_size !== undefined && object.payload_size !== null) {
-      message.payloadSize = BigInt(object.payload_size);
+      message.payloadSize = Long.fromString(object.payload_size);
     }
     if (object.visibility !== undefined && object.visibility !== null) {
       message.visibility = visibilityTypeFromJSON(object.visibility);
@@ -941,7 +941,7 @@ export const ObjectInfo = {
       message.contentType = object.content_type;
     }
     if (object.create_at !== undefined && object.create_at !== null) {
-      message.createAt = BigInt(object.create_at);
+      message.createAt = Long.fromString(object.create_at);
     }
     if (object.object_status !== undefined && object.object_status !== null) {
       message.objectStatus = objectStatusFromJSON(object.object_status);
@@ -1009,7 +1009,7 @@ function createBaseGroupInfo(): GroupInfo {
 }
 export const GroupInfo = {
   typeUrl: "/greenfield.storage.GroupInfo",
-  encode(message: GroupInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: GroupInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -1030,8 +1030,8 @@ export const GroupInfo = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): GroupInfo {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GroupInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGroupInfo();
     while (reader.pos < end) {
@@ -1168,7 +1168,7 @@ function createBaseTrait(): Trait {
 }
 export const Trait = {
   typeUrl: "/greenfield.storage.Trait",
-  encode(message: Trait, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Trait, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.traitType !== "") {
       writer.uint32(10).string(message.traitType);
     }
@@ -1177,8 +1177,8 @@ export const Trait = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Trait {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Trait {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTrait();
     while (reader.pos < end) {
@@ -1270,7 +1270,7 @@ function createBaseBucketMetaData(): BucketMetaData {
 }
 export const BucketMetaData = {
   typeUrl: "/greenfield.storage.BucketMetaData",
-  encode(message: BucketMetaData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: BucketMetaData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.description !== "") {
       writer.uint32(10).string(message.description);
     }
@@ -1288,8 +1288,8 @@ export const BucketMetaData = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): BucketMetaData {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): BucketMetaData {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBucketMetaData();
     while (reader.pos < end) {
@@ -1427,7 +1427,7 @@ function createBaseObjectMetaData(): ObjectMetaData {
 }
 export const ObjectMetaData = {
   typeUrl: "/greenfield.storage.ObjectMetaData",
-  encode(message: ObjectMetaData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: ObjectMetaData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.description !== "") {
       writer.uint32(10).string(message.description);
     }
@@ -1445,8 +1445,8 @@ export const ObjectMetaData = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): ObjectMetaData {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): ObjectMetaData {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseObjectMetaData();
     while (reader.pos < end) {
@@ -1584,7 +1584,7 @@ function createBaseGroupMetaData(): GroupMetaData {
 }
 export const GroupMetaData = {
   typeUrl: "/greenfield.storage.GroupMetaData",
-  encode(message: GroupMetaData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: GroupMetaData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.description !== "") {
       writer.uint32(10).string(message.description);
     }
@@ -1602,8 +1602,8 @@ export const GroupMetaData = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): GroupMetaData {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GroupMetaData {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGroupMetaData();
     while (reader.pos < end) {
@@ -1737,14 +1737,14 @@ function createBaseIds(): Ids {
 }
 export const Ids = {
   typeUrl: "/greenfield.storage.Ids",
-  encode(message: Ids, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Ids, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.id) {
       writer.uint32(10).string(v!);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Ids {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Ids {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseIds();
     while (reader.pos < end) {
@@ -1832,7 +1832,7 @@ function createBaseDeleteInfo(): DeleteInfo {
 }
 export const DeleteInfo = {
   typeUrl: "/greenfield.storage.DeleteInfo",
-  encode(message: DeleteInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: DeleteInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.bucketIds !== undefined) {
       Ids.encode(message.bucketIds, writer.uint32(10).fork()).ldelim();
     }
@@ -1844,8 +1844,8 @@ export const DeleteInfo = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): DeleteInfo {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteInfo();
     while (reader.pos < end) {
@@ -1948,7 +1948,7 @@ function createBaseMigrationBucketInfo(): MigrationBucketInfo {
 }
 export const MigrationBucketInfo = {
   typeUrl: "/greenfield.storage.MigrationBucketInfo",
-  encode(message: MigrationBucketInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MigrationBucketInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.srcSpId !== 0) {
       writer.uint32(8).uint32(message.srcSpId);
     }
@@ -1963,8 +1963,8 @@ export const MigrationBucketInfo = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MigrationBucketInfo {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MigrationBucketInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMigrationBucketInfo();
     while (reader.pos < end) {
@@ -2076,14 +2076,14 @@ function createBaseResourceTags(): ResourceTags {
 }
 export const ResourceTags = {
   typeUrl: "/greenfield.storage.ResourceTags",
-  encode(message: ResourceTags, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: ResourceTags, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.tags) {
       ResourceTags_Tag.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): ResourceTags {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): ResourceTags {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResourceTags();
     while (reader.pos < end) {
@@ -2170,7 +2170,7 @@ function createBaseResourceTags_Tag(): ResourceTags_Tag {
 }
 export const ResourceTags_Tag = {
   typeUrl: "/greenfield.storage.Tag",
-  encode(message: ResourceTags_Tag, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: ResourceTags_Tag, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
@@ -2179,8 +2179,8 @@ export const ResourceTags_Tag = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): ResourceTags_Tag {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): ResourceTags_Tag {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResourceTags_Tag();
     while (reader.pos < end) {

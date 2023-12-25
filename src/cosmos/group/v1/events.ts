@@ -1,13 +1,13 @@
 //@ts-nocheck
 /* eslint-disable */
 import { ProposalExecutorResult, ProposalStatus, TallyResult, TallyResultSDKType, proposalExecutorResultFromJSON, proposalExecutorResultToJSON, proposalStatusFromJSON, proposalStatusToJSON } from "./types";
-import { BinaryReader, BinaryWriter } from "../../../binary";
-import { isSet, DeepPartial, Exact } from "../../../helpers";
+import { Long, isSet, DeepPartial, Exact } from "../../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.group.v1";
 /** EventCreateGroup is an event emitted when a group is created. */
 export interface EventCreateGroup {
   /** group_id is the unique ID of the group. */
-  groupId: bigint;
+  groupId: Long;
 }
 export interface EventCreateGroupProtoMsg {
   typeUrl: "/cosmos.group.v1.EventCreateGroup";
@@ -15,12 +15,12 @@ export interface EventCreateGroupProtoMsg {
 }
 /** EventCreateGroup is an event emitted when a group is created. */
 export interface EventCreateGroupSDKType {
-  group_id: bigint;
+  group_id: Long;
 }
 /** EventUpdateGroup is an event emitted when a group is updated. */
 export interface EventUpdateGroup {
   /** group_id is the unique ID of the group. */
-  groupId: bigint;
+  groupId: Long;
 }
 export interface EventUpdateGroupProtoMsg {
   typeUrl: "/cosmos.group.v1.EventUpdateGroup";
@@ -28,7 +28,7 @@ export interface EventUpdateGroupProtoMsg {
 }
 /** EventUpdateGroup is an event emitted when a group is updated. */
 export interface EventUpdateGroupSDKType {
-  group_id: bigint;
+  group_id: Long;
 }
 /** EventCreateGroupPolicy is an event emitted when a group policy is created. */
 export interface EventCreateGroupPolicy {
@@ -59,7 +59,7 @@ export interface EventUpdateGroupPolicySDKType {
 /** EventSubmitProposal is an event emitted when a proposal is created. */
 export interface EventSubmitProposal {
   /** proposal_id is the unique ID of the proposal. */
-  proposalId: bigint;
+  proposalId: Long;
 }
 export interface EventSubmitProposalProtoMsg {
   typeUrl: "/cosmos.group.v1.EventSubmitProposal";
@@ -67,12 +67,12 @@ export interface EventSubmitProposalProtoMsg {
 }
 /** EventSubmitProposal is an event emitted when a proposal is created. */
 export interface EventSubmitProposalSDKType {
-  proposal_id: bigint;
+  proposal_id: Long;
 }
 /** EventWithdrawProposal is an event emitted when a proposal is withdrawn. */
 export interface EventWithdrawProposal {
   /** proposal_id is the unique ID of the proposal. */
-  proposalId: bigint;
+  proposalId: Long;
 }
 export interface EventWithdrawProposalProtoMsg {
   typeUrl: "/cosmos.group.v1.EventWithdrawProposal";
@@ -80,12 +80,12 @@ export interface EventWithdrawProposalProtoMsg {
 }
 /** EventWithdrawProposal is an event emitted when a proposal is withdrawn. */
 export interface EventWithdrawProposalSDKType {
-  proposal_id: bigint;
+  proposal_id: Long;
 }
 /** EventVote is an event emitted when a voter votes on a proposal. */
 export interface EventVote {
   /** proposal_id is the unique ID of the proposal. */
-  proposalId: bigint;
+  proposalId: Long;
 }
 export interface EventVoteProtoMsg {
   typeUrl: "/cosmos.group.v1.EventVote";
@@ -93,12 +93,12 @@ export interface EventVoteProtoMsg {
 }
 /** EventVote is an event emitted when a voter votes on a proposal. */
 export interface EventVoteSDKType {
-  proposal_id: bigint;
+  proposal_id: Long;
 }
 /** EventExec is an event emitted when a proposal is executed. */
 export interface EventExec {
   /** proposal_id is the unique ID of the proposal. */
-  proposalId: bigint;
+  proposalId: Long;
   /** result is the proposal execution result. */
   result: ProposalExecutorResult;
   /** logs contains error logs in case the execution result is FAILURE. */
@@ -110,14 +110,14 @@ export interface EventExecProtoMsg {
 }
 /** EventExec is an event emitted when a proposal is executed. */
 export interface EventExecSDKType {
-  proposal_id: bigint;
+  proposal_id: Long;
   result: ProposalExecutorResult;
   logs: string;
 }
 /** EventLeaveGroup is an event emitted when group member leaves the group. */
 export interface EventLeaveGroup {
   /** group_id is the unique ID of the group. */
-  groupId: bigint;
+  groupId: Long;
   /** address is the account address of the group member. */
   address: string;
 }
@@ -127,13 +127,13 @@ export interface EventLeaveGroupProtoMsg {
 }
 /** EventLeaveGroup is an event emitted when group member leaves the group. */
 export interface EventLeaveGroupSDKType {
-  group_id: bigint;
+  group_id: Long;
   address: string;
 }
 /** EventProposalPruned is an event emitted when a proposal is pruned. */
 export interface EventProposalPruned {
   /** proposal_id is the unique ID of the proposal. */
-  proposalId: bigint;
+  proposalId: Long;
   /** status is the proposal status (UNSPECIFIED, SUBMITTED, ACCEPTED, REJECTED, ABORTED, WITHDRAWN). */
   status: ProposalStatus;
   /** tally_result is the proposal tally result (when applicable). */
@@ -145,32 +145,32 @@ export interface EventProposalPrunedProtoMsg {
 }
 /** EventProposalPruned is an event emitted when a proposal is pruned. */
 export interface EventProposalPrunedSDKType {
-  proposal_id: bigint;
+  proposal_id: Long;
   status: ProposalStatus;
   tally_result?: TallyResultSDKType;
 }
 function createBaseEventCreateGroup(): EventCreateGroup {
   return {
-    groupId: BigInt(0)
+    groupId: Long.UZERO
   };
 }
 export const EventCreateGroup = {
   typeUrl: "/cosmos.group.v1.EventCreateGroup",
-  encode(message: EventCreateGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.groupId !== BigInt(0)) {
+  encode(message: EventCreateGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.groupId.isZero()) {
       writer.uint32(8).uint64(message.groupId);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateGroup {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCreateGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCreateGroup();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.groupId = reader.uint64();
+          message.groupId = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -181,17 +181,17 @@ export const EventCreateGroup = {
   },
   fromJSON(object: any): EventCreateGroup {
     return {
-      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt(0)
+      groupId: isSet(object.groupId) ? Long.fromValue(object.groupId) : Long.UZERO
     };
   },
   toJSON(message: EventCreateGroup): unknown {
     const obj: any = {};
-    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt(0)).toString());
+    message.groupId !== undefined && (obj.groupId = (message.groupId || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventCreateGroup>, I>>(object: I): EventCreateGroup {
     const message = createBaseEventCreateGroup();
-    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt(0);
+    message.groupId = object.groupId !== undefined && object.groupId !== null ? Long.fromValue(object.groupId) : Long.UZERO;
     return message;
   },
   fromSDK(object: EventCreateGroupSDKType): EventCreateGroup {
@@ -207,7 +207,7 @@ export const EventCreateGroup = {
   fromAmino(object: EventCreateGroupAmino): EventCreateGroup {
     const message = createBaseEventCreateGroup();
     if (object.group_id !== undefined && object.group_id !== null) {
-      message.groupId = BigInt(object.group_id);
+      message.groupId = Long.fromString(object.group_id);
     }
     return message;
   },
@@ -240,26 +240,26 @@ export const EventCreateGroup = {
 };
 function createBaseEventUpdateGroup(): EventUpdateGroup {
   return {
-    groupId: BigInt(0)
+    groupId: Long.UZERO
   };
 }
 export const EventUpdateGroup = {
   typeUrl: "/cosmos.group.v1.EventUpdateGroup",
-  encode(message: EventUpdateGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.groupId !== BigInt(0)) {
+  encode(message: EventUpdateGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.groupId.isZero()) {
       writer.uint32(8).uint64(message.groupId);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateGroup {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventUpdateGroup();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.groupId = reader.uint64();
+          message.groupId = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -270,17 +270,17 @@ export const EventUpdateGroup = {
   },
   fromJSON(object: any): EventUpdateGroup {
     return {
-      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt(0)
+      groupId: isSet(object.groupId) ? Long.fromValue(object.groupId) : Long.UZERO
     };
   },
   toJSON(message: EventUpdateGroup): unknown {
     const obj: any = {};
-    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt(0)).toString());
+    message.groupId !== undefined && (obj.groupId = (message.groupId || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventUpdateGroup>, I>>(object: I): EventUpdateGroup {
     const message = createBaseEventUpdateGroup();
-    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt(0);
+    message.groupId = object.groupId !== undefined && object.groupId !== null ? Long.fromValue(object.groupId) : Long.UZERO;
     return message;
   },
   fromSDK(object: EventUpdateGroupSDKType): EventUpdateGroup {
@@ -296,7 +296,7 @@ export const EventUpdateGroup = {
   fromAmino(object: EventUpdateGroupAmino): EventUpdateGroup {
     const message = createBaseEventUpdateGroup();
     if (object.group_id !== undefined && object.group_id !== null) {
-      message.groupId = BigInt(object.group_id);
+      message.groupId = Long.fromString(object.group_id);
     }
     return message;
   },
@@ -334,14 +334,14 @@ function createBaseEventCreateGroupPolicy(): EventCreateGroupPolicy {
 }
 export const EventCreateGroupPolicy = {
   typeUrl: "/cosmos.group.v1.EventCreateGroupPolicy",
-  encode(message: EventCreateGroupPolicy, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventCreateGroupPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateGroupPolicy {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCreateGroupPolicy {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCreateGroupPolicy();
     while (reader.pos < end) {
@@ -423,14 +423,14 @@ function createBaseEventUpdateGroupPolicy(): EventUpdateGroupPolicy {
 }
 export const EventUpdateGroupPolicy = {
   typeUrl: "/cosmos.group.v1.EventUpdateGroupPolicy",
-  encode(message: EventUpdateGroupPolicy, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventUpdateGroupPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateGroupPolicy {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateGroupPolicy {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventUpdateGroupPolicy();
     while (reader.pos < end) {
@@ -507,26 +507,26 @@ export const EventUpdateGroupPolicy = {
 };
 function createBaseEventSubmitProposal(): EventSubmitProposal {
   return {
-    proposalId: BigInt(0)
+    proposalId: Long.UZERO
   };
 }
 export const EventSubmitProposal = {
   typeUrl: "/cosmos.group.v1.EventSubmitProposal",
-  encode(message: EventSubmitProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.proposalId !== BigInt(0)) {
+  encode(message: EventSubmitProposal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.proposalId.isZero()) {
       writer.uint32(8).uint64(message.proposalId);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventSubmitProposal {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventSubmitProposal {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventSubmitProposal();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.proposalId = reader.uint64();
+          message.proposalId = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -537,17 +537,17 @@ export const EventSubmitProposal = {
   },
   fromJSON(object: any): EventSubmitProposal {
     return {
-      proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt(0)
+      proposalId: isSet(object.proposalId) ? Long.fromValue(object.proposalId) : Long.UZERO
     };
   },
   toJSON(message: EventSubmitProposal): unknown {
     const obj: any = {};
-    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
+    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventSubmitProposal>, I>>(object: I): EventSubmitProposal {
     const message = createBaseEventSubmitProposal();
-    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? BigInt(object.proposalId.toString()) : BigInt(0);
+    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? Long.fromValue(object.proposalId) : Long.UZERO;
     return message;
   },
   fromSDK(object: EventSubmitProposalSDKType): EventSubmitProposal {
@@ -563,7 +563,7 @@ export const EventSubmitProposal = {
   fromAmino(object: EventSubmitProposalAmino): EventSubmitProposal {
     const message = createBaseEventSubmitProposal();
     if (object.proposal_id !== undefined && object.proposal_id !== null) {
-      message.proposalId = BigInt(object.proposal_id);
+      message.proposalId = Long.fromString(object.proposal_id);
     }
     return message;
   },
@@ -596,26 +596,26 @@ export const EventSubmitProposal = {
 };
 function createBaseEventWithdrawProposal(): EventWithdrawProposal {
   return {
-    proposalId: BigInt(0)
+    proposalId: Long.UZERO
   };
 }
 export const EventWithdrawProposal = {
   typeUrl: "/cosmos.group.v1.EventWithdrawProposal",
-  encode(message: EventWithdrawProposal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.proposalId !== BigInt(0)) {
+  encode(message: EventWithdrawProposal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.proposalId.isZero()) {
       writer.uint32(8).uint64(message.proposalId);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventWithdrawProposal {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventWithdrawProposal {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventWithdrawProposal();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.proposalId = reader.uint64();
+          message.proposalId = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -626,17 +626,17 @@ export const EventWithdrawProposal = {
   },
   fromJSON(object: any): EventWithdrawProposal {
     return {
-      proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt(0)
+      proposalId: isSet(object.proposalId) ? Long.fromValue(object.proposalId) : Long.UZERO
     };
   },
   toJSON(message: EventWithdrawProposal): unknown {
     const obj: any = {};
-    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
+    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventWithdrawProposal>, I>>(object: I): EventWithdrawProposal {
     const message = createBaseEventWithdrawProposal();
-    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? BigInt(object.proposalId.toString()) : BigInt(0);
+    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? Long.fromValue(object.proposalId) : Long.UZERO;
     return message;
   },
   fromSDK(object: EventWithdrawProposalSDKType): EventWithdrawProposal {
@@ -652,7 +652,7 @@ export const EventWithdrawProposal = {
   fromAmino(object: EventWithdrawProposalAmino): EventWithdrawProposal {
     const message = createBaseEventWithdrawProposal();
     if (object.proposal_id !== undefined && object.proposal_id !== null) {
-      message.proposalId = BigInt(object.proposal_id);
+      message.proposalId = Long.fromString(object.proposal_id);
     }
     return message;
   },
@@ -685,26 +685,26 @@ export const EventWithdrawProposal = {
 };
 function createBaseEventVote(): EventVote {
   return {
-    proposalId: BigInt(0)
+    proposalId: Long.UZERO
   };
 }
 export const EventVote = {
   typeUrl: "/cosmos.group.v1.EventVote",
-  encode(message: EventVote, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.proposalId !== BigInt(0)) {
+  encode(message: EventVote, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.proposalId.isZero()) {
       writer.uint32(8).uint64(message.proposalId);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventVote {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventVote {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventVote();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.proposalId = reader.uint64();
+          message.proposalId = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -715,17 +715,17 @@ export const EventVote = {
   },
   fromJSON(object: any): EventVote {
     return {
-      proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt(0)
+      proposalId: isSet(object.proposalId) ? Long.fromValue(object.proposalId) : Long.UZERO
     };
   },
   toJSON(message: EventVote): unknown {
     const obj: any = {};
-    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
+    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventVote>, I>>(object: I): EventVote {
     const message = createBaseEventVote();
-    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? BigInt(object.proposalId.toString()) : BigInt(0);
+    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? Long.fromValue(object.proposalId) : Long.UZERO;
     return message;
   },
   fromSDK(object: EventVoteSDKType): EventVote {
@@ -741,7 +741,7 @@ export const EventVote = {
   fromAmino(object: EventVoteAmino): EventVote {
     const message = createBaseEventVote();
     if (object.proposal_id !== undefined && object.proposal_id !== null) {
-      message.proposalId = BigInt(object.proposal_id);
+      message.proposalId = Long.fromString(object.proposal_id);
     }
     return message;
   },
@@ -774,15 +774,15 @@ export const EventVote = {
 };
 function createBaseEventExec(): EventExec {
   return {
-    proposalId: BigInt(0),
+    proposalId: Long.UZERO,
     result: 0,
     logs: ""
   };
 }
 export const EventExec = {
   typeUrl: "/cosmos.group.v1.EventExec",
-  encode(message: EventExec, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.proposalId !== BigInt(0)) {
+  encode(message: EventExec, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.proposalId.isZero()) {
       writer.uint32(8).uint64(message.proposalId);
     }
     if (message.result !== 0) {
@@ -793,15 +793,15 @@ export const EventExec = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventExec {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventExec {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventExec();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.proposalId = reader.uint64();
+          message.proposalId = (reader.uint64() as Long);
           break;
         case 2:
           message.result = (reader.int32() as any);
@@ -818,21 +818,21 @@ export const EventExec = {
   },
   fromJSON(object: any): EventExec {
     return {
-      proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt(0),
+      proposalId: isSet(object.proposalId) ? Long.fromValue(object.proposalId) : Long.UZERO,
       result: isSet(object.result) ? proposalExecutorResultFromJSON(object.result) : -1,
       logs: isSet(object.logs) ? String(object.logs) : ""
     };
   },
   toJSON(message: EventExec): unknown {
     const obj: any = {};
-    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
+    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || Long.UZERO).toString());
     message.result !== undefined && (obj.result = proposalExecutorResultToJSON(message.result));
     message.logs !== undefined && (obj.logs = message.logs);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventExec>, I>>(object: I): EventExec {
     const message = createBaseEventExec();
-    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? BigInt(object.proposalId.toString()) : BigInt(0);
+    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? Long.fromValue(object.proposalId) : Long.UZERO;
     message.result = object.result ?? 0;
     message.logs = object.logs ?? "";
     return message;
@@ -854,7 +854,7 @@ export const EventExec = {
   fromAmino(object: EventExecAmino): EventExec {
     const message = createBaseEventExec();
     if (object.proposal_id !== undefined && object.proposal_id !== null) {
-      message.proposalId = BigInt(object.proposal_id);
+      message.proposalId = Long.fromString(object.proposal_id);
     }
     if (object.result !== undefined && object.result !== null) {
       message.result = proposalExecutorResultFromJSON(object.result);
@@ -895,14 +895,14 @@ export const EventExec = {
 };
 function createBaseEventLeaveGroup(): EventLeaveGroup {
   return {
-    groupId: BigInt(0),
+    groupId: Long.UZERO,
     address: ""
   };
 }
 export const EventLeaveGroup = {
   typeUrl: "/cosmos.group.v1.EventLeaveGroup",
-  encode(message: EventLeaveGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.groupId !== BigInt(0)) {
+  encode(message: EventLeaveGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.groupId.isZero()) {
       writer.uint32(8).uint64(message.groupId);
     }
     if (message.address !== "") {
@@ -910,15 +910,15 @@ export const EventLeaveGroup = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventLeaveGroup {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventLeaveGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventLeaveGroup();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.groupId = reader.uint64();
+          message.groupId = (reader.uint64() as Long);
           break;
         case 2:
           message.address = reader.string();
@@ -932,19 +932,19 @@ export const EventLeaveGroup = {
   },
   fromJSON(object: any): EventLeaveGroup {
     return {
-      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt(0),
+      groupId: isSet(object.groupId) ? Long.fromValue(object.groupId) : Long.UZERO,
       address: isSet(object.address) ? String(object.address) : ""
     };
   },
   toJSON(message: EventLeaveGroup): unknown {
     const obj: any = {};
-    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt(0)).toString());
+    message.groupId !== undefined && (obj.groupId = (message.groupId || Long.UZERO).toString());
     message.address !== undefined && (obj.address = message.address);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventLeaveGroup>, I>>(object: I): EventLeaveGroup {
     const message = createBaseEventLeaveGroup();
-    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt(0);
+    message.groupId = object.groupId !== undefined && object.groupId !== null ? Long.fromValue(object.groupId) : Long.UZERO;
     message.address = object.address ?? "";
     return message;
   },
@@ -963,7 +963,7 @@ export const EventLeaveGroup = {
   fromAmino(object: EventLeaveGroupAmino): EventLeaveGroup {
     const message = createBaseEventLeaveGroup();
     if (object.group_id !== undefined && object.group_id !== null) {
-      message.groupId = BigInt(object.group_id);
+      message.groupId = Long.fromString(object.group_id);
     }
     if (object.address !== undefined && object.address !== null) {
       message.address = object.address;
@@ -1000,15 +1000,15 @@ export const EventLeaveGroup = {
 };
 function createBaseEventProposalPruned(): EventProposalPruned {
   return {
-    proposalId: BigInt(0),
+    proposalId: Long.UZERO,
     status: 0,
     tallyResult: undefined
   };
 }
 export const EventProposalPruned = {
   typeUrl: "/cosmos.group.v1.EventProposalPruned",
-  encode(message: EventProposalPruned, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.proposalId !== BigInt(0)) {
+  encode(message: EventProposalPruned, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.proposalId.isZero()) {
       writer.uint32(8).uint64(message.proposalId);
     }
     if (message.status !== 0) {
@@ -1019,15 +1019,15 @@ export const EventProposalPruned = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventProposalPruned {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventProposalPruned {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventProposalPruned();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.proposalId = reader.uint64();
+          message.proposalId = (reader.uint64() as Long);
           break;
         case 2:
           message.status = (reader.int32() as any);
@@ -1044,21 +1044,21 @@ export const EventProposalPruned = {
   },
   fromJSON(object: any): EventProposalPruned {
     return {
-      proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt(0),
+      proposalId: isSet(object.proposalId) ? Long.fromValue(object.proposalId) : Long.UZERO,
       status: isSet(object.status) ? proposalStatusFromJSON(object.status) : -1,
       tallyResult: isSet(object.tallyResult) ? TallyResult.fromJSON(object.tallyResult) : undefined
     };
   },
   toJSON(message: EventProposalPruned): unknown {
     const obj: any = {};
-    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
+    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || Long.UZERO).toString());
     message.status !== undefined && (obj.status = proposalStatusToJSON(message.status));
     message.tallyResult !== undefined && (obj.tallyResult = message.tallyResult ? TallyResult.toJSON(message.tallyResult) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventProposalPruned>, I>>(object: I): EventProposalPruned {
     const message = createBaseEventProposalPruned();
-    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? BigInt(object.proposalId.toString()) : BigInt(0);
+    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? Long.fromValue(object.proposalId) : Long.UZERO;
     message.status = object.status ?? 0;
     message.tallyResult = object.tallyResult !== undefined && object.tallyResult !== null ? TallyResult.fromPartial(object.tallyResult) : undefined;
     return message;
@@ -1080,7 +1080,7 @@ export const EventProposalPruned = {
   fromAmino(object: EventProposalPrunedAmino): EventProposalPruned {
     const message = createBaseEventProposalPruned();
     if (object.proposal_id !== undefined && object.proposal_id !== null) {
-      message.proposalId = BigInt(object.proposal_id);
+      message.proposalId = Long.fromString(object.proposal_id);
     }
     if (object.status !== undefined && object.status !== null) {
       message.status = proposalStatusFromJSON(object.status);

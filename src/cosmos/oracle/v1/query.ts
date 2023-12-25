@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Params, ParamsSDKType, RelayInterval, RelayIntervalSDKType } from "./oracle";
-import { BinaryReader, BinaryWriter } from "../../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.oracle.v1";
 /** ClaimSrcChain defines the src chain of a claim */
@@ -98,11 +98,11 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
 }
 export const QueryParamsRequest = {
   typeUrl: "/cosmos.oracle.v1.QueryParamsRequest",
-  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -170,14 +170,14 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
 }
 export const QueryParamsResponse = {
   typeUrl: "/cosmos.oracle.v1.QueryParamsResponse",
-  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -259,14 +259,14 @@ function createBaseQueryInturnRelayerRequest(): QueryInturnRelayerRequest {
 }
 export const QueryInturnRelayerRequest = {
   typeUrl: "/cosmos.oracle.v1.QueryInturnRelayerRequest",
-  encode(message: QueryInturnRelayerRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryInturnRelayerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.claimSrcChain !== 0) {
       writer.uint32(8).int32(message.claimSrcChain);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryInturnRelayerRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryInturnRelayerRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryInturnRelayerRequest();
     while (reader.pos < end) {
@@ -349,7 +349,7 @@ function createBaseQueryInturnRelayerResponse(): QueryInturnRelayerResponse {
 }
 export const QueryInturnRelayerResponse = {
   typeUrl: "/cosmos.oracle.v1.QueryInturnRelayerResponse",
-  encode(message: QueryInturnRelayerResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryInturnRelayerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.blsPubKey !== "") {
       writer.uint32(10).string(message.blsPubKey);
     }
@@ -358,8 +358,8 @@ export const QueryInturnRelayerResponse = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryInturnRelayerResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryInturnRelayerResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryInturnRelayerResponse();
     while (reader.pos < end) {
@@ -463,11 +463,11 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.oracle.v1.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
   InturnRelayer(request: QueryInturnRelayerRequest): Promise<QueryInturnRelayerResponse> {
     const data = QueryInturnRelayerRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.oracle.v1.Query", "InturnRelayer", data);
-    return promise.then(data => QueryInturnRelayerResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryInturnRelayerResponse.decode(new _m0.Reader(data)));
   }
 }

@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { isSet, DeepPartial, Exact } from "../../helpers";
+import { Long, isSet, DeepPartial, Exact } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.virtualgroup";
 /** Params defines the parameters for the module. */
 export interface Params {
@@ -14,7 +14,7 @@ export interface Params {
   /** the max number of gvg which can exist in a family */
   maxGlobalVirtualGroupNumPerFamily: number;
   /** if the store size reach the exceed, the family is not allowed to sever more buckets */
-  maxStoreSizePerFamily: bigint;
+  maxStoreSizePerFamily: Long;
 }
 export interface ParamsProtoMsg {
   typeUrl: "/greenfield.virtualgroup.Params";
@@ -26,7 +26,7 @@ export interface ParamsSDKType {
   gvg_staking_per_bytes: string;
   max_local_virtual_group_num_per_bucket: number;
   max_global_virtual_group_num_per_family: number;
-  max_store_size_per_family: bigint;
+  max_store_size_per_family: Long;
 }
 function createBaseParams(): Params {
   return {
@@ -34,12 +34,12 @@ function createBaseParams(): Params {
     gvgStakingPerBytes: "",
     maxLocalVirtualGroupNumPerBucket: 0,
     maxGlobalVirtualGroupNumPerFamily: 0,
-    maxStoreSizePerFamily: BigInt(0)
+    maxStoreSizePerFamily: Long.UZERO
   };
 }
 export const Params = {
   typeUrl: "/greenfield.virtualgroup.Params",
-  encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.depositDenom !== "") {
       writer.uint32(10).string(message.depositDenom);
     }
@@ -52,13 +52,13 @@ export const Params = {
     if (message.maxGlobalVirtualGroupNumPerFamily !== 0) {
       writer.uint32(32).uint32(message.maxGlobalVirtualGroupNumPerFamily);
     }
-    if (message.maxStoreSizePerFamily !== BigInt(0)) {
+    if (!message.maxStoreSizePerFamily.isZero()) {
       writer.uint32(40).uint64(message.maxStoreSizePerFamily);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Params {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
@@ -77,7 +77,7 @@ export const Params = {
           message.maxGlobalVirtualGroupNumPerFamily = reader.uint32();
           break;
         case 5:
-          message.maxStoreSizePerFamily = reader.uint64();
+          message.maxStoreSizePerFamily = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -92,7 +92,7 @@ export const Params = {
       gvgStakingPerBytes: isSet(object.gvgStakingPerBytes) ? String(object.gvgStakingPerBytes) : "",
       maxLocalVirtualGroupNumPerBucket: isSet(object.maxLocalVirtualGroupNumPerBucket) ? Number(object.maxLocalVirtualGroupNumPerBucket) : 0,
       maxGlobalVirtualGroupNumPerFamily: isSet(object.maxGlobalVirtualGroupNumPerFamily) ? Number(object.maxGlobalVirtualGroupNumPerFamily) : 0,
-      maxStoreSizePerFamily: isSet(object.maxStoreSizePerFamily) ? BigInt(object.maxStoreSizePerFamily.toString()) : BigInt(0)
+      maxStoreSizePerFamily: isSet(object.maxStoreSizePerFamily) ? Long.fromValue(object.maxStoreSizePerFamily) : Long.UZERO
     };
   },
   toJSON(message: Params): unknown {
@@ -101,7 +101,7 @@ export const Params = {
     message.gvgStakingPerBytes !== undefined && (obj.gvgStakingPerBytes = message.gvgStakingPerBytes);
     message.maxLocalVirtualGroupNumPerBucket !== undefined && (obj.maxLocalVirtualGroupNumPerBucket = Math.round(message.maxLocalVirtualGroupNumPerBucket));
     message.maxGlobalVirtualGroupNumPerFamily !== undefined && (obj.maxGlobalVirtualGroupNumPerFamily = Math.round(message.maxGlobalVirtualGroupNumPerFamily));
-    message.maxStoreSizePerFamily !== undefined && (obj.maxStoreSizePerFamily = (message.maxStoreSizePerFamily || BigInt(0)).toString());
+    message.maxStoreSizePerFamily !== undefined && (obj.maxStoreSizePerFamily = (message.maxStoreSizePerFamily || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
@@ -110,7 +110,7 @@ export const Params = {
     message.gvgStakingPerBytes = object.gvgStakingPerBytes ?? "";
     message.maxLocalVirtualGroupNumPerBucket = object.maxLocalVirtualGroupNumPerBucket ?? 0;
     message.maxGlobalVirtualGroupNumPerFamily = object.maxGlobalVirtualGroupNumPerFamily ?? 0;
-    message.maxStoreSizePerFamily = object.maxStoreSizePerFamily !== undefined && object.maxStoreSizePerFamily !== null ? BigInt(object.maxStoreSizePerFamily.toString()) : BigInt(0);
+    message.maxStoreSizePerFamily = object.maxStoreSizePerFamily !== undefined && object.maxStoreSizePerFamily !== null ? Long.fromValue(object.maxStoreSizePerFamily) : Long.UZERO;
     return message;
   },
   fromSDK(object: ParamsSDKType): Params {
@@ -146,7 +146,7 @@ export const Params = {
       message.maxGlobalVirtualGroupNumPerFamily = object.max_global_virtual_group_num_per_family;
     }
     if (object.max_store_size_per_family !== undefined && object.max_store_size_per_family !== null) {
-      message.maxStoreSizePerFamily = BigInt(object.max_store_size_per_family);
+      message.maxStoreSizePerFamily = Long.fromString(object.max_store_size_per_family);
     }
     return message;
   },

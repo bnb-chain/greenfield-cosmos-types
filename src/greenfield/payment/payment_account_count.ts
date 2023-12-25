@@ -1,14 +1,14 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { isSet, DeepPartial, Exact } from "../../helpers";
+import { Long, isSet, DeepPartial, Exact } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.payment";
 /** PaymentAccountCount defines the state struct which stores the number of payment accounts for an account */
 export interface PaymentAccountCount {
   /** owner is the account address */
   owner: string;
   /** count is the number of payment accounts for the account */
-  count: bigint;
+  count: Long;
 }
 export interface PaymentAccountCountProtoMsg {
   typeUrl: "/greenfield.payment.PaymentAccountCount";
@@ -17,27 +17,27 @@ export interface PaymentAccountCountProtoMsg {
 /** PaymentAccountCount defines the state struct which stores the number of payment accounts for an account */
 export interface PaymentAccountCountSDKType {
   owner: string;
-  count: bigint;
+  count: Long;
 }
 function createBasePaymentAccountCount(): PaymentAccountCount {
   return {
     owner: "",
-    count: BigInt(0)
+    count: Long.UZERO
   };
 }
 export const PaymentAccountCount = {
   typeUrl: "/greenfield.payment.PaymentAccountCount",
-  encode(message: PaymentAccountCount, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: PaymentAccountCount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
-    if (message.count !== BigInt(0)) {
+    if (!message.count.isZero()) {
       writer.uint32(16).uint64(message.count);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): PaymentAccountCount {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): PaymentAccountCount {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePaymentAccountCount();
     while (reader.pos < end) {
@@ -47,7 +47,7 @@ export const PaymentAccountCount = {
           message.owner = reader.string();
           break;
         case 2:
-          message.count = reader.uint64();
+          message.count = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -59,19 +59,19 @@ export const PaymentAccountCount = {
   fromJSON(object: any): PaymentAccountCount {
     return {
       owner: isSet(object.owner) ? String(object.owner) : "",
-      count: isSet(object.count) ? BigInt(object.count.toString()) : BigInt(0)
+      count: isSet(object.count) ? Long.fromValue(object.count) : Long.UZERO
     };
   },
   toJSON(message: PaymentAccountCount): unknown {
     const obj: any = {};
     message.owner !== undefined && (obj.owner = message.owner);
-    message.count !== undefined && (obj.count = (message.count || BigInt(0)).toString());
+    message.count !== undefined && (obj.count = (message.count || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<PaymentAccountCount>, I>>(object: I): PaymentAccountCount {
     const message = createBasePaymentAccountCount();
     message.owner = object.owner ?? "";
-    message.count = object.count !== undefined && object.count !== null ? BigInt(object.count.toString()) : BigInt(0);
+    message.count = object.count !== undefined && object.count !== null ? Long.fromValue(object.count) : Long.UZERO;
     return message;
   },
   fromSDK(object: PaymentAccountCountSDKType): PaymentAccountCount {
@@ -92,7 +92,7 @@ export const PaymentAccountCount = {
       message.owner = object.owner;
     }
     if (object.count !== undefined && object.count !== null) {
-      message.count = BigInt(object.count);
+      message.count = Long.fromString(object.count);
     }
     return message;
   },

@@ -2,8 +2,8 @@
 /* eslint-disable */
 import { Params, ParamsSDKType } from "./params";
 import { AttestedChallenge, AttestedChallengeSDKType } from "./types";
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
+import { Long, DeepPartial, Exact, isSet, Rpc } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.challenge";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
@@ -29,7 +29,7 @@ export interface QueryParamsResponseSDKType {
 /** QueryAttestedChallengeRequest is request type for the Query/AttestedChallenge RPC method. */
 export interface QueryAttestedChallengeRequest {
   /** The id of the challenge. */
-  challengeId: bigint;
+  challengeId: Long;
 }
 export interface QueryAttestedChallengeRequestProtoMsg {
   typeUrl: "/greenfield.challenge.QueryAttestedChallengeRequest";
@@ -37,7 +37,7 @@ export interface QueryAttestedChallengeRequestProtoMsg {
 }
 /** QueryAttestedChallengeRequest is request type for the Query/AttestedChallenge RPC method. */
 export interface QueryAttestedChallengeRequestSDKType {
-  challenge_id: bigint;
+  challenge_id: Long;
 }
 /** QueryAttestedChallengeResponse is response type for the Query/AttestedChallenge RPC method. */
 export interface QueryAttestedChallengeResponse {
@@ -95,8 +95,8 @@ export interface QueryInturnAttestationSubmitterResponseSDKType {
 }
 /** SubmitInterval holds start and end (exclusive) (i.e., [start, end)) time of in turn attestation. */
 export interface SubmitInterval {
-  start: bigint;
-  end: bigint;
+  start: Long;
+  end: Long;
 }
 export interface SubmitIntervalProtoMsg {
   typeUrl: "/greenfield.challenge.SubmitInterval";
@@ -104,19 +104,19 @@ export interface SubmitIntervalProtoMsg {
 }
 /** SubmitInterval holds start and end (exclusive) (i.e., [start, end)) time of in turn attestation. */
 export interface SubmitIntervalSDKType {
-  start: bigint;
-  end: bigint;
+  start: Long;
+  end: Long;
 }
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
 export const QueryParamsRequest = {
   typeUrl: "/greenfield.challenge.QueryParamsRequest",
-  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -178,14 +178,14 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
 }
 export const QueryParamsResponse = {
   typeUrl: "/greenfield.challenge.QueryParamsResponse",
-  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -256,26 +256,26 @@ export const QueryParamsResponse = {
 };
 function createBaseQueryAttestedChallengeRequest(): QueryAttestedChallengeRequest {
   return {
-    challengeId: BigInt(0)
+    challengeId: Long.UZERO
   };
 }
 export const QueryAttestedChallengeRequest = {
   typeUrl: "/greenfield.challenge.QueryAttestedChallengeRequest",
-  encode(message: QueryAttestedChallengeRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.challengeId !== BigInt(0)) {
+  encode(message: QueryAttestedChallengeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.challengeId.isZero()) {
       writer.uint32(8).uint64(message.challengeId);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryAttestedChallengeRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAttestedChallengeRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAttestedChallengeRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.challengeId = reader.uint64();
+          message.challengeId = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -286,17 +286,17 @@ export const QueryAttestedChallengeRequest = {
   },
   fromJSON(object: any): QueryAttestedChallengeRequest {
     return {
-      challengeId: isSet(object.challengeId) ? BigInt(object.challengeId.toString()) : BigInt(0)
+      challengeId: isSet(object.challengeId) ? Long.fromValue(object.challengeId) : Long.UZERO
     };
   },
   toJSON(message: QueryAttestedChallengeRequest): unknown {
     const obj: any = {};
-    message.challengeId !== undefined && (obj.challengeId = (message.challengeId || BigInt(0)).toString());
+    message.challengeId !== undefined && (obj.challengeId = (message.challengeId || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<QueryAttestedChallengeRequest>, I>>(object: I): QueryAttestedChallengeRequest {
     const message = createBaseQueryAttestedChallengeRequest();
-    message.challengeId = object.challengeId !== undefined && object.challengeId !== null ? BigInt(object.challengeId.toString()) : BigInt(0);
+    message.challengeId = object.challengeId !== undefined && object.challengeId !== null ? Long.fromValue(object.challengeId) : Long.UZERO;
     return message;
   },
   fromSDK(object: QueryAttestedChallengeRequestSDKType): QueryAttestedChallengeRequest {
@@ -312,7 +312,7 @@ export const QueryAttestedChallengeRequest = {
   fromAmino(object: QueryAttestedChallengeRequestAmino): QueryAttestedChallengeRequest {
     const message = createBaseQueryAttestedChallengeRequest();
     if (object.challenge_id !== undefined && object.challenge_id !== null) {
-      message.challengeId = BigInt(object.challenge_id);
+      message.challengeId = Long.fromString(object.challenge_id);
     }
     return message;
   },
@@ -344,14 +344,14 @@ function createBaseQueryAttestedChallengeResponse(): QueryAttestedChallengeRespo
 }
 export const QueryAttestedChallengeResponse = {
   typeUrl: "/greenfield.challenge.QueryAttestedChallengeResponse",
-  encode(message: QueryAttestedChallengeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryAttestedChallengeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.challenge !== undefined) {
       AttestedChallenge.encode(message.challenge, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryAttestedChallengeResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAttestedChallengeResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAttestedChallengeResponse();
     while (reader.pos < end) {
@@ -425,11 +425,11 @@ function createBaseQueryLatestAttestedChallengesRequest(): QueryLatestAttestedCh
 }
 export const QueryLatestAttestedChallengesRequest = {
   typeUrl: "/greenfield.challenge.QueryLatestAttestedChallengesRequest",
-  encode(_: QueryLatestAttestedChallengesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: QueryLatestAttestedChallengesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryLatestAttestedChallengesRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLatestAttestedChallengesRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryLatestAttestedChallengesRequest();
     while (reader.pos < end) {
@@ -491,14 +491,14 @@ function createBaseQueryLatestAttestedChallengesResponse(): QueryLatestAttestedC
 }
 export const QueryLatestAttestedChallengesResponse = {
   typeUrl: "/greenfield.challenge.QueryLatestAttestedChallengesResponse",
-  encode(message: QueryLatestAttestedChallengesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryLatestAttestedChallengesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.challenges) {
       AttestedChallenge.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryLatestAttestedChallengesResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryLatestAttestedChallengesResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryLatestAttestedChallengesResponse();
     while (reader.pos < end) {
@@ -582,11 +582,11 @@ function createBaseQueryInturnAttestationSubmitterRequest(): QueryInturnAttestat
 }
 export const QueryInturnAttestationSubmitterRequest = {
   typeUrl: "/greenfield.challenge.QueryInturnAttestationSubmitterRequest",
-  encode(_: QueryInturnAttestationSubmitterRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: QueryInturnAttestationSubmitterRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryInturnAttestationSubmitterRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryInturnAttestationSubmitterRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryInturnAttestationSubmitterRequest();
     while (reader.pos < end) {
@@ -649,7 +649,7 @@ function createBaseQueryInturnAttestationSubmitterResponse(): QueryInturnAttesta
 }
 export const QueryInturnAttestationSubmitterResponse = {
   typeUrl: "/greenfield.challenge.QueryInturnAttestationSubmitterResponse",
-  encode(message: QueryInturnAttestationSubmitterResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryInturnAttestationSubmitterResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.blsPubKey !== "") {
       writer.uint32(10).string(message.blsPubKey);
     }
@@ -658,8 +658,8 @@ export const QueryInturnAttestationSubmitterResponse = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryInturnAttestationSubmitterResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryInturnAttestationSubmitterResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryInturnAttestationSubmitterResponse();
     while (reader.pos < end) {
@@ -742,33 +742,33 @@ export const QueryInturnAttestationSubmitterResponse = {
 };
 function createBaseSubmitInterval(): SubmitInterval {
   return {
-    start: BigInt(0),
-    end: BigInt(0)
+    start: Long.UZERO,
+    end: Long.UZERO
   };
 }
 export const SubmitInterval = {
   typeUrl: "/greenfield.challenge.SubmitInterval",
-  encode(message: SubmitInterval, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.start !== BigInt(0)) {
+  encode(message: SubmitInterval, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.start.isZero()) {
       writer.uint32(8).uint64(message.start);
     }
-    if (message.end !== BigInt(0)) {
+    if (!message.end.isZero()) {
       writer.uint32(16).uint64(message.end);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): SubmitInterval {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SubmitInterval {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSubmitInterval();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.start = reader.uint64();
+          message.start = (reader.uint64() as Long);
           break;
         case 2:
-          message.end = reader.uint64();
+          message.end = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -779,20 +779,20 @@ export const SubmitInterval = {
   },
   fromJSON(object: any): SubmitInterval {
     return {
-      start: isSet(object.start) ? BigInt(object.start.toString()) : BigInt(0),
-      end: isSet(object.end) ? BigInt(object.end.toString()) : BigInt(0)
+      start: isSet(object.start) ? Long.fromValue(object.start) : Long.UZERO,
+      end: isSet(object.end) ? Long.fromValue(object.end) : Long.UZERO
     };
   },
   toJSON(message: SubmitInterval): unknown {
     const obj: any = {};
-    message.start !== undefined && (obj.start = (message.start || BigInt(0)).toString());
-    message.end !== undefined && (obj.end = (message.end || BigInt(0)).toString());
+    message.start !== undefined && (obj.start = (message.start || Long.UZERO).toString());
+    message.end !== undefined && (obj.end = (message.end || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<SubmitInterval>, I>>(object: I): SubmitInterval {
     const message = createBaseSubmitInterval();
-    message.start = object.start !== undefined && object.start !== null ? BigInt(object.start.toString()) : BigInt(0);
-    message.end = object.end !== undefined && object.end !== null ? BigInt(object.end.toString()) : BigInt(0);
+    message.start = object.start !== undefined && object.start !== null ? Long.fromValue(object.start) : Long.UZERO;
+    message.end = object.end !== undefined && object.end !== null ? Long.fromValue(object.end) : Long.UZERO;
     return message;
   },
   fromSDK(object: SubmitIntervalSDKType): SubmitInterval {
@@ -810,10 +810,10 @@ export const SubmitInterval = {
   fromAmino(object: SubmitIntervalAmino): SubmitInterval {
     const message = createBaseSubmitInterval();
     if (object.start !== undefined && object.start !== null) {
-      message.start = BigInt(object.start);
+      message.start = Long.fromString(object.start);
     }
     if (object.end !== undefined && object.end !== null) {
-      message.end = BigInt(object.end);
+      message.end = Long.fromString(object.end);
     }
     return message;
   },
@@ -862,21 +862,21 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.challenge.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
   AttestedChallenge(request: QueryAttestedChallengeRequest): Promise<QueryAttestedChallengeResponse> {
     const data = QueryAttestedChallengeRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.challenge.Query", "AttestedChallenge", data);
-    return promise.then(data => QueryAttestedChallengeResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryAttestedChallengeResponse.decode(new _m0.Reader(data)));
   }
   LatestAttestedChallenges(request: QueryLatestAttestedChallengesRequest = {}): Promise<QueryLatestAttestedChallengesResponse> {
     const data = QueryLatestAttestedChallengesRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.challenge.Query", "LatestAttestedChallenges", data);
-    return promise.then(data => QueryLatestAttestedChallengesResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryLatestAttestedChallengesResponse.decode(new _m0.Reader(data)));
   }
   InturnAttestationSubmitter(request: QueryInturnAttestationSubmitterRequest = {}): Promise<QueryInturnAttestationSubmitterResponse> {
     const data = QueryInturnAttestationSubmitterRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.challenge.Query", "InturnAttestationSubmitter", data);
-    return promise.then(data => QueryInturnAttestationSubmitterResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryInturnAttestationSubmitterResponse.decode(new _m0.Reader(data)));
   }
 }

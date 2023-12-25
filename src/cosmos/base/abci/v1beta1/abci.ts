@@ -2,8 +2,8 @@
 /* eslint-disable */
 import { Any, AnySDKType } from "../../../../google/protobuf/any";
 import { Event, EventSDKType } from "../../../../tendermint/abci/types";
-import { BinaryReader, BinaryWriter } from "../../../../binary";
-import { isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.base.abci.v1beta1";
 /**
  * TxResponse defines a structure containing relevant tx data and metadata. The
@@ -11,7 +11,7 @@ export const protobufPackage = "cosmos.base.abci.v1beta1";
  */
 export interface TxResponse {
   /** The block height */
-  height: bigint;
+  height: Long;
   /** The transaction hash. */
   txhash: string;
   /** Namespace for the Code */
@@ -30,9 +30,9 @@ export interface TxResponse {
   /** Additional information. May be non-deterministic. */
   info: string;
   /** Amount of gas requested for transaction. */
-  gasWanted: bigint;
+  gasWanted: Long;
   /** Amount of gas consumed by transaction. */
-  gasUsed: bigint;
+  gasUsed: Long;
   /** The request transaction bytes. */
   tx?: Any;
   /**
@@ -60,7 +60,7 @@ export interface TxResponseProtoMsg {
  * tags are stringified and the log is JSON decoded.
  */
 export interface TxResponseSDKType {
-  height: bigint;
+  height: Long;
   txhash: string;
   codespace: string;
   code: number;
@@ -68,8 +68,8 @@ export interface TxResponseSDKType {
   raw_log: string;
   logs: ABCIMessageLogSDKType[];
   info: string;
-  gas_wanted: bigint;
-  gas_used: bigint;
+  gas_wanted: Long;
+  gas_used: Long;
   tx?: AnySDKType;
   timestamp: string;
   events: EventSDKType[];
@@ -137,13 +137,13 @@ export interface AttributeSDKType {
 /** GasInfo defines tx execution gas context. */
 export interface GasInfo {
   /** GasWanted is the maximum units of work we allow this tx to perform. */
-  gasWanted: bigint;
+  gasWanted: Long;
   /** GasUsed is the amount of gas actually consumed. */
-  gasUsed: bigint;
+  gasUsed: Long;
   /** MinGasPrice are the min gas price. */
   minGasPrice: string;
   /** RWUsed is the amount of r/w actually consumed. */
-  rwUsed: bigint;
+  rwUsed: Long;
 }
 export interface GasInfoProtoMsg {
   typeUrl: "/cosmos.base.abci.v1beta1.GasInfo";
@@ -151,10 +151,10 @@ export interface GasInfoProtoMsg {
 }
 /** GasInfo defines tx execution gas context. */
 export interface GasInfoSDKType {
-  gas_wanted: bigint;
-  gas_used: bigint;
+  gas_wanted: Long;
+  gas_used: Long;
   min_gas_price: string;
-  rw_used: bigint;
+  rw_used: Long;
 }
 /** Result is the union of ResponseFormat and ResponseCheckTx. */
 export interface Result {
@@ -268,15 +268,15 @@ export interface TxMsgDataSDKType {
 /** SearchTxsResult defines a structure for querying txs pageable */
 export interface SearchTxsResult {
   /** Count of all txs */
-  totalCount: bigint;
+  totalCount: Long;
   /** Count of txs in current page */
-  count: bigint;
+  count: Long;
   /** Index of current page, start from 1 */
-  pageNumber: bigint;
+  pageNumber: Long;
   /** Count of total pages */
-  pageTotal: bigint;
+  pageTotal: Long;
   /** Max count txs per page */
-  limit: bigint;
+  limit: Long;
   /** List of txs in current page */
   txs: TxResponse[];
 }
@@ -286,16 +286,16 @@ export interface SearchTxsResultProtoMsg {
 }
 /** SearchTxsResult defines a structure for querying txs pageable */
 export interface SearchTxsResultSDKType {
-  total_count: bigint;
-  count: bigint;
-  page_number: bigint;
-  page_total: bigint;
-  limit: bigint;
+  total_count: Long;
+  count: Long;
+  page_number: Long;
+  page_total: Long;
+  limit: Long;
   txs: TxResponseSDKType[];
 }
 function createBaseTxResponse(): TxResponse {
   return {
-    height: BigInt(0),
+    height: Long.ZERO,
     txhash: "",
     codespace: "",
     code: 0,
@@ -303,8 +303,8 @@ function createBaseTxResponse(): TxResponse {
     rawLog: "",
     logs: [],
     info: "",
-    gasWanted: BigInt(0),
-    gasUsed: BigInt(0),
+    gasWanted: Long.ZERO,
+    gasUsed: Long.ZERO,
     tx: undefined,
     timestamp: "",
     events: []
@@ -312,8 +312,8 @@ function createBaseTxResponse(): TxResponse {
 }
 export const TxResponse = {
   typeUrl: "/cosmos.base.abci.v1beta1.TxResponse",
-  encode(message: TxResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.height !== BigInt(0)) {
+  encode(message: TxResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.height.isZero()) {
       writer.uint32(8).int64(message.height);
     }
     if (message.txhash !== "") {
@@ -337,10 +337,10 @@ export const TxResponse = {
     if (message.info !== "") {
       writer.uint32(66).string(message.info);
     }
-    if (message.gasWanted !== BigInt(0)) {
+    if (!message.gasWanted.isZero()) {
       writer.uint32(72).int64(message.gasWanted);
     }
-    if (message.gasUsed !== BigInt(0)) {
+    if (!message.gasUsed.isZero()) {
       writer.uint32(80).int64(message.gasUsed);
     }
     if (message.tx !== undefined) {
@@ -354,15 +354,15 @@ export const TxResponse = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): TxResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): TxResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTxResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.height = reader.int64();
+          message.height = (reader.int64() as Long);
           break;
         case 2:
           message.txhash = reader.string();
@@ -386,10 +386,10 @@ export const TxResponse = {
           message.info = reader.string();
           break;
         case 9:
-          message.gasWanted = reader.int64();
+          message.gasWanted = (reader.int64() as Long);
           break;
         case 10:
-          message.gasUsed = reader.int64();
+          message.gasUsed = (reader.int64() as Long);
           break;
         case 11:
           message.tx = Any.decode(reader, reader.uint32());
@@ -409,7 +409,7 @@ export const TxResponse = {
   },
   fromJSON(object: any): TxResponse {
     return {
-      height: isSet(object.height) ? BigInt(object.height.toString()) : BigInt(0),
+      height: isSet(object.height) ? Long.fromValue(object.height) : Long.ZERO,
       txhash: isSet(object.txhash) ? String(object.txhash) : "",
       codespace: isSet(object.codespace) ? String(object.codespace) : "",
       code: isSet(object.code) ? Number(object.code) : 0,
@@ -417,8 +417,8 @@ export const TxResponse = {
       rawLog: isSet(object.rawLog) ? String(object.rawLog) : "",
       logs: Array.isArray(object?.logs) ? object.logs.map((e: any) => ABCIMessageLog.fromJSON(e)) : [],
       info: isSet(object.info) ? String(object.info) : "",
-      gasWanted: isSet(object.gasWanted) ? BigInt(object.gasWanted.toString()) : BigInt(0),
-      gasUsed: isSet(object.gasUsed) ? BigInt(object.gasUsed.toString()) : BigInt(0),
+      gasWanted: isSet(object.gasWanted) ? Long.fromValue(object.gasWanted) : Long.ZERO,
+      gasUsed: isSet(object.gasUsed) ? Long.fromValue(object.gasUsed) : Long.ZERO,
       tx: isSet(object.tx) ? Any.fromJSON(object.tx) : undefined,
       timestamp: isSet(object.timestamp) ? String(object.timestamp) : "",
       events: Array.isArray(object?.events) ? object.events.map((e: any) => Event.fromJSON(e)) : []
@@ -426,7 +426,7 @@ export const TxResponse = {
   },
   toJSON(message: TxResponse): unknown {
     const obj: any = {};
-    message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
+    message.height !== undefined && (obj.height = (message.height || Long.ZERO).toString());
     message.txhash !== undefined && (obj.txhash = message.txhash);
     message.codespace !== undefined && (obj.codespace = message.codespace);
     message.code !== undefined && (obj.code = Math.round(message.code));
@@ -438,8 +438,8 @@ export const TxResponse = {
       obj.logs = [];
     }
     message.info !== undefined && (obj.info = message.info);
-    message.gasWanted !== undefined && (obj.gasWanted = (message.gasWanted || BigInt(0)).toString());
-    message.gasUsed !== undefined && (obj.gasUsed = (message.gasUsed || BigInt(0)).toString());
+    message.gasWanted !== undefined && (obj.gasWanted = (message.gasWanted || Long.ZERO).toString());
+    message.gasUsed !== undefined && (obj.gasUsed = (message.gasUsed || Long.ZERO).toString());
     message.tx !== undefined && (obj.tx = message.tx ? Any.toJSON(message.tx) : undefined);
     message.timestamp !== undefined && (obj.timestamp = message.timestamp);
     if (message.events) {
@@ -451,7 +451,7 @@ export const TxResponse = {
   },
   fromPartial<I extends Exact<DeepPartial<TxResponse>, I>>(object: I): TxResponse {
     const message = createBaseTxResponse();
-    message.height = object.height !== undefined && object.height !== null ? BigInt(object.height.toString()) : BigInt(0);
+    message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.ZERO;
     message.txhash = object.txhash ?? "";
     message.codespace = object.codespace ?? "";
     message.code = object.code ?? 0;
@@ -459,8 +459,8 @@ export const TxResponse = {
     message.rawLog = object.rawLog ?? "";
     message.logs = object.logs?.map(e => ABCIMessageLog.fromPartial(e)) || [];
     message.info = object.info ?? "";
-    message.gasWanted = object.gasWanted !== undefined && object.gasWanted !== null ? BigInt(object.gasWanted.toString()) : BigInt(0);
-    message.gasUsed = object.gasUsed !== undefined && object.gasUsed !== null ? BigInt(object.gasUsed.toString()) : BigInt(0);
+    message.gasWanted = object.gasWanted !== undefined && object.gasWanted !== null ? Long.fromValue(object.gasWanted) : Long.ZERO;
+    message.gasUsed = object.gasUsed !== undefined && object.gasUsed !== null ? Long.fromValue(object.gasUsed) : Long.ZERO;
     message.tx = object.tx !== undefined && object.tx !== null ? Any.fromPartial(object.tx) : undefined;
     message.timestamp = object.timestamp ?? "";
     message.events = object.events?.map(e => Event.fromPartial(e)) || [];
@@ -511,7 +511,7 @@ export const TxResponse = {
   fromAmino(object: TxResponseAmino): TxResponse {
     const message = createBaseTxResponse();
     if (object.height !== undefined && object.height !== null) {
-      message.height = BigInt(object.height);
+      message.height = Long.fromString(object.height);
     }
     if (object.txhash !== undefined && object.txhash !== null) {
       message.txhash = object.txhash;
@@ -533,10 +533,10 @@ export const TxResponse = {
       message.info = object.info;
     }
     if (object.gas_wanted !== undefined && object.gas_wanted !== null) {
-      message.gasWanted = BigInt(object.gas_wanted);
+      message.gasWanted = Long.fromString(object.gas_wanted);
     }
     if (object.gas_used !== undefined && object.gas_used !== null) {
-      message.gasUsed = BigInt(object.gas_used);
+      message.gasUsed = Long.fromString(object.gas_used);
     }
     if (object.tx !== undefined && object.tx !== null) {
       message.tx = Any.fromAmino(object.tx);
@@ -603,7 +603,7 @@ function createBaseABCIMessageLog(): ABCIMessageLog {
 }
 export const ABCIMessageLog = {
   typeUrl: "/cosmos.base.abci.v1beta1.ABCIMessageLog",
-  encode(message: ABCIMessageLog, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: ABCIMessageLog, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.msgIndex !== 0) {
       writer.uint32(8).uint32(message.msgIndex);
     }
@@ -615,8 +615,8 @@ export const ABCIMessageLog = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): ABCIMessageLog {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): ABCIMessageLog {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseABCIMessageLog();
     while (reader.pos < end) {
@@ -733,7 +733,7 @@ function createBaseStringEvent(): StringEvent {
 }
 export const StringEvent = {
   typeUrl: "/cosmos.base.abci.v1beta1.StringEvent",
-  encode(message: StringEvent, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: StringEvent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.type !== "") {
       writer.uint32(10).string(message.type);
     }
@@ -742,8 +742,8 @@ export const StringEvent = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): StringEvent {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): StringEvent {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStringEvent();
     while (reader.pos < end) {
@@ -848,7 +848,7 @@ function createBaseAttribute(): Attribute {
 }
 export const Attribute = {
   typeUrl: "/cosmos.base.abci.v1beta1.Attribute",
-  encode(message: Attribute, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Attribute, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
@@ -857,8 +857,8 @@ export const Attribute = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Attribute {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Attribute {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAttribute();
     while (reader.pos < end) {
@@ -947,47 +947,47 @@ export const Attribute = {
 };
 function createBaseGasInfo(): GasInfo {
   return {
-    gasWanted: BigInt(0),
-    gasUsed: BigInt(0),
+    gasWanted: Long.UZERO,
+    gasUsed: Long.UZERO,
     minGasPrice: "",
-    rwUsed: BigInt(0)
+    rwUsed: Long.UZERO
   };
 }
 export const GasInfo = {
   typeUrl: "/cosmos.base.abci.v1beta1.GasInfo",
-  encode(message: GasInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.gasWanted !== BigInt(0)) {
+  encode(message: GasInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.gasWanted.isZero()) {
       writer.uint32(8).uint64(message.gasWanted);
     }
-    if (message.gasUsed !== BigInt(0)) {
+    if (!message.gasUsed.isZero()) {
       writer.uint32(16).uint64(message.gasUsed);
     }
     if (message.minGasPrice !== "") {
       writer.uint32(26).string(message.minGasPrice);
     }
-    if (message.rwUsed !== BigInt(0)) {
+    if (!message.rwUsed.isZero()) {
       writer.uint32(32).uint64(message.rwUsed);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): GasInfo {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GasInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGasInfo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.gasWanted = reader.uint64();
+          message.gasWanted = (reader.uint64() as Long);
           break;
         case 2:
-          message.gasUsed = reader.uint64();
+          message.gasUsed = (reader.uint64() as Long);
           break;
         case 3:
           message.minGasPrice = reader.string();
           break;
         case 4:
-          message.rwUsed = reader.uint64();
+          message.rwUsed = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -998,26 +998,26 @@ export const GasInfo = {
   },
   fromJSON(object: any): GasInfo {
     return {
-      gasWanted: isSet(object.gasWanted) ? BigInt(object.gasWanted.toString()) : BigInt(0),
-      gasUsed: isSet(object.gasUsed) ? BigInt(object.gasUsed.toString()) : BigInt(0),
+      gasWanted: isSet(object.gasWanted) ? Long.fromValue(object.gasWanted) : Long.UZERO,
+      gasUsed: isSet(object.gasUsed) ? Long.fromValue(object.gasUsed) : Long.UZERO,
       minGasPrice: isSet(object.minGasPrice) ? String(object.minGasPrice) : "",
-      rwUsed: isSet(object.rwUsed) ? BigInt(object.rwUsed.toString()) : BigInt(0)
+      rwUsed: isSet(object.rwUsed) ? Long.fromValue(object.rwUsed) : Long.UZERO
     };
   },
   toJSON(message: GasInfo): unknown {
     const obj: any = {};
-    message.gasWanted !== undefined && (obj.gasWanted = (message.gasWanted || BigInt(0)).toString());
-    message.gasUsed !== undefined && (obj.gasUsed = (message.gasUsed || BigInt(0)).toString());
+    message.gasWanted !== undefined && (obj.gasWanted = (message.gasWanted || Long.UZERO).toString());
+    message.gasUsed !== undefined && (obj.gasUsed = (message.gasUsed || Long.UZERO).toString());
     message.minGasPrice !== undefined && (obj.minGasPrice = message.minGasPrice);
-    message.rwUsed !== undefined && (obj.rwUsed = (message.rwUsed || BigInt(0)).toString());
+    message.rwUsed !== undefined && (obj.rwUsed = (message.rwUsed || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<GasInfo>, I>>(object: I): GasInfo {
     const message = createBaseGasInfo();
-    message.gasWanted = object.gasWanted !== undefined && object.gasWanted !== null ? BigInt(object.gasWanted.toString()) : BigInt(0);
-    message.gasUsed = object.gasUsed !== undefined && object.gasUsed !== null ? BigInt(object.gasUsed.toString()) : BigInt(0);
+    message.gasWanted = object.gasWanted !== undefined && object.gasWanted !== null ? Long.fromValue(object.gasWanted) : Long.UZERO;
+    message.gasUsed = object.gasUsed !== undefined && object.gasUsed !== null ? Long.fromValue(object.gasUsed) : Long.UZERO;
     message.minGasPrice = object.minGasPrice ?? "";
-    message.rwUsed = object.rwUsed !== undefined && object.rwUsed !== null ? BigInt(object.rwUsed.toString()) : BigInt(0);
+    message.rwUsed = object.rwUsed !== undefined && object.rwUsed !== null ? Long.fromValue(object.rwUsed) : Long.UZERO;
     return message;
   },
   fromSDK(object: GasInfoSDKType): GasInfo {
@@ -1039,16 +1039,16 @@ export const GasInfo = {
   fromAmino(object: GasInfoAmino): GasInfo {
     const message = createBaseGasInfo();
     if (object.gas_wanted !== undefined && object.gas_wanted !== null) {
-      message.gasWanted = BigInt(object.gas_wanted);
+      message.gasWanted = Long.fromString(object.gas_wanted);
     }
     if (object.gas_used !== undefined && object.gas_used !== null) {
-      message.gasUsed = BigInt(object.gas_used);
+      message.gasUsed = Long.fromString(object.gas_used);
     }
     if (object.min_gas_price !== undefined && object.min_gas_price !== null) {
       message.minGasPrice = object.min_gas_price;
     }
     if (object.rw_used !== undefined && object.rw_used !== null) {
-      message.rwUsed = BigInt(object.rw_used);
+      message.rwUsed = Long.fromString(object.rw_used);
     }
     return message;
   },
@@ -1092,7 +1092,7 @@ function createBaseResult(): Result {
 }
 export const Result = {
   typeUrl: "/cosmos.base.abci.v1beta1.Result",
-  encode(message: Result, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Result, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.data.length !== 0) {
       writer.uint32(10).bytes(message.data);
     }
@@ -1107,8 +1107,8 @@ export const Result = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Result {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Result {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResult();
     while (reader.pos < end) {
@@ -1247,7 +1247,7 @@ function createBaseSimulationResponse(): SimulationResponse {
 }
 export const SimulationResponse = {
   typeUrl: "/cosmos.base.abci.v1beta1.SimulationResponse",
-  encode(message: SimulationResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: SimulationResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.gasInfo !== undefined) {
       GasInfo.encode(message.gasInfo, writer.uint32(10).fork()).ldelim();
     }
@@ -1256,8 +1256,8 @@ export const SimulationResponse = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): SimulationResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SimulationResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSimulationResponse();
     while (reader.pos < end) {
@@ -1352,7 +1352,7 @@ function createBaseMsgData(): MsgData {
 }
 export const MsgData = {
   typeUrl: "/cosmos.base.abci.v1beta1.MsgData",
-  encode(message: MsgData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.msgType !== "") {
       writer.uint32(10).string(message.msgType);
     }
@@ -1361,8 +1361,8 @@ export const MsgData = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgData {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgData {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgData();
     while (reader.pos < end) {
@@ -1458,7 +1458,7 @@ function createBaseTxMsgData(): TxMsgData {
 }
 export const TxMsgData = {
   typeUrl: "/cosmos.base.abci.v1beta1.TxMsgData",
-  encode(message: TxMsgData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: TxMsgData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.data) {
       MsgData.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1470,8 +1470,8 @@ export const TxMsgData = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): TxMsgData {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): TxMsgData {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTxMsgData();
     while (reader.pos < end) {
@@ -1592,30 +1592,30 @@ export const TxMsgData = {
 };
 function createBaseSearchTxsResult(): SearchTxsResult {
   return {
-    totalCount: BigInt(0),
-    count: BigInt(0),
-    pageNumber: BigInt(0),
-    pageTotal: BigInt(0),
-    limit: BigInt(0),
+    totalCount: Long.UZERO,
+    count: Long.UZERO,
+    pageNumber: Long.UZERO,
+    pageTotal: Long.UZERO,
+    limit: Long.UZERO,
     txs: []
   };
 }
 export const SearchTxsResult = {
   typeUrl: "/cosmos.base.abci.v1beta1.SearchTxsResult",
-  encode(message: SearchTxsResult, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.totalCount !== BigInt(0)) {
+  encode(message: SearchTxsResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.totalCount.isZero()) {
       writer.uint32(8).uint64(message.totalCount);
     }
-    if (message.count !== BigInt(0)) {
+    if (!message.count.isZero()) {
       writer.uint32(16).uint64(message.count);
     }
-    if (message.pageNumber !== BigInt(0)) {
+    if (!message.pageNumber.isZero()) {
       writer.uint32(24).uint64(message.pageNumber);
     }
-    if (message.pageTotal !== BigInt(0)) {
+    if (!message.pageTotal.isZero()) {
       writer.uint32(32).uint64(message.pageTotal);
     }
-    if (message.limit !== BigInt(0)) {
+    if (!message.limit.isZero()) {
       writer.uint32(40).uint64(message.limit);
     }
     for (const v of message.txs) {
@@ -1623,27 +1623,27 @@ export const SearchTxsResult = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): SearchTxsResult {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SearchTxsResult {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSearchTxsResult();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.totalCount = reader.uint64();
+          message.totalCount = (reader.uint64() as Long);
           break;
         case 2:
-          message.count = reader.uint64();
+          message.count = (reader.uint64() as Long);
           break;
         case 3:
-          message.pageNumber = reader.uint64();
+          message.pageNumber = (reader.uint64() as Long);
           break;
         case 4:
-          message.pageTotal = reader.uint64();
+          message.pageTotal = (reader.uint64() as Long);
           break;
         case 5:
-          message.limit = reader.uint64();
+          message.limit = (reader.uint64() as Long);
           break;
         case 6:
           message.txs.push(TxResponse.decode(reader, reader.uint32()));
@@ -1657,21 +1657,21 @@ export const SearchTxsResult = {
   },
   fromJSON(object: any): SearchTxsResult {
     return {
-      totalCount: isSet(object.totalCount) ? BigInt(object.totalCount.toString()) : BigInt(0),
-      count: isSet(object.count) ? BigInt(object.count.toString()) : BigInt(0),
-      pageNumber: isSet(object.pageNumber) ? BigInt(object.pageNumber.toString()) : BigInt(0),
-      pageTotal: isSet(object.pageTotal) ? BigInt(object.pageTotal.toString()) : BigInt(0),
-      limit: isSet(object.limit) ? BigInt(object.limit.toString()) : BigInt(0),
+      totalCount: isSet(object.totalCount) ? Long.fromValue(object.totalCount) : Long.UZERO,
+      count: isSet(object.count) ? Long.fromValue(object.count) : Long.UZERO,
+      pageNumber: isSet(object.pageNumber) ? Long.fromValue(object.pageNumber) : Long.UZERO,
+      pageTotal: isSet(object.pageTotal) ? Long.fromValue(object.pageTotal) : Long.UZERO,
+      limit: isSet(object.limit) ? Long.fromValue(object.limit) : Long.UZERO,
       txs: Array.isArray(object?.txs) ? object.txs.map((e: any) => TxResponse.fromJSON(e)) : []
     };
   },
   toJSON(message: SearchTxsResult): unknown {
     const obj: any = {};
-    message.totalCount !== undefined && (obj.totalCount = (message.totalCount || BigInt(0)).toString());
-    message.count !== undefined && (obj.count = (message.count || BigInt(0)).toString());
-    message.pageNumber !== undefined && (obj.pageNumber = (message.pageNumber || BigInt(0)).toString());
-    message.pageTotal !== undefined && (obj.pageTotal = (message.pageTotal || BigInt(0)).toString());
-    message.limit !== undefined && (obj.limit = (message.limit || BigInt(0)).toString());
+    message.totalCount !== undefined && (obj.totalCount = (message.totalCount || Long.UZERO).toString());
+    message.count !== undefined && (obj.count = (message.count || Long.UZERO).toString());
+    message.pageNumber !== undefined && (obj.pageNumber = (message.pageNumber || Long.UZERO).toString());
+    message.pageTotal !== undefined && (obj.pageTotal = (message.pageTotal || Long.UZERO).toString());
+    message.limit !== undefined && (obj.limit = (message.limit || Long.UZERO).toString());
     if (message.txs) {
       obj.txs = message.txs.map(e => e ? TxResponse.toJSON(e) : undefined);
     } else {
@@ -1681,11 +1681,11 @@ export const SearchTxsResult = {
   },
   fromPartial<I extends Exact<DeepPartial<SearchTxsResult>, I>>(object: I): SearchTxsResult {
     const message = createBaseSearchTxsResult();
-    message.totalCount = object.totalCount !== undefined && object.totalCount !== null ? BigInt(object.totalCount.toString()) : BigInt(0);
-    message.count = object.count !== undefined && object.count !== null ? BigInt(object.count.toString()) : BigInt(0);
-    message.pageNumber = object.pageNumber !== undefined && object.pageNumber !== null ? BigInt(object.pageNumber.toString()) : BigInt(0);
-    message.pageTotal = object.pageTotal !== undefined && object.pageTotal !== null ? BigInt(object.pageTotal.toString()) : BigInt(0);
-    message.limit = object.limit !== undefined && object.limit !== null ? BigInt(object.limit.toString()) : BigInt(0);
+    message.totalCount = object.totalCount !== undefined && object.totalCount !== null ? Long.fromValue(object.totalCount) : Long.UZERO;
+    message.count = object.count !== undefined && object.count !== null ? Long.fromValue(object.count) : Long.UZERO;
+    message.pageNumber = object.pageNumber !== undefined && object.pageNumber !== null ? Long.fromValue(object.pageNumber) : Long.UZERO;
+    message.pageTotal = object.pageTotal !== undefined && object.pageTotal !== null ? Long.fromValue(object.pageTotal) : Long.UZERO;
+    message.limit = object.limit !== undefined && object.limit !== null ? Long.fromValue(object.limit) : Long.UZERO;
     message.txs = object.txs?.map(e => TxResponse.fromPartial(e)) || [];
     return message;
   },
@@ -1716,19 +1716,19 @@ export const SearchTxsResult = {
   fromAmino(object: SearchTxsResultAmino): SearchTxsResult {
     const message = createBaseSearchTxsResult();
     if (object.total_count !== undefined && object.total_count !== null) {
-      message.totalCount = BigInt(object.total_count);
+      message.totalCount = Long.fromString(object.total_count);
     }
     if (object.count !== undefined && object.count !== null) {
-      message.count = BigInt(object.count);
+      message.count = Long.fromString(object.count);
     }
     if (object.page_number !== undefined && object.page_number !== null) {
-      message.pageNumber = BigInt(object.page_number);
+      message.pageNumber = Long.fromString(object.page_number);
     }
     if (object.page_total !== undefined && object.page_total !== null) {
-      message.pageTotal = BigInt(object.page_total);
+      message.pageTotal = Long.fromString(object.page_total);
     }
     if (object.limit !== undefined && object.limit !== null) {
-      message.limit = BigInt(object.limit);
+      message.limit = Long.fromString(object.limit);
     }
     message.txs = object.txs?.map(e => TxResponse.fromAmino(e)) || [];
     return message;

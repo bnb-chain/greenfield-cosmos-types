@@ -1,14 +1,14 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../../binary";
-import { isSet, DeepPartial, Exact } from "../../../helpers";
+import { Long, isSet, DeepPartial, Exact } from "../../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.gashub.v1beta1";
 /** Params defines the parameters for the gashub module. */
 export interface Params {
   /** max_tx_size is the maximum size of a transaction's bytes. */
-  maxTxSize: bigint;
+  maxTxSize: Long;
   /** min_gas_per_byte is the minimum gas to be paid per byte of a transaction's */
-  minGasPerByte: bigint;
+  minGasPerByte: Long;
 }
 export interface ParamsProtoMsg {
   typeUrl: "/cosmos.gashub.v1beta1.Params";
@@ -16,8 +16,8 @@ export interface ParamsProtoMsg {
 }
 /** Params defines the parameters for the gashub module. */
 export interface ParamsSDKType {
-  max_tx_size: bigint;
-  min_gas_per_byte: bigint;
+  max_tx_size: Long;
+  min_gas_per_byte: Long;
 }
 /** MsgGasParams defines gas consumption for a msg type */
 export interface MsgGasParams {
@@ -46,7 +46,7 @@ export interface MsgGasParamsSDKType {
 /** FixedGasParams defines the parameters for fixed gas type. */
 export interface MsgGasParams_FixedGasParams {
   /** fixed_gas is the gas cost for a fixed type msg */
-  fixedGas: bigint;
+  fixedGas: Long;
 }
 export interface MsgGasParams_FixedGasParamsProtoMsg {
   typeUrl: "/cosmos.gashub.v1beta1.FixedGasParams";
@@ -54,14 +54,14 @@ export interface MsgGasParams_FixedGasParamsProtoMsg {
 }
 /** FixedGasParams defines the parameters for fixed gas type. */
 export interface MsgGasParams_FixedGasParamsSDKType {
-  fixed_gas: bigint;
+  fixed_gas: Long;
 }
 /** DynamicGasParams defines the parameters for dynamic gas type. */
 export interface MsgGasParams_DynamicGasParams {
   /** fixed_gas is the base gas cost for a dynamic type msg */
-  fixedGas: bigint;
+  fixedGas: Long;
   /** gas_per_item is the gas cost for a dynamic type msg per item */
-  gasPerItem: bigint;
+  gasPerItem: Long;
 }
 export interface MsgGasParams_DynamicGasParamsProtoMsg {
   typeUrl: "/cosmos.gashub.v1beta1.DynamicGasParams";
@@ -69,38 +69,38 @@ export interface MsgGasParams_DynamicGasParamsProtoMsg {
 }
 /** DynamicGasParams defines the parameters for dynamic gas type. */
 export interface MsgGasParams_DynamicGasParamsSDKType {
-  fixed_gas: bigint;
-  gas_per_item: bigint;
+  fixed_gas: Long;
+  gas_per_item: Long;
 }
 function createBaseParams(): Params {
   return {
-    maxTxSize: BigInt(0),
-    minGasPerByte: BigInt(0)
+    maxTxSize: Long.UZERO,
+    minGasPerByte: Long.UZERO
   };
 }
 export const Params = {
   typeUrl: "/cosmos.gashub.v1beta1.Params",
-  encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.maxTxSize !== BigInt(0)) {
+  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.maxTxSize.isZero()) {
       writer.uint32(8).uint64(message.maxTxSize);
     }
-    if (message.minGasPerByte !== BigInt(0)) {
+    if (!message.minGasPerByte.isZero()) {
       writer.uint32(16).uint64(message.minGasPerByte);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Params {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.maxTxSize = reader.uint64();
+          message.maxTxSize = (reader.uint64() as Long);
           break;
         case 2:
-          message.minGasPerByte = reader.uint64();
+          message.minGasPerByte = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -111,20 +111,20 @@ export const Params = {
   },
   fromJSON(object: any): Params {
     return {
-      maxTxSize: isSet(object.maxTxSize) ? BigInt(object.maxTxSize.toString()) : BigInt(0),
-      minGasPerByte: isSet(object.minGasPerByte) ? BigInt(object.minGasPerByte.toString()) : BigInt(0)
+      maxTxSize: isSet(object.maxTxSize) ? Long.fromValue(object.maxTxSize) : Long.UZERO,
+      minGasPerByte: isSet(object.minGasPerByte) ? Long.fromValue(object.minGasPerByte) : Long.UZERO
     };
   },
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.maxTxSize !== undefined && (obj.maxTxSize = (message.maxTxSize || BigInt(0)).toString());
-    message.minGasPerByte !== undefined && (obj.minGasPerByte = (message.minGasPerByte || BigInt(0)).toString());
+    message.maxTxSize !== undefined && (obj.maxTxSize = (message.maxTxSize || Long.UZERO).toString());
+    message.minGasPerByte !== undefined && (obj.minGasPerByte = (message.minGasPerByte || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.maxTxSize = object.maxTxSize !== undefined && object.maxTxSize !== null ? BigInt(object.maxTxSize.toString()) : BigInt(0);
-    message.minGasPerByte = object.minGasPerByte !== undefined && object.minGasPerByte !== null ? BigInt(object.minGasPerByte.toString()) : BigInt(0);
+    message.maxTxSize = object.maxTxSize !== undefined && object.maxTxSize !== null ? Long.fromValue(object.maxTxSize) : Long.UZERO;
+    message.minGasPerByte = object.minGasPerByte !== undefined && object.minGasPerByte !== null ? Long.fromValue(object.minGasPerByte) : Long.UZERO;
     return message;
   },
   fromSDK(object: ParamsSDKType): Params {
@@ -142,10 +142,10 @@ export const Params = {
   fromAmino(object: ParamsAmino): Params {
     const message = createBaseParams();
     if (object.max_tx_size !== undefined && object.max_tx_size !== null) {
-      message.maxTxSize = BigInt(object.max_tx_size);
+      message.maxTxSize = Long.fromString(object.max_tx_size);
     }
     if (object.min_gas_per_byte !== undefined && object.min_gas_per_byte !== null) {
-      message.minGasPerByte = BigInt(object.min_gas_per_byte);
+      message.minGasPerByte = Long.fromString(object.min_gas_per_byte);
     }
     return message;
   },
@@ -188,7 +188,7 @@ function createBaseMsgGasParams(): MsgGasParams {
 }
 export const MsgGasParams = {
   typeUrl: "/cosmos.gashub.v1beta1.MsgGasParams",
-  encode(message: MsgGasParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgGasParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.msgTypeUrl !== "") {
       writer.uint32(10).string(message.msgTypeUrl);
     }
@@ -206,8 +206,8 @@ export const MsgGasParams = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgGasParams {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgGasParams {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgGasParams();
     while (reader.pos < end) {
@@ -332,26 +332,26 @@ export const MsgGasParams = {
 };
 function createBaseMsgGasParams_FixedGasParams(): MsgGasParams_FixedGasParams {
   return {
-    fixedGas: BigInt(0)
+    fixedGas: Long.UZERO
   };
 }
 export const MsgGasParams_FixedGasParams = {
   typeUrl: "/cosmos.gashub.v1beta1.FixedGasParams",
-  encode(message: MsgGasParams_FixedGasParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.fixedGas !== BigInt(0)) {
+  encode(message: MsgGasParams_FixedGasParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.fixedGas.isZero()) {
       writer.uint32(8).uint64(message.fixedGas);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgGasParams_FixedGasParams {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgGasParams_FixedGasParams {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgGasParams_FixedGasParams();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.fixedGas = reader.uint64();
+          message.fixedGas = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -362,17 +362,17 @@ export const MsgGasParams_FixedGasParams = {
   },
   fromJSON(object: any): MsgGasParams_FixedGasParams {
     return {
-      fixedGas: isSet(object.fixedGas) ? BigInt(object.fixedGas.toString()) : BigInt(0)
+      fixedGas: isSet(object.fixedGas) ? Long.fromValue(object.fixedGas) : Long.UZERO
     };
   },
   toJSON(message: MsgGasParams_FixedGasParams): unknown {
     const obj: any = {};
-    message.fixedGas !== undefined && (obj.fixedGas = (message.fixedGas || BigInt(0)).toString());
+    message.fixedGas !== undefined && (obj.fixedGas = (message.fixedGas || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MsgGasParams_FixedGasParams>, I>>(object: I): MsgGasParams_FixedGasParams {
     const message = createBaseMsgGasParams_FixedGasParams();
-    message.fixedGas = object.fixedGas !== undefined && object.fixedGas !== null ? BigInt(object.fixedGas.toString()) : BigInt(0);
+    message.fixedGas = object.fixedGas !== undefined && object.fixedGas !== null ? Long.fromValue(object.fixedGas) : Long.UZERO;
     return message;
   },
   fromSDK(object: MsgGasParams_FixedGasParamsSDKType): MsgGasParams_FixedGasParams {
@@ -388,7 +388,7 @@ export const MsgGasParams_FixedGasParams = {
   fromAmino(object: MsgGasParams_FixedGasParamsAmino): MsgGasParams_FixedGasParams {
     const message = createBaseMsgGasParams_FixedGasParams();
     if (object.fixed_gas !== undefined && object.fixed_gas !== null) {
-      message.fixedGas = BigInt(object.fixed_gas);
+      message.fixedGas = Long.fromString(object.fixed_gas);
     }
     return message;
   },
@@ -421,33 +421,33 @@ export const MsgGasParams_FixedGasParams = {
 };
 function createBaseMsgGasParams_DynamicGasParams(): MsgGasParams_DynamicGasParams {
   return {
-    fixedGas: BigInt(0),
-    gasPerItem: BigInt(0)
+    fixedGas: Long.UZERO,
+    gasPerItem: Long.UZERO
   };
 }
 export const MsgGasParams_DynamicGasParams = {
   typeUrl: "/cosmos.gashub.v1beta1.DynamicGasParams",
-  encode(message: MsgGasParams_DynamicGasParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.fixedGas !== BigInt(0)) {
+  encode(message: MsgGasParams_DynamicGasParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.fixedGas.isZero()) {
       writer.uint32(8).uint64(message.fixedGas);
     }
-    if (message.gasPerItem !== BigInt(0)) {
+    if (!message.gasPerItem.isZero()) {
       writer.uint32(16).uint64(message.gasPerItem);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgGasParams_DynamicGasParams {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgGasParams_DynamicGasParams {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgGasParams_DynamicGasParams();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.fixedGas = reader.uint64();
+          message.fixedGas = (reader.uint64() as Long);
           break;
         case 2:
-          message.gasPerItem = reader.uint64();
+          message.gasPerItem = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -458,20 +458,20 @@ export const MsgGasParams_DynamicGasParams = {
   },
   fromJSON(object: any): MsgGasParams_DynamicGasParams {
     return {
-      fixedGas: isSet(object.fixedGas) ? BigInt(object.fixedGas.toString()) : BigInt(0),
-      gasPerItem: isSet(object.gasPerItem) ? BigInt(object.gasPerItem.toString()) : BigInt(0)
+      fixedGas: isSet(object.fixedGas) ? Long.fromValue(object.fixedGas) : Long.UZERO,
+      gasPerItem: isSet(object.gasPerItem) ? Long.fromValue(object.gasPerItem) : Long.UZERO
     };
   },
   toJSON(message: MsgGasParams_DynamicGasParams): unknown {
     const obj: any = {};
-    message.fixedGas !== undefined && (obj.fixedGas = (message.fixedGas || BigInt(0)).toString());
-    message.gasPerItem !== undefined && (obj.gasPerItem = (message.gasPerItem || BigInt(0)).toString());
+    message.fixedGas !== undefined && (obj.fixedGas = (message.fixedGas || Long.UZERO).toString());
+    message.gasPerItem !== undefined && (obj.gasPerItem = (message.gasPerItem || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MsgGasParams_DynamicGasParams>, I>>(object: I): MsgGasParams_DynamicGasParams {
     const message = createBaseMsgGasParams_DynamicGasParams();
-    message.fixedGas = object.fixedGas !== undefined && object.fixedGas !== null ? BigInt(object.fixedGas.toString()) : BigInt(0);
-    message.gasPerItem = object.gasPerItem !== undefined && object.gasPerItem !== null ? BigInt(object.gasPerItem.toString()) : BigInt(0);
+    message.fixedGas = object.fixedGas !== undefined && object.fixedGas !== null ? Long.fromValue(object.fixedGas) : Long.UZERO;
+    message.gasPerItem = object.gasPerItem !== undefined && object.gasPerItem !== null ? Long.fromValue(object.gasPerItem) : Long.UZERO;
     return message;
   },
   fromSDK(object: MsgGasParams_DynamicGasParamsSDKType): MsgGasParams_DynamicGasParams {
@@ -489,10 +489,10 @@ export const MsgGasParams_DynamicGasParams = {
   fromAmino(object: MsgGasParams_DynamicGasParamsAmino): MsgGasParams_DynamicGasParams {
     const message = createBaseMsgGasParams_DynamicGasParams();
     if (object.fixed_gas !== undefined && object.fixed_gas !== null) {
-      message.fixedGas = BigInt(object.fixed_gas);
+      message.fixedGas = Long.fromString(object.fixed_gas);
     }
     if (object.gas_per_item !== undefined && object.gas_per_item !== null) {
-      message.gasPerItem = BigInt(object.gas_per_item);
+      message.gasPerItem = Long.fromString(object.gas_per_item);
     }
     return message;
   },

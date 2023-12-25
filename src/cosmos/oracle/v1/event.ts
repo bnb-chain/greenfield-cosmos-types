@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../../binary";
-import { isSet, DeepPartial, Exact } from "../../../helpers";
+import { Long, isSet, DeepPartial, Exact } from "../../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.oracle.v1";
 /** EventPackageClaim is emitted when a cross chain package is processed */
 export interface EventPackageClaim {
@@ -14,9 +14,9 @@ export interface EventPackageClaim {
   /** Package type of the package, like SYN, ACK and FAIL_ACK */
   packageType: number;
   /** Receive sequence of the package */
-  receiveSequence: bigint;
+  receiveSequence: Long;
   /** Send sequence of the corresponding ACK package or FAIL_ACK package */
-  sendSequence: bigint;
+  sendSequence: Long;
   /** Crash status for the handle of this package */
   crash: boolean;
   /** Error message for the handle of this package */
@@ -36,8 +36,8 @@ export interface EventPackageClaimSDKType {
   dest_chain_id: number;
   channel_id: number;
   package_type: number;
-  receive_sequence: bigint;
-  send_sequence: bigint;
+  receive_sequence: Long;
+  send_sequence: Long;
   crash: boolean;
   error_msg: string;
   relayer_fee: string;
@@ -49,8 +49,8 @@ function createBaseEventPackageClaim(): EventPackageClaim {
     destChainId: 0,
     channelId: 0,
     packageType: 0,
-    receiveSequence: BigInt(0),
-    sendSequence: BigInt(0),
+    receiveSequence: Long.UZERO,
+    sendSequence: Long.ZERO,
     crash: false,
     errorMsg: "",
     relayerFee: "",
@@ -59,7 +59,7 @@ function createBaseEventPackageClaim(): EventPackageClaim {
 }
 export const EventPackageClaim = {
   typeUrl: "/cosmos.oracle.v1.EventPackageClaim",
-  encode(message: EventPackageClaim, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventPackageClaim, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.srcChainId !== 0) {
       writer.uint32(8).uint32(message.srcChainId);
     }
@@ -72,10 +72,10 @@ export const EventPackageClaim = {
     if (message.packageType !== 0) {
       writer.uint32(32).uint32(message.packageType);
     }
-    if (message.receiveSequence !== BigInt(0)) {
+    if (!message.receiveSequence.isZero()) {
       writer.uint32(40).uint64(message.receiveSequence);
     }
-    if (message.sendSequence !== BigInt(0)) {
+    if (!message.sendSequence.isZero()) {
       writer.uint32(48).int64(message.sendSequence);
     }
     if (message.crash === true) {
@@ -92,8 +92,8 @@ export const EventPackageClaim = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventPackageClaim {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventPackageClaim {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventPackageClaim();
     while (reader.pos < end) {
@@ -112,10 +112,10 @@ export const EventPackageClaim = {
           message.packageType = reader.uint32();
           break;
         case 5:
-          message.receiveSequence = reader.uint64();
+          message.receiveSequence = (reader.uint64() as Long);
           break;
         case 6:
-          message.sendSequence = reader.int64();
+          message.sendSequence = (reader.int64() as Long);
           break;
         case 7:
           message.crash = reader.bool();
@@ -142,8 +142,8 @@ export const EventPackageClaim = {
       destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0,
       channelId: isSet(object.channelId) ? Number(object.channelId) : 0,
       packageType: isSet(object.packageType) ? Number(object.packageType) : 0,
-      receiveSequence: isSet(object.receiveSequence) ? BigInt(object.receiveSequence.toString()) : BigInt(0),
-      sendSequence: isSet(object.sendSequence) ? BigInt(object.sendSequence.toString()) : BigInt(0),
+      receiveSequence: isSet(object.receiveSequence) ? Long.fromValue(object.receiveSequence) : Long.UZERO,
+      sendSequence: isSet(object.sendSequence) ? Long.fromValue(object.sendSequence) : Long.ZERO,
       crash: isSet(object.crash) ? Boolean(object.crash) : false,
       errorMsg: isSet(object.errorMsg) ? String(object.errorMsg) : "",
       relayerFee: isSet(object.relayerFee) ? String(object.relayerFee) : "",
@@ -156,8 +156,8 @@ export const EventPackageClaim = {
     message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
     message.channelId !== undefined && (obj.channelId = Math.round(message.channelId));
     message.packageType !== undefined && (obj.packageType = Math.round(message.packageType));
-    message.receiveSequence !== undefined && (obj.receiveSequence = (message.receiveSequence || BigInt(0)).toString());
-    message.sendSequence !== undefined && (obj.sendSequence = (message.sendSequence || BigInt(0)).toString());
+    message.receiveSequence !== undefined && (obj.receiveSequence = (message.receiveSequence || Long.UZERO).toString());
+    message.sendSequence !== undefined && (obj.sendSequence = (message.sendSequence || Long.ZERO).toString());
     message.crash !== undefined && (obj.crash = message.crash);
     message.errorMsg !== undefined && (obj.errorMsg = message.errorMsg);
     message.relayerFee !== undefined && (obj.relayerFee = message.relayerFee);
@@ -170,8 +170,8 @@ export const EventPackageClaim = {
     message.destChainId = object.destChainId ?? 0;
     message.channelId = object.channelId ?? 0;
     message.packageType = object.packageType ?? 0;
-    message.receiveSequence = object.receiveSequence !== undefined && object.receiveSequence !== null ? BigInt(object.receiveSequence.toString()) : BigInt(0);
-    message.sendSequence = object.sendSequence !== undefined && object.sendSequence !== null ? BigInt(object.sendSequence.toString()) : BigInt(0);
+    message.receiveSequence = object.receiveSequence !== undefined && object.receiveSequence !== null ? Long.fromValue(object.receiveSequence) : Long.UZERO;
+    message.sendSequence = object.sendSequence !== undefined && object.sendSequence !== null ? Long.fromValue(object.sendSequence) : Long.ZERO;
     message.crash = object.crash ?? false;
     message.errorMsg = object.errorMsg ?? "";
     message.relayerFee = object.relayerFee ?? "";
@@ -221,10 +221,10 @@ export const EventPackageClaim = {
       message.packageType = object.package_type;
     }
     if (object.receive_sequence !== undefined && object.receive_sequence !== null) {
-      message.receiveSequence = BigInt(object.receive_sequence);
+      message.receiveSequence = Long.fromString(object.receive_sequence);
     }
     if (object.send_sequence !== undefined && object.send_sequence !== null) {
-      message.sendSequence = BigInt(object.send_sequence);
+      message.sendSequence = Long.fromString(object.send_sequence);
     }
     if (object.crash !== undefined && object.crash !== null) {
       message.crash = object.crash;

@@ -1,14 +1,14 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../../binary";
-import { isSet, DeepPartial, Exact } from "../../../helpers";
+import { Long, isSet, DeepPartial, Exact } from "../../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.oracle.v1";
 /** Params holds parameters for the oracle module. */
 export interface Params {
   /** Timeout for the in turn relayer in seconds */
-  relayerTimeout: bigint;
+  relayerTimeout: Long;
   /** RelayInterval is for in-turn relayer in seconds */
-  relayerInterval: bigint;
+  relayerInterval: Long;
   /**
    * Reward share for the relayer sends the claim message,
    * the other relayers signed the bls message will share the reward evenly.
@@ -21,14 +21,14 @@ export interface ParamsProtoMsg {
 }
 /** Params holds parameters for the oracle module. */
 export interface ParamsSDKType {
-  relayer_timeout: bigint;
-  relayer_interval: bigint;
+  relayer_timeout: Long;
+  relayer_interval: Long;
   relayer_reward_share: number;
 }
 /** RelayInterval holds start and end(exclusive) time of in-turn relayer, [start, end) */
 export interface RelayInterval {
-  start: bigint;
-  end: bigint;
+  start: Long;
+  end: Long;
 }
 export interface RelayIntervalProtoMsg {
   typeUrl: "/cosmos.oracle.v1.RelayInterval";
@@ -36,23 +36,23 @@ export interface RelayIntervalProtoMsg {
 }
 /** RelayInterval holds start and end(exclusive) time of in-turn relayer, [start, end) */
 export interface RelayIntervalSDKType {
-  start: bigint;
-  end: bigint;
+  start: Long;
+  end: Long;
 }
 function createBaseParams(): Params {
   return {
-    relayerTimeout: BigInt(0),
-    relayerInterval: BigInt(0),
+    relayerTimeout: Long.UZERO,
+    relayerInterval: Long.UZERO,
     relayerRewardShare: 0
   };
 }
 export const Params = {
   typeUrl: "/cosmos.oracle.v1.Params",
-  encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.relayerTimeout !== BigInt(0)) {
+  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.relayerTimeout.isZero()) {
       writer.uint32(8).uint64(message.relayerTimeout);
     }
-    if (message.relayerInterval !== BigInt(0)) {
+    if (!message.relayerInterval.isZero()) {
       writer.uint32(16).uint64(message.relayerInterval);
     }
     if (message.relayerRewardShare !== 0) {
@@ -60,18 +60,18 @@ export const Params = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Params {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.relayerTimeout = reader.uint64();
+          message.relayerTimeout = (reader.uint64() as Long);
           break;
         case 2:
-          message.relayerInterval = reader.uint64();
+          message.relayerInterval = (reader.uint64() as Long);
           break;
         case 3:
           message.relayerRewardShare = reader.uint32();
@@ -85,22 +85,22 @@ export const Params = {
   },
   fromJSON(object: any): Params {
     return {
-      relayerTimeout: isSet(object.relayerTimeout) ? BigInt(object.relayerTimeout.toString()) : BigInt(0),
-      relayerInterval: isSet(object.relayerInterval) ? BigInt(object.relayerInterval.toString()) : BigInt(0),
+      relayerTimeout: isSet(object.relayerTimeout) ? Long.fromValue(object.relayerTimeout) : Long.UZERO,
+      relayerInterval: isSet(object.relayerInterval) ? Long.fromValue(object.relayerInterval) : Long.UZERO,
       relayerRewardShare: isSet(object.relayerRewardShare) ? Number(object.relayerRewardShare) : 0
     };
   },
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.relayerTimeout !== undefined && (obj.relayerTimeout = (message.relayerTimeout || BigInt(0)).toString());
-    message.relayerInterval !== undefined && (obj.relayerInterval = (message.relayerInterval || BigInt(0)).toString());
+    message.relayerTimeout !== undefined && (obj.relayerTimeout = (message.relayerTimeout || Long.UZERO).toString());
+    message.relayerInterval !== undefined && (obj.relayerInterval = (message.relayerInterval || Long.UZERO).toString());
     message.relayerRewardShare !== undefined && (obj.relayerRewardShare = Math.round(message.relayerRewardShare));
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.relayerTimeout = object.relayerTimeout !== undefined && object.relayerTimeout !== null ? BigInt(object.relayerTimeout.toString()) : BigInt(0);
-    message.relayerInterval = object.relayerInterval !== undefined && object.relayerInterval !== null ? BigInt(object.relayerInterval.toString()) : BigInt(0);
+    message.relayerTimeout = object.relayerTimeout !== undefined && object.relayerTimeout !== null ? Long.fromValue(object.relayerTimeout) : Long.UZERO;
+    message.relayerInterval = object.relayerInterval !== undefined && object.relayerInterval !== null ? Long.fromValue(object.relayerInterval) : Long.UZERO;
     message.relayerRewardShare = object.relayerRewardShare ?? 0;
     return message;
   },
@@ -121,10 +121,10 @@ export const Params = {
   fromAmino(object: ParamsAmino): Params {
     const message = createBaseParams();
     if (object.relayer_timeout !== undefined && object.relayer_timeout !== null) {
-      message.relayerTimeout = BigInt(object.relayer_timeout);
+      message.relayerTimeout = Long.fromString(object.relayer_timeout);
     }
     if (object.relayer_interval !== undefined && object.relayer_interval !== null) {
-      message.relayerInterval = BigInt(object.relayer_interval);
+      message.relayerInterval = Long.fromString(object.relayer_interval);
     }
     if (object.relayer_reward_share !== undefined && object.relayer_reward_share !== null) {
       message.relayerRewardShare = object.relayer_reward_share;
@@ -162,33 +162,33 @@ export const Params = {
 };
 function createBaseRelayInterval(): RelayInterval {
   return {
-    start: BigInt(0),
-    end: BigInt(0)
+    start: Long.UZERO,
+    end: Long.UZERO
   };
 }
 export const RelayInterval = {
   typeUrl: "/cosmos.oracle.v1.RelayInterval",
-  encode(message: RelayInterval, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.start !== BigInt(0)) {
+  encode(message: RelayInterval, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.start.isZero()) {
       writer.uint32(8).uint64(message.start);
     }
-    if (message.end !== BigInt(0)) {
+    if (!message.end.isZero()) {
       writer.uint32(16).uint64(message.end);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): RelayInterval {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): RelayInterval {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRelayInterval();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.start = reader.uint64();
+          message.start = (reader.uint64() as Long);
           break;
         case 2:
-          message.end = reader.uint64();
+          message.end = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -199,20 +199,20 @@ export const RelayInterval = {
   },
   fromJSON(object: any): RelayInterval {
     return {
-      start: isSet(object.start) ? BigInt(object.start.toString()) : BigInt(0),
-      end: isSet(object.end) ? BigInt(object.end.toString()) : BigInt(0)
+      start: isSet(object.start) ? Long.fromValue(object.start) : Long.UZERO,
+      end: isSet(object.end) ? Long.fromValue(object.end) : Long.UZERO
     };
   },
   toJSON(message: RelayInterval): unknown {
     const obj: any = {};
-    message.start !== undefined && (obj.start = (message.start || BigInt(0)).toString());
-    message.end !== undefined && (obj.end = (message.end || BigInt(0)).toString());
+    message.start !== undefined && (obj.start = (message.start || Long.UZERO).toString());
+    message.end !== undefined && (obj.end = (message.end || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<RelayInterval>, I>>(object: I): RelayInterval {
     const message = createBaseRelayInterval();
-    message.start = object.start !== undefined && object.start !== null ? BigInt(object.start.toString()) : BigInt(0);
-    message.end = object.end !== undefined && object.end !== null ? BigInt(object.end.toString()) : BigInt(0);
+    message.start = object.start !== undefined && object.start !== null ? Long.fromValue(object.start) : Long.UZERO;
+    message.end = object.end !== undefined && object.end !== null ? Long.fromValue(object.end) : Long.UZERO;
     return message;
   },
   fromSDK(object: RelayIntervalSDKType): RelayInterval {
@@ -230,10 +230,10 @@ export const RelayInterval = {
   fromAmino(object: RelayIntervalAmino): RelayInterval {
     const message = createBaseRelayInterval();
     if (object.start !== undefined && object.start !== null) {
-      message.start = BigInt(object.start);
+      message.start = Long.fromString(object.start);
     }
     if (object.end !== undefined && object.end !== null) {
-      message.end = BigInt(object.end);
+      message.end = Long.fromString(object.end);
     }
     return message;
   },

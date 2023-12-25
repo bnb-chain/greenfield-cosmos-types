@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../base/query/v1beta1/pagination";
 import { Params, ParamsSDKType, MsgGasParams, MsgGasParamsSDKType } from "./gashub";
-import { BinaryReader, BinaryWriter } from "../../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.gashub.v1beta1";
 /** QueryParamsRequest defines the request type for querying x/gashub parameters. */
@@ -67,11 +67,11 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
 }
 export const QueryParamsRequest = {
   typeUrl: "/cosmos.gashub.v1beta1.QueryParamsRequest",
-  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -139,14 +139,14 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
 }
 export const QueryParamsResponse = {
   typeUrl: "/cosmos.gashub.v1beta1.QueryParamsResponse",
-  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -229,7 +229,7 @@ function createBaseQueryMsgGasParamsRequest(): QueryMsgGasParamsRequest {
 }
 export const QueryMsgGasParamsRequest = {
   typeUrl: "/cosmos.gashub.v1beta1.QueryMsgGasParamsRequest",
-  encode(message: QueryMsgGasParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryMsgGasParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.msgTypeUrls) {
       writer.uint32(10).string(v!);
     }
@@ -238,8 +238,8 @@ export const QueryMsgGasParamsRequest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryMsgGasParamsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryMsgGasParamsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryMsgGasParamsRequest();
     while (reader.pos < end) {
@@ -344,7 +344,7 @@ function createBaseQueryMsgGasParamsResponse(): QueryMsgGasParamsResponse {
 }
 export const QueryMsgGasParamsResponse = {
   typeUrl: "/cosmos.gashub.v1beta1.QueryMsgGasParamsResponse",
-  encode(message: QueryMsgGasParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryMsgGasParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.msgGasParams) {
       MsgGasParams.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -353,8 +353,8 @@ export const QueryMsgGasParamsResponse = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryMsgGasParamsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryMsgGasParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryMsgGasParamsResponse();
     while (reader.pos < end) {
@@ -473,11 +473,11 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.gashub.v1beta1.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
   MsgGasParams(request: QueryMsgGasParamsRequest): Promise<QueryMsgGasParamsResponse> {
     const data = QueryMsgGasParamsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.gashub.v1beta1.Query", "MsgGasParams", data);
-    return promise.then(data => QueryMsgGasParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryMsgGasParamsResponse.decode(new _m0.Reader(data)));
   }
 }

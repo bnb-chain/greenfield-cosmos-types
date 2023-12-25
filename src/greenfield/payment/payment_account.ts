@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.payment";
 /** PaymentAccount defines a payment account */
@@ -31,7 +31,7 @@ function createBasePaymentAccount(): PaymentAccount {
 }
 export const PaymentAccount = {
   typeUrl: "/greenfield.payment.PaymentAccount",
-  encode(message: PaymentAccount, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: PaymentAccount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.addr !== "") {
       writer.uint32(10).string(message.addr);
     }
@@ -43,8 +43,8 @@ export const PaymentAccount = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): PaymentAccount {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): PaymentAccount {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePaymentAccount();
     while (reader.pos < end) {

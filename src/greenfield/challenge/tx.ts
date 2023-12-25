@@ -2,8 +2,8 @@
 /* eslint-disable */
 import { VoteResult, voteResultFromJSON, voteResultToJSON } from "./types";
 import { Params, ParamsSDKType } from "./params";
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, Rpc } from "../../helpers";
+import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, Rpc } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.challenge";
 /** MsgSubmit defines the message for submitting challenges. */
 export interface MsgSubmit {
@@ -36,7 +36,7 @@ export interface MsgSubmitSDKType {
 /** MsgSubmitResponse defines the response of MsgSubmit. */
 export interface MsgSubmitResponse {
   /** The id of the challenge. */
-  challengeId: bigint;
+  challengeId: Long;
 }
 export interface MsgSubmitResponseProtoMsg {
   typeUrl: "/greenfield.challenge.MsgSubmitResponse";
@@ -44,14 +44,14 @@ export interface MsgSubmitResponseProtoMsg {
 }
 /** MsgSubmitResponse defines the response of MsgSubmit. */
 export interface MsgSubmitResponseSDKType {
-  challenge_id: bigint;
+  challenge_id: Long;
 }
 /** MsgSubmit defines the message for attesting challenges. */
 export interface MsgAttest {
   /** The submitter address. */
   submitter: string;
   /** The id of the challenge. */
-  challengeId: bigint;
+  challengeId: Long;
   /** The id of the object info. */
   objectId: string;
   /** The storage provider to be challenged. */
@@ -61,7 +61,7 @@ export interface MsgAttest {
   /** The challenger who submits the challenge, which can be empty. */
   challengerAddress: string;
   /** The validators participated in the attestation. */
-  voteValidatorSet: bigint[];
+  voteValidatorSet: Long[];
   /** The aggregated BLS signature from the validators. */
   voteAggSignature: Uint8Array;
 }
@@ -72,12 +72,12 @@ export interface MsgAttestProtoMsg {
 /** MsgSubmit defines the message for attesting challenges. */
 export interface MsgAttestSDKType {
   submitter: string;
-  challenge_id: bigint;
+  challenge_id: Long;
   object_id: string;
   sp_operator_address: string;
   vote_result: VoteResult;
   challenger_address: string;
-  vote_validator_set: bigint[];
+  vote_validator_set: Long[];
   vote_agg_signature: Uint8Array;
 }
 /** MsgAttest defines the response of MsgAttestResponse. */
@@ -127,7 +127,7 @@ function createBaseMsgSubmit(): MsgSubmit {
 }
 export const MsgSubmit = {
   typeUrl: "/greenfield.challenge.MsgSubmit",
-  encode(message: MsgSubmit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgSubmit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.challenger !== "") {
       writer.uint32(10).string(message.challenger);
     }
@@ -148,8 +148,8 @@ export const MsgSubmit = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgSubmit {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmit {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSubmit();
     while (reader.pos < end) {
@@ -280,26 +280,26 @@ export const MsgSubmit = {
 };
 function createBaseMsgSubmitResponse(): MsgSubmitResponse {
   return {
-    challengeId: BigInt(0)
+    challengeId: Long.UZERO
   };
 }
 export const MsgSubmitResponse = {
   typeUrl: "/greenfield.challenge.MsgSubmitResponse",
-  encode(message: MsgSubmitResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.challengeId !== BigInt(0)) {
+  encode(message: MsgSubmitResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.challengeId.isZero()) {
       writer.uint32(8).uint64(message.challengeId);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgSubmitResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSubmitResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSubmitResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.challengeId = reader.uint64();
+          message.challengeId = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -310,17 +310,17 @@ export const MsgSubmitResponse = {
   },
   fromJSON(object: any): MsgSubmitResponse {
     return {
-      challengeId: isSet(object.challengeId) ? BigInt(object.challengeId.toString()) : BigInt(0)
+      challengeId: isSet(object.challengeId) ? Long.fromValue(object.challengeId) : Long.UZERO
     };
   },
   toJSON(message: MsgSubmitResponse): unknown {
     const obj: any = {};
-    message.challengeId !== undefined && (obj.challengeId = (message.challengeId || BigInt(0)).toString());
+    message.challengeId !== undefined && (obj.challengeId = (message.challengeId || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MsgSubmitResponse>, I>>(object: I): MsgSubmitResponse {
     const message = createBaseMsgSubmitResponse();
-    message.challengeId = object.challengeId !== undefined && object.challengeId !== null ? BigInt(object.challengeId.toString()) : BigInt(0);
+    message.challengeId = object.challengeId !== undefined && object.challengeId !== null ? Long.fromValue(object.challengeId) : Long.UZERO;
     return message;
   },
   fromSDK(object: MsgSubmitResponseSDKType): MsgSubmitResponse {
@@ -336,7 +336,7 @@ export const MsgSubmitResponse = {
   fromAmino(object: MsgSubmitResponseAmino): MsgSubmitResponse {
     const message = createBaseMsgSubmitResponse();
     if (object.challenge_id !== undefined && object.challenge_id !== null) {
-      message.challengeId = BigInt(object.challenge_id);
+      message.challengeId = Long.fromString(object.challenge_id);
     }
     return message;
   },
@@ -364,7 +364,7 @@ export const MsgSubmitResponse = {
 function createBaseMsgAttest(): MsgAttest {
   return {
     submitter: "",
-    challengeId: BigInt(0),
+    challengeId: Long.UZERO,
     objectId: "",
     spOperatorAddress: "",
     voteResult: 0,
@@ -375,11 +375,11 @@ function createBaseMsgAttest(): MsgAttest {
 }
 export const MsgAttest = {
   typeUrl: "/greenfield.challenge.MsgAttest",
-  encode(message: MsgAttest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgAttest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.submitter !== "") {
       writer.uint32(10).string(message.submitter);
     }
-    if (message.challengeId !== BigInt(0)) {
+    if (!message.challengeId.isZero()) {
       writer.uint32(16).uint64(message.challengeId);
     }
     if (message.objectId !== "") {
@@ -404,8 +404,8 @@ export const MsgAttest = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgAttest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAttest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgAttest();
     while (reader.pos < end) {
@@ -415,7 +415,7 @@ export const MsgAttest = {
           message.submitter = reader.string();
           break;
         case 2:
-          message.challengeId = reader.uint64();
+          message.challengeId = (reader.uint64() as Long);
           break;
         case 3:
           message.objectId = reader.string();
@@ -433,10 +433,10 @@ export const MsgAttest = {
           if ((tag & 7) === 2) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
-              message.voteValidatorSet.push(reader.fixed64());
+              message.voteValidatorSet.push((reader.fixed64() as Long));
             }
           } else {
-            message.voteValidatorSet.push(reader.fixed64());
+            message.voteValidatorSet.push((reader.fixed64() as Long));
           }
           break;
         case 8:
@@ -452,25 +452,25 @@ export const MsgAttest = {
   fromJSON(object: any): MsgAttest {
     return {
       submitter: isSet(object.submitter) ? String(object.submitter) : "",
-      challengeId: isSet(object.challengeId) ? BigInt(object.challengeId.toString()) : BigInt(0),
+      challengeId: isSet(object.challengeId) ? Long.fromValue(object.challengeId) : Long.UZERO,
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
       spOperatorAddress: isSet(object.spOperatorAddress) ? String(object.spOperatorAddress) : "",
       voteResult: isSet(object.voteResult) ? voteResultFromJSON(object.voteResult) : -1,
       challengerAddress: isSet(object.challengerAddress) ? String(object.challengerAddress) : "",
-      voteValidatorSet: Array.isArray(object?.voteValidatorSet) ? object.voteValidatorSet.map((e: any) => BigInt(e.toString())) : [],
+      voteValidatorSet: Array.isArray(object?.voteValidatorSet) ? object.voteValidatorSet.map((e: any) => Long.fromValue(e)) : [],
       voteAggSignature: isSet(object.voteAggSignature) ? bytesFromBase64(object.voteAggSignature) : new Uint8Array()
     };
   },
   toJSON(message: MsgAttest): unknown {
     const obj: any = {};
     message.submitter !== undefined && (obj.submitter = message.submitter);
-    message.challengeId !== undefined && (obj.challengeId = (message.challengeId || BigInt(0)).toString());
+    message.challengeId !== undefined && (obj.challengeId = (message.challengeId || Long.UZERO).toString());
     message.objectId !== undefined && (obj.objectId = message.objectId);
     message.spOperatorAddress !== undefined && (obj.spOperatorAddress = message.spOperatorAddress);
     message.voteResult !== undefined && (obj.voteResult = voteResultToJSON(message.voteResult));
     message.challengerAddress !== undefined && (obj.challengerAddress = message.challengerAddress);
     if (message.voteValidatorSet) {
-      obj.voteValidatorSet = message.voteValidatorSet.map(e => (e || BigInt(0)).toString());
+      obj.voteValidatorSet = message.voteValidatorSet.map(e => (e || Long.ZERO).toString());
     } else {
       obj.voteValidatorSet = [];
     }
@@ -480,12 +480,12 @@ export const MsgAttest = {
   fromPartial<I extends Exact<DeepPartial<MsgAttest>, I>>(object: I): MsgAttest {
     const message = createBaseMsgAttest();
     message.submitter = object.submitter ?? "";
-    message.challengeId = object.challengeId !== undefined && object.challengeId !== null ? BigInt(object.challengeId.toString()) : BigInt(0);
+    message.challengeId = object.challengeId !== undefined && object.challengeId !== null ? Long.fromValue(object.challengeId) : Long.UZERO;
     message.objectId = object.objectId ?? "";
     message.spOperatorAddress = object.spOperatorAddress ?? "";
     message.voteResult = object.voteResult ?? 0;
     message.challengerAddress = object.challengerAddress ?? "";
-    message.voteValidatorSet = object.voteValidatorSet?.map(e => BigInt(e.toString())) || [];
+    message.voteValidatorSet = object.voteValidatorSet?.map(e => Long.fromValue(e)) || [];
     message.voteAggSignature = object.voteAggSignature ?? new Uint8Array();
     return message;
   },
@@ -523,7 +523,7 @@ export const MsgAttest = {
       message.submitter = object.submitter;
     }
     if (object.challenge_id !== undefined && object.challenge_id !== null) {
-      message.challengeId = BigInt(object.challenge_id);
+      message.challengeId = Long.fromString(object.challenge_id);
     }
     if (object.object_id !== undefined && object.object_id !== null) {
       message.objectId = object.object_id;
@@ -537,7 +537,7 @@ export const MsgAttest = {
     if (object.challenger_address !== undefined && object.challenger_address !== null) {
       message.challengerAddress = object.challenger_address;
     }
-    message.voteValidatorSet = object.vote_validator_set?.map(e => BigInt(e)) || [];
+    message.voteValidatorSet = object.vote_validator_set?.map(e => Long.fromString(e)) || [];
     if (object.vote_agg_signature !== undefined && object.vote_agg_signature !== null) {
       message.voteAggSignature = bytesFromBase64(object.vote_agg_signature);
     }
@@ -552,7 +552,7 @@ export const MsgAttest = {
     obj.vote_result = voteResultToJSON(message.voteResult);
     obj.challenger_address = message.challengerAddress;
     if (message.voteValidatorSet) {
-      obj.vote_validator_set = message.voteValidatorSet.map(e => e.toString());
+      obj.vote_validator_set = message.voteValidatorSet.map(e => e);
     } else {
       obj.vote_validator_set = [];
     }
@@ -580,11 +580,11 @@ function createBaseMsgAttestResponse(): MsgAttestResponse {
 }
 export const MsgAttestResponse = {
   typeUrl: "/greenfield.challenge.MsgAttestResponse",
-  encode(_: MsgAttestResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgAttestResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgAttestResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAttestResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgAttestResponse();
     while (reader.pos < end) {
@@ -647,7 +647,7 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/greenfield.challenge.MsgUpdateParams",
-  encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -656,8 +656,8 @@ export const MsgUpdateParams = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParams {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParams();
     while (reader.pos < end) {
@@ -743,11 +743,11 @@ function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/greenfield.challenge.MsgUpdateParamsResponse",
-  encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParamsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParamsResponse();
     while (reader.pos < end) {
@@ -825,16 +825,16 @@ export class MsgClientImpl implements Msg {
   Submit(request: MsgSubmit): Promise<MsgSubmitResponse> {
     const data = MsgSubmit.encode(request).finish();
     const promise = this.rpc.request("greenfield.challenge.Msg", "Submit", data);
-    return promise.then(data => MsgSubmitResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgSubmitResponse.decode(new _m0.Reader(data)));
   }
   Attest(request: MsgAttest): Promise<MsgAttestResponse> {
     const data = MsgAttest.encode(request).finish();
     const promise = this.rpc.request("greenfield.challenge.Msg", "Attest", data);
-    return promise.then(data => MsgAttestResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgAttestResponse.decode(new _m0.Reader(data)));
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("greenfield.challenge.Msg", "UpdateParams", data);
-    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
   }
 }

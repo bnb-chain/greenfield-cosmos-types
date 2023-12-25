@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../../../helpers";
 export const protobufPackage = "cosmos.staking.module.v1";
 /** Module is the config object of the staking module. */
@@ -31,7 +31,7 @@ function createBaseModule(): Module {
 }
 export const Module = {
   typeUrl: "/cosmos.staking.module.v1.Module",
-  encode(message: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Module, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.hooksOrder) {
       writer.uint32(10).string(v!);
     }
@@ -40,8 +40,8 @@ export const Module = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Module {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Module {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseModule();
     while (reader.pos < end) {

@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.payment";
 /** OutFlowStatus defines the status of a out flow */
@@ -71,7 +71,7 @@ function createBaseOutFlow(): OutFlow {
 }
 export const OutFlow = {
   typeUrl: "/greenfield.payment.OutFlow",
-  encode(message: OutFlow, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: OutFlow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.toAddress !== "") {
       writer.uint32(10).string(message.toAddress);
     }
@@ -83,8 +83,8 @@ export const OutFlow = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): OutFlow {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): OutFlow {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOutFlow();
     while (reader.pos < end) {

@@ -3,7 +3,7 @@
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
 import { Params, ParamsSDKType } from "./params";
 import { GlobalVirtualGroup, GlobalVirtualGroupSDKType, GlobalVirtualGroupFamily, GlobalVirtualGroupFamilySDKType } from "./types";
-import { BinaryReader, BinaryWriter } from "../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.virtualgroup";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
@@ -134,11 +134,11 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
 }
 export const QueryParamsRequest = {
   typeUrl: "/greenfield.virtualgroup.QueryParamsRequest",
-  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -200,14 +200,14 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
 }
 export const QueryParamsResponse = {
   typeUrl: "/greenfield.virtualgroup.QueryParamsResponse",
-  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -283,14 +283,14 @@ function createBaseQueryGlobalVirtualGroupRequest(): QueryGlobalVirtualGroupRequ
 }
 export const QueryGlobalVirtualGroupRequest = {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupRequest",
-  encode(message: QueryGlobalVirtualGroupRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryGlobalVirtualGroupRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.globalVirtualGroupId !== 0) {
       writer.uint32(8).uint32(message.globalVirtualGroupId);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupRequest();
     while (reader.pos < end) {
@@ -366,14 +366,14 @@ function createBaseQueryGlobalVirtualGroupResponse(): QueryGlobalVirtualGroupRes
 }
 export const QueryGlobalVirtualGroupResponse = {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupResponse",
-  encode(message: QueryGlobalVirtualGroupResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryGlobalVirtualGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.globalVirtualGroup !== undefined) {
       GlobalVirtualGroup.encode(message.globalVirtualGroup, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupResponse();
     while (reader.pos < end) {
@@ -449,14 +449,14 @@ function createBaseQueryGlobalVirtualGroupByFamilyIDRequest(): QueryGlobalVirtua
 }
 export const QueryGlobalVirtualGroupByFamilyIDRequest = {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupByFamilyIDRequest",
-  encode(message: QueryGlobalVirtualGroupByFamilyIDRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryGlobalVirtualGroupByFamilyIDRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.globalVirtualGroupFamilyId !== 0) {
       writer.uint32(8).uint32(message.globalVirtualGroupFamilyId);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupByFamilyIDRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupByFamilyIDRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupByFamilyIDRequest();
     while (reader.pos < end) {
@@ -532,14 +532,14 @@ function createBaseQueryGlobalVirtualGroupByFamilyIDResponse(): QueryGlobalVirtu
 }
 export const QueryGlobalVirtualGroupByFamilyIDResponse = {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupByFamilyIDResponse",
-  encode(message: QueryGlobalVirtualGroupByFamilyIDResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryGlobalVirtualGroupByFamilyIDResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.globalVirtualGroups) {
       GlobalVirtualGroup.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupByFamilyIDResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupByFamilyIDResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupByFamilyIDResponse();
     while (reader.pos < end) {
@@ -625,14 +625,14 @@ function createBaseQueryGlobalVirtualGroupFamilyRequest(): QueryGlobalVirtualGro
 }
 export const QueryGlobalVirtualGroupFamilyRequest = {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamilyRequest",
-  encode(message: QueryGlobalVirtualGroupFamilyRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryGlobalVirtualGroupFamilyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.familyId !== 0) {
       writer.uint32(8).uint32(message.familyId);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamilyRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamilyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupFamilyRequest();
     while (reader.pos < end) {
@@ -708,14 +708,14 @@ function createBaseQueryGlobalVirtualGroupFamilyResponse(): QueryGlobalVirtualGr
 }
 export const QueryGlobalVirtualGroupFamilyResponse = {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamilyResponse",
-  encode(message: QueryGlobalVirtualGroupFamilyResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryGlobalVirtualGroupFamilyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.globalVirtualGroupFamily !== undefined) {
       GlobalVirtualGroupFamily.encode(message.globalVirtualGroupFamily, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamilyResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamilyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupFamilyResponse();
     while (reader.pos < end) {
@@ -791,14 +791,14 @@ function createBaseQueryGlobalVirtualGroupFamiliesRequest(): QueryGlobalVirtualG
 }
 export const QueryGlobalVirtualGroupFamiliesRequest = {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamiliesRequest",
-  encode(message: QueryGlobalVirtualGroupFamiliesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryGlobalVirtualGroupFamiliesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamiliesRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamiliesRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupFamiliesRequest();
     while (reader.pos < end) {
@@ -875,7 +875,7 @@ function createBaseQueryGlobalVirtualGroupFamiliesResponse(): QueryGlobalVirtual
 }
 export const QueryGlobalVirtualGroupFamiliesResponse = {
   typeUrl: "/greenfield.virtualgroup.QueryGlobalVirtualGroupFamiliesResponse",
-  encode(message: QueryGlobalVirtualGroupFamiliesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryGlobalVirtualGroupFamiliesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.gvgFamilies) {
       GlobalVirtualGroupFamily.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -884,8 +884,8 @@ export const QueryGlobalVirtualGroupFamiliesResponse = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamiliesResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalVirtualGroupFamiliesResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalVirtualGroupFamiliesResponse();
     while (reader.pos < end) {
@@ -983,7 +983,7 @@ function createBaseAvailableGlobalVirtualGroupFamiliesRequest(): AvailableGlobal
 }
 export const AvailableGlobalVirtualGroupFamiliesRequest = {
   typeUrl: "/greenfield.virtualgroup.AvailableGlobalVirtualGroupFamiliesRequest",
-  encode(message: AvailableGlobalVirtualGroupFamiliesRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: AvailableGlobalVirtualGroupFamiliesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     writer.uint32(10).fork();
     for (const v of message.globalVirtualGroupFamilyIds) {
       writer.uint32(v);
@@ -991,8 +991,8 @@ export const AvailableGlobalVirtualGroupFamiliesRequest = {
     writer.ldelim();
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): AvailableGlobalVirtualGroupFamiliesRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): AvailableGlobalVirtualGroupFamiliesRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAvailableGlobalVirtualGroupFamiliesRequest();
     while (reader.pos < end) {
@@ -1085,7 +1085,7 @@ function createBaseAvailableGlobalVirtualGroupFamiliesResponse(): AvailableGloba
 }
 export const AvailableGlobalVirtualGroupFamiliesResponse = {
   typeUrl: "/greenfield.virtualgroup.AvailableGlobalVirtualGroupFamiliesResponse",
-  encode(message: AvailableGlobalVirtualGroupFamiliesResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: AvailableGlobalVirtualGroupFamiliesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     writer.uint32(10).fork();
     for (const v of message.globalVirtualGroupFamilyIds) {
       writer.uint32(v);
@@ -1093,8 +1093,8 @@ export const AvailableGlobalVirtualGroupFamiliesResponse = {
     writer.ldelim();
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): AvailableGlobalVirtualGroupFamiliesResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): AvailableGlobalVirtualGroupFamiliesResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAvailableGlobalVirtualGroupFamiliesResponse();
     while (reader.pos < end) {
@@ -1209,33 +1209,33 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
   GlobalVirtualGroup(request: QueryGlobalVirtualGroupRequest): Promise<QueryGlobalVirtualGroupResponse> {
     const data = QueryGlobalVirtualGroupRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Query", "GlobalVirtualGroup", data);
-    return promise.then(data => QueryGlobalVirtualGroupResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryGlobalVirtualGroupResponse.decode(new _m0.Reader(data)));
   }
   GlobalVirtualGroupByFamilyID(request: QueryGlobalVirtualGroupByFamilyIDRequest): Promise<QueryGlobalVirtualGroupByFamilyIDResponse> {
     const data = QueryGlobalVirtualGroupByFamilyIDRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Query", "GlobalVirtualGroupByFamilyID", data);
-    return promise.then(data => QueryGlobalVirtualGroupByFamilyIDResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryGlobalVirtualGroupByFamilyIDResponse.decode(new _m0.Reader(data)));
   }
   GlobalVirtualGroupFamily(request: QueryGlobalVirtualGroupFamilyRequest): Promise<QueryGlobalVirtualGroupFamilyResponse> {
     const data = QueryGlobalVirtualGroupFamilyRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Query", "GlobalVirtualGroupFamily", data);
-    return promise.then(data => QueryGlobalVirtualGroupFamilyResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryGlobalVirtualGroupFamilyResponse.decode(new _m0.Reader(data)));
   }
   GlobalVirtualGroupFamilies(request: QueryGlobalVirtualGroupFamiliesRequest = {
     pagination: undefined
   }): Promise<QueryGlobalVirtualGroupFamiliesResponse> {
     const data = QueryGlobalVirtualGroupFamiliesRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Query", "GlobalVirtualGroupFamilies", data);
-    return promise.then(data => QueryGlobalVirtualGroupFamiliesResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryGlobalVirtualGroupFamiliesResponse.decode(new _m0.Reader(data)));
   }
   AvailableGlobalVirtualGroupFamilies(request: AvailableGlobalVirtualGroupFamiliesRequest): Promise<AvailableGlobalVirtualGroupFamiliesResponse> {
     const data = AvailableGlobalVirtualGroupFamiliesRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Query", "AvailableGlobalVirtualGroupFamilies", data);
-    return promise.then(data => AvailableGlobalVirtualGroupFamiliesResponse.decode(new BinaryReader(data)));
+    return promise.then(data => AvailableGlobalVirtualGroupFamiliesResponse.decode(new _m0.Reader(data)));
   }
 }

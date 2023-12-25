@@ -3,8 +3,8 @@
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
 import { Params, ParamsSDKType } from "./params";
 import { StorageProvider, StorageProviderSDKType, SpStoragePrice, SpStoragePriceSDKType, GlobalSpStorePrice, GlobalSpStorePriceSDKType, MaintenanceRecord, MaintenanceRecordSDKType } from "./types";
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
+import { Long, DeepPartial, Exact, isSet, Rpc } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.sp";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
@@ -74,14 +74,14 @@ export interface QuerySpStoragePriceResponseSDKType {
 }
 export interface QueryGlobalSpStorePriceByTimeRequest {
   /** unix timestamp in seconds. If it's 0, it will return the latest price. */
-  timestamp: bigint;
+  timestamp: Long;
 }
 export interface QueryGlobalSpStorePriceByTimeRequestProtoMsg {
   typeUrl: "/greenfield.sp.QueryGlobalSpStorePriceByTimeRequest";
   value: Uint8Array;
 }
 export interface QueryGlobalSpStorePriceByTimeRequestSDKType {
-  timestamp: bigint;
+  timestamp: Long;
 }
 export interface QueryGlobalSpStorePriceByTimeResponse {
   globalSpStorePrice: GlobalSpStorePrice;
@@ -158,11 +158,11 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
 }
 export const QueryParamsRequest = {
   typeUrl: "/greenfield.sp.QueryParamsRequest",
-  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -224,14 +224,14 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
 }
 export const QueryParamsResponse = {
   typeUrl: "/greenfield.sp.QueryParamsResponse",
-  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -307,14 +307,14 @@ function createBaseQueryStorageProvidersRequest(): QueryStorageProvidersRequest 
 }
 export const QueryStorageProvidersRequest = {
   typeUrl: "/greenfield.sp.QueryStorageProvidersRequest",
-  encode(message: QueryStorageProvidersRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryStorageProvidersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProvidersRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProvidersRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProvidersRequest();
     while (reader.pos < end) {
@@ -391,7 +391,7 @@ function createBaseQueryStorageProvidersResponse(): QueryStorageProvidersRespons
 }
 export const QueryStorageProvidersResponse = {
   typeUrl: "/greenfield.sp.QueryStorageProvidersResponse",
-  encode(message: QueryStorageProvidersResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryStorageProvidersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.sps) {
       StorageProvider.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -400,8 +400,8 @@ export const QueryStorageProvidersResponse = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProvidersResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProvidersResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProvidersResponse();
     while (reader.pos < end) {
@@ -499,14 +499,14 @@ function createBaseQuerySpStoragePriceRequest(): QuerySpStoragePriceRequest {
 }
 export const QuerySpStoragePriceRequest = {
   typeUrl: "/greenfield.sp.QuerySpStoragePriceRequest",
-  encode(message: QuerySpStoragePriceRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QuerySpStoragePriceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.spAddr !== "") {
       writer.uint32(10).string(message.spAddr);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QuerySpStoragePriceRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpStoragePriceRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySpStoragePriceRequest();
     while (reader.pos < end) {
@@ -582,14 +582,14 @@ function createBaseQuerySpStoragePriceResponse(): QuerySpStoragePriceResponse {
 }
 export const QuerySpStoragePriceResponse = {
   typeUrl: "/greenfield.sp.QuerySpStoragePriceResponse",
-  encode(message: QuerySpStoragePriceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QuerySpStoragePriceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.spStoragePrice !== undefined) {
       SpStoragePrice.encode(message.spStoragePrice, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QuerySpStoragePriceResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpStoragePriceResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySpStoragePriceResponse();
     while (reader.pos < end) {
@@ -660,26 +660,26 @@ export const QuerySpStoragePriceResponse = {
 };
 function createBaseQueryGlobalSpStorePriceByTimeRequest(): QueryGlobalSpStorePriceByTimeRequest {
   return {
-    timestamp: BigInt(0)
+    timestamp: Long.ZERO
   };
 }
 export const QueryGlobalSpStorePriceByTimeRequest = {
   typeUrl: "/greenfield.sp.QueryGlobalSpStorePriceByTimeRequest",
-  encode(message: QueryGlobalSpStorePriceByTimeRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.timestamp !== BigInt(0)) {
+  encode(message: QueryGlobalSpStorePriceByTimeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.timestamp.isZero()) {
       writer.uint32(8).int64(message.timestamp);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalSpStorePriceByTimeRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalSpStorePriceByTimeRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalSpStorePriceByTimeRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.timestamp = reader.int64();
+          message.timestamp = (reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -690,17 +690,17 @@ export const QueryGlobalSpStorePriceByTimeRequest = {
   },
   fromJSON(object: any): QueryGlobalSpStorePriceByTimeRequest {
     return {
-      timestamp: isSet(object.timestamp) ? BigInt(object.timestamp.toString()) : BigInt(0)
+      timestamp: isSet(object.timestamp) ? Long.fromValue(object.timestamp) : Long.ZERO
     };
   },
   toJSON(message: QueryGlobalSpStorePriceByTimeRequest): unknown {
     const obj: any = {};
-    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || BigInt(0)).toString());
+    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || Long.ZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<QueryGlobalSpStorePriceByTimeRequest>, I>>(object: I): QueryGlobalSpStorePriceByTimeRequest {
     const message = createBaseQueryGlobalSpStorePriceByTimeRequest();
-    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? BigInt(object.timestamp.toString()) : BigInt(0);
+    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
     return message;
   },
   fromSDK(object: QueryGlobalSpStorePriceByTimeRequestSDKType): QueryGlobalSpStorePriceByTimeRequest {
@@ -716,7 +716,7 @@ export const QueryGlobalSpStorePriceByTimeRequest = {
   fromAmino(object: QueryGlobalSpStorePriceByTimeRequestAmino): QueryGlobalSpStorePriceByTimeRequest {
     const message = createBaseQueryGlobalSpStorePriceByTimeRequest();
     if (object.timestamp !== undefined && object.timestamp !== null) {
-      message.timestamp = BigInt(object.timestamp);
+      message.timestamp = Long.fromString(object.timestamp);
     }
     return message;
   },
@@ -748,14 +748,14 @@ function createBaseQueryGlobalSpStorePriceByTimeResponse(): QueryGlobalSpStorePr
 }
 export const QueryGlobalSpStorePriceByTimeResponse = {
   typeUrl: "/greenfield.sp.QueryGlobalSpStorePriceByTimeResponse",
-  encode(message: QueryGlobalSpStorePriceByTimeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryGlobalSpStorePriceByTimeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.globalSpStorePrice !== undefined) {
       GlobalSpStorePrice.encode(message.globalSpStorePrice, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalSpStorePriceByTimeResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalSpStorePriceByTimeResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalSpStorePriceByTimeResponse();
     while (reader.pos < end) {
@@ -831,14 +831,14 @@ function createBaseQueryStorageProviderRequest(): QueryStorageProviderRequest {
 }
 export const QueryStorageProviderRequest = {
   typeUrl: "/greenfield.sp.QueryStorageProviderRequest",
-  encode(message: QueryStorageProviderRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryStorageProviderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProviderRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProviderRequest();
     while (reader.pos < end) {
@@ -914,14 +914,14 @@ function createBaseQueryStorageProviderResponse(): QueryStorageProviderResponse 
 }
 export const QueryStorageProviderResponse = {
   typeUrl: "/greenfield.sp.QueryStorageProviderResponse",
-  encode(message: QueryStorageProviderResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryStorageProviderResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProvider !== undefined) {
       StorageProvider.encode(message.storageProvider, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProviderResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProviderResponse();
     while (reader.pos < end) {
@@ -997,14 +997,14 @@ function createBaseQueryStorageProviderByOperatorAddressRequest(): QueryStorageP
 }
 export const QueryStorageProviderByOperatorAddressRequest = {
   typeUrl: "/greenfield.sp.QueryStorageProviderByOperatorAddressRequest",
-  encode(message: QueryStorageProviderByOperatorAddressRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryStorageProviderByOperatorAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operatorAddress !== "") {
       writer.uint32(10).string(message.operatorAddress);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProviderByOperatorAddressRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderByOperatorAddressRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProviderByOperatorAddressRequest();
     while (reader.pos < end) {
@@ -1080,14 +1080,14 @@ function createBaseQueryStorageProviderByOperatorAddressResponse(): QueryStorage
 }
 export const QueryStorageProviderByOperatorAddressResponse = {
   typeUrl: "/greenfield.sp.QueryStorageProviderByOperatorAddressResponse",
-  encode(message: QueryStorageProviderByOperatorAddressResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryStorageProviderByOperatorAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProvider !== undefined) {
       StorageProvider.encode(message.storageProvider, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProviderByOperatorAddressResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderByOperatorAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProviderByOperatorAddressResponse();
     while (reader.pos < end) {
@@ -1163,14 +1163,14 @@ function createBaseQueryStorageProviderMaintenanceRecordsRequest(): QueryStorage
 }
 export const QueryStorageProviderMaintenanceRecordsRequest = {
   typeUrl: "/greenfield.sp.QueryStorageProviderMaintenanceRecordsRequest",
-  encode(message: QueryStorageProviderMaintenanceRecordsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryStorageProviderMaintenanceRecordsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operatorAddress !== "") {
       writer.uint32(10).string(message.operatorAddress);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProviderMaintenanceRecordsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderMaintenanceRecordsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProviderMaintenanceRecordsRequest();
     while (reader.pos < end) {
@@ -1246,14 +1246,14 @@ function createBaseQueryStorageProviderMaintenanceRecordsResponse(): QueryStorag
 }
 export const QueryStorageProviderMaintenanceRecordsResponse = {
   typeUrl: "/greenfield.sp.QueryStorageProviderMaintenanceRecordsResponse",
-  encode(message: QueryStorageProviderMaintenanceRecordsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryStorageProviderMaintenanceRecordsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.records) {
       MaintenanceRecord.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProviderMaintenanceRecordsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderMaintenanceRecordsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProviderMaintenanceRecordsResponse();
     while (reader.pos < end) {
@@ -1364,38 +1364,38 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
   StorageProviders(request: QueryStorageProvidersRequest = {
     pagination: undefined
   }): Promise<QueryStorageProvidersResponse> {
     const data = QueryStorageProvidersRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "StorageProviders", data);
-    return promise.then(data => QueryStorageProvidersResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryStorageProvidersResponse.decode(new _m0.Reader(data)));
   }
   QuerySpStoragePrice(request: QuerySpStoragePriceRequest): Promise<QuerySpStoragePriceResponse> {
     const data = QuerySpStoragePriceRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "QuerySpStoragePrice", data);
-    return promise.then(data => QuerySpStoragePriceResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QuerySpStoragePriceResponse.decode(new _m0.Reader(data)));
   }
   QueryGlobalSpStorePriceByTime(request: QueryGlobalSpStorePriceByTimeRequest): Promise<QueryGlobalSpStorePriceByTimeResponse> {
     const data = QueryGlobalSpStorePriceByTimeRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "QueryGlobalSpStorePriceByTime", data);
-    return promise.then(data => QueryGlobalSpStorePriceByTimeResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryGlobalSpStorePriceByTimeResponse.decode(new _m0.Reader(data)));
   }
   StorageProvider(request: QueryStorageProviderRequest): Promise<QueryStorageProviderResponse> {
     const data = QueryStorageProviderRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "StorageProvider", data);
-    return promise.then(data => QueryStorageProviderResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryStorageProviderResponse.decode(new _m0.Reader(data)));
   }
   StorageProviderByOperatorAddress(request: QueryStorageProviderByOperatorAddressRequest): Promise<QueryStorageProviderByOperatorAddressResponse> {
     const data = QueryStorageProviderByOperatorAddressRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "StorageProviderByOperatorAddress", data);
-    return promise.then(data => QueryStorageProviderByOperatorAddressResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryStorageProviderByOperatorAddressResponse.decode(new _m0.Reader(data)));
   }
   StorageProviderMaintenanceRecordsByOperatorAddress(request: QueryStorageProviderMaintenanceRecordsRequest): Promise<QueryStorageProviderMaintenanceRecordsResponse> {
     const data = QueryStorageProviderMaintenanceRecordsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "StorageProviderMaintenanceRecordsByOperatorAddress", data);
-    return promise.then(data => QueryStorageProviderMaintenanceRecordsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryStorageProviderMaintenanceRecordsResponse.decode(new _m0.Reader(data)));
   }
 }

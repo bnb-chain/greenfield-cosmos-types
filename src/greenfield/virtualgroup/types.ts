@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { isSet, DeepPartial, Exact } from "../../helpers";
+import { Long, isSet, DeepPartial, Exact } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.virtualgroup";
 /**
  * A global virtual group consists of one primary SP (SP) and multiple secondary SP.
@@ -18,7 +18,7 @@ export interface GlobalVirtualGroup {
   /** Secondary SP IDs represents the list of unique identifiers of the secondary storage providers in the group. */
   secondarySpIds: number[];
   /** Stored size represents the size of the stored objects within the group. */
-  storedSize: bigint;
+  storedSize: Long;
   /** Virtual payment address represents the payment address associated with the group. */
   virtualPaymentAddress: string;
   /** Total deposit represents the number of tokens deposited by this storage provider for staking. */
@@ -38,7 +38,7 @@ export interface GlobalVirtualGroupSDKType {
   family_id: number;
   primary_sp_id: number;
   secondary_sp_ids: number[];
-  stored_size: bigint;
+  stored_size: Long;
   virtual_payment_address: string;
   total_deposit: string;
 }
@@ -127,14 +127,14 @@ function createBaseGlobalVirtualGroup(): GlobalVirtualGroup {
     familyId: 0,
     primarySpId: 0,
     secondarySpIds: [],
-    storedSize: BigInt(0),
+    storedSize: Long.UZERO,
     virtualPaymentAddress: "",
     totalDeposit: ""
   };
 }
 export const GlobalVirtualGroup = {
   typeUrl: "/greenfield.virtualgroup.GlobalVirtualGroup",
-  encode(message: GlobalVirtualGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: GlobalVirtualGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id);
     }
@@ -149,7 +149,7 @@ export const GlobalVirtualGroup = {
       writer.uint32(v);
     }
     writer.ldelim();
-    if (message.storedSize !== BigInt(0)) {
+    if (!message.storedSize.isZero()) {
       writer.uint32(40).uint64(message.storedSize);
     }
     if (message.virtualPaymentAddress !== "") {
@@ -160,8 +160,8 @@ export const GlobalVirtualGroup = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): GlobalVirtualGroup {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GlobalVirtualGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGlobalVirtualGroup();
     while (reader.pos < end) {
@@ -187,7 +187,7 @@ export const GlobalVirtualGroup = {
           }
           break;
         case 5:
-          message.storedSize = reader.uint64();
+          message.storedSize = (reader.uint64() as Long);
           break;
         case 6:
           message.virtualPaymentAddress = reader.string();
@@ -208,7 +208,7 @@ export const GlobalVirtualGroup = {
       familyId: isSet(object.familyId) ? Number(object.familyId) : 0,
       primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0,
       secondarySpIds: Array.isArray(object?.secondarySpIds) ? object.secondarySpIds.map((e: any) => Number(e)) : [],
-      storedSize: isSet(object.storedSize) ? BigInt(object.storedSize.toString()) : BigInt(0),
+      storedSize: isSet(object.storedSize) ? Long.fromValue(object.storedSize) : Long.UZERO,
       virtualPaymentAddress: isSet(object.virtualPaymentAddress) ? String(object.virtualPaymentAddress) : "",
       totalDeposit: isSet(object.totalDeposit) ? String(object.totalDeposit) : ""
     };
@@ -223,7 +223,7 @@ export const GlobalVirtualGroup = {
     } else {
       obj.secondarySpIds = [];
     }
-    message.storedSize !== undefined && (obj.storedSize = (message.storedSize || BigInt(0)).toString());
+    message.storedSize !== undefined && (obj.storedSize = (message.storedSize || Long.UZERO).toString());
     message.virtualPaymentAddress !== undefined && (obj.virtualPaymentAddress = message.virtualPaymentAddress);
     message.totalDeposit !== undefined && (obj.totalDeposit = message.totalDeposit);
     return obj;
@@ -234,7 +234,7 @@ export const GlobalVirtualGroup = {
     message.familyId = object.familyId ?? 0;
     message.primarySpId = object.primarySpId ?? 0;
     message.secondarySpIds = object.secondarySpIds?.map(e => e) || [];
-    message.storedSize = object.storedSize !== undefined && object.storedSize !== null ? BigInt(object.storedSize.toString()) : BigInt(0);
+    message.storedSize = object.storedSize !== undefined && object.storedSize !== null ? Long.fromValue(object.storedSize) : Long.UZERO;
     message.virtualPaymentAddress = object.virtualPaymentAddress ?? "";
     message.totalDeposit = object.totalDeposit ?? "";
     return message;
@@ -278,7 +278,7 @@ export const GlobalVirtualGroup = {
     }
     message.secondarySpIds = object.secondary_sp_ids?.map(e => e) || [];
     if (object.stored_size !== undefined && object.stored_size !== null) {
-      message.storedSize = BigInt(object.stored_size);
+      message.storedSize = Long.fromString(object.stored_size);
     }
     if (object.virtual_payment_address !== undefined && object.virtual_payment_address !== null) {
       message.virtualPaymentAddress = object.virtual_payment_address;
@@ -329,7 +329,7 @@ function createBaseGlobalVirtualGroupFamily(): GlobalVirtualGroupFamily {
 }
 export const GlobalVirtualGroupFamily = {
   typeUrl: "/greenfield.virtualgroup.GlobalVirtualGroupFamily",
-  encode(message: GlobalVirtualGroupFamily, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: GlobalVirtualGroupFamily, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id);
     }
@@ -346,8 +346,8 @@ export const GlobalVirtualGroupFamily = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): GlobalVirtualGroupFamily {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GlobalVirtualGroupFamily {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGlobalVirtualGroupFamily();
     while (reader.pos < end) {
@@ -478,7 +478,7 @@ function createBaseGlobalVirtualGroupsBindingOnBucket(): GlobalVirtualGroupsBind
 }
 export const GlobalVirtualGroupsBindingOnBucket = {
   typeUrl: "/greenfield.virtualgroup.GlobalVirtualGroupsBindingOnBucket",
-  encode(message: GlobalVirtualGroupsBindingOnBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: GlobalVirtualGroupsBindingOnBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.bucketId !== "") {
       writer.uint32(10).string(message.bucketId);
     }
@@ -494,8 +494,8 @@ export const GlobalVirtualGroupsBindingOnBucket = {
     writer.ldelim();
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): GlobalVirtualGroupsBindingOnBucket {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GlobalVirtualGroupsBindingOnBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGlobalVirtualGroupsBindingOnBucket();
     while (reader.pos < end) {
@@ -631,7 +631,7 @@ function createBaseGVGStatisticsWithinSP(): GVGStatisticsWithinSP {
 }
 export const GVGStatisticsWithinSP = {
   typeUrl: "/greenfield.virtualgroup.GVGStatisticsWithinSP",
-  encode(message: GVGStatisticsWithinSP, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: GVGStatisticsWithinSP, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProviderId !== 0) {
       writer.uint32(8).uint32(message.storageProviderId);
     }
@@ -643,8 +643,8 @@ export const GVGStatisticsWithinSP = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): GVGStatisticsWithinSP {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GVGStatisticsWithinSP {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGVGStatisticsWithinSP();
     while (reader.pos < end) {
@@ -745,7 +745,7 @@ function createBaseSwapOutInfo(): SwapOutInfo {
 }
 export const SwapOutInfo = {
   typeUrl: "/greenfield.virtualgroup.SwapOutInfo",
-  encode(message: SwapOutInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: SwapOutInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.spId !== 0) {
       writer.uint32(8).uint32(message.spId);
     }
@@ -754,8 +754,8 @@ export const SwapOutInfo = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): SwapOutInfo {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SwapOutInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSwapOutInfo();
     while (reader.pos < end) {

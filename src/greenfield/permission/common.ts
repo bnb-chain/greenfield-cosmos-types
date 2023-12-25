@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import { UInt64Value, UInt64ValueSDKType } from "../common/wrapper";
-import { BinaryReader, BinaryWriter } from "../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.permission";
 /** ActionType defines the operations you can execute in greenfield storage network */
@@ -249,7 +249,7 @@ function createBaseStatement(): Statement {
 }
 export const Statement = {
   typeUrl: "/greenfield.permission.Statement",
-  encode(message: Statement, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Statement, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.effect !== 0) {
       writer.uint32(8).int32(message.effect);
     }
@@ -269,8 +269,8 @@ export const Statement = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Statement {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Statement {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStatement();
     while (reader.pos < end) {
@@ -422,7 +422,7 @@ function createBasePrincipal(): Principal {
 }
 export const Principal = {
   typeUrl: "/greenfield.permission.Principal",
-  encode(message: Principal, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Principal, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.type !== 0) {
       writer.uint32(8).int32(message.type);
     }
@@ -431,8 +431,8 @@ export const Principal = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Principal {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Principal {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePrincipal();
     while (reader.pos < end) {

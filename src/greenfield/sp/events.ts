@@ -2,8 +2,8 @@
 /* eslint-disable */
 import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Status, Description, DescriptionSDKType, statusFromJSON, statusToJSON } from "./types";
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { isSet, DeepPartial, Exact } from "../../helpers";
+import { Long, isSet, DeepPartial, Exact } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 import { Decimal } from "@cosmjs/math";
 export const protobufPackage = "greenfield.sp";
 /** EventCreateStorageProvider is emitted when there is a storage provider created */
@@ -112,11 +112,11 @@ export interface EventSpStoragePriceUpdate {
   /** sp id */
   spId: number;
   /** update time, in unix timestamp */
-  updateTimeSec: bigint;
+  updateTimeSec: Long;
   /** read price, in bnb wei per charge byte */
   readPrice: string;
   /** free read quota, in byte */
-  freeReadQuota: bigint;
+  freeReadQuota: Long;
   /** store price, in bnb wei per charge byte */
   storePrice: string;
 }
@@ -126,14 +126,14 @@ export interface EventSpStoragePriceUpdateProtoMsg {
 }
 export interface EventSpStoragePriceUpdateSDKType {
   sp_id: number;
-  update_time_sec: bigint;
+  update_time_sec: Long;
   read_price: string;
-  free_read_quota: bigint;
+  free_read_quota: Long;
   store_price: string;
 }
 export interface EventGlobalSpStorePriceUpdate {
   /** update time, in unix timestamp */
-  updateTimeSec: bigint;
+  updateTimeSec: Long;
   /** read price, in bnb wei per charge byte */
   readPrice: string;
   /** primary store price, in bnb wei per charge byte */
@@ -146,7 +146,7 @@ export interface EventGlobalSpStorePriceUpdateProtoMsg {
   value: Uint8Array;
 }
 export interface EventGlobalSpStorePriceUpdateSDKType {
-  update_time_sec: bigint;
+  update_time_sec: Long;
   read_price: string;
   primary_store_price: string;
   secondary_store_price: string;
@@ -191,7 +191,7 @@ function createBaseEventCreateStorageProvider(): EventCreateStorageProvider {
 }
 export const EventCreateStorageProvider = {
   typeUrl: "/greenfield.sp.EventCreateStorageProvider",
-  encode(message: EventCreateStorageProvider, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventCreateStorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.spId !== 0) {
       writer.uint32(8).uint32(message.spId);
     }
@@ -230,8 +230,8 @@ export const EventCreateStorageProvider = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateStorageProvider {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCreateStorageProvider {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCreateStorageProvider();
     while (reader.pos < end) {
@@ -447,7 +447,7 @@ function createBaseEventEditStorageProvider(): EventEditStorageProvider {
 }
 export const EventEditStorageProvider = {
   typeUrl: "/greenfield.sp.EventEditStorageProvider",
-  encode(message: EventEditStorageProvider, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventEditStorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.spId !== 0) {
       writer.uint32(8).uint32(message.spId);
     }
@@ -477,8 +477,8 @@ export const EventEditStorageProvider = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventEditStorageProvider {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventEditStorageProvider {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventEditStorageProvider();
     while (reader.pos < end) {
@@ -652,7 +652,7 @@ function createBaseEventDeposit(): EventDeposit {
 }
 export const EventDeposit = {
   typeUrl: "/greenfield.sp.EventDeposit",
-  encode(message: EventDeposit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventDeposit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.fundingAddress !== "") {
       writer.uint32(10).string(message.fundingAddress);
     }
@@ -664,8 +664,8 @@ export const EventDeposit = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventDeposit {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventDeposit {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDeposit();
     while (reader.pos < end) {
@@ -761,25 +761,25 @@ export const EventDeposit = {
 function createBaseEventSpStoragePriceUpdate(): EventSpStoragePriceUpdate {
   return {
     spId: 0,
-    updateTimeSec: BigInt(0),
+    updateTimeSec: Long.ZERO,
     readPrice: "",
-    freeReadQuota: BigInt(0),
+    freeReadQuota: Long.UZERO,
     storePrice: ""
   };
 }
 export const EventSpStoragePriceUpdate = {
   typeUrl: "/greenfield.sp.EventSpStoragePriceUpdate",
-  encode(message: EventSpStoragePriceUpdate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventSpStoragePriceUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.spId !== 0) {
       writer.uint32(8).uint32(message.spId);
     }
-    if (message.updateTimeSec !== BigInt(0)) {
+    if (!message.updateTimeSec.isZero()) {
       writer.uint32(16).int64(message.updateTimeSec);
     }
     if (message.readPrice !== "") {
       writer.uint32(26).string(Decimal.fromUserInput(message.readPrice, 18).atomics);
     }
-    if (message.freeReadQuota !== BigInt(0)) {
+    if (!message.freeReadQuota.isZero()) {
       writer.uint32(32).uint64(message.freeReadQuota);
     }
     if (message.storePrice !== "") {
@@ -787,8 +787,8 @@ export const EventSpStoragePriceUpdate = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventSpStoragePriceUpdate {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventSpStoragePriceUpdate {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventSpStoragePriceUpdate();
     while (reader.pos < end) {
@@ -798,13 +798,13 @@ export const EventSpStoragePriceUpdate = {
           message.spId = reader.uint32();
           break;
         case 2:
-          message.updateTimeSec = reader.int64();
+          message.updateTimeSec = (reader.int64() as Long);
           break;
         case 3:
           message.readPrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 4:
-          message.freeReadQuota = reader.uint64();
+          message.freeReadQuota = (reader.uint64() as Long);
           break;
         case 5:
           message.storePrice = Decimal.fromAtomics(reader.string(), 18).toString();
@@ -819,27 +819,27 @@ export const EventSpStoragePriceUpdate = {
   fromJSON(object: any): EventSpStoragePriceUpdate {
     return {
       spId: isSet(object.spId) ? Number(object.spId) : 0,
-      updateTimeSec: isSet(object.updateTimeSec) ? BigInt(object.updateTimeSec.toString()) : BigInt(0),
+      updateTimeSec: isSet(object.updateTimeSec) ? Long.fromValue(object.updateTimeSec) : Long.ZERO,
       readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
-      freeReadQuota: isSet(object.freeReadQuota) ? BigInt(object.freeReadQuota.toString()) : BigInt(0),
+      freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
       storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
     };
   },
   toJSON(message: EventSpStoragePriceUpdate): unknown {
     const obj: any = {};
     message.spId !== undefined && (obj.spId = Math.round(message.spId));
-    message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || BigInt(0)).toString());
+    message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || Long.ZERO).toString());
     message.readPrice !== undefined && (obj.readPrice = message.readPrice);
-    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || BigInt(0)).toString());
+    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
     message.storePrice !== undefined && (obj.storePrice = message.storePrice);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventSpStoragePriceUpdate>, I>>(object: I): EventSpStoragePriceUpdate {
     const message = createBaseEventSpStoragePriceUpdate();
     message.spId = object.spId ?? 0;
-    message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? BigInt(object.updateTimeSec.toString()) : BigInt(0);
+    message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? Long.fromValue(object.updateTimeSec) : Long.ZERO;
     message.readPrice = object.readPrice ?? "";
-    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? BigInt(object.freeReadQuota.toString()) : BigInt(0);
+    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
     message.storePrice = object.storePrice ?? "";
     return message;
   },
@@ -867,13 +867,13 @@ export const EventSpStoragePriceUpdate = {
       message.spId = object.sp_id;
     }
     if (object.update_time_sec !== undefined && object.update_time_sec !== null) {
-      message.updateTimeSec = BigInt(object.update_time_sec);
+      message.updateTimeSec = Long.fromString(object.update_time_sec);
     }
     if (object.read_price !== undefined && object.read_price !== null) {
       message.readPrice = object.read_price;
     }
     if (object.free_read_quota !== undefined && object.free_read_quota !== null) {
-      message.freeReadQuota = BigInt(object.free_read_quota);
+      message.freeReadQuota = Long.fromString(object.free_read_quota);
     }
     if (object.store_price !== undefined && object.store_price !== null) {
       message.storePrice = object.store_price;
@@ -907,7 +907,7 @@ export const EventSpStoragePriceUpdate = {
 };
 function createBaseEventGlobalSpStorePriceUpdate(): EventGlobalSpStorePriceUpdate {
   return {
-    updateTimeSec: BigInt(0),
+    updateTimeSec: Long.ZERO,
     readPrice: "",
     primaryStorePrice: "",
     secondaryStorePrice: ""
@@ -915,8 +915,8 @@ function createBaseEventGlobalSpStorePriceUpdate(): EventGlobalSpStorePriceUpdat
 }
 export const EventGlobalSpStorePriceUpdate = {
   typeUrl: "/greenfield.sp.EventGlobalSpStorePriceUpdate",
-  encode(message: EventGlobalSpStorePriceUpdate, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.updateTimeSec !== BigInt(0)) {
+  encode(message: EventGlobalSpStorePriceUpdate, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.updateTimeSec.isZero()) {
       writer.uint32(8).int64(message.updateTimeSec);
     }
     if (message.readPrice !== "") {
@@ -930,15 +930,15 @@ export const EventGlobalSpStorePriceUpdate = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventGlobalSpStorePriceUpdate {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventGlobalSpStorePriceUpdate {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventGlobalSpStorePriceUpdate();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.updateTimeSec = reader.int64();
+          message.updateTimeSec = (reader.int64() as Long);
           break;
         case 2:
           message.readPrice = Decimal.fromAtomics(reader.string(), 18).toString();
@@ -958,7 +958,7 @@ export const EventGlobalSpStorePriceUpdate = {
   },
   fromJSON(object: any): EventGlobalSpStorePriceUpdate {
     return {
-      updateTimeSec: isSet(object.updateTimeSec) ? BigInt(object.updateTimeSec.toString()) : BigInt(0),
+      updateTimeSec: isSet(object.updateTimeSec) ? Long.fromValue(object.updateTimeSec) : Long.ZERO,
       readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
       primaryStorePrice: isSet(object.primaryStorePrice) ? String(object.primaryStorePrice) : "",
       secondaryStorePrice: isSet(object.secondaryStorePrice) ? String(object.secondaryStorePrice) : ""
@@ -966,7 +966,7 @@ export const EventGlobalSpStorePriceUpdate = {
   },
   toJSON(message: EventGlobalSpStorePriceUpdate): unknown {
     const obj: any = {};
-    message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || BigInt(0)).toString());
+    message.updateTimeSec !== undefined && (obj.updateTimeSec = (message.updateTimeSec || Long.ZERO).toString());
     message.readPrice !== undefined && (obj.readPrice = message.readPrice);
     message.primaryStorePrice !== undefined && (obj.primaryStorePrice = message.primaryStorePrice);
     message.secondaryStorePrice !== undefined && (obj.secondaryStorePrice = message.secondaryStorePrice);
@@ -974,7 +974,7 @@ export const EventGlobalSpStorePriceUpdate = {
   },
   fromPartial<I extends Exact<DeepPartial<EventGlobalSpStorePriceUpdate>, I>>(object: I): EventGlobalSpStorePriceUpdate {
     const message = createBaseEventGlobalSpStorePriceUpdate();
-    message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? BigInt(object.updateTimeSec.toString()) : BigInt(0);
+    message.updateTimeSec = object.updateTimeSec !== undefined && object.updateTimeSec !== null ? Long.fromValue(object.updateTimeSec) : Long.ZERO;
     message.readPrice = object.readPrice ?? "";
     message.primaryStorePrice = object.primaryStorePrice ?? "";
     message.secondaryStorePrice = object.secondaryStorePrice ?? "";
@@ -999,7 +999,7 @@ export const EventGlobalSpStorePriceUpdate = {
   fromAmino(object: EventGlobalSpStorePriceUpdateAmino): EventGlobalSpStorePriceUpdate {
     const message = createBaseEventGlobalSpStorePriceUpdate();
     if (object.update_time_sec !== undefined && object.update_time_sec !== null) {
-      message.updateTimeSec = BigInt(object.update_time_sec);
+      message.updateTimeSec = Long.fromString(object.update_time_sec);
     }
     if (object.read_price !== undefined && object.read_price !== null) {
       message.readPrice = object.read_price;
@@ -1046,7 +1046,7 @@ function createBaseEventUpdateStorageProviderStatus(): EventUpdateStorageProvide
 }
 export const EventUpdateStorageProviderStatus = {
   typeUrl: "/greenfield.sp.EventUpdateStorageProviderStatus",
-  encode(message: EventUpdateStorageProviderStatus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventUpdateStorageProviderStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.spId !== 0) {
       writer.uint32(8).uint32(message.spId);
     }
@@ -1061,8 +1061,8 @@ export const EventUpdateStorageProviderStatus = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateStorageProviderStatus {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateStorageProviderStatus {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventUpdateStorageProviderStatus();
     while (reader.pos < end) {

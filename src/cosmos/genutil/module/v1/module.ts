@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact } from "../../../../helpers";
 export const protobufPackage = "cosmos.genutil.module.v1";
 /** Module is the config object for the genutil module. */
@@ -16,11 +16,11 @@ function createBaseModule(): Module {
 }
 export const Module = {
   typeUrl: "/cosmos.genutil.module.v1.Module",
-  encode(_: Module, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: Module, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Module {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Module {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseModule();
     while (reader.pos < end) {

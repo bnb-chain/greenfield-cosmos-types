@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { isSet, DeepPartial, Exact } from "../../helpers";
+import { Long, isSet, DeepPartial, Exact } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.payment";
 /**
  * AutoResumeRecord is the record keeps the auto resume information.
@@ -10,7 +10,7 @@ export const protobufPackage = "greenfield.payment";
  */
 export interface AutoResumeRecord {
   /** timestamp is the unix timestamp to order the records */
-  timestamp: bigint;
+  timestamp: Long;
   /** the stream account address */
   addr: string;
 }
@@ -24,19 +24,19 @@ export interface AutoResumeRecordProtoMsg {
  * and resume the stream account one by one.
  */
 export interface AutoResumeRecordSDKType {
-  timestamp: bigint;
+  timestamp: Long;
   addr: string;
 }
 function createBaseAutoResumeRecord(): AutoResumeRecord {
   return {
-    timestamp: BigInt(0),
+    timestamp: Long.ZERO,
     addr: ""
   };
 }
 export const AutoResumeRecord = {
   typeUrl: "/greenfield.payment.AutoResumeRecord",
-  encode(message: AutoResumeRecord, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.timestamp !== BigInt(0)) {
+  encode(message: AutoResumeRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.timestamp.isZero()) {
       writer.uint32(8).int64(message.timestamp);
     }
     if (message.addr !== "") {
@@ -44,15 +44,15 @@ export const AutoResumeRecord = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): AutoResumeRecord {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): AutoResumeRecord {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAutoResumeRecord();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.timestamp = reader.int64();
+          message.timestamp = (reader.int64() as Long);
           break;
         case 2:
           message.addr = reader.string();
@@ -66,19 +66,19 @@ export const AutoResumeRecord = {
   },
   fromJSON(object: any): AutoResumeRecord {
     return {
-      timestamp: isSet(object.timestamp) ? BigInt(object.timestamp.toString()) : BigInt(0),
+      timestamp: isSet(object.timestamp) ? Long.fromValue(object.timestamp) : Long.ZERO,
       addr: isSet(object.addr) ? String(object.addr) : ""
     };
   },
   toJSON(message: AutoResumeRecord): unknown {
     const obj: any = {};
-    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || BigInt(0)).toString());
+    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || Long.ZERO).toString());
     message.addr !== undefined && (obj.addr = message.addr);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<AutoResumeRecord>, I>>(object: I): AutoResumeRecord {
     const message = createBaseAutoResumeRecord();
-    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? BigInt(object.timestamp.toString()) : BigInt(0);
+    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
     message.addr = object.addr ?? "";
     return message;
   },
@@ -97,7 +97,7 @@ export const AutoResumeRecord = {
   fromAmino(object: AutoResumeRecordAmino): AutoResumeRecord {
     const message = createBaseAutoResumeRecord();
     if (object.timestamp !== undefined && object.timestamp !== null) {
-      message.timestamp = BigInt(object.timestamp);
+      message.timestamp = Long.fromString(object.timestamp);
     }
     if (object.addr !== undefined && object.addr !== null) {
       message.addr = object.addr;

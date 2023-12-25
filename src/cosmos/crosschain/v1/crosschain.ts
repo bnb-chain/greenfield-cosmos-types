@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.crosschain.v1";
 /** Params holds parameters for the cross chain module. */
@@ -42,14 +42,14 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/cosmos.crosschain.v1.Params",
-  encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.initModuleBalance !== "") {
       writer.uint32(10).string(message.initModuleBalance);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Params {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
@@ -133,7 +133,7 @@ function createBaseChannelPermission(): ChannelPermission {
 }
 export const ChannelPermission = {
   typeUrl: "/cosmos.crosschain.v1.ChannelPermission",
-  encode(message: ChannelPermission, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: ChannelPermission, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.destChainId !== 0) {
       writer.uint32(8).uint32(message.destChainId);
     }
@@ -145,8 +145,8 @@ export const ChannelPermission = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): ChannelPermission {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): ChannelPermission {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseChannelPermission();
     while (reader.pos < end) {

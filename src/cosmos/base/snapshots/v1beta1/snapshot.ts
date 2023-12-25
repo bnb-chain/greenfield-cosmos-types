@@ -1,11 +1,11 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../../../binary";
-import { isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../../../helpers";
+import { Long, isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "cosmos.base.snapshots.v1beta1";
 /** Snapshot contains Tendermint state sync snapshot info. */
 export interface Snapshot {
-  height: bigint;
+  height: Long;
   format: number;
   chunks: number;
   hash: Uint8Array;
@@ -17,7 +17,7 @@ export interface SnapshotProtoMsg {
 }
 /** Snapshot contains Tendermint state sync snapshot info. */
 export interface SnapshotSDKType {
-  height: bigint;
+  height: Long;
   format: number;
   chunks: number;
   hash: Uint8Array;
@@ -99,7 +99,7 @@ export interface SnapshotIAVLItem {
   key: Uint8Array;
   value: Uint8Array;
   /** version is block height */
-  version: bigint;
+  version: Long;
   /** height is depth of the tree. */
   height: number;
 }
@@ -115,7 +115,7 @@ export interface SnapshotIAVLItemProtoMsg {
 export interface SnapshotIAVLItemSDKType {
   key: Uint8Array;
   value: Uint8Array;
-  version: bigint;
+  version: Long;
   height: number;
 }
 /**
@@ -212,7 +212,7 @@ export interface SnapshotSchemaSDKType {
 }
 function createBaseSnapshot(): Snapshot {
   return {
-    height: BigInt(0),
+    height: Long.UZERO,
     format: 0,
     chunks: 0,
     hash: new Uint8Array(),
@@ -221,8 +221,8 @@ function createBaseSnapshot(): Snapshot {
 }
 export const Snapshot = {
   typeUrl: "/cosmos.base.snapshots.v1beta1.Snapshot",
-  encode(message: Snapshot, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.height !== BigInt(0)) {
+  encode(message: Snapshot, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.height.isZero()) {
       writer.uint32(8).uint64(message.height);
     }
     if (message.format !== 0) {
@@ -239,15 +239,15 @@ export const Snapshot = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Snapshot {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Snapshot {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSnapshot();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.height = reader.uint64();
+          message.height = (reader.uint64() as Long);
           break;
         case 2:
           message.format = reader.uint32();
@@ -270,7 +270,7 @@ export const Snapshot = {
   },
   fromJSON(object: any): Snapshot {
     return {
-      height: isSet(object.height) ? BigInt(object.height.toString()) : BigInt(0),
+      height: isSet(object.height) ? Long.fromValue(object.height) : Long.UZERO,
       format: isSet(object.format) ? Number(object.format) : 0,
       chunks: isSet(object.chunks) ? Number(object.chunks) : 0,
       hash: isSet(object.hash) ? bytesFromBase64(object.hash) : new Uint8Array(),
@@ -279,7 +279,7 @@ export const Snapshot = {
   },
   toJSON(message: Snapshot): unknown {
     const obj: any = {};
-    message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
+    message.height !== undefined && (obj.height = (message.height || Long.UZERO).toString());
     message.format !== undefined && (obj.format = Math.round(message.format));
     message.chunks !== undefined && (obj.chunks = Math.round(message.chunks));
     message.hash !== undefined && (obj.hash = base64FromBytes(message.hash !== undefined ? message.hash : new Uint8Array()));
@@ -288,7 +288,7 @@ export const Snapshot = {
   },
   fromPartial<I extends Exact<DeepPartial<Snapshot>, I>>(object: I): Snapshot {
     const message = createBaseSnapshot();
-    message.height = object.height !== undefined && object.height !== null ? BigInt(object.height.toString()) : BigInt(0);
+    message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.UZERO;
     message.format = object.format ?? 0;
     message.chunks = object.chunks ?? 0;
     message.hash = object.hash ?? new Uint8Array();
@@ -316,7 +316,7 @@ export const Snapshot = {
   fromAmino(object: SnapshotAmino): Snapshot {
     const message = createBaseSnapshot();
     if (object.height !== undefined && object.height !== null) {
-      message.height = BigInt(object.height);
+      message.height = Long.fromString(object.height);
     }
     if (object.format !== undefined && object.format !== null) {
       message.format = object.format;
@@ -370,14 +370,14 @@ function createBaseMetadata(): Metadata {
 }
 export const Metadata = {
   typeUrl: "/cosmos.base.snapshots.v1beta1.Metadata",
-  encode(message: Metadata, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Metadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.chunkHashes) {
       writer.uint32(10).bytes(v!);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Metadata {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Metadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMetadata();
     while (reader.pos < end) {
@@ -474,7 +474,7 @@ function createBaseSnapshotItem(): SnapshotItem {
 }
 export const SnapshotItem = {
   typeUrl: "/cosmos.base.snapshots.v1beta1.SnapshotItem",
-  encode(message: SnapshotItem, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: SnapshotItem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.store !== undefined) {
       SnapshotStoreItem.encode(message.store, writer.uint32(10).fork()).ldelim();
     }
@@ -495,8 +495,8 @@ export const SnapshotItem = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): SnapshotItem {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SnapshotItem {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSnapshotItem();
     while (reader.pos < end) {
@@ -638,14 +638,14 @@ function createBaseSnapshotStoreItem(): SnapshotStoreItem {
 }
 export const SnapshotStoreItem = {
   typeUrl: "/cosmos.base.snapshots.v1beta1.SnapshotStoreItem",
-  encode(message: SnapshotStoreItem, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: SnapshotStoreItem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): SnapshotStoreItem {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SnapshotStoreItem {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSnapshotStoreItem();
     while (reader.pos < end) {
@@ -724,20 +724,20 @@ function createBaseSnapshotIAVLItem(): SnapshotIAVLItem {
   return {
     key: new Uint8Array(),
     value: new Uint8Array(),
-    version: BigInt(0),
+    version: Long.ZERO,
     height: 0
   };
 }
 export const SnapshotIAVLItem = {
   typeUrl: "/cosmos.base.snapshots.v1beta1.SnapshotIAVLItem",
-  encode(message: SnapshotIAVLItem, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: SnapshotIAVLItem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
     }
     if (message.value.length !== 0) {
       writer.uint32(18).bytes(message.value);
     }
-    if (message.version !== BigInt(0)) {
+    if (!message.version.isZero()) {
       writer.uint32(24).int64(message.version);
     }
     if (message.height !== 0) {
@@ -745,8 +745,8 @@ export const SnapshotIAVLItem = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): SnapshotIAVLItem {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SnapshotIAVLItem {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSnapshotIAVLItem();
     while (reader.pos < end) {
@@ -759,7 +759,7 @@ export const SnapshotIAVLItem = {
           message.value = reader.bytes();
           break;
         case 3:
-          message.version = reader.int64();
+          message.version = (reader.int64() as Long);
           break;
         case 4:
           message.height = reader.int32();
@@ -775,7 +775,7 @@ export const SnapshotIAVLItem = {
     return {
       key: isSet(object.key) ? bytesFromBase64(object.key) : new Uint8Array(),
       value: isSet(object.value) ? bytesFromBase64(object.value) : new Uint8Array(),
-      version: isSet(object.version) ? BigInt(object.version.toString()) : BigInt(0),
+      version: isSet(object.version) ? Long.fromValue(object.version) : Long.ZERO,
       height: isSet(object.height) ? Number(object.height) : 0
     };
   },
@@ -783,7 +783,7 @@ export const SnapshotIAVLItem = {
     const obj: any = {};
     message.key !== undefined && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
     message.value !== undefined && (obj.value = base64FromBytes(message.value !== undefined ? message.value : new Uint8Array()));
-    message.version !== undefined && (obj.version = (message.version || BigInt(0)).toString());
+    message.version !== undefined && (obj.version = (message.version || Long.ZERO).toString());
     message.height !== undefined && (obj.height = Math.round(message.height));
     return obj;
   },
@@ -791,7 +791,7 @@ export const SnapshotIAVLItem = {
     const message = createBaseSnapshotIAVLItem();
     message.key = object.key ?? new Uint8Array();
     message.value = object.value ?? new Uint8Array();
-    message.version = object.version !== undefined && object.version !== null ? BigInt(object.version.toString()) : BigInt(0);
+    message.version = object.version !== undefined && object.version !== null ? Long.fromValue(object.version) : Long.ZERO;
     message.height = object.height ?? 0;
     return message;
   },
@@ -820,7 +820,7 @@ export const SnapshotIAVLItem = {
       message.value = bytesFromBase64(object.value);
     }
     if (object.version !== undefined && object.version !== null) {
-      message.version = BigInt(object.version);
+      message.version = Long.fromString(object.version);
     }
     if (object.height !== undefined && object.height !== null) {
       message.height = object.height;
@@ -865,7 +865,7 @@ function createBaseSnapshotExtensionMeta(): SnapshotExtensionMeta {
 }
 export const SnapshotExtensionMeta = {
   typeUrl: "/cosmos.base.snapshots.v1beta1.SnapshotExtensionMeta",
-  encode(message: SnapshotExtensionMeta, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: SnapshotExtensionMeta, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -874,8 +874,8 @@ export const SnapshotExtensionMeta = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): SnapshotExtensionMeta {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SnapshotExtensionMeta {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSnapshotExtensionMeta();
     while (reader.pos < end) {
@@ -969,14 +969,14 @@ function createBaseSnapshotExtensionPayload(): SnapshotExtensionPayload {
 }
 export const SnapshotExtensionPayload = {
   typeUrl: "/cosmos.base.snapshots.v1beta1.SnapshotExtensionPayload",
-  encode(message: SnapshotExtensionPayload, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: SnapshotExtensionPayload, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.payload.length !== 0) {
       writer.uint32(10).bytes(message.payload);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): SnapshotExtensionPayload {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SnapshotExtensionPayload {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSnapshotExtensionPayload();
     while (reader.pos < end) {
@@ -1059,7 +1059,7 @@ function createBaseSnapshotKVItem(): SnapshotKVItem {
 }
 export const SnapshotKVItem = {
   typeUrl: "/cosmos.base.snapshots.v1beta1.SnapshotKVItem",
-  encode(message: SnapshotKVItem, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: SnapshotKVItem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
     }
@@ -1068,8 +1068,8 @@ export const SnapshotKVItem = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): SnapshotKVItem {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SnapshotKVItem {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSnapshotKVItem();
     while (reader.pos < end) {
@@ -1163,14 +1163,14 @@ function createBaseSnapshotSchema(): SnapshotSchema {
 }
 export const SnapshotSchema = {
   typeUrl: "/cosmos.base.snapshots.v1beta1.SnapshotSchema",
-  encode(message: SnapshotSchema, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: SnapshotSchema, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.keys) {
       writer.uint32(10).bytes(v!);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): SnapshotSchema {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SnapshotSchema {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSnapshotSchema();
     while (reader.pos < end) {

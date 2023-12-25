@@ -3,7 +3,7 @@
 import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Approval, ApprovalSDKType } from "../common/approval";
 import { Params, ParamsSDKType } from "./params";
-import { BinaryReader, BinaryWriter } from "../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.virtualgroup";
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
@@ -314,7 +314,7 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/greenfield.virtualgroup.MsgUpdateParams",
-  encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -323,8 +323,8 @@ export const MsgUpdateParams = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParams {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParams();
     while (reader.pos < end) {
@@ -410,11 +410,11 @@ function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/greenfield.virtualgroup.MsgUpdateParamsResponse",
-  encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParamsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParamsResponse();
     while (reader.pos < end) {
@@ -479,7 +479,7 @@ function createBaseMsgCreateGlobalVirtualGroup(): MsgCreateGlobalVirtualGroup {
 }
 export const MsgCreateGlobalVirtualGroup = {
   typeUrl: "/greenfield.virtualgroup.MsgCreateGlobalVirtualGroup",
-  encode(message: MsgCreateGlobalVirtualGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgCreateGlobalVirtualGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProvider !== "") {
       writer.uint32(10).string(message.storageProvider);
     }
@@ -496,8 +496,8 @@ export const MsgCreateGlobalVirtualGroup = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateGlobalVirtualGroup {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateGlobalVirtualGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateGlobalVirtualGroup();
     while (reader.pos < end) {
@@ -624,11 +624,11 @@ function createBaseMsgCreateGlobalVirtualGroupResponse(): MsgCreateGlobalVirtual
 }
 export const MsgCreateGlobalVirtualGroupResponse = {
   typeUrl: "/greenfield.virtualgroup.MsgCreateGlobalVirtualGroupResponse",
-  encode(_: MsgCreateGlobalVirtualGroupResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgCreateGlobalVirtualGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateGlobalVirtualGroupResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateGlobalVirtualGroupResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateGlobalVirtualGroupResponse();
     while (reader.pos < end) {
@@ -691,7 +691,7 @@ function createBaseMsgDeleteGlobalVirtualGroup(): MsgDeleteGlobalVirtualGroup {
 }
 export const MsgDeleteGlobalVirtualGroup = {
   typeUrl: "/greenfield.virtualgroup.MsgDeleteGlobalVirtualGroup",
-  encode(message: MsgDeleteGlobalVirtualGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgDeleteGlobalVirtualGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProvider !== "") {
       writer.uint32(10).string(message.storageProvider);
     }
@@ -700,8 +700,8 @@ export const MsgDeleteGlobalVirtualGroup = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgDeleteGlobalVirtualGroup {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteGlobalVirtualGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeleteGlobalVirtualGroup();
     while (reader.pos < end) {
@@ -787,11 +787,11 @@ function createBaseMsgDeleteGlobalVirtualGroupResponse(): MsgDeleteGlobalVirtual
 }
 export const MsgDeleteGlobalVirtualGroupResponse = {
   typeUrl: "/greenfield.virtualgroup.MsgDeleteGlobalVirtualGroupResponse",
-  encode(_: MsgDeleteGlobalVirtualGroupResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgDeleteGlobalVirtualGroupResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgDeleteGlobalVirtualGroupResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeleteGlobalVirtualGroupResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeleteGlobalVirtualGroupResponse();
     while (reader.pos < end) {
@@ -855,7 +855,7 @@ function createBaseMsgDeposit(): MsgDeposit {
 }
 export const MsgDeposit = {
   typeUrl: "/greenfield.virtualgroup.MsgDeposit",
-  encode(message: MsgDeposit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgDeposit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProvider !== "") {
       writer.uint32(10).string(message.storageProvider);
     }
@@ -867,8 +867,8 @@ export const MsgDeposit = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgDeposit {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeposit {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeposit();
     while (reader.pos < end) {
@@ -966,11 +966,11 @@ function createBaseMsgDepositResponse(): MsgDepositResponse {
 }
 export const MsgDepositResponse = {
   typeUrl: "/greenfield.virtualgroup.MsgDepositResponse",
-  encode(_: MsgDepositResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgDepositResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgDepositResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDepositResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDepositResponse();
     while (reader.pos < end) {
@@ -1034,7 +1034,7 @@ function createBaseMsgWithdraw(): MsgWithdraw {
 }
 export const MsgWithdraw = {
   typeUrl: "/greenfield.virtualgroup.MsgWithdraw",
-  encode(message: MsgWithdraw, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgWithdraw, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProvider !== "") {
       writer.uint32(10).string(message.storageProvider);
     }
@@ -1046,8 +1046,8 @@ export const MsgWithdraw = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgWithdraw {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgWithdraw {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgWithdraw();
     while (reader.pos < end) {
@@ -1145,11 +1145,11 @@ function createBaseMsgWithdrawResponse(): MsgWithdrawResponse {
 }
 export const MsgWithdrawResponse = {
   typeUrl: "/greenfield.virtualgroup.MsgWithdrawResponse",
-  encode(_: MsgWithdrawResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgWithdrawResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgWithdrawResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgWithdrawResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgWithdrawResponse();
     while (reader.pos < end) {
@@ -1215,7 +1215,7 @@ function createBaseMsgSwapOut(): MsgSwapOut {
 }
 export const MsgSwapOut = {
   typeUrl: "/greenfield.virtualgroup.MsgSwapOut",
-  encode(message: MsgSwapOut, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgSwapOut, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProvider !== "") {
       writer.uint32(10).string(message.storageProvider);
     }
@@ -1235,8 +1235,8 @@ export const MsgSwapOut = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgSwapOut {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSwapOut {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSwapOut();
     while (reader.pos < end) {
@@ -1375,11 +1375,11 @@ function createBaseMsgSwapOutResponse(): MsgSwapOutResponse {
 }
 export const MsgSwapOutResponse = {
   typeUrl: "/greenfield.virtualgroup.MsgSwapOutResponse",
-  encode(_: MsgSwapOutResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgSwapOutResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgSwapOutResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSwapOutResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSwapOutResponse();
     while (reader.pos < end) {
@@ -1443,7 +1443,7 @@ function createBaseMsgCompleteSwapOut(): MsgCompleteSwapOut {
 }
 export const MsgCompleteSwapOut = {
   typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapOut",
-  encode(message: MsgCompleteSwapOut, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgCompleteSwapOut, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProvider !== "") {
       writer.uint32(10).string(message.storageProvider);
     }
@@ -1457,8 +1457,8 @@ export const MsgCompleteSwapOut = {
     writer.ldelim();
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgCompleteSwapOut {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCompleteSwapOut {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCompleteSwapOut();
     while (reader.pos < end) {
@@ -1573,11 +1573,11 @@ function createBaseMsgCompleteSwapOutResponse(): MsgCompleteSwapOutResponse {
 }
 export const MsgCompleteSwapOutResponse = {
   typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapOutResponse",
-  encode(_: MsgCompleteSwapOutResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgCompleteSwapOutResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgCompleteSwapOutResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCompleteSwapOutResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCompleteSwapOutResponse();
     while (reader.pos < end) {
@@ -1641,7 +1641,7 @@ function createBaseMsgCancelSwapOut(): MsgCancelSwapOut {
 }
 export const MsgCancelSwapOut = {
   typeUrl: "/greenfield.virtualgroup.MsgCancelSwapOut",
-  encode(message: MsgCancelSwapOut, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgCancelSwapOut, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProvider !== "") {
       writer.uint32(10).string(message.storageProvider);
     }
@@ -1655,8 +1655,8 @@ export const MsgCancelSwapOut = {
     writer.ldelim();
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgCancelSwapOut {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelSwapOut {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCancelSwapOut();
     while (reader.pos < end) {
@@ -1771,11 +1771,11 @@ function createBaseMsgCancelSwapOutResponse(): MsgCancelSwapOutResponse {
 }
 export const MsgCancelSwapOutResponse = {
   typeUrl: "/greenfield.virtualgroup.MsgCancelSwapOutResponse",
-  encode(_: MsgCancelSwapOutResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgCancelSwapOutResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgCancelSwapOutResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelSwapOutResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCancelSwapOutResponse();
     while (reader.pos < end) {
@@ -1839,7 +1839,7 @@ function createBaseMsgSettle(): MsgSettle {
 }
 export const MsgSettle = {
   typeUrl: "/greenfield.virtualgroup.MsgSettle",
-  encode(message: MsgSettle, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgSettle, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProvider !== "") {
       writer.uint32(10).string(message.storageProvider);
     }
@@ -1853,8 +1853,8 @@ export const MsgSettle = {
     writer.ldelim();
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgSettle {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSettle {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSettle();
     while (reader.pos < end) {
@@ -1969,11 +1969,11 @@ function createBaseMsgSettleResponse(): MsgSettleResponse {
 }
 export const MsgSettleResponse = {
   typeUrl: "/greenfield.virtualgroup.MsgSettleResponse",
-  encode(_: MsgSettleResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgSettleResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgSettleResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSettleResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSettleResponse();
     while (reader.pos < end) {
@@ -2035,14 +2035,14 @@ function createBaseMsgStorageProviderExit(): MsgStorageProviderExit {
 }
 export const MsgStorageProviderExit = {
   typeUrl: "/greenfield.virtualgroup.MsgStorageProviderExit",
-  encode(message: MsgStorageProviderExit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgStorageProviderExit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProvider !== "") {
       writer.uint32(10).string(message.storageProvider);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgStorageProviderExit {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgStorageProviderExit {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgStorageProviderExit();
     while (reader.pos < end) {
@@ -2116,11 +2116,11 @@ function createBaseMsgStorageProviderExitResponse(): MsgStorageProviderExitRespo
 }
 export const MsgStorageProviderExitResponse = {
   typeUrl: "/greenfield.virtualgroup.MsgStorageProviderExitResponse",
-  encode(_: MsgStorageProviderExitResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgStorageProviderExitResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgStorageProviderExitResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgStorageProviderExitResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgStorageProviderExitResponse();
     while (reader.pos < end) {
@@ -2182,14 +2182,14 @@ function createBaseMsgCompleteStorageProviderExit(): MsgCompleteStorageProviderE
 }
 export const MsgCompleteStorageProviderExit = {
   typeUrl: "/greenfield.virtualgroup.MsgCompleteStorageProviderExit",
-  encode(message: MsgCompleteStorageProviderExit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgCompleteStorageProviderExit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProvider !== "") {
       writer.uint32(10).string(message.storageProvider);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgCompleteStorageProviderExit {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCompleteStorageProviderExit {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCompleteStorageProviderExit();
     while (reader.pos < end) {
@@ -2263,11 +2263,11 @@ function createBaseMsgCompleteStorageProviderExitResponse(): MsgCompleteStorageP
 }
 export const MsgCompleteStorageProviderExitResponse = {
   typeUrl: "/greenfield.virtualgroup.MsgCompleteStorageProviderExitResponse",
-  encode(_: MsgCompleteStorageProviderExitResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgCompleteStorageProviderExitResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgCompleteStorageProviderExitResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCompleteStorageProviderExitResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCompleteStorageProviderExitResponse();
     while (reader.pos < end) {
@@ -2356,56 +2356,56 @@ export class MsgClientImpl implements Msg {
   CreateGlobalVirtualGroup(request: MsgCreateGlobalVirtualGroup): Promise<MsgCreateGlobalVirtualGroupResponse> {
     const data = MsgCreateGlobalVirtualGroup.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Msg", "CreateGlobalVirtualGroup", data);
-    return promise.then(data => MsgCreateGlobalVirtualGroupResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgCreateGlobalVirtualGroupResponse.decode(new _m0.Reader(data)));
   }
   DeleteGlobalVirtualGroup(request: MsgDeleteGlobalVirtualGroup): Promise<MsgDeleteGlobalVirtualGroupResponse> {
     const data = MsgDeleteGlobalVirtualGroup.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Msg", "DeleteGlobalVirtualGroup", data);
-    return promise.then(data => MsgDeleteGlobalVirtualGroupResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgDeleteGlobalVirtualGroupResponse.decode(new _m0.Reader(data)));
   }
   Deposit(request: MsgDeposit): Promise<MsgDepositResponse> {
     const data = MsgDeposit.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Msg", "Deposit", data);
-    return promise.then(data => MsgDepositResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgDepositResponse.decode(new _m0.Reader(data)));
   }
   Withdraw(request: MsgWithdraw): Promise<MsgWithdrawResponse> {
     const data = MsgWithdraw.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Msg", "Withdraw", data);
-    return promise.then(data => MsgWithdrawResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgWithdrawResponse.decode(new _m0.Reader(data)));
   }
   SwapOut(request: MsgSwapOut): Promise<MsgSwapOutResponse> {
     const data = MsgSwapOut.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Msg", "SwapOut", data);
-    return promise.then(data => MsgSwapOutResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgSwapOutResponse.decode(new _m0.Reader(data)));
   }
   Settle(request: MsgSettle): Promise<MsgSettleResponse> {
     const data = MsgSettle.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Msg", "Settle", data);
-    return promise.then(data => MsgSettleResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgSettleResponse.decode(new _m0.Reader(data)));
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Msg", "UpdateParams", data);
-    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
   }
   StorageProviderExit(request: MsgStorageProviderExit): Promise<MsgStorageProviderExitResponse> {
     const data = MsgStorageProviderExit.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Msg", "StorageProviderExit", data);
-    return promise.then(data => MsgStorageProviderExitResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgStorageProviderExitResponse.decode(new _m0.Reader(data)));
   }
   CompleteStorageProviderExit(request: MsgCompleteStorageProviderExit): Promise<MsgCompleteStorageProviderExitResponse> {
     const data = MsgCompleteStorageProviderExit.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Msg", "CompleteStorageProviderExit", data);
-    return promise.then(data => MsgCompleteStorageProviderExitResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgCompleteStorageProviderExitResponse.decode(new _m0.Reader(data)));
   }
   CompleteSwapOut(request: MsgCompleteSwapOut): Promise<MsgCompleteSwapOutResponse> {
     const data = MsgCompleteSwapOut.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Msg", "CompleteSwapOut", data);
-    return promise.then(data => MsgCompleteSwapOutResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgCompleteSwapOutResponse.decode(new _m0.Reader(data)));
   }
   CancelSwapOut(request: MsgCancelSwapOut): Promise<MsgCancelSwapOutResponse> {
     const data = MsgCancelSwapOut.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Msg", "CancelSwapOut", data);
-    return promise.then(data => MsgCancelSwapOutResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgCancelSwapOutResponse.decode(new _m0.Reader(data)));
   }
 }

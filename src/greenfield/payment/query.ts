@@ -8,8 +8,8 @@ import { PaymentAccountCount, PaymentAccountCountSDKType } from "./payment_accou
 import { PaymentAccount, PaymentAccountSDKType } from "./payment_account";
 import { AutoSettleRecord, AutoSettleRecordSDKType } from "./auto_settle_record";
 import { DelayedWithdrawalRecord, DelayedWithdrawalRecordSDKType } from "./delayed_withdrawal_record";
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
+import { Long, DeepPartial, Exact, isSet, Rpc } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.payment";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
@@ -35,7 +35,7 @@ export interface QueryParamsResponseSDKType {
 /** QueryParamsByTimestampRequest is request type for the Query/ParamsByTimestamp RPC method with timestamp. */
 export interface QueryParamsByTimestampRequest {
   /** the timestamp of the block time you want to query */
-  timestamp: bigint;
+  timestamp: Long;
 }
 export interface QueryParamsByTimestampRequestProtoMsg {
   typeUrl: "/greenfield.payment.QueryParamsByTimestampRequest";
@@ -43,7 +43,7 @@ export interface QueryParamsByTimestampRequestProtoMsg {
 }
 /** QueryParamsByTimestampRequest is request type for the Query/ParamsByTimestamp RPC method with timestamp. */
 export interface QueryParamsByTimestampRequestSDKType {
-  timestamp: bigint;
+  timestamp: Long;
 }
 /** QueryParamsByTimestampResponse is response type for the Query/ParamsByTimestamp RPC method with timestamp. */
 export interface QueryParamsByTimestampResponse {
@@ -220,7 +220,7 @@ export interface QueryDynamicBalanceResponse {
   /** the stream record of the given account, if it does not exist, it will be default values */
   streamRecord: StreamRecord;
   /** the timestamp of the current block */
-  currentTimestamp: bigint;
+  currentTimestamp: Long;
   /** bank_balance is the BNB balance of the bank module */
   bankBalance: string;
   /** available_balance is bank balance + static balance */
@@ -237,7 +237,7 @@ export interface QueryDynamicBalanceResponseProtoMsg {
 export interface QueryDynamicBalanceResponseSDKType {
   dynamic_balance: string;
   stream_record: StreamRecordSDKType;
-  current_timestamp: bigint;
+  current_timestamp: Long;
   bank_balance: string;
   available_balance: string;
   locked_fee: string;
@@ -310,11 +310,11 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
 }
 export const QueryParamsRequest = {
   typeUrl: "/greenfield.payment.QueryParamsRequest",
-  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -376,14 +376,14 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
 }
 export const QueryParamsResponse = {
   typeUrl: "/greenfield.payment.QueryParamsResponse",
-  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -454,26 +454,26 @@ export const QueryParamsResponse = {
 };
 function createBaseQueryParamsByTimestampRequest(): QueryParamsByTimestampRequest {
   return {
-    timestamp: BigInt(0)
+    timestamp: Long.ZERO
   };
 }
 export const QueryParamsByTimestampRequest = {
   typeUrl: "/greenfield.payment.QueryParamsByTimestampRequest",
-  encode(message: QueryParamsByTimestampRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.timestamp !== BigInt(0)) {
+  encode(message: QueryParamsByTimestampRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.timestamp.isZero()) {
       writer.uint32(8).int64(message.timestamp);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsByTimestampRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsByTimestampRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsByTimestampRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.timestamp = reader.int64();
+          message.timestamp = (reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -484,17 +484,17 @@ export const QueryParamsByTimestampRequest = {
   },
   fromJSON(object: any): QueryParamsByTimestampRequest {
     return {
-      timestamp: isSet(object.timestamp) ? BigInt(object.timestamp.toString()) : BigInt(0)
+      timestamp: isSet(object.timestamp) ? Long.fromValue(object.timestamp) : Long.ZERO
     };
   },
   toJSON(message: QueryParamsByTimestampRequest): unknown {
     const obj: any = {};
-    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || BigInt(0)).toString());
+    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || Long.ZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<QueryParamsByTimestampRequest>, I>>(object: I): QueryParamsByTimestampRequest {
     const message = createBaseQueryParamsByTimestampRequest();
-    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? BigInt(object.timestamp.toString()) : BigInt(0);
+    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
     return message;
   },
   fromSDK(object: QueryParamsByTimestampRequestSDKType): QueryParamsByTimestampRequest {
@@ -510,7 +510,7 @@ export const QueryParamsByTimestampRequest = {
   fromAmino(object: QueryParamsByTimestampRequestAmino): QueryParamsByTimestampRequest {
     const message = createBaseQueryParamsByTimestampRequest();
     if (object.timestamp !== undefined && object.timestamp !== null) {
-      message.timestamp = BigInt(object.timestamp);
+      message.timestamp = Long.fromString(object.timestamp);
     }
     return message;
   },
@@ -542,14 +542,14 @@ function createBaseQueryParamsByTimestampResponse(): QueryParamsByTimestampRespo
 }
 export const QueryParamsByTimestampResponse = {
   typeUrl: "/greenfield.payment.QueryParamsByTimestampResponse",
-  encode(message: QueryParamsByTimestampResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryParamsByTimestampResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsByTimestampResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsByTimestampResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsByTimestampResponse();
     while (reader.pos < end) {
@@ -625,14 +625,14 @@ function createBaseQueryOutFlowsRequest(): QueryOutFlowsRequest {
 }
 export const QueryOutFlowsRequest = {
   typeUrl: "/greenfield.payment.QueryOutFlowsRequest",
-  encode(message: QueryOutFlowsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryOutFlowsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.account !== "") {
       writer.uint32(10).string(message.account);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryOutFlowsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryOutFlowsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryOutFlowsRequest();
     while (reader.pos < end) {
@@ -708,14 +708,14 @@ function createBaseQueryOutFlowsResponse(): QueryOutFlowsResponse {
 }
 export const QueryOutFlowsResponse = {
   typeUrl: "/greenfield.payment.QueryOutFlowsResponse",
-  encode(message: QueryOutFlowsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryOutFlowsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.outFlows) {
       OutFlow.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryOutFlowsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryOutFlowsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryOutFlowsResponse();
     while (reader.pos < end) {
@@ -801,14 +801,14 @@ function createBaseQueryGetStreamRecordRequest(): QueryGetStreamRecordRequest {
 }
 export const QueryGetStreamRecordRequest = {
   typeUrl: "/greenfield.payment.QueryGetStreamRecordRequest",
-  encode(message: QueryGetStreamRecordRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryGetStreamRecordRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.account !== "") {
       writer.uint32(10).string(message.account);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryGetStreamRecordRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetStreamRecordRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGetStreamRecordRequest();
     while (reader.pos < end) {
@@ -884,14 +884,14 @@ function createBaseQueryGetStreamRecordResponse(): QueryGetStreamRecordResponse 
 }
 export const QueryGetStreamRecordResponse = {
   typeUrl: "/greenfield.payment.QueryGetStreamRecordResponse",
-  encode(message: QueryGetStreamRecordResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryGetStreamRecordResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.streamRecord !== undefined) {
       StreamRecord.encode(message.streamRecord, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryGetStreamRecordResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetStreamRecordResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGetStreamRecordResponse();
     while (reader.pos < end) {
@@ -967,14 +967,14 @@ function createBaseQueryStreamRecordsRequest(): QueryStreamRecordsRequest {
 }
 export const QueryStreamRecordsRequest = {
   typeUrl: "/greenfield.payment.QueryStreamRecordsRequest",
-  encode(message: QueryStreamRecordsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryStreamRecordsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryStreamRecordsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStreamRecordsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStreamRecordsRequest();
     while (reader.pos < end) {
@@ -1051,7 +1051,7 @@ function createBaseQueryStreamRecordsResponse(): QueryStreamRecordsResponse {
 }
 export const QueryStreamRecordsResponse = {
   typeUrl: "/greenfield.payment.QueryStreamRecordsResponse",
-  encode(message: QueryStreamRecordsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryStreamRecordsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.streamRecords) {
       StreamRecord.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1060,8 +1060,8 @@ export const QueryStreamRecordsResponse = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryStreamRecordsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStreamRecordsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStreamRecordsResponse();
     while (reader.pos < end) {
@@ -1159,14 +1159,14 @@ function createBaseQueryPaymentAccountCountRequest(): QueryPaymentAccountCountRe
 }
 export const QueryPaymentAccountCountRequest = {
   typeUrl: "/greenfield.payment.QueryPaymentAccountCountRequest",
-  encode(message: QueryPaymentAccountCountRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryPaymentAccountCountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryPaymentAccountCountRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountCountRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPaymentAccountCountRequest();
     while (reader.pos < end) {
@@ -1242,14 +1242,14 @@ function createBaseQueryPaymentAccountCountResponse(): QueryPaymentAccountCountR
 }
 export const QueryPaymentAccountCountResponse = {
   typeUrl: "/greenfield.payment.QueryPaymentAccountCountResponse",
-  encode(message: QueryPaymentAccountCountResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryPaymentAccountCountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.paymentAccountCount !== undefined) {
       PaymentAccountCount.encode(message.paymentAccountCount, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryPaymentAccountCountResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountCountResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPaymentAccountCountResponse();
     while (reader.pos < end) {
@@ -1325,14 +1325,14 @@ function createBaseQueryPaymentAccountCountsRequest(): QueryPaymentAccountCounts
 }
 export const QueryPaymentAccountCountsRequest = {
   typeUrl: "/greenfield.payment.QueryPaymentAccountCountsRequest",
-  encode(message: QueryPaymentAccountCountsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryPaymentAccountCountsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryPaymentAccountCountsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountCountsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPaymentAccountCountsRequest();
     while (reader.pos < end) {
@@ -1409,7 +1409,7 @@ function createBaseQueryPaymentAccountCountsResponse(): QueryPaymentAccountCount
 }
 export const QueryPaymentAccountCountsResponse = {
   typeUrl: "/greenfield.payment.QueryPaymentAccountCountsResponse",
-  encode(message: QueryPaymentAccountCountsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryPaymentAccountCountsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.paymentAccountCounts) {
       PaymentAccountCount.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1418,8 +1418,8 @@ export const QueryPaymentAccountCountsResponse = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryPaymentAccountCountsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountCountsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPaymentAccountCountsResponse();
     while (reader.pos < end) {
@@ -1517,14 +1517,14 @@ function createBaseQueryPaymentAccountRequest(): QueryPaymentAccountRequest {
 }
 export const QueryPaymentAccountRequest = {
   typeUrl: "/greenfield.payment.QueryPaymentAccountRequest",
-  encode(message: QueryPaymentAccountRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryPaymentAccountRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.addr !== "") {
       writer.uint32(10).string(message.addr);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryPaymentAccountRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPaymentAccountRequest();
     while (reader.pos < end) {
@@ -1600,14 +1600,14 @@ function createBaseQueryPaymentAccountResponse(): QueryPaymentAccountResponse {
 }
 export const QueryPaymentAccountResponse = {
   typeUrl: "/greenfield.payment.QueryPaymentAccountResponse",
-  encode(message: QueryPaymentAccountResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryPaymentAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.paymentAccount !== undefined) {
       PaymentAccount.encode(message.paymentAccount, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryPaymentAccountResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPaymentAccountResponse();
     while (reader.pos < end) {
@@ -1683,14 +1683,14 @@ function createBaseQueryPaymentAccountsRequest(): QueryPaymentAccountsRequest {
 }
 export const QueryPaymentAccountsRequest = {
   typeUrl: "/greenfield.payment.QueryPaymentAccountsRequest",
-  encode(message: QueryPaymentAccountsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryPaymentAccountsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryPaymentAccountsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPaymentAccountsRequest();
     while (reader.pos < end) {
@@ -1767,7 +1767,7 @@ function createBaseQueryPaymentAccountsResponse(): QueryPaymentAccountsResponse 
 }
 export const QueryPaymentAccountsResponse = {
   typeUrl: "/greenfield.payment.QueryPaymentAccountsResponse",
-  encode(message: QueryPaymentAccountsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryPaymentAccountsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.paymentAccounts) {
       PaymentAccount.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1776,8 +1776,8 @@ export const QueryPaymentAccountsResponse = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryPaymentAccountsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPaymentAccountsResponse();
     while (reader.pos < end) {
@@ -1875,14 +1875,14 @@ function createBaseQueryDynamicBalanceRequest(): QueryDynamicBalanceRequest {
 }
 export const QueryDynamicBalanceRequest = {
   typeUrl: "/greenfield.payment.QueryDynamicBalanceRequest",
-  encode(message: QueryDynamicBalanceRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryDynamicBalanceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.account !== "") {
       writer.uint32(10).string(message.account);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryDynamicBalanceRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryDynamicBalanceRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryDynamicBalanceRequest();
     while (reader.pos < end) {
@@ -1955,7 +1955,7 @@ function createBaseQueryDynamicBalanceResponse(): QueryDynamicBalanceResponse {
   return {
     dynamicBalance: "",
     streamRecord: StreamRecord.fromPartial({}),
-    currentTimestamp: BigInt(0),
+    currentTimestamp: Long.ZERO,
     bankBalance: "",
     availableBalance: "",
     lockedFee: "",
@@ -1964,14 +1964,14 @@ function createBaseQueryDynamicBalanceResponse(): QueryDynamicBalanceResponse {
 }
 export const QueryDynamicBalanceResponse = {
   typeUrl: "/greenfield.payment.QueryDynamicBalanceResponse",
-  encode(message: QueryDynamicBalanceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryDynamicBalanceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.dynamicBalance !== "") {
       writer.uint32(10).string(message.dynamicBalance);
     }
     if (message.streamRecord !== undefined) {
       StreamRecord.encode(message.streamRecord, writer.uint32(18).fork()).ldelim();
     }
-    if (message.currentTimestamp !== BigInt(0)) {
+    if (!message.currentTimestamp.isZero()) {
       writer.uint32(24).int64(message.currentTimestamp);
     }
     if (message.bankBalance !== "") {
@@ -1988,8 +1988,8 @@ export const QueryDynamicBalanceResponse = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryDynamicBalanceResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryDynamicBalanceResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryDynamicBalanceResponse();
     while (reader.pos < end) {
@@ -2002,7 +2002,7 @@ export const QueryDynamicBalanceResponse = {
           message.streamRecord = StreamRecord.decode(reader, reader.uint32());
           break;
         case 3:
-          message.currentTimestamp = reader.int64();
+          message.currentTimestamp = (reader.int64() as Long);
           break;
         case 4:
           message.bankBalance = reader.string();
@@ -2027,7 +2027,7 @@ export const QueryDynamicBalanceResponse = {
     return {
       dynamicBalance: isSet(object.dynamicBalance) ? String(object.dynamicBalance) : "",
       streamRecord: isSet(object.streamRecord) ? StreamRecord.fromJSON(object.streamRecord) : undefined,
-      currentTimestamp: isSet(object.currentTimestamp) ? BigInt(object.currentTimestamp.toString()) : BigInt(0),
+      currentTimestamp: isSet(object.currentTimestamp) ? Long.fromValue(object.currentTimestamp) : Long.ZERO,
       bankBalance: isSet(object.bankBalance) ? String(object.bankBalance) : "",
       availableBalance: isSet(object.availableBalance) ? String(object.availableBalance) : "",
       lockedFee: isSet(object.lockedFee) ? String(object.lockedFee) : "",
@@ -2038,7 +2038,7 @@ export const QueryDynamicBalanceResponse = {
     const obj: any = {};
     message.dynamicBalance !== undefined && (obj.dynamicBalance = message.dynamicBalance);
     message.streamRecord !== undefined && (obj.streamRecord = message.streamRecord ? StreamRecord.toJSON(message.streamRecord) : undefined);
-    message.currentTimestamp !== undefined && (obj.currentTimestamp = (message.currentTimestamp || BigInt(0)).toString());
+    message.currentTimestamp !== undefined && (obj.currentTimestamp = (message.currentTimestamp || Long.ZERO).toString());
     message.bankBalance !== undefined && (obj.bankBalance = message.bankBalance);
     message.availableBalance !== undefined && (obj.availableBalance = message.availableBalance);
     message.lockedFee !== undefined && (obj.lockedFee = message.lockedFee);
@@ -2049,7 +2049,7 @@ export const QueryDynamicBalanceResponse = {
     const message = createBaseQueryDynamicBalanceResponse();
     message.dynamicBalance = object.dynamicBalance ?? "";
     message.streamRecord = object.streamRecord !== undefined && object.streamRecord !== null ? StreamRecord.fromPartial(object.streamRecord) : undefined;
-    message.currentTimestamp = object.currentTimestamp !== undefined && object.currentTimestamp !== null ? BigInt(object.currentTimestamp.toString()) : BigInt(0);
+    message.currentTimestamp = object.currentTimestamp !== undefined && object.currentTimestamp !== null ? Long.fromValue(object.currentTimestamp) : Long.ZERO;
     message.bankBalance = object.bankBalance ?? "";
     message.availableBalance = object.availableBalance ?? "";
     message.lockedFee = object.lockedFee ?? "";
@@ -2087,7 +2087,7 @@ export const QueryDynamicBalanceResponse = {
       message.streamRecord = StreamRecord.fromAmino(object.stream_record);
     }
     if (object.current_timestamp !== undefined && object.current_timestamp !== null) {
-      message.currentTimestamp = BigInt(object.current_timestamp);
+      message.currentTimestamp = Long.fromString(object.current_timestamp);
     }
     if (object.bank_balance !== undefined && object.bank_balance !== null) {
       message.bankBalance = object.bank_balance;
@@ -2137,14 +2137,14 @@ function createBaseQueryPaymentAccountsByOwnerRequest(): QueryPaymentAccountsByO
 }
 export const QueryPaymentAccountsByOwnerRequest = {
   typeUrl: "/greenfield.payment.QueryPaymentAccountsByOwnerRequest",
-  encode(message: QueryPaymentAccountsByOwnerRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryPaymentAccountsByOwnerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryPaymentAccountsByOwnerRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountsByOwnerRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPaymentAccountsByOwnerRequest();
     while (reader.pos < end) {
@@ -2220,14 +2220,14 @@ function createBaseQueryPaymentAccountsByOwnerResponse(): QueryPaymentAccountsBy
 }
 export const QueryPaymentAccountsByOwnerResponse = {
   typeUrl: "/greenfield.payment.QueryPaymentAccountsByOwnerResponse",
-  encode(message: QueryPaymentAccountsByOwnerResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryPaymentAccountsByOwnerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.paymentAccounts) {
       writer.uint32(10).string(v!);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryPaymentAccountsByOwnerResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryPaymentAccountsByOwnerResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryPaymentAccountsByOwnerResponse();
     while (reader.pos < end) {
@@ -2313,14 +2313,14 @@ function createBaseQueryAutoSettleRecordsRequest(): QueryAutoSettleRecordsReques
 }
 export const QueryAutoSettleRecordsRequest = {
   typeUrl: "/greenfield.payment.QueryAutoSettleRecordsRequest",
-  encode(message: QueryAutoSettleRecordsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryAutoSettleRecordsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryAutoSettleRecordsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAutoSettleRecordsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAutoSettleRecordsRequest();
     while (reader.pos < end) {
@@ -2397,7 +2397,7 @@ function createBaseQueryAutoSettleRecordsResponse(): QueryAutoSettleRecordsRespo
 }
 export const QueryAutoSettleRecordsResponse = {
   typeUrl: "/greenfield.payment.QueryAutoSettleRecordsResponse",
-  encode(message: QueryAutoSettleRecordsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryAutoSettleRecordsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.autoSettleRecords) {
       AutoSettleRecord.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -2406,8 +2406,8 @@ export const QueryAutoSettleRecordsResponse = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryAutoSettleRecordsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAutoSettleRecordsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAutoSettleRecordsResponse();
     while (reader.pos < end) {
@@ -2505,14 +2505,14 @@ function createBaseQueryDelayedWithdrawalRequest(): QueryDelayedWithdrawalReques
 }
 export const QueryDelayedWithdrawalRequest = {
   typeUrl: "/greenfield.payment.QueryDelayedWithdrawalRequest",
-  encode(message: QueryDelayedWithdrawalRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryDelayedWithdrawalRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.account !== "") {
       writer.uint32(10).string(message.account);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryDelayedWithdrawalRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryDelayedWithdrawalRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryDelayedWithdrawalRequest();
     while (reader.pos < end) {
@@ -2588,14 +2588,14 @@ function createBaseQueryDelayedWithdrawalResponse(): QueryDelayedWithdrawalRespo
 }
 export const QueryDelayedWithdrawalResponse = {
   typeUrl: "/greenfield.payment.QueryDelayedWithdrawalResponse",
-  encode(message: QueryDelayedWithdrawalResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: QueryDelayedWithdrawalResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.delayedWithdrawal !== undefined) {
       DelayedWithdrawalRecord.encode(message.delayedWithdrawal, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): QueryDelayedWithdrawalResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryDelayedWithdrawalResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryDelayedWithdrawalResponse();
     while (reader.pos < end) {
@@ -2714,74 +2714,74 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
   ParamsByTimestamp(request: QueryParamsByTimestampRequest): Promise<QueryParamsByTimestampResponse> {
     const data = QueryParamsByTimestampRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "ParamsByTimestamp", data);
-    return promise.then(data => QueryParamsByTimestampResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryParamsByTimestampResponse.decode(new _m0.Reader(data)));
   }
   OutFlows(request: QueryOutFlowsRequest): Promise<QueryOutFlowsResponse> {
     const data = QueryOutFlowsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "OutFlows", data);
-    return promise.then(data => QueryOutFlowsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryOutFlowsResponse.decode(new _m0.Reader(data)));
   }
   StreamRecord(request: QueryGetStreamRecordRequest): Promise<QueryGetStreamRecordResponse> {
     const data = QueryGetStreamRecordRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "StreamRecord", data);
-    return promise.then(data => QueryGetStreamRecordResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryGetStreamRecordResponse.decode(new _m0.Reader(data)));
   }
   StreamRecords(request: QueryStreamRecordsRequest = {
     pagination: undefined
   }): Promise<QueryStreamRecordsResponse> {
     const data = QueryStreamRecordsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "StreamRecords", data);
-    return promise.then(data => QueryStreamRecordsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryStreamRecordsResponse.decode(new _m0.Reader(data)));
   }
   PaymentAccountCount(request: QueryPaymentAccountCountRequest): Promise<QueryPaymentAccountCountResponse> {
     const data = QueryPaymentAccountCountRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccountCount", data);
-    return promise.then(data => QueryPaymentAccountCountResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryPaymentAccountCountResponse.decode(new _m0.Reader(data)));
   }
   PaymentAccountCounts(request: QueryPaymentAccountCountsRequest = {
     pagination: undefined
   }): Promise<QueryPaymentAccountCountsResponse> {
     const data = QueryPaymentAccountCountsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccountCounts", data);
-    return promise.then(data => QueryPaymentAccountCountsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryPaymentAccountCountsResponse.decode(new _m0.Reader(data)));
   }
   PaymentAccount(request: QueryPaymentAccountRequest): Promise<QueryPaymentAccountResponse> {
     const data = QueryPaymentAccountRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccount", data);
-    return promise.then(data => QueryPaymentAccountResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryPaymentAccountResponse.decode(new _m0.Reader(data)));
   }
   PaymentAccounts(request: QueryPaymentAccountsRequest = {
     pagination: undefined
   }): Promise<QueryPaymentAccountsResponse> {
     const data = QueryPaymentAccountsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccounts", data);
-    return promise.then(data => QueryPaymentAccountsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryPaymentAccountsResponse.decode(new _m0.Reader(data)));
   }
   DynamicBalance(request: QueryDynamicBalanceRequest): Promise<QueryDynamicBalanceResponse> {
     const data = QueryDynamicBalanceRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "DynamicBalance", data);
-    return promise.then(data => QueryDynamicBalanceResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryDynamicBalanceResponse.decode(new _m0.Reader(data)));
   }
   PaymentAccountsByOwner(request: QueryPaymentAccountsByOwnerRequest): Promise<QueryPaymentAccountsByOwnerResponse> {
     const data = QueryPaymentAccountsByOwnerRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "PaymentAccountsByOwner", data);
-    return promise.then(data => QueryPaymentAccountsByOwnerResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryPaymentAccountsByOwnerResponse.decode(new _m0.Reader(data)));
   }
   AutoSettleRecords(request: QueryAutoSettleRecordsRequest = {
     pagination: undefined
   }): Promise<QueryAutoSettleRecordsResponse> {
     const data = QueryAutoSettleRecordsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "AutoSettleRecords", data);
-    return promise.then(data => QueryAutoSettleRecordsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryAutoSettleRecordsResponse.decode(new _m0.Reader(data)));
   }
   DelayedWithdrawal(request: QueryDelayedWithdrawalRequest): Promise<QueryDelayedWithdrawalResponse> {
     const data = QueryDelayedWithdrawalRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.payment.Query", "DelayedWithdrawal", data);
-    return promise.then(data => QueryDelayedWithdrawalResponse.decode(new BinaryReader(data)));
+    return promise.then(data => QueryDelayedWithdrawalResponse.decode(new _m0.Reader(data)));
   }
 }

@@ -1,8 +1,8 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../binary";
+import { Long, isSet, DeepPartial, Exact } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 import { Decimal } from "@cosmjs/math";
-import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.sp";
 /** Params defines the parameters for the module. */
 export interface Params {
@@ -13,13 +13,13 @@ export interface Params {
   /** the ratio of the store price of the secondary sp to the primary sp, the default value is 80% */
   secondarySpStorePriceRatio: string;
   /** previous blocks that be traced back to for maintenance_records */
-  numOfHistoricalBlocksForMaintenanceRecords: bigint;
+  numOfHistoricalBlocksForMaintenanceRecords: Long;
   /** the max duration that a SP can be in_maintenance within num_of_historical_blocks_for_maintenance_records */
-  maintenanceDurationQuota: bigint;
+  maintenanceDurationQuota: Long;
   /** the number of blocks to be wait for sp to be in maintenance mode again if already requested */
-  numOfLockupBlocksForMaintenance: bigint;
+  numOfLockupBlocksForMaintenance: Long;
   /** the time interval to update global storage price, if it is not set then the price will be updated at the first block of each natural month */
-  updateGlobalPriceInterval: bigint;
+  updateGlobalPriceInterval: Long;
   /** the days counting backwards from end of a month in which a sp cannot update its price */
   updatePriceDisallowedDays: number;
 }
@@ -32,10 +32,10 @@ export interface ParamsSDKType {
   deposit_denom: string;
   min_deposit: string;
   secondary_sp_store_price_ratio: string;
-  num_of_historical_blocks_for_maintenance_records: bigint;
-  maintenance_duration_quota: bigint;
-  num_of_lockup_blocks_for_maintenance: bigint;
-  update_global_price_interval: bigint;
+  num_of_historical_blocks_for_maintenance_records: Long;
+  maintenance_duration_quota: Long;
+  num_of_lockup_blocks_for_maintenance: Long;
+  update_global_price_interval: Long;
   update_price_disallowed_days: number;
 }
 function createBaseParams(): Params {
@@ -43,16 +43,16 @@ function createBaseParams(): Params {
     depositDenom: "",
     minDeposit: "",
     secondarySpStorePriceRatio: "",
-    numOfHistoricalBlocksForMaintenanceRecords: BigInt(0),
-    maintenanceDurationQuota: BigInt(0),
-    numOfLockupBlocksForMaintenance: BigInt(0),
-    updateGlobalPriceInterval: BigInt(0),
+    numOfHistoricalBlocksForMaintenanceRecords: Long.ZERO,
+    maintenanceDurationQuota: Long.ZERO,
+    numOfLockupBlocksForMaintenance: Long.ZERO,
+    updateGlobalPriceInterval: Long.UZERO,
     updatePriceDisallowedDays: 0
   };
 }
 export const Params = {
   typeUrl: "/greenfield.sp.Params",
-  encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.depositDenom !== "") {
       writer.uint32(10).string(message.depositDenom);
     }
@@ -62,16 +62,16 @@ export const Params = {
     if (message.secondarySpStorePriceRatio !== "") {
       writer.uint32(26).string(Decimal.fromUserInput(message.secondarySpStorePriceRatio, 18).atomics);
     }
-    if (message.numOfHistoricalBlocksForMaintenanceRecords !== BigInt(0)) {
+    if (!message.numOfHistoricalBlocksForMaintenanceRecords.isZero()) {
       writer.uint32(32).int64(message.numOfHistoricalBlocksForMaintenanceRecords);
     }
-    if (message.maintenanceDurationQuota !== BigInt(0)) {
+    if (!message.maintenanceDurationQuota.isZero()) {
       writer.uint32(40).int64(message.maintenanceDurationQuota);
     }
-    if (message.numOfLockupBlocksForMaintenance !== BigInt(0)) {
+    if (!message.numOfLockupBlocksForMaintenance.isZero()) {
       writer.uint32(48).int64(message.numOfLockupBlocksForMaintenance);
     }
-    if (message.updateGlobalPriceInterval !== BigInt(0)) {
+    if (!message.updateGlobalPriceInterval.isZero()) {
       writer.uint32(56).uint64(message.updateGlobalPriceInterval);
     }
     if (message.updatePriceDisallowedDays !== 0) {
@@ -79,8 +79,8 @@ export const Params = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Params {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
@@ -96,16 +96,16 @@ export const Params = {
           message.secondarySpStorePriceRatio = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 4:
-          message.numOfHistoricalBlocksForMaintenanceRecords = reader.int64();
+          message.numOfHistoricalBlocksForMaintenanceRecords = (reader.int64() as Long);
           break;
         case 5:
-          message.maintenanceDurationQuota = reader.int64();
+          message.maintenanceDurationQuota = (reader.int64() as Long);
           break;
         case 6:
-          message.numOfLockupBlocksForMaintenance = reader.int64();
+          message.numOfLockupBlocksForMaintenance = (reader.int64() as Long);
           break;
         case 7:
-          message.updateGlobalPriceInterval = reader.uint64();
+          message.updateGlobalPriceInterval = (reader.uint64() as Long);
           break;
         case 8:
           message.updatePriceDisallowedDays = reader.uint32();
@@ -122,10 +122,10 @@ export const Params = {
       depositDenom: isSet(object.depositDenom) ? String(object.depositDenom) : "",
       minDeposit: isSet(object.minDeposit) ? String(object.minDeposit) : "",
       secondarySpStorePriceRatio: isSet(object.secondarySpStorePriceRatio) ? String(object.secondarySpStorePriceRatio) : "",
-      numOfHistoricalBlocksForMaintenanceRecords: isSet(object.numOfHistoricalBlocksForMaintenanceRecords) ? BigInt(object.numOfHistoricalBlocksForMaintenanceRecords.toString()) : BigInt(0),
-      maintenanceDurationQuota: isSet(object.maintenanceDurationQuota) ? BigInt(object.maintenanceDurationQuota.toString()) : BigInt(0),
-      numOfLockupBlocksForMaintenance: isSet(object.numOfLockupBlocksForMaintenance) ? BigInt(object.numOfLockupBlocksForMaintenance.toString()) : BigInt(0),
-      updateGlobalPriceInterval: isSet(object.updateGlobalPriceInterval) ? BigInt(object.updateGlobalPriceInterval.toString()) : BigInt(0),
+      numOfHistoricalBlocksForMaintenanceRecords: isSet(object.numOfHistoricalBlocksForMaintenanceRecords) ? Long.fromValue(object.numOfHistoricalBlocksForMaintenanceRecords) : Long.ZERO,
+      maintenanceDurationQuota: isSet(object.maintenanceDurationQuota) ? Long.fromValue(object.maintenanceDurationQuota) : Long.ZERO,
+      numOfLockupBlocksForMaintenance: isSet(object.numOfLockupBlocksForMaintenance) ? Long.fromValue(object.numOfLockupBlocksForMaintenance) : Long.ZERO,
+      updateGlobalPriceInterval: isSet(object.updateGlobalPriceInterval) ? Long.fromValue(object.updateGlobalPriceInterval) : Long.UZERO,
       updatePriceDisallowedDays: isSet(object.updatePriceDisallowedDays) ? Number(object.updatePriceDisallowedDays) : 0
     };
   },
@@ -134,10 +134,10 @@ export const Params = {
     message.depositDenom !== undefined && (obj.depositDenom = message.depositDenom);
     message.minDeposit !== undefined && (obj.minDeposit = message.minDeposit);
     message.secondarySpStorePriceRatio !== undefined && (obj.secondarySpStorePriceRatio = message.secondarySpStorePriceRatio);
-    message.numOfHistoricalBlocksForMaintenanceRecords !== undefined && (obj.numOfHistoricalBlocksForMaintenanceRecords = (message.numOfHistoricalBlocksForMaintenanceRecords || BigInt(0)).toString());
-    message.maintenanceDurationQuota !== undefined && (obj.maintenanceDurationQuota = (message.maintenanceDurationQuota || BigInt(0)).toString());
-    message.numOfLockupBlocksForMaintenance !== undefined && (obj.numOfLockupBlocksForMaintenance = (message.numOfLockupBlocksForMaintenance || BigInt(0)).toString());
-    message.updateGlobalPriceInterval !== undefined && (obj.updateGlobalPriceInterval = (message.updateGlobalPriceInterval || BigInt(0)).toString());
+    message.numOfHistoricalBlocksForMaintenanceRecords !== undefined && (obj.numOfHistoricalBlocksForMaintenanceRecords = (message.numOfHistoricalBlocksForMaintenanceRecords || Long.ZERO).toString());
+    message.maintenanceDurationQuota !== undefined && (obj.maintenanceDurationQuota = (message.maintenanceDurationQuota || Long.ZERO).toString());
+    message.numOfLockupBlocksForMaintenance !== undefined && (obj.numOfLockupBlocksForMaintenance = (message.numOfLockupBlocksForMaintenance || Long.ZERO).toString());
+    message.updateGlobalPriceInterval !== undefined && (obj.updateGlobalPriceInterval = (message.updateGlobalPriceInterval || Long.UZERO).toString());
     message.updatePriceDisallowedDays !== undefined && (obj.updatePriceDisallowedDays = Math.round(message.updatePriceDisallowedDays));
     return obj;
   },
@@ -146,10 +146,10 @@ export const Params = {
     message.depositDenom = object.depositDenom ?? "";
     message.minDeposit = object.minDeposit ?? "";
     message.secondarySpStorePriceRatio = object.secondarySpStorePriceRatio ?? "";
-    message.numOfHistoricalBlocksForMaintenanceRecords = object.numOfHistoricalBlocksForMaintenanceRecords !== undefined && object.numOfHistoricalBlocksForMaintenanceRecords !== null ? BigInt(object.numOfHistoricalBlocksForMaintenanceRecords.toString()) : BigInt(0);
-    message.maintenanceDurationQuota = object.maintenanceDurationQuota !== undefined && object.maintenanceDurationQuota !== null ? BigInt(object.maintenanceDurationQuota.toString()) : BigInt(0);
-    message.numOfLockupBlocksForMaintenance = object.numOfLockupBlocksForMaintenance !== undefined && object.numOfLockupBlocksForMaintenance !== null ? BigInt(object.numOfLockupBlocksForMaintenance.toString()) : BigInt(0);
-    message.updateGlobalPriceInterval = object.updateGlobalPriceInterval !== undefined && object.updateGlobalPriceInterval !== null ? BigInt(object.updateGlobalPriceInterval.toString()) : BigInt(0);
+    message.numOfHistoricalBlocksForMaintenanceRecords = object.numOfHistoricalBlocksForMaintenanceRecords !== undefined && object.numOfHistoricalBlocksForMaintenanceRecords !== null ? Long.fromValue(object.numOfHistoricalBlocksForMaintenanceRecords) : Long.ZERO;
+    message.maintenanceDurationQuota = object.maintenanceDurationQuota !== undefined && object.maintenanceDurationQuota !== null ? Long.fromValue(object.maintenanceDurationQuota) : Long.ZERO;
+    message.numOfLockupBlocksForMaintenance = object.numOfLockupBlocksForMaintenance !== undefined && object.numOfLockupBlocksForMaintenance !== null ? Long.fromValue(object.numOfLockupBlocksForMaintenance) : Long.ZERO;
+    message.updateGlobalPriceInterval = object.updateGlobalPriceInterval !== undefined && object.updateGlobalPriceInterval !== null ? Long.fromValue(object.updateGlobalPriceInterval) : Long.UZERO;
     message.updatePriceDisallowedDays = object.updatePriceDisallowedDays ?? 0;
     return message;
   },
@@ -189,16 +189,16 @@ export const Params = {
       message.secondarySpStorePriceRatio = object.secondary_sp_store_price_ratio;
     }
     if (object.num_of_historical_blocks_for_maintenance_records !== undefined && object.num_of_historical_blocks_for_maintenance_records !== null) {
-      message.numOfHistoricalBlocksForMaintenanceRecords = BigInt(object.num_of_historical_blocks_for_maintenance_records);
+      message.numOfHistoricalBlocksForMaintenanceRecords = Long.fromString(object.num_of_historical_blocks_for_maintenance_records);
     }
     if (object.maintenance_duration_quota !== undefined && object.maintenance_duration_quota !== null) {
-      message.maintenanceDurationQuota = BigInt(object.maintenance_duration_quota);
+      message.maintenanceDurationQuota = Long.fromString(object.maintenance_duration_quota);
     }
     if (object.num_of_lockup_blocks_for_maintenance !== undefined && object.num_of_lockup_blocks_for_maintenance !== null) {
-      message.numOfLockupBlocksForMaintenance = BigInt(object.num_of_lockup_blocks_for_maintenance);
+      message.numOfLockupBlocksForMaintenance = Long.fromString(object.num_of_lockup_blocks_for_maintenance);
     }
     if (object.update_global_price_interval !== undefined && object.update_global_price_interval !== null) {
-      message.updateGlobalPriceInterval = BigInt(object.update_global_price_interval);
+      message.updateGlobalPriceInterval = Long.fromString(object.update_global_price_interval);
     }
     if (object.update_price_disallowed_days !== undefined && object.update_price_disallowed_days !== null) {
       message.updatePriceDisallowedDays = object.update_price_disallowed_days;

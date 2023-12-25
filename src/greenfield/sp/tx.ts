@@ -3,9 +3,9 @@
 import { Description, DescriptionSDKType, Status, statusFromJSON, statusToJSON } from "./types";
 import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Params, ParamsSDKType } from "./params";
-import { BinaryReader, BinaryWriter } from "../../binary";
+import { Long, isSet, DeepPartial, Exact, Rpc } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 import { Decimal } from "@cosmjs/math";
-import { isSet, DeepPartial, Exact, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.sp";
 /** MsgCreateStorageProvider defines message for creating a new storage provider. */
 export interface MsgCreateStorageProvider {
@@ -32,7 +32,7 @@ export interface MsgCreateStorageProvider {
   /** read price, in bnb wei per charge byte */
   readPrice: string;
   /** free read quota, in byte */
-  freeReadQuota: bigint;
+  freeReadQuota: Long;
   /** store price, in bnb wei per charge byte */
   storePrice: string;
   /** bls_key defines the bls pub key of the Storage provider for sealing object */
@@ -56,7 +56,7 @@ export interface MsgCreateStorageProviderSDKType {
   endpoint: string;
   deposit: CoinSDKType;
   read_price: string;
-  free_read_quota: bigint;
+  free_read_quota: Long;
   store_price: string;
   bls_key: string;
   bls_proof: string;
@@ -149,7 +149,7 @@ export interface MsgUpdateSpStoragePrice {
   /** read price, in bnb wei per charge byte */
   readPrice: string;
   /** free read quota, in byte */
-  freeReadQuota: bigint;
+  freeReadQuota: Long;
   /** store price, in bnb wei per charge byte */
   storePrice: string;
 }
@@ -160,7 +160,7 @@ export interface MsgUpdateSpStoragePriceProtoMsg {
 export interface MsgUpdateSpStoragePriceSDKType {
   sp_address: string;
   read_price: string;
-  free_read_quota: bigint;
+  free_read_quota: Long;
   store_price: string;
 }
 export interface MsgUpdateSpStoragePriceResponse {}
@@ -210,7 +210,7 @@ export interface MsgUpdateStorageProviderStatus {
   /** status defines the desired status be update to. */
   status: Status;
   /** duration defines the time requested in desired status */
-  duration: bigint;
+  duration: Long;
 }
 export interface MsgUpdateStorageProviderStatusProtoMsg {
   typeUrl: "/greenfield.sp.MsgUpdateStorageProviderStatus";
@@ -220,7 +220,7 @@ export interface MsgUpdateStorageProviderStatusProtoMsg {
 export interface MsgUpdateStorageProviderStatusSDKType {
   sp_address: string;
   status: Status;
-  duration: bigint;
+  duration: Long;
 }
 /** MsgUpdateStorageProviderStatusResponse defines the MsgUpdateStorageProviderStatus response type. */
 export interface MsgUpdateStorageProviderStatusResponse {}
@@ -243,7 +243,7 @@ function createBaseMsgCreateStorageProvider(): MsgCreateStorageProvider {
     endpoint: "",
     deposit: Coin.fromPartial({}),
     readPrice: "",
-    freeReadQuota: BigInt(0),
+    freeReadQuota: Long.UZERO,
     storePrice: "",
     blsKey: "",
     blsProof: ""
@@ -251,7 +251,7 @@ function createBaseMsgCreateStorageProvider(): MsgCreateStorageProvider {
 }
 export const MsgCreateStorageProvider = {
   typeUrl: "/greenfield.sp.MsgCreateStorageProvider",
-  encode(message: MsgCreateStorageProvider, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgCreateStorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -285,7 +285,7 @@ export const MsgCreateStorageProvider = {
     if (message.readPrice !== "") {
       writer.uint32(90).string(Decimal.fromUserInput(message.readPrice, 18).atomics);
     }
-    if (message.freeReadQuota !== BigInt(0)) {
+    if (!message.freeReadQuota.isZero()) {
       writer.uint32(96).uint64(message.freeReadQuota);
     }
     if (message.storePrice !== "") {
@@ -299,8 +299,8 @@ export const MsgCreateStorageProvider = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateStorageProvider {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateStorageProvider {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateStorageProvider();
     while (reader.pos < end) {
@@ -340,7 +340,7 @@ export const MsgCreateStorageProvider = {
           message.readPrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 12:
-          message.freeReadQuota = reader.uint64();
+          message.freeReadQuota = (reader.uint64() as Long);
           break;
         case 13:
           message.storePrice = Decimal.fromAtomics(reader.string(), 18).toString();
@@ -371,7 +371,7 @@ export const MsgCreateStorageProvider = {
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
       deposit: isSet(object.deposit) ? Coin.fromJSON(object.deposit) : undefined,
       readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
-      freeReadQuota: isSet(object.freeReadQuota) ? BigInt(object.freeReadQuota.toString()) : BigInt(0),
+      freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
       storePrice: isSet(object.storePrice) ? String(object.storePrice) : "",
       blsKey: isSet(object.blsKey) ? String(object.blsKey) : "",
       blsProof: isSet(object.blsProof) ? String(object.blsProof) : ""
@@ -390,7 +390,7 @@ export const MsgCreateStorageProvider = {
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
     message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toJSON(message.deposit) : undefined);
     message.readPrice !== undefined && (obj.readPrice = message.readPrice);
-    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || BigInt(0)).toString());
+    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
     message.storePrice !== undefined && (obj.storePrice = message.storePrice);
     message.blsKey !== undefined && (obj.blsKey = message.blsKey);
     message.blsProof !== undefined && (obj.blsProof = message.blsProof);
@@ -409,7 +409,7 @@ export const MsgCreateStorageProvider = {
     message.endpoint = object.endpoint ?? "";
     message.deposit = object.deposit !== undefined && object.deposit !== null ? Coin.fromPartial(object.deposit) : undefined;
     message.readPrice = object.readPrice ?? "";
-    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? BigInt(object.freeReadQuota.toString()) : BigInt(0);
+    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
     message.storePrice = object.storePrice ?? "";
     message.blsKey = object.blsKey ?? "";
     message.blsProof = object.blsProof ?? "";
@@ -489,7 +489,7 @@ export const MsgCreateStorageProvider = {
       message.readPrice = object.read_price;
     }
     if (object.free_read_quota !== undefined && object.free_read_quota !== null) {
-      message.freeReadQuota = BigInt(object.free_read_quota);
+      message.freeReadQuota = Long.fromString(object.free_read_quota);
     }
     if (object.store_price !== undefined && object.store_price !== null) {
       message.storePrice = object.store_price;
@@ -542,11 +542,11 @@ function createBaseMsgCreateStorageProviderResponse(): MsgCreateStorageProviderR
 }
 export const MsgCreateStorageProviderResponse = {
   typeUrl: "/greenfield.sp.MsgCreateStorageProviderResponse",
-  encode(_: MsgCreateStorageProviderResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgCreateStorageProviderResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateStorageProviderResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateStorageProviderResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateStorageProviderResponse();
     while (reader.pos < end) {
@@ -610,7 +610,7 @@ function createBaseMsgDeposit(): MsgDeposit {
 }
 export const MsgDeposit = {
   typeUrl: "/greenfield.sp.MsgDeposit",
-  encode(message: MsgDeposit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgDeposit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -622,8 +622,8 @@ export const MsgDeposit = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgDeposit {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeposit {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeposit();
     while (reader.pos < end) {
@@ -721,11 +721,11 @@ function createBaseMsgDepositResponse(): MsgDepositResponse {
 }
 export const MsgDepositResponse = {
   typeUrl: "/greenfield.sp.MsgDepositResponse",
-  encode(_: MsgDepositResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgDepositResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgDepositResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDepositResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDepositResponse();
     while (reader.pos < end) {
@@ -795,7 +795,7 @@ function createBaseMsgEditStorageProvider(): MsgEditStorageProvider {
 }
 export const MsgEditStorageProvider = {
   typeUrl: "/greenfield.sp.MsgEditStorageProvider",
-  encode(message: MsgEditStorageProvider, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgEditStorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.spAddress !== "") {
       writer.uint32(10).string(message.spAddress);
     }
@@ -825,8 +825,8 @@ export const MsgEditStorageProvider = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgEditStorageProvider {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgEditStorageProvider {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgEditStorageProvider();
     while (reader.pos < end) {
@@ -996,11 +996,11 @@ function createBaseMsgEditStorageProviderResponse(): MsgEditStorageProviderRespo
 }
 export const MsgEditStorageProviderResponse = {
   typeUrl: "/greenfield.sp.MsgEditStorageProviderResponse",
-  encode(_: MsgEditStorageProviderResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgEditStorageProviderResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgEditStorageProviderResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgEditStorageProviderResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgEditStorageProviderResponse();
     while (reader.pos < end) {
@@ -1059,20 +1059,20 @@ function createBaseMsgUpdateSpStoragePrice(): MsgUpdateSpStoragePrice {
   return {
     spAddress: "",
     readPrice: "",
-    freeReadQuota: BigInt(0),
+    freeReadQuota: Long.UZERO,
     storePrice: ""
   };
 }
 export const MsgUpdateSpStoragePrice = {
   typeUrl: "/greenfield.sp.MsgUpdateSpStoragePrice",
-  encode(message: MsgUpdateSpStoragePrice, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgUpdateSpStoragePrice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.spAddress !== "") {
       writer.uint32(10).string(message.spAddress);
     }
     if (message.readPrice !== "") {
       writer.uint32(18).string(Decimal.fromUserInput(message.readPrice, 18).atomics);
     }
-    if (message.freeReadQuota !== BigInt(0)) {
+    if (!message.freeReadQuota.isZero()) {
       writer.uint32(24).uint64(message.freeReadQuota);
     }
     if (message.storePrice !== "") {
@@ -1080,8 +1080,8 @@ export const MsgUpdateSpStoragePrice = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateSpStoragePrice {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateSpStoragePrice {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateSpStoragePrice();
     while (reader.pos < end) {
@@ -1094,7 +1094,7 @@ export const MsgUpdateSpStoragePrice = {
           message.readPrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 3:
-          message.freeReadQuota = reader.uint64();
+          message.freeReadQuota = (reader.uint64() as Long);
           break;
         case 4:
           message.storePrice = Decimal.fromAtomics(reader.string(), 18).toString();
@@ -1110,7 +1110,7 @@ export const MsgUpdateSpStoragePrice = {
     return {
       spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
       readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
-      freeReadQuota: isSet(object.freeReadQuota) ? BigInt(object.freeReadQuota.toString()) : BigInt(0),
+      freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
       storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
     };
   },
@@ -1118,7 +1118,7 @@ export const MsgUpdateSpStoragePrice = {
     const obj: any = {};
     message.spAddress !== undefined && (obj.spAddress = message.spAddress);
     message.readPrice !== undefined && (obj.readPrice = message.readPrice);
-    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || BigInt(0)).toString());
+    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
     message.storePrice !== undefined && (obj.storePrice = message.storePrice);
     return obj;
   },
@@ -1126,7 +1126,7 @@ export const MsgUpdateSpStoragePrice = {
     const message = createBaseMsgUpdateSpStoragePrice();
     message.spAddress = object.spAddress ?? "";
     message.readPrice = object.readPrice ?? "";
-    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? BigInt(object.freeReadQuota.toString()) : BigInt(0);
+    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
     message.storePrice = object.storePrice ?? "";
     return message;
   },
@@ -1155,7 +1155,7 @@ export const MsgUpdateSpStoragePrice = {
       message.readPrice = object.read_price;
     }
     if (object.free_read_quota !== undefined && object.free_read_quota !== null) {
-      message.freeReadQuota = BigInt(object.free_read_quota);
+      message.freeReadQuota = Long.fromString(object.free_read_quota);
     }
     if (object.store_price !== undefined && object.store_price !== null) {
       message.storePrice = object.store_price;
@@ -1191,11 +1191,11 @@ function createBaseMsgUpdateSpStoragePriceResponse(): MsgUpdateSpStoragePriceRes
 }
 export const MsgUpdateSpStoragePriceResponse = {
   typeUrl: "/greenfield.sp.MsgUpdateSpStoragePriceResponse",
-  encode(_: MsgUpdateSpStoragePriceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgUpdateSpStoragePriceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateSpStoragePriceResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateSpStoragePriceResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateSpStoragePriceResponse();
     while (reader.pos < end) {
@@ -1258,7 +1258,7 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/greenfield.sp.MsgUpdateParams",
-  encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -1267,8 +1267,8 @@ export const MsgUpdateParams = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParams {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParams();
     while (reader.pos < end) {
@@ -1354,11 +1354,11 @@ function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/greenfield.sp.MsgUpdateParamsResponse",
-  encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParamsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParamsResponse();
     while (reader.pos < end) {
@@ -1417,25 +1417,25 @@ function createBaseMsgUpdateStorageProviderStatus(): MsgUpdateStorageProviderSta
   return {
     spAddress: "",
     status: 0,
-    duration: BigInt(0)
+    duration: Long.ZERO
   };
 }
 export const MsgUpdateStorageProviderStatus = {
   typeUrl: "/greenfield.sp.MsgUpdateStorageProviderStatus",
-  encode(message: MsgUpdateStorageProviderStatus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgUpdateStorageProviderStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.spAddress !== "") {
       writer.uint32(10).string(message.spAddress);
     }
     if (message.status !== 0) {
       writer.uint32(16).int32(message.status);
     }
-    if (message.duration !== BigInt(0)) {
+    if (!message.duration.isZero()) {
       writer.uint32(24).int64(message.duration);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateStorageProviderStatus {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateStorageProviderStatus {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateStorageProviderStatus();
     while (reader.pos < end) {
@@ -1448,7 +1448,7 @@ export const MsgUpdateStorageProviderStatus = {
           message.status = (reader.int32() as any);
           break;
         case 3:
-          message.duration = reader.int64();
+          message.duration = (reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -1461,21 +1461,21 @@ export const MsgUpdateStorageProviderStatus = {
     return {
       spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
       status: isSet(object.status) ? statusFromJSON(object.status) : -1,
-      duration: isSet(object.duration) ? BigInt(object.duration.toString()) : BigInt(0)
+      duration: isSet(object.duration) ? Long.fromValue(object.duration) : Long.ZERO
     };
   },
   toJSON(message: MsgUpdateStorageProviderStatus): unknown {
     const obj: any = {};
     message.spAddress !== undefined && (obj.spAddress = message.spAddress);
     message.status !== undefined && (obj.status = statusToJSON(message.status));
-    message.duration !== undefined && (obj.duration = (message.duration || BigInt(0)).toString());
+    message.duration !== undefined && (obj.duration = (message.duration || Long.ZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MsgUpdateStorageProviderStatus>, I>>(object: I): MsgUpdateStorageProviderStatus {
     const message = createBaseMsgUpdateStorageProviderStatus();
     message.spAddress = object.spAddress ?? "";
     message.status = object.status ?? 0;
-    message.duration = object.duration !== undefined && object.duration !== null ? BigInt(object.duration.toString()) : BigInt(0);
+    message.duration = object.duration !== undefined && object.duration !== null ? Long.fromValue(object.duration) : Long.ZERO;
     return message;
   },
   fromSDK(object: MsgUpdateStorageProviderStatusSDKType): MsgUpdateStorageProviderStatus {
@@ -1501,7 +1501,7 @@ export const MsgUpdateStorageProviderStatus = {
       message.status = statusFromJSON(object.status);
     }
     if (object.duration !== undefined && object.duration !== null) {
-      message.duration = BigInt(object.duration);
+      message.duration = Long.fromString(object.duration);
     }
     return message;
   },
@@ -1533,11 +1533,11 @@ function createBaseMsgUpdateStorageProviderStatusResponse(): MsgUpdateStoragePro
 }
 export const MsgUpdateStorageProviderStatusResponse = {
   typeUrl: "/greenfield.sp.MsgUpdateStorageProviderStatusResponse",
-  encode(_: MsgUpdateStorageProviderStatusResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgUpdateStorageProviderStatusResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateStorageProviderStatusResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateStorageProviderStatusResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateStorageProviderStatusResponse();
     while (reader.pos < end) {
@@ -1622,31 +1622,31 @@ export class MsgClientImpl implements Msg {
   CreateStorageProvider(request: MsgCreateStorageProvider): Promise<MsgCreateStorageProviderResponse> {
     const data = MsgCreateStorageProvider.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Msg", "CreateStorageProvider", data);
-    return promise.then(data => MsgCreateStorageProviderResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgCreateStorageProviderResponse.decode(new _m0.Reader(data)));
   }
   Deposit(request: MsgDeposit): Promise<MsgDepositResponse> {
     const data = MsgDeposit.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Msg", "Deposit", data);
-    return promise.then(data => MsgDepositResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgDepositResponse.decode(new _m0.Reader(data)));
   }
   EditStorageProvider(request: MsgEditStorageProvider): Promise<MsgEditStorageProviderResponse> {
     const data = MsgEditStorageProvider.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Msg", "EditStorageProvider", data);
-    return promise.then(data => MsgEditStorageProviderResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgEditStorageProviderResponse.decode(new _m0.Reader(data)));
   }
   UpdateSpStoragePrice(request: MsgUpdateSpStoragePrice): Promise<MsgUpdateSpStoragePriceResponse> {
     const data = MsgUpdateSpStoragePrice.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Msg", "UpdateSpStoragePrice", data);
-    return promise.then(data => MsgUpdateSpStoragePriceResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateSpStoragePriceResponse.decode(new _m0.Reader(data)));
   }
   UpdateSpStatus(request: MsgUpdateStorageProviderStatus): Promise<MsgUpdateStorageProviderStatusResponse> {
     const data = MsgUpdateStorageProviderStatus.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Msg", "UpdateSpStatus", data);
-    return promise.then(data => MsgUpdateStorageProviderStatusResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateStorageProviderStatusResponse.decode(new _m0.Reader(data)));
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Msg", "UpdateParams", data);
-    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
   }
 }

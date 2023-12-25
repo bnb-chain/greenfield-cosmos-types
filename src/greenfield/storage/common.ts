@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
+import { Long, isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.storage";
 /**
  * SourceType represents the source of resource creation, which can
@@ -291,12 +291,12 @@ export interface LocalVirtualGroup {
   /** global_virtual_group_id is the identifier of the global virtual group. */
   globalVirtualGroupId: number;
   /** stored_size is the size of the stored data in the local virtual group. */
-  storedSize: bigint;
+  storedSize: Long;
   /**
    * total_charge_size is the total charged size of the objects in the LVG.
    * Notice that the minimum unit of charge is 128K
    */
-  totalChargeSize: bigint;
+  totalChargeSize: Long;
 }
 export interface LocalVirtualGroupProtoMsg {
   typeUrl: "/greenfield.storage.LocalVirtualGroup";
@@ -311,8 +311,8 @@ export interface LocalVirtualGroupProtoMsg {
 export interface LocalVirtualGroupSDKType {
   id: number;
   global_virtual_group_id: number;
-  stored_size: bigint;
-  total_charge_size: bigint;
+  stored_size: Long;
+  total_charge_size: Long;
 }
 function createBaseSecondarySpSealObjectSignDoc(): SecondarySpSealObjectSignDoc {
   return {
@@ -324,7 +324,7 @@ function createBaseSecondarySpSealObjectSignDoc(): SecondarySpSealObjectSignDoc 
 }
 export const SecondarySpSealObjectSignDoc = {
   typeUrl: "/greenfield.storage.SecondarySpSealObjectSignDoc",
-  encode(message: SecondarySpSealObjectSignDoc, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: SecondarySpSealObjectSignDoc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.chainId !== "") {
       writer.uint32(10).string(message.chainId);
     }
@@ -339,8 +339,8 @@ export const SecondarySpSealObjectSignDoc = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): SecondarySpSealObjectSignDoc {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SecondarySpSealObjectSignDoc {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSecondarySpSealObjectSignDoc();
     while (reader.pos < end) {
@@ -454,7 +454,7 @@ function createBaseGVGMapping(): GVGMapping {
 }
 export const GVGMapping = {
   typeUrl: "/greenfield.storage.GVGMapping",
-  encode(message: GVGMapping, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: GVGMapping, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.srcGlobalVirtualGroupId !== 0) {
       writer.uint32(8).uint32(message.srcGlobalVirtualGroupId);
     }
@@ -466,8 +466,8 @@ export const GVGMapping = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): GVGMapping {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GVGMapping {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGVGMapping();
     while (reader.pos < end) {
@@ -571,7 +571,7 @@ function createBaseSecondarySpMigrationBucketSignDoc(): SecondarySpMigrationBuck
 }
 export const SecondarySpMigrationBucketSignDoc = {
   typeUrl: "/greenfield.storage.SecondarySpMigrationBucketSignDoc",
-  encode(message: SecondarySpMigrationBucketSignDoc, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: SecondarySpMigrationBucketSignDoc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.chainId !== "") {
       writer.uint32(10).string(message.chainId);
     }
@@ -589,8 +589,8 @@ export const SecondarySpMigrationBucketSignDoc = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): SecondarySpMigrationBucketSignDoc {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): SecondarySpMigrationBucketSignDoc {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSecondarySpMigrationBucketSignDoc();
     while (reader.pos < end) {
@@ -711,29 +711,29 @@ function createBaseLocalVirtualGroup(): LocalVirtualGroup {
   return {
     id: 0,
     globalVirtualGroupId: 0,
-    storedSize: BigInt(0),
-    totalChargeSize: BigInt(0)
+    storedSize: Long.UZERO,
+    totalChargeSize: Long.UZERO
   };
 }
 export const LocalVirtualGroup = {
   typeUrl: "/greenfield.storage.LocalVirtualGroup",
-  encode(message: LocalVirtualGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: LocalVirtualGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id);
     }
     if (message.globalVirtualGroupId !== 0) {
       writer.uint32(16).uint32(message.globalVirtualGroupId);
     }
-    if (message.storedSize !== BigInt(0)) {
+    if (!message.storedSize.isZero()) {
       writer.uint32(24).uint64(message.storedSize);
     }
-    if (message.totalChargeSize !== BigInt(0)) {
+    if (!message.totalChargeSize.isZero()) {
       writer.uint32(32).uint64(message.totalChargeSize);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): LocalVirtualGroup {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): LocalVirtualGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLocalVirtualGroup();
     while (reader.pos < end) {
@@ -746,10 +746,10 @@ export const LocalVirtualGroup = {
           message.globalVirtualGroupId = reader.uint32();
           break;
         case 3:
-          message.storedSize = reader.uint64();
+          message.storedSize = (reader.uint64() as Long);
           break;
         case 4:
-          message.totalChargeSize = reader.uint64();
+          message.totalChargeSize = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -762,24 +762,24 @@ export const LocalVirtualGroup = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       globalVirtualGroupId: isSet(object.globalVirtualGroupId) ? Number(object.globalVirtualGroupId) : 0,
-      storedSize: isSet(object.storedSize) ? BigInt(object.storedSize.toString()) : BigInt(0),
-      totalChargeSize: isSet(object.totalChargeSize) ? BigInt(object.totalChargeSize.toString()) : BigInt(0)
+      storedSize: isSet(object.storedSize) ? Long.fromValue(object.storedSize) : Long.UZERO,
+      totalChargeSize: isSet(object.totalChargeSize) ? Long.fromValue(object.totalChargeSize) : Long.UZERO
     };
   },
   toJSON(message: LocalVirtualGroup): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.globalVirtualGroupId !== undefined && (obj.globalVirtualGroupId = Math.round(message.globalVirtualGroupId));
-    message.storedSize !== undefined && (obj.storedSize = (message.storedSize || BigInt(0)).toString());
-    message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || BigInt(0)).toString());
+    message.storedSize !== undefined && (obj.storedSize = (message.storedSize || Long.UZERO).toString());
+    message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<LocalVirtualGroup>, I>>(object: I): LocalVirtualGroup {
     const message = createBaseLocalVirtualGroup();
     message.id = object.id ?? 0;
     message.globalVirtualGroupId = object.globalVirtualGroupId ?? 0;
-    message.storedSize = object.storedSize !== undefined && object.storedSize !== null ? BigInt(object.storedSize.toString()) : BigInt(0);
-    message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? BigInt(object.totalChargeSize.toString()) : BigInt(0);
+    message.storedSize = object.storedSize !== undefined && object.storedSize !== null ? Long.fromValue(object.storedSize) : Long.UZERO;
+    message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? Long.fromValue(object.totalChargeSize) : Long.UZERO;
     return message;
   },
   fromSDK(object: LocalVirtualGroupSDKType): LocalVirtualGroup {
@@ -807,10 +807,10 @@ export const LocalVirtualGroup = {
       message.globalVirtualGroupId = object.global_virtual_group_id;
     }
     if (object.stored_size !== undefined && object.stored_size !== null) {
-      message.storedSize = BigInt(object.stored_size);
+      message.storedSize = Long.fromString(object.stored_size);
     }
     if (object.total_charge_size !== undefined && object.total_charge_size !== null) {
-      message.totalChargeSize = BigInt(object.total_charge_size);
+      message.totalChargeSize = Long.fromString(object.total_charge_size);
     }
     return message;
   },

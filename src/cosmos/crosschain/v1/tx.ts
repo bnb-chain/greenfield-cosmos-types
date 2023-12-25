@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Params, ParamsSDKType, ChannelPermission, ChannelPermissionSDKType } from "./crosschain";
-import { BinaryReader, BinaryWriter } from "../../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.crosschain.v1";
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
@@ -114,7 +114,7 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
 }
 export const MsgUpdateParams = {
   typeUrl: "/cosmos.crosschain.v1.MsgUpdateParams",
-  encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -123,8 +123,8 @@ export const MsgUpdateParams = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParams {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParams();
     while (reader.pos < end) {
@@ -216,11 +216,11 @@ function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
 }
 export const MsgUpdateParamsResponse = {
   typeUrl: "/cosmos.crosschain.v1.MsgUpdateParamsResponse",
-  encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParamsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParamsResponse();
     while (reader.pos < end) {
@@ -289,7 +289,7 @@ function createBaseMsgUpdateChannelPermissions(): MsgUpdateChannelPermissions {
 }
 export const MsgUpdateChannelPermissions = {
   typeUrl: "/cosmos.crosschain.v1.MsgUpdateChannelPermissions",
-  encode(message: MsgUpdateChannelPermissions, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgUpdateChannelPermissions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -298,8 +298,8 @@ export const MsgUpdateChannelPermissions = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateChannelPermissions {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateChannelPermissions {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateChannelPermissions();
     while (reader.pos < end) {
@@ -401,11 +401,11 @@ function createBaseMsgUpdateChannelPermissionsResponse(): MsgUpdateChannelPermis
 }
 export const MsgUpdateChannelPermissionsResponse = {
   typeUrl: "/cosmos.crosschain.v1.MsgUpdateChannelPermissionsResponse",
-  encode(_: MsgUpdateChannelPermissionsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgUpdateChannelPermissionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateChannelPermissionsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateChannelPermissionsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateChannelPermissionsResponse();
     while (reader.pos < end) {
@@ -474,7 +474,7 @@ function createBaseMsgMintModuleTokens(): MsgMintModuleTokens {
 }
 export const MsgMintModuleTokens = {
   typeUrl: "/cosmos.crosschain.v1.MsgMintModuleTokens",
-  encode(message: MsgMintModuleTokens, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: MsgMintModuleTokens, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -483,8 +483,8 @@ export const MsgMintModuleTokens = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgMintModuleTokens {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMintModuleTokens {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgMintModuleTokens();
     while (reader.pos < end) {
@@ -576,11 +576,11 @@ function createBaseMsgMintModuleTokensResponse(): MsgMintModuleTokensResponse {
 }
 export const MsgMintModuleTokensResponse = {
   typeUrl: "/cosmos.crosschain.v1.MsgMintModuleTokensResponse",
-  encode(_: MsgMintModuleTokensResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(_: MsgMintModuleTokensResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): MsgMintModuleTokensResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMintModuleTokensResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgMintModuleTokensResponse();
     while (reader.pos < end) {
@@ -672,16 +672,16 @@ export class MsgClientImpl implements Msg {
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("cosmos.crosschain.v1.Msg", "UpdateParams", data);
-    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
   }
   UpdateChannelPermissions(request: MsgUpdateChannelPermissions): Promise<MsgUpdateChannelPermissionsResponse> {
     const data = MsgUpdateChannelPermissions.encode(request).finish();
     const promise = this.rpc.request("cosmos.crosschain.v1.Msg", "UpdateChannelPermissions", data);
-    return promise.then(data => MsgUpdateChannelPermissionsResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgUpdateChannelPermissionsResponse.decode(new _m0.Reader(data)));
   }
   MintModuleTokens(request: MsgMintModuleTokens): Promise<MsgMintModuleTokensResponse> {
     const data = MsgMintModuleTokens.encode(request).finish();
     const promise = this.rpc.request("cosmos.crosschain.v1.Msg", "MintModuleTokens", data);
-    return promise.then(data => MsgMintModuleTokensResponse.decode(new BinaryReader(data)));
+    return promise.then(data => MsgMintModuleTokensResponse.decode(new _m0.Reader(data)));
   }
 }

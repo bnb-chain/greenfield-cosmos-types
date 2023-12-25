@@ -3,7 +3,7 @@
 import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "./common";
 import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from "../resource/types";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import { BinaryReader, BinaryWriter } from "../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.permission";
 export interface EventPutPolicy {
@@ -58,7 +58,7 @@ function createBaseEventPutPolicy(): EventPutPolicy {
 }
 export const EventPutPolicy = {
   typeUrl: "/greenfield.permission.EventPutPolicy",
-  encode(message: EventPutPolicy, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventPutPolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.policyId !== "") {
       writer.uint32(10).string(message.policyId);
     }
@@ -79,8 +79,8 @@ export const EventPutPolicy = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventPutPolicy {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventPutPolicy {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventPutPolicy();
     while (reader.pos < end) {
@@ -226,14 +226,14 @@ function createBaseEventDeletePolicy(): EventDeletePolicy {
 }
 export const EventDeletePolicy = {
   typeUrl: "/greenfield.permission.EventDeletePolicy",
-  encode(message: EventDeletePolicy, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventDeletePolicy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.policyId !== "") {
       writer.uint32(10).string(message.policyId);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventDeletePolicy {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventDeletePolicy {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDeletePolicy();
     while (reader.pos < end) {

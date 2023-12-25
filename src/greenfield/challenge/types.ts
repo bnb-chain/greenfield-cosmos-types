@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { isSet, DeepPartial, Exact } from "../../helpers";
+import { Long, isSet, DeepPartial, Exact } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.challenge";
 /** VoteResult defines the result attestation for a challenge. */
 export enum VoteResult {
@@ -44,7 +44,7 @@ export interface Slash {
   /** The slashed object info. */
   objectId: string;
   /** The height when the slash happened, which is used for prune purpose. */
-  height: bigint;
+  height: Long;
 }
 export interface SlashProtoMsg {
   typeUrl: "/greenfield.challenge.Slash";
@@ -54,14 +54,14 @@ export interface SlashProtoMsg {
 export interface SlashSDKType {
   sp_id: number;
   object_id: string;
-  height: bigint;
+  height: Long;
 }
 /** Challenge records the challenge which are not expired yet. */
 export interface Challenge {
   /** The id of the challenge. */
-  id: bigint;
+  id: Long;
   /** The height at which the challenge will be expired. */
-  expiredHeight: bigint;
+  expiredHeight: Long;
 }
 export interface ChallengeProtoMsg {
   typeUrl: "/greenfield.challenge.Challenge";
@@ -69,13 +69,13 @@ export interface ChallengeProtoMsg {
 }
 /** Challenge records the challenge which are not expired yet. */
 export interface ChallengeSDKType {
-  id: bigint;
-  expired_height: bigint;
+  id: Long;
+  expired_height: Long;
 }
 /** AttestedChallenge records the challenge which are attested. */
 export interface AttestedChallenge {
   /** The id of the challenge. */
-  id: bigint;
+  id: Long;
   /** The attestation result of the challenge. */
   result: VoteResult;
 }
@@ -85,7 +85,7 @@ export interface AttestedChallengeProtoMsg {
 }
 /** AttestedChallenge records the challenge which are attested. */
 export interface AttestedChallengeSDKType {
-  id: bigint;
+  id: Long;
   result: VoteResult;
 }
 /**
@@ -94,11 +94,11 @@ export interface AttestedChallengeSDKType {
  */
 export interface AttestedChallengeIds {
   /** The fixed number of challenge ids to save. */
-  size: bigint;
+  size: Long;
   /** The latest attested challenges. */
   challenges: AttestedChallenge[];
   /** The cursor to retrieve data from the ids field. */
-  cursor: bigint;
+  cursor: Long;
 }
 export interface AttestedChallengeIdsProtoMsg {
   typeUrl: "/greenfield.challenge.AttestedChallengeIds";
@@ -109,33 +109,33 @@ export interface AttestedChallengeIdsProtoMsg {
  * To use the storage more efficiently, a circular queue will be constructed using these fields.
  */
 export interface AttestedChallengeIdsSDKType {
-  size: bigint;
+  size: Long;
   challenges: AttestedChallengeSDKType[];
-  cursor: bigint;
+  cursor: Long;
 }
 function createBaseSlash(): Slash {
   return {
     spId: 0,
     objectId: "",
-    height: BigInt(0)
+    height: Long.UZERO
   };
 }
 export const Slash = {
   typeUrl: "/greenfield.challenge.Slash",
-  encode(message: Slash, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Slash, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.spId !== 0) {
       writer.uint32(8).uint32(message.spId);
     }
     if (message.objectId !== "") {
       writer.uint32(18).string(message.objectId);
     }
-    if (message.height !== BigInt(0)) {
+    if (!message.height.isZero()) {
       writer.uint32(24).uint64(message.height);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Slash {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Slash {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSlash();
     while (reader.pos < end) {
@@ -148,7 +148,7 @@ export const Slash = {
           message.objectId = reader.string();
           break;
         case 3:
-          message.height = reader.uint64();
+          message.height = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -161,21 +161,21 @@ export const Slash = {
     return {
       spId: isSet(object.spId) ? Number(object.spId) : 0,
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
-      height: isSet(object.height) ? BigInt(object.height.toString()) : BigInt(0)
+      height: isSet(object.height) ? Long.fromValue(object.height) : Long.UZERO
     };
   },
   toJSON(message: Slash): unknown {
     const obj: any = {};
     message.spId !== undefined && (obj.spId = Math.round(message.spId));
     message.objectId !== undefined && (obj.objectId = message.objectId);
-    message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
+    message.height !== undefined && (obj.height = (message.height || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Slash>, I>>(object: I): Slash {
     const message = createBaseSlash();
     message.spId = object.spId ?? 0;
     message.objectId = object.objectId ?? "";
-    message.height = object.height !== undefined && object.height !== null ? BigInt(object.height.toString()) : BigInt(0);
+    message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.UZERO;
     return message;
   },
   fromSDK(object: SlashSDKType): Slash {
@@ -201,7 +201,7 @@ export const Slash = {
       message.objectId = object.object_id;
     }
     if (object.height !== undefined && object.height !== null) {
-      message.height = BigInt(object.height);
+      message.height = Long.fromString(object.height);
     }
     return message;
   },
@@ -230,33 +230,33 @@ export const Slash = {
 };
 function createBaseChallenge(): Challenge {
   return {
-    id: BigInt(0),
-    expiredHeight: BigInt(0)
+    id: Long.UZERO,
+    expiredHeight: Long.UZERO
   };
 }
 export const Challenge = {
   typeUrl: "/greenfield.challenge.Challenge",
-  encode(message: Challenge, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.id !== BigInt(0)) {
+  encode(message: Challenge, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.id.isZero()) {
       writer.uint32(8).uint64(message.id);
     }
-    if (message.expiredHeight !== BigInt(0)) {
+    if (!message.expiredHeight.isZero()) {
       writer.uint32(16).uint64(message.expiredHeight);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Challenge {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Challenge {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseChallenge();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.uint64();
+          message.id = (reader.uint64() as Long);
           break;
         case 2:
-          message.expiredHeight = reader.uint64();
+          message.expiredHeight = (reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -267,20 +267,20 @@ export const Challenge = {
   },
   fromJSON(object: any): Challenge {
     return {
-      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
-      expiredHeight: isSet(object.expiredHeight) ? BigInt(object.expiredHeight.toString()) : BigInt(0)
+      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO,
+      expiredHeight: isSet(object.expiredHeight) ? Long.fromValue(object.expiredHeight) : Long.UZERO
     };
   },
   toJSON(message: Challenge): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
-    message.expiredHeight !== undefined && (obj.expiredHeight = (message.expiredHeight || BigInt(0)).toString());
+    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
+    message.expiredHeight !== undefined && (obj.expiredHeight = (message.expiredHeight || Long.UZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Challenge>, I>>(object: I): Challenge {
     const message = createBaseChallenge();
-    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
-    message.expiredHeight = object.expiredHeight !== undefined && object.expiredHeight !== null ? BigInt(object.expiredHeight.toString()) : BigInt(0);
+    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
+    message.expiredHeight = object.expiredHeight !== undefined && object.expiredHeight !== null ? Long.fromValue(object.expiredHeight) : Long.UZERO;
     return message;
   },
   fromSDK(object: ChallengeSDKType): Challenge {
@@ -298,10 +298,10 @@ export const Challenge = {
   fromAmino(object: ChallengeAmino): Challenge {
     const message = createBaseChallenge();
     if (object.id !== undefined && object.id !== null) {
-      message.id = BigInt(object.id);
+      message.id = Long.fromString(object.id);
     }
     if (object.expired_height !== undefined && object.expired_height !== null) {
-      message.expiredHeight = BigInt(object.expired_height);
+      message.expiredHeight = Long.fromString(object.expired_height);
     }
     return message;
   },
@@ -329,14 +329,14 @@ export const Challenge = {
 };
 function createBaseAttestedChallenge(): AttestedChallenge {
   return {
-    id: BigInt(0),
+    id: Long.UZERO,
     result: 0
   };
 }
 export const AttestedChallenge = {
   typeUrl: "/greenfield.challenge.AttestedChallenge",
-  encode(message: AttestedChallenge, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.id !== BigInt(0)) {
+  encode(message: AttestedChallenge, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.id.isZero()) {
       writer.uint32(8).uint64(message.id);
     }
     if (message.result !== 0) {
@@ -344,15 +344,15 @@ export const AttestedChallenge = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): AttestedChallenge {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): AttestedChallenge {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAttestedChallenge();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.uint64();
+          message.id = (reader.uint64() as Long);
           break;
         case 2:
           message.result = (reader.int32() as any);
@@ -366,19 +366,19 @@ export const AttestedChallenge = {
   },
   fromJSON(object: any): AttestedChallenge {
     return {
-      id: isSet(object.id) ? BigInt(object.id.toString()) : BigInt(0),
+      id: isSet(object.id) ? Long.fromValue(object.id) : Long.UZERO,
       result: isSet(object.result) ? voteResultFromJSON(object.result) : -1
     };
   },
   toJSON(message: AttestedChallenge): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = (message.id || BigInt(0)).toString());
+    message.id !== undefined && (obj.id = (message.id || Long.UZERO).toString());
     message.result !== undefined && (obj.result = voteResultToJSON(message.result));
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<AttestedChallenge>, I>>(object: I): AttestedChallenge {
     const message = createBaseAttestedChallenge();
-    message.id = object.id !== undefined && object.id !== null ? BigInt(object.id.toString()) : BigInt(0);
+    message.id = object.id !== undefined && object.id !== null ? Long.fromValue(object.id) : Long.UZERO;
     message.result = object.result ?? 0;
     return message;
   },
@@ -397,7 +397,7 @@ export const AttestedChallenge = {
   fromAmino(object: AttestedChallengeAmino): AttestedChallenge {
     const message = createBaseAttestedChallenge();
     if (object.id !== undefined && object.id !== null) {
-      message.id = BigInt(object.id);
+      message.id = Long.fromString(object.id);
     }
     if (object.result !== undefined && object.result !== null) {
       message.result = voteResultFromJSON(object.result);
@@ -428,40 +428,40 @@ export const AttestedChallenge = {
 };
 function createBaseAttestedChallengeIds(): AttestedChallengeIds {
   return {
-    size: BigInt(0),
+    size: Long.UZERO,
     challenges: [],
-    cursor: BigInt(0)
+    cursor: Long.ZERO
   };
 }
 export const AttestedChallengeIds = {
   typeUrl: "/greenfield.challenge.AttestedChallengeIds",
-  encode(message: AttestedChallengeIds, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.size !== BigInt(0)) {
+  encode(message: AttestedChallengeIds, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.size.isZero()) {
       writer.uint32(8).uint64(message.size);
     }
     for (const v of message.challenges) {
       AttestedChallenge.encode(v!, writer.uint32(18).fork()).ldelim();
     }
-    if (message.cursor !== BigInt(0)) {
+    if (!message.cursor.isZero()) {
       writer.uint32(24).int64(message.cursor);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): AttestedChallengeIds {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): AttestedChallengeIds {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAttestedChallengeIds();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.size = reader.uint64();
+          message.size = (reader.uint64() as Long);
           break;
         case 2:
           message.challenges.push(AttestedChallenge.decode(reader, reader.uint32()));
           break;
         case 3:
-          message.cursor = reader.int64();
+          message.cursor = (reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -472,27 +472,27 @@ export const AttestedChallengeIds = {
   },
   fromJSON(object: any): AttestedChallengeIds {
     return {
-      size: isSet(object.size) ? BigInt(object.size.toString()) : BigInt(0),
+      size: isSet(object.size) ? Long.fromValue(object.size) : Long.UZERO,
       challenges: Array.isArray(object?.challenges) ? object.challenges.map((e: any) => AttestedChallenge.fromJSON(e)) : [],
-      cursor: isSet(object.cursor) ? BigInt(object.cursor.toString()) : BigInt(0)
+      cursor: isSet(object.cursor) ? Long.fromValue(object.cursor) : Long.ZERO
     };
   },
   toJSON(message: AttestedChallengeIds): unknown {
     const obj: any = {};
-    message.size !== undefined && (obj.size = (message.size || BigInt(0)).toString());
+    message.size !== undefined && (obj.size = (message.size || Long.UZERO).toString());
     if (message.challenges) {
       obj.challenges = message.challenges.map(e => e ? AttestedChallenge.toJSON(e) : undefined);
     } else {
       obj.challenges = [];
     }
-    message.cursor !== undefined && (obj.cursor = (message.cursor || BigInt(0)).toString());
+    message.cursor !== undefined && (obj.cursor = (message.cursor || Long.ZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<AttestedChallengeIds>, I>>(object: I): AttestedChallengeIds {
     const message = createBaseAttestedChallengeIds();
-    message.size = object.size !== undefined && object.size !== null ? BigInt(object.size.toString()) : BigInt(0);
+    message.size = object.size !== undefined && object.size !== null ? Long.fromValue(object.size) : Long.UZERO;
     message.challenges = object.challenges?.map(e => AttestedChallenge.fromPartial(e)) || [];
-    message.cursor = object.cursor !== undefined && object.cursor !== null ? BigInt(object.cursor.toString()) : BigInt(0);
+    message.cursor = object.cursor !== undefined && object.cursor !== null ? Long.fromValue(object.cursor) : Long.ZERO;
     return message;
   },
   fromSDK(object: AttestedChallengeIdsSDKType): AttestedChallengeIds {
@@ -516,11 +516,11 @@ export const AttestedChallengeIds = {
   fromAmino(object: AttestedChallengeIdsAmino): AttestedChallengeIds {
     const message = createBaseAttestedChallengeIds();
     if (object.size !== undefined && object.size !== null) {
-      message.size = BigInt(object.size);
+      message.size = Long.fromString(object.size);
     }
     message.challenges = object.challenges?.map(e => AttestedChallenge.fromAmino(e)) || [];
     if (object.cursor !== undefined && object.cursor !== null) {
-      message.cursor = BigInt(object.cursor);
+      message.cursor = Long.fromString(object.cursor);
     }
     return message;
   },

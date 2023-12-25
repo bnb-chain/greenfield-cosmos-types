@@ -3,7 +3,7 @@
 import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "./common";
 import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from "../resource/types";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import { BinaryReader, BinaryWriter } from "../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.permission";
 export interface Policy {
@@ -100,7 +100,7 @@ function createBasePolicy(): Policy {
 }
 export const Policy = {
   typeUrl: "/greenfield.permission.Policy",
-  encode(message: Policy, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: Policy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -121,8 +121,8 @@ export const Policy = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): Policy {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): Policy {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePolicy();
     while (reader.pos < end) {
@@ -268,14 +268,14 @@ function createBasePolicyGroup(): PolicyGroup {
 }
 export const PolicyGroup = {
   typeUrl: "/greenfield.permission.PolicyGroup",
-  encode(message: PolicyGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: PolicyGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.items) {
       PolicyGroup_Item.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): PolicyGroup {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): PolicyGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePolicyGroup();
     while (reader.pos < end) {
@@ -362,7 +362,7 @@ function createBasePolicyGroup_Item(): PolicyGroup_Item {
 }
 export const PolicyGroup_Item = {
   typeUrl: "/greenfield.permission.Item",
-  encode(message: PolicyGroup_Item, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: PolicyGroup_Item, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.policyId !== "") {
       writer.uint32(10).string(message.policyId);
     }
@@ -371,8 +371,8 @@ export const PolicyGroup_Item = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): PolicyGroup_Item {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): PolicyGroup_Item {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePolicyGroup_Item();
     while (reader.pos < end) {
@@ -463,7 +463,7 @@ function createBaseGroupMember(): GroupMember {
 }
 export const GroupMember = {
   typeUrl: "/greenfield.permission.GroupMember",
-  encode(message: GroupMember, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: GroupMember, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -478,8 +478,8 @@ export const GroupMember = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): GroupMember {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GroupMember {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGroupMember();
     while (reader.pos < end) {

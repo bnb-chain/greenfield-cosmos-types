@@ -3,8 +3,8 @@
 import { VisibilityType, SourceType, BucketStatus, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
 import { DeleteInfo, DeleteInfoSDKType, ResourceTags, ResourceTagsSDKType } from "./types";
-import { BinaryReader, BinaryWriter } from "../../binary";
-import { isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers";
+import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes, fromJsonTimestamp, fromTimestamp } from "../../helpers";
+import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "greenfield.storage";
 /** EventCreateBucket is emitted on MsgCreateBucket */
 export interface EventCreateBucket {
@@ -15,13 +15,13 @@ export interface EventCreateBucket {
   /** visibility defines the highest permissions for bucket. When a bucket is public, everyone can get the object under it. */
   visibility: VisibilityType;
   /** create_at define the block timestamp when the bucket has been created */
-  createAt: bigint;
+  createAt: Long;
   /** bucket_id is the unique u256 for bucket. Not global, only unique in buckets. */
   bucketId: string;
   /** source_type define the source of the bucket. CrossChain or Greenfield origin */
   sourceType: SourceType;
   /** read_quota defines the charged traffic quota for read, not include free quota which provided by each storage provider */
-  chargedReadQuota: bigint;
+  chargedReadQuota: Long;
   /** payment_address is the address of the payment account */
   paymentAddress: string;
   /** primary_sp_id is the unique id of primary sp. */
@@ -40,10 +40,10 @@ export interface EventCreateBucketSDKType {
   owner: string;
   bucket_name: string;
   visibility: VisibilityType;
-  create_at: bigint;
+  create_at: Long;
   bucket_id: string;
   source_type: SourceType;
-  charged_read_quota: bigint;
+  charged_read_quota: Long;
   payment_address: string;
   primary_sp_id: number;
   global_virtual_group_family_id: number;
@@ -83,7 +83,7 @@ export interface EventUpdateBucketInfo {
   /** bucket_id define an u256 id for bucket */
   bucketId: string;
   /** charged_read_quota_after define the read quota after updated */
-  chargedReadQuota: bigint;
+  chargedReadQuota: Long;
   /** payment_address define the payment address after updated */
   paymentAddress: string;
   /** visibility defines the highest permission of object. */
@@ -100,7 +100,7 @@ export interface EventUpdateBucketInfoSDKType {
   operator: string;
   bucket_name: string;
   bucket_id: string;
-  charged_read_quota: bigint;
+  charged_read_quota: Long;
   payment_address: string;
   visibility: VisibilityType;
   global_virtual_group_family_id: number;
@@ -114,7 +114,7 @@ export interface EventDiscontinueBucket {
   /** the reason */
   reason: string;
   /** the timestamp after which the metadata will be deleted */
-  deleteAt: bigint;
+  deleteAt: Long;
 }
 export interface EventDiscontinueBucketProtoMsg {
   typeUrl: "/greenfield.storage.EventDiscontinueBucket";
@@ -125,7 +125,7 @@ export interface EventDiscontinueBucketSDKType {
   bucket_id: string;
   bucket_name: string;
   reason: string;
-  delete_at: bigint;
+  delete_at: Long;
 }
 /** EventCreateObject is emitted on MsgCreateObject */
 export interface EventCreateObject {
@@ -144,13 +144,13 @@ export interface EventCreateObject {
   /** primary_sp_id define the unique id of primary sp */
   primarySpId: number;
   /** payload_size define the size of payload data which you want upload */
-  payloadSize: bigint;
+  payloadSize: Long;
   /** visibility defines the highest permission of object. */
   visibility: VisibilityType;
   /** content_type define the content type of the payload data */
   contentType: string;
   /** create_at define the block timestamp when the object created */
-  createAt: bigint;
+  createAt: Long;
   /** status define the status of the object. INIT or IN_SERVICE or others */
   status: ObjectStatus;
   /** redundancy_type define the type of redundancy. Replication or EC */
@@ -175,10 +175,10 @@ export interface EventCreateObjectSDKType {
   bucket_id: string;
   object_id: string;
   primary_sp_id: number;
-  payload_size: bigint;
+  payload_size: Long;
   visibility: VisibilityType;
   content_type: string;
-  create_at: bigint;
+  create_at: Long;
   status: ObjectStatus;
   redundancy_type: RedundancyType;
   source_type: SourceType;
@@ -331,7 +331,7 @@ export interface EventDiscontinueObject {
   /** the reason */
   reason: string;
   /** the timestamp after which the metadata will be deleted */
-  deleteAt: bigint;
+  deleteAt: Long;
 }
 export interface EventDiscontinueObjectProtoMsg {
   typeUrl: "/greenfield.storage.EventDiscontinueObject";
@@ -342,7 +342,7 @@ export interface EventDiscontinueObjectSDKType {
   bucket_name: string;
   object_id: string;
   reason: string;
-  delete_at: bigint;
+  delete_at: Long;
 }
 /** EventUpdateObjectInfo is emitted on MsgUpdateObjectInfo */
 export interface EventUpdateObjectInfo {
@@ -668,7 +668,7 @@ export interface EventMirrorGroupResultSDKType {
 }
 /** EventStalePolicyCleanup is emitted when specified block height's stale policies need to be Garbage collected */
 export interface EventStalePolicyCleanup {
-  blockNum: bigint;
+  blockNum: Long;
   deleteInfo?: DeleteInfo;
 }
 export interface EventStalePolicyCleanupProtoMsg {
@@ -677,7 +677,7 @@ export interface EventStalePolicyCleanupProtoMsg {
 }
 /** EventStalePolicyCleanup is emitted when specified block height's stale policies need to be Garbage collected */
 export interface EventStalePolicyCleanupSDKType {
-  blockNum: bigint;
+  blockNum: Long;
   delete_info?: DeleteInfoSDKType;
 }
 export interface EventMigrationBucket {
@@ -785,10 +785,10 @@ function createBaseEventCreateBucket(): EventCreateBucket {
     owner: "",
     bucketName: "",
     visibility: 0,
-    createAt: BigInt(0),
+    createAt: Long.ZERO,
     bucketId: "",
     sourceType: 0,
-    chargedReadQuota: BigInt(0),
+    chargedReadQuota: Long.UZERO,
     paymentAddress: "",
     primarySpId: 0,
     globalVirtualGroupFamilyId: 0,
@@ -797,7 +797,7 @@ function createBaseEventCreateBucket(): EventCreateBucket {
 }
 export const EventCreateBucket = {
   typeUrl: "/greenfield.storage.EventCreateBucket",
-  encode(message: EventCreateBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventCreateBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -807,7 +807,7 @@ export const EventCreateBucket = {
     if (message.visibility !== 0) {
       writer.uint32(24).int32(message.visibility);
     }
-    if (message.createAt !== BigInt(0)) {
+    if (!message.createAt.isZero()) {
       writer.uint32(32).int64(message.createAt);
     }
     if (message.bucketId !== "") {
@@ -816,7 +816,7 @@ export const EventCreateBucket = {
     if (message.sourceType !== 0) {
       writer.uint32(48).int32(message.sourceType);
     }
-    if (message.chargedReadQuota !== BigInt(0)) {
+    if (!message.chargedReadQuota.isZero()) {
       writer.uint32(56).uint64(message.chargedReadQuota);
     }
     if (message.paymentAddress !== "") {
@@ -833,8 +833,8 @@ export const EventCreateBucket = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateBucket {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCreateBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCreateBucket();
     while (reader.pos < end) {
@@ -850,7 +850,7 @@ export const EventCreateBucket = {
           message.visibility = (reader.int32() as any);
           break;
         case 4:
-          message.createAt = reader.int64();
+          message.createAt = (reader.int64() as Long);
           break;
         case 5:
           message.bucketId = reader.string();
@@ -859,7 +859,7 @@ export const EventCreateBucket = {
           message.sourceType = (reader.int32() as any);
           break;
         case 7:
-          message.chargedReadQuota = reader.uint64();
+          message.chargedReadQuota = (reader.uint64() as Long);
           break;
         case 8:
           message.paymentAddress = reader.string();
@@ -885,10 +885,10 @@ export const EventCreateBucket = {
       owner: isSet(object.owner) ? String(object.owner) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : -1,
-      createAt: isSet(object.createAt) ? BigInt(object.createAt.toString()) : BigInt(0),
+      createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : -1,
-      chargedReadQuota: isSet(object.chargedReadQuota) ? BigInt(object.chargedReadQuota.toString()) : BigInt(0),
+      chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0,
       globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
@@ -900,10 +900,10 @@ export const EventCreateBucket = {
     message.owner !== undefined && (obj.owner = message.owner);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
-    message.createAt !== undefined && (obj.createAt = (message.createAt || BigInt(0)).toString());
+    message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
-    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || BigInt(0)).toString());
+    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.primarySpId !== undefined && (obj.primarySpId = Math.round(message.primarySpId));
     message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
@@ -915,10 +915,10 @@ export const EventCreateBucket = {
     message.owner = object.owner ?? "";
     message.bucketName = object.bucketName ?? "";
     message.visibility = object.visibility ?? 0;
-    message.createAt = object.createAt !== undefined && object.createAt !== null ? BigInt(object.createAt.toString()) : BigInt(0);
+    message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
     message.bucketId = object.bucketId ?? "";
     message.sourceType = object.sourceType ?? 0;
-    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? BigInt(object.chargedReadQuota.toString()) : BigInt(0);
+    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
     message.paymentAddress = object.paymentAddress ?? "";
     message.primarySpId = object.primarySpId ?? 0;
     message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
@@ -967,7 +967,7 @@ export const EventCreateBucket = {
       message.visibility = visibilityTypeFromJSON(object.visibility);
     }
     if (object.create_at !== undefined && object.create_at !== null) {
-      message.createAt = BigInt(object.create_at);
+      message.createAt = Long.fromString(object.create_at);
     }
     if (object.bucket_id !== undefined && object.bucket_id !== null) {
       message.bucketId = object.bucket_id;
@@ -976,7 +976,7 @@ export const EventCreateBucket = {
       message.sourceType = sourceTypeFromJSON(object.source_type);
     }
     if (object.charged_read_quota !== undefined && object.charged_read_quota !== null) {
-      message.chargedReadQuota = BigInt(object.charged_read_quota);
+      message.chargedReadQuota = Long.fromString(object.charged_read_quota);
     }
     if (object.payment_address !== undefined && object.payment_address !== null) {
       message.paymentAddress = object.payment_address;
@@ -1034,7 +1034,7 @@ function createBaseEventDeleteBucket(): EventDeleteBucket {
 }
 export const EventDeleteBucket = {
   typeUrl: "/greenfield.storage.EventDeleteBucket",
-  encode(message: EventDeleteBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventDeleteBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -1052,8 +1052,8 @@ export const EventDeleteBucket = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventDeleteBucket {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventDeleteBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDeleteBucket();
     while (reader.pos < end) {
@@ -1175,7 +1175,7 @@ function createBaseEventUpdateBucketInfo(): EventUpdateBucketInfo {
     operator: "",
     bucketName: "",
     bucketId: "",
-    chargedReadQuota: BigInt(0),
+    chargedReadQuota: Long.UZERO,
     paymentAddress: "",
     visibility: 0,
     globalVirtualGroupFamilyId: 0
@@ -1183,7 +1183,7 @@ function createBaseEventUpdateBucketInfo(): EventUpdateBucketInfo {
 }
 export const EventUpdateBucketInfo = {
   typeUrl: "/greenfield.storage.EventUpdateBucketInfo",
-  encode(message: EventUpdateBucketInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventUpdateBucketInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -1193,7 +1193,7 @@ export const EventUpdateBucketInfo = {
     if (message.bucketId !== "") {
       writer.uint32(26).string(message.bucketId);
     }
-    if (message.chargedReadQuota !== BigInt(0)) {
+    if (!message.chargedReadQuota.isZero()) {
       writer.uint32(32).uint64(message.chargedReadQuota);
     }
     if (message.paymentAddress !== "") {
@@ -1207,8 +1207,8 @@ export const EventUpdateBucketInfo = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateBucketInfo {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateBucketInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventUpdateBucketInfo();
     while (reader.pos < end) {
@@ -1224,7 +1224,7 @@ export const EventUpdateBucketInfo = {
           message.bucketId = reader.string();
           break;
         case 4:
-          message.chargedReadQuota = reader.uint64();
+          message.chargedReadQuota = (reader.uint64() as Long);
           break;
         case 5:
           message.paymentAddress = reader.string();
@@ -1247,7 +1247,7 @@ export const EventUpdateBucketInfo = {
       operator: isSet(object.operator) ? String(object.operator) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
-      chargedReadQuota: isSet(object.chargedReadQuota) ? BigInt(object.chargedReadQuota.toString()) : BigInt(0),
+      chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : -1,
       globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0
@@ -1258,7 +1258,7 @@ export const EventUpdateBucketInfo = {
     message.operator !== undefined && (obj.operator = message.operator);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
-    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || BigInt(0)).toString());
+    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
@@ -1269,7 +1269,7 @@ export const EventUpdateBucketInfo = {
     message.operator = object.operator ?? "";
     message.bucketName = object.bucketName ?? "";
     message.bucketId = object.bucketId ?? "";
-    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? BigInt(object.chargedReadQuota.toString()) : BigInt(0);
+    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
     message.paymentAddress = object.paymentAddress ?? "";
     message.visibility = object.visibility ?? 0;
     message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
@@ -1309,7 +1309,7 @@ export const EventUpdateBucketInfo = {
       message.bucketId = object.bucket_id;
     }
     if (object.charged_read_quota !== undefined && object.charged_read_quota !== null) {
-      message.chargedReadQuota = BigInt(object.charged_read_quota);
+      message.chargedReadQuota = Long.fromString(object.charged_read_quota);
     }
     if (object.payment_address !== undefined && object.payment_address !== null) {
       message.paymentAddress = object.payment_address;
@@ -1354,12 +1354,12 @@ function createBaseEventDiscontinueBucket(): EventDiscontinueBucket {
     bucketId: "",
     bucketName: "",
     reason: "",
-    deleteAt: BigInt(0)
+    deleteAt: Long.ZERO
   };
 }
 export const EventDiscontinueBucket = {
   typeUrl: "/greenfield.storage.EventDiscontinueBucket",
-  encode(message: EventDiscontinueBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventDiscontinueBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.bucketId !== "") {
       writer.uint32(10).string(message.bucketId);
     }
@@ -1369,13 +1369,13 @@ export const EventDiscontinueBucket = {
     if (message.reason !== "") {
       writer.uint32(26).string(message.reason);
     }
-    if (message.deleteAt !== BigInt(0)) {
+    if (!message.deleteAt.isZero()) {
       writer.uint32(32).int64(message.deleteAt);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventDiscontinueBucket {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventDiscontinueBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDiscontinueBucket();
     while (reader.pos < end) {
@@ -1391,7 +1391,7 @@ export const EventDiscontinueBucket = {
           message.reason = reader.string();
           break;
         case 4:
-          message.deleteAt = reader.int64();
+          message.deleteAt = (reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -1405,7 +1405,7 @@ export const EventDiscontinueBucket = {
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       reason: isSet(object.reason) ? String(object.reason) : "",
-      deleteAt: isSet(object.deleteAt) ? BigInt(object.deleteAt.toString()) : BigInt(0)
+      deleteAt: isSet(object.deleteAt) ? Long.fromValue(object.deleteAt) : Long.ZERO
     };
   },
   toJSON(message: EventDiscontinueBucket): unknown {
@@ -1413,7 +1413,7 @@ export const EventDiscontinueBucket = {
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.reason !== undefined && (obj.reason = message.reason);
-    message.deleteAt !== undefined && (obj.deleteAt = (message.deleteAt || BigInt(0)).toString());
+    message.deleteAt !== undefined && (obj.deleteAt = (message.deleteAt || Long.ZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventDiscontinueBucket>, I>>(object: I): EventDiscontinueBucket {
@@ -1421,7 +1421,7 @@ export const EventDiscontinueBucket = {
     message.bucketId = object.bucketId ?? "";
     message.bucketName = object.bucketName ?? "";
     message.reason = object.reason ?? "";
-    message.deleteAt = object.deleteAt !== undefined && object.deleteAt !== null ? BigInt(object.deleteAt.toString()) : BigInt(0);
+    message.deleteAt = object.deleteAt !== undefined && object.deleteAt !== null ? Long.fromValue(object.deleteAt) : Long.ZERO;
     return message;
   },
   fromSDK(object: EventDiscontinueBucketSDKType): EventDiscontinueBucket {
@@ -1452,7 +1452,7 @@ export const EventDiscontinueBucket = {
       message.reason = object.reason;
     }
     if (object.delete_at !== undefined && object.delete_at !== null) {
-      message.deleteAt = BigInt(object.delete_at);
+      message.deleteAt = Long.fromString(object.delete_at);
     }
     return message;
   },
@@ -1489,10 +1489,10 @@ function createBaseEventCreateObject(): EventCreateObject {
     bucketId: "",
     objectId: "",
     primarySpId: 0,
-    payloadSize: BigInt(0),
+    payloadSize: Long.UZERO,
     visibility: 0,
     contentType: "",
-    createAt: BigInt(0),
+    createAt: Long.ZERO,
     status: 0,
     redundancyType: 0,
     sourceType: 0,
@@ -1502,7 +1502,7 @@ function createBaseEventCreateObject(): EventCreateObject {
 }
 export const EventCreateObject = {
   typeUrl: "/greenfield.storage.EventCreateObject",
-  encode(message: EventCreateObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventCreateObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -1524,7 +1524,7 @@ export const EventCreateObject = {
     if (message.primarySpId !== 0) {
       writer.uint32(64).uint32(message.primarySpId);
     }
-    if (message.payloadSize !== BigInt(0)) {
+    if (!message.payloadSize.isZero()) {
       writer.uint32(72).uint64(message.payloadSize);
     }
     if (message.visibility !== 0) {
@@ -1533,7 +1533,7 @@ export const EventCreateObject = {
     if (message.contentType !== "") {
       writer.uint32(90).string(message.contentType);
     }
-    if (message.createAt !== BigInt(0)) {
+    if (!message.createAt.isZero()) {
       writer.uint32(96).int64(message.createAt);
     }
     if (message.status !== 0) {
@@ -1553,8 +1553,8 @@ export const EventCreateObject = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateObject {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCreateObject {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCreateObject();
     while (reader.pos < end) {
@@ -1582,7 +1582,7 @@ export const EventCreateObject = {
           message.primarySpId = reader.uint32();
           break;
         case 9:
-          message.payloadSize = reader.uint64();
+          message.payloadSize = (reader.uint64() as Long);
           break;
         case 10:
           message.visibility = (reader.int32() as any);
@@ -1591,7 +1591,7 @@ export const EventCreateObject = {
           message.contentType = reader.string();
           break;
         case 12:
-          message.createAt = reader.int64();
+          message.createAt = (reader.int64() as Long);
           break;
         case 13:
           message.status = (reader.int32() as any);
@@ -1624,10 +1624,10 @@ export const EventCreateObject = {
       bucketId: isSet(object.bucketId) ? String(object.bucketId) : "",
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
       primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0,
-      payloadSize: isSet(object.payloadSize) ? BigInt(object.payloadSize.toString()) : BigInt(0),
+      payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO,
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : -1,
       contentType: isSet(object.contentType) ? String(object.contentType) : "",
-      createAt: isSet(object.createAt) ? BigInt(object.createAt.toString()) : BigInt(0),
+      createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
       status: isSet(object.status) ? objectStatusFromJSON(object.status) : -1,
       redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : -1,
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : -1,
@@ -1644,10 +1644,10 @@ export const EventCreateObject = {
     message.bucketId !== undefined && (obj.bucketId = message.bucketId);
     message.objectId !== undefined && (obj.objectId = message.objectId);
     message.primarySpId !== undefined && (obj.primarySpId = Math.round(message.primarySpId));
-    message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || BigInt(0)).toString());
+    message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.contentType !== undefined && (obj.contentType = message.contentType);
-    message.createAt !== undefined && (obj.createAt = (message.createAt || BigInt(0)).toString());
+    message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
     message.status !== undefined && (obj.status = objectStatusToJSON(message.status));
     message.redundancyType !== undefined && (obj.redundancyType = redundancyTypeToJSON(message.redundancyType));
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
@@ -1668,10 +1668,10 @@ export const EventCreateObject = {
     message.bucketId = object.bucketId ?? "";
     message.objectId = object.objectId ?? "";
     message.primarySpId = object.primarySpId ?? 0;
-    message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? BigInt(object.payloadSize.toString()) : BigInt(0);
+    message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
     message.visibility = object.visibility ?? 0;
     message.contentType = object.contentType ?? "";
-    message.createAt = object.createAt !== undefined && object.createAt !== null ? BigInt(object.createAt.toString()) : BigInt(0);
+    message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
     message.status = object.status ?? 0;
     message.redundancyType = object.redundancyType ?? 0;
     message.sourceType = object.sourceType ?? 0;
@@ -1747,7 +1747,7 @@ export const EventCreateObject = {
       message.primarySpId = object.primary_sp_id;
     }
     if (object.payload_size !== undefined && object.payload_size !== null) {
-      message.payloadSize = BigInt(object.payload_size);
+      message.payloadSize = Long.fromString(object.payload_size);
     }
     if (object.visibility !== undefined && object.visibility !== null) {
       message.visibility = visibilityTypeFromJSON(object.visibility);
@@ -1756,7 +1756,7 @@ export const EventCreateObject = {
       message.contentType = object.content_type;
     }
     if (object.create_at !== undefined && object.create_at !== null) {
-      message.createAt = BigInt(object.create_at);
+      message.createAt = Long.fromString(object.create_at);
     }
     if (object.status !== undefined && object.status !== null) {
       message.status = objectStatusFromJSON(object.status);
@@ -1824,7 +1824,7 @@ function createBaseEventCancelCreateObject(): EventCancelCreateObject {
 }
 export const EventCancelCreateObject = {
   typeUrl: "/greenfield.storage.EventCancelCreateObject",
-  encode(message: EventCancelCreateObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventCancelCreateObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -1842,8 +1842,8 @@ export const EventCancelCreateObject = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventCancelCreateObject {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCancelCreateObject {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCancelCreateObject();
     while (reader.pos < end) {
@@ -1973,7 +1973,7 @@ function createBaseEventSealObject(): EventSealObject {
 }
 export const EventSealObject = {
   typeUrl: "/greenfield.storage.EventSealObject",
-  encode(message: EventSealObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventSealObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -1997,8 +1997,8 @@ export const EventSealObject = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventSealObject {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventSealObject {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventSealObject();
     while (reader.pos < end) {
@@ -2153,7 +2153,7 @@ function createBaseEventCopyObject(): EventCopyObject {
 }
 export const EventCopyObject = {
   typeUrl: "/greenfield.storage.EventCopyObject",
-  encode(message: EventCopyObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventCopyObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -2180,8 +2180,8 @@ export const EventCopyObject = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventCopyObject {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCopyObject {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCopyObject();
     while (reader.pos < end) {
@@ -2345,7 +2345,7 @@ function createBaseEventDeleteObject(): EventDeleteObject {
 }
 export const EventDeleteObject = {
   typeUrl: "/greenfield.storage.EventDeleteObject",
-  encode(message: EventDeleteObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventDeleteObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -2363,8 +2363,8 @@ export const EventDeleteObject = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventDeleteObject {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventDeleteObject {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDeleteObject();
     while (reader.pos < end) {
@@ -2491,7 +2491,7 @@ function createBaseEventRejectSealObject(): EventRejectSealObject {
 }
 export const EventRejectSealObject = {
   typeUrl: "/greenfield.storage.EventRejectSealObject",
-  encode(message: EventRejectSealObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventRejectSealObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -2506,8 +2506,8 @@ export const EventRejectSealObject = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventRejectSealObject {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventRejectSealObject {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventRejectSealObject();
     while (reader.pos < end) {
@@ -2617,12 +2617,12 @@ function createBaseEventDiscontinueObject(): EventDiscontinueObject {
     bucketName: "",
     objectId: "",
     reason: "",
-    deleteAt: BigInt(0)
+    deleteAt: Long.ZERO
   };
 }
 export const EventDiscontinueObject = {
   typeUrl: "/greenfield.storage.EventDiscontinueObject",
-  encode(message: EventDiscontinueObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventDiscontinueObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.bucketName !== "") {
       writer.uint32(10).string(message.bucketName);
     }
@@ -2632,13 +2632,13 @@ export const EventDiscontinueObject = {
     if (message.reason !== "") {
       writer.uint32(26).string(message.reason);
     }
-    if (message.deleteAt !== BigInt(0)) {
+    if (!message.deleteAt.isZero()) {
       writer.uint32(32).int64(message.deleteAt);
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventDiscontinueObject {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventDiscontinueObject {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDiscontinueObject();
     while (reader.pos < end) {
@@ -2654,7 +2654,7 @@ export const EventDiscontinueObject = {
           message.reason = reader.string();
           break;
         case 4:
-          message.deleteAt = reader.int64();
+          message.deleteAt = (reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -2668,7 +2668,7 @@ export const EventDiscontinueObject = {
       bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
       objectId: isSet(object.objectId) ? String(object.objectId) : "",
       reason: isSet(object.reason) ? String(object.reason) : "",
-      deleteAt: isSet(object.deleteAt) ? BigInt(object.deleteAt.toString()) : BigInt(0)
+      deleteAt: isSet(object.deleteAt) ? Long.fromValue(object.deleteAt) : Long.ZERO
     };
   },
   toJSON(message: EventDiscontinueObject): unknown {
@@ -2676,7 +2676,7 @@ export const EventDiscontinueObject = {
     message.bucketName !== undefined && (obj.bucketName = message.bucketName);
     message.objectId !== undefined && (obj.objectId = message.objectId);
     message.reason !== undefined && (obj.reason = message.reason);
-    message.deleteAt !== undefined && (obj.deleteAt = (message.deleteAt || BigInt(0)).toString());
+    message.deleteAt !== undefined && (obj.deleteAt = (message.deleteAt || Long.ZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventDiscontinueObject>, I>>(object: I): EventDiscontinueObject {
@@ -2684,7 +2684,7 @@ export const EventDiscontinueObject = {
     message.bucketName = object.bucketName ?? "";
     message.objectId = object.objectId ?? "";
     message.reason = object.reason ?? "";
-    message.deleteAt = object.deleteAt !== undefined && object.deleteAt !== null ? BigInt(object.deleteAt.toString()) : BigInt(0);
+    message.deleteAt = object.deleteAt !== undefined && object.deleteAt !== null ? Long.fromValue(object.deleteAt) : Long.ZERO;
     return message;
   },
   fromSDK(object: EventDiscontinueObjectSDKType): EventDiscontinueObject {
@@ -2715,7 +2715,7 @@ export const EventDiscontinueObject = {
       message.reason = object.reason;
     }
     if (object.delete_at !== undefined && object.delete_at !== null) {
-      message.deleteAt = BigInt(object.delete_at);
+      message.deleteAt = Long.fromString(object.delete_at);
     }
     return message;
   },
@@ -2754,7 +2754,7 @@ function createBaseEventUpdateObjectInfo(): EventUpdateObjectInfo {
 }
 export const EventUpdateObjectInfo = {
   typeUrl: "/greenfield.storage.EventUpdateObjectInfo",
-  encode(message: EventUpdateObjectInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventUpdateObjectInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -2772,8 +2772,8 @@ export const EventUpdateObjectInfo = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateObjectInfo {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateObjectInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventUpdateObjectInfo();
     while (reader.pos < end) {
@@ -2901,7 +2901,7 @@ function createBaseEventCreateGroup(): EventCreateGroup {
 }
 export const EventCreateGroup = {
   typeUrl: "/greenfield.storage.EventCreateGroup",
-  encode(message: EventCreateGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventCreateGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -2919,8 +2919,8 @@ export const EventCreateGroup = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventCreateGroup {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCreateGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCreateGroup();
     while (reader.pos < end) {
@@ -3046,7 +3046,7 @@ function createBaseEventDeleteGroup(): EventDeleteGroup {
 }
 export const EventDeleteGroup = {
   typeUrl: "/greenfield.storage.EventDeleteGroup",
-  encode(message: EventDeleteGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventDeleteGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.owner !== "") {
       writer.uint32(18).string(message.owner);
     }
@@ -3058,8 +3058,8 @@ export const EventDeleteGroup = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventDeleteGroup {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventDeleteGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventDeleteGroup();
     while (reader.pos < end) {
@@ -3162,7 +3162,7 @@ function createBaseEventLeaveGroup(): EventLeaveGroup {
 }
 export const EventLeaveGroup = {
   typeUrl: "/greenfield.storage.EventLeaveGroup",
-  encode(message: EventLeaveGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventLeaveGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.memberAddress !== "") {
       writer.uint32(10).string(message.memberAddress);
     }
@@ -3177,8 +3177,8 @@ export const EventLeaveGroup = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventLeaveGroup {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventLeaveGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventLeaveGroup();
     while (reader.pos < end) {
@@ -3295,7 +3295,7 @@ function createBaseEventUpdateGroupMember(): EventUpdateGroupMember {
 }
 export const EventUpdateGroupMember = {
   typeUrl: "/greenfield.storage.EventUpdateGroupMember",
-  encode(message: EventUpdateGroupMember, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventUpdateGroupMember, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -3316,8 +3316,8 @@ export const EventUpdateGroupMember = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateGroupMember {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateGroupMember {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventUpdateGroupMember();
     while (reader.pos < end) {
@@ -3478,7 +3478,7 @@ function createBaseEventRenewGroupMember(): EventRenewGroupMember {
 }
 export const EventRenewGroupMember = {
   typeUrl: "/greenfield.storage.EventRenewGroupMember",
-  encode(message: EventRenewGroupMember, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventRenewGroupMember, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -3499,8 +3499,8 @@ export const EventRenewGroupMember = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventRenewGroupMember {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventRenewGroupMember {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventRenewGroupMember();
     while (reader.pos < end) {
@@ -3647,7 +3647,7 @@ function createBaseEventGroupMemberDetail(): EventGroupMemberDetail {
 }
 export const EventGroupMemberDetail = {
   typeUrl: "/greenfield.storage.EventGroupMemberDetail",
-  encode(message: EventGroupMemberDetail, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventGroupMemberDetail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.member !== "") {
       writer.uint32(10).string(message.member);
     }
@@ -3656,8 +3656,8 @@ export const EventGroupMemberDetail = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventGroupMemberDetail {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventGroupMemberDetail {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventGroupMemberDetail();
     while (reader.pos < end) {
@@ -3749,7 +3749,7 @@ function createBaseEventUpdateGroupExtra(): EventUpdateGroupExtra {
 }
 export const EventUpdateGroupExtra = {
   typeUrl: "/greenfield.storage.EventUpdateGroupExtra",
-  encode(message: EventUpdateGroupExtra, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventUpdateGroupExtra, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -3767,8 +3767,8 @@ export const EventUpdateGroupExtra = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateGroupExtra {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateGroupExtra {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventUpdateGroupExtra();
     while (reader.pos < end) {
@@ -3895,7 +3895,7 @@ function createBaseEventMirrorBucket(): EventMirrorBucket {
 }
 export const EventMirrorBucket = {
   typeUrl: "/greenfield.storage.EventMirrorBucket",
-  encode(message: EventMirrorBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventMirrorBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -3910,8 +3910,8 @@ export const EventMirrorBucket = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventMirrorBucket {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventMirrorBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMirrorBucket();
     while (reader.pos < end) {
@@ -4026,7 +4026,7 @@ function createBaseEventMirrorBucketResult(): EventMirrorBucketResult {
 }
 export const EventMirrorBucketResult = {
   typeUrl: "/greenfield.storage.EventMirrorBucketResult",
-  encode(message: EventMirrorBucketResult, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventMirrorBucketResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.status !== 0) {
       writer.uint32(8).uint32(message.status);
     }
@@ -4041,8 +4041,8 @@ export const EventMirrorBucketResult = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventMirrorBucketResult {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventMirrorBucketResult {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMirrorBucketResult();
     while (reader.pos < end) {
@@ -4158,7 +4158,7 @@ function createBaseEventMirrorObject(): EventMirrorObject {
 }
 export const EventMirrorObject = {
   typeUrl: "/greenfield.storage.EventMirrorObject",
-  encode(message: EventMirrorObject, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventMirrorObject, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -4176,8 +4176,8 @@ export const EventMirrorObject = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventMirrorObject {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventMirrorObject {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMirrorObject();
     while (reader.pos < end) {
@@ -4305,7 +4305,7 @@ function createBaseEventMirrorObjectResult(): EventMirrorObjectResult {
 }
 export const EventMirrorObjectResult = {
   typeUrl: "/greenfield.storage.EventMirrorObjectResult",
-  encode(message: EventMirrorObjectResult, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventMirrorObjectResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.status !== 0) {
       writer.uint32(8).uint32(message.status);
     }
@@ -4323,8 +4323,8 @@ export const EventMirrorObjectResult = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventMirrorObjectResult {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventMirrorObjectResult {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMirrorObjectResult();
     while (reader.pos < end) {
@@ -4451,7 +4451,7 @@ function createBaseEventMirrorGroup(): EventMirrorGroup {
 }
 export const EventMirrorGroup = {
   typeUrl: "/greenfield.storage.EventMirrorGroup",
-  encode(message: EventMirrorGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventMirrorGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -4466,8 +4466,8 @@ export const EventMirrorGroup = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventMirrorGroup {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventMirrorGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMirrorGroup();
     while (reader.pos < end) {
@@ -4582,7 +4582,7 @@ function createBaseEventMirrorGroupResult(): EventMirrorGroupResult {
 }
 export const EventMirrorGroupResult = {
   typeUrl: "/greenfield.storage.EventMirrorGroupResult",
-  encode(message: EventMirrorGroupResult, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventMirrorGroupResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.status !== 0) {
       writer.uint32(8).uint32(message.status);
     }
@@ -4597,8 +4597,8 @@ export const EventMirrorGroupResult = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventMirrorGroupResult {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventMirrorGroupResult {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMirrorGroupResult();
     while (reader.pos < end) {
@@ -4705,14 +4705,14 @@ export const EventMirrorGroupResult = {
 };
 function createBaseEventStalePolicyCleanup(): EventStalePolicyCleanup {
   return {
-    blockNum: BigInt(0),
+    blockNum: Long.ZERO,
     deleteInfo: undefined
   };
 }
 export const EventStalePolicyCleanup = {
   typeUrl: "/greenfield.storage.EventStalePolicyCleanup",
-  encode(message: EventStalePolicyCleanup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.blockNum !== BigInt(0)) {
+  encode(message: EventStalePolicyCleanup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.blockNum.isZero()) {
       writer.uint32(8).int64(message.blockNum);
     }
     if (message.deleteInfo !== undefined) {
@@ -4720,15 +4720,15 @@ export const EventStalePolicyCleanup = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventStalePolicyCleanup {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventStalePolicyCleanup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventStalePolicyCleanup();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.blockNum = reader.int64();
+          message.blockNum = (reader.int64() as Long);
           break;
         case 2:
           message.deleteInfo = DeleteInfo.decode(reader, reader.uint32());
@@ -4742,19 +4742,19 @@ export const EventStalePolicyCleanup = {
   },
   fromJSON(object: any): EventStalePolicyCleanup {
     return {
-      blockNum: isSet(object.blockNum) ? BigInt(object.blockNum.toString()) : BigInt(0),
+      blockNum: isSet(object.blockNum) ? Long.fromValue(object.blockNum) : Long.ZERO,
       deleteInfo: isSet(object.deleteInfo) ? DeleteInfo.fromJSON(object.deleteInfo) : undefined
     };
   },
   toJSON(message: EventStalePolicyCleanup): unknown {
     const obj: any = {};
-    message.blockNum !== undefined && (obj.blockNum = (message.blockNum || BigInt(0)).toString());
+    message.blockNum !== undefined && (obj.blockNum = (message.blockNum || Long.ZERO).toString());
     message.deleteInfo !== undefined && (obj.deleteInfo = message.deleteInfo ? DeleteInfo.toJSON(message.deleteInfo) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventStalePolicyCleanup>, I>>(object: I): EventStalePolicyCleanup {
     const message = createBaseEventStalePolicyCleanup();
-    message.blockNum = object.blockNum !== undefined && object.blockNum !== null ? BigInt(object.blockNum.toString()) : BigInt(0);
+    message.blockNum = object.blockNum !== undefined && object.blockNum !== null ? Long.fromValue(object.blockNum) : Long.ZERO;
     message.deleteInfo = object.deleteInfo !== undefined && object.deleteInfo !== null ? DeleteInfo.fromPartial(object.deleteInfo) : undefined;
     return message;
   },
@@ -4773,7 +4773,7 @@ export const EventStalePolicyCleanup = {
   fromAmino(object: EventStalePolicyCleanupAmino): EventStalePolicyCleanup {
     const message = createBaseEventStalePolicyCleanup();
     if (object.blockNum !== undefined && object.blockNum !== null) {
-      message.blockNum = BigInt(object.blockNum);
+      message.blockNum = Long.fromString(object.blockNum);
     }
     if (object.delete_info !== undefined && object.delete_info !== null) {
       message.deleteInfo = DeleteInfo.fromAmino(object.delete_info);
@@ -4812,7 +4812,7 @@ function createBaseEventMigrationBucket(): EventMigrationBucket {
 }
 export const EventMigrationBucket = {
   typeUrl: "/greenfield.storage.EventMigrationBucket",
-  encode(message: EventMigrationBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventMigrationBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -4827,8 +4827,8 @@ export const EventMigrationBucket = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventMigrationBucket {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventMigrationBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventMigrationBucket();
     while (reader.pos < end) {
@@ -4942,7 +4942,7 @@ function createBaseEventCancelMigrationBucket(): EventCancelMigrationBucket {
 }
 export const EventCancelMigrationBucket = {
   typeUrl: "/greenfield.storage.EventCancelMigrationBucket",
-  encode(message: EventCancelMigrationBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventCancelMigrationBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -4954,8 +4954,8 @@ export const EventCancelMigrationBucket = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventCancelMigrationBucket {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCancelMigrationBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCancelMigrationBucket();
     while (reader.pos < end) {
@@ -5057,7 +5057,7 @@ function createBaseEventRejectMigrateBucket(): EventRejectMigrateBucket {
 }
 export const EventRejectMigrateBucket = {
   typeUrl: "/greenfield.storage.EventRejectMigrateBucket",
-  encode(message: EventRejectMigrateBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventRejectMigrateBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -5069,8 +5069,8 @@ export const EventRejectMigrateBucket = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventRejectMigrateBucket {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventRejectMigrateBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventRejectMigrateBucket();
     while (reader.pos < end) {
@@ -5174,7 +5174,7 @@ function createBaseEventCompleteMigrationBucket(): EventCompleteMigrationBucket 
 }
 export const EventCompleteMigrationBucket = {
   typeUrl: "/greenfield.storage.EventCompleteMigrationBucket",
-  encode(message: EventCompleteMigrationBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventCompleteMigrationBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.operator !== "") {
       writer.uint32(10).string(message.operator);
     }
@@ -5192,8 +5192,8 @@ export const EventCompleteMigrationBucket = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventCompleteMigrationBucket {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCompleteMigrationBucket {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventCompleteMigrationBucket();
     while (reader.pos < end) {
@@ -5318,7 +5318,7 @@ function createBaseEventSetTag(): EventSetTag {
 }
 export const EventSetTag = {
   typeUrl: "/greenfield.storage.EventSetTag",
-  encode(message: EventSetTag, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventSetTag, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.resource !== "") {
       writer.uint32(10).string(message.resource);
     }
@@ -5327,8 +5327,8 @@ export const EventSetTag = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventSetTag {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventSetTag {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventSetTag();
     while (reader.pos < end) {

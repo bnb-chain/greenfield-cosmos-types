@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { BinaryReader, BinaryWriter } from "../../../binary";
+import * as _m0 from "protobufjs/minimal";
 import { isSet, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.gashub.v1beta1";
 /** EventUpdateMsgGasParams is emitted when updating a message's gas params */
@@ -31,7 +31,7 @@ function createBaseEventUpdateMsgGasParams(): EventUpdateMsgGasParams {
 }
 export const EventUpdateMsgGasParams = {
   typeUrl: "/cosmos.gashub.v1beta1.EventUpdateMsgGasParams",
-  encode(message: EventUpdateMsgGasParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+  encode(message: EventUpdateMsgGasParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.msgTypeUrl !== "") {
       writer.uint32(10).string(message.msgTypeUrl);
     }
@@ -43,8 +43,8 @@ export const EventUpdateMsgGasParams = {
     }
     return writer;
   },
-  decode(input: BinaryReader | Uint8Array, length?: number): EventUpdateMsgGasParams {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventUpdateMsgGasParams {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventUpdateMsgGasParams();
     while (reader.pos < end) {
