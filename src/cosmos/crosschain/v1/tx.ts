@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Params, ParamsSDKType, ChannelPermission, ChannelPermissionSDKType } from "./crosschain";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.crosschain.v1";
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
@@ -15,6 +15,10 @@ export interface MsgUpdateParams {
    */
   params: Params;
 }
+export interface MsgUpdateParamsProtoMsg {
+  typeUrl: "/cosmos.crosschain.v1.MsgUpdateParams";
+  value: Uint8Array;
+}
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
@@ -25,6 +29,10 @@ export interface MsgUpdateParamsSDKType {
  * MsgUpdateParams message.
  */
 export interface MsgUpdateParamsResponse {}
+export interface MsgUpdateParamsResponseProtoMsg {
+  typeUrl: "/cosmos.crosschain.v1.MsgUpdateParamsResponse";
+  value: Uint8Array;
+}
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
  * MsgUpdateParams message.
@@ -37,6 +45,10 @@ export interface MsgUpdateChannelPermissions {
   /** channel_permissions defines the channel permissions to update */
   channelPermissions: ChannelPermission[];
 }
+export interface MsgUpdateChannelPermissionsProtoMsg {
+  typeUrl: "/cosmos.crosschain.v1.MsgUpdateChannelPermissions";
+  value: Uint8Array;
+}
 /** MsgUpdateChannelPermissions is the Msg/MsgUpdateChannelPermissions request type. */
 export interface MsgUpdateChannelPermissionsSDKType {
   authority: string;
@@ -47,6 +59,10 @@ export interface MsgUpdateChannelPermissionsSDKType {
  * MsgUpdateChannelPermissions message.
  */
 export interface MsgUpdateChannelPermissionsResponse {}
+export interface MsgUpdateChannelPermissionsResponseProtoMsg {
+  typeUrl: "/cosmos.crosschain.v1.MsgUpdateChannelPermissionsResponse";
+  value: Uint8Array;
+}
 /**
  * MsgUpdateChannelPermissionsResponse defines the response structure for executing a
  * MsgUpdateChannelPermissions message.
@@ -63,6 +79,10 @@ export interface MsgMintModuleTokens {
   /** initial balance to mint for crosschain module when the chain starts */
   amount: string;
 }
+export interface MsgMintModuleTokensProtoMsg {
+  typeUrl: "/cosmos.crosschain.v1.MsgMintModuleTokens";
+  value: Uint8Array;
+}
 /**
  * MsgMintModuleTokens is the Msg/MintModuleTokens request type.
  * The Msg is used to mint tokens for the crosschain module.
@@ -77,6 +97,10 @@ export interface MsgMintModuleTokensSDKType {
  * MsgMintModuleTokens message.
  */
 export interface MsgMintModuleTokensResponse {}
+export interface MsgMintModuleTokensResponseProtoMsg {
+  typeUrl: "/cosmos.crosschain.v1.MsgMintModuleTokensResponse";
+  value: Uint8Array;
+}
 /**
  * MsgMintModuleTokensResponse defines the response structure for executing a
  * MsgMintModuleTokens message.
@@ -89,7 +113,8 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
   };
 }
 export const MsgUpdateParams = {
-  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.crosschain.v1.MsgUpdateParams",
+  encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -98,8 +123,8 @@ export const MsgUpdateParams = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParams();
     while (reader.pos < end) {
@@ -147,17 +172,55 @@ export const MsgUpdateParams = {
     obj.authority = message.authority;
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: MsgUpdateParamsAmino): MsgUpdateParams {
+    const message = createBaseMsgUpdateParams();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
+    const obj: any = {};
+    obj.authority = message.authority;
+    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateParamsAminoMsg): MsgUpdateParams {
+    return MsgUpdateParams.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUpdateParams): MsgUpdateParamsAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgUpdateParams",
+      value: MsgUpdateParams.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgUpdateParamsProtoMsg): MsgUpdateParams {
+    return MsgUpdateParams.decode(message.value);
+  },
+  toProto(message: MsgUpdateParams): Uint8Array {
+    return MsgUpdateParams.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateParams): MsgUpdateParamsProtoMsg {
+    return {
+      typeUrl: "/cosmos.crosschain.v1.MsgUpdateParams",
+      value: MsgUpdateParams.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
-  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.crosschain.v1.MsgUpdateParamsResponse",
+  encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParamsResponse();
     while (reader.pos < end) {
@@ -187,6 +250,35 @@ export const MsgUpdateParamsResponse = {
   toSDK(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgUpdateParamsResponseAmino): MsgUpdateParamsResponse {
+    const message = createBaseMsgUpdateParamsResponse();
+    return message;
+  },
+  toAmino(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateParamsResponseAminoMsg): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgUpdateParamsResponse",
+      value: MsgUpdateParamsResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgUpdateParamsResponseProtoMsg): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.decode(message.value);
+  },
+  toProto(message: MsgUpdateParamsResponse): Uint8Array {
+    return MsgUpdateParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.crosschain.v1.MsgUpdateParamsResponse",
+      value: MsgUpdateParamsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateChannelPermissions(): MsgUpdateChannelPermissions {
@@ -196,7 +288,8 @@ function createBaseMsgUpdateChannelPermissions(): MsgUpdateChannelPermissions {
   };
 }
 export const MsgUpdateChannelPermissions = {
-  encode(message: MsgUpdateChannelPermissions, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.crosschain.v1.MsgUpdateChannelPermissions",
+  encode(message: MsgUpdateChannelPermissions, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -205,8 +298,8 @@ export const MsgUpdateChannelPermissions = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateChannelPermissions {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateChannelPermissions {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateChannelPermissions();
     while (reader.pos < end) {
@@ -262,17 +355,57 @@ export const MsgUpdateChannelPermissions = {
       obj.channel_permissions = [];
     }
     return obj;
+  },
+  fromAmino(object: MsgUpdateChannelPermissionsAmino): MsgUpdateChannelPermissions {
+    const message = createBaseMsgUpdateChannelPermissions();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    message.channelPermissions = object.channel_permissions?.map(e => ChannelPermission.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: MsgUpdateChannelPermissions): MsgUpdateChannelPermissionsAmino {
+    const obj: any = {};
+    obj.authority = message.authority;
+    if (message.channelPermissions) {
+      obj.channel_permissions = message.channelPermissions.map(e => e ? ChannelPermission.toAmino(e) : undefined);
+    } else {
+      obj.channel_permissions = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateChannelPermissionsAminoMsg): MsgUpdateChannelPermissions {
+    return MsgUpdateChannelPermissions.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUpdateChannelPermissions): MsgUpdateChannelPermissionsAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgUpdateChannelPermissions",
+      value: MsgUpdateChannelPermissions.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgUpdateChannelPermissionsProtoMsg): MsgUpdateChannelPermissions {
+    return MsgUpdateChannelPermissions.decode(message.value);
+  },
+  toProto(message: MsgUpdateChannelPermissions): Uint8Array {
+    return MsgUpdateChannelPermissions.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateChannelPermissions): MsgUpdateChannelPermissionsProtoMsg {
+    return {
+      typeUrl: "/cosmos.crosschain.v1.MsgUpdateChannelPermissions",
+      value: MsgUpdateChannelPermissions.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateChannelPermissionsResponse(): MsgUpdateChannelPermissionsResponse {
   return {};
 }
 export const MsgUpdateChannelPermissionsResponse = {
-  encode(_: MsgUpdateChannelPermissionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.crosschain.v1.MsgUpdateChannelPermissionsResponse",
+  encode(_: MsgUpdateChannelPermissionsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateChannelPermissionsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateChannelPermissionsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateChannelPermissionsResponse();
     while (reader.pos < end) {
@@ -302,6 +435,35 @@ export const MsgUpdateChannelPermissionsResponse = {
   toSDK(_: MsgUpdateChannelPermissionsResponse): MsgUpdateChannelPermissionsResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgUpdateChannelPermissionsResponseAmino): MsgUpdateChannelPermissionsResponse {
+    const message = createBaseMsgUpdateChannelPermissionsResponse();
+    return message;
+  },
+  toAmino(_: MsgUpdateChannelPermissionsResponse): MsgUpdateChannelPermissionsResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateChannelPermissionsResponseAminoMsg): MsgUpdateChannelPermissionsResponse {
+    return MsgUpdateChannelPermissionsResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUpdateChannelPermissionsResponse): MsgUpdateChannelPermissionsResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgUpdateChannelPermissionsResponse",
+      value: MsgUpdateChannelPermissionsResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgUpdateChannelPermissionsResponseProtoMsg): MsgUpdateChannelPermissionsResponse {
+    return MsgUpdateChannelPermissionsResponse.decode(message.value);
+  },
+  toProto(message: MsgUpdateChannelPermissionsResponse): Uint8Array {
+    return MsgUpdateChannelPermissionsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateChannelPermissionsResponse): MsgUpdateChannelPermissionsResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.crosschain.v1.MsgUpdateChannelPermissionsResponse",
+      value: MsgUpdateChannelPermissionsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgMintModuleTokens(): MsgMintModuleTokens {
@@ -311,7 +473,8 @@ function createBaseMsgMintModuleTokens(): MsgMintModuleTokens {
   };
 }
 export const MsgMintModuleTokens = {
-  encode(message: MsgMintModuleTokens, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.crosschain.v1.MsgMintModuleTokens",
+  encode(message: MsgMintModuleTokens, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -320,8 +483,8 @@ export const MsgMintModuleTokens = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMintModuleTokens {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgMintModuleTokens {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgMintModuleTokens();
     while (reader.pos < end) {
@@ -369,17 +532,55 @@ export const MsgMintModuleTokens = {
     obj.authority = message.authority;
     obj.amount = message.amount;
     return obj;
+  },
+  fromAmino(object: MsgMintModuleTokensAmino): MsgMintModuleTokens {
+    const message = createBaseMsgMintModuleTokens();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
+    }
+    return message;
+  },
+  toAmino(message: MsgMintModuleTokens): MsgMintModuleTokensAmino {
+    const obj: any = {};
+    obj.authority = message.authority;
+    obj.amount = message.amount;
+    return obj;
+  },
+  fromAminoMsg(object: MsgMintModuleTokensAminoMsg): MsgMintModuleTokens {
+    return MsgMintModuleTokens.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgMintModuleTokens): MsgMintModuleTokensAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgMintModuleTokens",
+      value: MsgMintModuleTokens.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgMintModuleTokensProtoMsg): MsgMintModuleTokens {
+    return MsgMintModuleTokens.decode(message.value);
+  },
+  toProto(message: MsgMintModuleTokens): Uint8Array {
+    return MsgMintModuleTokens.encode(message).finish();
+  },
+  toProtoMsg(message: MsgMintModuleTokens): MsgMintModuleTokensProtoMsg {
+    return {
+      typeUrl: "/cosmos.crosschain.v1.MsgMintModuleTokens",
+      value: MsgMintModuleTokens.encode(message).finish()
+    };
   }
 };
 function createBaseMsgMintModuleTokensResponse(): MsgMintModuleTokensResponse {
   return {};
 }
 export const MsgMintModuleTokensResponse = {
-  encode(_: MsgMintModuleTokensResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.crosschain.v1.MsgMintModuleTokensResponse",
+  encode(_: MsgMintModuleTokensResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgMintModuleTokensResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgMintModuleTokensResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgMintModuleTokensResponse();
     while (reader.pos < end) {
@@ -409,6 +610,35 @@ export const MsgMintModuleTokensResponse = {
   toSDK(_: MsgMintModuleTokensResponse): MsgMintModuleTokensResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgMintModuleTokensResponseAmino): MsgMintModuleTokensResponse {
+    const message = createBaseMsgMintModuleTokensResponse();
+    return message;
+  },
+  toAmino(_: MsgMintModuleTokensResponse): MsgMintModuleTokensResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgMintModuleTokensResponseAminoMsg): MsgMintModuleTokensResponse {
+    return MsgMintModuleTokensResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgMintModuleTokensResponse): MsgMintModuleTokensResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgMintModuleTokensResponse",
+      value: MsgMintModuleTokensResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgMintModuleTokensResponseProtoMsg): MsgMintModuleTokensResponse {
+    return MsgMintModuleTokensResponse.decode(message.value);
+  },
+  toProto(message: MsgMintModuleTokensResponse): Uint8Array {
+    return MsgMintModuleTokensResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgMintModuleTokensResponse): MsgMintModuleTokensResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.crosschain.v1.MsgMintModuleTokensResponse",
+      value: MsgMintModuleTokensResponse.encode(message).finish()
+    };
   }
 };
 /** Msg defines the crosschain Msg service. */
@@ -442,16 +672,16 @@ export class MsgClientImpl implements Msg {
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("cosmos.crosschain.v1.Msg", "UpdateParams", data);
-    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
   }
   UpdateChannelPermissions(request: MsgUpdateChannelPermissions): Promise<MsgUpdateChannelPermissionsResponse> {
     const data = MsgUpdateChannelPermissions.encode(request).finish();
     const promise = this.rpc.request("cosmos.crosschain.v1.Msg", "UpdateChannelPermissions", data);
-    return promise.then(data => MsgUpdateChannelPermissionsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUpdateChannelPermissionsResponse.decode(new BinaryReader(data)));
   }
   MintModuleTokens(request: MsgMintModuleTokens): Promise<MsgMintModuleTokensResponse> {
     const data = MsgMintModuleTokens.encode(request).finish();
     const promise = this.rpc.request("cosmos.crosschain.v1.Msg", "MintModuleTokens", data);
-    return promise.then(data => MsgMintModuleTokensResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgMintModuleTokensResponse.decode(new BinaryReader(data)));
   }
 }

@@ -3,8 +3,9 @@
 import { Description, DescriptionSDKType, Status, statusFromJSON, statusToJSON } from "./types";
 import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Params, ParamsSDKType } from "./params";
-import { Long, isSet, DeepPartial, Exact, Rpc } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { Decimal } from "@cosmjs/math";
+import { isSet, DeepPartial, Exact, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.sp";
 /** MsgCreateStorageProvider defines message for creating a new storage provider. */
 export interface MsgCreateStorageProvider {
@@ -31,12 +32,16 @@ export interface MsgCreateStorageProvider {
   /** read price, in bnb wei per charge byte */
   readPrice: string;
   /** free read quota, in byte */
-  freeReadQuota: Long;
+  freeReadQuota: bigint;
   /** store price, in bnb wei per charge byte */
   storePrice: string;
   /** bls_key defines the bls pub key of the Storage provider for sealing object */
   blsKey: string;
   blsProof: string;
+}
+export interface MsgCreateStorageProviderProtoMsg {
+  typeUrl: "/greenfield.sp.MsgCreateStorageProvider";
+  value: Uint8Array;
 }
 /** MsgCreateStorageProvider defines message for creating a new storage provider. */
 export interface MsgCreateStorageProviderSDKType {
@@ -51,13 +56,17 @@ export interface MsgCreateStorageProviderSDKType {
   endpoint: string;
   deposit: CoinSDKType;
   read_price: string;
-  free_read_quota: Long;
+  free_read_quota: bigint;
   store_price: string;
   bls_key: string;
   bls_proof: string;
 }
 /** MsgCreateStorageProviderResponse defines the Msg/CreateStorageProvider response type. */
 export interface MsgCreateStorageProviderResponse {}
+export interface MsgCreateStorageProviderResponseProtoMsg {
+  typeUrl: "/greenfield.sp.MsgCreateStorageProviderResponse";
+  value: Uint8Array;
+}
 /** MsgCreateStorageProviderResponse defines the Msg/CreateStorageProvider response type. */
 export interface MsgCreateStorageProviderResponseSDKType {}
 /** MsgDeposit defines a SDK message for deposit token for sp. */
@@ -69,6 +78,10 @@ export interface MsgDeposit {
   /** deposit is a mount of token which used to deposit for SP */
   deposit: Coin;
 }
+export interface MsgDepositProtoMsg {
+  typeUrl: "/greenfield.sp.MsgDeposit";
+  value: Uint8Array;
+}
 /** MsgDeposit defines a SDK message for deposit token for sp. */
 export interface MsgDepositSDKType {
   creator: string;
@@ -77,6 +90,10 @@ export interface MsgDepositSDKType {
 }
 /** MsgDepositResponse defines the Msg/Deposit response type. */
 export interface MsgDepositResponse {}
+export interface MsgDepositResponseProtoMsg {
+  typeUrl: "/greenfield.sp.MsgDepositResponse";
+  value: Uint8Array;
+}
 /** MsgDepositResponse defines the Msg/Deposit response type. */
 export interface MsgDepositResponseSDKType {}
 /**
@@ -86,7 +103,7 @@ export interface MsgDepositResponseSDKType {}
 export interface MsgEditStorageProvider {
   spAddress: string;
   endpoint: string;
-  description: Description;
+  description?: Description;
   /** seal_address is the account address of the storage provider for sealObject */
   sealAddress: string;
   /** approval_address is the account address of the storage provider for ack CreateBucket/Object */
@@ -99,6 +116,10 @@ export interface MsgEditStorageProvider {
   blsKey: string;
   blsProof: string;
 }
+export interface MsgEditStorageProviderProtoMsg {
+  typeUrl: "/greenfield.sp.MsgEditStorageProvider";
+  value: Uint8Array;
+}
 /**
  * MsgEditStorageProvider defines a SDK message for editing an existing sp.
  * TODO: use sp id to edit the storage provider.
@@ -106,7 +127,7 @@ export interface MsgEditStorageProvider {
 export interface MsgEditStorageProviderSDKType {
   sp_address: string;
   endpoint: string;
-  description: DescriptionSDKType;
+  description?: DescriptionSDKType;
   seal_address: string;
   approval_address: string;
   gc_address: string;
@@ -116,6 +137,10 @@ export interface MsgEditStorageProviderSDKType {
 }
 /** MsgEditStorageProviderResponse defines the Msg/EditStorageProvider response type. */
 export interface MsgEditStorageProviderResponse {}
+export interface MsgEditStorageProviderResponseProtoMsg {
+  typeUrl: "/greenfield.sp.MsgEditStorageProviderResponse";
+  value: Uint8Array;
+}
 /** MsgEditStorageProviderResponse defines the Msg/EditStorageProvider response type. */
 export interface MsgEditStorageProviderResponseSDKType {}
 export interface MsgUpdateSpStoragePrice {
@@ -124,17 +149,25 @@ export interface MsgUpdateSpStoragePrice {
   /** read price, in bnb wei per charge byte */
   readPrice: string;
   /** free read quota, in byte */
-  freeReadQuota: Long;
+  freeReadQuota: bigint;
   /** store price, in bnb wei per charge byte */
   storePrice: string;
+}
+export interface MsgUpdateSpStoragePriceProtoMsg {
+  typeUrl: "/greenfield.sp.MsgUpdateSpStoragePrice";
+  value: Uint8Array;
 }
 export interface MsgUpdateSpStoragePriceSDKType {
   sp_address: string;
   read_price: string;
-  free_read_quota: Long;
+  free_read_quota: bigint;
   store_price: string;
 }
 export interface MsgUpdateSpStoragePriceResponse {}
+export interface MsgUpdateSpStoragePriceResponseProtoMsg {
+  typeUrl: "/greenfield.sp.MsgUpdateSpStoragePriceResponse";
+  value: Uint8Array;
+}
 export interface MsgUpdateSpStoragePriceResponseSDKType {}
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParams {
@@ -147,6 +180,10 @@ export interface MsgUpdateParams {
    */
   params: Params;
 }
+export interface MsgUpdateParamsProtoMsg {
+  typeUrl: "/greenfield.sp.MsgUpdateParams";
+  value: Uint8Array;
+}
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
@@ -157,6 +194,10 @@ export interface MsgUpdateParamsSDKType {
  * MsgUpdateParams message.
  */
 export interface MsgUpdateParamsResponse {}
+export interface MsgUpdateParamsResponseProtoMsg {
+  typeUrl: "/greenfield.sp.MsgUpdateParamsResponse";
+  value: Uint8Array;
+}
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
  * MsgUpdateParams message.
@@ -169,16 +210,24 @@ export interface MsgUpdateStorageProviderStatus {
   /** status defines the desired status be update to. */
   status: Status;
   /** duration defines the time requested in desired status */
-  duration: Long;
+  duration: bigint;
+}
+export interface MsgUpdateStorageProviderStatusProtoMsg {
+  typeUrl: "/greenfield.sp.MsgUpdateStorageProviderStatus";
+  value: Uint8Array;
 }
 /** MsgUpdateStorageProviderStatus is used to update the status of a SP by itself */
 export interface MsgUpdateStorageProviderStatusSDKType {
   sp_address: string;
   status: Status;
-  duration: Long;
+  duration: bigint;
 }
 /** MsgUpdateStorageProviderStatusResponse defines the MsgUpdateStorageProviderStatus response type. */
 export interface MsgUpdateStorageProviderStatusResponse {}
+export interface MsgUpdateStorageProviderStatusResponseProtoMsg {
+  typeUrl: "/greenfield.sp.MsgUpdateStorageProviderStatusResponse";
+  value: Uint8Array;
+}
 /** MsgUpdateStorageProviderStatusResponse defines the MsgUpdateStorageProviderStatus response type. */
 export interface MsgUpdateStorageProviderStatusResponseSDKType {}
 function createBaseMsgCreateStorageProvider(): MsgCreateStorageProvider {
@@ -194,14 +243,15 @@ function createBaseMsgCreateStorageProvider(): MsgCreateStorageProvider {
     endpoint: "",
     deposit: Coin.fromPartial({}),
     readPrice: "",
-    freeReadQuota: Long.UZERO,
+    freeReadQuota: BigInt(0),
     storePrice: "",
     blsKey: "",
     blsProof: ""
   };
 }
 export const MsgCreateStorageProvider = {
-  encode(message: MsgCreateStorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.MsgCreateStorageProvider",
+  encode(message: MsgCreateStorageProvider, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -233,13 +283,13 @@ export const MsgCreateStorageProvider = {
       Coin.encode(message.deposit, writer.uint32(82).fork()).ldelim();
     }
     if (message.readPrice !== "") {
-      writer.uint32(90).string(message.readPrice);
+      writer.uint32(90).string(Decimal.fromUserInput(message.readPrice, 18).atomics);
     }
-    if (!message.freeReadQuota.isZero()) {
+    if (message.freeReadQuota !== BigInt(0)) {
       writer.uint32(96).uint64(message.freeReadQuota);
     }
     if (message.storePrice !== "") {
-      writer.uint32(106).string(message.storePrice);
+      writer.uint32(106).string(Decimal.fromUserInput(message.storePrice, 18).atomics);
     }
     if (message.blsKey !== "") {
       writer.uint32(114).string(message.blsKey);
@@ -249,8 +299,8 @@ export const MsgCreateStorageProvider = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateStorageProvider {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateStorageProvider {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateStorageProvider();
     while (reader.pos < end) {
@@ -287,13 +337,13 @@ export const MsgCreateStorageProvider = {
           message.deposit = Coin.decode(reader, reader.uint32());
           break;
         case 11:
-          message.readPrice = reader.string();
+          message.readPrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 12:
-          message.freeReadQuota = (reader.uint64() as Long);
+          message.freeReadQuota = reader.uint64();
           break;
         case 13:
-          message.storePrice = reader.string();
+          message.storePrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 14:
           message.blsKey = reader.string();
@@ -321,7 +371,7 @@ export const MsgCreateStorageProvider = {
       endpoint: isSet(object.endpoint) ? String(object.endpoint) : "",
       deposit: isSet(object.deposit) ? Coin.fromJSON(object.deposit) : undefined,
       readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
-      freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
+      freeReadQuota: isSet(object.freeReadQuota) ? BigInt(object.freeReadQuota.toString()) : BigInt(0),
       storePrice: isSet(object.storePrice) ? String(object.storePrice) : "",
       blsKey: isSet(object.blsKey) ? String(object.blsKey) : "",
       blsProof: isSet(object.blsProof) ? String(object.blsProof) : ""
@@ -340,7 +390,7 @@ export const MsgCreateStorageProvider = {
     message.endpoint !== undefined && (obj.endpoint = message.endpoint);
     message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toJSON(message.deposit) : undefined);
     message.readPrice !== undefined && (obj.readPrice = message.readPrice);
-    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
+    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || BigInt(0)).toString());
     message.storePrice !== undefined && (obj.storePrice = message.storePrice);
     message.blsKey !== undefined && (obj.blsKey = message.blsKey);
     message.blsProof !== undefined && (obj.blsProof = message.blsProof);
@@ -359,7 +409,7 @@ export const MsgCreateStorageProvider = {
     message.endpoint = object.endpoint ?? "";
     message.deposit = object.deposit !== undefined && object.deposit !== null ? Coin.fromPartial(object.deposit) : undefined;
     message.readPrice = object.readPrice ?? "";
-    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
+    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? BigInt(object.freeReadQuota.toString()) : BigInt(0);
     message.storePrice = object.storePrice ?? "";
     message.blsKey = object.blsKey ?? "";
     message.blsProof = object.blsProof ?? "";
@@ -402,17 +452,101 @@ export const MsgCreateStorageProvider = {
     obj.bls_key = message.blsKey;
     obj.bls_proof = message.blsProof;
     return obj;
+  },
+  fromAmino(object: MsgCreateStorageProviderAmino): MsgCreateStorageProvider {
+    const message = createBaseMsgCreateStorageProvider();
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = Description.fromAmino(object.description);
+    }
+    if (object.sp_address !== undefined && object.sp_address !== null) {
+      message.spAddress = object.sp_address;
+    }
+    if (object.funding_address !== undefined && object.funding_address !== null) {
+      message.fundingAddress = object.funding_address;
+    }
+    if (object.seal_address !== undefined && object.seal_address !== null) {
+      message.sealAddress = object.seal_address;
+    }
+    if (object.approval_address !== undefined && object.approval_address !== null) {
+      message.approvalAddress = object.approval_address;
+    }
+    if (object.gc_address !== undefined && object.gc_address !== null) {
+      message.gcAddress = object.gc_address;
+    }
+    if (object.maintenance_address !== undefined && object.maintenance_address !== null) {
+      message.maintenanceAddress = object.maintenance_address;
+    }
+    if (object.endpoint !== undefined && object.endpoint !== null) {
+      message.endpoint = object.endpoint;
+    }
+    if (object.deposit !== undefined && object.deposit !== null) {
+      message.deposit = Coin.fromAmino(object.deposit);
+    }
+    if (object.read_price !== undefined && object.read_price !== null) {
+      message.readPrice = object.read_price;
+    }
+    if (object.free_read_quota !== undefined && object.free_read_quota !== null) {
+      message.freeReadQuota = BigInt(object.free_read_quota);
+    }
+    if (object.store_price !== undefined && object.store_price !== null) {
+      message.storePrice = object.store_price;
+    }
+    if (object.bls_key !== undefined && object.bls_key !== null) {
+      message.blsKey = object.bls_key;
+    }
+    if (object.bls_proof !== undefined && object.bls_proof !== null) {
+      message.blsProof = object.bls_proof;
+    }
+    return message;
+  },
+  toAmino(message: MsgCreateStorageProvider): MsgCreateStorageProviderAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.description = message.description ? Description.toAmino(message.description) : undefined;
+    obj.sp_address = message.spAddress;
+    obj.funding_address = message.fundingAddress;
+    obj.seal_address = message.sealAddress;
+    obj.approval_address = message.approvalAddress;
+    obj.gc_address = message.gcAddress;
+    obj.maintenance_address = message.maintenanceAddress;
+    obj.endpoint = message.endpoint;
+    obj.deposit = message.deposit ? Coin.toAmino(message.deposit) : undefined;
+    obj.read_price = message.readPrice;
+    obj.free_read_quota = message.freeReadQuota ? message.freeReadQuota.toString() : undefined;
+    obj.store_price = message.storePrice;
+    obj.bls_key = message.blsKey;
+    obj.bls_proof = message.blsProof;
+    return obj;
+  },
+  fromAminoMsg(object: MsgCreateStorageProviderAminoMsg): MsgCreateStorageProvider {
+    return MsgCreateStorageProvider.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCreateStorageProviderProtoMsg): MsgCreateStorageProvider {
+    return MsgCreateStorageProvider.decode(message.value);
+  },
+  toProto(message: MsgCreateStorageProvider): Uint8Array {
+    return MsgCreateStorageProvider.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCreateStorageProvider): MsgCreateStorageProviderProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.MsgCreateStorageProvider",
+      value: MsgCreateStorageProvider.encode(message).finish()
+    };
   }
 };
 function createBaseMsgCreateStorageProviderResponse(): MsgCreateStorageProviderResponse {
   return {};
 }
 export const MsgCreateStorageProviderResponse = {
-  encode(_: MsgCreateStorageProviderResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.MsgCreateStorageProviderResponse",
+  encode(_: MsgCreateStorageProviderResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateStorageProviderResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateStorageProviderResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateStorageProviderResponse();
     while (reader.pos < end) {
@@ -442,6 +576,29 @@ export const MsgCreateStorageProviderResponse = {
   toSDK(_: MsgCreateStorageProviderResponse): MsgCreateStorageProviderResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgCreateStorageProviderResponseAmino): MsgCreateStorageProviderResponse {
+    const message = createBaseMsgCreateStorageProviderResponse();
+    return message;
+  },
+  toAmino(_: MsgCreateStorageProviderResponse): MsgCreateStorageProviderResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgCreateStorageProviderResponseAminoMsg): MsgCreateStorageProviderResponse {
+    return MsgCreateStorageProviderResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCreateStorageProviderResponseProtoMsg): MsgCreateStorageProviderResponse {
+    return MsgCreateStorageProviderResponse.decode(message.value);
+  },
+  toProto(message: MsgCreateStorageProviderResponse): Uint8Array {
+    return MsgCreateStorageProviderResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCreateStorageProviderResponse): MsgCreateStorageProviderResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.MsgCreateStorageProviderResponse",
+      value: MsgCreateStorageProviderResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgDeposit(): MsgDeposit {
@@ -452,7 +609,8 @@ function createBaseMsgDeposit(): MsgDeposit {
   };
 }
 export const MsgDeposit = {
-  encode(message: MsgDeposit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.MsgDeposit",
+  encode(message: MsgDeposit, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
     }
@@ -464,8 +622,8 @@ export const MsgDeposit = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeposit {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDeposit {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDeposit();
     while (reader.pos < end) {
@@ -521,17 +679,53 @@ export const MsgDeposit = {
     obj.sp_address = message.spAddress;
     message.deposit !== undefined && (obj.deposit = message.deposit ? Coin.toSDK(message.deposit) : undefined);
     return obj;
+  },
+  fromAmino(object: MsgDepositAmino): MsgDeposit {
+    const message = createBaseMsgDeposit();
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    }
+    if (object.sp_address !== undefined && object.sp_address !== null) {
+      message.spAddress = object.sp_address;
+    }
+    if (object.deposit !== undefined && object.deposit !== null) {
+      message.deposit = Coin.fromAmino(object.deposit);
+    }
+    return message;
+  },
+  toAmino(message: MsgDeposit): MsgDepositAmino {
+    const obj: any = {};
+    obj.creator = message.creator;
+    obj.sp_address = message.spAddress;
+    obj.deposit = message.deposit ? Coin.toAmino(message.deposit) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgDepositAminoMsg): MsgDeposit {
+    return MsgDeposit.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgDepositProtoMsg): MsgDeposit {
+    return MsgDeposit.decode(message.value);
+  },
+  toProto(message: MsgDeposit): Uint8Array {
+    return MsgDeposit.encode(message).finish();
+  },
+  toProtoMsg(message: MsgDeposit): MsgDepositProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.MsgDeposit",
+      value: MsgDeposit.encode(message).finish()
+    };
   }
 };
 function createBaseMsgDepositResponse(): MsgDepositResponse {
   return {};
 }
 export const MsgDepositResponse = {
-  encode(_: MsgDepositResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.MsgDepositResponse",
+  encode(_: MsgDepositResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDepositResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgDepositResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgDepositResponse();
     while (reader.pos < end) {
@@ -561,13 +755,36 @@ export const MsgDepositResponse = {
   toSDK(_: MsgDepositResponse): MsgDepositResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgDepositResponseAmino): MsgDepositResponse {
+    const message = createBaseMsgDepositResponse();
+    return message;
+  },
+  toAmino(_: MsgDepositResponse): MsgDepositResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgDepositResponseAminoMsg): MsgDepositResponse {
+    return MsgDepositResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgDepositResponseProtoMsg): MsgDepositResponse {
+    return MsgDepositResponse.decode(message.value);
+  },
+  toProto(message: MsgDepositResponse): Uint8Array {
+    return MsgDepositResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgDepositResponse): MsgDepositResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.MsgDepositResponse",
+      value: MsgDepositResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgEditStorageProvider(): MsgEditStorageProvider {
   return {
     spAddress: "",
     endpoint: "",
-    description: Description.fromPartial({}),
+    description: undefined,
     sealAddress: "",
     approvalAddress: "",
     gcAddress: "",
@@ -577,7 +794,8 @@ function createBaseMsgEditStorageProvider(): MsgEditStorageProvider {
   };
 }
 export const MsgEditStorageProvider = {
-  encode(message: MsgEditStorageProvider, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.MsgEditStorageProvider",
+  encode(message: MsgEditStorageProvider, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.spAddress !== "") {
       writer.uint32(10).string(message.spAddress);
     }
@@ -607,8 +825,8 @@ export const MsgEditStorageProvider = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgEditStorageProvider {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgEditStorageProvider {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgEditStorageProvider();
     while (reader.pos < end) {
@@ -712,17 +930,77 @@ export const MsgEditStorageProvider = {
     obj.bls_key = message.blsKey;
     obj.bls_proof = message.blsProof;
     return obj;
+  },
+  fromAmino(object: MsgEditStorageProviderAmino): MsgEditStorageProvider {
+    const message = createBaseMsgEditStorageProvider();
+    if (object.sp_address !== undefined && object.sp_address !== null) {
+      message.spAddress = object.sp_address;
+    }
+    if (object.endpoint !== undefined && object.endpoint !== null) {
+      message.endpoint = object.endpoint;
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = Description.fromAmino(object.description);
+    }
+    if (object.seal_address !== undefined && object.seal_address !== null) {
+      message.sealAddress = object.seal_address;
+    }
+    if (object.approval_address !== undefined && object.approval_address !== null) {
+      message.approvalAddress = object.approval_address;
+    }
+    if (object.gc_address !== undefined && object.gc_address !== null) {
+      message.gcAddress = object.gc_address;
+    }
+    if (object.maintenance_address !== undefined && object.maintenance_address !== null) {
+      message.maintenanceAddress = object.maintenance_address;
+    }
+    if (object.bls_key !== undefined && object.bls_key !== null) {
+      message.blsKey = object.bls_key;
+    }
+    if (object.bls_proof !== undefined && object.bls_proof !== null) {
+      message.blsProof = object.bls_proof;
+    }
+    return message;
+  },
+  toAmino(message: MsgEditStorageProvider): MsgEditStorageProviderAmino {
+    const obj: any = {};
+    obj.sp_address = message.spAddress;
+    obj.endpoint = message.endpoint;
+    obj.description = message.description ? Description.toAmino(message.description) : undefined;
+    obj.seal_address = message.sealAddress;
+    obj.approval_address = message.approvalAddress;
+    obj.gc_address = message.gcAddress;
+    obj.maintenance_address = message.maintenanceAddress;
+    obj.bls_key = message.blsKey;
+    obj.bls_proof = message.blsProof;
+    return obj;
+  },
+  fromAminoMsg(object: MsgEditStorageProviderAminoMsg): MsgEditStorageProvider {
+    return MsgEditStorageProvider.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgEditStorageProviderProtoMsg): MsgEditStorageProvider {
+    return MsgEditStorageProvider.decode(message.value);
+  },
+  toProto(message: MsgEditStorageProvider): Uint8Array {
+    return MsgEditStorageProvider.encode(message).finish();
+  },
+  toProtoMsg(message: MsgEditStorageProvider): MsgEditStorageProviderProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.MsgEditStorageProvider",
+      value: MsgEditStorageProvider.encode(message).finish()
+    };
   }
 };
 function createBaseMsgEditStorageProviderResponse(): MsgEditStorageProviderResponse {
   return {};
 }
 export const MsgEditStorageProviderResponse = {
-  encode(_: MsgEditStorageProviderResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.MsgEditStorageProviderResponse",
+  encode(_: MsgEditStorageProviderResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgEditStorageProviderResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgEditStorageProviderResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgEditStorageProviderResponse();
     while (reader.pos < end) {
@@ -752,34 +1030,58 @@ export const MsgEditStorageProviderResponse = {
   toSDK(_: MsgEditStorageProviderResponse): MsgEditStorageProviderResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgEditStorageProviderResponseAmino): MsgEditStorageProviderResponse {
+    const message = createBaseMsgEditStorageProviderResponse();
+    return message;
+  },
+  toAmino(_: MsgEditStorageProviderResponse): MsgEditStorageProviderResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgEditStorageProviderResponseAminoMsg): MsgEditStorageProviderResponse {
+    return MsgEditStorageProviderResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgEditStorageProviderResponseProtoMsg): MsgEditStorageProviderResponse {
+    return MsgEditStorageProviderResponse.decode(message.value);
+  },
+  toProto(message: MsgEditStorageProviderResponse): Uint8Array {
+    return MsgEditStorageProviderResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgEditStorageProviderResponse): MsgEditStorageProviderResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.MsgEditStorageProviderResponse",
+      value: MsgEditStorageProviderResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateSpStoragePrice(): MsgUpdateSpStoragePrice {
   return {
     spAddress: "",
     readPrice: "",
-    freeReadQuota: Long.UZERO,
+    freeReadQuota: BigInt(0),
     storePrice: ""
   };
 }
 export const MsgUpdateSpStoragePrice = {
-  encode(message: MsgUpdateSpStoragePrice, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.MsgUpdateSpStoragePrice",
+  encode(message: MsgUpdateSpStoragePrice, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.spAddress !== "") {
       writer.uint32(10).string(message.spAddress);
     }
     if (message.readPrice !== "") {
-      writer.uint32(18).string(message.readPrice);
+      writer.uint32(18).string(Decimal.fromUserInput(message.readPrice, 18).atomics);
     }
-    if (!message.freeReadQuota.isZero()) {
+    if (message.freeReadQuota !== BigInt(0)) {
       writer.uint32(24).uint64(message.freeReadQuota);
     }
     if (message.storePrice !== "") {
-      writer.uint32(34).string(message.storePrice);
+      writer.uint32(34).string(Decimal.fromUserInput(message.storePrice, 18).atomics);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateSpStoragePrice {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateSpStoragePrice {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateSpStoragePrice();
     while (reader.pos < end) {
@@ -789,13 +1091,13 @@ export const MsgUpdateSpStoragePrice = {
           message.spAddress = reader.string();
           break;
         case 2:
-          message.readPrice = reader.string();
+          message.readPrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 3:
-          message.freeReadQuota = (reader.uint64() as Long);
+          message.freeReadQuota = reader.uint64();
           break;
         case 4:
-          message.storePrice = reader.string();
+          message.storePrice = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -808,7 +1110,7 @@ export const MsgUpdateSpStoragePrice = {
     return {
       spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
       readPrice: isSet(object.readPrice) ? String(object.readPrice) : "",
-      freeReadQuota: isSet(object.freeReadQuota) ? Long.fromValue(object.freeReadQuota) : Long.UZERO,
+      freeReadQuota: isSet(object.freeReadQuota) ? BigInt(object.freeReadQuota.toString()) : BigInt(0),
       storePrice: isSet(object.storePrice) ? String(object.storePrice) : ""
     };
   },
@@ -816,7 +1118,7 @@ export const MsgUpdateSpStoragePrice = {
     const obj: any = {};
     message.spAddress !== undefined && (obj.spAddress = message.spAddress);
     message.readPrice !== undefined && (obj.readPrice = message.readPrice);
-    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || Long.UZERO).toString());
+    message.freeReadQuota !== undefined && (obj.freeReadQuota = (message.freeReadQuota || BigInt(0)).toString());
     message.storePrice !== undefined && (obj.storePrice = message.storePrice);
     return obj;
   },
@@ -824,7 +1126,7 @@ export const MsgUpdateSpStoragePrice = {
     const message = createBaseMsgUpdateSpStoragePrice();
     message.spAddress = object.spAddress ?? "";
     message.readPrice = object.readPrice ?? "";
-    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? Long.fromValue(object.freeReadQuota) : Long.UZERO;
+    message.freeReadQuota = object.freeReadQuota !== undefined && object.freeReadQuota !== null ? BigInt(object.freeReadQuota.toString()) : BigInt(0);
     message.storePrice = object.storePrice ?? "";
     return message;
   },
@@ -843,17 +1145,57 @@ export const MsgUpdateSpStoragePrice = {
     obj.free_read_quota = message.freeReadQuota;
     obj.store_price = message.storePrice;
     return obj;
+  },
+  fromAmino(object: MsgUpdateSpStoragePriceAmino): MsgUpdateSpStoragePrice {
+    const message = createBaseMsgUpdateSpStoragePrice();
+    if (object.sp_address !== undefined && object.sp_address !== null) {
+      message.spAddress = object.sp_address;
+    }
+    if (object.read_price !== undefined && object.read_price !== null) {
+      message.readPrice = object.read_price;
+    }
+    if (object.free_read_quota !== undefined && object.free_read_quota !== null) {
+      message.freeReadQuota = BigInt(object.free_read_quota);
+    }
+    if (object.store_price !== undefined && object.store_price !== null) {
+      message.storePrice = object.store_price;
+    }
+    return message;
+  },
+  toAmino(message: MsgUpdateSpStoragePrice): MsgUpdateSpStoragePriceAmino {
+    const obj: any = {};
+    obj.sp_address = message.spAddress;
+    obj.read_price = message.readPrice;
+    obj.free_read_quota = message.freeReadQuota ? message.freeReadQuota.toString() : undefined;
+    obj.store_price = message.storePrice;
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateSpStoragePriceAminoMsg): MsgUpdateSpStoragePrice {
+    return MsgUpdateSpStoragePrice.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateSpStoragePriceProtoMsg): MsgUpdateSpStoragePrice {
+    return MsgUpdateSpStoragePrice.decode(message.value);
+  },
+  toProto(message: MsgUpdateSpStoragePrice): Uint8Array {
+    return MsgUpdateSpStoragePrice.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateSpStoragePrice): MsgUpdateSpStoragePriceProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.MsgUpdateSpStoragePrice",
+      value: MsgUpdateSpStoragePrice.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateSpStoragePriceResponse(): MsgUpdateSpStoragePriceResponse {
   return {};
 }
 export const MsgUpdateSpStoragePriceResponse = {
-  encode(_: MsgUpdateSpStoragePriceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.MsgUpdateSpStoragePriceResponse",
+  encode(_: MsgUpdateSpStoragePriceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateSpStoragePriceResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateSpStoragePriceResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateSpStoragePriceResponse();
     while (reader.pos < end) {
@@ -883,6 +1225,29 @@ export const MsgUpdateSpStoragePriceResponse = {
   toSDK(_: MsgUpdateSpStoragePriceResponse): MsgUpdateSpStoragePriceResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgUpdateSpStoragePriceResponseAmino): MsgUpdateSpStoragePriceResponse {
+    const message = createBaseMsgUpdateSpStoragePriceResponse();
+    return message;
+  },
+  toAmino(_: MsgUpdateSpStoragePriceResponse): MsgUpdateSpStoragePriceResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateSpStoragePriceResponseAminoMsg): MsgUpdateSpStoragePriceResponse {
+    return MsgUpdateSpStoragePriceResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateSpStoragePriceResponseProtoMsg): MsgUpdateSpStoragePriceResponse {
+    return MsgUpdateSpStoragePriceResponse.decode(message.value);
+  },
+  toProto(message: MsgUpdateSpStoragePriceResponse): Uint8Array {
+    return MsgUpdateSpStoragePriceResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateSpStoragePriceResponse): MsgUpdateSpStoragePriceResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.MsgUpdateSpStoragePriceResponse",
+      value: MsgUpdateSpStoragePriceResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateParams(): MsgUpdateParams {
@@ -892,7 +1257,8 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
   };
 }
 export const MsgUpdateParams = {
-  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.MsgUpdateParams",
+  encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -901,8 +1267,8 @@ export const MsgUpdateParams = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParams();
     while (reader.pos < end) {
@@ -950,17 +1316,49 @@ export const MsgUpdateParams = {
     obj.authority = message.authority;
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: MsgUpdateParamsAmino): MsgUpdateParams {
+    const message = createBaseMsgUpdateParams();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
+    const obj: any = {};
+    obj.authority = message.authority;
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateParamsAminoMsg): MsgUpdateParams {
+    return MsgUpdateParams.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateParamsProtoMsg): MsgUpdateParams {
+    return MsgUpdateParams.decode(message.value);
+  },
+  toProto(message: MsgUpdateParams): Uint8Array {
+    return MsgUpdateParams.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateParams): MsgUpdateParamsProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.MsgUpdateParams",
+      value: MsgUpdateParams.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
-  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.MsgUpdateParamsResponse",
+  encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParamsResponse();
     while (reader.pos < end) {
@@ -990,30 +1388,54 @@ export const MsgUpdateParamsResponse = {
   toSDK(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgUpdateParamsResponseAmino): MsgUpdateParamsResponse {
+    const message = createBaseMsgUpdateParamsResponse();
+    return message;
+  },
+  toAmino(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateParamsResponseAminoMsg): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateParamsResponseProtoMsg): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.decode(message.value);
+  },
+  toProto(message: MsgUpdateParamsResponse): Uint8Array {
+    return MsgUpdateParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.MsgUpdateParamsResponse",
+      value: MsgUpdateParamsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateStorageProviderStatus(): MsgUpdateStorageProviderStatus {
   return {
     spAddress: "",
     status: 0,
-    duration: Long.ZERO
+    duration: BigInt(0)
   };
 }
 export const MsgUpdateStorageProviderStatus = {
-  encode(message: MsgUpdateStorageProviderStatus, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.MsgUpdateStorageProviderStatus",
+  encode(message: MsgUpdateStorageProviderStatus, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.spAddress !== "") {
       writer.uint32(10).string(message.spAddress);
     }
     if (message.status !== 0) {
       writer.uint32(16).int32(message.status);
     }
-    if (!message.duration.isZero()) {
+    if (message.duration !== BigInt(0)) {
       writer.uint32(24).int64(message.duration);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateStorageProviderStatus {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateStorageProviderStatus {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateStorageProviderStatus();
     while (reader.pos < end) {
@@ -1026,7 +1448,7 @@ export const MsgUpdateStorageProviderStatus = {
           message.status = (reader.int32() as any);
           break;
         case 3:
-          message.duration = (reader.int64() as Long);
+          message.duration = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1039,21 +1461,21 @@ export const MsgUpdateStorageProviderStatus = {
     return {
       spAddress: isSet(object.spAddress) ? String(object.spAddress) : "",
       status: isSet(object.status) ? statusFromJSON(object.status) : -1,
-      duration: isSet(object.duration) ? Long.fromValue(object.duration) : Long.ZERO
+      duration: isSet(object.duration) ? BigInt(object.duration.toString()) : BigInt(0)
     };
   },
   toJSON(message: MsgUpdateStorageProviderStatus): unknown {
     const obj: any = {};
     message.spAddress !== undefined && (obj.spAddress = message.spAddress);
     message.status !== undefined && (obj.status = statusToJSON(message.status));
-    message.duration !== undefined && (obj.duration = (message.duration || Long.ZERO).toString());
+    message.duration !== undefined && (obj.duration = (message.duration || BigInt(0)).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MsgUpdateStorageProviderStatus>, I>>(object: I): MsgUpdateStorageProviderStatus {
     const message = createBaseMsgUpdateStorageProviderStatus();
     message.spAddress = object.spAddress ?? "";
     message.status = object.status ?? 0;
-    message.duration = object.duration !== undefined && object.duration !== null ? Long.fromValue(object.duration) : Long.ZERO;
+    message.duration = object.duration !== undefined && object.duration !== null ? BigInt(object.duration.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: MsgUpdateStorageProviderStatusSDKType): MsgUpdateStorageProviderStatus {
@@ -1069,17 +1491,53 @@ export const MsgUpdateStorageProviderStatus = {
     message.status !== undefined && (obj.status = statusToJSON(message.status));
     obj.duration = message.duration;
     return obj;
+  },
+  fromAmino(object: MsgUpdateStorageProviderStatusAmino): MsgUpdateStorageProviderStatus {
+    const message = createBaseMsgUpdateStorageProviderStatus();
+    if (object.sp_address !== undefined && object.sp_address !== null) {
+      message.spAddress = object.sp_address;
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = statusFromJSON(object.status);
+    }
+    if (object.duration !== undefined && object.duration !== null) {
+      message.duration = BigInt(object.duration);
+    }
+    return message;
+  },
+  toAmino(message: MsgUpdateStorageProviderStatus): MsgUpdateStorageProviderStatusAmino {
+    const obj: any = {};
+    obj.sp_address = message.spAddress;
+    obj.status = statusToJSON(message.status);
+    obj.duration = message.duration ? message.duration.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateStorageProviderStatusAminoMsg): MsgUpdateStorageProviderStatus {
+    return MsgUpdateStorageProviderStatus.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateStorageProviderStatusProtoMsg): MsgUpdateStorageProviderStatus {
+    return MsgUpdateStorageProviderStatus.decode(message.value);
+  },
+  toProto(message: MsgUpdateStorageProviderStatus): Uint8Array {
+    return MsgUpdateStorageProviderStatus.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateStorageProviderStatus): MsgUpdateStorageProviderStatusProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.MsgUpdateStorageProviderStatus",
+      value: MsgUpdateStorageProviderStatus.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateStorageProviderStatusResponse(): MsgUpdateStorageProviderStatusResponse {
   return {};
 }
 export const MsgUpdateStorageProviderStatusResponse = {
-  encode(_: MsgUpdateStorageProviderStatusResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.MsgUpdateStorageProviderStatusResponse",
+  encode(_: MsgUpdateStorageProviderStatusResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateStorageProviderStatusResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateStorageProviderStatusResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateStorageProviderStatusResponse();
     while (reader.pos < end) {
@@ -1109,6 +1567,29 @@ export const MsgUpdateStorageProviderStatusResponse = {
   toSDK(_: MsgUpdateStorageProviderStatusResponse): MsgUpdateStorageProviderStatusResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgUpdateStorageProviderStatusResponseAmino): MsgUpdateStorageProviderStatusResponse {
+    const message = createBaseMsgUpdateStorageProviderStatusResponse();
+    return message;
+  },
+  toAmino(_: MsgUpdateStorageProviderStatusResponse): MsgUpdateStorageProviderStatusResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateStorageProviderStatusResponseAminoMsg): MsgUpdateStorageProviderStatusResponse {
+    return MsgUpdateStorageProviderStatusResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateStorageProviderStatusResponseProtoMsg): MsgUpdateStorageProviderStatusResponse {
+    return MsgUpdateStorageProviderStatusResponse.decode(message.value);
+  },
+  toProto(message: MsgUpdateStorageProviderStatusResponse): Uint8Array {
+    return MsgUpdateStorageProviderStatusResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateStorageProviderStatusResponse): MsgUpdateStorageProviderStatusResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.MsgUpdateStorageProviderStatusResponse",
+      value: MsgUpdateStorageProviderStatusResponse.encode(message).finish()
+    };
   }
 };
 /** Msg defines the Msg service for creating a new storage provider.
@@ -1141,31 +1622,31 @@ export class MsgClientImpl implements Msg {
   CreateStorageProvider(request: MsgCreateStorageProvider): Promise<MsgCreateStorageProviderResponse> {
     const data = MsgCreateStorageProvider.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Msg", "CreateStorageProvider", data);
-    return promise.then(data => MsgCreateStorageProviderResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgCreateStorageProviderResponse.decode(new BinaryReader(data)));
   }
   Deposit(request: MsgDeposit): Promise<MsgDepositResponse> {
     const data = MsgDeposit.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Msg", "Deposit", data);
-    return promise.then(data => MsgDepositResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgDepositResponse.decode(new BinaryReader(data)));
   }
   EditStorageProvider(request: MsgEditStorageProvider): Promise<MsgEditStorageProviderResponse> {
     const data = MsgEditStorageProvider.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Msg", "EditStorageProvider", data);
-    return promise.then(data => MsgEditStorageProviderResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgEditStorageProviderResponse.decode(new BinaryReader(data)));
   }
   UpdateSpStoragePrice(request: MsgUpdateSpStoragePrice): Promise<MsgUpdateSpStoragePriceResponse> {
     const data = MsgUpdateSpStoragePrice.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Msg", "UpdateSpStoragePrice", data);
-    return promise.then(data => MsgUpdateSpStoragePriceResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUpdateSpStoragePriceResponse.decode(new BinaryReader(data)));
   }
   UpdateSpStatus(request: MsgUpdateStorageProviderStatus): Promise<MsgUpdateStorageProviderStatusResponse> {
     const data = MsgUpdateStorageProviderStatus.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Msg", "UpdateSpStatus", data);
-    return promise.then(data => MsgUpdateStorageProviderStatusResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUpdateStorageProviderStatusResponse.decode(new BinaryReader(data)));
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Msg", "UpdateParams", data);
-    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
   }
 }

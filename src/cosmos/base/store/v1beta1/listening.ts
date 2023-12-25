@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { RequestDeliverTx, RequestDeliverTxSDKType, ResponseDeliverTx, ResponseDeliverTxSDKType, RequestBeginBlock, RequestBeginBlockSDKType, ResponseBeginBlock, ResponseBeginBlockSDKType, RequestEndBlock, RequestEndBlockSDKType, ResponseEndBlock, ResponseEndBlockSDKType, ResponseCommit, ResponseCommitSDKType } from "../../../../tendermint/abci/types";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../../../helpers";
 export const protobufPackage = "cosmos.base.store.v1beta1";
 /**
@@ -17,6 +17,10 @@ export interface StoreKVPair {
   /** true indicates a delete operation, false indicates a set operation */
   delete: boolean;
   key: Uint8Array;
+  value: Uint8Array;
+}
+export interface StoreKVPairProtoMsg {
+  typeUrl: "/cosmos.base.store.v1beta1.StoreKVPair";
   value: Uint8Array;
 }
 /**
@@ -37,34 +41,42 @@ export interface StoreKVPairSDKType {
  * the file streamer dump them into files together with the state changes.
  */
 export interface BlockMetadata {
-  requestBeginBlock: RequestBeginBlock;
-  responseBeginBlock: ResponseBeginBlock;
+  requestBeginBlock?: RequestBeginBlock;
+  responseBeginBlock?: ResponseBeginBlock;
   deliverTxs: BlockMetadata_DeliverTx[];
-  requestEndBlock: RequestEndBlock;
-  responseEndBlock: ResponseEndBlock;
-  responseCommit: ResponseCommit;
+  requestEndBlock?: RequestEndBlock;
+  responseEndBlock?: ResponseEndBlock;
+  responseCommit?: ResponseCommit;
+}
+export interface BlockMetadataProtoMsg {
+  typeUrl: "/cosmos.base.store.v1beta1.BlockMetadata";
+  value: Uint8Array;
 }
 /**
  * BlockMetadata contains all the abci event data of a block
  * the file streamer dump them into files together with the state changes.
  */
 export interface BlockMetadataSDKType {
-  request_begin_block: RequestBeginBlockSDKType;
-  response_begin_block: ResponseBeginBlockSDKType;
+  request_begin_block?: RequestBeginBlockSDKType;
+  response_begin_block?: ResponseBeginBlockSDKType;
   deliver_txs: BlockMetadata_DeliverTxSDKType[];
-  request_end_block: RequestEndBlockSDKType;
-  response_end_block: ResponseEndBlockSDKType;
-  response_commit: ResponseCommitSDKType;
+  request_end_block?: RequestEndBlockSDKType;
+  response_end_block?: ResponseEndBlockSDKType;
+  response_commit?: ResponseCommitSDKType;
 }
 /** DeliverTx encapulate deliver tx request and response. */
 export interface BlockMetadata_DeliverTx {
-  request: RequestDeliverTx;
-  response: ResponseDeliverTx;
+  request?: RequestDeliverTx;
+  response?: ResponseDeliverTx;
+}
+export interface BlockMetadata_DeliverTxProtoMsg {
+  typeUrl: "/cosmos.base.store.v1beta1.DeliverTx";
+  value: Uint8Array;
 }
 /** DeliverTx encapulate deliver tx request and response. */
 export interface BlockMetadata_DeliverTxSDKType {
-  request: RequestDeliverTxSDKType;
-  response: ResponseDeliverTxSDKType;
+  request?: RequestDeliverTxSDKType;
+  response?: ResponseDeliverTxSDKType;
 }
 function createBaseStoreKVPair(): StoreKVPair {
   return {
@@ -75,7 +87,8 @@ function createBaseStoreKVPair(): StoreKVPair {
   };
 }
 export const StoreKVPair = {
-  encode(message: StoreKVPair, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.base.store.v1beta1.StoreKVPair",
+  encode(message: StoreKVPair, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.storeKey !== "") {
       writer.uint32(10).string(message.storeKey);
     }
@@ -90,8 +103,8 @@ export const StoreKVPair = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): StoreKVPair {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): StoreKVPair {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStoreKVPair();
     while (reader.pos < end) {
@@ -155,20 +168,66 @@ export const StoreKVPair = {
     obj.key = message.key;
     obj.value = message.value;
     return obj;
+  },
+  fromAmino(object: StoreKVPairAmino): StoreKVPair {
+    const message = createBaseStoreKVPair();
+    if (object.store_key !== undefined && object.store_key !== null) {
+      message.storeKey = object.store_key;
+    }
+    if (object.delete !== undefined && object.delete !== null) {
+      message.delete = object.delete;
+    }
+    if (object.key !== undefined && object.key !== null) {
+      message.key = bytesFromBase64(object.key);
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = bytesFromBase64(object.value);
+    }
+    return message;
+  },
+  toAmino(message: StoreKVPair): StoreKVPairAmino {
+    const obj: any = {};
+    obj.store_key = message.storeKey;
+    obj.delete = message.delete;
+    obj.key = message.key ? base64FromBytes(message.key) : undefined;
+    obj.value = message.value ? base64FromBytes(message.value) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: StoreKVPairAminoMsg): StoreKVPair {
+    return StoreKVPair.fromAmino(object.value);
+  },
+  toAminoMsg(message: StoreKVPair): StoreKVPairAminoMsg {
+    return {
+      type: "cosmos-sdk/StoreKVPair",
+      value: StoreKVPair.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: StoreKVPairProtoMsg): StoreKVPair {
+    return StoreKVPair.decode(message.value);
+  },
+  toProto(message: StoreKVPair): Uint8Array {
+    return StoreKVPair.encode(message).finish();
+  },
+  toProtoMsg(message: StoreKVPair): StoreKVPairProtoMsg {
+    return {
+      typeUrl: "/cosmos.base.store.v1beta1.StoreKVPair",
+      value: StoreKVPair.encode(message).finish()
+    };
   }
 };
 function createBaseBlockMetadata(): BlockMetadata {
   return {
-    requestBeginBlock: RequestBeginBlock.fromPartial({}),
-    responseBeginBlock: ResponseBeginBlock.fromPartial({}),
+    requestBeginBlock: undefined,
+    responseBeginBlock: undefined,
     deliverTxs: [],
-    requestEndBlock: RequestEndBlock.fromPartial({}),
-    responseEndBlock: ResponseEndBlock.fromPartial({}),
-    responseCommit: ResponseCommit.fromPartial({})
+    requestEndBlock: undefined,
+    responseEndBlock: undefined,
+    responseCommit: undefined
   };
 }
 export const BlockMetadata = {
-  encode(message: BlockMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.base.store.v1beta1.BlockMetadata",
+  encode(message: BlockMetadata, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.requestBeginBlock !== undefined) {
       RequestBeginBlock.encode(message.requestBeginBlock, writer.uint32(10).fork()).ldelim();
     }
@@ -189,8 +248,8 @@ export const BlockMetadata = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): BlockMetadata {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): BlockMetadata {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBlockMetadata();
     while (reader.pos < end) {
@@ -278,16 +337,72 @@ export const BlockMetadata = {
     message.responseEndBlock !== undefined && (obj.response_end_block = message.responseEndBlock ? ResponseEndBlock.toSDK(message.responseEndBlock) : undefined);
     message.responseCommit !== undefined && (obj.response_commit = message.responseCommit ? ResponseCommit.toSDK(message.responseCommit) : undefined);
     return obj;
+  },
+  fromAmino(object: BlockMetadataAmino): BlockMetadata {
+    const message = createBaseBlockMetadata();
+    if (object.request_begin_block !== undefined && object.request_begin_block !== null) {
+      message.requestBeginBlock = RequestBeginBlock.fromAmino(object.request_begin_block);
+    }
+    if (object.response_begin_block !== undefined && object.response_begin_block !== null) {
+      message.responseBeginBlock = ResponseBeginBlock.fromAmino(object.response_begin_block);
+    }
+    message.deliverTxs = object.deliver_txs?.map(e => BlockMetadata_DeliverTx.fromAmino(e)) || [];
+    if (object.request_end_block !== undefined && object.request_end_block !== null) {
+      message.requestEndBlock = RequestEndBlock.fromAmino(object.request_end_block);
+    }
+    if (object.response_end_block !== undefined && object.response_end_block !== null) {
+      message.responseEndBlock = ResponseEndBlock.fromAmino(object.response_end_block);
+    }
+    if (object.response_commit !== undefined && object.response_commit !== null) {
+      message.responseCommit = ResponseCommit.fromAmino(object.response_commit);
+    }
+    return message;
+  },
+  toAmino(message: BlockMetadata): BlockMetadataAmino {
+    const obj: any = {};
+    obj.request_begin_block = message.requestBeginBlock ? RequestBeginBlock.toAmino(message.requestBeginBlock) : undefined;
+    obj.response_begin_block = message.responseBeginBlock ? ResponseBeginBlock.toAmino(message.responseBeginBlock) : undefined;
+    if (message.deliverTxs) {
+      obj.deliver_txs = message.deliverTxs.map(e => e ? BlockMetadata_DeliverTx.toAmino(e) : undefined);
+    } else {
+      obj.deliver_txs = [];
+    }
+    obj.request_end_block = message.requestEndBlock ? RequestEndBlock.toAmino(message.requestEndBlock) : undefined;
+    obj.response_end_block = message.responseEndBlock ? ResponseEndBlock.toAmino(message.responseEndBlock) : undefined;
+    obj.response_commit = message.responseCommit ? ResponseCommit.toAmino(message.responseCommit) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: BlockMetadataAminoMsg): BlockMetadata {
+    return BlockMetadata.fromAmino(object.value);
+  },
+  toAminoMsg(message: BlockMetadata): BlockMetadataAminoMsg {
+    return {
+      type: "cosmos-sdk/BlockMetadata",
+      value: BlockMetadata.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: BlockMetadataProtoMsg): BlockMetadata {
+    return BlockMetadata.decode(message.value);
+  },
+  toProto(message: BlockMetadata): Uint8Array {
+    return BlockMetadata.encode(message).finish();
+  },
+  toProtoMsg(message: BlockMetadata): BlockMetadataProtoMsg {
+    return {
+      typeUrl: "/cosmos.base.store.v1beta1.BlockMetadata",
+      value: BlockMetadata.encode(message).finish()
+    };
   }
 };
 function createBaseBlockMetadata_DeliverTx(): BlockMetadata_DeliverTx {
   return {
-    request: RequestDeliverTx.fromPartial({}),
-    response: ResponseDeliverTx.fromPartial({})
+    request: undefined,
+    response: undefined
   };
 }
 export const BlockMetadata_DeliverTx = {
-  encode(message: BlockMetadata_DeliverTx, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.base.store.v1beta1.DeliverTx",
+  encode(message: BlockMetadata_DeliverTx, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.request !== undefined) {
       RequestDeliverTx.encode(message.request, writer.uint32(10).fork()).ldelim();
     }
@@ -296,8 +411,8 @@ export const BlockMetadata_DeliverTx = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): BlockMetadata_DeliverTx {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): BlockMetadata_DeliverTx {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBlockMetadata_DeliverTx();
     while (reader.pos < end) {
@@ -345,5 +460,42 @@ export const BlockMetadata_DeliverTx = {
     message.request !== undefined && (obj.request = message.request ? RequestDeliverTx.toSDK(message.request) : undefined);
     message.response !== undefined && (obj.response = message.response ? ResponseDeliverTx.toSDK(message.response) : undefined);
     return obj;
+  },
+  fromAmino(object: BlockMetadata_DeliverTxAmino): BlockMetadata_DeliverTx {
+    const message = createBaseBlockMetadata_DeliverTx();
+    if (object.request !== undefined && object.request !== null) {
+      message.request = RequestDeliverTx.fromAmino(object.request);
+    }
+    if (object.response !== undefined && object.response !== null) {
+      message.response = ResponseDeliverTx.fromAmino(object.response);
+    }
+    return message;
+  },
+  toAmino(message: BlockMetadata_DeliverTx): BlockMetadata_DeliverTxAmino {
+    const obj: any = {};
+    obj.request = message.request ? RequestDeliverTx.toAmino(message.request) : undefined;
+    obj.response = message.response ? ResponseDeliverTx.toAmino(message.response) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: BlockMetadata_DeliverTxAminoMsg): BlockMetadata_DeliverTx {
+    return BlockMetadata_DeliverTx.fromAmino(object.value);
+  },
+  toAminoMsg(message: BlockMetadata_DeliverTx): BlockMetadata_DeliverTxAminoMsg {
+    return {
+      type: "cosmos-sdk/DeliverTx",
+      value: BlockMetadata_DeliverTx.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: BlockMetadata_DeliverTxProtoMsg): BlockMetadata_DeliverTx {
+    return BlockMetadata_DeliverTx.decode(message.value);
+  },
+  toProto(message: BlockMetadata_DeliverTx): Uint8Array {
+    return BlockMetadata_DeliverTx.encode(message).finish();
+  },
+  toProtoMsg(message: BlockMetadata_DeliverTx): BlockMetadata_DeliverTxProtoMsg {
+    return {
+      typeUrl: "/cosmos.base.store.v1beta1.DeliverTx",
+      value: BlockMetadata_DeliverTx.encode(message).finish()
+    };
   }
 };

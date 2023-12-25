@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Long, isSet, DeepPartial, Exact } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.payment";
 /** StreamAccountStatus defines the status of a stream account */
 export enum StreamAccountStatus {
@@ -46,7 +46,7 @@ export interface StreamRecord {
   /** account address */
   account: string;
   /** latest update timestamp of the stream record */
-  crudTimestamp: Long;
+  crudTimestamp: bigint;
   /**
    * The per-second rate that an account's balance is changing.
    * It is the sum of the account's inbound and outbound flow rates.
@@ -64,45 +64,50 @@ export interface StreamRecord {
   /** the status of the stream account */
   status: StreamAccountStatus;
   /** the unix timestamp when the stream account will be settled */
-  settleTimestamp: Long;
+  settleTimestamp: bigint;
   /** the count of its out flows */
-  outFlowCount: Long;
+  outFlowCount: bigint;
   /** the frozen netflow rate, which is used when resuming stream account */
   frozenNetflowRate: string;
+}
+export interface StreamRecordProtoMsg {
+  typeUrl: "/greenfield.payment.StreamRecord";
+  value: Uint8Array;
 }
 /** Stream Payment Record of a stream account */
 export interface StreamRecordSDKType {
   account: string;
-  crud_timestamp: Long;
+  crud_timestamp: bigint;
   netflow_rate: string;
   static_balance: string;
   buffer_balance: string;
   lock_balance: string;
   status: StreamAccountStatus;
-  settle_timestamp: Long;
-  out_flow_count: Long;
+  settle_timestamp: bigint;
+  out_flow_count: bigint;
   frozen_netflow_rate: string;
 }
 function createBaseStreamRecord(): StreamRecord {
   return {
     account: "",
-    crudTimestamp: Long.ZERO,
+    crudTimestamp: BigInt(0),
     netflowRate: "",
     staticBalance: "",
     bufferBalance: "",
     lockBalance: "",
     status: 0,
-    settleTimestamp: Long.ZERO,
-    outFlowCount: Long.UZERO,
+    settleTimestamp: BigInt(0),
+    outFlowCount: BigInt(0),
     frozenNetflowRate: ""
   };
 }
 export const StreamRecord = {
-  encode(message: StreamRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.StreamRecord",
+  encode(message: StreamRecord, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.account !== "") {
       writer.uint32(10).string(message.account);
     }
-    if (!message.crudTimestamp.isZero()) {
+    if (message.crudTimestamp !== BigInt(0)) {
       writer.uint32(16).int64(message.crudTimestamp);
     }
     if (message.netflowRate !== "") {
@@ -120,10 +125,10 @@ export const StreamRecord = {
     if (message.status !== 0) {
       writer.uint32(56).int32(message.status);
     }
-    if (!message.settleTimestamp.isZero()) {
+    if (message.settleTimestamp !== BigInt(0)) {
       writer.uint32(64).int64(message.settleTimestamp);
     }
-    if (!message.outFlowCount.isZero()) {
+    if (message.outFlowCount !== BigInt(0)) {
       writer.uint32(72).uint64(message.outFlowCount);
     }
     if (message.frozenNetflowRate !== "") {
@@ -131,8 +136,8 @@ export const StreamRecord = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): StreamRecord {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): StreamRecord {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStreamRecord();
     while (reader.pos < end) {
@@ -142,7 +147,7 @@ export const StreamRecord = {
           message.account = reader.string();
           break;
         case 2:
-          message.crudTimestamp = (reader.int64() as Long);
+          message.crudTimestamp = reader.int64();
           break;
         case 3:
           message.netflowRate = reader.string();
@@ -160,10 +165,10 @@ export const StreamRecord = {
           message.status = (reader.int32() as any);
           break;
         case 8:
-          message.settleTimestamp = (reader.int64() as Long);
+          message.settleTimestamp = reader.int64();
           break;
         case 9:
-          message.outFlowCount = (reader.uint64() as Long);
+          message.outFlowCount = reader.uint64();
           break;
         case 10:
           message.frozenNetflowRate = reader.string();
@@ -178,42 +183,42 @@ export const StreamRecord = {
   fromJSON(object: any): StreamRecord {
     return {
       account: isSet(object.account) ? String(object.account) : "",
-      crudTimestamp: isSet(object.crudTimestamp) ? Long.fromValue(object.crudTimestamp) : Long.ZERO,
+      crudTimestamp: isSet(object.crudTimestamp) ? BigInt(object.crudTimestamp.toString()) : BigInt(0),
       netflowRate: isSet(object.netflowRate) ? String(object.netflowRate) : "",
       staticBalance: isSet(object.staticBalance) ? String(object.staticBalance) : "",
       bufferBalance: isSet(object.bufferBalance) ? String(object.bufferBalance) : "",
       lockBalance: isSet(object.lockBalance) ? String(object.lockBalance) : "",
       status: isSet(object.status) ? streamAccountStatusFromJSON(object.status) : -1,
-      settleTimestamp: isSet(object.settleTimestamp) ? Long.fromValue(object.settleTimestamp) : Long.ZERO,
-      outFlowCount: isSet(object.outFlowCount) ? Long.fromValue(object.outFlowCount) : Long.UZERO,
+      settleTimestamp: isSet(object.settleTimestamp) ? BigInt(object.settleTimestamp.toString()) : BigInt(0),
+      outFlowCount: isSet(object.outFlowCount) ? BigInt(object.outFlowCount.toString()) : BigInt(0),
       frozenNetflowRate: isSet(object.frozenNetflowRate) ? String(object.frozenNetflowRate) : ""
     };
   },
   toJSON(message: StreamRecord): unknown {
     const obj: any = {};
     message.account !== undefined && (obj.account = message.account);
-    message.crudTimestamp !== undefined && (obj.crudTimestamp = (message.crudTimestamp || Long.ZERO).toString());
+    message.crudTimestamp !== undefined && (obj.crudTimestamp = (message.crudTimestamp || BigInt(0)).toString());
     message.netflowRate !== undefined && (obj.netflowRate = message.netflowRate);
     message.staticBalance !== undefined && (obj.staticBalance = message.staticBalance);
     message.bufferBalance !== undefined && (obj.bufferBalance = message.bufferBalance);
     message.lockBalance !== undefined && (obj.lockBalance = message.lockBalance);
     message.status !== undefined && (obj.status = streamAccountStatusToJSON(message.status));
-    message.settleTimestamp !== undefined && (obj.settleTimestamp = (message.settleTimestamp || Long.ZERO).toString());
-    message.outFlowCount !== undefined && (obj.outFlowCount = (message.outFlowCount || Long.UZERO).toString());
+    message.settleTimestamp !== undefined && (obj.settleTimestamp = (message.settleTimestamp || BigInt(0)).toString());
+    message.outFlowCount !== undefined && (obj.outFlowCount = (message.outFlowCount || BigInt(0)).toString());
     message.frozenNetflowRate !== undefined && (obj.frozenNetflowRate = message.frozenNetflowRate);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<StreamRecord>, I>>(object: I): StreamRecord {
     const message = createBaseStreamRecord();
     message.account = object.account ?? "";
-    message.crudTimestamp = object.crudTimestamp !== undefined && object.crudTimestamp !== null ? Long.fromValue(object.crudTimestamp) : Long.ZERO;
+    message.crudTimestamp = object.crudTimestamp !== undefined && object.crudTimestamp !== null ? BigInt(object.crudTimestamp.toString()) : BigInt(0);
     message.netflowRate = object.netflowRate ?? "";
     message.staticBalance = object.staticBalance ?? "";
     message.bufferBalance = object.bufferBalance ?? "";
     message.lockBalance = object.lockBalance ?? "";
     message.status = object.status ?? 0;
-    message.settleTimestamp = object.settleTimestamp !== undefined && object.settleTimestamp !== null ? Long.fromValue(object.settleTimestamp) : Long.ZERO;
-    message.outFlowCount = object.outFlowCount !== undefined && object.outFlowCount !== null ? Long.fromValue(object.outFlowCount) : Long.UZERO;
+    message.settleTimestamp = object.settleTimestamp !== undefined && object.settleTimestamp !== null ? BigInt(object.settleTimestamp.toString()) : BigInt(0);
+    message.outFlowCount = object.outFlowCount !== undefined && object.outFlowCount !== null ? BigInt(object.outFlowCount.toString()) : BigInt(0);
     message.frozenNetflowRate = object.frozenNetflowRate ?? "";
     return message;
   },
@@ -244,5 +249,68 @@ export const StreamRecord = {
     obj.out_flow_count = message.outFlowCount;
     obj.frozen_netflow_rate = message.frozenNetflowRate;
     return obj;
+  },
+  fromAmino(object: StreamRecordAmino): StreamRecord {
+    const message = createBaseStreamRecord();
+    if (object.account !== undefined && object.account !== null) {
+      message.account = object.account;
+    }
+    if (object.crud_timestamp !== undefined && object.crud_timestamp !== null) {
+      message.crudTimestamp = BigInt(object.crud_timestamp);
+    }
+    if (object.netflow_rate !== undefined && object.netflow_rate !== null) {
+      message.netflowRate = object.netflow_rate;
+    }
+    if (object.static_balance !== undefined && object.static_balance !== null) {
+      message.staticBalance = object.static_balance;
+    }
+    if (object.buffer_balance !== undefined && object.buffer_balance !== null) {
+      message.bufferBalance = object.buffer_balance;
+    }
+    if (object.lock_balance !== undefined && object.lock_balance !== null) {
+      message.lockBalance = object.lock_balance;
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = streamAccountStatusFromJSON(object.status);
+    }
+    if (object.settle_timestamp !== undefined && object.settle_timestamp !== null) {
+      message.settleTimestamp = BigInt(object.settle_timestamp);
+    }
+    if (object.out_flow_count !== undefined && object.out_flow_count !== null) {
+      message.outFlowCount = BigInt(object.out_flow_count);
+    }
+    if (object.frozen_netflow_rate !== undefined && object.frozen_netflow_rate !== null) {
+      message.frozenNetflowRate = object.frozen_netflow_rate;
+    }
+    return message;
+  },
+  toAmino(message: StreamRecord): StreamRecordAmino {
+    const obj: any = {};
+    obj.account = message.account;
+    obj.crud_timestamp = message.crudTimestamp ? message.crudTimestamp.toString() : undefined;
+    obj.netflow_rate = message.netflowRate;
+    obj.static_balance = message.staticBalance;
+    obj.buffer_balance = message.bufferBalance;
+    obj.lock_balance = message.lockBalance;
+    obj.status = streamAccountStatusToJSON(message.status);
+    obj.settle_timestamp = message.settleTimestamp ? message.settleTimestamp.toString() : undefined;
+    obj.out_flow_count = message.outFlowCount ? message.outFlowCount.toString() : undefined;
+    obj.frozen_netflow_rate = message.frozenNetflowRate;
+    return obj;
+  },
+  fromAminoMsg(object: StreamRecordAminoMsg): StreamRecord {
+    return StreamRecord.fromAmino(object.value);
+  },
+  fromProtoMsg(message: StreamRecordProtoMsg): StreamRecord {
+    return StreamRecord.decode(message.value);
+  },
+  toProto(message: StreamRecord): Uint8Array {
+    return StreamRecord.encode(message).finish();
+  },
+  toProtoMsg(message: StreamRecord): StreamRecordProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.StreamRecord",
+      value: StreamRecord.encode(message).finish()
+    };
   }
 };

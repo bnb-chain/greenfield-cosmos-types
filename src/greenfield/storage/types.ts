@@ -1,8 +1,8 @@
 //@ts-nocheck
 /* eslint-disable */
 import { VisibilityType, SourceType, BucketStatus, LocalVirtualGroup, LocalVirtualGroupSDKType, ObjectStatus, RedundancyType, visibilityTypeFromJSON, sourceTypeFromJSON, bucketStatusFromJSON, visibilityTypeToJSON, sourceTypeToJSON, bucketStatusToJSON, objectStatusFromJSON, redundancyTypeFromJSON, objectStatusToJSON, redundancyTypeToJSON } from "./common";
-import { Long, isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { isSet, DeepPartial, Exact, bytesFromBase64, base64FromBytes } from "../../helpers";
 export const protobufPackage = "greenfield.storage";
 export interface BucketInfo {
   /** owner is the account address of bucket creator, it is also the bucket owner. */
@@ -16,7 +16,7 @@ export interface BucketInfo {
   /** source_type defines which chain the user should send the bucket management transactions to */
   sourceType: SourceType;
   /** create_at define the block timestamp when the bucket created. */
-  createAt: Long;
+  createAt: bigint;
   /** payment_address is the address of the payment account */
   paymentAddress: string;
   /** global_virtual_group_family_id defines the unique id of gvg family */
@@ -26,11 +26,15 @@ export interface BucketInfo {
    * The available read data for each user is the sum of the free read data provided by SP and
    * the ChargeReadQuota specified here.
    */
-  chargedReadQuota: Long;
+  chargedReadQuota: bigint;
   /** bucket_status define the status of the bucket. */
   bucketStatus: BucketStatus;
   /** tags defines a list of tags the bucket has */
-  tags: ResourceTags;
+  tags?: ResourceTags;
+}
+export interface BucketInfoProtoMsg {
+  typeUrl: "/greenfield.storage.BucketInfo";
+  value: Uint8Array;
 }
 export interface BucketInfoSDKType {
   owner: string;
@@ -38,26 +42,30 @@ export interface BucketInfoSDKType {
   visibility: VisibilityType;
   id: string;
   source_type: SourceType;
-  create_at: Long;
+  create_at: bigint;
   payment_address: string;
   global_virtual_group_family_id: number;
-  charged_read_quota: Long;
+  charged_read_quota: bigint;
   bucket_status: BucketStatus;
-  tags: ResourceTagsSDKType;
+  tags?: ResourceTagsSDKType;
 }
 export interface InternalBucketInfo {
   /** the time of the payment price, used to calculate the charge rate of the bucket */
-  priceTime: Long;
+  priceTime: bigint;
   /** the total size of the objects in the bucket, used to calculate the charge rate of the bucket */
-  totalChargeSize: Long;
+  totalChargeSize: bigint;
   /** local_virtual_groups contains all the lvg of this bucket. */
   localVirtualGroups: LocalVirtualGroup[];
   /** next_local_virtual_group_id store the next id used by local virtual group */
   nextLocalVirtualGroupId: number;
 }
+export interface InternalBucketInfoProtoMsg {
+  typeUrl: "/greenfield.storage.InternalBucketInfo";
+  value: Uint8Array;
+}
 export interface InternalBucketInfoSDKType {
-  price_time: Long;
-  total_charge_size: Long;
+  price_time: bigint;
+  total_charge_size: bigint;
   local_virtual_groups: LocalVirtualGroupSDKType[];
   next_local_virtual_group_id: number;
 }
@@ -74,13 +82,13 @@ export interface ObjectInfo {
   id: string;
   localVirtualGroupId: number;
   /** payloadSize is the total size of the object payload */
-  payloadSize: Long;
+  payloadSize: bigint;
   /** visibility defines the highest permissions for object. When an object is public, everyone can access it. */
   visibility: VisibilityType;
   /** content_type define the format of the object which should be a standard MIME type. */
   contentType: string;
   /** create_at define the block timestamp when the object is created */
-  createAt: Long;
+  createAt: bigint;
   /** object_status define the upload status of the object. */
   objectStatus: ObjectStatus;
   /** redundancy_type define the type of the redundancy which can be multi-replication or EC. */
@@ -93,7 +101,11 @@ export interface ObjectInfo {
    */
   checksums: Uint8Array[];
   /** tags defines a list of tags the object has */
-  tags: ResourceTags;
+  tags?: ResourceTags;
+}
+export interface ObjectInfoProtoMsg {
+  typeUrl: "/greenfield.storage.ObjectInfo";
+  value: Uint8Array;
 }
 export interface ObjectInfoSDKType {
   owner: string;
@@ -102,15 +114,15 @@ export interface ObjectInfoSDKType {
   object_name: string;
   id: string;
   local_virtual_group_id: number;
-  payload_size: Long;
+  payload_size: bigint;
   visibility: VisibilityType;
   content_type: string;
-  create_at: Long;
+  create_at: bigint;
   object_status: ObjectStatus;
   redundancy_type: RedundancyType;
   source_type: SourceType;
   checksums: Uint8Array[];
-  tags: ResourceTagsSDKType;
+  tags?: ResourceTagsSDKType;
 }
 export interface GroupInfo {
   /** owner is the owner of the group. It can not changed once it created. */
@@ -124,7 +136,11 @@ export interface GroupInfo {
   /** extra is used to store extra info for the group */
   extra: string;
   /** tags defines a list of tags the group has */
-  tags: ResourceTags;
+  tags?: ResourceTags;
+}
+export interface GroupInfoProtoMsg {
+  typeUrl: "/greenfield.storage.GroupInfo";
+  value: Uint8Array;
 }
 export interface GroupInfoSDKType {
   owner: string;
@@ -132,11 +148,15 @@ export interface GroupInfoSDKType {
   source_type: SourceType;
   id: string;
   extra: string;
-  tags: ResourceTagsSDKType;
+  tags?: ResourceTagsSDKType;
 }
 export interface Trait {
   traitType: string;
   value: string;
+}
+export interface TraitProtoMsg {
+  typeUrl: "/greenfield.storage.Trait";
+  value: Uint8Array;
 }
 export interface TraitSDKType {
   trait_type: string;
@@ -153,6 +173,10 @@ export interface BucketMetaData {
   image: string;
   /** attributes */
   attributes: Trait[];
+}
+export interface BucketMetaDataProtoMsg {
+  typeUrl: "/greenfield.storage.BucketMetaData";
+  value: Uint8Array;
 }
 export interface BucketMetaDataSDKType {
   description: string;
@@ -173,6 +197,10 @@ export interface ObjectMetaData {
   /** attributes */
   attributes: Trait[];
 }
+export interface ObjectMetaDataProtoMsg {
+  typeUrl: "/greenfield.storage.ObjectMetaData";
+  value: Uint8Array;
+}
 export interface ObjectMetaDataSDKType {
   description: string;
   external_url: string;
@@ -192,6 +220,10 @@ export interface GroupMetaData {
   /** attributes */
   attributes: Trait[];
 }
+export interface GroupMetaDataProtoMsg {
+  typeUrl: "/greenfield.storage.GroupMetaData";
+  value: Uint8Array;
+}
 export interface GroupMetaDataSDKType {
   description: string;
   external_url: string;
@@ -203,18 +235,26 @@ export interface Ids {
   /** ids of the objects or buckets */
   id: string[];
 }
+export interface IdsProtoMsg {
+  typeUrl: "/greenfield.storage.Ids";
+  value: Uint8Array;
+}
 export interface IdsSDKType {
   id: string[];
 }
 export interface DeleteInfo {
-  bucketIds: Ids;
-  objectIds: Ids;
-  groupIds: Ids;
+  bucketIds?: Ids;
+  objectIds?: Ids;
+  groupIds?: Ids;
+}
+export interface DeleteInfoProtoMsg {
+  typeUrl: "/greenfield.storage.DeleteInfo";
+  value: Uint8Array;
 }
 export interface DeleteInfoSDKType {
-  bucket_ids: IdsSDKType;
-  object_ids: IdsSDKType;
-  group_ids: IdsSDKType;
+  bucket_ids?: IdsSDKType;
+  object_ids?: IdsSDKType;
+  group_ids?: IdsSDKType;
 }
 export interface MigrationBucketInfo {
   srcSpId: number;
@@ -222,6 +262,10 @@ export interface MigrationBucketInfo {
   dstSpId: number;
   /** id is the unique identifier of bucket */
   bucketId: string;
+}
+export interface MigrationBucketInfoProtoMsg {
+  typeUrl: "/greenfield.storage.MigrationBucketInfo";
+  value: Uint8Array;
 }
 export interface MigrationBucketInfoSDKType {
   src_sp_id: number;
@@ -233,12 +277,20 @@ export interface ResourceTags {
   /** tags defines a list of tags the resource has */
   tags: ResourceTags_Tag[];
 }
+export interface ResourceTagsProtoMsg {
+  typeUrl: "/greenfield.storage.ResourceTags";
+  value: Uint8Array;
+}
 export interface ResourceTagsSDKType {
   tags: ResourceTags_TagSDKType[];
 }
 export interface ResourceTags_Tag {
   key: string;
   value: string;
+}
+export interface ResourceTags_TagProtoMsg {
+  typeUrl: "/greenfield.storage.Tag";
+  value: Uint8Array;
 }
 export interface ResourceTags_TagSDKType {
   key: string;
@@ -251,16 +303,17 @@ function createBaseBucketInfo(): BucketInfo {
     visibility: 0,
     id: "",
     sourceType: 0,
-    createAt: Long.ZERO,
+    createAt: BigInt(0),
     paymentAddress: "",
     globalVirtualGroupFamilyId: 0,
-    chargedReadQuota: Long.UZERO,
+    chargedReadQuota: BigInt(0),
     bucketStatus: 0,
-    tags: ResourceTags.fromPartial({})
+    tags: undefined
   };
 }
 export const BucketInfo = {
-  encode(message: BucketInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.BucketInfo",
+  encode(message: BucketInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -276,7 +329,7 @@ export const BucketInfo = {
     if (message.sourceType !== 0) {
       writer.uint32(40).int32(message.sourceType);
     }
-    if (!message.createAt.isZero()) {
+    if (message.createAt !== BigInt(0)) {
       writer.uint32(48).int64(message.createAt);
     }
     if (message.paymentAddress !== "") {
@@ -285,7 +338,7 @@ export const BucketInfo = {
     if (message.globalVirtualGroupFamilyId !== 0) {
       writer.uint32(64).uint32(message.globalVirtualGroupFamilyId);
     }
-    if (!message.chargedReadQuota.isZero()) {
+    if (message.chargedReadQuota !== BigInt(0)) {
       writer.uint32(72).uint64(message.chargedReadQuota);
     }
     if (message.bucketStatus !== 0) {
@@ -296,8 +349,8 @@ export const BucketInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): BucketInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): BucketInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBucketInfo();
     while (reader.pos < end) {
@@ -319,7 +372,7 @@ export const BucketInfo = {
           message.sourceType = (reader.int32() as any);
           break;
         case 6:
-          message.createAt = (reader.int64() as Long);
+          message.createAt = reader.int64();
           break;
         case 7:
           message.paymentAddress = reader.string();
@@ -328,7 +381,7 @@ export const BucketInfo = {
           message.globalVirtualGroupFamilyId = reader.uint32();
           break;
         case 9:
-          message.chargedReadQuota = (reader.uint64() as Long);
+          message.chargedReadQuota = reader.uint64();
           break;
         case 10:
           message.bucketStatus = (reader.int32() as any);
@@ -350,10 +403,10 @@ export const BucketInfo = {
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : -1,
       id: isSet(object.id) ? String(object.id) : "",
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : -1,
-      createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
+      createAt: isSet(object.createAt) ? BigInt(object.createAt.toString()) : BigInt(0),
       paymentAddress: isSet(object.paymentAddress) ? String(object.paymentAddress) : "",
       globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
-      chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
+      chargedReadQuota: isSet(object.chargedReadQuota) ? BigInt(object.chargedReadQuota.toString()) : BigInt(0),
       bucketStatus: isSet(object.bucketStatus) ? bucketStatusFromJSON(object.bucketStatus) : -1,
       tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined
     };
@@ -365,10 +418,10 @@ export const BucketInfo = {
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.id !== undefined && (obj.id = message.id);
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
-    message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
+    message.createAt !== undefined && (obj.createAt = (message.createAt || BigInt(0)).toString());
     message.paymentAddress !== undefined && (obj.paymentAddress = message.paymentAddress);
     message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
-    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
+    message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || BigInt(0)).toString());
     message.bucketStatus !== undefined && (obj.bucketStatus = bucketStatusToJSON(message.bucketStatus));
     message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toJSON(message.tags) : undefined);
     return obj;
@@ -380,10 +433,10 @@ export const BucketInfo = {
     message.visibility = object.visibility ?? 0;
     message.id = object.id ?? "";
     message.sourceType = object.sourceType ?? 0;
-    message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
+    message.createAt = object.createAt !== undefined && object.createAt !== null ? BigInt(object.createAt.toString()) : BigInt(0);
     message.paymentAddress = object.paymentAddress ?? "";
     message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
-    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
+    message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? BigInt(object.chargedReadQuota.toString()) : BigInt(0);
     message.bucketStatus = object.bucketStatus ?? 0;
     message.tags = object.tags !== undefined && object.tags !== null ? ResourceTags.fromPartial(object.tags) : undefined;
     return message;
@@ -417,22 +470,90 @@ export const BucketInfo = {
     message.bucketStatus !== undefined && (obj.bucket_status = bucketStatusToJSON(message.bucketStatus));
     message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
+  },
+  fromAmino(object: BucketInfoAmino): BucketInfo {
+    const message = createBaseBucketInfo();
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.visibility !== undefined && object.visibility !== null) {
+      message.visibility = visibilityTypeFromJSON(object.visibility);
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.source_type !== undefined && object.source_type !== null) {
+      message.sourceType = sourceTypeFromJSON(object.source_type);
+    }
+    if (object.create_at !== undefined && object.create_at !== null) {
+      message.createAt = BigInt(object.create_at);
+    }
+    if (object.payment_address !== undefined && object.payment_address !== null) {
+      message.paymentAddress = object.payment_address;
+    }
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    if (object.charged_read_quota !== undefined && object.charged_read_quota !== null) {
+      message.chargedReadQuota = BigInt(object.charged_read_quota);
+    }
+    if (object.bucket_status !== undefined && object.bucket_status !== null) {
+      message.bucketStatus = bucketStatusFromJSON(object.bucket_status);
+    }
+    if (object.tags !== undefined && object.tags !== null) {
+      message.tags = ResourceTags.fromAmino(object.tags);
+    }
+    return message;
+  },
+  toAmino(message: BucketInfo): BucketInfoAmino {
+    const obj: any = {};
+    obj.owner = message.owner;
+    obj.bucket_name = message.bucketName;
+    obj.visibility = visibilityTypeToJSON(message.visibility);
+    obj.id = message.id;
+    obj.source_type = sourceTypeToJSON(message.sourceType);
+    obj.create_at = message.createAt ? message.createAt.toString() : undefined;
+    obj.payment_address = message.paymentAddress;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.charged_read_quota = message.chargedReadQuota ? message.chargedReadQuota.toString() : undefined;
+    obj.bucket_status = bucketStatusToJSON(message.bucketStatus);
+    obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: BucketInfoAminoMsg): BucketInfo {
+    return BucketInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: BucketInfoProtoMsg): BucketInfo {
+    return BucketInfo.decode(message.value);
+  },
+  toProto(message: BucketInfo): Uint8Array {
+    return BucketInfo.encode(message).finish();
+  },
+  toProtoMsg(message: BucketInfo): BucketInfoProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.BucketInfo",
+      value: BucketInfo.encode(message).finish()
+    };
   }
 };
 function createBaseInternalBucketInfo(): InternalBucketInfo {
   return {
-    priceTime: Long.ZERO,
-    totalChargeSize: Long.UZERO,
+    priceTime: BigInt(0),
+    totalChargeSize: BigInt(0),
     localVirtualGroups: [],
     nextLocalVirtualGroupId: 0
   };
 }
 export const InternalBucketInfo = {
-  encode(message: InternalBucketInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.priceTime.isZero()) {
+  typeUrl: "/greenfield.storage.InternalBucketInfo",
+  encode(message: InternalBucketInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.priceTime !== BigInt(0)) {
       writer.uint32(8).int64(message.priceTime);
     }
-    if (!message.totalChargeSize.isZero()) {
+    if (message.totalChargeSize !== BigInt(0)) {
       writer.uint32(16).uint64(message.totalChargeSize);
     }
     for (const v of message.localVirtualGroups) {
@@ -443,18 +564,18 @@ export const InternalBucketInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): InternalBucketInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): InternalBucketInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseInternalBucketInfo();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.priceTime = (reader.int64() as Long);
+          message.priceTime = reader.int64();
           break;
         case 2:
-          message.totalChargeSize = (reader.uint64() as Long);
+          message.totalChargeSize = reader.uint64();
           break;
         case 3:
           message.localVirtualGroups.push(LocalVirtualGroup.decode(reader, reader.uint32()));
@@ -471,16 +592,16 @@ export const InternalBucketInfo = {
   },
   fromJSON(object: any): InternalBucketInfo {
     return {
-      priceTime: isSet(object.priceTime) ? Long.fromValue(object.priceTime) : Long.ZERO,
-      totalChargeSize: isSet(object.totalChargeSize) ? Long.fromValue(object.totalChargeSize) : Long.UZERO,
+      priceTime: isSet(object.priceTime) ? BigInt(object.priceTime.toString()) : BigInt(0),
+      totalChargeSize: isSet(object.totalChargeSize) ? BigInt(object.totalChargeSize.toString()) : BigInt(0),
       localVirtualGroups: Array.isArray(object?.localVirtualGroups) ? object.localVirtualGroups.map((e: any) => LocalVirtualGroup.fromJSON(e)) : [],
       nextLocalVirtualGroupId: isSet(object.nextLocalVirtualGroupId) ? Number(object.nextLocalVirtualGroupId) : 0
     };
   },
   toJSON(message: InternalBucketInfo): unknown {
     const obj: any = {};
-    message.priceTime !== undefined && (obj.priceTime = (message.priceTime || Long.ZERO).toString());
-    message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || Long.UZERO).toString());
+    message.priceTime !== undefined && (obj.priceTime = (message.priceTime || BigInt(0)).toString());
+    message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || BigInt(0)).toString());
     if (message.localVirtualGroups) {
       obj.localVirtualGroups = message.localVirtualGroups.map(e => e ? LocalVirtualGroup.toJSON(e) : undefined);
     } else {
@@ -491,8 +612,8 @@ export const InternalBucketInfo = {
   },
   fromPartial<I extends Exact<DeepPartial<InternalBucketInfo>, I>>(object: I): InternalBucketInfo {
     const message = createBaseInternalBucketInfo();
-    message.priceTime = object.priceTime !== undefined && object.priceTime !== null ? Long.fromValue(object.priceTime) : Long.ZERO;
-    message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? Long.fromValue(object.totalChargeSize) : Long.UZERO;
+    message.priceTime = object.priceTime !== undefined && object.priceTime !== null ? BigInt(object.priceTime.toString()) : BigInt(0);
+    message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? BigInt(object.totalChargeSize.toString()) : BigInt(0);
     message.localVirtualGroups = object.localVirtualGroups?.map(e => LocalVirtualGroup.fromPartial(e)) || [];
     message.nextLocalVirtualGroupId = object.nextLocalVirtualGroupId ?? 0;
     return message;
@@ -516,6 +637,47 @@ export const InternalBucketInfo = {
     }
     obj.next_local_virtual_group_id = message.nextLocalVirtualGroupId;
     return obj;
+  },
+  fromAmino(object: InternalBucketInfoAmino): InternalBucketInfo {
+    const message = createBaseInternalBucketInfo();
+    if (object.price_time !== undefined && object.price_time !== null) {
+      message.priceTime = BigInt(object.price_time);
+    }
+    if (object.total_charge_size !== undefined && object.total_charge_size !== null) {
+      message.totalChargeSize = BigInt(object.total_charge_size);
+    }
+    message.localVirtualGroups = object.local_virtual_groups?.map(e => LocalVirtualGroup.fromAmino(e)) || [];
+    if (object.next_local_virtual_group_id !== undefined && object.next_local_virtual_group_id !== null) {
+      message.nextLocalVirtualGroupId = object.next_local_virtual_group_id;
+    }
+    return message;
+  },
+  toAmino(message: InternalBucketInfo): InternalBucketInfoAmino {
+    const obj: any = {};
+    obj.price_time = message.priceTime ? message.priceTime.toString() : undefined;
+    obj.total_charge_size = message.totalChargeSize ? message.totalChargeSize.toString() : undefined;
+    if (message.localVirtualGroups) {
+      obj.local_virtual_groups = message.localVirtualGroups.map(e => e ? LocalVirtualGroup.toAmino(e) : undefined);
+    } else {
+      obj.local_virtual_groups = [];
+    }
+    obj.next_local_virtual_group_id = message.nextLocalVirtualGroupId;
+    return obj;
+  },
+  fromAminoMsg(object: InternalBucketInfoAminoMsg): InternalBucketInfo {
+    return InternalBucketInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: InternalBucketInfoProtoMsg): InternalBucketInfo {
+    return InternalBucketInfo.decode(message.value);
+  },
+  toProto(message: InternalBucketInfo): Uint8Array {
+    return InternalBucketInfo.encode(message).finish();
+  },
+  toProtoMsg(message: InternalBucketInfo): InternalBucketInfoProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.InternalBucketInfo",
+      value: InternalBucketInfo.encode(message).finish()
+    };
   }
 };
 function createBaseObjectInfo(): ObjectInfo {
@@ -526,19 +688,20 @@ function createBaseObjectInfo(): ObjectInfo {
     objectName: "",
     id: "",
     localVirtualGroupId: 0,
-    payloadSize: Long.UZERO,
+    payloadSize: BigInt(0),
     visibility: 0,
     contentType: "",
-    createAt: Long.ZERO,
+    createAt: BigInt(0),
     objectStatus: 0,
     redundancyType: 0,
     sourceType: 0,
     checksums: [],
-    tags: ResourceTags.fromPartial({})
+    tags: undefined
   };
 }
 export const ObjectInfo = {
-  encode(message: ObjectInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.ObjectInfo",
+  encode(message: ObjectInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -557,7 +720,7 @@ export const ObjectInfo = {
     if (message.localVirtualGroupId !== 0) {
       writer.uint32(48).uint32(message.localVirtualGroupId);
     }
-    if (!message.payloadSize.isZero()) {
+    if (message.payloadSize !== BigInt(0)) {
       writer.uint32(56).uint64(message.payloadSize);
     }
     if (message.visibility !== 0) {
@@ -566,7 +729,7 @@ export const ObjectInfo = {
     if (message.contentType !== "") {
       writer.uint32(74).string(message.contentType);
     }
-    if (!message.createAt.isZero()) {
+    if (message.createAt !== BigInt(0)) {
       writer.uint32(80).int64(message.createAt);
     }
     if (message.objectStatus !== 0) {
@@ -586,8 +749,8 @@ export const ObjectInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ObjectInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ObjectInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseObjectInfo();
     while (reader.pos < end) {
@@ -612,7 +775,7 @@ export const ObjectInfo = {
           message.localVirtualGroupId = reader.uint32();
           break;
         case 7:
-          message.payloadSize = (reader.uint64() as Long);
+          message.payloadSize = reader.uint64();
           break;
         case 8:
           message.visibility = (reader.int32() as any);
@@ -621,7 +784,7 @@ export const ObjectInfo = {
           message.contentType = reader.string();
           break;
         case 10:
-          message.createAt = (reader.int64() as Long);
+          message.createAt = reader.int64();
           break;
         case 11:
           message.objectStatus = (reader.int32() as any);
@@ -653,10 +816,10 @@ export const ObjectInfo = {
       objectName: isSet(object.objectName) ? String(object.objectName) : "",
       id: isSet(object.id) ? String(object.id) : "",
       localVirtualGroupId: isSet(object.localVirtualGroupId) ? Number(object.localVirtualGroupId) : 0,
-      payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO,
+      payloadSize: isSet(object.payloadSize) ? BigInt(object.payloadSize.toString()) : BigInt(0),
       visibility: isSet(object.visibility) ? visibilityTypeFromJSON(object.visibility) : -1,
       contentType: isSet(object.contentType) ? String(object.contentType) : "",
-      createAt: isSet(object.createAt) ? Long.fromValue(object.createAt) : Long.ZERO,
+      createAt: isSet(object.createAt) ? BigInt(object.createAt.toString()) : BigInt(0),
       objectStatus: isSet(object.objectStatus) ? objectStatusFromJSON(object.objectStatus) : -1,
       redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : -1,
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : -1,
@@ -672,10 +835,10 @@ export const ObjectInfo = {
     message.objectName !== undefined && (obj.objectName = message.objectName);
     message.id !== undefined && (obj.id = message.id);
     message.localVirtualGroupId !== undefined && (obj.localVirtualGroupId = Math.round(message.localVirtualGroupId));
-    message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
+    message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || BigInt(0)).toString());
     message.visibility !== undefined && (obj.visibility = visibilityTypeToJSON(message.visibility));
     message.contentType !== undefined && (obj.contentType = message.contentType);
-    message.createAt !== undefined && (obj.createAt = (message.createAt || Long.ZERO).toString());
+    message.createAt !== undefined && (obj.createAt = (message.createAt || BigInt(0)).toString());
     message.objectStatus !== undefined && (obj.objectStatus = objectStatusToJSON(message.objectStatus));
     message.redundancyType !== undefined && (obj.redundancyType = redundancyTypeToJSON(message.redundancyType));
     message.sourceType !== undefined && (obj.sourceType = sourceTypeToJSON(message.sourceType));
@@ -695,10 +858,10 @@ export const ObjectInfo = {
     message.objectName = object.objectName ?? "";
     message.id = object.id ?? "";
     message.localVirtualGroupId = object.localVirtualGroupId ?? 0;
-    message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
+    message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? BigInt(object.payloadSize.toString()) : BigInt(0);
     message.visibility = object.visibility ?? 0;
     message.contentType = object.contentType ?? "";
-    message.createAt = object.createAt !== undefined && object.createAt !== null ? Long.fromValue(object.createAt) : Long.ZERO;
+    message.createAt = object.createAt !== undefined && object.createAt !== null ? BigInt(object.createAt.toString()) : BigInt(0);
     message.objectStatus = object.objectStatus ?? 0;
     message.redundancyType = object.redundancyType ?? 0;
     message.sourceType = object.sourceType ?? 0;
@@ -747,6 +910,91 @@ export const ObjectInfo = {
     }
     message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
+  },
+  fromAmino(object: ObjectInfoAmino): ObjectInfo {
+    const message = createBaseObjectInfo();
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.object_name !== undefined && object.object_name !== null) {
+      message.objectName = object.object_name;
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.local_virtual_group_id !== undefined && object.local_virtual_group_id !== null) {
+      message.localVirtualGroupId = object.local_virtual_group_id;
+    }
+    if (object.payload_size !== undefined && object.payload_size !== null) {
+      message.payloadSize = BigInt(object.payload_size);
+    }
+    if (object.visibility !== undefined && object.visibility !== null) {
+      message.visibility = visibilityTypeFromJSON(object.visibility);
+    }
+    if (object.content_type !== undefined && object.content_type !== null) {
+      message.contentType = object.content_type;
+    }
+    if (object.create_at !== undefined && object.create_at !== null) {
+      message.createAt = BigInt(object.create_at);
+    }
+    if (object.object_status !== undefined && object.object_status !== null) {
+      message.objectStatus = objectStatusFromJSON(object.object_status);
+    }
+    if (object.redundancy_type !== undefined && object.redundancy_type !== null) {
+      message.redundancyType = redundancyTypeFromJSON(object.redundancy_type);
+    }
+    if (object.source_type !== undefined && object.source_type !== null) {
+      message.sourceType = sourceTypeFromJSON(object.source_type);
+    }
+    message.checksums = object.checksums?.map(e => bytesFromBase64(e)) || [];
+    if (object.tags !== undefined && object.tags !== null) {
+      message.tags = ResourceTags.fromAmino(object.tags);
+    }
+    return message;
+  },
+  toAmino(message: ObjectInfo): ObjectInfoAmino {
+    const obj: any = {};
+    obj.owner = message.owner;
+    obj.creator = message.creator;
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    obj.id = message.id;
+    obj.local_virtual_group_id = message.localVirtualGroupId;
+    obj.payload_size = message.payloadSize ? message.payloadSize.toString() : undefined;
+    obj.visibility = visibilityTypeToJSON(message.visibility);
+    obj.content_type = message.contentType;
+    obj.create_at = message.createAt ? message.createAt.toString() : undefined;
+    obj.object_status = objectStatusToJSON(message.objectStatus);
+    obj.redundancy_type = redundancyTypeToJSON(message.redundancyType);
+    obj.source_type = sourceTypeToJSON(message.sourceType);
+    if (message.checksums) {
+      obj.checksums = message.checksums.map(e => base64FromBytes(e));
+    } else {
+      obj.checksums = [];
+    }
+    obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: ObjectInfoAminoMsg): ObjectInfo {
+    return ObjectInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ObjectInfoProtoMsg): ObjectInfo {
+    return ObjectInfo.decode(message.value);
+  },
+  toProto(message: ObjectInfo): Uint8Array {
+    return ObjectInfo.encode(message).finish();
+  },
+  toProtoMsg(message: ObjectInfo): ObjectInfoProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.ObjectInfo",
+      value: ObjectInfo.encode(message).finish()
+    };
   }
 };
 function createBaseGroupInfo(): GroupInfo {
@@ -756,11 +1004,12 @@ function createBaseGroupInfo(): GroupInfo {
     sourceType: 0,
     id: "",
     extra: "",
-    tags: ResourceTags.fromPartial({})
+    tags: undefined
   };
 }
 export const GroupInfo = {
-  encode(message: GroupInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.GroupInfo",
+  encode(message: GroupInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.owner !== "") {
       writer.uint32(10).string(message.owner);
     }
@@ -781,8 +1030,8 @@ export const GroupInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GroupInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GroupInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGroupInfo();
     while (reader.pos < end) {
@@ -862,6 +1111,53 @@ export const GroupInfo = {
     obj.extra = message.extra;
     message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
     return obj;
+  },
+  fromAmino(object: GroupInfoAmino): GroupInfo {
+    const message = createBaseGroupInfo();
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    }
+    if (object.group_name !== undefined && object.group_name !== null) {
+      message.groupName = object.group_name;
+    }
+    if (object.source_type !== undefined && object.source_type !== null) {
+      message.sourceType = sourceTypeFromJSON(object.source_type);
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.extra !== undefined && object.extra !== null) {
+      message.extra = object.extra;
+    }
+    if (object.tags !== undefined && object.tags !== null) {
+      message.tags = ResourceTags.fromAmino(object.tags);
+    }
+    return message;
+  },
+  toAmino(message: GroupInfo): GroupInfoAmino {
+    const obj: any = {};
+    obj.owner = message.owner;
+    obj.group_name = message.groupName;
+    obj.source_type = sourceTypeToJSON(message.sourceType);
+    obj.id = message.id;
+    obj.extra = message.extra;
+    obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: GroupInfoAminoMsg): GroupInfo {
+    return GroupInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GroupInfoProtoMsg): GroupInfo {
+    return GroupInfo.decode(message.value);
+  },
+  toProto(message: GroupInfo): Uint8Array {
+    return GroupInfo.encode(message).finish();
+  },
+  toProtoMsg(message: GroupInfo): GroupInfoProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.GroupInfo",
+      value: GroupInfo.encode(message).finish()
+    };
   }
 };
 function createBaseTrait(): Trait {
@@ -871,7 +1167,8 @@ function createBaseTrait(): Trait {
   };
 }
 export const Trait = {
-  encode(message: Trait, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.Trait",
+  encode(message: Trait, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.traitType !== "") {
       writer.uint32(10).string(message.traitType);
     }
@@ -880,8 +1177,8 @@ export const Trait = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Trait {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Trait {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTrait();
     while (reader.pos < end) {
@@ -929,6 +1226,37 @@ export const Trait = {
     obj.trait_type = message.traitType;
     obj.value = message.value;
     return obj;
+  },
+  fromAmino(object: TraitAmino): Trait {
+    const message = createBaseTrait();
+    if (object.trait_type !== undefined && object.trait_type !== null) {
+      message.traitType = object.trait_type;
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    }
+    return message;
+  },
+  toAmino(message: Trait): TraitAmino {
+    const obj: any = {};
+    obj.trait_type = message.traitType;
+    obj.value = message.value;
+    return obj;
+  },
+  fromAminoMsg(object: TraitAminoMsg): Trait {
+    return Trait.fromAmino(object.value);
+  },
+  fromProtoMsg(message: TraitProtoMsg): Trait {
+    return Trait.decode(message.value);
+  },
+  toProto(message: Trait): Uint8Array {
+    return Trait.encode(message).finish();
+  },
+  toProtoMsg(message: Trait): TraitProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.Trait",
+      value: Trait.encode(message).finish()
+    };
   }
 };
 function createBaseBucketMetaData(): BucketMetaData {
@@ -941,7 +1269,8 @@ function createBaseBucketMetaData(): BucketMetaData {
   };
 }
 export const BucketMetaData = {
-  encode(message: BucketMetaData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.BucketMetaData",
+  encode(message: BucketMetaData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.description !== "") {
       writer.uint32(10).string(message.description);
     }
@@ -959,8 +1288,8 @@ export const BucketMetaData = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): BucketMetaData {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): BucketMetaData {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBucketMetaData();
     while (reader.pos < end) {
@@ -1040,6 +1369,51 @@ export const BucketMetaData = {
       obj.attributes = [];
     }
     return obj;
+  },
+  fromAmino(object: BucketMetaDataAmino): BucketMetaData {
+    const message = createBaseBucketMetaData();
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    }
+    if (object.external_url !== undefined && object.external_url !== null) {
+      message.externalUrl = object.external_url;
+    }
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.image !== undefined && object.image !== null) {
+      message.image = object.image;
+    }
+    message.attributes = object.attributes?.map(e => Trait.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: BucketMetaData): BucketMetaDataAmino {
+    const obj: any = {};
+    obj.description = message.description;
+    obj.external_url = message.externalUrl;
+    obj.bucket_name = message.bucketName;
+    obj.image = message.image;
+    if (message.attributes) {
+      obj.attributes = message.attributes.map(e => e ? Trait.toAmino(e) : undefined);
+    } else {
+      obj.attributes = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: BucketMetaDataAminoMsg): BucketMetaData {
+    return BucketMetaData.fromAmino(object.value);
+  },
+  fromProtoMsg(message: BucketMetaDataProtoMsg): BucketMetaData {
+    return BucketMetaData.decode(message.value);
+  },
+  toProto(message: BucketMetaData): Uint8Array {
+    return BucketMetaData.encode(message).finish();
+  },
+  toProtoMsg(message: BucketMetaData): BucketMetaDataProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.BucketMetaData",
+      value: BucketMetaData.encode(message).finish()
+    };
   }
 };
 function createBaseObjectMetaData(): ObjectMetaData {
@@ -1052,7 +1426,8 @@ function createBaseObjectMetaData(): ObjectMetaData {
   };
 }
 export const ObjectMetaData = {
-  encode(message: ObjectMetaData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.ObjectMetaData",
+  encode(message: ObjectMetaData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.description !== "") {
       writer.uint32(10).string(message.description);
     }
@@ -1070,8 +1445,8 @@ export const ObjectMetaData = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ObjectMetaData {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ObjectMetaData {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseObjectMetaData();
     while (reader.pos < end) {
@@ -1151,6 +1526,51 @@ export const ObjectMetaData = {
       obj.attributes = [];
     }
     return obj;
+  },
+  fromAmino(object: ObjectMetaDataAmino): ObjectMetaData {
+    const message = createBaseObjectMetaData();
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    }
+    if (object.external_url !== undefined && object.external_url !== null) {
+      message.externalUrl = object.external_url;
+    }
+    if (object.object_name !== undefined && object.object_name !== null) {
+      message.objectName = object.object_name;
+    }
+    if (object.image !== undefined && object.image !== null) {
+      message.image = object.image;
+    }
+    message.attributes = object.attributes?.map(e => Trait.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: ObjectMetaData): ObjectMetaDataAmino {
+    const obj: any = {};
+    obj.description = message.description;
+    obj.external_url = message.externalUrl;
+    obj.object_name = message.objectName;
+    obj.image = message.image;
+    if (message.attributes) {
+      obj.attributes = message.attributes.map(e => e ? Trait.toAmino(e) : undefined);
+    } else {
+      obj.attributes = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: ObjectMetaDataAminoMsg): ObjectMetaData {
+    return ObjectMetaData.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ObjectMetaDataProtoMsg): ObjectMetaData {
+    return ObjectMetaData.decode(message.value);
+  },
+  toProto(message: ObjectMetaData): Uint8Array {
+    return ObjectMetaData.encode(message).finish();
+  },
+  toProtoMsg(message: ObjectMetaData): ObjectMetaDataProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.ObjectMetaData",
+      value: ObjectMetaData.encode(message).finish()
+    };
   }
 };
 function createBaseGroupMetaData(): GroupMetaData {
@@ -1163,7 +1583,8 @@ function createBaseGroupMetaData(): GroupMetaData {
   };
 }
 export const GroupMetaData = {
-  encode(message: GroupMetaData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.GroupMetaData",
+  encode(message: GroupMetaData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.description !== "") {
       writer.uint32(10).string(message.description);
     }
@@ -1181,8 +1602,8 @@ export const GroupMetaData = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GroupMetaData {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GroupMetaData {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGroupMetaData();
     while (reader.pos < end) {
@@ -1262,6 +1683,51 @@ export const GroupMetaData = {
       obj.attributes = [];
     }
     return obj;
+  },
+  fromAmino(object: GroupMetaDataAmino): GroupMetaData {
+    const message = createBaseGroupMetaData();
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    }
+    if (object.external_url !== undefined && object.external_url !== null) {
+      message.externalUrl = object.external_url;
+    }
+    if (object.group_name !== undefined && object.group_name !== null) {
+      message.groupName = object.group_name;
+    }
+    if (object.image !== undefined && object.image !== null) {
+      message.image = object.image;
+    }
+    message.attributes = object.attributes?.map(e => Trait.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: GroupMetaData): GroupMetaDataAmino {
+    const obj: any = {};
+    obj.description = message.description;
+    obj.external_url = message.externalUrl;
+    obj.group_name = message.groupName;
+    obj.image = message.image;
+    if (message.attributes) {
+      obj.attributes = message.attributes.map(e => e ? Trait.toAmino(e) : undefined);
+    } else {
+      obj.attributes = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: GroupMetaDataAminoMsg): GroupMetaData {
+    return GroupMetaData.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GroupMetaDataProtoMsg): GroupMetaData {
+    return GroupMetaData.decode(message.value);
+  },
+  toProto(message: GroupMetaData): Uint8Array {
+    return GroupMetaData.encode(message).finish();
+  },
+  toProtoMsg(message: GroupMetaData): GroupMetaDataProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.GroupMetaData",
+      value: GroupMetaData.encode(message).finish()
+    };
   }
 };
 function createBaseIds(): Ids {
@@ -1270,14 +1736,15 @@ function createBaseIds(): Ids {
   };
 }
 export const Ids = {
-  encode(message: Ids, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.Ids",
+  encode(message: Ids, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.id) {
       writer.uint32(10).string(v!);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Ids {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Ids {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseIds();
     while (reader.pos < end) {
@@ -1325,17 +1792,47 @@ export const Ids = {
       obj.id = [];
     }
     return obj;
+  },
+  fromAmino(object: IdsAmino): Ids {
+    const message = createBaseIds();
+    message.id = object.id?.map(e => e) || [];
+    return message;
+  },
+  toAmino(message: Ids): IdsAmino {
+    const obj: any = {};
+    if (message.id) {
+      obj.id = message.id.map(e => e);
+    } else {
+      obj.id = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: IdsAminoMsg): Ids {
+    return Ids.fromAmino(object.value);
+  },
+  fromProtoMsg(message: IdsProtoMsg): Ids {
+    return Ids.decode(message.value);
+  },
+  toProto(message: Ids): Uint8Array {
+    return Ids.encode(message).finish();
+  },
+  toProtoMsg(message: Ids): IdsProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.Ids",
+      value: Ids.encode(message).finish()
+    };
   }
 };
 function createBaseDeleteInfo(): DeleteInfo {
   return {
-    bucketIds: Ids.fromPartial({}),
-    objectIds: Ids.fromPartial({}),
-    groupIds: Ids.fromPartial({})
+    bucketIds: undefined,
+    objectIds: undefined,
+    groupIds: undefined
   };
 }
 export const DeleteInfo = {
-  encode(message: DeleteInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.DeleteInfo",
+  encode(message: DeleteInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bucketIds !== undefined) {
       Ids.encode(message.bucketIds, writer.uint32(10).fork()).ldelim();
     }
@@ -1347,8 +1844,8 @@ export const DeleteInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DeleteInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteInfo();
     while (reader.pos < end) {
@@ -1404,6 +1901,41 @@ export const DeleteInfo = {
     message.objectIds !== undefined && (obj.object_ids = message.objectIds ? Ids.toSDK(message.objectIds) : undefined);
     message.groupIds !== undefined && (obj.group_ids = message.groupIds ? Ids.toSDK(message.groupIds) : undefined);
     return obj;
+  },
+  fromAmino(object: DeleteInfoAmino): DeleteInfo {
+    const message = createBaseDeleteInfo();
+    if (object.bucket_ids !== undefined && object.bucket_ids !== null) {
+      message.bucketIds = Ids.fromAmino(object.bucket_ids);
+    }
+    if (object.object_ids !== undefined && object.object_ids !== null) {
+      message.objectIds = Ids.fromAmino(object.object_ids);
+    }
+    if (object.group_ids !== undefined && object.group_ids !== null) {
+      message.groupIds = Ids.fromAmino(object.group_ids);
+    }
+    return message;
+  },
+  toAmino(message: DeleteInfo): DeleteInfoAmino {
+    const obj: any = {};
+    obj.bucket_ids = message.bucketIds ? Ids.toAmino(message.bucketIds) : undefined;
+    obj.object_ids = message.objectIds ? Ids.toAmino(message.objectIds) : undefined;
+    obj.group_ids = message.groupIds ? Ids.toAmino(message.groupIds) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: DeleteInfoAminoMsg): DeleteInfo {
+    return DeleteInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: DeleteInfoProtoMsg): DeleteInfo {
+    return DeleteInfo.decode(message.value);
+  },
+  toProto(message: DeleteInfo): Uint8Array {
+    return DeleteInfo.encode(message).finish();
+  },
+  toProtoMsg(message: DeleteInfo): DeleteInfoProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.DeleteInfo",
+      value: DeleteInfo.encode(message).finish()
+    };
   }
 };
 function createBaseMigrationBucketInfo(): MigrationBucketInfo {
@@ -1415,7 +1947,8 @@ function createBaseMigrationBucketInfo(): MigrationBucketInfo {
   };
 }
 export const MigrationBucketInfo = {
-  encode(message: MigrationBucketInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.MigrationBucketInfo",
+  encode(message: MigrationBucketInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.srcSpId !== 0) {
       writer.uint32(8).uint32(message.srcSpId);
     }
@@ -1430,8 +1963,8 @@ export const MigrationBucketInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MigrationBucketInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MigrationBucketInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMigrationBucketInfo();
     while (reader.pos < end) {
@@ -1495,6 +2028,45 @@ export const MigrationBucketInfo = {
     obj.dst_sp_id = message.dstSpId;
     obj.bucket_id = message.bucketId;
     return obj;
+  },
+  fromAmino(object: MigrationBucketInfoAmino): MigrationBucketInfo {
+    const message = createBaseMigrationBucketInfo();
+    if (object.src_sp_id !== undefined && object.src_sp_id !== null) {
+      message.srcSpId = object.src_sp_id;
+    }
+    if (object.src_global_virtual_group_family_id !== undefined && object.src_global_virtual_group_family_id !== null) {
+      message.srcGlobalVirtualGroupFamilyId = object.src_global_virtual_group_family_id;
+    }
+    if (object.dst_sp_id !== undefined && object.dst_sp_id !== null) {
+      message.dstSpId = object.dst_sp_id;
+    }
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    return message;
+  },
+  toAmino(message: MigrationBucketInfo): MigrationBucketInfoAmino {
+    const obj: any = {};
+    obj.src_sp_id = message.srcSpId;
+    obj.src_global_virtual_group_family_id = message.srcGlobalVirtualGroupFamilyId;
+    obj.dst_sp_id = message.dstSpId;
+    obj.bucket_id = message.bucketId;
+    return obj;
+  },
+  fromAminoMsg(object: MigrationBucketInfoAminoMsg): MigrationBucketInfo {
+    return MigrationBucketInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MigrationBucketInfoProtoMsg): MigrationBucketInfo {
+    return MigrationBucketInfo.decode(message.value);
+  },
+  toProto(message: MigrationBucketInfo): Uint8Array {
+    return MigrationBucketInfo.encode(message).finish();
+  },
+  toProtoMsg(message: MigrationBucketInfo): MigrationBucketInfoProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.MigrationBucketInfo",
+      value: MigrationBucketInfo.encode(message).finish()
+    };
   }
 };
 function createBaseResourceTags(): ResourceTags {
@@ -1503,14 +2075,15 @@ function createBaseResourceTags(): ResourceTags {
   };
 }
 export const ResourceTags = {
-  encode(message: ResourceTags, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.ResourceTags",
+  encode(message: ResourceTags, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.tags) {
       ResourceTags_Tag.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ResourceTags {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ResourceTags {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResourceTags();
     while (reader.pos < end) {
@@ -1558,6 +2131,35 @@ export const ResourceTags = {
       obj.tags = [];
     }
     return obj;
+  },
+  fromAmino(object: ResourceTagsAmino): ResourceTags {
+    const message = createBaseResourceTags();
+    message.tags = object.tags?.map(e => ResourceTags_Tag.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: ResourceTags): ResourceTagsAmino {
+    const obj: any = {};
+    if (message.tags) {
+      obj.tags = message.tags.map(e => e ? ResourceTags_Tag.toAmino(e) : undefined);
+    } else {
+      obj.tags = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: ResourceTagsAminoMsg): ResourceTags {
+    return ResourceTags.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ResourceTagsProtoMsg): ResourceTags {
+    return ResourceTags.decode(message.value);
+  },
+  toProto(message: ResourceTags): Uint8Array {
+    return ResourceTags.encode(message).finish();
+  },
+  toProtoMsg(message: ResourceTags): ResourceTagsProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.ResourceTags",
+      value: ResourceTags.encode(message).finish()
+    };
   }
 };
 function createBaseResourceTags_Tag(): ResourceTags_Tag {
@@ -1567,7 +2169,8 @@ function createBaseResourceTags_Tag(): ResourceTags_Tag {
   };
 }
 export const ResourceTags_Tag = {
-  encode(message: ResourceTags_Tag, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.Tag",
+  encode(message: ResourceTags_Tag, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key !== "") {
       writer.uint32(10).string(message.key);
     }
@@ -1576,8 +2179,8 @@ export const ResourceTags_Tag = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ResourceTags_Tag {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ResourceTags_Tag {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseResourceTags_Tag();
     while (reader.pos < end) {
@@ -1625,5 +2228,36 @@ export const ResourceTags_Tag = {
     obj.key = message.key;
     obj.value = message.value;
     return obj;
+  },
+  fromAmino(object: ResourceTags_TagAmino): ResourceTags_Tag {
+    const message = createBaseResourceTags_Tag();
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    }
+    return message;
+  },
+  toAmino(message: ResourceTags_Tag): ResourceTags_TagAmino {
+    const obj: any = {};
+    obj.key = message.key;
+    obj.value = message.value;
+    return obj;
+  },
+  fromAminoMsg(object: ResourceTags_TagAminoMsg): ResourceTags_Tag {
+    return ResourceTags_Tag.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ResourceTags_TagProtoMsg): ResourceTags_Tag {
+    return ResourceTags_Tag.decode(message.value);
+  },
+  toProto(message: ResourceTags_Tag): Uint8Array {
+    return ResourceTags_Tag.encode(message).finish();
+  },
+  toProtoMsg(message: ResourceTags_Tag): ResourceTags_TagProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.Tag",
+      value: ResourceTags_Tag.encode(message).finish()
+    };
   }
 };

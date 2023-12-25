@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import { Params, ParamsSDKType } from "./params";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, DeepPartial, Exact, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.bridge";
 /** MsgTransferOut is the Msg/TransferOut request type. */
@@ -12,16 +12,24 @@ export interface MsgTransferOut {
   /** to address */
   to: string;
   /** transfer token amount */
-  amount: Coin;
+  amount?: Coin;
+}
+export interface MsgTransferOutProtoMsg {
+  typeUrl: "/greenfield.bridge.MsgTransferOut";
+  value: Uint8Array;
 }
 /** MsgTransferOut is the Msg/TransferOut request type. */
 export interface MsgTransferOutSDKType {
   from: string;
   to: string;
-  amount: CoinSDKType;
+  amount?: CoinSDKType;
 }
 /** MsgTransferOutResponse is the Msg/TransferOut response type. */
 export interface MsgTransferOutResponse {}
+export interface MsgTransferOutResponseProtoMsg {
+  typeUrl: "/greenfield.bridge.MsgTransferOutResponse";
+  value: Uint8Array;
+}
 /** MsgTransferOutResponse is the Msg/TransferOut response type. */
 export interface MsgTransferOutResponseSDKType {}
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
@@ -35,6 +43,10 @@ export interface MsgUpdateParams {
    */
   params: Params;
 }
+export interface MsgUpdateParamsProtoMsg {
+  typeUrl: "/greenfield.bridge.MsgUpdateParams";
+  value: Uint8Array;
+}
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
@@ -45,6 +57,10 @@ export interface MsgUpdateParamsSDKType {
  * MsgUpdateParams message.
  */
 export interface MsgUpdateParamsResponse {}
+export interface MsgUpdateParamsResponseProtoMsg {
+  typeUrl: "/greenfield.bridge.MsgUpdateParamsResponse";
+  value: Uint8Array;
+}
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
  * MsgUpdateParams message.
@@ -54,11 +70,12 @@ function createBaseMsgTransferOut(): MsgTransferOut {
   return {
     from: "",
     to: "",
-    amount: Coin.fromPartial({})
+    amount: undefined
   };
 }
 export const MsgTransferOut = {
-  encode(message: MsgTransferOut, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.bridge.MsgTransferOut",
+  encode(message: MsgTransferOut, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.from !== "") {
       writer.uint32(10).string(message.from);
     }
@@ -70,8 +87,8 @@ export const MsgTransferOut = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgTransferOut {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgTransferOut {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgTransferOut();
     while (reader.pos < end) {
@@ -127,17 +144,53 @@ export const MsgTransferOut = {
     obj.to = message.to;
     message.amount !== undefined && (obj.amount = message.amount ? Coin.toSDK(message.amount) : undefined);
     return obj;
+  },
+  fromAmino(object: MsgTransferOutAmino): MsgTransferOut {
+    const message = createBaseMsgTransferOut();
+    if (object.from !== undefined && object.from !== null) {
+      message.from = object.from;
+    }
+    if (object.to !== undefined && object.to !== null) {
+      message.to = object.to;
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = Coin.fromAmino(object.amount);
+    }
+    return message;
+  },
+  toAmino(message: MsgTransferOut): MsgTransferOutAmino {
+    const obj: any = {};
+    obj.from = message.from;
+    obj.to = message.to;
+    obj.amount = message.amount ? Coin.toAmino(message.amount) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgTransferOutAminoMsg): MsgTransferOut {
+    return MsgTransferOut.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgTransferOutProtoMsg): MsgTransferOut {
+    return MsgTransferOut.decode(message.value);
+  },
+  toProto(message: MsgTransferOut): Uint8Array {
+    return MsgTransferOut.encode(message).finish();
+  },
+  toProtoMsg(message: MsgTransferOut): MsgTransferOutProtoMsg {
+    return {
+      typeUrl: "/greenfield.bridge.MsgTransferOut",
+      value: MsgTransferOut.encode(message).finish()
+    };
   }
 };
 function createBaseMsgTransferOutResponse(): MsgTransferOutResponse {
   return {};
 }
 export const MsgTransferOutResponse = {
-  encode(_: MsgTransferOutResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.bridge.MsgTransferOutResponse",
+  encode(_: MsgTransferOutResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgTransferOutResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgTransferOutResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgTransferOutResponse();
     while (reader.pos < end) {
@@ -167,6 +220,29 @@ export const MsgTransferOutResponse = {
   toSDK(_: MsgTransferOutResponse): MsgTransferOutResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgTransferOutResponseAmino): MsgTransferOutResponse {
+    const message = createBaseMsgTransferOutResponse();
+    return message;
+  },
+  toAmino(_: MsgTransferOutResponse): MsgTransferOutResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgTransferOutResponseAminoMsg): MsgTransferOutResponse {
+    return MsgTransferOutResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgTransferOutResponseProtoMsg): MsgTransferOutResponse {
+    return MsgTransferOutResponse.decode(message.value);
+  },
+  toProto(message: MsgTransferOutResponse): Uint8Array {
+    return MsgTransferOutResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgTransferOutResponse): MsgTransferOutResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.bridge.MsgTransferOutResponse",
+      value: MsgTransferOutResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateParams(): MsgUpdateParams {
@@ -176,7 +252,8 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
   };
 }
 export const MsgUpdateParams = {
-  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.bridge.MsgUpdateParams",
+  encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -185,8 +262,8 @@ export const MsgUpdateParams = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParams();
     while (reader.pos < end) {
@@ -234,17 +311,49 @@ export const MsgUpdateParams = {
     obj.authority = message.authority;
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: MsgUpdateParamsAmino): MsgUpdateParams {
+    const message = createBaseMsgUpdateParams();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
+    const obj: any = {};
+    obj.authority = message.authority;
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateParamsAminoMsg): MsgUpdateParams {
+    return MsgUpdateParams.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateParamsProtoMsg): MsgUpdateParams {
+    return MsgUpdateParams.decode(message.value);
+  },
+  toProto(message: MsgUpdateParams): Uint8Array {
+    return MsgUpdateParams.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateParams): MsgUpdateParamsProtoMsg {
+    return {
+      typeUrl: "/greenfield.bridge.MsgUpdateParams",
+      value: MsgUpdateParams.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
-  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.bridge.MsgUpdateParamsResponse",
+  encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParamsResponse();
     while (reader.pos < end) {
@@ -274,6 +383,29 @@ export const MsgUpdateParamsResponse = {
   toSDK(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgUpdateParamsResponseAmino): MsgUpdateParamsResponse {
+    const message = createBaseMsgUpdateParamsResponse();
+    return message;
+  },
+  toAmino(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateParamsResponseAminoMsg): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgUpdateParamsResponseProtoMsg): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.decode(message.value);
+  },
+  toProto(message: MsgUpdateParamsResponse): Uint8Array {
+    return MsgUpdateParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.bridge.MsgUpdateParamsResponse",
+      value: MsgUpdateParamsResponse.encode(message).finish()
+    };
   }
 };
 /** Msg defines the Msg service. */
@@ -297,11 +429,11 @@ export class MsgClientImpl implements Msg {
   TransferOut(request: MsgTransferOut): Promise<MsgTransferOutResponse> {
     const data = MsgTransferOut.encode(request).finish();
     const promise = this.rpc.request("greenfield.bridge.Msg", "TransferOut", data);
-    return promise.then(data => MsgTransferOutResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgTransferOutResponse.decode(new BinaryReader(data)));
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("greenfield.bridge.Msg", "UpdateParams", data);
-    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
   }
 }

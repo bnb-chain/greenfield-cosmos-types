@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { bytesFromBase64, base64FromBytes, DeepPartial, Exact, isSet } from "../../../../helpers";
 export const protobufPackage = "cosmos.crypto.multisig.v1beta1";
 /**
@@ -10,6 +10,10 @@ export const protobufPackage = "cosmos.crypto.multisig.v1beta1";
  */
 export interface MultiSignature {
   signatures: Uint8Array[];
+}
+export interface MultiSignatureProtoMsg {
+  typeUrl: "/cosmos.crypto.multisig.v1beta1.MultiSignature";
+  value: Uint8Array;
 }
 /**
  * MultiSignature wraps the signatures from a multisig.LegacyAminoPubKey.
@@ -29,6 +33,10 @@ export interface CompactBitArray {
   extraBitsStored: number;
   elems: Uint8Array;
 }
+export interface CompactBitArrayProtoMsg {
+  typeUrl: "/cosmos.crypto.multisig.v1beta1.CompactBitArray";
+  value: Uint8Array;
+}
 /**
  * CompactBitArray is an implementation of a space efficient bit array.
  * This is used to ensure that the encoded data takes up a minimal amount of
@@ -45,14 +53,15 @@ function createBaseMultiSignature(): MultiSignature {
   };
 }
 export const MultiSignature = {
-  encode(message: MultiSignature, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.crypto.multisig.v1beta1.MultiSignature",
+  encode(message: MultiSignature, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.signatures) {
       writer.uint32(10).bytes(v!);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MultiSignature {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MultiSignature {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMultiSignature();
     while (reader.pos < end) {
@@ -100,6 +109,41 @@ export const MultiSignature = {
       obj.signatures = [];
     }
     return obj;
+  },
+  fromAmino(object: MultiSignatureAmino): MultiSignature {
+    const message = createBaseMultiSignature();
+    message.signatures = object.signatures?.map(e => bytesFromBase64(e)) || [];
+    return message;
+  },
+  toAmino(message: MultiSignature): MultiSignatureAmino {
+    const obj: any = {};
+    if (message.signatures) {
+      obj.signatures = message.signatures.map(e => base64FromBytes(e));
+    } else {
+      obj.signatures = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: MultiSignatureAminoMsg): MultiSignature {
+    return MultiSignature.fromAmino(object.value);
+  },
+  toAminoMsg(message: MultiSignature): MultiSignatureAminoMsg {
+    return {
+      type: "cosmos-sdk/MultiSignature",
+      value: MultiSignature.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MultiSignatureProtoMsg): MultiSignature {
+    return MultiSignature.decode(message.value);
+  },
+  toProto(message: MultiSignature): Uint8Array {
+    return MultiSignature.encode(message).finish();
+  },
+  toProtoMsg(message: MultiSignature): MultiSignatureProtoMsg {
+    return {
+      typeUrl: "/cosmos.crypto.multisig.v1beta1.MultiSignature",
+      value: MultiSignature.encode(message).finish()
+    };
   }
 };
 function createBaseCompactBitArray(): CompactBitArray {
@@ -109,7 +153,8 @@ function createBaseCompactBitArray(): CompactBitArray {
   };
 }
 export const CompactBitArray = {
-  encode(message: CompactBitArray, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.crypto.multisig.v1beta1.CompactBitArray",
+  encode(message: CompactBitArray, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.extraBitsStored !== 0) {
       writer.uint32(8).uint32(message.extraBitsStored);
     }
@@ -118,8 +163,8 @@ export const CompactBitArray = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CompactBitArray {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CompactBitArray {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCompactBitArray();
     while (reader.pos < end) {
@@ -167,5 +212,42 @@ export const CompactBitArray = {
     obj.extra_bits_stored = message.extraBitsStored;
     obj.elems = message.elems;
     return obj;
+  },
+  fromAmino(object: CompactBitArrayAmino): CompactBitArray {
+    const message = createBaseCompactBitArray();
+    if (object.extra_bits_stored !== undefined && object.extra_bits_stored !== null) {
+      message.extraBitsStored = object.extra_bits_stored;
+    }
+    if (object.elems !== undefined && object.elems !== null) {
+      message.elems = bytesFromBase64(object.elems);
+    }
+    return message;
+  },
+  toAmino(message: CompactBitArray): CompactBitArrayAmino {
+    const obj: any = {};
+    obj.extra_bits_stored = message.extraBitsStored;
+    obj.elems = message.elems ? base64FromBytes(message.elems) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: CompactBitArrayAminoMsg): CompactBitArray {
+    return CompactBitArray.fromAmino(object.value);
+  },
+  toAminoMsg(message: CompactBitArray): CompactBitArrayAminoMsg {
+    return {
+      type: "cosmos-sdk/CompactBitArray",
+      value: CompactBitArray.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: CompactBitArrayProtoMsg): CompactBitArray {
+    return CompactBitArray.decode(message.value);
+  },
+  toProto(message: CompactBitArray): Uint8Array {
+    return CompactBitArray.encode(message).finish();
+  },
+  toProtoMsg(message: CompactBitArray): CompactBitArrayProtoMsg {
+    return {
+      typeUrl: "/cosmos.crypto.multisig.v1beta1.CompactBitArray",
+      value: CompactBitArray.encode(message).finish()
+    };
   }
 };

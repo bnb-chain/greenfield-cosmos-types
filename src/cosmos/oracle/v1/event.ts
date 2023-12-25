@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Long, isSet, DeepPartial, Exact } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.oracle.v1";
 /** EventPackageClaim is emitted when a cross chain package is processed */
 export interface EventPackageClaim {
@@ -14,9 +14,9 @@ export interface EventPackageClaim {
   /** Package type of the package, like SYN, ACK and FAIL_ACK */
   packageType: number;
   /** Receive sequence of the package */
-  receiveSequence: Long;
+  receiveSequence: bigint;
   /** Send sequence of the corresponding ACK package or FAIL_ACK package */
-  sendSequence: Long;
+  sendSequence: bigint;
   /** Crash status for the handle of this package */
   crash: boolean;
   /** Error message for the handle of this package */
@@ -26,14 +26,18 @@ export interface EventPackageClaim {
   /** Relayer fee paid for the ACK or FAIL_ACK package */
   ackRelayerFee: string;
 }
+export interface EventPackageClaimProtoMsg {
+  typeUrl: "/cosmos.oracle.v1.EventPackageClaim";
+  value: Uint8Array;
+}
 /** EventPackageClaim is emitted when a cross chain package is processed */
 export interface EventPackageClaimSDKType {
   src_chain_id: number;
   dest_chain_id: number;
   channel_id: number;
   package_type: number;
-  receive_sequence: Long;
-  send_sequence: Long;
+  receive_sequence: bigint;
+  send_sequence: bigint;
   crash: boolean;
   error_msg: string;
   relayer_fee: string;
@@ -45,8 +49,8 @@ function createBaseEventPackageClaim(): EventPackageClaim {
     destChainId: 0,
     channelId: 0,
     packageType: 0,
-    receiveSequence: Long.UZERO,
-    sendSequence: Long.ZERO,
+    receiveSequence: BigInt(0),
+    sendSequence: BigInt(0),
     crash: false,
     errorMsg: "",
     relayerFee: "",
@@ -54,7 +58,8 @@ function createBaseEventPackageClaim(): EventPackageClaim {
   };
 }
 export const EventPackageClaim = {
-  encode(message: EventPackageClaim, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.oracle.v1.EventPackageClaim",
+  encode(message: EventPackageClaim, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.srcChainId !== 0) {
       writer.uint32(8).uint32(message.srcChainId);
     }
@@ -67,10 +72,10 @@ export const EventPackageClaim = {
     if (message.packageType !== 0) {
       writer.uint32(32).uint32(message.packageType);
     }
-    if (!message.receiveSequence.isZero()) {
+    if (message.receiveSequence !== BigInt(0)) {
       writer.uint32(40).uint64(message.receiveSequence);
     }
-    if (!message.sendSequence.isZero()) {
+    if (message.sendSequence !== BigInt(0)) {
       writer.uint32(48).int64(message.sendSequence);
     }
     if (message.crash === true) {
@@ -87,8 +92,8 @@ export const EventPackageClaim = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): EventPackageClaim {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): EventPackageClaim {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEventPackageClaim();
     while (reader.pos < end) {
@@ -107,10 +112,10 @@ export const EventPackageClaim = {
           message.packageType = reader.uint32();
           break;
         case 5:
-          message.receiveSequence = (reader.uint64() as Long);
+          message.receiveSequence = reader.uint64();
           break;
         case 6:
-          message.sendSequence = (reader.int64() as Long);
+          message.sendSequence = reader.int64();
           break;
         case 7:
           message.crash = reader.bool();
@@ -137,8 +142,8 @@ export const EventPackageClaim = {
       destChainId: isSet(object.destChainId) ? Number(object.destChainId) : 0,
       channelId: isSet(object.channelId) ? Number(object.channelId) : 0,
       packageType: isSet(object.packageType) ? Number(object.packageType) : 0,
-      receiveSequence: isSet(object.receiveSequence) ? Long.fromValue(object.receiveSequence) : Long.UZERO,
-      sendSequence: isSet(object.sendSequence) ? Long.fromValue(object.sendSequence) : Long.ZERO,
+      receiveSequence: isSet(object.receiveSequence) ? BigInt(object.receiveSequence.toString()) : BigInt(0),
+      sendSequence: isSet(object.sendSequence) ? BigInt(object.sendSequence.toString()) : BigInt(0),
       crash: isSet(object.crash) ? Boolean(object.crash) : false,
       errorMsg: isSet(object.errorMsg) ? String(object.errorMsg) : "",
       relayerFee: isSet(object.relayerFee) ? String(object.relayerFee) : "",
@@ -151,8 +156,8 @@ export const EventPackageClaim = {
     message.destChainId !== undefined && (obj.destChainId = Math.round(message.destChainId));
     message.channelId !== undefined && (obj.channelId = Math.round(message.channelId));
     message.packageType !== undefined && (obj.packageType = Math.round(message.packageType));
-    message.receiveSequence !== undefined && (obj.receiveSequence = (message.receiveSequence || Long.UZERO).toString());
-    message.sendSequence !== undefined && (obj.sendSequence = (message.sendSequence || Long.ZERO).toString());
+    message.receiveSequence !== undefined && (obj.receiveSequence = (message.receiveSequence || BigInt(0)).toString());
+    message.sendSequence !== undefined && (obj.sendSequence = (message.sendSequence || BigInt(0)).toString());
     message.crash !== undefined && (obj.crash = message.crash);
     message.errorMsg !== undefined && (obj.errorMsg = message.errorMsg);
     message.relayerFee !== undefined && (obj.relayerFee = message.relayerFee);
@@ -165,8 +170,8 @@ export const EventPackageClaim = {
     message.destChainId = object.destChainId ?? 0;
     message.channelId = object.channelId ?? 0;
     message.packageType = object.packageType ?? 0;
-    message.receiveSequence = object.receiveSequence !== undefined && object.receiveSequence !== null ? Long.fromValue(object.receiveSequence) : Long.UZERO;
-    message.sendSequence = object.sendSequence !== undefined && object.sendSequence !== null ? Long.fromValue(object.sendSequence) : Long.ZERO;
+    message.receiveSequence = object.receiveSequence !== undefined && object.receiveSequence !== null ? BigInt(object.receiveSequence.toString()) : BigInt(0);
+    message.sendSequence = object.sendSequence !== undefined && object.sendSequence !== null ? BigInt(object.sendSequence.toString()) : BigInt(0);
     message.crash = object.crash ?? false;
     message.errorMsg = object.errorMsg ?? "";
     message.relayerFee = object.relayerFee ?? "";
@@ -200,5 +205,74 @@ export const EventPackageClaim = {
     obj.relayer_fee = message.relayerFee;
     obj.ack_relayer_fee = message.ackRelayerFee;
     return obj;
+  },
+  fromAmino(object: EventPackageClaimAmino): EventPackageClaim {
+    const message = createBaseEventPackageClaim();
+    if (object.src_chain_id !== undefined && object.src_chain_id !== null) {
+      message.srcChainId = object.src_chain_id;
+    }
+    if (object.dest_chain_id !== undefined && object.dest_chain_id !== null) {
+      message.destChainId = object.dest_chain_id;
+    }
+    if (object.channel_id !== undefined && object.channel_id !== null) {
+      message.channelId = object.channel_id;
+    }
+    if (object.package_type !== undefined && object.package_type !== null) {
+      message.packageType = object.package_type;
+    }
+    if (object.receive_sequence !== undefined && object.receive_sequence !== null) {
+      message.receiveSequence = BigInt(object.receive_sequence);
+    }
+    if (object.send_sequence !== undefined && object.send_sequence !== null) {
+      message.sendSequence = BigInt(object.send_sequence);
+    }
+    if (object.crash !== undefined && object.crash !== null) {
+      message.crash = object.crash;
+    }
+    if (object.error_msg !== undefined && object.error_msg !== null) {
+      message.errorMsg = object.error_msg;
+    }
+    if (object.relayer_fee !== undefined && object.relayer_fee !== null) {
+      message.relayerFee = object.relayer_fee;
+    }
+    if (object.ack_relayer_fee !== undefined && object.ack_relayer_fee !== null) {
+      message.ackRelayerFee = object.ack_relayer_fee;
+    }
+    return message;
+  },
+  toAmino(message: EventPackageClaim): EventPackageClaimAmino {
+    const obj: any = {};
+    obj.src_chain_id = message.srcChainId;
+    obj.dest_chain_id = message.destChainId;
+    obj.channel_id = message.channelId;
+    obj.package_type = message.packageType;
+    obj.receive_sequence = message.receiveSequence ? message.receiveSequence.toString() : undefined;
+    obj.send_sequence = message.sendSequence ? message.sendSequence.toString() : undefined;
+    obj.crash = message.crash;
+    obj.error_msg = message.errorMsg;
+    obj.relayer_fee = message.relayerFee;
+    obj.ack_relayer_fee = message.ackRelayerFee;
+    return obj;
+  },
+  fromAminoMsg(object: EventPackageClaimAminoMsg): EventPackageClaim {
+    return EventPackageClaim.fromAmino(object.value);
+  },
+  toAminoMsg(message: EventPackageClaim): EventPackageClaimAminoMsg {
+    return {
+      type: "cosmos-sdk/EventPackageClaim",
+      value: EventPackageClaim.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: EventPackageClaimProtoMsg): EventPackageClaim {
+    return EventPackageClaim.decode(message.value);
+  },
+  toProto(message: EventPackageClaim): Uint8Array {
+    return EventPackageClaim.encode(message).finish();
+  },
+  toProtoMsg(message: EventPackageClaim): EventPackageClaimProtoMsg {
+    return {
+      typeUrl: "/cosmos.oracle.v1.EventPackageClaim",
+      value: EventPackageClaim.encode(message).finish()
+    };
   }
 };

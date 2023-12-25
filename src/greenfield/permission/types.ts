@@ -3,14 +3,14 @@
 import { Principal, PrincipalSDKType, Statement, StatementSDKType } from "./common";
 import { ResourceType, resourceTypeFromJSON, resourceTypeToJSON } from "../resource/types";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, fromJsonTimestamp, fromTimestamp, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.permission";
 export interface Policy {
   /** id is an unique u256 sequence for each policy. It also be used as NFT tokenID */
   id: string;
   /** principal defines the accounts/group which the permission grants to */
-  principal: Principal;
+  principal?: Principal;
   /** resource_type defines the type of resource that grants permission for */
   resourceType: ResourceType;
   /** resource_id defines the bucket/object/group id of the resource that grants permission for */
@@ -23,9 +23,13 @@ export interface Policy {
    */
   expirationTime?: Timestamp;
 }
+export interface PolicyProtoMsg {
+  typeUrl: "/greenfield.permission.Policy";
+  value: Uint8Array;
+}
 export interface PolicySDKType {
   id: string;
-  principal: PrincipalSDKType;
+  principal?: PrincipalSDKType;
   resource_type: ResourceType;
   resource_id: string;
   statements: StatementSDKType[];
@@ -40,6 +44,10 @@ export interface PolicyGroup {
   /** items define a pair of policy_id and group_id. Each resource can only grant its own permissions to a limited number of groups */
   items: PolicyGroup_Item[];
 }
+export interface PolicyGroupProtoMsg {
+  typeUrl: "/greenfield.permission.PolicyGroup";
+  value: Uint8Array;
+}
 /**
  * PolicyGroup refers to a group of policies which grant permission to Group, which is limited to MaxGroupNum (default 10).
  * This means that a single resource can only grant permission to 10 groups. The reason for
@@ -51,6 +59,10 @@ export interface PolicyGroupSDKType {
 export interface PolicyGroup_Item {
   policyId: string;
   groupId: string;
+}
+export interface PolicyGroup_ItemProtoMsg {
+  typeUrl: "/greenfield.permission.Item";
+  value: Uint8Array;
 }
 export interface PolicyGroup_ItemSDKType {
   policy_id: string;
@@ -64,18 +76,22 @@ export interface GroupMember {
   /** member is the account address of the member */
   member: string;
   /** expiration_time defines the expiration time of the group member */
-  expirationTime: Timestamp;
+  expirationTime?: Timestamp;
+}
+export interface GroupMemberProtoMsg {
+  typeUrl: "/greenfield.permission.GroupMember";
+  value: Uint8Array;
 }
 export interface GroupMemberSDKType {
   id: string;
   group_id: string;
   member: string;
-  expiration_time: TimestampSDKType;
+  expiration_time?: TimestampSDKType;
 }
 function createBasePolicy(): Policy {
   return {
     id: "",
-    principal: Principal.fromPartial({}),
+    principal: undefined,
     resourceType: 0,
     resourceId: "",
     statements: [],
@@ -83,7 +99,8 @@ function createBasePolicy(): Policy {
   };
 }
 export const Policy = {
-  encode(message: Policy, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.permission.Policy",
+  encode(message: Policy, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -104,8 +121,8 @@ export const Policy = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Policy {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Policy {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePolicy();
     while (reader.pos < end) {
@@ -193,6 +210,55 @@ export const Policy = {
     }
     message.expirationTime !== undefined && (obj.expiration_time = message.expirationTime ? Timestamp.toSDK(message.expirationTime) : undefined);
     return obj;
+  },
+  fromAmino(object: PolicyAmino): Policy {
+    const message = createBasePolicy();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.principal !== undefined && object.principal !== null) {
+      message.principal = Principal.fromAmino(object.principal);
+    }
+    if (object.resource_type !== undefined && object.resource_type !== null) {
+      message.resourceType = resourceTypeFromJSON(object.resource_type);
+    }
+    if (object.resource_id !== undefined && object.resource_id !== null) {
+      message.resourceId = object.resource_id;
+    }
+    message.statements = object.statements?.map(e => Statement.fromAmino(e)) || [];
+    if (object.expiration_time !== undefined && object.expiration_time !== null) {
+      message.expirationTime = Timestamp.fromAmino(object.expiration_time);
+    }
+    return message;
+  },
+  toAmino(message: Policy): PolicyAmino {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.principal = message.principal ? Principal.toAmino(message.principal) : undefined;
+    obj.resource_type = resourceTypeToJSON(message.resourceType);
+    obj.resource_id = message.resourceId;
+    if (message.statements) {
+      obj.statements = message.statements.map(e => e ? Statement.toAmino(e) : undefined);
+    } else {
+      obj.statements = [];
+    }
+    obj.expiration_time = message.expirationTime ? Timestamp.toAmino(message.expirationTime) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: PolicyAminoMsg): Policy {
+    return Policy.fromAmino(object.value);
+  },
+  fromProtoMsg(message: PolicyProtoMsg): Policy {
+    return Policy.decode(message.value);
+  },
+  toProto(message: Policy): Uint8Array {
+    return Policy.encode(message).finish();
+  },
+  toProtoMsg(message: Policy): PolicyProtoMsg {
+    return {
+      typeUrl: "/greenfield.permission.Policy",
+      value: Policy.encode(message).finish()
+    };
   }
 };
 function createBasePolicyGroup(): PolicyGroup {
@@ -201,14 +267,15 @@ function createBasePolicyGroup(): PolicyGroup {
   };
 }
 export const PolicyGroup = {
-  encode(message: PolicyGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.permission.PolicyGroup",
+  encode(message: PolicyGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.items) {
       PolicyGroup_Item.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PolicyGroup {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PolicyGroup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePolicyGroup();
     while (reader.pos < end) {
@@ -256,6 +323,35 @@ export const PolicyGroup = {
       obj.items = [];
     }
     return obj;
+  },
+  fromAmino(object: PolicyGroupAmino): PolicyGroup {
+    const message = createBasePolicyGroup();
+    message.items = object.items?.map(e => PolicyGroup_Item.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: PolicyGroup): PolicyGroupAmino {
+    const obj: any = {};
+    if (message.items) {
+      obj.items = message.items.map(e => e ? PolicyGroup_Item.toAmino(e) : undefined);
+    } else {
+      obj.items = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: PolicyGroupAminoMsg): PolicyGroup {
+    return PolicyGroup.fromAmino(object.value);
+  },
+  fromProtoMsg(message: PolicyGroupProtoMsg): PolicyGroup {
+    return PolicyGroup.decode(message.value);
+  },
+  toProto(message: PolicyGroup): Uint8Array {
+    return PolicyGroup.encode(message).finish();
+  },
+  toProtoMsg(message: PolicyGroup): PolicyGroupProtoMsg {
+    return {
+      typeUrl: "/greenfield.permission.PolicyGroup",
+      value: PolicyGroup.encode(message).finish()
+    };
   }
 };
 function createBasePolicyGroup_Item(): PolicyGroup_Item {
@@ -265,7 +361,8 @@ function createBasePolicyGroup_Item(): PolicyGroup_Item {
   };
 }
 export const PolicyGroup_Item = {
-  encode(message: PolicyGroup_Item, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.permission.Item",
+  encode(message: PolicyGroup_Item, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.policyId !== "") {
       writer.uint32(10).string(message.policyId);
     }
@@ -274,8 +371,8 @@ export const PolicyGroup_Item = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PolicyGroup_Item {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PolicyGroup_Item {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePolicyGroup_Item();
     while (reader.pos < end) {
@@ -323,6 +420,37 @@ export const PolicyGroup_Item = {
     obj.policy_id = message.policyId;
     obj.group_id = message.groupId;
     return obj;
+  },
+  fromAmino(object: PolicyGroup_ItemAmino): PolicyGroup_Item {
+    const message = createBasePolicyGroup_Item();
+    if (object.policy_id !== undefined && object.policy_id !== null) {
+      message.policyId = object.policy_id;
+    }
+    if (object.group_id !== undefined && object.group_id !== null) {
+      message.groupId = object.group_id;
+    }
+    return message;
+  },
+  toAmino(message: PolicyGroup_Item): PolicyGroup_ItemAmino {
+    const obj: any = {};
+    obj.policy_id = message.policyId;
+    obj.group_id = message.groupId;
+    return obj;
+  },
+  fromAminoMsg(object: PolicyGroup_ItemAminoMsg): PolicyGroup_Item {
+    return PolicyGroup_Item.fromAmino(object.value);
+  },
+  fromProtoMsg(message: PolicyGroup_ItemProtoMsg): PolicyGroup_Item {
+    return PolicyGroup_Item.decode(message.value);
+  },
+  toProto(message: PolicyGroup_Item): Uint8Array {
+    return PolicyGroup_Item.encode(message).finish();
+  },
+  toProtoMsg(message: PolicyGroup_Item): PolicyGroup_ItemProtoMsg {
+    return {
+      typeUrl: "/greenfield.permission.Item",
+      value: PolicyGroup_Item.encode(message).finish()
+    };
   }
 };
 function createBaseGroupMember(): GroupMember {
@@ -330,11 +458,12 @@ function createBaseGroupMember(): GroupMember {
     id: "",
     groupId: "",
     member: "",
-    expirationTime: Timestamp.fromPartial({})
+    expirationTime: undefined
   };
 }
 export const GroupMember = {
-  encode(message: GroupMember, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.permission.GroupMember",
+  encode(message: GroupMember, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -349,8 +478,8 @@ export const GroupMember = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GroupMember {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GroupMember {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGroupMember();
     while (reader.pos < end) {
@@ -414,5 +543,44 @@ export const GroupMember = {
     obj.member = message.member;
     message.expirationTime !== undefined && (obj.expiration_time = message.expirationTime ? Timestamp.toSDK(message.expirationTime) : undefined);
     return obj;
+  },
+  fromAmino(object: GroupMemberAmino): GroupMember {
+    const message = createBaseGroupMember();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.group_id !== undefined && object.group_id !== null) {
+      message.groupId = object.group_id;
+    }
+    if (object.member !== undefined && object.member !== null) {
+      message.member = object.member;
+    }
+    if (object.expiration_time !== undefined && object.expiration_time !== null) {
+      message.expirationTime = Timestamp.fromAmino(object.expiration_time);
+    }
+    return message;
+  },
+  toAmino(message: GroupMember): GroupMemberAmino {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.group_id = message.groupId;
+    obj.member = message.member;
+    obj.expiration_time = message.expirationTime ? Timestamp.toAmino(message.expirationTime) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: GroupMemberAminoMsg): GroupMember {
+    return GroupMember.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GroupMemberProtoMsg): GroupMember {
+    return GroupMember.decode(message.value);
+  },
+  toProto(message: GroupMember): Uint8Array {
+    return GroupMember.encode(message).finish();
+  },
+  toProtoMsg(message: GroupMember): GroupMemberProtoMsg {
+    return {
+      typeUrl: "/greenfield.permission.GroupMember",
+      value: GroupMember.encode(message).finish()
+    };
   }
 };

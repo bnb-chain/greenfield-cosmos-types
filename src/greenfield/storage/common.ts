@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Long, isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.storage";
 /**
  * SourceType represents the source of resource creation, which can
@@ -230,6 +230,10 @@ export interface SecondarySpSealObjectSignDoc {
   /** checksum is the sha256 hash of slice of integrity hash from secondary sps */
   checksum: Uint8Array;
 }
+export interface SecondarySpSealObjectSignDocProtoMsg {
+  typeUrl: "/greenfield.storage.SecondarySpSealObjectSignDoc";
+  value: Uint8Array;
+}
 /**
  * SecondarySpSealObjectSignDoc used to generate seal signature of secondary SP
  * If the secondary SP only signs the checksum to declare the object pieces are saved,
@@ -248,6 +252,10 @@ export interface GVGMapping {
   dstGlobalVirtualGroupId: number;
   secondarySpBlsSignature: Uint8Array;
 }
+export interface GVGMappingProtoMsg {
+  typeUrl: "/greenfield.storage.GVGMapping";
+  value: Uint8Array;
+}
 export interface GVGMappingSDKType {
   src_global_virtual_group_id: number;
   dst_global_virtual_group_id: number;
@@ -259,6 +267,10 @@ export interface SecondarySpMigrationBucketSignDoc {
   srcGlobalVirtualGroupId: number;
   dstGlobalVirtualGroupId: number;
   bucketId: string;
+}
+export interface SecondarySpMigrationBucketSignDocProtoMsg {
+  typeUrl: "/greenfield.storage.SecondarySpMigrationBucketSignDoc";
+  value: Uint8Array;
 }
 export interface SecondarySpMigrationBucketSignDocSDKType {
   chain_id: string;
@@ -279,12 +291,16 @@ export interface LocalVirtualGroup {
   /** global_virtual_group_id is the identifier of the global virtual group. */
   globalVirtualGroupId: number;
   /** stored_size is the size of the stored data in the local virtual group. */
-  storedSize: Long;
+  storedSize: bigint;
   /**
    * total_charge_size is the total charged size of the objects in the LVG.
    * Notice that the minimum unit of charge is 128K
    */
-  totalChargeSize: Long;
+  totalChargeSize: bigint;
+}
+export interface LocalVirtualGroupProtoMsg {
+  typeUrl: "/greenfield.storage.LocalVirtualGroup";
+  value: Uint8Array;
 }
 /**
  * Local virtual group(LVG) uniquely associated with a global virtual group.
@@ -295,8 +311,8 @@ export interface LocalVirtualGroup {
 export interface LocalVirtualGroupSDKType {
   id: number;
   global_virtual_group_id: number;
-  stored_size: Long;
-  total_charge_size: Long;
+  stored_size: bigint;
+  total_charge_size: bigint;
 }
 function createBaseSecondarySpSealObjectSignDoc(): SecondarySpSealObjectSignDoc {
   return {
@@ -307,7 +323,8 @@ function createBaseSecondarySpSealObjectSignDoc(): SecondarySpSealObjectSignDoc 
   };
 }
 export const SecondarySpSealObjectSignDoc = {
-  encode(message: SecondarySpSealObjectSignDoc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.SecondarySpSealObjectSignDoc",
+  encode(message: SecondarySpSealObjectSignDoc, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.chainId !== "") {
       writer.uint32(10).string(message.chainId);
     }
@@ -322,8 +339,8 @@ export const SecondarySpSealObjectSignDoc = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SecondarySpSealObjectSignDoc {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SecondarySpSealObjectSignDoc {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSecondarySpSealObjectSignDoc();
     while (reader.pos < end) {
@@ -387,6 +404,45 @@ export const SecondarySpSealObjectSignDoc = {
     obj.object_id = message.objectId;
     obj.checksum = message.checksum;
     return obj;
+  },
+  fromAmino(object: SecondarySpSealObjectSignDocAmino): SecondarySpSealObjectSignDoc {
+    const message = createBaseSecondarySpSealObjectSignDoc();
+    if (object.chain_id !== undefined && object.chain_id !== null) {
+      message.chainId = object.chain_id;
+    }
+    if (object.global_virtual_group_id !== undefined && object.global_virtual_group_id !== null) {
+      message.globalVirtualGroupId = object.global_virtual_group_id;
+    }
+    if (object.object_id !== undefined && object.object_id !== null) {
+      message.objectId = object.object_id;
+    }
+    if (object.checksum !== undefined && object.checksum !== null) {
+      message.checksum = bytesFromBase64(object.checksum);
+    }
+    return message;
+  },
+  toAmino(message: SecondarySpSealObjectSignDoc): SecondarySpSealObjectSignDocAmino {
+    const obj: any = {};
+    obj.chain_id = message.chainId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    obj.object_id = message.objectId;
+    obj.checksum = message.checksum ? base64FromBytes(message.checksum) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: SecondarySpSealObjectSignDocAminoMsg): SecondarySpSealObjectSignDoc {
+    return SecondarySpSealObjectSignDoc.fromAmino(object.value);
+  },
+  fromProtoMsg(message: SecondarySpSealObjectSignDocProtoMsg): SecondarySpSealObjectSignDoc {
+    return SecondarySpSealObjectSignDoc.decode(message.value);
+  },
+  toProto(message: SecondarySpSealObjectSignDoc): Uint8Array {
+    return SecondarySpSealObjectSignDoc.encode(message).finish();
+  },
+  toProtoMsg(message: SecondarySpSealObjectSignDoc): SecondarySpSealObjectSignDocProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.SecondarySpSealObjectSignDoc",
+      value: SecondarySpSealObjectSignDoc.encode(message).finish()
+    };
   }
 };
 function createBaseGVGMapping(): GVGMapping {
@@ -397,7 +453,8 @@ function createBaseGVGMapping(): GVGMapping {
   };
 }
 export const GVGMapping = {
-  encode(message: GVGMapping, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.GVGMapping",
+  encode(message: GVGMapping, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.srcGlobalVirtualGroupId !== 0) {
       writer.uint32(8).uint32(message.srcGlobalVirtualGroupId);
     }
@@ -409,8 +466,8 @@ export const GVGMapping = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GVGMapping {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GVGMapping {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGVGMapping();
     while (reader.pos < end) {
@@ -466,6 +523,41 @@ export const GVGMapping = {
     obj.dst_global_virtual_group_id = message.dstGlobalVirtualGroupId;
     obj.secondary_sp_bls_signature = message.secondarySpBlsSignature;
     return obj;
+  },
+  fromAmino(object: GVGMappingAmino): GVGMapping {
+    const message = createBaseGVGMapping();
+    if (object.src_global_virtual_group_id !== undefined && object.src_global_virtual_group_id !== null) {
+      message.srcGlobalVirtualGroupId = object.src_global_virtual_group_id;
+    }
+    if (object.dst_global_virtual_group_id !== undefined && object.dst_global_virtual_group_id !== null) {
+      message.dstGlobalVirtualGroupId = object.dst_global_virtual_group_id;
+    }
+    if (object.secondary_sp_bls_signature !== undefined && object.secondary_sp_bls_signature !== null) {
+      message.secondarySpBlsSignature = bytesFromBase64(object.secondary_sp_bls_signature);
+    }
+    return message;
+  },
+  toAmino(message: GVGMapping): GVGMappingAmino {
+    const obj: any = {};
+    obj.src_global_virtual_group_id = message.srcGlobalVirtualGroupId;
+    obj.dst_global_virtual_group_id = message.dstGlobalVirtualGroupId;
+    obj.secondary_sp_bls_signature = message.secondarySpBlsSignature ? base64FromBytes(message.secondarySpBlsSignature) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: GVGMappingAminoMsg): GVGMapping {
+    return GVGMapping.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GVGMappingProtoMsg): GVGMapping {
+    return GVGMapping.decode(message.value);
+  },
+  toProto(message: GVGMapping): Uint8Array {
+    return GVGMapping.encode(message).finish();
+  },
+  toProtoMsg(message: GVGMapping): GVGMappingProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.GVGMapping",
+      value: GVGMapping.encode(message).finish()
+    };
   }
 };
 function createBaseSecondarySpMigrationBucketSignDoc(): SecondarySpMigrationBucketSignDoc {
@@ -478,7 +570,8 @@ function createBaseSecondarySpMigrationBucketSignDoc(): SecondarySpMigrationBuck
   };
 }
 export const SecondarySpMigrationBucketSignDoc = {
-  encode(message: SecondarySpMigrationBucketSignDoc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.SecondarySpMigrationBucketSignDoc",
+  encode(message: SecondarySpMigrationBucketSignDoc, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.chainId !== "") {
       writer.uint32(10).string(message.chainId);
     }
@@ -496,8 +589,8 @@ export const SecondarySpMigrationBucketSignDoc = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SecondarySpMigrationBucketSignDoc {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SecondarySpMigrationBucketSignDoc {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSecondarySpMigrationBucketSignDoc();
     while (reader.pos < end) {
@@ -569,34 +662,78 @@ export const SecondarySpMigrationBucketSignDoc = {
     obj.dst_global_virtual_group_id = message.dstGlobalVirtualGroupId;
     obj.bucket_id = message.bucketId;
     return obj;
+  },
+  fromAmino(object: SecondarySpMigrationBucketSignDocAmino): SecondarySpMigrationBucketSignDoc {
+    const message = createBaseSecondarySpMigrationBucketSignDoc();
+    if (object.chain_id !== undefined && object.chain_id !== null) {
+      message.chainId = object.chain_id;
+    }
+    if (object.dst_primary_sp_id !== undefined && object.dst_primary_sp_id !== null) {
+      message.dstPrimarySpId = object.dst_primary_sp_id;
+    }
+    if (object.src_global_virtual_group_id !== undefined && object.src_global_virtual_group_id !== null) {
+      message.srcGlobalVirtualGroupId = object.src_global_virtual_group_id;
+    }
+    if (object.dst_global_virtual_group_id !== undefined && object.dst_global_virtual_group_id !== null) {
+      message.dstGlobalVirtualGroupId = object.dst_global_virtual_group_id;
+    }
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    return message;
+  },
+  toAmino(message: SecondarySpMigrationBucketSignDoc): SecondarySpMigrationBucketSignDocAmino {
+    const obj: any = {};
+    obj.chain_id = message.chainId;
+    obj.dst_primary_sp_id = message.dstPrimarySpId;
+    obj.src_global_virtual_group_id = message.srcGlobalVirtualGroupId;
+    obj.dst_global_virtual_group_id = message.dstGlobalVirtualGroupId;
+    obj.bucket_id = message.bucketId;
+    return obj;
+  },
+  fromAminoMsg(object: SecondarySpMigrationBucketSignDocAminoMsg): SecondarySpMigrationBucketSignDoc {
+    return SecondarySpMigrationBucketSignDoc.fromAmino(object.value);
+  },
+  fromProtoMsg(message: SecondarySpMigrationBucketSignDocProtoMsg): SecondarySpMigrationBucketSignDoc {
+    return SecondarySpMigrationBucketSignDoc.decode(message.value);
+  },
+  toProto(message: SecondarySpMigrationBucketSignDoc): Uint8Array {
+    return SecondarySpMigrationBucketSignDoc.encode(message).finish();
+  },
+  toProtoMsg(message: SecondarySpMigrationBucketSignDoc): SecondarySpMigrationBucketSignDocProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.SecondarySpMigrationBucketSignDoc",
+      value: SecondarySpMigrationBucketSignDoc.encode(message).finish()
+    };
   }
 };
 function createBaseLocalVirtualGroup(): LocalVirtualGroup {
   return {
     id: 0,
     globalVirtualGroupId: 0,
-    storedSize: Long.UZERO,
-    totalChargeSize: Long.UZERO
+    storedSize: BigInt(0),
+    totalChargeSize: BigInt(0)
   };
 }
 export const LocalVirtualGroup = {
-  encode(message: LocalVirtualGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.storage.LocalVirtualGroup",
+  encode(message: LocalVirtualGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id);
     }
     if (message.globalVirtualGroupId !== 0) {
       writer.uint32(16).uint32(message.globalVirtualGroupId);
     }
-    if (!message.storedSize.isZero()) {
+    if (message.storedSize !== BigInt(0)) {
       writer.uint32(24).uint64(message.storedSize);
     }
-    if (!message.totalChargeSize.isZero()) {
+    if (message.totalChargeSize !== BigInt(0)) {
       writer.uint32(32).uint64(message.totalChargeSize);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): LocalVirtualGroup {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): LocalVirtualGroup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLocalVirtualGroup();
     while (reader.pos < end) {
@@ -609,10 +746,10 @@ export const LocalVirtualGroup = {
           message.globalVirtualGroupId = reader.uint32();
           break;
         case 3:
-          message.storedSize = (reader.uint64() as Long);
+          message.storedSize = reader.uint64();
           break;
         case 4:
-          message.totalChargeSize = (reader.uint64() as Long);
+          message.totalChargeSize = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -625,24 +762,24 @@ export const LocalVirtualGroup = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       globalVirtualGroupId: isSet(object.globalVirtualGroupId) ? Number(object.globalVirtualGroupId) : 0,
-      storedSize: isSet(object.storedSize) ? Long.fromValue(object.storedSize) : Long.UZERO,
-      totalChargeSize: isSet(object.totalChargeSize) ? Long.fromValue(object.totalChargeSize) : Long.UZERO
+      storedSize: isSet(object.storedSize) ? BigInt(object.storedSize.toString()) : BigInt(0),
+      totalChargeSize: isSet(object.totalChargeSize) ? BigInt(object.totalChargeSize.toString()) : BigInt(0)
     };
   },
   toJSON(message: LocalVirtualGroup): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.globalVirtualGroupId !== undefined && (obj.globalVirtualGroupId = Math.round(message.globalVirtualGroupId));
-    message.storedSize !== undefined && (obj.storedSize = (message.storedSize || Long.UZERO).toString());
-    message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || Long.UZERO).toString());
+    message.storedSize !== undefined && (obj.storedSize = (message.storedSize || BigInt(0)).toString());
+    message.totalChargeSize !== undefined && (obj.totalChargeSize = (message.totalChargeSize || BigInt(0)).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<LocalVirtualGroup>, I>>(object: I): LocalVirtualGroup {
     const message = createBaseLocalVirtualGroup();
     message.id = object.id ?? 0;
     message.globalVirtualGroupId = object.globalVirtualGroupId ?? 0;
-    message.storedSize = object.storedSize !== undefined && object.storedSize !== null ? Long.fromValue(object.storedSize) : Long.UZERO;
-    message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? Long.fromValue(object.totalChargeSize) : Long.UZERO;
+    message.storedSize = object.storedSize !== undefined && object.storedSize !== null ? BigInt(object.storedSize.toString()) : BigInt(0);
+    message.totalChargeSize = object.totalChargeSize !== undefined && object.totalChargeSize !== null ? BigInt(object.totalChargeSize.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: LocalVirtualGroupSDKType): LocalVirtualGroup {
@@ -660,5 +797,44 @@ export const LocalVirtualGroup = {
     obj.stored_size = message.storedSize;
     obj.total_charge_size = message.totalChargeSize;
     return obj;
+  },
+  fromAmino(object: LocalVirtualGroupAmino): LocalVirtualGroup {
+    const message = createBaseLocalVirtualGroup();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.global_virtual_group_id !== undefined && object.global_virtual_group_id !== null) {
+      message.globalVirtualGroupId = object.global_virtual_group_id;
+    }
+    if (object.stored_size !== undefined && object.stored_size !== null) {
+      message.storedSize = BigInt(object.stored_size);
+    }
+    if (object.total_charge_size !== undefined && object.total_charge_size !== null) {
+      message.totalChargeSize = BigInt(object.total_charge_size);
+    }
+    return message;
+  },
+  toAmino(message: LocalVirtualGroup): LocalVirtualGroupAmino {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    obj.stored_size = message.storedSize ? message.storedSize.toString() : undefined;
+    obj.total_charge_size = message.totalChargeSize ? message.totalChargeSize.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: LocalVirtualGroupAminoMsg): LocalVirtualGroup {
+    return LocalVirtualGroup.fromAmino(object.value);
+  },
+  fromProtoMsg(message: LocalVirtualGroupProtoMsg): LocalVirtualGroup {
+    return LocalVirtualGroup.decode(message.value);
+  },
+  toProto(message: LocalVirtualGroup): Uint8Array {
+    return LocalVirtualGroup.encode(message).finish();
+  },
+  toProtoMsg(message: LocalVirtualGroup): LocalVirtualGroupProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.LocalVirtualGroup",
+      value: LocalVirtualGroup.encode(message).finish()
+    };
   }
 };

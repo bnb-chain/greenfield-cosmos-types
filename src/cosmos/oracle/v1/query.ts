@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Params, ParamsSDKType, RelayInterval, RelayIntervalSDKType } from "./oracle";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { DeepPartial, Exact, isSet, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.oracle.v1";
 /** ClaimSrcChain defines the src chain of a claim */
@@ -47,12 +47,20 @@ export function claimSrcChainToJSON(object: ClaimSrcChain): string {
 }
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
+export interface QueryParamsRequestProtoMsg {
+  typeUrl: "/cosmos.oracle.v1.QueryParamsRequest";
+  value: Uint8Array;
+}
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponse {
   /** params defines the parameters of the module. */
   params: Params;
+}
+export interface QueryParamsResponseProtoMsg {
+  typeUrl: "/cosmos.oracle.v1.QueryParamsResponse";
+  value: Uint8Array;
 }
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
@@ -63,6 +71,10 @@ export interface QueryInturnRelayerRequest {
   /** ClaimSrcChain defines the src chain of a claim */
   claimSrcChain: ClaimSrcChain;
 }
+export interface QueryInturnRelayerRequestProtoMsg {
+  typeUrl: "/cosmos.oracle.v1.QueryInturnRelayerRequest";
+  value: Uint8Array;
+}
 /** QueryInturnRelayerRequest is the request type for the Query In-turn relayer RPC method. */
 export interface QueryInturnRelayerRequestSDKType {
   claim_src_chain: ClaimSrcChain;
@@ -70,22 +82,27 @@ export interface QueryInturnRelayerRequestSDKType {
 /** QueryInturnRelayerResponse is the response type for the Query In-turn relayer RPC method. */
 export interface QueryInturnRelayerResponse {
   blsPubKey: string;
-  relayInterval: RelayInterval;
+  relayInterval?: RelayInterval;
+}
+export interface QueryInturnRelayerResponseProtoMsg {
+  typeUrl: "/cosmos.oracle.v1.QueryInturnRelayerResponse";
+  value: Uint8Array;
 }
 /** QueryInturnRelayerResponse is the response type for the Query In-turn relayer RPC method. */
 export interface QueryInturnRelayerResponseSDKType {
   bls_pub_key: string;
-  relay_interval: RelayIntervalSDKType;
+  relay_interval?: RelayIntervalSDKType;
 }
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
 export const QueryParamsRequest = {
-  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.oracle.v1.QueryParamsRequest",
+  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -115,6 +132,35 @@ export const QueryParamsRequest = {
   toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: QueryParamsRequestAmino): QueryParamsRequest {
+    const message = createBaseQueryParamsRequest();
+    return message;
+  },
+  toAmino(_: QueryParamsRequest): QueryParamsRequestAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsRequestAminoMsg): QueryParamsRequest {
+    return QueryParamsRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryParamsRequest): QueryParamsRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryParamsRequest",
+      value: QueryParamsRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryParamsRequestProtoMsg): QueryParamsRequest {
+    return QueryParamsRequest.decode(message.value);
+  },
+  toProto(message: QueryParamsRequest): Uint8Array {
+    return QueryParamsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.oracle.v1.QueryParamsRequest",
+      value: QueryParamsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryParamsResponse(): QueryParamsResponse {
@@ -123,14 +169,15 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
   };
 }
 export const QueryParamsResponse = {
-  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.oracle.v1.QueryParamsResponse",
+  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -170,6 +217,39 @@ export const QueryParamsResponse = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryParamsResponseAmino): QueryParamsResponse {
+    const message = createBaseQueryParamsResponse();
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
+    const obj: any = {};
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
+    return QueryParamsResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryParamsResponse): QueryParamsResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryParamsResponse",
+      value: QueryParamsResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryParamsResponseProtoMsg): QueryParamsResponse {
+    return QueryParamsResponse.decode(message.value);
+  },
+  toProto(message: QueryParamsResponse): Uint8Array {
+    return QueryParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.oracle.v1.QueryParamsResponse",
+      value: QueryParamsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryInturnRelayerRequest(): QueryInturnRelayerRequest {
@@ -178,14 +258,15 @@ function createBaseQueryInturnRelayerRequest(): QueryInturnRelayerRequest {
   };
 }
 export const QueryInturnRelayerRequest = {
-  encode(message: QueryInturnRelayerRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.oracle.v1.QueryInturnRelayerRequest",
+  encode(message: QueryInturnRelayerRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.claimSrcChain !== 0) {
       writer.uint32(8).int32(message.claimSrcChain);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryInturnRelayerRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryInturnRelayerRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryInturnRelayerRequest();
     while (reader.pos < end) {
@@ -225,16 +306,50 @@ export const QueryInturnRelayerRequest = {
     const obj: any = {};
     message.claimSrcChain !== undefined && (obj.claim_src_chain = claimSrcChainToJSON(message.claimSrcChain));
     return obj;
+  },
+  fromAmino(object: QueryInturnRelayerRequestAmino): QueryInturnRelayerRequest {
+    const message = createBaseQueryInturnRelayerRequest();
+    if (object.claim_src_chain !== undefined && object.claim_src_chain !== null) {
+      message.claimSrcChain = claimSrcChainFromJSON(object.claim_src_chain);
+    }
+    return message;
+  },
+  toAmino(message: QueryInturnRelayerRequest): QueryInturnRelayerRequestAmino {
+    const obj: any = {};
+    obj.claim_src_chain = claimSrcChainToJSON(message.claimSrcChain);
+    return obj;
+  },
+  fromAminoMsg(object: QueryInturnRelayerRequestAminoMsg): QueryInturnRelayerRequest {
+    return QueryInturnRelayerRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryInturnRelayerRequest): QueryInturnRelayerRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryInturnRelayerRequest",
+      value: QueryInturnRelayerRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryInturnRelayerRequestProtoMsg): QueryInturnRelayerRequest {
+    return QueryInturnRelayerRequest.decode(message.value);
+  },
+  toProto(message: QueryInturnRelayerRequest): Uint8Array {
+    return QueryInturnRelayerRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryInturnRelayerRequest): QueryInturnRelayerRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.oracle.v1.QueryInturnRelayerRequest",
+      value: QueryInturnRelayerRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryInturnRelayerResponse(): QueryInturnRelayerResponse {
   return {
     blsPubKey: "",
-    relayInterval: RelayInterval.fromPartial({})
+    relayInterval: undefined
   };
 }
 export const QueryInturnRelayerResponse = {
-  encode(message: QueryInturnRelayerResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.oracle.v1.QueryInturnRelayerResponse",
+  encode(message: QueryInturnRelayerResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.blsPubKey !== "") {
       writer.uint32(10).string(message.blsPubKey);
     }
@@ -243,8 +358,8 @@ export const QueryInturnRelayerResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryInturnRelayerResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryInturnRelayerResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryInturnRelayerResponse();
     while (reader.pos < end) {
@@ -292,6 +407,43 @@ export const QueryInturnRelayerResponse = {
     obj.bls_pub_key = message.blsPubKey;
     message.relayInterval !== undefined && (obj.relay_interval = message.relayInterval ? RelayInterval.toSDK(message.relayInterval) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryInturnRelayerResponseAmino): QueryInturnRelayerResponse {
+    const message = createBaseQueryInturnRelayerResponse();
+    if (object.bls_pub_key !== undefined && object.bls_pub_key !== null) {
+      message.blsPubKey = object.bls_pub_key;
+    }
+    if (object.relay_interval !== undefined && object.relay_interval !== null) {
+      message.relayInterval = RelayInterval.fromAmino(object.relay_interval);
+    }
+    return message;
+  },
+  toAmino(message: QueryInturnRelayerResponse): QueryInturnRelayerResponseAmino {
+    const obj: any = {};
+    obj.bls_pub_key = message.blsPubKey;
+    obj.relay_interval = message.relayInterval ? RelayInterval.toAmino(message.relayInterval) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryInturnRelayerResponseAminoMsg): QueryInturnRelayerResponse {
+    return QueryInturnRelayerResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryInturnRelayerResponse): QueryInturnRelayerResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryInturnRelayerResponse",
+      value: QueryInturnRelayerResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryInturnRelayerResponseProtoMsg): QueryInturnRelayerResponse {
+    return QueryInturnRelayerResponse.decode(message.value);
+  },
+  toProto(message: QueryInturnRelayerResponse): Uint8Array {
+    return QueryInturnRelayerResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryInturnRelayerResponse): QueryInturnRelayerResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.oracle.v1.QueryInturnRelayerResponse",
+      value: QueryInturnRelayerResponse.encode(message).finish()
+    };
   }
 };
 /** Query provides defines the gRPC querier service. */
@@ -311,11 +463,11 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.oracle.v1.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   InturnRelayer(request: QueryInturnRelayerRequest): Promise<QueryInturnRelayerResponse> {
     const data = QueryInturnRelayerRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.oracle.v1.Query", "InturnRelayer", data);
-    return promise.then(data => QueryInturnRelayerResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryInturnRelayerResponse.decode(new BinaryReader(data)));
   }
 }

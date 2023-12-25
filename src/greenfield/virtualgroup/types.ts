@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
-import { Long, isSet, DeepPartial, Exact } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.virtualgroup";
 /**
  * A global virtual group consists of one primary SP (SP) and multiple secondary SP.
@@ -18,11 +18,15 @@ export interface GlobalVirtualGroup {
   /** Secondary SP IDs represents the list of unique identifiers of the secondary storage providers in the group. */
   secondarySpIds: number[];
   /** Stored size represents the size of the stored objects within the group. */
-  storedSize: Long;
+  storedSize: bigint;
   /** Virtual payment address represents the payment address associated with the group. */
   virtualPaymentAddress: string;
   /** Total deposit represents the number of tokens deposited by this storage provider for staking. */
   totalDeposit: string;
+}
+export interface GlobalVirtualGroupProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.GlobalVirtualGroup";
+  value: Uint8Array;
 }
 /**
  * A global virtual group consists of one primary SP (SP) and multiple secondary SP.
@@ -34,7 +38,7 @@ export interface GlobalVirtualGroupSDKType {
   family_id: number;
   primary_sp_id: number;
   secondary_sp_ids: number[];
-  stored_size: Long;
+  stored_size: bigint;
   virtual_payment_address: string;
   total_deposit: string;
 }
@@ -51,6 +55,10 @@ export interface GlobalVirtualGroupFamily {
   globalVirtualGroupIds: number[];
   /** virtual_payment_address is the payment address associated with the global virtual group family. */
   virtualPaymentAddress: string;
+}
+export interface GlobalVirtualGroupFamilyProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.GlobalVirtualGroupFamily";
+  value: Uint8Array;
 }
 /**
  * Global virtual group family serve as a means of grouping global virtual groups.
@@ -70,6 +78,10 @@ export interface GlobalVirtualGroupsBindingOnBucket {
   /** local_virtual_group_ids is a list of identifiers of the local virtual groups associated with the bucket. */
   localVirtualGroupIds: number[];
 }
+export interface GlobalVirtualGroupsBindingOnBucketProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.GlobalVirtualGroupsBindingOnBucket";
+  value: Uint8Array;
+}
 export interface GlobalVirtualGroupsBindingOnBucketSDKType {
   bucket_id: string;
   global_virtual_group_ids: number[];
@@ -86,6 +98,10 @@ export interface GVGStatisticsWithinSP {
    */
   secondaryCount: number;
 }
+export interface GVGStatisticsWithinSPProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.GVGStatisticsWithinSP";
+  value: Uint8Array;
+}
 export interface GVGStatisticsWithinSPSDKType {
   storage_provider_id: number;
   primary_count: number;
@@ -97,6 +113,10 @@ export interface SwapOutInfo {
   /** successor_sp_id is the id of the successor storage provider. */
   successorSpId: number;
 }
+export interface SwapOutInfoProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.SwapOutInfo";
+  value: Uint8Array;
+}
 export interface SwapOutInfoSDKType {
   sp_id: number;
   successor_sp_id: number;
@@ -107,13 +127,14 @@ function createBaseGlobalVirtualGroup(): GlobalVirtualGroup {
     familyId: 0,
     primarySpId: 0,
     secondarySpIds: [],
-    storedSize: Long.UZERO,
+    storedSize: BigInt(0),
     virtualPaymentAddress: "",
     totalDeposit: ""
   };
 }
 export const GlobalVirtualGroup = {
-  encode(message: GlobalVirtualGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.GlobalVirtualGroup",
+  encode(message: GlobalVirtualGroup, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id);
     }
@@ -128,7 +149,7 @@ export const GlobalVirtualGroup = {
       writer.uint32(v);
     }
     writer.ldelim();
-    if (!message.storedSize.isZero()) {
+    if (message.storedSize !== BigInt(0)) {
       writer.uint32(40).uint64(message.storedSize);
     }
     if (message.virtualPaymentAddress !== "") {
@@ -139,8 +160,8 @@ export const GlobalVirtualGroup = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GlobalVirtualGroup {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GlobalVirtualGroup {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGlobalVirtualGroup();
     while (reader.pos < end) {
@@ -166,7 +187,7 @@ export const GlobalVirtualGroup = {
           }
           break;
         case 5:
-          message.storedSize = (reader.uint64() as Long);
+          message.storedSize = reader.uint64();
           break;
         case 6:
           message.virtualPaymentAddress = reader.string();
@@ -187,7 +208,7 @@ export const GlobalVirtualGroup = {
       familyId: isSet(object.familyId) ? Number(object.familyId) : 0,
       primarySpId: isSet(object.primarySpId) ? Number(object.primarySpId) : 0,
       secondarySpIds: Array.isArray(object?.secondarySpIds) ? object.secondarySpIds.map((e: any) => Number(e)) : [],
-      storedSize: isSet(object.storedSize) ? Long.fromValue(object.storedSize) : Long.UZERO,
+      storedSize: isSet(object.storedSize) ? BigInt(object.storedSize.toString()) : BigInt(0),
       virtualPaymentAddress: isSet(object.virtualPaymentAddress) ? String(object.virtualPaymentAddress) : "",
       totalDeposit: isSet(object.totalDeposit) ? String(object.totalDeposit) : ""
     };
@@ -202,7 +223,7 @@ export const GlobalVirtualGroup = {
     } else {
       obj.secondarySpIds = [];
     }
-    message.storedSize !== undefined && (obj.storedSize = (message.storedSize || Long.UZERO).toString());
+    message.storedSize !== undefined && (obj.storedSize = (message.storedSize || BigInt(0)).toString());
     message.virtualPaymentAddress !== undefined && (obj.virtualPaymentAddress = message.virtualPaymentAddress);
     message.totalDeposit !== undefined && (obj.totalDeposit = message.totalDeposit);
     return obj;
@@ -213,7 +234,7 @@ export const GlobalVirtualGroup = {
     message.familyId = object.familyId ?? 0;
     message.primarySpId = object.primarySpId ?? 0;
     message.secondarySpIds = object.secondarySpIds?.map(e => e) || [];
-    message.storedSize = object.storedSize !== undefined && object.storedSize !== null ? Long.fromValue(object.storedSize) : Long.UZERO;
+    message.storedSize = object.storedSize !== undefined && object.storedSize !== null ? BigInt(object.storedSize.toString()) : BigInt(0);
     message.virtualPaymentAddress = object.virtualPaymentAddress ?? "";
     message.totalDeposit = object.totalDeposit ?? "";
     return message;
@@ -243,6 +264,59 @@ export const GlobalVirtualGroup = {
     obj.virtual_payment_address = message.virtualPaymentAddress;
     obj.total_deposit = message.totalDeposit;
     return obj;
+  },
+  fromAmino(object: GlobalVirtualGroupAmino): GlobalVirtualGroup {
+    const message = createBaseGlobalVirtualGroup();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.family_id !== undefined && object.family_id !== null) {
+      message.familyId = object.family_id;
+    }
+    if (object.primary_sp_id !== undefined && object.primary_sp_id !== null) {
+      message.primarySpId = object.primary_sp_id;
+    }
+    message.secondarySpIds = object.secondary_sp_ids?.map(e => e) || [];
+    if (object.stored_size !== undefined && object.stored_size !== null) {
+      message.storedSize = BigInt(object.stored_size);
+    }
+    if (object.virtual_payment_address !== undefined && object.virtual_payment_address !== null) {
+      message.virtualPaymentAddress = object.virtual_payment_address;
+    }
+    if (object.total_deposit !== undefined && object.total_deposit !== null) {
+      message.totalDeposit = object.total_deposit;
+    }
+    return message;
+  },
+  toAmino(message: GlobalVirtualGroup): GlobalVirtualGroupAmino {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.family_id = message.familyId;
+    obj.primary_sp_id = message.primarySpId;
+    if (message.secondarySpIds) {
+      obj.secondary_sp_ids = message.secondarySpIds.map(e => e);
+    } else {
+      obj.secondary_sp_ids = [];
+    }
+    obj.stored_size = message.storedSize ? message.storedSize.toString() : undefined;
+    obj.virtual_payment_address = message.virtualPaymentAddress;
+    obj.total_deposit = message.totalDeposit;
+    return obj;
+  },
+  fromAminoMsg(object: GlobalVirtualGroupAminoMsg): GlobalVirtualGroup {
+    return GlobalVirtualGroup.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GlobalVirtualGroupProtoMsg): GlobalVirtualGroup {
+    return GlobalVirtualGroup.decode(message.value);
+  },
+  toProto(message: GlobalVirtualGroup): Uint8Array {
+    return GlobalVirtualGroup.encode(message).finish();
+  },
+  toProtoMsg(message: GlobalVirtualGroup): GlobalVirtualGroupProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.GlobalVirtualGroup",
+      value: GlobalVirtualGroup.encode(message).finish()
+    };
   }
 };
 function createBaseGlobalVirtualGroupFamily(): GlobalVirtualGroupFamily {
@@ -254,7 +328,8 @@ function createBaseGlobalVirtualGroupFamily(): GlobalVirtualGroupFamily {
   };
 }
 export const GlobalVirtualGroupFamily = {
-  encode(message: GlobalVirtualGroupFamily, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.GlobalVirtualGroupFamily",
+  encode(message: GlobalVirtualGroupFamily, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id);
     }
@@ -271,8 +346,8 @@ export const GlobalVirtualGroupFamily = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GlobalVirtualGroupFamily {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GlobalVirtualGroupFamily {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGlobalVirtualGroupFamily();
     while (reader.pos < end) {
@@ -351,6 +426,47 @@ export const GlobalVirtualGroupFamily = {
     }
     obj.virtual_payment_address = message.virtualPaymentAddress;
     return obj;
+  },
+  fromAmino(object: GlobalVirtualGroupFamilyAmino): GlobalVirtualGroupFamily {
+    const message = createBaseGlobalVirtualGroupFamily();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.primary_sp_id !== undefined && object.primary_sp_id !== null) {
+      message.primarySpId = object.primary_sp_id;
+    }
+    message.globalVirtualGroupIds = object.global_virtual_group_ids?.map(e => e) || [];
+    if (object.virtual_payment_address !== undefined && object.virtual_payment_address !== null) {
+      message.virtualPaymentAddress = object.virtual_payment_address;
+    }
+    return message;
+  },
+  toAmino(message: GlobalVirtualGroupFamily): GlobalVirtualGroupFamilyAmino {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.primary_sp_id = message.primarySpId;
+    if (message.globalVirtualGroupIds) {
+      obj.global_virtual_group_ids = message.globalVirtualGroupIds.map(e => e);
+    } else {
+      obj.global_virtual_group_ids = [];
+    }
+    obj.virtual_payment_address = message.virtualPaymentAddress;
+    return obj;
+  },
+  fromAminoMsg(object: GlobalVirtualGroupFamilyAminoMsg): GlobalVirtualGroupFamily {
+    return GlobalVirtualGroupFamily.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GlobalVirtualGroupFamilyProtoMsg): GlobalVirtualGroupFamily {
+    return GlobalVirtualGroupFamily.decode(message.value);
+  },
+  toProto(message: GlobalVirtualGroupFamily): Uint8Array {
+    return GlobalVirtualGroupFamily.encode(message).finish();
+  },
+  toProtoMsg(message: GlobalVirtualGroupFamily): GlobalVirtualGroupFamilyProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.GlobalVirtualGroupFamily",
+      value: GlobalVirtualGroupFamily.encode(message).finish()
+    };
   }
 };
 function createBaseGlobalVirtualGroupsBindingOnBucket(): GlobalVirtualGroupsBindingOnBucket {
@@ -361,7 +477,8 @@ function createBaseGlobalVirtualGroupsBindingOnBucket(): GlobalVirtualGroupsBind
   };
 }
 export const GlobalVirtualGroupsBindingOnBucket = {
-  encode(message: GlobalVirtualGroupsBindingOnBucket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.GlobalVirtualGroupsBindingOnBucket",
+  encode(message: GlobalVirtualGroupsBindingOnBucket, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bucketId !== "") {
       writer.uint32(10).string(message.bucketId);
     }
@@ -377,8 +494,8 @@ export const GlobalVirtualGroupsBindingOnBucket = {
     writer.ldelim();
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GlobalVirtualGroupsBindingOnBucket {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GlobalVirtualGroupsBindingOnBucket {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGlobalVirtualGroupsBindingOnBucket();
     while (reader.pos < end) {
@@ -464,6 +581,45 @@ export const GlobalVirtualGroupsBindingOnBucket = {
       obj.local_virtual_group_ids = [];
     }
     return obj;
+  },
+  fromAmino(object: GlobalVirtualGroupsBindingOnBucketAmino): GlobalVirtualGroupsBindingOnBucket {
+    const message = createBaseGlobalVirtualGroupsBindingOnBucket();
+    if (object.bucket_id !== undefined && object.bucket_id !== null) {
+      message.bucketId = object.bucket_id;
+    }
+    message.globalVirtualGroupIds = object.global_virtual_group_ids?.map(e => e) || [];
+    message.localVirtualGroupIds = object.local_virtual_group_ids?.map(e => e) || [];
+    return message;
+  },
+  toAmino(message: GlobalVirtualGroupsBindingOnBucket): GlobalVirtualGroupsBindingOnBucketAmino {
+    const obj: any = {};
+    obj.bucket_id = message.bucketId;
+    if (message.globalVirtualGroupIds) {
+      obj.global_virtual_group_ids = message.globalVirtualGroupIds.map(e => e);
+    } else {
+      obj.global_virtual_group_ids = [];
+    }
+    if (message.localVirtualGroupIds) {
+      obj.local_virtual_group_ids = message.localVirtualGroupIds.map(e => e);
+    } else {
+      obj.local_virtual_group_ids = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: GlobalVirtualGroupsBindingOnBucketAminoMsg): GlobalVirtualGroupsBindingOnBucket {
+    return GlobalVirtualGroupsBindingOnBucket.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GlobalVirtualGroupsBindingOnBucketProtoMsg): GlobalVirtualGroupsBindingOnBucket {
+    return GlobalVirtualGroupsBindingOnBucket.decode(message.value);
+  },
+  toProto(message: GlobalVirtualGroupsBindingOnBucket): Uint8Array {
+    return GlobalVirtualGroupsBindingOnBucket.encode(message).finish();
+  },
+  toProtoMsg(message: GlobalVirtualGroupsBindingOnBucket): GlobalVirtualGroupsBindingOnBucketProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.GlobalVirtualGroupsBindingOnBucket",
+      value: GlobalVirtualGroupsBindingOnBucket.encode(message).finish()
+    };
   }
 };
 function createBaseGVGStatisticsWithinSP(): GVGStatisticsWithinSP {
@@ -474,7 +630,8 @@ function createBaseGVGStatisticsWithinSP(): GVGStatisticsWithinSP {
   };
 }
 export const GVGStatisticsWithinSP = {
-  encode(message: GVGStatisticsWithinSP, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.GVGStatisticsWithinSP",
+  encode(message: GVGStatisticsWithinSP, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.storageProviderId !== 0) {
       writer.uint32(8).uint32(message.storageProviderId);
     }
@@ -486,8 +643,8 @@ export const GVGStatisticsWithinSP = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GVGStatisticsWithinSP {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GVGStatisticsWithinSP {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGVGStatisticsWithinSP();
     while (reader.pos < end) {
@@ -543,6 +700,41 @@ export const GVGStatisticsWithinSP = {
     obj.primary_count = message.primaryCount;
     obj.secondary_count = message.secondaryCount;
     return obj;
+  },
+  fromAmino(object: GVGStatisticsWithinSPAmino): GVGStatisticsWithinSP {
+    const message = createBaseGVGStatisticsWithinSP();
+    if (object.storage_provider_id !== undefined && object.storage_provider_id !== null) {
+      message.storageProviderId = object.storage_provider_id;
+    }
+    if (object.primary_count !== undefined && object.primary_count !== null) {
+      message.primaryCount = object.primary_count;
+    }
+    if (object.secondary_count !== undefined && object.secondary_count !== null) {
+      message.secondaryCount = object.secondary_count;
+    }
+    return message;
+  },
+  toAmino(message: GVGStatisticsWithinSP): GVGStatisticsWithinSPAmino {
+    const obj: any = {};
+    obj.storage_provider_id = message.storageProviderId;
+    obj.primary_count = message.primaryCount;
+    obj.secondary_count = message.secondaryCount;
+    return obj;
+  },
+  fromAminoMsg(object: GVGStatisticsWithinSPAminoMsg): GVGStatisticsWithinSP {
+    return GVGStatisticsWithinSP.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GVGStatisticsWithinSPProtoMsg): GVGStatisticsWithinSP {
+    return GVGStatisticsWithinSP.decode(message.value);
+  },
+  toProto(message: GVGStatisticsWithinSP): Uint8Array {
+    return GVGStatisticsWithinSP.encode(message).finish();
+  },
+  toProtoMsg(message: GVGStatisticsWithinSP): GVGStatisticsWithinSPProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.GVGStatisticsWithinSP",
+      value: GVGStatisticsWithinSP.encode(message).finish()
+    };
   }
 };
 function createBaseSwapOutInfo(): SwapOutInfo {
@@ -552,7 +744,8 @@ function createBaseSwapOutInfo(): SwapOutInfo {
   };
 }
 export const SwapOutInfo = {
-  encode(message: SwapOutInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.virtualgroup.SwapOutInfo",
+  encode(message: SwapOutInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.spId !== 0) {
       writer.uint32(8).uint32(message.spId);
     }
@@ -561,8 +754,8 @@ export const SwapOutInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SwapOutInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SwapOutInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSwapOutInfo();
     while (reader.pos < end) {
@@ -610,5 +803,36 @@ export const SwapOutInfo = {
     obj.sp_id = message.spId;
     obj.successor_sp_id = message.successorSpId;
     return obj;
+  },
+  fromAmino(object: SwapOutInfoAmino): SwapOutInfo {
+    const message = createBaseSwapOutInfo();
+    if (object.sp_id !== undefined && object.sp_id !== null) {
+      message.spId = object.sp_id;
+    }
+    if (object.successor_sp_id !== undefined && object.successor_sp_id !== null) {
+      message.successorSpId = object.successor_sp_id;
+    }
+    return message;
+  },
+  toAmino(message: SwapOutInfo): SwapOutInfoAmino {
+    const obj: any = {};
+    obj.sp_id = message.spId;
+    obj.successor_sp_id = message.successorSpId;
+    return obj;
+  },
+  fromAminoMsg(object: SwapOutInfoAminoMsg): SwapOutInfo {
+    return SwapOutInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: SwapOutInfoProtoMsg): SwapOutInfo {
+    return SwapOutInfo.decode(message.value);
+  },
+  toProto(message: SwapOutInfo): Uint8Array {
+    return SwapOutInfo.encode(message).finish();
+  },
+  toProtoMsg(message: SwapOutInfo): SwapOutInfoProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.SwapOutInfo",
+      value: SwapOutInfo.encode(message).finish()
+    };
   }
 };

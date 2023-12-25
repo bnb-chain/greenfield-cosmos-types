@@ -3,11 +3,15 @@
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
 import { Params, ParamsSDKType } from "./params";
 import { StorageProvider, StorageProviderSDKType, SpStoragePrice, SpStoragePriceSDKType, GlobalSpStorePrice, GlobalSpStorePriceSDKType, MaintenanceRecord, MaintenanceRecordSDKType } from "./types";
-import { Long, DeepPartial, Exact, isSet, Rpc } from "../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.sp";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
+export interface QueryParamsRequestProtoMsg {
+  typeUrl: "/greenfield.sp.QueryParamsRequest";
+  value: Uint8Array;
+}
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
@@ -15,29 +19,45 @@ export interface QueryParamsResponse {
   /** params holds all the parameters of this module. */
   params: Params;
 }
+export interface QueryParamsResponseProtoMsg {
+  typeUrl: "/greenfield.sp.QueryParamsResponse";
+  value: Uint8Array;
+}
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
   params: ParamsSDKType;
 }
 export interface QueryStorageProvidersRequest {
   /** pagination defines an optional pagination for the request. */
-  pagination: PageRequest;
+  pagination?: PageRequest;
+}
+export interface QueryStorageProvidersRequestProtoMsg {
+  typeUrl: "/greenfield.sp.QueryStorageProvidersRequest";
+  value: Uint8Array;
 }
 export interface QueryStorageProvidersRequestSDKType {
-  pagination: PageRequestSDKType;
+  pagination?: PageRequestSDKType;
 }
 export interface QueryStorageProvidersResponse {
   sps: StorageProvider[];
   /** pagination defines the pagination in the response. */
-  pagination: PageResponse;
+  pagination?: PageResponse;
+}
+export interface QueryStorageProvidersResponseProtoMsg {
+  typeUrl: "/greenfield.sp.QueryStorageProvidersResponse";
+  value: Uint8Array;
 }
 export interface QueryStorageProvidersResponseSDKType {
   sps: StorageProviderSDKType[];
-  pagination: PageResponseSDKType;
+  pagination?: PageResponseSDKType;
 }
 export interface QuerySpStoragePriceRequest {
   /** operator address of sp */
   spAddr: string;
+}
+export interface QuerySpStoragePriceRequestProtoMsg {
+  typeUrl: "/greenfield.sp.QuerySpStoragePriceRequest";
+  value: Uint8Array;
 }
 export interface QuerySpStoragePriceRequestSDKType {
   sp_addr: string;
@@ -45,18 +65,30 @@ export interface QuerySpStoragePriceRequestSDKType {
 export interface QuerySpStoragePriceResponse {
   spStoragePrice: SpStoragePrice;
 }
+export interface QuerySpStoragePriceResponseProtoMsg {
+  typeUrl: "/greenfield.sp.QuerySpStoragePriceResponse";
+  value: Uint8Array;
+}
 export interface QuerySpStoragePriceResponseSDKType {
   sp_storage_price: SpStoragePriceSDKType;
 }
 export interface QueryGlobalSpStorePriceByTimeRequest {
   /** unix timestamp in seconds. If it's 0, it will return the latest price. */
-  timestamp: Long;
+  timestamp: bigint;
+}
+export interface QueryGlobalSpStorePriceByTimeRequestProtoMsg {
+  typeUrl: "/greenfield.sp.QueryGlobalSpStorePriceByTimeRequest";
+  value: Uint8Array;
 }
 export interface QueryGlobalSpStorePriceByTimeRequestSDKType {
-  timestamp: Long;
+  timestamp: bigint;
 }
 export interface QueryGlobalSpStorePriceByTimeResponse {
   globalSpStorePrice: GlobalSpStorePrice;
+}
+export interface QueryGlobalSpStorePriceByTimeResponseProtoMsg {
+  typeUrl: "/greenfield.sp.QueryGlobalSpStorePriceByTimeResponse";
+  value: Uint8Array;
 }
 export interface QueryGlobalSpStorePriceByTimeResponseSDKType {
   global_sp_store_price: GlobalSpStorePriceSDKType;
@@ -64,35 +96,59 @@ export interface QueryGlobalSpStorePriceByTimeResponseSDKType {
 export interface QueryStorageProviderRequest {
   id: number;
 }
+export interface QueryStorageProviderRequestProtoMsg {
+  typeUrl: "/greenfield.sp.QueryStorageProviderRequest";
+  value: Uint8Array;
+}
 export interface QueryStorageProviderRequestSDKType {
   id: number;
 }
 export interface QueryStorageProviderResponse {
-  storageProvider: StorageProvider;
+  storageProvider?: StorageProvider;
+}
+export interface QueryStorageProviderResponseProtoMsg {
+  typeUrl: "/greenfield.sp.QueryStorageProviderResponse";
+  value: Uint8Array;
 }
 export interface QueryStorageProviderResponseSDKType {
-  storageProvider: StorageProviderSDKType;
+  storageProvider?: StorageProviderSDKType;
 }
 export interface QueryStorageProviderByOperatorAddressRequest {
   operatorAddress: string;
+}
+export interface QueryStorageProviderByOperatorAddressRequestProtoMsg {
+  typeUrl: "/greenfield.sp.QueryStorageProviderByOperatorAddressRequest";
+  value: Uint8Array;
 }
 export interface QueryStorageProviderByOperatorAddressRequestSDKType {
   operator_address: string;
 }
 export interface QueryStorageProviderByOperatorAddressResponse {
-  storageProvider: StorageProvider;
+  storageProvider?: StorageProvider;
+}
+export interface QueryStorageProviderByOperatorAddressResponseProtoMsg {
+  typeUrl: "/greenfield.sp.QueryStorageProviderByOperatorAddressResponse";
+  value: Uint8Array;
 }
 export interface QueryStorageProviderByOperatorAddressResponseSDKType {
-  storageProvider: StorageProviderSDKType;
+  storageProvider?: StorageProviderSDKType;
 }
 export interface QueryStorageProviderMaintenanceRecordsRequest {
   operatorAddress: string;
+}
+export interface QueryStorageProviderMaintenanceRecordsRequestProtoMsg {
+  typeUrl: "/greenfield.sp.QueryStorageProviderMaintenanceRecordsRequest";
+  value: Uint8Array;
 }
 export interface QueryStorageProviderMaintenanceRecordsRequestSDKType {
   operator_address: string;
 }
 export interface QueryStorageProviderMaintenanceRecordsResponse {
   records: MaintenanceRecord[];
+}
+export interface QueryStorageProviderMaintenanceRecordsResponseProtoMsg {
+  typeUrl: "/greenfield.sp.QueryStorageProviderMaintenanceRecordsResponse";
+  value: Uint8Array;
 }
 export interface QueryStorageProviderMaintenanceRecordsResponseSDKType {
   records: MaintenanceRecordSDKType[];
@@ -101,11 +157,12 @@ function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
 export const QueryParamsRequest = {
-  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.QueryParamsRequest",
+  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -135,6 +192,29 @@ export const QueryParamsRequest = {
   toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: QueryParamsRequestAmino): QueryParamsRequest {
+    const message = createBaseQueryParamsRequest();
+    return message;
+  },
+  toAmino(_: QueryParamsRequest): QueryParamsRequestAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsRequestAminoMsg): QueryParamsRequest {
+    return QueryParamsRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryParamsRequestProtoMsg): QueryParamsRequest {
+    return QueryParamsRequest.decode(message.value);
+  },
+  toProto(message: QueryParamsRequest): Uint8Array {
+    return QueryParamsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QueryParamsRequest",
+      value: QueryParamsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryParamsResponse(): QueryParamsResponse {
@@ -143,14 +223,15 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
   };
 }
 export const QueryParamsResponse = {
-  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.QueryParamsResponse",
+  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -190,22 +271,50 @@ export const QueryParamsResponse = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryParamsResponseAmino): QueryParamsResponse {
+    const message = createBaseQueryParamsResponse();
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
+    const obj: any = {};
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
+    return QueryParamsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryParamsResponseProtoMsg): QueryParamsResponse {
+    return QueryParamsResponse.decode(message.value);
+  },
+  toProto(message: QueryParamsResponse): Uint8Array {
+    return QueryParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QueryParamsResponse",
+      value: QueryParamsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryStorageProvidersRequest(): QueryStorageProvidersRequest {
   return {
-    pagination: PageRequest.fromPartial({})
+    pagination: undefined
   };
 }
 export const QueryStorageProvidersRequest = {
-  encode(message: QueryStorageProvidersRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.QueryStorageProvidersRequest",
+  encode(message: QueryStorageProvidersRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProvidersRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProvidersRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProvidersRequest();
     while (reader.pos < end) {
@@ -245,16 +354,44 @@ export const QueryStorageProvidersRequest = {
     const obj: any = {};
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryStorageProvidersRequestAmino): QueryStorageProvidersRequest {
+    const message = createBaseQueryStorageProvidersRequest();
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryStorageProvidersRequest): QueryStorageProvidersRequestAmino {
+    const obj: any = {};
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryStorageProvidersRequestAminoMsg): QueryStorageProvidersRequest {
+    return QueryStorageProvidersRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryStorageProvidersRequestProtoMsg): QueryStorageProvidersRequest {
+    return QueryStorageProvidersRequest.decode(message.value);
+  },
+  toProto(message: QueryStorageProvidersRequest): Uint8Array {
+    return QueryStorageProvidersRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryStorageProvidersRequest): QueryStorageProvidersRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QueryStorageProvidersRequest",
+      value: QueryStorageProvidersRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryStorageProvidersResponse(): QueryStorageProvidersResponse {
   return {
     sps: [],
-    pagination: PageResponse.fromPartial({})
+    pagination: undefined
   };
 }
 export const QueryStorageProvidersResponse = {
-  encode(message: QueryStorageProvidersResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.QueryStorageProvidersResponse",
+  encode(message: QueryStorageProvidersResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.sps) {
       StorageProvider.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -263,8 +400,8 @@ export const QueryStorageProvidersResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProvidersResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProvidersResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProvidersResponse();
     while (reader.pos < end) {
@@ -320,6 +457,39 @@ export const QueryStorageProvidersResponse = {
     }
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryStorageProvidersResponseAmino): QueryStorageProvidersResponse {
+    const message = createBaseQueryStorageProvidersResponse();
+    message.sps = object.sps?.map(e => StorageProvider.fromAmino(e)) || [];
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryStorageProvidersResponse): QueryStorageProvidersResponseAmino {
+    const obj: any = {};
+    if (message.sps) {
+      obj.sps = message.sps.map(e => e ? StorageProvider.toAmino(e) : undefined);
+    } else {
+      obj.sps = [];
+    }
+    obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryStorageProvidersResponseAminoMsg): QueryStorageProvidersResponse {
+    return QueryStorageProvidersResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryStorageProvidersResponseProtoMsg): QueryStorageProvidersResponse {
+    return QueryStorageProvidersResponse.decode(message.value);
+  },
+  toProto(message: QueryStorageProvidersResponse): Uint8Array {
+    return QueryStorageProvidersResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryStorageProvidersResponse): QueryStorageProvidersResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QueryStorageProvidersResponse",
+      value: QueryStorageProvidersResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQuerySpStoragePriceRequest(): QuerySpStoragePriceRequest {
@@ -328,14 +498,15 @@ function createBaseQuerySpStoragePriceRequest(): QuerySpStoragePriceRequest {
   };
 }
 export const QuerySpStoragePriceRequest = {
-  encode(message: QuerySpStoragePriceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.QuerySpStoragePriceRequest",
+  encode(message: QuerySpStoragePriceRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.spAddr !== "") {
       writer.uint32(10).string(message.spAddr);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpStoragePriceRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySpStoragePriceRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySpStoragePriceRequest();
     while (reader.pos < end) {
@@ -375,6 +546,33 @@ export const QuerySpStoragePriceRequest = {
     const obj: any = {};
     obj.sp_addr = message.spAddr;
     return obj;
+  },
+  fromAmino(object: QuerySpStoragePriceRequestAmino): QuerySpStoragePriceRequest {
+    const message = createBaseQuerySpStoragePriceRequest();
+    if (object.sp_addr !== undefined && object.sp_addr !== null) {
+      message.spAddr = object.sp_addr;
+    }
+    return message;
+  },
+  toAmino(message: QuerySpStoragePriceRequest): QuerySpStoragePriceRequestAmino {
+    const obj: any = {};
+    obj.sp_addr = message.spAddr;
+    return obj;
+  },
+  fromAminoMsg(object: QuerySpStoragePriceRequestAminoMsg): QuerySpStoragePriceRequest {
+    return QuerySpStoragePriceRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySpStoragePriceRequestProtoMsg): QuerySpStoragePriceRequest {
+    return QuerySpStoragePriceRequest.decode(message.value);
+  },
+  toProto(message: QuerySpStoragePriceRequest): Uint8Array {
+    return QuerySpStoragePriceRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySpStoragePriceRequest): QuerySpStoragePriceRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QuerySpStoragePriceRequest",
+      value: QuerySpStoragePriceRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQuerySpStoragePriceResponse(): QuerySpStoragePriceResponse {
@@ -383,14 +581,15 @@ function createBaseQuerySpStoragePriceResponse(): QuerySpStoragePriceResponse {
   };
 }
 export const QuerySpStoragePriceResponse = {
-  encode(message: QuerySpStoragePriceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.QuerySpStoragePriceResponse",
+  encode(message: QuerySpStoragePriceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.spStoragePrice !== undefined) {
       SpStoragePrice.encode(message.spStoragePrice, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpStoragePriceResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QuerySpStoragePriceResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQuerySpStoragePriceResponse();
     while (reader.pos < end) {
@@ -430,29 +629,57 @@ export const QuerySpStoragePriceResponse = {
     const obj: any = {};
     message.spStoragePrice !== undefined && (obj.sp_storage_price = message.spStoragePrice ? SpStoragePrice.toSDK(message.spStoragePrice) : undefined);
     return obj;
+  },
+  fromAmino(object: QuerySpStoragePriceResponseAmino): QuerySpStoragePriceResponse {
+    const message = createBaseQuerySpStoragePriceResponse();
+    if (object.sp_storage_price !== undefined && object.sp_storage_price !== null) {
+      message.spStoragePrice = SpStoragePrice.fromAmino(object.sp_storage_price);
+    }
+    return message;
+  },
+  toAmino(message: QuerySpStoragePriceResponse): QuerySpStoragePriceResponseAmino {
+    const obj: any = {};
+    obj.sp_storage_price = message.spStoragePrice ? SpStoragePrice.toAmino(message.spStoragePrice) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QuerySpStoragePriceResponseAminoMsg): QuerySpStoragePriceResponse {
+    return QuerySpStoragePriceResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySpStoragePriceResponseProtoMsg): QuerySpStoragePriceResponse {
+    return QuerySpStoragePriceResponse.decode(message.value);
+  },
+  toProto(message: QuerySpStoragePriceResponse): Uint8Array {
+    return QuerySpStoragePriceResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySpStoragePriceResponse): QuerySpStoragePriceResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QuerySpStoragePriceResponse",
+      value: QuerySpStoragePriceResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGlobalSpStorePriceByTimeRequest(): QueryGlobalSpStorePriceByTimeRequest {
   return {
-    timestamp: Long.ZERO
+    timestamp: BigInt(0)
   };
 }
 export const QueryGlobalSpStorePriceByTimeRequest = {
-  encode(message: QueryGlobalSpStorePriceByTimeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.timestamp.isZero()) {
+  typeUrl: "/greenfield.sp.QueryGlobalSpStorePriceByTimeRequest",
+  encode(message: QueryGlobalSpStorePriceByTimeRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.timestamp !== BigInt(0)) {
       writer.uint32(8).int64(message.timestamp);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalSpStorePriceByTimeRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalSpStorePriceByTimeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalSpStorePriceByTimeRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.timestamp = (reader.int64() as Long);
+          message.timestamp = reader.int64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -463,17 +690,17 @@ export const QueryGlobalSpStorePriceByTimeRequest = {
   },
   fromJSON(object: any): QueryGlobalSpStorePriceByTimeRequest {
     return {
-      timestamp: isSet(object.timestamp) ? Long.fromValue(object.timestamp) : Long.ZERO
+      timestamp: isSet(object.timestamp) ? BigInt(object.timestamp.toString()) : BigInt(0)
     };
   },
   toJSON(message: QueryGlobalSpStorePriceByTimeRequest): unknown {
     const obj: any = {};
-    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || Long.ZERO).toString());
+    message.timestamp !== undefined && (obj.timestamp = (message.timestamp || BigInt(0)).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<QueryGlobalSpStorePriceByTimeRequest>, I>>(object: I): QueryGlobalSpStorePriceByTimeRequest {
     const message = createBaseQueryGlobalSpStorePriceByTimeRequest();
-    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? Long.fromValue(object.timestamp) : Long.ZERO;
+    message.timestamp = object.timestamp !== undefined && object.timestamp !== null ? BigInt(object.timestamp.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: QueryGlobalSpStorePriceByTimeRequestSDKType): QueryGlobalSpStorePriceByTimeRequest {
@@ -485,6 +712,33 @@ export const QueryGlobalSpStorePriceByTimeRequest = {
     const obj: any = {};
     obj.timestamp = message.timestamp;
     return obj;
+  },
+  fromAmino(object: QueryGlobalSpStorePriceByTimeRequestAmino): QueryGlobalSpStorePriceByTimeRequest {
+    const message = createBaseQueryGlobalSpStorePriceByTimeRequest();
+    if (object.timestamp !== undefined && object.timestamp !== null) {
+      message.timestamp = BigInt(object.timestamp);
+    }
+    return message;
+  },
+  toAmino(message: QueryGlobalSpStorePriceByTimeRequest): QueryGlobalSpStorePriceByTimeRequestAmino {
+    const obj: any = {};
+    obj.timestamp = message.timestamp ? message.timestamp.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryGlobalSpStorePriceByTimeRequestAminoMsg): QueryGlobalSpStorePriceByTimeRequest {
+    return QueryGlobalSpStorePriceByTimeRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGlobalSpStorePriceByTimeRequestProtoMsg): QueryGlobalSpStorePriceByTimeRequest {
+    return QueryGlobalSpStorePriceByTimeRequest.decode(message.value);
+  },
+  toProto(message: QueryGlobalSpStorePriceByTimeRequest): Uint8Array {
+    return QueryGlobalSpStorePriceByTimeRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGlobalSpStorePriceByTimeRequest): QueryGlobalSpStorePriceByTimeRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QueryGlobalSpStorePriceByTimeRequest",
+      value: QueryGlobalSpStorePriceByTimeRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryGlobalSpStorePriceByTimeResponse(): QueryGlobalSpStorePriceByTimeResponse {
@@ -493,14 +747,15 @@ function createBaseQueryGlobalSpStorePriceByTimeResponse(): QueryGlobalSpStorePr
   };
 }
 export const QueryGlobalSpStorePriceByTimeResponse = {
-  encode(message: QueryGlobalSpStorePriceByTimeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.QueryGlobalSpStorePriceByTimeResponse",
+  encode(message: QueryGlobalSpStorePriceByTimeResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.globalSpStorePrice !== undefined) {
       GlobalSpStorePrice.encode(message.globalSpStorePrice, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGlobalSpStorePriceByTimeResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryGlobalSpStorePriceByTimeResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryGlobalSpStorePriceByTimeResponse();
     while (reader.pos < end) {
@@ -540,6 +795,33 @@ export const QueryGlobalSpStorePriceByTimeResponse = {
     const obj: any = {};
     message.globalSpStorePrice !== undefined && (obj.global_sp_store_price = message.globalSpStorePrice ? GlobalSpStorePrice.toSDK(message.globalSpStorePrice) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryGlobalSpStorePriceByTimeResponseAmino): QueryGlobalSpStorePriceByTimeResponse {
+    const message = createBaseQueryGlobalSpStorePriceByTimeResponse();
+    if (object.global_sp_store_price !== undefined && object.global_sp_store_price !== null) {
+      message.globalSpStorePrice = GlobalSpStorePrice.fromAmino(object.global_sp_store_price);
+    }
+    return message;
+  },
+  toAmino(message: QueryGlobalSpStorePriceByTimeResponse): QueryGlobalSpStorePriceByTimeResponseAmino {
+    const obj: any = {};
+    obj.global_sp_store_price = message.globalSpStorePrice ? GlobalSpStorePrice.toAmino(message.globalSpStorePrice) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryGlobalSpStorePriceByTimeResponseAminoMsg): QueryGlobalSpStorePriceByTimeResponse {
+    return QueryGlobalSpStorePriceByTimeResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryGlobalSpStorePriceByTimeResponseProtoMsg): QueryGlobalSpStorePriceByTimeResponse {
+    return QueryGlobalSpStorePriceByTimeResponse.decode(message.value);
+  },
+  toProto(message: QueryGlobalSpStorePriceByTimeResponse): Uint8Array {
+    return QueryGlobalSpStorePriceByTimeResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryGlobalSpStorePriceByTimeResponse): QueryGlobalSpStorePriceByTimeResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QueryGlobalSpStorePriceByTimeResponse",
+      value: QueryGlobalSpStorePriceByTimeResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryStorageProviderRequest(): QueryStorageProviderRequest {
@@ -548,14 +830,15 @@ function createBaseQueryStorageProviderRequest(): QueryStorageProviderRequest {
   };
 }
 export const QueryStorageProviderRequest = {
-  encode(message: QueryStorageProviderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.QueryStorageProviderRequest",
+  encode(message: QueryStorageProviderRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProviderRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProviderRequest();
     while (reader.pos < end) {
@@ -595,22 +878,50 @@ export const QueryStorageProviderRequest = {
     const obj: any = {};
     obj.id = message.id;
     return obj;
+  },
+  fromAmino(object: QueryStorageProviderRequestAmino): QueryStorageProviderRequest {
+    const message = createBaseQueryStorageProviderRequest();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    return message;
+  },
+  toAmino(message: QueryStorageProviderRequest): QueryStorageProviderRequestAmino {
+    const obj: any = {};
+    obj.id = message.id;
+    return obj;
+  },
+  fromAminoMsg(object: QueryStorageProviderRequestAminoMsg): QueryStorageProviderRequest {
+    return QueryStorageProviderRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryStorageProviderRequestProtoMsg): QueryStorageProviderRequest {
+    return QueryStorageProviderRequest.decode(message.value);
+  },
+  toProto(message: QueryStorageProviderRequest): Uint8Array {
+    return QueryStorageProviderRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryStorageProviderRequest): QueryStorageProviderRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QueryStorageProviderRequest",
+      value: QueryStorageProviderRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryStorageProviderResponse(): QueryStorageProviderResponse {
   return {
-    storageProvider: StorageProvider.fromPartial({})
+    storageProvider: undefined
   };
 }
 export const QueryStorageProviderResponse = {
-  encode(message: QueryStorageProviderResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.QueryStorageProviderResponse",
+  encode(message: QueryStorageProviderResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.storageProvider !== undefined) {
       StorageProvider.encode(message.storageProvider, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProviderResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProviderResponse();
     while (reader.pos < end) {
@@ -650,6 +961,33 @@ export const QueryStorageProviderResponse = {
     const obj: any = {};
     message.storageProvider !== undefined && (obj.storageProvider = message.storageProvider ? StorageProvider.toSDK(message.storageProvider) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryStorageProviderResponseAmino): QueryStorageProviderResponse {
+    const message = createBaseQueryStorageProviderResponse();
+    if (object.storageProvider !== undefined && object.storageProvider !== null) {
+      message.storageProvider = StorageProvider.fromAmino(object.storageProvider);
+    }
+    return message;
+  },
+  toAmino(message: QueryStorageProviderResponse): QueryStorageProviderResponseAmino {
+    const obj: any = {};
+    obj.storageProvider = message.storageProvider ? StorageProvider.toAmino(message.storageProvider) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryStorageProviderResponseAminoMsg): QueryStorageProviderResponse {
+    return QueryStorageProviderResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryStorageProviderResponseProtoMsg): QueryStorageProviderResponse {
+    return QueryStorageProviderResponse.decode(message.value);
+  },
+  toProto(message: QueryStorageProviderResponse): Uint8Array {
+    return QueryStorageProviderResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryStorageProviderResponse): QueryStorageProviderResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QueryStorageProviderResponse",
+      value: QueryStorageProviderResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryStorageProviderByOperatorAddressRequest(): QueryStorageProviderByOperatorAddressRequest {
@@ -658,14 +996,15 @@ function createBaseQueryStorageProviderByOperatorAddressRequest(): QueryStorageP
   };
 }
 export const QueryStorageProviderByOperatorAddressRequest = {
-  encode(message: QueryStorageProviderByOperatorAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.QueryStorageProviderByOperatorAddressRequest",
+  encode(message: QueryStorageProviderByOperatorAddressRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operatorAddress !== "") {
       writer.uint32(10).string(message.operatorAddress);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderByOperatorAddressRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProviderByOperatorAddressRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProviderByOperatorAddressRequest();
     while (reader.pos < end) {
@@ -705,22 +1044,50 @@ export const QueryStorageProviderByOperatorAddressRequest = {
     const obj: any = {};
     obj.operator_address = message.operatorAddress;
     return obj;
+  },
+  fromAmino(object: QueryStorageProviderByOperatorAddressRequestAmino): QueryStorageProviderByOperatorAddressRequest {
+    const message = createBaseQueryStorageProviderByOperatorAddressRequest();
+    if (object.operator_address !== undefined && object.operator_address !== null) {
+      message.operatorAddress = object.operator_address;
+    }
+    return message;
+  },
+  toAmino(message: QueryStorageProviderByOperatorAddressRequest): QueryStorageProviderByOperatorAddressRequestAmino {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    return obj;
+  },
+  fromAminoMsg(object: QueryStorageProviderByOperatorAddressRequestAminoMsg): QueryStorageProviderByOperatorAddressRequest {
+    return QueryStorageProviderByOperatorAddressRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryStorageProviderByOperatorAddressRequestProtoMsg): QueryStorageProviderByOperatorAddressRequest {
+    return QueryStorageProviderByOperatorAddressRequest.decode(message.value);
+  },
+  toProto(message: QueryStorageProviderByOperatorAddressRequest): Uint8Array {
+    return QueryStorageProviderByOperatorAddressRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryStorageProviderByOperatorAddressRequest): QueryStorageProviderByOperatorAddressRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QueryStorageProviderByOperatorAddressRequest",
+      value: QueryStorageProviderByOperatorAddressRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryStorageProviderByOperatorAddressResponse(): QueryStorageProviderByOperatorAddressResponse {
   return {
-    storageProvider: StorageProvider.fromPartial({})
+    storageProvider: undefined
   };
 }
 export const QueryStorageProviderByOperatorAddressResponse = {
-  encode(message: QueryStorageProviderByOperatorAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.QueryStorageProviderByOperatorAddressResponse",
+  encode(message: QueryStorageProviderByOperatorAddressResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.storageProvider !== undefined) {
       StorageProvider.encode(message.storageProvider, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderByOperatorAddressResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProviderByOperatorAddressResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProviderByOperatorAddressResponse();
     while (reader.pos < end) {
@@ -760,6 +1127,33 @@ export const QueryStorageProviderByOperatorAddressResponse = {
     const obj: any = {};
     message.storageProvider !== undefined && (obj.storageProvider = message.storageProvider ? StorageProvider.toSDK(message.storageProvider) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryStorageProviderByOperatorAddressResponseAmino): QueryStorageProviderByOperatorAddressResponse {
+    const message = createBaseQueryStorageProviderByOperatorAddressResponse();
+    if (object.storageProvider !== undefined && object.storageProvider !== null) {
+      message.storageProvider = StorageProvider.fromAmino(object.storageProvider);
+    }
+    return message;
+  },
+  toAmino(message: QueryStorageProviderByOperatorAddressResponse): QueryStorageProviderByOperatorAddressResponseAmino {
+    const obj: any = {};
+    obj.storageProvider = message.storageProvider ? StorageProvider.toAmino(message.storageProvider) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryStorageProviderByOperatorAddressResponseAminoMsg): QueryStorageProviderByOperatorAddressResponse {
+    return QueryStorageProviderByOperatorAddressResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryStorageProviderByOperatorAddressResponseProtoMsg): QueryStorageProviderByOperatorAddressResponse {
+    return QueryStorageProviderByOperatorAddressResponse.decode(message.value);
+  },
+  toProto(message: QueryStorageProviderByOperatorAddressResponse): Uint8Array {
+    return QueryStorageProviderByOperatorAddressResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryStorageProviderByOperatorAddressResponse): QueryStorageProviderByOperatorAddressResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QueryStorageProviderByOperatorAddressResponse",
+      value: QueryStorageProviderByOperatorAddressResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryStorageProviderMaintenanceRecordsRequest(): QueryStorageProviderMaintenanceRecordsRequest {
@@ -768,14 +1162,15 @@ function createBaseQueryStorageProviderMaintenanceRecordsRequest(): QueryStorage
   };
 }
 export const QueryStorageProviderMaintenanceRecordsRequest = {
-  encode(message: QueryStorageProviderMaintenanceRecordsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.QueryStorageProviderMaintenanceRecordsRequest",
+  encode(message: QueryStorageProviderMaintenanceRecordsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operatorAddress !== "") {
       writer.uint32(10).string(message.operatorAddress);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderMaintenanceRecordsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProviderMaintenanceRecordsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProviderMaintenanceRecordsRequest();
     while (reader.pos < end) {
@@ -815,6 +1210,33 @@ export const QueryStorageProviderMaintenanceRecordsRequest = {
     const obj: any = {};
     obj.operator_address = message.operatorAddress;
     return obj;
+  },
+  fromAmino(object: QueryStorageProviderMaintenanceRecordsRequestAmino): QueryStorageProviderMaintenanceRecordsRequest {
+    const message = createBaseQueryStorageProviderMaintenanceRecordsRequest();
+    if (object.operator_address !== undefined && object.operator_address !== null) {
+      message.operatorAddress = object.operator_address;
+    }
+    return message;
+  },
+  toAmino(message: QueryStorageProviderMaintenanceRecordsRequest): QueryStorageProviderMaintenanceRecordsRequestAmino {
+    const obj: any = {};
+    obj.operator_address = message.operatorAddress;
+    return obj;
+  },
+  fromAminoMsg(object: QueryStorageProviderMaintenanceRecordsRequestAminoMsg): QueryStorageProviderMaintenanceRecordsRequest {
+    return QueryStorageProviderMaintenanceRecordsRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryStorageProviderMaintenanceRecordsRequestProtoMsg): QueryStorageProviderMaintenanceRecordsRequest {
+    return QueryStorageProviderMaintenanceRecordsRequest.decode(message.value);
+  },
+  toProto(message: QueryStorageProviderMaintenanceRecordsRequest): Uint8Array {
+    return QueryStorageProviderMaintenanceRecordsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryStorageProviderMaintenanceRecordsRequest): QueryStorageProviderMaintenanceRecordsRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QueryStorageProviderMaintenanceRecordsRequest",
+      value: QueryStorageProviderMaintenanceRecordsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryStorageProviderMaintenanceRecordsResponse(): QueryStorageProviderMaintenanceRecordsResponse {
@@ -823,14 +1245,15 @@ function createBaseQueryStorageProviderMaintenanceRecordsResponse(): QueryStorag
   };
 }
 export const QueryStorageProviderMaintenanceRecordsResponse = {
-  encode(message: QueryStorageProviderMaintenanceRecordsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.QueryStorageProviderMaintenanceRecordsResponse",
+  encode(message: QueryStorageProviderMaintenanceRecordsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.records) {
       MaintenanceRecord.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryStorageProviderMaintenanceRecordsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryStorageProviderMaintenanceRecordsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryStorageProviderMaintenanceRecordsResponse();
     while (reader.pos < end) {
@@ -878,6 +1301,35 @@ export const QueryStorageProviderMaintenanceRecordsResponse = {
       obj.records = [];
     }
     return obj;
+  },
+  fromAmino(object: QueryStorageProviderMaintenanceRecordsResponseAmino): QueryStorageProviderMaintenanceRecordsResponse {
+    const message = createBaseQueryStorageProviderMaintenanceRecordsResponse();
+    message.records = object.records?.map(e => MaintenanceRecord.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: QueryStorageProviderMaintenanceRecordsResponse): QueryStorageProviderMaintenanceRecordsResponseAmino {
+    const obj: any = {};
+    if (message.records) {
+      obj.records = message.records.map(e => e ? MaintenanceRecord.toAmino(e) : undefined);
+    } else {
+      obj.records = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: QueryStorageProviderMaintenanceRecordsResponseAminoMsg): QueryStorageProviderMaintenanceRecordsResponse {
+    return QueryStorageProviderMaintenanceRecordsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryStorageProviderMaintenanceRecordsResponseProtoMsg): QueryStorageProviderMaintenanceRecordsResponse {
+    return QueryStorageProviderMaintenanceRecordsResponse.decode(message.value);
+  },
+  toProto(message: QueryStorageProviderMaintenanceRecordsResponse): Uint8Array {
+    return QueryStorageProviderMaintenanceRecordsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryStorageProviderMaintenanceRecordsResponse): QueryStorageProviderMaintenanceRecordsResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.QueryStorageProviderMaintenanceRecordsResponse",
+      value: QueryStorageProviderMaintenanceRecordsResponse.encode(message).finish()
+    };
   }
 };
 /** Query defines the gRPC querier service. */
@@ -912,38 +1364,38 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   StorageProviders(request: QueryStorageProvidersRequest = {
     pagination: undefined
   }): Promise<QueryStorageProvidersResponse> {
     const data = QueryStorageProvidersRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "StorageProviders", data);
-    return promise.then(data => QueryStorageProvidersResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryStorageProvidersResponse.decode(new BinaryReader(data)));
   }
   QuerySpStoragePrice(request: QuerySpStoragePriceRequest): Promise<QuerySpStoragePriceResponse> {
     const data = QuerySpStoragePriceRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "QuerySpStoragePrice", data);
-    return promise.then(data => QuerySpStoragePriceResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QuerySpStoragePriceResponse.decode(new BinaryReader(data)));
   }
   QueryGlobalSpStorePriceByTime(request: QueryGlobalSpStorePriceByTimeRequest): Promise<QueryGlobalSpStorePriceByTimeResponse> {
     const data = QueryGlobalSpStorePriceByTimeRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "QueryGlobalSpStorePriceByTime", data);
-    return promise.then(data => QueryGlobalSpStorePriceByTimeResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryGlobalSpStorePriceByTimeResponse.decode(new BinaryReader(data)));
   }
   StorageProvider(request: QueryStorageProviderRequest): Promise<QueryStorageProviderResponse> {
     const data = QueryStorageProviderRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "StorageProvider", data);
-    return promise.then(data => QueryStorageProviderResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryStorageProviderResponse.decode(new BinaryReader(data)));
   }
   StorageProviderByOperatorAddress(request: QueryStorageProviderByOperatorAddressRequest): Promise<QueryStorageProviderByOperatorAddressResponse> {
     const data = QueryStorageProviderByOperatorAddressRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "StorageProviderByOperatorAddress", data);
-    return promise.then(data => QueryStorageProviderByOperatorAddressResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryStorageProviderByOperatorAddressResponse.decode(new BinaryReader(data)));
   }
   StorageProviderMaintenanceRecordsByOperatorAddress(request: QueryStorageProviderMaintenanceRecordsRequest): Promise<QueryStorageProviderMaintenanceRecordsResponse> {
     const data = QueryStorageProviderMaintenanceRecordsRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.sp.Query", "StorageProviderMaintenanceRecordsByOperatorAddress", data);
-    return promise.then(data => QueryStorageProviderMaintenanceRecordsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryStorageProviderMaintenanceRecordsResponse.decode(new BinaryReader(data)));
   }
 }

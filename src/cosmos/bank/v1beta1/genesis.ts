@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { Params, ParamsSDKType, Metadata, MetadataSDKType, SendEnabled, SendEnabledSDKType } from "./bank";
 import { Coin, CoinSDKType } from "../../base/v1beta1/coin";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.bank.v1beta1";
 /** GenesisState defines the bank module's genesis state. */
@@ -25,6 +25,10 @@ export interface GenesisState {
    */
   sendEnabled: SendEnabled[];
 }
+export interface GenesisStateProtoMsg {
+  typeUrl: "/cosmos.bank.v1beta1.GenesisState";
+  value: Uint8Array;
+}
 /** GenesisState defines the bank module's genesis state. */
 export interface GenesisStateSDKType {
   params: ParamsSDKType;
@@ -42,6 +46,10 @@ export interface Balance {
   address: string;
   /** coins defines the different coins this balance holds. */
   coins: Coin[];
+}
+export interface BalanceProtoMsg {
+  typeUrl: "/cosmos.bank.v1beta1.Balance";
+  value: Uint8Array;
 }
 /**
  * Balance defines an account address and balance pair used in the bank module's
@@ -61,7 +69,8 @@ function createBaseGenesisState(): GenesisState {
   };
 }
 export const GenesisState = {
-  encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.bank.v1beta1.GenesisState",
+  encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
@@ -79,8 +88,8 @@ export const GenesisState = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GenesisState {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
@@ -184,6 +193,63 @@ export const GenesisState = {
       obj.send_enabled = [];
     }
     return obj;
+  },
+  fromAmino(object: GenesisStateAmino): GenesisState {
+    const message = createBaseGenesisState();
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    message.balances = object.balances?.map(e => Balance.fromAmino(e)) || [];
+    message.supply = object.supply?.map(e => Coin.fromAmino(e)) || [];
+    message.denomMetadata = object.denom_metadata?.map(e => Metadata.fromAmino(e)) || [];
+    message.sendEnabled = object.send_enabled?.map(e => SendEnabled.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: GenesisState): GenesisStateAmino {
+    const obj: any = {};
+    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    if (message.balances) {
+      obj.balances = message.balances.map(e => e ? Balance.toAmino(e) : undefined);
+    } else {
+      obj.balances = [];
+    }
+    if (message.supply) {
+      obj.supply = message.supply.map(e => e ? Coin.toAmino(e) : undefined);
+    } else {
+      obj.supply = [];
+    }
+    if (message.denomMetadata) {
+      obj.denom_metadata = message.denomMetadata.map(e => e ? Metadata.toAmino(e) : undefined);
+    } else {
+      obj.denom_metadata = [];
+    }
+    if (message.sendEnabled) {
+      obj.send_enabled = message.sendEnabled.map(e => e ? SendEnabled.toAmino(e) : undefined);
+    } else {
+      obj.send_enabled = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {
+    return GenesisState.fromAmino(object.value);
+  },
+  toAminoMsg(message: GenesisState): GenesisStateAminoMsg {
+    return {
+      type: "cosmos-sdk/GenesisState",
+      value: GenesisState.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
+    return GenesisState.decode(message.value);
+  },
+  toProto(message: GenesisState): Uint8Array {
+    return GenesisState.encode(message).finish();
+  },
+  toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
+    return {
+      typeUrl: "/cosmos.bank.v1beta1.GenesisState",
+      value: GenesisState.encode(message).finish()
+    };
   }
 };
 function createBaseBalance(): Balance {
@@ -193,7 +259,8 @@ function createBaseBalance(): Balance {
   };
 }
 export const Balance = {
-  encode(message: Balance, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.bank.v1beta1.Balance",
+  encode(message: Balance, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
@@ -202,8 +269,8 @@ export const Balance = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Balance {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Balance {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBalance();
     while (reader.pos < end) {
@@ -259,5 +326,44 @@ export const Balance = {
       obj.coins = [];
     }
     return obj;
+  },
+  fromAmino(object: BalanceAmino): Balance {
+    const message = createBaseBalance();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    message.coins = object.coins?.map(e => Coin.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: Balance): BalanceAmino {
+    const obj: any = {};
+    obj.address = message.address;
+    if (message.coins) {
+      obj.coins = message.coins.map(e => e ? Coin.toAmino(e) : undefined);
+    } else {
+      obj.coins = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: BalanceAminoMsg): Balance {
+    return Balance.fromAmino(object.value);
+  },
+  toAminoMsg(message: Balance): BalanceAminoMsg {
+    return {
+      type: "cosmos-sdk/Balance",
+      value: Balance.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: BalanceProtoMsg): Balance {
+    return Balance.decode(message.value);
+  },
+  toProto(message: Balance): Uint8Array {
+    return Balance.encode(message).finish();
+  },
+  toProtoMsg(message: Balance): BalanceProtoMsg {
+    return {
+      typeUrl: "/cosmos.bank.v1beta1.Balance",
+      value: Balance.encode(message).finish()
+    };
   }
 };

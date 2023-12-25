@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.nft.v1beta1";
 /** MsgSend represents a message to send a nft from one account to another account. */
@@ -14,6 +14,10 @@ export interface MsgSend {
   /** receiver is the receiver address of nft */
   receiver: string;
 }
+export interface MsgSendProtoMsg {
+  typeUrl: "/cosmos.nft.v1beta1.MsgSend";
+  value: Uint8Array;
+}
 /** MsgSend represents a message to send a nft from one account to another account. */
 export interface MsgSendSDKType {
   class_id: string;
@@ -23,6 +27,10 @@ export interface MsgSendSDKType {
 }
 /** MsgSendResponse defines the Msg/Send response type. */
 export interface MsgSendResponse {}
+export interface MsgSendResponseProtoMsg {
+  typeUrl: "/cosmos.nft.v1beta1.MsgSendResponse";
+  value: Uint8Array;
+}
 /** MsgSendResponse defines the Msg/Send response type. */
 export interface MsgSendResponseSDKType {}
 function createBaseMsgSend(): MsgSend {
@@ -34,7 +42,8 @@ function createBaseMsgSend(): MsgSend {
   };
 }
 export const MsgSend = {
-  encode(message: MsgSend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.nft.v1beta1.MsgSend",
+  encode(message: MsgSend, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.classId !== "") {
       writer.uint32(10).string(message.classId);
     }
@@ -49,8 +58,8 @@ export const MsgSend = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSend {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgSend {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSend();
     while (reader.pos < end) {
@@ -114,17 +123,63 @@ export const MsgSend = {
     obj.sender = message.sender;
     obj.receiver = message.receiver;
     return obj;
+  },
+  fromAmino(object: MsgSendAmino): MsgSend {
+    const message = createBaseMsgSend();
+    if (object.class_id !== undefined && object.class_id !== null) {
+      message.classId = object.class_id;
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.sender !== undefined && object.sender !== null) {
+      message.sender = object.sender;
+    }
+    if (object.receiver !== undefined && object.receiver !== null) {
+      message.receiver = object.receiver;
+    }
+    return message;
+  },
+  toAmino(message: MsgSend): MsgSendAmino {
+    const obj: any = {};
+    obj.class_id = message.classId;
+    obj.id = message.id;
+    obj.sender = message.sender;
+    obj.receiver = message.receiver;
+    return obj;
+  },
+  fromAminoMsg(object: MsgSendAminoMsg): MsgSend {
+    return MsgSend.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgSend): MsgSendAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgNFTSend",
+      value: MsgSend.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgSendProtoMsg): MsgSend {
+    return MsgSend.decode(message.value);
+  },
+  toProto(message: MsgSend): Uint8Array {
+    return MsgSend.encode(message).finish();
+  },
+  toProtoMsg(message: MsgSend): MsgSendProtoMsg {
+    return {
+      typeUrl: "/cosmos.nft.v1beta1.MsgSend",
+      value: MsgSend.encode(message).finish()
+    };
   }
 };
 function createBaseMsgSendResponse(): MsgSendResponse {
   return {};
 }
 export const MsgSendResponse = {
-  encode(_: MsgSendResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.nft.v1beta1.MsgSendResponse",
+  encode(_: MsgSendResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSendResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgSendResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgSendResponse();
     while (reader.pos < end) {
@@ -154,6 +209,35 @@ export const MsgSendResponse = {
   toSDK(_: MsgSendResponse): MsgSendResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgSendResponseAmino): MsgSendResponse {
+    const message = createBaseMsgSendResponse();
+    return message;
+  },
+  toAmino(_: MsgSendResponse): MsgSendResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgSendResponseAminoMsg): MsgSendResponse {
+    return MsgSendResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgSendResponse): MsgSendResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgSendResponse",
+      value: MsgSendResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgSendResponseProtoMsg): MsgSendResponse {
+    return MsgSendResponse.decode(message.value);
+  },
+  toProto(message: MsgSendResponse): Uint8Array {
+    return MsgSendResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgSendResponse): MsgSendResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.nft.v1beta1.MsgSendResponse",
+      value: MsgSendResponse.encode(message).finish()
+    };
   }
 };
 /** Msg defines the nft Msg service. */
@@ -170,6 +254,6 @@ export class MsgClientImpl implements Msg {
   Send(request: MsgSend): Promise<MsgSendResponse> {
     const data = MsgSend.encode(request).finish();
     const promise = this.rpc.request("cosmos.nft.v1beta1.Msg", "Send", data);
-    return promise.then(data => MsgSendResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgSendResponse.decode(new BinaryReader(data)));
   }
 }

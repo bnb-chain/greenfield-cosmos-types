@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.payment";
 /** OutFlowStatus defines the status of a out flow */
@@ -49,6 +49,10 @@ export interface OutFlow {
   /** status */
   status: OutFlowStatus;
 }
+export interface OutFlowProtoMsg {
+  typeUrl: "/greenfield.payment.OutFlow";
+  value: Uint8Array;
+}
 /**
  * OutFlow defines the accumulative outflow stream rate in BNB
  * from a stream account to a Storage Provider
@@ -66,7 +70,8 @@ function createBaseOutFlow(): OutFlow {
   };
 }
 export const OutFlow = {
-  encode(message: OutFlow, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.OutFlow",
+  encode(message: OutFlow, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.toAddress !== "") {
       writer.uint32(10).string(message.toAddress);
     }
@@ -78,8 +83,8 @@ export const OutFlow = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): OutFlow {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): OutFlow {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOutFlow();
     while (reader.pos < end) {
@@ -135,5 +140,40 @@ export const OutFlow = {
     obj.rate = message.rate;
     message.status !== undefined && (obj.status = outFlowStatusToJSON(message.status));
     return obj;
+  },
+  fromAmino(object: OutFlowAmino): OutFlow {
+    const message = createBaseOutFlow();
+    if (object.to_address !== undefined && object.to_address !== null) {
+      message.toAddress = object.to_address;
+    }
+    if (object.rate !== undefined && object.rate !== null) {
+      message.rate = object.rate;
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = outFlowStatusFromJSON(object.status);
+    }
+    return message;
+  },
+  toAmino(message: OutFlow): OutFlowAmino {
+    const obj: any = {};
+    obj.to_address = message.toAddress;
+    obj.rate = message.rate;
+    obj.status = outFlowStatusToJSON(message.status);
+    return obj;
+  },
+  fromAminoMsg(object: OutFlowAminoMsg): OutFlow {
+    return OutFlow.fromAmino(object.value);
+  },
+  fromProtoMsg(message: OutFlowProtoMsg): OutFlow {
+    return OutFlow.decode(message.value);
+  },
+  toProto(message: OutFlow): Uint8Array {
+    return OutFlow.encode(message).finish();
+  },
+  toProtoMsg(message: OutFlow): OutFlowProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.OutFlow",
+      value: OutFlow.encode(message).finish()
+    };
   }
 };

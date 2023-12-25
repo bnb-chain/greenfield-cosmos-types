@@ -5,7 +5,7 @@ import { StreamRecord, StreamRecordSDKType } from "./stream_record";
 import { PaymentAccountCount, PaymentAccountCountSDKType } from "./payment_account_count";
 import { PaymentAccount, PaymentAccountSDKType } from "./payment_account";
 import { AutoSettleRecord, AutoSettleRecordSDKType } from "./auto_settle_record";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.payment";
 /** GenesisState defines the payment module's genesis state. */
@@ -15,6 +15,10 @@ export interface GenesisState {
   paymentAccountCountList: PaymentAccountCount[];
   paymentAccountList: PaymentAccount[];
   autoSettleRecordList: AutoSettleRecord[];
+}
+export interface GenesisStateProtoMsg {
+  typeUrl: "/greenfield.payment.GenesisState";
+  value: Uint8Array;
 }
 /** GenesisState defines the payment module's genesis state. */
 export interface GenesisStateSDKType {
@@ -34,7 +38,8 @@ function createBaseGenesisState(): GenesisState {
   };
 }
 export const GenesisState = {
-  encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.payment.GenesisState",
+  encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
@@ -52,8 +57,8 @@ export const GenesisState = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GenesisState {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
@@ -157,5 +162,56 @@ export const GenesisState = {
       obj.auto_settle_record_list = [];
     }
     return obj;
+  },
+  fromAmino(object: GenesisStateAmino): GenesisState {
+    const message = createBaseGenesisState();
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    message.streamRecordList = object.stream_record_list?.map(e => StreamRecord.fromAmino(e)) || [];
+    message.paymentAccountCountList = object.payment_account_count_list?.map(e => PaymentAccountCount.fromAmino(e)) || [];
+    message.paymentAccountList = object.payment_account_list?.map(e => PaymentAccount.fromAmino(e)) || [];
+    message.autoSettleRecordList = object.auto_settle_record_list?.map(e => AutoSettleRecord.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: GenesisState): GenesisStateAmino {
+    const obj: any = {};
+    obj.params = message.params ? Params.toAmino(message.params) : undefined;
+    if (message.streamRecordList) {
+      obj.stream_record_list = message.streamRecordList.map(e => e ? StreamRecord.toAmino(e) : undefined);
+    } else {
+      obj.stream_record_list = [];
+    }
+    if (message.paymentAccountCountList) {
+      obj.payment_account_count_list = message.paymentAccountCountList.map(e => e ? PaymentAccountCount.toAmino(e) : undefined);
+    } else {
+      obj.payment_account_count_list = [];
+    }
+    if (message.paymentAccountList) {
+      obj.payment_account_list = message.paymentAccountList.map(e => e ? PaymentAccount.toAmino(e) : undefined);
+    } else {
+      obj.payment_account_list = [];
+    }
+    if (message.autoSettleRecordList) {
+      obj.auto_settle_record_list = message.autoSettleRecordList.map(e => e ? AutoSettleRecord.toAmino(e) : undefined);
+    } else {
+      obj.auto_settle_record_list = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: GenesisStateAminoMsg): GenesisState {
+    return GenesisState.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GenesisStateProtoMsg): GenesisState {
+    return GenesisState.decode(message.value);
+  },
+  toProto(message: GenesisState): Uint8Array {
+    return GenesisState.encode(message).finish();
+  },
+  toProtoMsg(message: GenesisState): GenesisStateProtoMsg {
+    return {
+      typeUrl: "/greenfield.payment.GenesisState",
+      value: GenesisState.encode(message).finish()
+    };
   }
 };

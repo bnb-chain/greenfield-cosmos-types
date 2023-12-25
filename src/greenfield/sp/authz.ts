@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../binary";
 import { isSet, DeepPartial, Exact } from "../../helpers";
 export const protobufPackage = "greenfield.sp";
 /** DepositAuthorization defines authorization for sp deposit. */
@@ -10,23 +10,28 @@ export interface DepositAuthorization {
    * max_deposit specifies the maximum amount of tokens can be deposit to a storage provider. If it is
    * empty, there is no spend limit and any amount of coins can be deposit.
    */
-  maxDeposit: Coin;
+  maxDeposit?: Coin;
   /** sp_address is the operator address of storage provider. */
   spAddress: string;
 }
+export interface DepositAuthorizationProtoMsg {
+  typeUrl: "/greenfield.sp.DepositAuthorization";
+  value: Uint8Array;
+}
 /** DepositAuthorization defines authorization for sp deposit. */
 export interface DepositAuthorizationSDKType {
-  max_deposit: CoinSDKType;
+  max_deposit?: CoinSDKType;
   sp_address: string;
 }
 function createBaseDepositAuthorization(): DepositAuthorization {
   return {
-    maxDeposit: Coin.fromPartial({}),
+    maxDeposit: undefined,
     spAddress: ""
   };
 }
 export const DepositAuthorization = {
-  encode(message: DepositAuthorization, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/greenfield.sp.DepositAuthorization",
+  encode(message: DepositAuthorization, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.maxDeposit !== undefined) {
       Coin.encode(message.maxDeposit, writer.uint32(10).fork()).ldelim();
     }
@@ -35,8 +40,8 @@ export const DepositAuthorization = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DepositAuthorization {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DepositAuthorization {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDepositAuthorization();
     while (reader.pos < end) {
@@ -84,5 +89,36 @@ export const DepositAuthorization = {
     message.maxDeposit !== undefined && (obj.max_deposit = message.maxDeposit ? Coin.toSDK(message.maxDeposit) : undefined);
     obj.sp_address = message.spAddress;
     return obj;
+  },
+  fromAmino(object: DepositAuthorizationAmino): DepositAuthorization {
+    const message = createBaseDepositAuthorization();
+    if (object.max_deposit !== undefined && object.max_deposit !== null) {
+      message.maxDeposit = Coin.fromAmino(object.max_deposit);
+    }
+    if (object.sp_address !== undefined && object.sp_address !== null) {
+      message.spAddress = object.sp_address;
+    }
+    return message;
+  },
+  toAmino(message: DepositAuthorization): DepositAuthorizationAmino {
+    const obj: any = {};
+    obj.max_deposit = message.maxDeposit ? Coin.toAmino(message.maxDeposit) : undefined;
+    obj.sp_address = message.spAddress;
+    return obj;
+  },
+  fromAminoMsg(object: DepositAuthorizationAminoMsg): DepositAuthorization {
+    return DepositAuthorization.fromAmino(object.value);
+  },
+  fromProtoMsg(message: DepositAuthorizationProtoMsg): DepositAuthorization {
+    return DepositAuthorization.decode(message.value);
+  },
+  toProto(message: DepositAuthorization): Uint8Array {
+    return DepositAuthorization.encode(message).finish();
+  },
+  toProtoMsg(message: DepositAuthorization): DepositAuthorizationProtoMsg {
+    return {
+      typeUrl: "/greenfield.sp.DepositAuthorization",
+      value: DepositAuthorization.encode(message).finish()
+    };
   }
 };

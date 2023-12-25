@@ -4,18 +4,18 @@ import { Any, AnySDKType } from "../../../google/protobuf/any";
 import { SignMode, signModeFromJSON, signModeToJSON } from "../signing/v1beta1/signing";
 import { CompactBitArray, CompactBitArraySDKType } from "../../crypto/multisig/v1beta1/multisig";
 import { Coin, CoinSDKType } from "../../base/v1beta1/coin";
-import { Long, isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet, bytesFromBase64, base64FromBytes, DeepPartial, Exact } from "../../../helpers";
 export const protobufPackage = "cosmos.tx.v1beta1";
 /** Tx is the standard type used for broadcasting transactions. */
 export interface Tx {
   /** body is the processable content of the transaction */
-  body: TxBody;
+  body?: TxBody;
   /**
    * auth_info is the authorization related content of the transaction,
    * specifically signers, signer modes and fee
    */
-  authInfo: AuthInfo;
+  authInfo?: AuthInfo;
   /**
    * signatures is a list of signatures that matches the length and order of
    * AuthInfo's signer_infos to allow connecting signature meta information like
@@ -23,10 +23,14 @@ export interface Tx {
    */
   signatures: Uint8Array[];
 }
+export interface TxProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.Tx";
+  value: Uint8Array;
+}
 /** Tx is the standard type used for broadcasting transactions. */
 export interface TxSDKType {
-  body: TxBodySDKType;
-  auth_info: AuthInfoSDKType;
+  body?: TxBodySDKType;
+  auth_info?: AuthInfoSDKType;
   signatures: Uint8Array[];
 }
 /**
@@ -53,6 +57,10 @@ export interface TxRaw {
    * public key and signing mode by position.
    */
   signatures: Uint8Array[];
+}
+export interface TxRawProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.TxRaw";
+  value: Uint8Array;
 }
 /**
  * TxRaw is a variant of Tx that pins the signer's exact binary representation
@@ -85,14 +93,18 @@ export interface SignDoc {
    */
   chainId: string;
   /** account_number is the account number of the account in state */
-  accountNumber: Long;
+  accountNumber: bigint;
+}
+export interface SignDocProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.SignDoc";
+  value: Uint8Array;
 }
 /** SignDoc is the type used for generating sign bytes for SIGN_MODE_DIRECT. */
 export interface SignDocSDKType {
   body_bytes: Uint8Array;
   auth_info_bytes: Uint8Array;
   chain_id: string;
-  account_number: Long;
+  account_number: bigint;
 }
 /**
  * SignDocDirectAux is the type used for generating sign bytes for
@@ -107,7 +119,7 @@ export interface SignDocDirectAux {
    */
   bodyBytes: Uint8Array;
   /** public_key is the public key of the signing account. */
-  publicKey: Any;
+  publicKey?: Any;
   /**
    * chain_id is the identifier of the chain this transaction targets.
    * It prevents signed transactions from being used on another chain by an
@@ -115,9 +127,9 @@ export interface SignDocDirectAux {
    */
   chainId: string;
   /** account_number is the account number of the account in state. */
-  accountNumber: Long;
+  accountNumber: bigint;
   /** sequence is the sequence number of the signing account. */
-  sequence: Long;
+  sequence: bigint;
   /**
    * Tip is the optional tip used for transactions fees paid in another denom.
    * It should be left empty if the signer is not the tipper for this
@@ -126,7 +138,11 @@ export interface SignDocDirectAux {
    * This field is ignored if the chain didn't enable tips, i.e. didn't add the
    * `TipDecorator` in its posthandler.
    */
-  tip: Tip;
+  tip?: Tip;
+}
+export interface SignDocDirectAuxProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.SignDocDirectAux";
+  value: Uint8Array;
 }
 /**
  * SignDocDirectAux is the type used for generating sign bytes for
@@ -136,11 +152,11 @@ export interface SignDocDirectAux {
  */
 export interface SignDocDirectAuxSDKType {
   body_bytes: Uint8Array;
-  public_key: AnySDKType;
+  public_key?: AnySDKType;
   chain_id: string;
-  account_number: Long;
-  sequence: Long;
-  tip: TipSDKType;
+  account_number: bigint;
+  sequence: bigint;
+  tip?: TipSDKType;
 }
 /** SignDocEIP712 is the type used for generating sign bytes for SIGN_MODE_EIP_712. */
 export interface SignDocEip712 {
@@ -149,11 +165,11 @@ export interface SignDocEip712 {
    * It prevents signed transactions from being used on another chain by an
    * attacker.
    */
-  chainId: Long;
+  chainId: bigint;
   /** account_number is the account number of the account in state. */
-  accountNumber: Long;
+  accountNumber: bigint;
   /** sequence is the sequence number of the signing account. */
-  sequence: Long;
+  sequence: bigint;
   /**
    * Fee is the fee and gas limit for the transaction. The first signer is the
    * primary signer and the one which pays the fee. The fee can be calculated
@@ -164,7 +180,7 @@ export interface SignDocEip712 {
   /** msg is the msg in the EIP712 transaction. */
   msgs: Any[];
   /** timeout_height is the transaction's timeout height (if set). */
-  timeoutHeight: Long;
+  timeoutHeight: bigint;
   /**
    * memo is any arbitrary note/comment to be added to the transaction.
    * WARNING: in clients, any publicly exposed text should not be called memo,
@@ -179,18 +195,22 @@ export interface SignDocEip712 {
    * This field is ignored if the chain didn't enable tips, i.e. didn't add the
    * `TipDecorator` in its posthandler.
    */
-  tip: Tip;
+  tip?: Tip;
+}
+export interface SignDocEip712ProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.SignDocEip712";
+  value: Uint8Array;
 }
 /** SignDocEIP712 is the type used for generating sign bytes for SIGN_MODE_EIP_712. */
 export interface SignDocEip712SDKType {
-  chain_id: Long;
-  account_number: Long;
-  sequence: Long;
+  chain_id: bigint;
+  account_number: bigint;
+  sequence: bigint;
   fee: FeeSDKType;
   msgs: AnySDKType[];
-  timeout_height: Long;
+  timeout_height: bigint;
   memo: string;
-  tip: TipSDKType;
+  tip?: TipSDKType;
 }
 /** TxBody is the body of a transaction that all signers sign over. */
 export interface TxBody {
@@ -214,7 +234,7 @@ export interface TxBody {
    * timeout is the block height after which this transaction will not
    * be processed by the chain
    */
-  timeoutHeight: Long;
+  timeoutHeight: bigint;
   /**
    * extension_options are arbitrary options that can be added by chains
    * when the default options are not sufficient. If any of these are present
@@ -228,11 +248,15 @@ export interface TxBody {
    */
   nonCriticalExtensionOptions: Any[];
 }
+export interface TxBodyProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.TxBody";
+  value: Uint8Array;
+}
 /** TxBody is the body of a transaction that all signers sign over. */
 export interface TxBodySDKType {
   messages: AnySDKType[];
   memo: string;
-  timeout_height: Long;
+  timeout_height: bigint;
   extension_options: AnySDKType[];
   non_critical_extension_options: AnySDKType[];
 }
@@ -254,7 +278,7 @@ export interface AuthInfo {
    * based on the cost of evaluating the body and doing signature verification
    * of the signers. This can be estimated via simulation.
    */
-  fee: Fee;
+  fee?: Fee;
   /**
    * Tip is the optional tip used for transactions fees paid in another denom.
    * 
@@ -263,7 +287,11 @@ export interface AuthInfo {
    * 
    * Since: cosmos-sdk 0.46
    */
-  tip: Tip;
+  tip?: Tip;
+}
+export interface AuthInfoProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.AuthInfo";
+  value: Uint8Array;
 }
 /**
  * AuthInfo describes the fee and signer modes that are used to sign a
@@ -271,8 +299,8 @@ export interface AuthInfo {
  */
 export interface AuthInfoSDKType {
   signer_infos: SignerInfoSDKType[];
-  fee: FeeSDKType;
-  tip: TipSDKType;
+  fee?: FeeSDKType;
+  tip?: TipSDKType;
 }
 /**
  * SignerInfo describes the public key and signing mode of a single top-level
@@ -284,27 +312,31 @@ export interface SignerInfo {
    * that already exist in state. If unset, the verifier can use the required \
    * signer address for this position and lookup the public key.
    */
-  publicKey: Any;
+  publicKey?: Any;
   /**
    * mode_info describes the signing mode of the signer and is a nested
    * structure to support nested multisig pubkey's
    */
-  modeInfo: ModeInfo;
+  modeInfo?: ModeInfo;
   /**
    * sequence is the sequence of the account, which describes the
    * number of committed transactions signed by a given address. It is used to
    * prevent replay attacks.
    */
-  sequence: Long;
+  sequence: bigint;
+}
+export interface SignerInfoProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.SignerInfo";
+  value: Uint8Array;
 }
 /**
  * SignerInfo describes the public key and signing mode of a single top-level
  * signer.
  */
 export interface SignerInfoSDKType {
-  public_key: AnySDKType;
-  mode_info: ModeInfoSDKType;
-  sequence: Long;
+  public_key?: AnySDKType;
+  mode_info?: ModeInfoSDKType;
+  sequence: bigint;
 }
 /** ModeInfo describes the signing mode of a single or nested multisig signer. */
 export interface ModeInfo {
@@ -312,6 +344,10 @@ export interface ModeInfo {
   single?: ModeInfo_Single;
   /** multi represents a nested multisig signer */
   multi?: ModeInfo_Multi;
+}
+export interface ModeInfoProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.ModeInfo";
+  value: Uint8Array;
 }
 /** ModeInfo describes the signing mode of a single or nested multisig signer. */
 export interface ModeInfoSDKType {
@@ -327,6 +363,10 @@ export interface ModeInfo_Single {
   /** mode is the signing mode of the single signer */
   mode: SignMode;
 }
+export interface ModeInfo_SingleProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.Single";
+  value: Uint8Array;
+}
 /**
  * Single is the mode info for a single signer. It is structured as a message
  * to allow for additional fields such as locale for SIGN_MODE_TEXTUAL in the
@@ -338,16 +378,20 @@ export interface ModeInfo_SingleSDKType {
 /** Multi is the mode info for a multisig public key */
 export interface ModeInfo_Multi {
   /** bitarray specifies which keys within the multisig are signing */
-  bitarray: CompactBitArray;
+  bitarray?: CompactBitArray;
   /**
    * mode_infos is the corresponding modes of the signers of the multisig
    * which could include nested multisig public keys
    */
   modeInfos: ModeInfo[];
 }
+export interface ModeInfo_MultiProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.Multi";
+  value: Uint8Array;
+}
 /** Multi is the mode info for a multisig public key */
 export interface ModeInfo_MultiSDKType {
-  bitarray: CompactBitArraySDKType;
+  bitarray?: CompactBitArraySDKType;
   mode_infos: ModeInfoSDKType[];
 }
 /**
@@ -362,7 +406,7 @@ export interface Fee {
    * gas_limit is the maximum gas that can be used in transaction processing
    * before an out of gas error occurs
    */
-  gasLimit: Long;
+  gasLimit: bigint;
   /**
    * if unset, the first signer is responsible for paying the fees. If set, the specified account must pay the fees.
    * the payer must be a tx signer (and thus have signed this field in AuthInfo).
@@ -376,6 +420,10 @@ export interface Fee {
    */
   granter: string;
 }
+export interface FeeProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.Fee";
+  value: Uint8Array;
+}
 /**
  * Fee includes the amount of coins paid in fees and the maximum
  * gas to be used by the transaction. The ratio yields an effective "gasprice",
@@ -383,7 +431,7 @@ export interface Fee {
  */
 export interface FeeSDKType {
   amount: CoinSDKType[];
-  gas_limit: Long;
+  gas_limit: bigint;
   payer: string;
   granter: string;
 }
@@ -397,6 +445,10 @@ export interface Tip {
   amount: Coin[];
   /** tipper is the address of the account paying for the tip */
   tipper: string;
+}
+export interface TipProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.Tip";
+  value: Uint8Array;
 }
 /**
  * Tip is the tip used for meta-transactions.
@@ -427,11 +479,15 @@ export interface AuxSignerData {
    * signs. Note: we use the same sign doc even if we're signing with
    * LEGACY_AMINO_JSON.
    */
-  signDoc: SignDocDirectAux;
+  signDoc?: SignDocDirectAux;
   /** mode is the signing mode of the single signer. */
   mode: SignMode;
   /** sig is the signature of the sign doc. */
   sig: Uint8Array;
+}
+export interface AuxSignerDataProtoMsg {
+  typeUrl: "/cosmos.tx.v1beta1.AuxSignerData";
+  value: Uint8Array;
 }
 /**
  * AuxSignerData is the intermediary format that an auxiliary signer (e.g. a
@@ -443,19 +499,20 @@ export interface AuxSignerData {
  */
 export interface AuxSignerDataSDKType {
   address: string;
-  sign_doc: SignDocDirectAuxSDKType;
+  sign_doc?: SignDocDirectAuxSDKType;
   mode: SignMode;
   sig: Uint8Array;
 }
 function createBaseTx(): Tx {
   return {
-    body: TxBody.fromPartial({}),
-    authInfo: AuthInfo.fromPartial({}),
+    body: undefined,
+    authInfo: undefined,
     signatures: []
   };
 }
 export const Tx = {
-  encode(message: Tx, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.tx.v1beta1.Tx",
+  encode(message: Tx, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.body !== undefined) {
       TxBody.encode(message.body, writer.uint32(10).fork()).ldelim();
     }
@@ -467,8 +524,8 @@ export const Tx = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Tx {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Tx {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTx();
     while (reader.pos < end) {
@@ -532,6 +589,49 @@ export const Tx = {
       obj.signatures = [];
     }
     return obj;
+  },
+  fromAmino(object: TxAmino): Tx {
+    const message = createBaseTx();
+    if (object.body !== undefined && object.body !== null) {
+      message.body = TxBody.fromAmino(object.body);
+    }
+    if (object.auth_info !== undefined && object.auth_info !== null) {
+      message.authInfo = AuthInfo.fromAmino(object.auth_info);
+    }
+    message.signatures = object.signatures?.map(e => bytesFromBase64(e)) || [];
+    return message;
+  },
+  toAmino(message: Tx): TxAmino {
+    const obj: any = {};
+    obj.body = message.body ? TxBody.toAmino(message.body) : undefined;
+    obj.auth_info = message.authInfo ? AuthInfo.toAmino(message.authInfo) : undefined;
+    if (message.signatures) {
+      obj.signatures = message.signatures.map(e => base64FromBytes(e));
+    } else {
+      obj.signatures = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: TxAminoMsg): Tx {
+    return Tx.fromAmino(object.value);
+  },
+  toAminoMsg(message: Tx): TxAminoMsg {
+    return {
+      type: "cosmos-sdk/Tx",
+      value: Tx.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: TxProtoMsg): Tx {
+    return Tx.decode(message.value);
+  },
+  toProto(message: Tx): Uint8Array {
+    return Tx.encode(message).finish();
+  },
+  toProtoMsg(message: Tx): TxProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.Tx",
+      value: Tx.encode(message).finish()
+    };
   }
 };
 function createBaseTxRaw(): TxRaw {
@@ -542,7 +642,8 @@ function createBaseTxRaw(): TxRaw {
   };
 }
 export const TxRaw = {
-  encode(message: TxRaw, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.tx.v1beta1.TxRaw",
+  encode(message: TxRaw, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bodyBytes.length !== 0) {
       writer.uint32(10).bytes(message.bodyBytes);
     }
@@ -554,8 +655,8 @@ export const TxRaw = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): TxRaw {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): TxRaw {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTxRaw();
     while (reader.pos < end) {
@@ -619,6 +720,49 @@ export const TxRaw = {
       obj.signatures = [];
     }
     return obj;
+  },
+  fromAmino(object: TxRawAmino): TxRaw {
+    const message = createBaseTxRaw();
+    if (object.body_bytes !== undefined && object.body_bytes !== null) {
+      message.bodyBytes = bytesFromBase64(object.body_bytes);
+    }
+    if (object.auth_info_bytes !== undefined && object.auth_info_bytes !== null) {
+      message.authInfoBytes = bytesFromBase64(object.auth_info_bytes);
+    }
+    message.signatures = object.signatures?.map(e => bytesFromBase64(e)) || [];
+    return message;
+  },
+  toAmino(message: TxRaw): TxRawAmino {
+    const obj: any = {};
+    obj.body_bytes = message.bodyBytes ? base64FromBytes(message.bodyBytes) : undefined;
+    obj.auth_info_bytes = message.authInfoBytes ? base64FromBytes(message.authInfoBytes) : undefined;
+    if (message.signatures) {
+      obj.signatures = message.signatures.map(e => base64FromBytes(e));
+    } else {
+      obj.signatures = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: TxRawAminoMsg): TxRaw {
+    return TxRaw.fromAmino(object.value);
+  },
+  toAminoMsg(message: TxRaw): TxRawAminoMsg {
+    return {
+      type: "cosmos-sdk/TxRaw",
+      value: TxRaw.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: TxRawProtoMsg): TxRaw {
+    return TxRaw.decode(message.value);
+  },
+  toProto(message: TxRaw): Uint8Array {
+    return TxRaw.encode(message).finish();
+  },
+  toProtoMsg(message: TxRaw): TxRawProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.TxRaw",
+      value: TxRaw.encode(message).finish()
+    };
   }
 };
 function createBaseSignDoc(): SignDoc {
@@ -626,11 +770,12 @@ function createBaseSignDoc(): SignDoc {
     bodyBytes: new Uint8Array(),
     authInfoBytes: new Uint8Array(),
     chainId: "",
-    accountNumber: Long.UZERO
+    accountNumber: BigInt(0)
   };
 }
 export const SignDoc = {
-  encode(message: SignDoc, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.tx.v1beta1.SignDoc",
+  encode(message: SignDoc, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bodyBytes.length !== 0) {
       writer.uint32(10).bytes(message.bodyBytes);
     }
@@ -640,13 +785,13 @@ export const SignDoc = {
     if (message.chainId !== "") {
       writer.uint32(26).string(message.chainId);
     }
-    if (!message.accountNumber.isZero()) {
+    if (message.accountNumber !== BigInt(0)) {
       writer.uint32(32).uint64(message.accountNumber);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SignDoc {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SignDoc {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignDoc();
     while (reader.pos < end) {
@@ -662,7 +807,7 @@ export const SignDoc = {
           message.chainId = reader.string();
           break;
         case 4:
-          message.accountNumber = (reader.uint64() as Long);
+          message.accountNumber = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -676,7 +821,7 @@ export const SignDoc = {
       bodyBytes: isSet(object.bodyBytes) ? bytesFromBase64(object.bodyBytes) : new Uint8Array(),
       authInfoBytes: isSet(object.authInfoBytes) ? bytesFromBase64(object.authInfoBytes) : new Uint8Array(),
       chainId: isSet(object.chainId) ? String(object.chainId) : "",
-      accountNumber: isSet(object.accountNumber) ? Long.fromValue(object.accountNumber) : Long.UZERO
+      accountNumber: isSet(object.accountNumber) ? BigInt(object.accountNumber.toString()) : BigInt(0)
     };
   },
   toJSON(message: SignDoc): unknown {
@@ -684,7 +829,7 @@ export const SignDoc = {
     message.bodyBytes !== undefined && (obj.bodyBytes = base64FromBytes(message.bodyBytes !== undefined ? message.bodyBytes : new Uint8Array()));
     message.authInfoBytes !== undefined && (obj.authInfoBytes = base64FromBytes(message.authInfoBytes !== undefined ? message.authInfoBytes : new Uint8Array()));
     message.chainId !== undefined && (obj.chainId = message.chainId);
-    message.accountNumber !== undefined && (obj.accountNumber = (message.accountNumber || Long.UZERO).toString());
+    message.accountNumber !== undefined && (obj.accountNumber = (message.accountNumber || BigInt(0)).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<SignDoc>, I>>(object: I): SignDoc {
@@ -692,7 +837,7 @@ export const SignDoc = {
     message.bodyBytes = object.bodyBytes ?? new Uint8Array();
     message.authInfoBytes = object.authInfoBytes ?? new Uint8Array();
     message.chainId = object.chainId ?? "";
-    message.accountNumber = object.accountNumber !== undefined && object.accountNumber !== null ? Long.fromValue(object.accountNumber) : Long.UZERO;
+    message.accountNumber = object.accountNumber !== undefined && object.accountNumber !== null ? BigInt(object.accountNumber.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: SignDocSDKType): SignDoc {
@@ -710,20 +855,66 @@ export const SignDoc = {
     obj.chain_id = message.chainId;
     obj.account_number = message.accountNumber;
     return obj;
+  },
+  fromAmino(object: SignDocAmino): SignDoc {
+    const message = createBaseSignDoc();
+    if (object.body_bytes !== undefined && object.body_bytes !== null) {
+      message.bodyBytes = bytesFromBase64(object.body_bytes);
+    }
+    if (object.auth_info_bytes !== undefined && object.auth_info_bytes !== null) {
+      message.authInfoBytes = bytesFromBase64(object.auth_info_bytes);
+    }
+    if (object.chain_id !== undefined && object.chain_id !== null) {
+      message.chainId = object.chain_id;
+    }
+    if (object.account_number !== undefined && object.account_number !== null) {
+      message.accountNumber = BigInt(object.account_number);
+    }
+    return message;
+  },
+  toAmino(message: SignDoc): SignDocAmino {
+    const obj: any = {};
+    obj.body_bytes = message.bodyBytes ? base64FromBytes(message.bodyBytes) : undefined;
+    obj.auth_info_bytes = message.authInfoBytes ? base64FromBytes(message.authInfoBytes) : undefined;
+    obj.chain_id = message.chainId;
+    obj.account_number = message.accountNumber ? message.accountNumber.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: SignDocAminoMsg): SignDoc {
+    return SignDoc.fromAmino(object.value);
+  },
+  toAminoMsg(message: SignDoc): SignDocAminoMsg {
+    return {
+      type: "cosmos-sdk/SignDoc",
+      value: SignDoc.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: SignDocProtoMsg): SignDoc {
+    return SignDoc.decode(message.value);
+  },
+  toProto(message: SignDoc): Uint8Array {
+    return SignDoc.encode(message).finish();
+  },
+  toProtoMsg(message: SignDoc): SignDocProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.SignDoc",
+      value: SignDoc.encode(message).finish()
+    };
   }
 };
 function createBaseSignDocDirectAux(): SignDocDirectAux {
   return {
     bodyBytes: new Uint8Array(),
-    publicKey: Any.fromPartial({}),
+    publicKey: undefined,
     chainId: "",
-    accountNumber: Long.UZERO,
-    sequence: Long.UZERO,
-    tip: Tip.fromPartial({})
+    accountNumber: BigInt(0),
+    sequence: BigInt(0),
+    tip: undefined
   };
 }
 export const SignDocDirectAux = {
-  encode(message: SignDocDirectAux, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.tx.v1beta1.SignDocDirectAux",
+  encode(message: SignDocDirectAux, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bodyBytes.length !== 0) {
       writer.uint32(10).bytes(message.bodyBytes);
     }
@@ -733,10 +924,10 @@ export const SignDocDirectAux = {
     if (message.chainId !== "") {
       writer.uint32(26).string(message.chainId);
     }
-    if (!message.accountNumber.isZero()) {
+    if (message.accountNumber !== BigInt(0)) {
       writer.uint32(32).uint64(message.accountNumber);
     }
-    if (!message.sequence.isZero()) {
+    if (message.sequence !== BigInt(0)) {
       writer.uint32(40).uint64(message.sequence);
     }
     if (message.tip !== undefined) {
@@ -744,8 +935,8 @@ export const SignDocDirectAux = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SignDocDirectAux {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SignDocDirectAux {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignDocDirectAux();
     while (reader.pos < end) {
@@ -761,10 +952,10 @@ export const SignDocDirectAux = {
           message.chainId = reader.string();
           break;
         case 4:
-          message.accountNumber = (reader.uint64() as Long);
+          message.accountNumber = reader.uint64();
           break;
         case 5:
-          message.sequence = (reader.uint64() as Long);
+          message.sequence = reader.uint64();
           break;
         case 6:
           message.tip = Tip.decode(reader, reader.uint32());
@@ -781,8 +972,8 @@ export const SignDocDirectAux = {
       bodyBytes: isSet(object.bodyBytes) ? bytesFromBase64(object.bodyBytes) : new Uint8Array(),
       publicKey: isSet(object.publicKey) ? Any.fromJSON(object.publicKey) : undefined,
       chainId: isSet(object.chainId) ? String(object.chainId) : "",
-      accountNumber: isSet(object.accountNumber) ? Long.fromValue(object.accountNumber) : Long.UZERO,
-      sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO,
+      accountNumber: isSet(object.accountNumber) ? BigInt(object.accountNumber.toString()) : BigInt(0),
+      sequence: isSet(object.sequence) ? BigInt(object.sequence.toString()) : BigInt(0),
       tip: isSet(object.tip) ? Tip.fromJSON(object.tip) : undefined
     };
   },
@@ -791,8 +982,8 @@ export const SignDocDirectAux = {
     message.bodyBytes !== undefined && (obj.bodyBytes = base64FromBytes(message.bodyBytes !== undefined ? message.bodyBytes : new Uint8Array()));
     message.publicKey !== undefined && (obj.publicKey = message.publicKey ? Any.toJSON(message.publicKey) : undefined);
     message.chainId !== undefined && (obj.chainId = message.chainId);
-    message.accountNumber !== undefined && (obj.accountNumber = (message.accountNumber || Long.UZERO).toString());
-    message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
+    message.accountNumber !== undefined && (obj.accountNumber = (message.accountNumber || BigInt(0)).toString());
+    message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     message.tip !== undefined && (obj.tip = message.tip ? Tip.toJSON(message.tip) : undefined);
     return obj;
   },
@@ -801,8 +992,8 @@ export const SignDocDirectAux = {
     message.bodyBytes = object.bodyBytes ?? new Uint8Array();
     message.publicKey = object.publicKey !== undefined && object.publicKey !== null ? Any.fromPartial(object.publicKey) : undefined;
     message.chainId = object.chainId ?? "";
-    message.accountNumber = object.accountNumber !== undefined && object.accountNumber !== null ? Long.fromValue(object.accountNumber) : Long.UZERO;
-    message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
+    message.accountNumber = object.accountNumber !== undefined && object.accountNumber !== null ? BigInt(object.accountNumber.toString()) : BigInt(0);
+    message.sequence = object.sequence !== undefined && object.sequence !== null ? BigInt(object.sequence.toString()) : BigInt(0);
     message.tip = object.tip !== undefined && object.tip !== null ? Tip.fromPartial(object.tip) : undefined;
     return message;
   },
@@ -825,29 +1016,83 @@ export const SignDocDirectAux = {
     obj.sequence = message.sequence;
     message.tip !== undefined && (obj.tip = message.tip ? Tip.toSDK(message.tip) : undefined);
     return obj;
+  },
+  fromAmino(object: SignDocDirectAuxAmino): SignDocDirectAux {
+    const message = createBaseSignDocDirectAux();
+    if (object.body_bytes !== undefined && object.body_bytes !== null) {
+      message.bodyBytes = bytesFromBase64(object.body_bytes);
+    }
+    if (object.public_key !== undefined && object.public_key !== null) {
+      message.publicKey = Any.fromAmino(object.public_key);
+    }
+    if (object.chain_id !== undefined && object.chain_id !== null) {
+      message.chainId = object.chain_id;
+    }
+    if (object.account_number !== undefined && object.account_number !== null) {
+      message.accountNumber = BigInt(object.account_number);
+    }
+    if (object.sequence !== undefined && object.sequence !== null) {
+      message.sequence = BigInt(object.sequence);
+    }
+    if (object.tip !== undefined && object.tip !== null) {
+      message.tip = Tip.fromAmino(object.tip);
+    }
+    return message;
+  },
+  toAmino(message: SignDocDirectAux): SignDocDirectAuxAmino {
+    const obj: any = {};
+    obj.body_bytes = message.bodyBytes ? base64FromBytes(message.bodyBytes) : undefined;
+    obj.public_key = message.publicKey ? Any.toAmino(message.publicKey) : undefined;
+    obj.chain_id = message.chainId;
+    obj.account_number = message.accountNumber ? message.accountNumber.toString() : undefined;
+    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
+    obj.tip = message.tip ? Tip.toAmino(message.tip) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: SignDocDirectAuxAminoMsg): SignDocDirectAux {
+    return SignDocDirectAux.fromAmino(object.value);
+  },
+  toAminoMsg(message: SignDocDirectAux): SignDocDirectAuxAminoMsg {
+    return {
+      type: "cosmos-sdk/SignDocDirectAux",
+      value: SignDocDirectAux.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: SignDocDirectAuxProtoMsg): SignDocDirectAux {
+    return SignDocDirectAux.decode(message.value);
+  },
+  toProto(message: SignDocDirectAux): Uint8Array {
+    return SignDocDirectAux.encode(message).finish();
+  },
+  toProtoMsg(message: SignDocDirectAux): SignDocDirectAuxProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.SignDocDirectAux",
+      value: SignDocDirectAux.encode(message).finish()
+    };
   }
 };
 function createBaseSignDocEip712(): SignDocEip712 {
   return {
-    chainId: Long.UZERO,
-    accountNumber: Long.UZERO,
-    sequence: Long.UZERO,
+    chainId: BigInt(0),
+    accountNumber: BigInt(0),
+    sequence: BigInt(0),
     fee: Fee.fromPartial({}),
     msgs: [],
-    timeoutHeight: Long.UZERO,
+    timeoutHeight: BigInt(0),
     memo: "",
-    tip: Tip.fromPartial({})
+    tip: undefined
   };
 }
 export const SignDocEip712 = {
-  encode(message: SignDocEip712, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.chainId.isZero()) {
+  typeUrl: "/cosmos.tx.v1beta1.SignDocEip712",
+  encode(message: SignDocEip712, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.chainId !== BigInt(0)) {
       writer.uint32(8).uint64(message.chainId);
     }
-    if (!message.accountNumber.isZero()) {
+    if (message.accountNumber !== BigInt(0)) {
       writer.uint32(16).uint64(message.accountNumber);
     }
-    if (!message.sequence.isZero()) {
+    if (message.sequence !== BigInt(0)) {
       writer.uint32(24).uint64(message.sequence);
     }
     if (message.fee !== undefined) {
@@ -856,7 +1101,7 @@ export const SignDocEip712 = {
     for (const v of message.msgs) {
       Any.encode(v!, writer.uint32(42).fork()).ldelim();
     }
-    if (!message.timeoutHeight.isZero()) {
+    if (message.timeoutHeight !== BigInt(0)) {
       writer.uint32(48).uint64(message.timeoutHeight);
     }
     if (message.memo !== "") {
@@ -867,21 +1112,21 @@ export const SignDocEip712 = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SignDocEip712 {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SignDocEip712 {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignDocEip712();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.chainId = (reader.uint64() as Long);
+          message.chainId = reader.uint64();
           break;
         case 2:
-          message.accountNumber = (reader.uint64() as Long);
+          message.accountNumber = reader.uint64();
           break;
         case 3:
-          message.sequence = (reader.uint64() as Long);
+          message.sequence = reader.uint64();
           break;
         case 4:
           message.fee = Fee.decode(reader, reader.uint32());
@@ -890,7 +1135,7 @@ export const SignDocEip712 = {
           message.msgs.push(Any.decode(reader, reader.uint32()));
           break;
         case 6:
-          message.timeoutHeight = (reader.uint64() as Long);
+          message.timeoutHeight = reader.uint64();
           break;
         case 7:
           message.memo = reader.string();
@@ -907,40 +1152,40 @@ export const SignDocEip712 = {
   },
   fromJSON(object: any): SignDocEip712 {
     return {
-      chainId: isSet(object.chainId) ? Long.fromValue(object.chainId) : Long.UZERO,
-      accountNumber: isSet(object.accountNumber) ? Long.fromValue(object.accountNumber) : Long.UZERO,
-      sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO,
+      chainId: isSet(object.chainId) ? BigInt(object.chainId.toString()) : BigInt(0),
+      accountNumber: isSet(object.accountNumber) ? BigInt(object.accountNumber.toString()) : BigInt(0),
+      sequence: isSet(object.sequence) ? BigInt(object.sequence.toString()) : BigInt(0),
       fee: isSet(object.fee) ? Fee.fromJSON(object.fee) : undefined,
       msgs: Array.isArray(object?.msgs) ? object.msgs.map((e: any) => Any.fromJSON(e)) : [],
-      timeoutHeight: isSet(object.timeoutHeight) ? Long.fromValue(object.timeoutHeight) : Long.UZERO,
+      timeoutHeight: isSet(object.timeoutHeight) ? BigInt(object.timeoutHeight.toString()) : BigInt(0),
       memo: isSet(object.memo) ? String(object.memo) : "",
       tip: isSet(object.tip) ? Tip.fromJSON(object.tip) : undefined
     };
   },
   toJSON(message: SignDocEip712): unknown {
     const obj: any = {};
-    message.chainId !== undefined && (obj.chainId = (message.chainId || Long.UZERO).toString());
-    message.accountNumber !== undefined && (obj.accountNumber = (message.accountNumber || Long.UZERO).toString());
-    message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
+    message.chainId !== undefined && (obj.chainId = (message.chainId || BigInt(0)).toString());
+    message.accountNumber !== undefined && (obj.accountNumber = (message.accountNumber || BigInt(0)).toString());
+    message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     message.fee !== undefined && (obj.fee = message.fee ? Fee.toJSON(message.fee) : undefined);
     if (message.msgs) {
       obj.msgs = message.msgs.map(e => e ? Any.toJSON(e) : undefined);
     } else {
       obj.msgs = [];
     }
-    message.timeoutHeight !== undefined && (obj.timeoutHeight = (message.timeoutHeight || Long.UZERO).toString());
+    message.timeoutHeight !== undefined && (obj.timeoutHeight = (message.timeoutHeight || BigInt(0)).toString());
     message.memo !== undefined && (obj.memo = message.memo);
     message.tip !== undefined && (obj.tip = message.tip ? Tip.toJSON(message.tip) : undefined);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<SignDocEip712>, I>>(object: I): SignDocEip712 {
     const message = createBaseSignDocEip712();
-    message.chainId = object.chainId !== undefined && object.chainId !== null ? Long.fromValue(object.chainId) : Long.UZERO;
-    message.accountNumber = object.accountNumber !== undefined && object.accountNumber !== null ? Long.fromValue(object.accountNumber) : Long.UZERO;
-    message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
+    message.chainId = object.chainId !== undefined && object.chainId !== null ? BigInt(object.chainId.toString()) : BigInt(0);
+    message.accountNumber = object.accountNumber !== undefined && object.accountNumber !== null ? BigInt(object.accountNumber.toString()) : BigInt(0);
+    message.sequence = object.sequence !== undefined && object.sequence !== null ? BigInt(object.sequence.toString()) : BigInt(0);
     message.fee = object.fee !== undefined && object.fee !== null ? Fee.fromPartial(object.fee) : undefined;
     message.msgs = object.msgs?.map(e => Any.fromPartial(e)) || [];
-    message.timeoutHeight = object.timeoutHeight !== undefined && object.timeoutHeight !== null ? Long.fromValue(object.timeoutHeight) : Long.UZERO;
+    message.timeoutHeight = object.timeoutHeight !== undefined && object.timeoutHeight !== null ? BigInt(object.timeoutHeight.toString()) : BigInt(0);
     message.memo = object.memo ?? "";
     message.tip = object.tip !== undefined && object.tip !== null ? Tip.fromPartial(object.tip) : undefined;
     return message;
@@ -972,26 +1217,90 @@ export const SignDocEip712 = {
     obj.memo = message.memo;
     message.tip !== undefined && (obj.tip = message.tip ? Tip.toSDK(message.tip) : undefined);
     return obj;
+  },
+  fromAmino(object: SignDocEip712Amino): SignDocEip712 {
+    const message = createBaseSignDocEip712();
+    if (object.chain_id !== undefined && object.chain_id !== null) {
+      message.chainId = BigInt(object.chain_id);
+    }
+    if (object.account_number !== undefined && object.account_number !== null) {
+      message.accountNumber = BigInt(object.account_number);
+    }
+    if (object.sequence !== undefined && object.sequence !== null) {
+      message.sequence = BigInt(object.sequence);
+    }
+    if (object.fee !== undefined && object.fee !== null) {
+      message.fee = Fee.fromAmino(object.fee);
+    }
+    message.msgs = object.msgs?.map(e => Any.fromAmino(e)) || [];
+    if (object.timeout_height !== undefined && object.timeout_height !== null) {
+      message.timeoutHeight = BigInt(object.timeout_height);
+    }
+    if (object.memo !== undefined && object.memo !== null) {
+      message.memo = object.memo;
+    }
+    if (object.tip !== undefined && object.tip !== null) {
+      message.tip = Tip.fromAmino(object.tip);
+    }
+    return message;
+  },
+  toAmino(message: SignDocEip712): SignDocEip712Amino {
+    const obj: any = {};
+    obj.chain_id = message.chainId ? message.chainId.toString() : undefined;
+    obj.account_number = message.accountNumber ? message.accountNumber.toString() : undefined;
+    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
+    obj.fee = message.fee ? Fee.toAmino(message.fee) : undefined;
+    if (message.msgs) {
+      obj.msgs = message.msgs.map(e => e ? Any.toAmino(e) : undefined);
+    } else {
+      obj.msgs = [];
+    }
+    obj.timeout_height = message.timeoutHeight ? message.timeoutHeight.toString() : undefined;
+    obj.memo = message.memo;
+    obj.tip = message.tip ? Tip.toAmino(message.tip) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: SignDocEip712AminoMsg): SignDocEip712 {
+    return SignDocEip712.fromAmino(object.value);
+  },
+  toAminoMsg(message: SignDocEip712): SignDocEip712AminoMsg {
+    return {
+      type: "cosmos-sdk/SignDocEip712",
+      value: SignDocEip712.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: SignDocEip712ProtoMsg): SignDocEip712 {
+    return SignDocEip712.decode(message.value);
+  },
+  toProto(message: SignDocEip712): Uint8Array {
+    return SignDocEip712.encode(message).finish();
+  },
+  toProtoMsg(message: SignDocEip712): SignDocEip712ProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.SignDocEip712",
+      value: SignDocEip712.encode(message).finish()
+    };
   }
 };
 function createBaseTxBody(): TxBody {
   return {
     messages: [],
     memo: "",
-    timeoutHeight: Long.UZERO,
+    timeoutHeight: BigInt(0),
     extensionOptions: [],
     nonCriticalExtensionOptions: []
   };
 }
 export const TxBody = {
-  encode(message: TxBody, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.tx.v1beta1.TxBody",
+  encode(message: TxBody, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.messages) {
       Any.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.memo !== "") {
       writer.uint32(18).string(message.memo);
     }
-    if (!message.timeoutHeight.isZero()) {
+    if (message.timeoutHeight !== BigInt(0)) {
       writer.uint32(24).uint64(message.timeoutHeight);
     }
     for (const v of message.extensionOptions) {
@@ -1002,8 +1311,8 @@ export const TxBody = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): TxBody {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): TxBody {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTxBody();
     while (reader.pos < end) {
@@ -1016,7 +1325,7 @@ export const TxBody = {
           message.memo = reader.string();
           break;
         case 3:
-          message.timeoutHeight = (reader.uint64() as Long);
+          message.timeoutHeight = reader.uint64();
           break;
         case 1023:
           message.extensionOptions.push(Any.decode(reader, reader.uint32()));
@@ -1035,7 +1344,7 @@ export const TxBody = {
     return {
       messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Any.fromJSON(e)) : [],
       memo: isSet(object.memo) ? String(object.memo) : "",
-      timeoutHeight: isSet(object.timeoutHeight) ? Long.fromValue(object.timeoutHeight) : Long.UZERO,
+      timeoutHeight: isSet(object.timeoutHeight) ? BigInt(object.timeoutHeight.toString()) : BigInt(0),
       extensionOptions: Array.isArray(object?.extensionOptions) ? object.extensionOptions.map((e: any) => Any.fromJSON(e)) : [],
       nonCriticalExtensionOptions: Array.isArray(object?.nonCriticalExtensionOptions) ? object.nonCriticalExtensionOptions.map((e: any) => Any.fromJSON(e)) : []
     };
@@ -1048,7 +1357,7 @@ export const TxBody = {
       obj.messages = [];
     }
     message.memo !== undefined && (obj.memo = message.memo);
-    message.timeoutHeight !== undefined && (obj.timeoutHeight = (message.timeoutHeight || Long.UZERO).toString());
+    message.timeoutHeight !== undefined && (obj.timeoutHeight = (message.timeoutHeight || BigInt(0)).toString());
     if (message.extensionOptions) {
       obj.extensionOptions = message.extensionOptions.map(e => e ? Any.toJSON(e) : undefined);
     } else {
@@ -1065,7 +1374,7 @@ export const TxBody = {
     const message = createBaseTxBody();
     message.messages = object.messages?.map(e => Any.fromPartial(e)) || [];
     message.memo = object.memo ?? "";
-    message.timeoutHeight = object.timeoutHeight !== undefined && object.timeoutHeight !== null ? Long.fromValue(object.timeoutHeight) : Long.UZERO;
+    message.timeoutHeight = object.timeoutHeight !== undefined && object.timeoutHeight !== null ? BigInt(object.timeoutHeight.toString()) : BigInt(0);
     message.extensionOptions = object.extensionOptions?.map(e => Any.fromPartial(e)) || [];
     message.nonCriticalExtensionOptions = object.nonCriticalExtensionOptions?.map(e => Any.fromPartial(e)) || [];
     return message;
@@ -1099,17 +1408,73 @@ export const TxBody = {
       obj.non_critical_extension_options = [];
     }
     return obj;
+  },
+  fromAmino(object: TxBodyAmino): TxBody {
+    const message = createBaseTxBody();
+    message.messages = object.messages?.map(e => Any.fromAmino(e)) || [];
+    if (object.memo !== undefined && object.memo !== null) {
+      message.memo = object.memo;
+    }
+    if (object.timeout_height !== undefined && object.timeout_height !== null) {
+      message.timeoutHeight = BigInt(object.timeout_height);
+    }
+    message.extensionOptions = object.extension_options?.map(e => Any.fromAmino(e)) || [];
+    message.nonCriticalExtensionOptions = object.non_critical_extension_options?.map(e => Any.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: TxBody): TxBodyAmino {
+    const obj: any = {};
+    if (message.messages) {
+      obj.messages = message.messages.map(e => e ? Any.toAmino(e) : undefined);
+    } else {
+      obj.messages = [];
+    }
+    obj.memo = message.memo;
+    obj.timeout_height = message.timeoutHeight ? message.timeoutHeight.toString() : undefined;
+    if (message.extensionOptions) {
+      obj.extension_options = message.extensionOptions.map(e => e ? Any.toAmino(e) : undefined);
+    } else {
+      obj.extension_options = [];
+    }
+    if (message.nonCriticalExtensionOptions) {
+      obj.non_critical_extension_options = message.nonCriticalExtensionOptions.map(e => e ? Any.toAmino(e) : undefined);
+    } else {
+      obj.non_critical_extension_options = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: TxBodyAminoMsg): TxBody {
+    return TxBody.fromAmino(object.value);
+  },
+  toAminoMsg(message: TxBody): TxBodyAminoMsg {
+    return {
+      type: "cosmos-sdk/TxBody",
+      value: TxBody.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: TxBodyProtoMsg): TxBody {
+    return TxBody.decode(message.value);
+  },
+  toProto(message: TxBody): Uint8Array {
+    return TxBody.encode(message).finish();
+  },
+  toProtoMsg(message: TxBody): TxBodyProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.TxBody",
+      value: TxBody.encode(message).finish()
+    };
   }
 };
 function createBaseAuthInfo(): AuthInfo {
   return {
     signerInfos: [],
-    fee: Fee.fromPartial({}),
-    tip: Tip.fromPartial({})
+    fee: undefined,
+    tip: undefined
   };
 }
 export const AuthInfo = {
-  encode(message: AuthInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.tx.v1beta1.AuthInfo",
+  encode(message: AuthInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.signerInfos) {
       SignerInfo.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1121,8 +1486,8 @@ export const AuthInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AuthInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AuthInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAuthInfo();
     while (reader.pos < end) {
@@ -1186,30 +1551,74 @@ export const AuthInfo = {
     message.fee !== undefined && (obj.fee = message.fee ? Fee.toSDK(message.fee) : undefined);
     message.tip !== undefined && (obj.tip = message.tip ? Tip.toSDK(message.tip) : undefined);
     return obj;
+  },
+  fromAmino(object: AuthInfoAmino): AuthInfo {
+    const message = createBaseAuthInfo();
+    message.signerInfos = object.signer_infos?.map(e => SignerInfo.fromAmino(e)) || [];
+    if (object.fee !== undefined && object.fee !== null) {
+      message.fee = Fee.fromAmino(object.fee);
+    }
+    if (object.tip !== undefined && object.tip !== null) {
+      message.tip = Tip.fromAmino(object.tip);
+    }
+    return message;
+  },
+  toAmino(message: AuthInfo): AuthInfoAmino {
+    const obj: any = {};
+    if (message.signerInfos) {
+      obj.signer_infos = message.signerInfos.map(e => e ? SignerInfo.toAmino(e) : undefined);
+    } else {
+      obj.signer_infos = [];
+    }
+    obj.fee = message.fee ? Fee.toAmino(message.fee) : undefined;
+    obj.tip = message.tip ? Tip.toAmino(message.tip) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: AuthInfoAminoMsg): AuthInfo {
+    return AuthInfo.fromAmino(object.value);
+  },
+  toAminoMsg(message: AuthInfo): AuthInfoAminoMsg {
+    return {
+      type: "cosmos-sdk/AuthInfo",
+      value: AuthInfo.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: AuthInfoProtoMsg): AuthInfo {
+    return AuthInfo.decode(message.value);
+  },
+  toProto(message: AuthInfo): Uint8Array {
+    return AuthInfo.encode(message).finish();
+  },
+  toProtoMsg(message: AuthInfo): AuthInfoProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.AuthInfo",
+      value: AuthInfo.encode(message).finish()
+    };
   }
 };
 function createBaseSignerInfo(): SignerInfo {
   return {
-    publicKey: Any.fromPartial({}),
-    modeInfo: ModeInfo.fromPartial({}),
-    sequence: Long.UZERO
+    publicKey: undefined,
+    modeInfo: undefined,
+    sequence: BigInt(0)
   };
 }
 export const SignerInfo = {
-  encode(message: SignerInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.tx.v1beta1.SignerInfo",
+  encode(message: SignerInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.publicKey !== undefined) {
       Any.encode(message.publicKey, writer.uint32(10).fork()).ldelim();
     }
     if (message.modeInfo !== undefined) {
       ModeInfo.encode(message.modeInfo, writer.uint32(18).fork()).ldelim();
     }
-    if (!message.sequence.isZero()) {
+    if (message.sequence !== BigInt(0)) {
       writer.uint32(24).uint64(message.sequence);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): SignerInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): SignerInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignerInfo();
     while (reader.pos < end) {
@@ -1222,7 +1631,7 @@ export const SignerInfo = {
           message.modeInfo = ModeInfo.decode(reader, reader.uint32());
           break;
         case 3:
-          message.sequence = (reader.uint64() as Long);
+          message.sequence = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1235,21 +1644,21 @@ export const SignerInfo = {
     return {
       publicKey: isSet(object.publicKey) ? Any.fromJSON(object.publicKey) : undefined,
       modeInfo: isSet(object.modeInfo) ? ModeInfo.fromJSON(object.modeInfo) : undefined,
-      sequence: isSet(object.sequence) ? Long.fromValue(object.sequence) : Long.UZERO
+      sequence: isSet(object.sequence) ? BigInt(object.sequence.toString()) : BigInt(0)
     };
   },
   toJSON(message: SignerInfo): unknown {
     const obj: any = {};
     message.publicKey !== undefined && (obj.publicKey = message.publicKey ? Any.toJSON(message.publicKey) : undefined);
     message.modeInfo !== undefined && (obj.modeInfo = message.modeInfo ? ModeInfo.toJSON(message.modeInfo) : undefined);
-    message.sequence !== undefined && (obj.sequence = (message.sequence || Long.UZERO).toString());
+    message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<SignerInfo>, I>>(object: I): SignerInfo {
     const message = createBaseSignerInfo();
     message.publicKey = object.publicKey !== undefined && object.publicKey !== null ? Any.fromPartial(object.publicKey) : undefined;
     message.modeInfo = object.modeInfo !== undefined && object.modeInfo !== null ? ModeInfo.fromPartial(object.modeInfo) : undefined;
-    message.sequence = object.sequence !== undefined && object.sequence !== null ? Long.fromValue(object.sequence) : Long.UZERO;
+    message.sequence = object.sequence !== undefined && object.sequence !== null ? BigInt(object.sequence.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: SignerInfoSDKType): SignerInfo {
@@ -1265,6 +1674,47 @@ export const SignerInfo = {
     message.modeInfo !== undefined && (obj.mode_info = message.modeInfo ? ModeInfo.toSDK(message.modeInfo) : undefined);
     obj.sequence = message.sequence;
     return obj;
+  },
+  fromAmino(object: SignerInfoAmino): SignerInfo {
+    const message = createBaseSignerInfo();
+    if (object.public_key !== undefined && object.public_key !== null) {
+      message.publicKey = Any.fromAmino(object.public_key);
+    }
+    if (object.mode_info !== undefined && object.mode_info !== null) {
+      message.modeInfo = ModeInfo.fromAmino(object.mode_info);
+    }
+    if (object.sequence !== undefined && object.sequence !== null) {
+      message.sequence = BigInt(object.sequence);
+    }
+    return message;
+  },
+  toAmino(message: SignerInfo): SignerInfoAmino {
+    const obj: any = {};
+    obj.public_key = message.publicKey ? Any.toAmino(message.publicKey) : undefined;
+    obj.mode_info = message.modeInfo ? ModeInfo.toAmino(message.modeInfo) : undefined;
+    obj.sequence = message.sequence ? message.sequence.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: SignerInfoAminoMsg): SignerInfo {
+    return SignerInfo.fromAmino(object.value);
+  },
+  toAminoMsg(message: SignerInfo): SignerInfoAminoMsg {
+    return {
+      type: "cosmos-sdk/SignerInfo",
+      value: SignerInfo.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: SignerInfoProtoMsg): SignerInfo {
+    return SignerInfo.decode(message.value);
+  },
+  toProto(message: SignerInfo): Uint8Array {
+    return SignerInfo.encode(message).finish();
+  },
+  toProtoMsg(message: SignerInfo): SignerInfoProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.SignerInfo",
+      value: SignerInfo.encode(message).finish()
+    };
   }
 };
 function createBaseModeInfo(): ModeInfo {
@@ -1274,7 +1724,8 @@ function createBaseModeInfo(): ModeInfo {
   };
 }
 export const ModeInfo = {
-  encode(message: ModeInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.tx.v1beta1.ModeInfo",
+  encode(message: ModeInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.single !== undefined) {
       ModeInfo_Single.encode(message.single, writer.uint32(10).fork()).ldelim();
     }
@@ -1283,8 +1734,8 @@ export const ModeInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ModeInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ModeInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseModeInfo();
     while (reader.pos < end) {
@@ -1332,6 +1783,43 @@ export const ModeInfo = {
     message.single !== undefined && (obj.single = message.single ? ModeInfo_Single.toSDK(message.single) : undefined);
     message.multi !== undefined && (obj.multi = message.multi ? ModeInfo_Multi.toSDK(message.multi) : undefined);
     return obj;
+  },
+  fromAmino(object: ModeInfoAmino): ModeInfo {
+    const message = createBaseModeInfo();
+    if (object.single !== undefined && object.single !== null) {
+      message.single = ModeInfo_Single.fromAmino(object.single);
+    }
+    if (object.multi !== undefined && object.multi !== null) {
+      message.multi = ModeInfo_Multi.fromAmino(object.multi);
+    }
+    return message;
+  },
+  toAmino(message: ModeInfo): ModeInfoAmino {
+    const obj: any = {};
+    obj.single = message.single ? ModeInfo_Single.toAmino(message.single) : undefined;
+    obj.multi = message.multi ? ModeInfo_Multi.toAmino(message.multi) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: ModeInfoAminoMsg): ModeInfo {
+    return ModeInfo.fromAmino(object.value);
+  },
+  toAminoMsg(message: ModeInfo): ModeInfoAminoMsg {
+    return {
+      type: "cosmos-sdk/ModeInfo",
+      value: ModeInfo.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: ModeInfoProtoMsg): ModeInfo {
+    return ModeInfo.decode(message.value);
+  },
+  toProto(message: ModeInfo): Uint8Array {
+    return ModeInfo.encode(message).finish();
+  },
+  toProtoMsg(message: ModeInfo): ModeInfoProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.ModeInfo",
+      value: ModeInfo.encode(message).finish()
+    };
   }
 };
 function createBaseModeInfo_Single(): ModeInfo_Single {
@@ -1340,14 +1828,15 @@ function createBaseModeInfo_Single(): ModeInfo_Single {
   };
 }
 export const ModeInfo_Single = {
-  encode(message: ModeInfo_Single, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.tx.v1beta1.Single",
+  encode(message: ModeInfo_Single, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.mode !== 0) {
       writer.uint32(8).int32(message.mode);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ModeInfo_Single {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ModeInfo_Single {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseModeInfo_Single();
     while (reader.pos < end) {
@@ -1387,16 +1876,50 @@ export const ModeInfo_Single = {
     const obj: any = {};
     message.mode !== undefined && (obj.mode = signModeToJSON(message.mode));
     return obj;
+  },
+  fromAmino(object: ModeInfo_SingleAmino): ModeInfo_Single {
+    const message = createBaseModeInfo_Single();
+    if (object.mode !== undefined && object.mode !== null) {
+      message.mode = signModeFromJSON(object.mode);
+    }
+    return message;
+  },
+  toAmino(message: ModeInfo_Single): ModeInfo_SingleAmino {
+    const obj: any = {};
+    obj.mode = signModeToJSON(message.mode);
+    return obj;
+  },
+  fromAminoMsg(object: ModeInfo_SingleAminoMsg): ModeInfo_Single {
+    return ModeInfo_Single.fromAmino(object.value);
+  },
+  toAminoMsg(message: ModeInfo_Single): ModeInfo_SingleAminoMsg {
+    return {
+      type: "cosmos-sdk/Single",
+      value: ModeInfo_Single.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: ModeInfo_SingleProtoMsg): ModeInfo_Single {
+    return ModeInfo_Single.decode(message.value);
+  },
+  toProto(message: ModeInfo_Single): Uint8Array {
+    return ModeInfo_Single.encode(message).finish();
+  },
+  toProtoMsg(message: ModeInfo_Single): ModeInfo_SingleProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.Single",
+      value: ModeInfo_Single.encode(message).finish()
+    };
   }
 };
 function createBaseModeInfo_Multi(): ModeInfo_Multi {
   return {
-    bitarray: CompactBitArray.fromPartial({}),
+    bitarray: undefined,
     modeInfos: []
   };
 }
 export const ModeInfo_Multi = {
-  encode(message: ModeInfo_Multi, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.tx.v1beta1.Multi",
+  encode(message: ModeInfo_Multi, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.bitarray !== undefined) {
       CompactBitArray.encode(message.bitarray, writer.uint32(10).fork()).ldelim();
     }
@@ -1405,8 +1928,8 @@ export const ModeInfo_Multi = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ModeInfo_Multi {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ModeInfo_Multi {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseModeInfo_Multi();
     while (reader.pos < end) {
@@ -1462,22 +1985,62 @@ export const ModeInfo_Multi = {
       obj.mode_infos = [];
     }
     return obj;
+  },
+  fromAmino(object: ModeInfo_MultiAmino): ModeInfo_Multi {
+    const message = createBaseModeInfo_Multi();
+    if (object.bitarray !== undefined && object.bitarray !== null) {
+      message.bitarray = CompactBitArray.fromAmino(object.bitarray);
+    }
+    message.modeInfos = object.mode_infos?.map(e => ModeInfo.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: ModeInfo_Multi): ModeInfo_MultiAmino {
+    const obj: any = {};
+    obj.bitarray = message.bitarray ? CompactBitArray.toAmino(message.bitarray) : undefined;
+    if (message.modeInfos) {
+      obj.mode_infos = message.modeInfos.map(e => e ? ModeInfo.toAmino(e) : undefined);
+    } else {
+      obj.mode_infos = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: ModeInfo_MultiAminoMsg): ModeInfo_Multi {
+    return ModeInfo_Multi.fromAmino(object.value);
+  },
+  toAminoMsg(message: ModeInfo_Multi): ModeInfo_MultiAminoMsg {
+    return {
+      type: "cosmos-sdk/Multi",
+      value: ModeInfo_Multi.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: ModeInfo_MultiProtoMsg): ModeInfo_Multi {
+    return ModeInfo_Multi.decode(message.value);
+  },
+  toProto(message: ModeInfo_Multi): Uint8Array {
+    return ModeInfo_Multi.encode(message).finish();
+  },
+  toProtoMsg(message: ModeInfo_Multi): ModeInfo_MultiProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.Multi",
+      value: ModeInfo_Multi.encode(message).finish()
+    };
   }
 };
 function createBaseFee(): Fee {
   return {
     amount: [],
-    gasLimit: Long.UZERO,
+    gasLimit: BigInt(0),
     payer: "",
     granter: ""
   };
 }
 export const Fee = {
-  encode(message: Fee, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.tx.v1beta1.Fee",
+  encode(message: Fee, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.amount) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
     }
-    if (!message.gasLimit.isZero()) {
+    if (message.gasLimit !== BigInt(0)) {
       writer.uint32(16).uint64(message.gasLimit);
     }
     if (message.payer !== "") {
@@ -1488,8 +2051,8 @@ export const Fee = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Fee {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Fee {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFee();
     while (reader.pos < end) {
@@ -1499,7 +2062,7 @@ export const Fee = {
           message.amount.push(Coin.decode(reader, reader.uint32()));
           break;
         case 2:
-          message.gasLimit = (reader.uint64() as Long);
+          message.gasLimit = reader.uint64();
           break;
         case 3:
           message.payer = reader.string();
@@ -1517,7 +2080,7 @@ export const Fee = {
   fromJSON(object: any): Fee {
     return {
       amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromJSON(e)) : [],
-      gasLimit: isSet(object.gasLimit) ? Long.fromValue(object.gasLimit) : Long.UZERO,
+      gasLimit: isSet(object.gasLimit) ? BigInt(object.gasLimit.toString()) : BigInt(0),
       payer: isSet(object.payer) ? String(object.payer) : "",
       granter: isSet(object.granter) ? String(object.granter) : ""
     };
@@ -1529,7 +2092,7 @@ export const Fee = {
     } else {
       obj.amount = [];
     }
-    message.gasLimit !== undefined && (obj.gasLimit = (message.gasLimit || Long.UZERO).toString());
+    message.gasLimit !== undefined && (obj.gasLimit = (message.gasLimit || BigInt(0)).toString());
     message.payer !== undefined && (obj.payer = message.payer);
     message.granter !== undefined && (obj.granter = message.granter);
     return obj;
@@ -1537,7 +2100,7 @@ export const Fee = {
   fromPartial<I extends Exact<DeepPartial<Fee>, I>>(object: I): Fee {
     const message = createBaseFee();
     message.amount = object.amount?.map(e => Coin.fromPartial(e)) || [];
-    message.gasLimit = object.gasLimit !== undefined && object.gasLimit !== null ? Long.fromValue(object.gasLimit) : Long.UZERO;
+    message.gasLimit = object.gasLimit !== undefined && object.gasLimit !== null ? BigInt(object.gasLimit.toString()) : BigInt(0);
     message.payer = object.payer ?? "";
     message.granter = object.granter ?? "";
     return message;
@@ -1561,6 +2124,53 @@ export const Fee = {
     obj.payer = message.payer;
     obj.granter = message.granter;
     return obj;
+  },
+  fromAmino(object: FeeAmino): Fee {
+    const message = createBaseFee();
+    message.amount = object.amount?.map(e => Coin.fromAmino(e)) || [];
+    if (object.gas_limit !== undefined && object.gas_limit !== null) {
+      message.gasLimit = BigInt(object.gas_limit);
+    }
+    if (object.payer !== undefined && object.payer !== null) {
+      message.payer = object.payer;
+    }
+    if (object.granter !== undefined && object.granter !== null) {
+      message.granter = object.granter;
+    }
+    return message;
+  },
+  toAmino(message: Fee): FeeAmino {
+    const obj: any = {};
+    if (message.amount) {
+      obj.amount = message.amount.map(e => e ? Coin.toAmino(e) : undefined);
+    } else {
+      obj.amount = [];
+    }
+    obj.gas_limit = message.gasLimit ? message.gasLimit.toString() : undefined;
+    obj.payer = message.payer;
+    obj.granter = message.granter;
+    return obj;
+  },
+  fromAminoMsg(object: FeeAminoMsg): Fee {
+    return Fee.fromAmino(object.value);
+  },
+  toAminoMsg(message: Fee): FeeAminoMsg {
+    return {
+      type: "cosmos-sdk/Fee",
+      value: Fee.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: FeeProtoMsg): Fee {
+    return Fee.decode(message.value);
+  },
+  toProto(message: Fee): Uint8Array {
+    return Fee.encode(message).finish();
+  },
+  toProtoMsg(message: Fee): FeeProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.Fee",
+      value: Fee.encode(message).finish()
+    };
   }
 };
 function createBaseTip(): Tip {
@@ -1570,7 +2180,8 @@ function createBaseTip(): Tip {
   };
 }
 export const Tip = {
-  encode(message: Tip, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.tx.v1beta1.Tip",
+  encode(message: Tip, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.amount) {
       Coin.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1579,8 +2190,8 @@ export const Tip = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Tip {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Tip {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTip();
     while (reader.pos < end) {
@@ -1636,18 +2247,58 @@ export const Tip = {
     }
     obj.tipper = message.tipper;
     return obj;
+  },
+  fromAmino(object: TipAmino): Tip {
+    const message = createBaseTip();
+    message.amount = object.amount?.map(e => Coin.fromAmino(e)) || [];
+    if (object.tipper !== undefined && object.tipper !== null) {
+      message.tipper = object.tipper;
+    }
+    return message;
+  },
+  toAmino(message: Tip): TipAmino {
+    const obj: any = {};
+    if (message.amount) {
+      obj.amount = message.amount.map(e => e ? Coin.toAmino(e) : undefined);
+    } else {
+      obj.amount = [];
+    }
+    obj.tipper = message.tipper;
+    return obj;
+  },
+  fromAminoMsg(object: TipAminoMsg): Tip {
+    return Tip.fromAmino(object.value);
+  },
+  toAminoMsg(message: Tip): TipAminoMsg {
+    return {
+      type: "cosmos-sdk/Tip",
+      value: Tip.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: TipProtoMsg): Tip {
+    return Tip.decode(message.value);
+  },
+  toProto(message: Tip): Uint8Array {
+    return Tip.encode(message).finish();
+  },
+  toProtoMsg(message: Tip): TipProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.Tip",
+      value: Tip.encode(message).finish()
+    };
   }
 };
 function createBaseAuxSignerData(): AuxSignerData {
   return {
     address: "",
-    signDoc: SignDocDirectAux.fromPartial({}),
+    signDoc: undefined,
     mode: 0,
     sig: new Uint8Array()
   };
 }
 export const AuxSignerData = {
-  encode(message: AuxSignerData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.tx.v1beta1.AuxSignerData",
+  encode(message: AuxSignerData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.address !== "") {
       writer.uint32(10).string(message.address);
     }
@@ -1662,8 +2313,8 @@ export const AuxSignerData = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): AuxSignerData {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): AuxSignerData {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAuxSignerData();
     while (reader.pos < end) {
@@ -1727,5 +2378,50 @@ export const AuxSignerData = {
     message.mode !== undefined && (obj.mode = signModeToJSON(message.mode));
     obj.sig = message.sig;
     return obj;
+  },
+  fromAmino(object: AuxSignerDataAmino): AuxSignerData {
+    const message = createBaseAuxSignerData();
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    }
+    if (object.sign_doc !== undefined && object.sign_doc !== null) {
+      message.signDoc = SignDocDirectAux.fromAmino(object.sign_doc);
+    }
+    if (object.mode !== undefined && object.mode !== null) {
+      message.mode = signModeFromJSON(object.mode);
+    }
+    if (object.sig !== undefined && object.sig !== null) {
+      message.sig = bytesFromBase64(object.sig);
+    }
+    return message;
+  },
+  toAmino(message: AuxSignerData): AuxSignerDataAmino {
+    const obj: any = {};
+    obj.address = message.address;
+    obj.sign_doc = message.signDoc ? SignDocDirectAux.toAmino(message.signDoc) : undefined;
+    obj.mode = signModeToJSON(message.mode);
+    obj.sig = message.sig ? base64FromBytes(message.sig) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: AuxSignerDataAminoMsg): AuxSignerData {
+    return AuxSignerData.fromAmino(object.value);
+  },
+  toAminoMsg(message: AuxSignerData): AuxSignerDataAminoMsg {
+    return {
+      type: "cosmos-sdk/AuxSignerData",
+      value: AuxSignerData.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: AuxSignerDataProtoMsg): AuxSignerData {
+    return AuxSignerData.decode(message.value);
+  },
+  toProto(message: AuxSignerData): Uint8Array {
+    return AuxSignerData.encode(message).finish();
+  },
+  toProtoMsg(message: AuxSignerData): AuxSignerDataProtoMsg {
+    return {
+      typeUrl: "/cosmos.tx.v1beta1.AuxSignerData",
+      value: AuxSignerData.encode(message).finish()
+    };
   }
 };

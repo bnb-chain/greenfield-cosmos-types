@@ -2,16 +2,24 @@
 /* eslint-disable */
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../base/query/v1beta1/pagination";
 import { Params, ParamsSDKType, MsgGasParams, MsgGasParamsSDKType } from "./gashub";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { DeepPartial, Exact, isSet, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.gashub.v1beta1";
 /** QueryParamsRequest defines the request type for querying x/gashub parameters. */
 export interface QueryParamsRequest {}
+export interface QueryParamsRequestProtoMsg {
+  typeUrl: "/cosmos.gashub.v1beta1.QueryParamsRequest";
+  value: Uint8Array;
+}
 /** QueryParamsRequest defines the request type for querying x/gashub parameters. */
 export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse defines the response type for querying x/gashub parameters. */
 export interface QueryParamsResponse {
   params: Params;
+}
+export interface QueryParamsResponseProtoMsg {
+  typeUrl: "/cosmos.gashub.v1beta1.QueryParamsResponse";
+  value: Uint8Array;
 }
 /** QueryParamsResponse defines the response type for querying x/gashub parameters. */
 export interface QueryParamsResponseSDKType {
@@ -25,12 +33,16 @@ export interface QueryMsgGasParamsRequest {
    * pagination defines an optional pagination for the request. This field is
    * only read if the msg_type_urls field is empty.
    */
-  pagination: PageRequest;
+  pagination?: PageRequest;
+}
+export interface QueryMsgGasParamsRequestProtoMsg {
+  typeUrl: "/cosmos.gashub.v1beta1.QueryMsgGasParamsRequest";
+  value: Uint8Array;
 }
 /** QueryMsgGasParamsRequest defines the RPC request for looking up MsgGasParams entries. */
 export interface QueryMsgGasParamsRequestSDKType {
   msg_type_urls: string[];
-  pagination: PageRequestSDKType;
+  pagination?: PageRequestSDKType;
 }
 /** QueryMsgGasParamsResponse defines the RPC response of a MsgGasParams query. */
 export interface QueryMsgGasParamsResponse {
@@ -39,22 +51,27 @@ export interface QueryMsgGasParamsResponse {
    * pagination defines the pagination in the response. This field is only
    * populated if the msg_type_urls field in the request is empty.
    */
-  pagination: PageResponse;
+  pagination?: PageResponse;
+}
+export interface QueryMsgGasParamsResponseProtoMsg {
+  typeUrl: "/cosmos.gashub.v1beta1.QueryMsgGasParamsResponse";
+  value: Uint8Array;
 }
 /** QueryMsgGasParamsResponse defines the RPC response of a MsgGasParams query. */
 export interface QueryMsgGasParamsResponseSDKType {
   msg_gas_params: MsgGasParamsSDKType[];
-  pagination: PageResponseSDKType;
+  pagination?: PageResponseSDKType;
 }
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
 export const QueryParamsRequest = {
-  encode(_: QueryParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.gashub.v1beta1.QueryParamsRequest",
+  encode(_: QueryParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsRequest();
     while (reader.pos < end) {
@@ -84,6 +101,35 @@ export const QueryParamsRequest = {
   toSDK(_: QueryParamsRequest): QueryParamsRequestSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: QueryParamsRequestAmino): QueryParamsRequest {
+    const message = createBaseQueryParamsRequest();
+    return message;
+  },
+  toAmino(_: QueryParamsRequest): QueryParamsRequestAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsRequestAminoMsg): QueryParamsRequest {
+    return QueryParamsRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryParamsRequest): QueryParamsRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryParamsRequest",
+      value: QueryParamsRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryParamsRequestProtoMsg): QueryParamsRequest {
+    return QueryParamsRequest.decode(message.value);
+  },
+  toProto(message: QueryParamsRequest): Uint8Array {
+    return QueryParamsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsRequest): QueryParamsRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.gashub.v1beta1.QueryParamsRequest",
+      value: QueryParamsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryParamsResponse(): QueryParamsResponse {
@@ -92,14 +138,15 @@ function createBaseQueryParamsResponse(): QueryParamsResponse {
   };
 }
 export const QueryParamsResponse = {
-  encode(message: QueryParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.gashub.v1beta1.QueryParamsResponse",
+  encode(message: QueryParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryParamsResponse();
     while (reader.pos < end) {
@@ -139,16 +186,50 @@ export const QueryParamsResponse = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryParamsResponseAmino): QueryParamsResponse {
+    const message = createBaseQueryParamsResponse();
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: QueryParamsResponse): QueryParamsResponseAmino {
+    const obj: any = {};
+    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    return obj;
+  },
+  fromAminoMsg(object: QueryParamsResponseAminoMsg): QueryParamsResponse {
+    return QueryParamsResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryParamsResponse): QueryParamsResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryParamsResponse",
+      value: QueryParamsResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryParamsResponseProtoMsg): QueryParamsResponse {
+    return QueryParamsResponse.decode(message.value);
+  },
+  toProto(message: QueryParamsResponse): Uint8Array {
+    return QueryParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryParamsResponse): QueryParamsResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.gashub.v1beta1.QueryParamsResponse",
+      value: QueryParamsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseQueryMsgGasParamsRequest(): QueryMsgGasParamsRequest {
   return {
     msgTypeUrls: [],
-    pagination: PageRequest.fromPartial({})
+    pagination: undefined
   };
 }
 export const QueryMsgGasParamsRequest = {
-  encode(message: QueryMsgGasParamsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.gashub.v1beta1.QueryMsgGasParamsRequest",
+  encode(message: QueryMsgGasParamsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.msgTypeUrls) {
       writer.uint32(10).string(v!);
     }
@@ -157,8 +238,8 @@ export const QueryMsgGasParamsRequest = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryMsgGasParamsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryMsgGasParamsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryMsgGasParamsRequest();
     while (reader.pos < end) {
@@ -214,16 +295,56 @@ export const QueryMsgGasParamsRequest = {
     }
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryMsgGasParamsRequestAmino): QueryMsgGasParamsRequest {
+    const message = createBaseQueryMsgGasParamsRequest();
+    message.msgTypeUrls = object.msg_type_urls?.map(e => e) || [];
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryMsgGasParamsRequest): QueryMsgGasParamsRequestAmino {
+    const obj: any = {};
+    if (message.msgTypeUrls) {
+      obj.msg_type_urls = message.msgTypeUrls.map(e => e);
+    } else {
+      obj.msg_type_urls = [];
+    }
+    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryMsgGasParamsRequestAminoMsg): QueryMsgGasParamsRequest {
+    return QueryMsgGasParamsRequest.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryMsgGasParamsRequest): QueryMsgGasParamsRequestAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryMsgGasParamsRequest",
+      value: QueryMsgGasParamsRequest.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryMsgGasParamsRequestProtoMsg): QueryMsgGasParamsRequest {
+    return QueryMsgGasParamsRequest.decode(message.value);
+  },
+  toProto(message: QueryMsgGasParamsRequest): Uint8Array {
+    return QueryMsgGasParamsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryMsgGasParamsRequest): QueryMsgGasParamsRequestProtoMsg {
+    return {
+      typeUrl: "/cosmos.gashub.v1beta1.QueryMsgGasParamsRequest",
+      value: QueryMsgGasParamsRequest.encode(message).finish()
+    };
   }
 };
 function createBaseQueryMsgGasParamsResponse(): QueryMsgGasParamsResponse {
   return {
     msgGasParams: [],
-    pagination: PageResponse.fromPartial({})
+    pagination: undefined
   };
 }
 export const QueryMsgGasParamsResponse = {
-  encode(message: QueryMsgGasParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.gashub.v1beta1.QueryMsgGasParamsResponse",
+  encode(message: QueryMsgGasParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.msgGasParams) {
       MsgGasParams.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -232,8 +353,8 @@ export const QueryMsgGasParamsResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryMsgGasParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryMsgGasParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryMsgGasParamsResponse();
     while (reader.pos < end) {
@@ -289,6 +410,45 @@ export const QueryMsgGasParamsResponse = {
     }
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
     return obj;
+  },
+  fromAmino(object: QueryMsgGasParamsResponseAmino): QueryMsgGasParamsResponse {
+    const message = createBaseQueryMsgGasParamsResponse();
+    message.msgGasParams = object.msg_gas_params?.map(e => MsgGasParams.fromAmino(e)) || [];
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromAmino(object.pagination);
+    }
+    return message;
+  },
+  toAmino(message: QueryMsgGasParamsResponse): QueryMsgGasParamsResponseAmino {
+    const obj: any = {};
+    if (message.msgGasParams) {
+      obj.msg_gas_params = message.msgGasParams.map(e => e ? MsgGasParams.toAmino(e) : undefined);
+    } else {
+      obj.msg_gas_params = [];
+    }
+    obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryMsgGasParamsResponseAminoMsg): QueryMsgGasParamsResponse {
+    return QueryMsgGasParamsResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: QueryMsgGasParamsResponse): QueryMsgGasParamsResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/QueryMsgGasParamsResponse",
+      value: QueryMsgGasParamsResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: QueryMsgGasParamsResponseProtoMsg): QueryMsgGasParamsResponse {
+    return QueryMsgGasParamsResponse.decode(message.value);
+  },
+  toProto(message: QueryMsgGasParamsResponse): Uint8Array {
+    return QueryMsgGasParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryMsgGasParamsResponse): QueryMsgGasParamsResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.gashub.v1beta1.QueryMsgGasParamsResponse",
+      value: QueryMsgGasParamsResponse.encode(message).finish()
+    };
   }
 };
 /** Query defines the gRPC querier service. */
@@ -313,11 +473,11 @@ export class QueryClientImpl implements Query {
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.gashub.v1beta1.Query", "Params", data);
-    return promise.then(data => QueryParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryParamsResponse.decode(new BinaryReader(data)));
   }
   MsgGasParams(request: QueryMsgGasParamsRequest): Promise<QueryMsgGasParamsResponse> {
     const data = QueryMsgGasParamsRequest.encode(request).finish();
     const promise = this.rpc.request("cosmos.gashub.v1beta1.Query", "MsgGasParams", data);
-    return promise.then(data => QueryMsgGasParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => QueryMsgGasParamsResponse.decode(new BinaryReader(data)));
   }
 }

@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Any, AnySDKType } from "../../../google/protobuf/any";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { DeepPartial, Exact, isSet } from "../../../helpers";
 export const protobufPackage = "cosmos.app.v1alpha1";
 /**
@@ -22,6 +22,10 @@ export interface Config {
    * field's configuration is global (not module specific).
    */
   golangBindings: GolangBinding[];
+}
+export interface ConfigProtoMsg {
+  typeUrl: "/cosmos.app.v1alpha1.Config";
+  value: Uint8Array;
 }
 /**
  * Config represents the configuration for a Cosmos SDK ABCI app.
@@ -55,7 +59,7 @@ export interface ModuleConfig {
    * config is the config object for the module. Module config messages should
    * define a ModuleDescriptor using the cosmos.app.v1alpha1.is_module extension.
    */
-  config: Any;
+  config?: Any;
   /**
    * golang_bindings specifies explicit interface to implementation type bindings which
    * depinject uses to resolve interface inputs to provider functions.  The scope of this
@@ -63,10 +67,14 @@ export interface ModuleConfig {
    */
   golangBindings: GolangBinding[];
 }
+export interface ModuleConfigProtoMsg {
+  typeUrl: "/cosmos.app.v1alpha1.ModuleConfig";
+  value: Uint8Array;
+}
 /** ModuleConfig is a module configuration for an app. */
 export interface ModuleConfigSDKType {
   name: string;
-  config: AnySDKType;
+  config?: AnySDKType;
   golang_bindings: GolangBindingSDKType[];
 }
 /** GolangBinding is an explicit interface type to implementing type binding for dependency injection. */
@@ -75,6 +83,10 @@ export interface GolangBinding {
   interfaceType: string;
   /** implementation is the implementing type which will be supplied when an input of type interface is requested */
   implementation: string;
+}
+export interface GolangBindingProtoMsg {
+  typeUrl: "/cosmos.app.v1alpha1.GolangBinding";
+  value: Uint8Array;
 }
 /** GolangBinding is an explicit interface type to implementing type binding for dependency injection. */
 export interface GolangBindingSDKType {
@@ -88,7 +100,8 @@ function createBaseConfig(): Config {
   };
 }
 export const Config = {
-  encode(message: Config, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.app.v1alpha1.Config",
+  encode(message: Config, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.modules) {
       ModuleConfig.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -97,8 +110,8 @@ export const Config = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Config {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Config {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseConfig();
     while (reader.pos < end) {
@@ -162,17 +175,59 @@ export const Config = {
       obj.golang_bindings = [];
     }
     return obj;
+  },
+  fromAmino(object: ConfigAmino): Config {
+    const message = createBaseConfig();
+    message.modules = object.modules?.map(e => ModuleConfig.fromAmino(e)) || [];
+    message.golangBindings = object.golang_bindings?.map(e => GolangBinding.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: Config): ConfigAmino {
+    const obj: any = {};
+    if (message.modules) {
+      obj.modules = message.modules.map(e => e ? ModuleConfig.toAmino(e) : undefined);
+    } else {
+      obj.modules = [];
+    }
+    if (message.golangBindings) {
+      obj.golang_bindings = message.golangBindings.map(e => e ? GolangBinding.toAmino(e) : undefined);
+    } else {
+      obj.golang_bindings = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: ConfigAminoMsg): Config {
+    return Config.fromAmino(object.value);
+  },
+  toAminoMsg(message: Config): ConfigAminoMsg {
+    return {
+      type: "cosmos-sdk/Config",
+      value: Config.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: ConfigProtoMsg): Config {
+    return Config.decode(message.value);
+  },
+  toProto(message: Config): Uint8Array {
+    return Config.encode(message).finish();
+  },
+  toProtoMsg(message: Config): ConfigProtoMsg {
+    return {
+      typeUrl: "/cosmos.app.v1alpha1.Config",
+      value: Config.encode(message).finish()
+    };
   }
 };
 function createBaseModuleConfig(): ModuleConfig {
   return {
     name: "",
-    config: Any.fromPartial({}),
+    config: undefined,
     golangBindings: []
   };
 }
 export const ModuleConfig = {
-  encode(message: ModuleConfig, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.app.v1alpha1.ModuleConfig",
+  encode(message: ModuleConfig, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -184,8 +239,8 @@ export const ModuleConfig = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ModuleConfig {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ModuleConfig {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseModuleConfig();
     while (reader.pos < end) {
@@ -249,6 +304,49 @@ export const ModuleConfig = {
       obj.golang_bindings = [];
     }
     return obj;
+  },
+  fromAmino(object: ModuleConfigAmino): ModuleConfig {
+    const message = createBaseModuleConfig();
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    }
+    if (object.config !== undefined && object.config !== null) {
+      message.config = Any.fromAmino(object.config);
+    }
+    message.golangBindings = object.golang_bindings?.map(e => GolangBinding.fromAmino(e)) || [];
+    return message;
+  },
+  toAmino(message: ModuleConfig): ModuleConfigAmino {
+    const obj: any = {};
+    obj.name = message.name;
+    obj.config = message.config ? Any.toAmino(message.config) : undefined;
+    if (message.golangBindings) {
+      obj.golang_bindings = message.golangBindings.map(e => e ? GolangBinding.toAmino(e) : undefined);
+    } else {
+      obj.golang_bindings = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: ModuleConfigAminoMsg): ModuleConfig {
+    return ModuleConfig.fromAmino(object.value);
+  },
+  toAminoMsg(message: ModuleConfig): ModuleConfigAminoMsg {
+    return {
+      type: "cosmos-sdk/ModuleConfig",
+      value: ModuleConfig.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: ModuleConfigProtoMsg): ModuleConfig {
+    return ModuleConfig.decode(message.value);
+  },
+  toProto(message: ModuleConfig): Uint8Array {
+    return ModuleConfig.encode(message).finish();
+  },
+  toProtoMsg(message: ModuleConfig): ModuleConfigProtoMsg {
+    return {
+      typeUrl: "/cosmos.app.v1alpha1.ModuleConfig",
+      value: ModuleConfig.encode(message).finish()
+    };
   }
 };
 function createBaseGolangBinding(): GolangBinding {
@@ -258,7 +356,8 @@ function createBaseGolangBinding(): GolangBinding {
   };
 }
 export const GolangBinding = {
-  encode(message: GolangBinding, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.app.v1alpha1.GolangBinding",
+  encode(message: GolangBinding, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.interfaceType !== "") {
       writer.uint32(10).string(message.interfaceType);
     }
@@ -267,8 +366,8 @@ export const GolangBinding = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GolangBinding {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GolangBinding {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGolangBinding();
     while (reader.pos < end) {
@@ -316,5 +415,42 @@ export const GolangBinding = {
     obj.interface_type = message.interfaceType;
     obj.implementation = message.implementation;
     return obj;
+  },
+  fromAmino(object: GolangBindingAmino): GolangBinding {
+    const message = createBaseGolangBinding();
+    if (object.interface_type !== undefined && object.interface_type !== null) {
+      message.interfaceType = object.interface_type;
+    }
+    if (object.implementation !== undefined && object.implementation !== null) {
+      message.implementation = object.implementation;
+    }
+    return message;
+  },
+  toAmino(message: GolangBinding): GolangBindingAmino {
+    const obj: any = {};
+    obj.interface_type = message.interfaceType;
+    obj.implementation = message.implementation;
+    return obj;
+  },
+  fromAminoMsg(object: GolangBindingAminoMsg): GolangBinding {
+    return GolangBinding.fromAmino(object.value);
+  },
+  toAminoMsg(message: GolangBinding): GolangBindingAminoMsg {
+    return {
+      type: "cosmos-sdk/GolangBinding",
+      value: GolangBinding.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: GolangBindingProtoMsg): GolangBinding {
+    return GolangBinding.decode(message.value);
+  },
+  toProto(message: GolangBinding): Uint8Array {
+    return GolangBinding.encode(message).finish();
+  },
+  toProtoMsg(message: GolangBinding): GolangBindingProtoMsg {
+    return {
+      typeUrl: "/cosmos.app.v1alpha1.GolangBinding",
+      value: GolangBinding.encode(message).finish()
+    };
   }
 };

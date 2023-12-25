@@ -1,12 +1,16 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Params, ParamsSDKType } from "./slashing";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, DeepPartial, Exact, Rpc } from "../../../helpers";
 export const protobufPackage = "cosmos.slashing.v1beta1";
 /** MsgUnjail defines the Msg/Unjail request type */
 export interface MsgUnjail {
   validatorAddr: string;
+}
+export interface MsgUnjailProtoMsg {
+  typeUrl: "/cosmos.slashing.v1beta1.MsgUnjail";
+  value: Uint8Array;
 }
 /** MsgUnjail defines the Msg/Unjail request type */
 export interface MsgUnjailSDKType {
@@ -14,6 +18,10 @@ export interface MsgUnjailSDKType {
 }
 /** MsgUnjailResponse defines the Msg/Unjail response type */
 export interface MsgUnjailResponse {}
+export interface MsgUnjailResponseProtoMsg {
+  typeUrl: "/cosmos.slashing.v1beta1.MsgUnjailResponse";
+  value: Uint8Array;
+}
 /** MsgUnjailResponse defines the Msg/Unjail response type */
 export interface MsgUnjailResponseSDKType {}
 /**
@@ -31,6 +39,10 @@ export interface MsgUpdateParams {
    */
   params: Params;
 }
+export interface MsgUpdateParamsProtoMsg {
+  typeUrl: "/cosmos.slashing.v1beta1.MsgUpdateParams";
+  value: Uint8Array;
+}
 /**
  * MsgUpdateParams is the Msg/UpdateParams request type.
  * 
@@ -47,6 +59,10 @@ export interface MsgUpdateParamsSDKType {
  * Since: cosmos-sdk 0.47
  */
 export interface MsgUpdateParamsResponse {}
+export interface MsgUpdateParamsResponseProtoMsg {
+  typeUrl: "/cosmos.slashing.v1beta1.MsgUpdateParamsResponse";
+  value: Uint8Array;
+}
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
  * MsgUpdateParams message.
@@ -59,6 +75,10 @@ export interface MsgImpeach {
   from: string;
   validatorAddress: string;
 }
+export interface MsgImpeachProtoMsg {
+  typeUrl: "/cosmos.slashing.v1beta1.MsgImpeach";
+  value: Uint8Array;
+}
 /** MsgImpeach defines the Msg/Impeach request type */
 export interface MsgImpeachSDKType {
   from: string;
@@ -66,6 +86,10 @@ export interface MsgImpeachSDKType {
 }
 /** MsgImpeachResponse defines the Msg/Impeach response type. */
 export interface MsgImpeachResponse {}
+export interface MsgImpeachResponseProtoMsg {
+  typeUrl: "/cosmos.slashing.v1beta1.MsgImpeachResponse";
+  value: Uint8Array;
+}
 /** MsgImpeachResponse defines the Msg/Impeach response type. */
 export interface MsgImpeachResponseSDKType {}
 function createBaseMsgUnjail(): MsgUnjail {
@@ -74,14 +98,15 @@ function createBaseMsgUnjail(): MsgUnjail {
   };
 }
 export const MsgUnjail = {
-  encode(message: MsgUnjail, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.slashing.v1beta1.MsgUnjail",
+  encode(message: MsgUnjail, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddr !== "") {
       writer.uint32(10).string(message.validatorAddr);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUnjail {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUnjail {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUnjail();
     while (reader.pos < end) {
@@ -121,17 +146,51 @@ export const MsgUnjail = {
     const obj: any = {};
     obj.validator_addr = message.validatorAddr;
     return obj;
+  },
+  fromAmino(object: MsgUnjailAmino): MsgUnjail {
+    const message = createBaseMsgUnjail();
+    if (object.validator_addr !== undefined && object.validator_addr !== null) {
+      message.validatorAddr = object.validator_addr;
+    }
+    return message;
+  },
+  toAmino(message: MsgUnjail): MsgUnjailAmino {
+    const obj: any = {};
+    obj.validator_addr = message.validatorAddr ?? "";
+    return obj;
+  },
+  fromAminoMsg(object: MsgUnjailAminoMsg): MsgUnjail {
+    return MsgUnjail.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUnjail): MsgUnjailAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgUnjail",
+      value: MsgUnjail.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgUnjailProtoMsg): MsgUnjail {
+    return MsgUnjail.decode(message.value);
+  },
+  toProto(message: MsgUnjail): Uint8Array {
+    return MsgUnjail.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUnjail): MsgUnjailProtoMsg {
+    return {
+      typeUrl: "/cosmos.slashing.v1beta1.MsgUnjail",
+      value: MsgUnjail.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUnjailResponse(): MsgUnjailResponse {
   return {};
 }
 export const MsgUnjailResponse = {
-  encode(_: MsgUnjailResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.slashing.v1beta1.MsgUnjailResponse",
+  encode(_: MsgUnjailResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUnjailResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUnjailResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUnjailResponse();
     while (reader.pos < end) {
@@ -161,6 +220,35 @@ export const MsgUnjailResponse = {
   toSDK(_: MsgUnjailResponse): MsgUnjailResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgUnjailResponseAmino): MsgUnjailResponse {
+    const message = createBaseMsgUnjailResponse();
+    return message;
+  },
+  toAmino(_: MsgUnjailResponse): MsgUnjailResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUnjailResponseAminoMsg): MsgUnjailResponse {
+    return MsgUnjailResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUnjailResponse): MsgUnjailResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgUnjailResponse",
+      value: MsgUnjailResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgUnjailResponseProtoMsg): MsgUnjailResponse {
+    return MsgUnjailResponse.decode(message.value);
+  },
+  toProto(message: MsgUnjailResponse): Uint8Array {
+    return MsgUnjailResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUnjailResponse): MsgUnjailResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.slashing.v1beta1.MsgUnjailResponse",
+      value: MsgUnjailResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateParams(): MsgUpdateParams {
@@ -170,7 +258,8 @@ function createBaseMsgUpdateParams(): MsgUpdateParams {
   };
 }
 export const MsgUpdateParams = {
-  encode(message: MsgUpdateParams, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.slashing.v1beta1.MsgUpdateParams",
+  encode(message: MsgUpdateParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.authority !== "") {
       writer.uint32(10).string(message.authority);
     }
@@ -179,8 +268,8 @@ export const MsgUpdateParams = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParams {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParams {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParams();
     while (reader.pos < end) {
@@ -228,17 +317,55 @@ export const MsgUpdateParams = {
     obj.authority = message.authority;
     message.params !== undefined && (obj.params = message.params ? Params.toSDK(message.params) : undefined);
     return obj;
+  },
+  fromAmino(object: MsgUpdateParamsAmino): MsgUpdateParams {
+    const message = createBaseMsgUpdateParams();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.params !== undefined && object.params !== null) {
+      message.params = Params.fromAmino(object.params);
+    }
+    return message;
+  },
+  toAmino(message: MsgUpdateParams): MsgUpdateParamsAmino {
+    const obj: any = {};
+    obj.authority = message.authority;
+    obj.params = message.params ? Params.toAmino(message.params) : Params.fromPartial({});
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateParamsAminoMsg): MsgUpdateParams {
+    return MsgUpdateParams.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUpdateParams): MsgUpdateParamsAminoMsg {
+    return {
+      type: "cosmos-sdk/x/slashing/MsgUpdateParams",
+      value: MsgUpdateParams.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgUpdateParamsProtoMsg): MsgUpdateParams {
+    return MsgUpdateParams.decode(message.value);
+  },
+  toProto(message: MsgUpdateParams): Uint8Array {
+    return MsgUpdateParams.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateParams): MsgUpdateParamsProtoMsg {
+    return {
+      typeUrl: "/cosmos.slashing.v1beta1.MsgUpdateParams",
+      value: MsgUpdateParams.encode(message).finish()
+    };
   }
 };
 function createBaseMsgUpdateParamsResponse(): MsgUpdateParamsResponse {
   return {};
 }
 export const MsgUpdateParamsResponse = {
-  encode(_: MsgUpdateParamsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.slashing.v1beta1.MsgUpdateParamsResponse",
+  encode(_: MsgUpdateParamsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdateParamsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgUpdateParamsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgUpdateParamsResponse();
     while (reader.pos < end) {
@@ -268,6 +395,35 @@ export const MsgUpdateParamsResponse = {
   toSDK(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgUpdateParamsResponseAmino): MsgUpdateParamsResponse {
+    const message = createBaseMsgUpdateParamsResponse();
+    return message;
+  },
+  toAmino(_: MsgUpdateParamsResponse): MsgUpdateParamsResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgUpdateParamsResponseAminoMsg): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgUpdateParamsResponse",
+      value: MsgUpdateParamsResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgUpdateParamsResponseProtoMsg): MsgUpdateParamsResponse {
+    return MsgUpdateParamsResponse.decode(message.value);
+  },
+  toProto(message: MsgUpdateParamsResponse): Uint8Array {
+    return MsgUpdateParamsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgUpdateParamsResponse): MsgUpdateParamsResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.slashing.v1beta1.MsgUpdateParamsResponse",
+      value: MsgUpdateParamsResponse.encode(message).finish()
+    };
   }
 };
 function createBaseMsgImpeach(): MsgImpeach {
@@ -277,7 +433,8 @@ function createBaseMsgImpeach(): MsgImpeach {
   };
 }
 export const MsgImpeach = {
-  encode(message: MsgImpeach, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.slashing.v1beta1.MsgImpeach",
+  encode(message: MsgImpeach, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.from !== "") {
       writer.uint32(10).string(message.from);
     }
@@ -286,8 +443,8 @@ export const MsgImpeach = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgImpeach {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgImpeach {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgImpeach();
     while (reader.pos < end) {
@@ -335,17 +492,55 @@ export const MsgImpeach = {
     obj.from = message.from;
     obj.validator_address = message.validatorAddress;
     return obj;
+  },
+  fromAmino(object: MsgImpeachAmino): MsgImpeach {
+    const message = createBaseMsgImpeach();
+    if (object.from !== undefined && object.from !== null) {
+      message.from = object.from;
+    }
+    if (object.validator_address !== undefined && object.validator_address !== null) {
+      message.validatorAddress = object.validator_address;
+    }
+    return message;
+  },
+  toAmino(message: MsgImpeach): MsgImpeachAmino {
+    const obj: any = {};
+    obj.from = message.from;
+    obj.validator_address = message.validatorAddress;
+    return obj;
+  },
+  fromAminoMsg(object: MsgImpeachAminoMsg): MsgImpeach {
+    return MsgImpeach.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgImpeach): MsgImpeachAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgImpeach",
+      value: MsgImpeach.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgImpeachProtoMsg): MsgImpeach {
+    return MsgImpeach.decode(message.value);
+  },
+  toProto(message: MsgImpeach): Uint8Array {
+    return MsgImpeach.encode(message).finish();
+  },
+  toProtoMsg(message: MsgImpeach): MsgImpeachProtoMsg {
+    return {
+      typeUrl: "/cosmos.slashing.v1beta1.MsgImpeach",
+      value: MsgImpeach.encode(message).finish()
+    };
   }
 };
 function createBaseMsgImpeachResponse(): MsgImpeachResponse {
   return {};
 }
 export const MsgImpeachResponse = {
-  encode(_: MsgImpeachResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  typeUrl: "/cosmos.slashing.v1beta1.MsgImpeachResponse",
+  encode(_: MsgImpeachResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgImpeachResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgImpeachResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgImpeachResponse();
     while (reader.pos < end) {
@@ -375,6 +570,35 @@ export const MsgImpeachResponse = {
   toSDK(_: MsgImpeachResponse): MsgImpeachResponseSDKType {
     const obj: any = {};
     return obj;
+  },
+  fromAmino(_: MsgImpeachResponseAmino): MsgImpeachResponse {
+    const message = createBaseMsgImpeachResponse();
+    return message;
+  },
+  toAmino(_: MsgImpeachResponse): MsgImpeachResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgImpeachResponseAminoMsg): MsgImpeachResponse {
+    return MsgImpeachResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgImpeachResponse): MsgImpeachResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgImpeachResponse",
+      value: MsgImpeachResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgImpeachResponseProtoMsg): MsgImpeachResponse {
+    return MsgImpeachResponse.decode(message.value);
+  },
+  toProto(message: MsgImpeachResponse): Uint8Array {
+    return MsgImpeachResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgImpeachResponse): MsgImpeachResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.slashing.v1beta1.MsgImpeachResponse",
+      value: MsgImpeachResponse.encode(message).finish()
+    };
   }
 };
 /** Msg defines the slashing Msg service. */
@@ -406,16 +630,16 @@ export class MsgClientImpl implements Msg {
   Unjail(request: MsgUnjail): Promise<MsgUnjailResponse> {
     const data = MsgUnjail.encode(request).finish();
     const promise = this.rpc.request("cosmos.slashing.v1beta1.Msg", "Unjail", data);
-    return promise.then(data => MsgUnjailResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUnjailResponse.decode(new BinaryReader(data)));
   }
   UpdateParams(request: MsgUpdateParams): Promise<MsgUpdateParamsResponse> {
     const data = MsgUpdateParams.encode(request).finish();
     const promise = this.rpc.request("cosmos.slashing.v1beta1.Msg", "UpdateParams", data);
-    return promise.then(data => MsgUpdateParamsResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgUpdateParamsResponse.decode(new BinaryReader(data)));
   }
   Impeach(request: MsgImpeach): Promise<MsgImpeachResponse> {
     const data = MsgImpeach.encode(request).finish();
     const promise = this.rpc.request("cosmos.slashing.v1beta1.Msg", "Impeach", data);
-    return promise.then(data => MsgImpeachResponse.decode(new _m0.Reader(data)));
+    return promise.then(data => MsgImpeachResponse.decode(new BinaryReader(data)));
   }
 }
