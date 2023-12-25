@@ -1,3 +1,10 @@
+# [0.4.0-alpha.30](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.29...v0.4.0-alpha.30) (2023-12-25)
+
+
+### Features
+
+* Interface Union ([c6096b1](https://github.com/bnb-chain/greenfield-cosmos-types/commit/c6096b1e2062ab336985967bb849b0bb8639b27f))
+
 # [0.4.0-alpha.29](https://github.com/bnb-chain/greenfield-cosmos-types/compare/v0.4.0-alpha.28...v0.4.0-alpha.29) (2023-12-25)
 
 
