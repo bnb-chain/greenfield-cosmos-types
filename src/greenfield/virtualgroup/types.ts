@@ -145,13 +145,22 @@ export interface GlobalVirtualGroupsBindingOnBucketSDKType {
 export interface GVGStatisticsWithinSP {
   /** storage_provider_id defines the id of the sp which the statistics associated to */
   storageProviderId: number;
-  /** primary_sp_family_count defines the number of the family which this sp serves as primary sp */
+  /** primary_count defines the number of global virtual groups (GVGs) which this sp serves as primary sp */
   primaryCount: number;
   /**
    * secondary_count defines the number of global virtual groups (GVGs) in
    * which this storage provider serves as a secondary storage provider.
    */
   secondaryCount: number;
+  /**
+   * Redundancy defines the number of gvg that sp serves as sp and secondary sp, which breaks the data redundancy requirement.
+   * In most case, this should not happen,
+   * during sp exit, a successor sp might need to swapIn GVG(s) that it is already a secondary and become the primary SP
+   * of whole family.
+   * a successor sp which need to swapIn a GVG as secondary must be unique to all other SP. So this will not be used for
+   * swapIn individual GVG as secondary
+   */
+  breakRedundancyReqmtGvgCount: number;
 }
 export interface GVGStatisticsWithinSPProtoMsg {
   typeUrl: "/greenfield.virtualgroup.GVGStatisticsWithinSP";
@@ -160,13 +169,22 @@ export interface GVGStatisticsWithinSPProtoMsg {
 export interface GVGStatisticsWithinSPAmino {
   /** storage_provider_id defines the id of the sp which the statistics associated to */
   storage_provider_id?: number;
-  /** primary_sp_family_count defines the number of the family which this sp serves as primary sp */
+  /** primary_count defines the number of global virtual groups (GVGs) which this sp serves as primary sp */
   primary_count?: number;
   /**
    * secondary_count defines the number of global virtual groups (GVGs) in
    * which this storage provider serves as a secondary storage provider.
    */
   secondary_count?: number;
+  /**
+   * Redundancy defines the number of gvg that sp serves as sp and secondary sp, which breaks the data redundancy requirement.
+   * In most case, this should not happen,
+   * during sp exit, a successor sp might need to swapIn GVG(s) that it is already a secondary and become the primary SP
+   * of whole family.
+   * a successor sp which need to swapIn a GVG as secondary must be unique to all other SP. So this will not be used for
+   * swapIn individual GVG as secondary
+   */
+  break_redundancy_reqmt_gvg_count?: number;
 }
 export interface GVGStatisticsWithinSPAminoMsg {
   type: "/greenfield.virtualgroup.GVGStatisticsWithinSP";
@@ -176,6 +194,31 @@ export interface GVGStatisticsWithinSPSDKType {
   storage_provider_id: number;
   primary_count: number;
   secondary_count: number;
+  break_redundancy_reqmt_gvg_count: number;
+}
+export interface GVGFamilyStatisticsWithinSP {
+  /** sp_id defines the id of the sp which the statistics associated to */
+  spId: number;
+  /** global_virtual_group_family_ids is a list of identifiers of the global virtual group family associated with the SP. */
+  globalVirtualGroupFamilyIds: number[];
+}
+export interface GVGFamilyStatisticsWithinSPProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.GVGFamilyStatisticsWithinSP";
+  value: Uint8Array;
+}
+export interface GVGFamilyStatisticsWithinSPAmino {
+  /** sp_id defines the id of the sp which the statistics associated to */
+  sp_id?: number;
+  /** global_virtual_group_family_ids is a list of identifiers of the global virtual group family associated with the SP. */
+  global_virtual_group_family_ids?: number[];
+}
+export interface GVGFamilyStatisticsWithinSPAminoMsg {
+  type: "/greenfield.virtualgroup.GVGFamilyStatisticsWithinSP";
+  value: GVGFamilyStatisticsWithinSPAmino;
+}
+export interface GVGFamilyStatisticsWithinSPSDKType {
+  sp_id: number;
+  global_virtual_group_family_ids: number[];
 }
 export interface SwapOutInfo {
   /** sp_id is the unique id of the storage provider who want to swap out. */
@@ -200,6 +243,35 @@ export interface SwapOutInfoAminoMsg {
 export interface SwapOutInfoSDKType {
   sp_id: number;
   successor_sp_id: number;
+}
+export interface SwapInInfo {
+  /** successor_sp_id defines the id of SP who wants to join the family or GVG */
+  successorSpId: number;
+  /** target_sp_id is the id of SP in the family or GVG to be swapped. */
+  targetSpId: number;
+  /** expiration_time is the expiration of epoch time for the swapInInfo */
+  expirationTime: Long;
+}
+export interface SwapInInfoProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.SwapInInfo";
+  value: Uint8Array;
+}
+export interface SwapInInfoAmino {
+  /** successor_sp_id defines the id of SP who wants to join the family or GVG */
+  successor_sp_id?: number;
+  /** target_sp_id is the id of SP in the family or GVG to be swapped. */
+  target_sp_id?: number;
+  /** expiration_time is the expiration of epoch time for the swapInInfo */
+  expiration_time?: string;
+}
+export interface SwapInInfoAminoMsg {
+  type: "/greenfield.virtualgroup.SwapInInfo";
+  value: SwapInInfoAmino;
+}
+export interface SwapInInfoSDKType {
+  successor_sp_id: number;
+  target_sp_id: number;
+  expiration_time: Long;
 }
 function createBaseGlobalVirtualGroup(): GlobalVirtualGroup {
   return {
@@ -706,7 +778,8 @@ function createBaseGVGStatisticsWithinSP(): GVGStatisticsWithinSP {
   return {
     storageProviderId: 0,
     primaryCount: 0,
-    secondaryCount: 0
+    secondaryCount: 0,
+    breakRedundancyReqmtGvgCount: 0
   };
 }
 export const GVGStatisticsWithinSP = {
@@ -720,6 +793,9 @@ export const GVGStatisticsWithinSP = {
     }
     if (message.secondaryCount !== 0) {
       writer.uint32(24).uint32(message.secondaryCount);
+    }
+    if (message.breakRedundancyReqmtGvgCount !== 0) {
+      writer.uint32(32).uint32(message.breakRedundancyReqmtGvgCount);
     }
     return writer;
   },
@@ -739,6 +815,9 @@ export const GVGStatisticsWithinSP = {
         case 3:
           message.secondaryCount = reader.uint32();
           break;
+        case 4:
+          message.breakRedundancyReqmtGvgCount = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -750,7 +829,8 @@ export const GVGStatisticsWithinSP = {
     return {
       storageProviderId: isSet(object.storageProviderId) ? Number(object.storageProviderId) : 0,
       primaryCount: isSet(object.primaryCount) ? Number(object.primaryCount) : 0,
-      secondaryCount: isSet(object.secondaryCount) ? Number(object.secondaryCount) : 0
+      secondaryCount: isSet(object.secondaryCount) ? Number(object.secondaryCount) : 0,
+      breakRedundancyReqmtGvgCount: isSet(object.breakRedundancyReqmtGvgCount) ? Number(object.breakRedundancyReqmtGvgCount) : 0
     };
   },
   toJSON(message: GVGStatisticsWithinSP): unknown {
@@ -758,6 +838,7 @@ export const GVGStatisticsWithinSP = {
     message.storageProviderId !== undefined && (obj.storageProviderId = Math.round(message.storageProviderId));
     message.primaryCount !== undefined && (obj.primaryCount = Math.round(message.primaryCount));
     message.secondaryCount !== undefined && (obj.secondaryCount = Math.round(message.secondaryCount));
+    message.breakRedundancyReqmtGvgCount !== undefined && (obj.breakRedundancyReqmtGvgCount = Math.round(message.breakRedundancyReqmtGvgCount));
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<GVGStatisticsWithinSP>, I>>(object: I): GVGStatisticsWithinSP {
@@ -765,13 +846,15 @@ export const GVGStatisticsWithinSP = {
     message.storageProviderId = object.storageProviderId ?? 0;
     message.primaryCount = object.primaryCount ?? 0;
     message.secondaryCount = object.secondaryCount ?? 0;
+    message.breakRedundancyReqmtGvgCount = object.breakRedundancyReqmtGvgCount ?? 0;
     return message;
   },
   fromSDK(object: GVGStatisticsWithinSPSDKType): GVGStatisticsWithinSP {
     return {
       storageProviderId: object?.storage_provider_id,
       primaryCount: object?.primary_count,
-      secondaryCount: object?.secondary_count
+      secondaryCount: object?.secondary_count,
+      breakRedundancyReqmtGvgCount: object?.break_redundancy_reqmt_gvg_count
     };
   },
   toSDK(message: GVGStatisticsWithinSP): GVGStatisticsWithinSPSDKType {
@@ -779,6 +862,7 @@ export const GVGStatisticsWithinSP = {
     obj.storage_provider_id = message.storageProviderId;
     obj.primary_count = message.primaryCount;
     obj.secondary_count = message.secondaryCount;
+    obj.break_redundancy_reqmt_gvg_count = message.breakRedundancyReqmtGvgCount;
     return obj;
   },
   fromAmino(object: GVGStatisticsWithinSPAmino): GVGStatisticsWithinSP {
@@ -792,6 +876,9 @@ export const GVGStatisticsWithinSP = {
     if (object.secondary_count !== undefined && object.secondary_count !== null) {
       message.secondaryCount = object.secondary_count;
     }
+    if (object.break_redundancy_reqmt_gvg_count !== undefined && object.break_redundancy_reqmt_gvg_count !== null) {
+      message.breakRedundancyReqmtGvgCount = object.break_redundancy_reqmt_gvg_count;
+    }
     return message;
   },
   toAmino(message: GVGStatisticsWithinSP): GVGStatisticsWithinSPAmino {
@@ -799,6 +886,7 @@ export const GVGStatisticsWithinSP = {
     obj.storage_provider_id = message.storageProviderId;
     obj.primary_count = message.primaryCount;
     obj.secondary_count = message.secondaryCount;
+    obj.break_redundancy_reqmt_gvg_count = message.breakRedundancyReqmtGvgCount;
     return obj;
   },
   fromAminoMsg(object: GVGStatisticsWithinSPAminoMsg): GVGStatisticsWithinSP {
@@ -814,6 +902,124 @@ export const GVGStatisticsWithinSP = {
     return {
       typeUrl: "/greenfield.virtualgroup.GVGStatisticsWithinSP",
       value: GVGStatisticsWithinSP.encode(message).finish()
+    };
+  }
+};
+function createBaseGVGFamilyStatisticsWithinSP(): GVGFamilyStatisticsWithinSP {
+  return {
+    spId: 0,
+    globalVirtualGroupFamilyIds: []
+  };
+}
+export const GVGFamilyStatisticsWithinSP = {
+  typeUrl: "/greenfield.virtualgroup.GVGFamilyStatisticsWithinSP",
+  encode(message: GVGFamilyStatisticsWithinSP, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.spId !== 0) {
+      writer.uint32(8).uint32(message.spId);
+    }
+    writer.uint32(18).fork();
+    for (const v of message.globalVirtualGroupFamilyIds) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): GVGFamilyStatisticsWithinSP {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGVGFamilyStatisticsWithinSP();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.spId = reader.uint32();
+          break;
+        case 2:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.globalVirtualGroupFamilyIds.push(reader.uint32());
+            }
+          } else {
+            message.globalVirtualGroupFamilyIds.push(reader.uint32());
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): GVGFamilyStatisticsWithinSP {
+    return {
+      spId: isSet(object.spId) ? Number(object.spId) : 0,
+      globalVirtualGroupFamilyIds: Array.isArray(object?.globalVirtualGroupFamilyIds) ? object.globalVirtualGroupFamilyIds.map((e: any) => Number(e)) : []
+    };
+  },
+  toJSON(message: GVGFamilyStatisticsWithinSP): unknown {
+    const obj: any = {};
+    message.spId !== undefined && (obj.spId = Math.round(message.spId));
+    if (message.globalVirtualGroupFamilyIds) {
+      obj.globalVirtualGroupFamilyIds = message.globalVirtualGroupFamilyIds.map(e => Math.round(e));
+    } else {
+      obj.globalVirtualGroupFamilyIds = [];
+    }
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<GVGFamilyStatisticsWithinSP>, I>>(object: I): GVGFamilyStatisticsWithinSP {
+    const message = createBaseGVGFamilyStatisticsWithinSP();
+    message.spId = object.spId ?? 0;
+    message.globalVirtualGroupFamilyIds = object.globalVirtualGroupFamilyIds?.map(e => e) || [];
+    return message;
+  },
+  fromSDK(object: GVGFamilyStatisticsWithinSPSDKType): GVGFamilyStatisticsWithinSP {
+    return {
+      spId: object?.sp_id,
+      globalVirtualGroupFamilyIds: Array.isArray(object?.global_virtual_group_family_ids) ? object.global_virtual_group_family_ids.map((e: any) => e) : []
+    };
+  },
+  toSDK(message: GVGFamilyStatisticsWithinSP): GVGFamilyStatisticsWithinSPSDKType {
+    const obj: any = {};
+    obj.sp_id = message.spId;
+    if (message.globalVirtualGroupFamilyIds) {
+      obj.global_virtual_group_family_ids = message.globalVirtualGroupFamilyIds.map(e => e);
+    } else {
+      obj.global_virtual_group_family_ids = [];
+    }
+    return obj;
+  },
+  fromAmino(object: GVGFamilyStatisticsWithinSPAmino): GVGFamilyStatisticsWithinSP {
+    const message = createBaseGVGFamilyStatisticsWithinSP();
+    if (object.sp_id !== undefined && object.sp_id !== null) {
+      message.spId = object.sp_id;
+    }
+    message.globalVirtualGroupFamilyIds = object.global_virtual_group_family_ids?.map(e => e) || [];
+    return message;
+  },
+  toAmino(message: GVGFamilyStatisticsWithinSP): GVGFamilyStatisticsWithinSPAmino {
+    const obj: any = {};
+    obj.sp_id = message.spId;
+    if (message.globalVirtualGroupFamilyIds) {
+      obj.global_virtual_group_family_ids = message.globalVirtualGroupFamilyIds.map(e => e);
+    } else {
+      obj.global_virtual_group_family_ids = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: GVGFamilyStatisticsWithinSPAminoMsg): GVGFamilyStatisticsWithinSP {
+    return GVGFamilyStatisticsWithinSP.fromAmino(object.value);
+  },
+  fromProtoMsg(message: GVGFamilyStatisticsWithinSPProtoMsg): GVGFamilyStatisticsWithinSP {
+    return GVGFamilyStatisticsWithinSP.decode(message.value);
+  },
+  toProto(message: GVGFamilyStatisticsWithinSP): Uint8Array {
+    return GVGFamilyStatisticsWithinSP.encode(message).finish();
+  },
+  toProtoMsg(message: GVGFamilyStatisticsWithinSP): GVGFamilyStatisticsWithinSPProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.GVGFamilyStatisticsWithinSP",
+      value: GVGFamilyStatisticsWithinSP.encode(message).finish()
     };
   }
 };
@@ -913,6 +1119,121 @@ export const SwapOutInfo = {
     return {
       typeUrl: "/greenfield.virtualgroup.SwapOutInfo",
       value: SwapOutInfo.encode(message).finish()
+    };
+  }
+};
+function createBaseSwapInInfo(): SwapInInfo {
+  return {
+    successorSpId: 0,
+    targetSpId: 0,
+    expirationTime: Long.UZERO
+  };
+}
+export const SwapInInfo = {
+  typeUrl: "/greenfield.virtualgroup.SwapInInfo",
+  encode(message: SwapInInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.successorSpId !== 0) {
+      writer.uint32(8).uint32(message.successorSpId);
+    }
+    if (message.targetSpId !== 0) {
+      writer.uint32(16).uint32(message.targetSpId);
+    }
+    if (!message.expirationTime.isZero()) {
+      writer.uint32(24).uint64(message.expirationTime);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): SwapInInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSwapInInfo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.successorSpId = reader.uint32();
+          break;
+        case 2:
+          message.targetSpId = reader.uint32();
+          break;
+        case 3:
+          message.expirationTime = (reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): SwapInInfo {
+    return {
+      successorSpId: isSet(object.successorSpId) ? Number(object.successorSpId) : 0,
+      targetSpId: isSet(object.targetSpId) ? Number(object.targetSpId) : 0,
+      expirationTime: isSet(object.expirationTime) ? Long.fromValue(object.expirationTime) : Long.UZERO
+    };
+  },
+  toJSON(message: SwapInInfo): unknown {
+    const obj: any = {};
+    message.successorSpId !== undefined && (obj.successorSpId = Math.round(message.successorSpId));
+    message.targetSpId !== undefined && (obj.targetSpId = Math.round(message.targetSpId));
+    message.expirationTime !== undefined && (obj.expirationTime = (message.expirationTime || Long.UZERO).toString());
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<SwapInInfo>, I>>(object: I): SwapInInfo {
+    const message = createBaseSwapInInfo();
+    message.successorSpId = object.successorSpId ?? 0;
+    message.targetSpId = object.targetSpId ?? 0;
+    message.expirationTime = object.expirationTime !== undefined && object.expirationTime !== null ? Long.fromValue(object.expirationTime) : Long.UZERO;
+    return message;
+  },
+  fromSDK(object: SwapInInfoSDKType): SwapInInfo {
+    return {
+      successorSpId: object?.successor_sp_id,
+      targetSpId: object?.target_sp_id,
+      expirationTime: object?.expiration_time
+    };
+  },
+  toSDK(message: SwapInInfo): SwapInInfoSDKType {
+    const obj: any = {};
+    obj.successor_sp_id = message.successorSpId;
+    obj.target_sp_id = message.targetSpId;
+    obj.expiration_time = message.expirationTime;
+    return obj;
+  },
+  fromAmino(object: SwapInInfoAmino): SwapInInfo {
+    const message = createBaseSwapInInfo();
+    if (object.successor_sp_id !== undefined && object.successor_sp_id !== null) {
+      message.successorSpId = object.successor_sp_id;
+    }
+    if (object.target_sp_id !== undefined && object.target_sp_id !== null) {
+      message.targetSpId = object.target_sp_id;
+    }
+    if (object.expiration_time !== undefined && object.expiration_time !== null) {
+      message.expirationTime = Long.fromString(object.expiration_time);
+    }
+    return message;
+  },
+  toAmino(message: SwapInInfo): SwapInInfoAmino {
+    const obj: any = {};
+    obj.successor_sp_id = message.successorSpId;
+    obj.target_sp_id = message.targetSpId;
+    obj.expiration_time = message.expirationTime ? message.expirationTime.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: SwapInInfoAminoMsg): SwapInInfo {
+    return SwapInInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: SwapInInfoProtoMsg): SwapInInfo {
+    return SwapInInfo.decode(message.value);
+  },
+  toProto(message: SwapInInfo): Uint8Array {
+    return SwapInInfo.encode(message).finish();
+  },
+  toProtoMsg(message: SwapInInfo): SwapInInfoProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.SwapInInfo",
+      value: SwapInInfo.encode(message).finish()
     };
   }
 };

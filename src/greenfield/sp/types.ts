@@ -11,6 +11,7 @@ export enum Status {
   STATUS_IN_JAILED = 1,
   STATUS_GRACEFUL_EXITING = 2,
   STATUS_IN_MAINTENANCE = 3,
+  STATUS_FORCED_EXITING = 4,
   UNRECOGNIZED = -1,
 }
 export const StatusSDKType = Status;
@@ -29,6 +30,9 @@ export function statusFromJSON(object: any): Status {
     case 3:
     case "STATUS_IN_MAINTENANCE":
       return Status.STATUS_IN_MAINTENANCE;
+    case 4:
+    case "STATUS_FORCED_EXITING":
+      return Status.STATUS_FORCED_EXITING;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -45,6 +49,8 @@ export function statusToJSON(object: Status): string {
       return "STATUS_GRACEFUL_EXITING";
     case Status.STATUS_IN_MAINTENANCE:
       return "STATUS_IN_MAINTENANCE";
+    case Status.STATUS_FORCED_EXITING:
+      return "STATUS_FORCED_EXITING";
     case Status.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

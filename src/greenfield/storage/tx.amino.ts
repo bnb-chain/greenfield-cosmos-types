@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { MsgCreateBucket, MsgDeleteBucket, MsgUpdateBucketInfo, MsgMirrorBucket, MsgDiscontinueBucket, MsgCreateObject, MsgSealObject, MsgRejectSealObject, MsgCopyObject, MsgDeleteObject, MsgCancelCreateObject, MsgMirrorObject, MsgDiscontinueObject, MsgUpdateObjectInfo, MsgCreateGroup, MsgDeleteGroup, MsgUpdateGroupMember, MsgUpdateGroupExtra, MsgLeaveGroup, MsgMirrorGroup, MsgRenewGroupMember, MsgPutPolicy, MsgDeletePolicy, MsgUpdateParams, MsgMigrateBucket, MsgCompleteMigrateBucket, MsgCancelMigrateBucket, MsgRejectMigrateBucket, MsgSetTag } from "./tx";
+import { MsgCreateBucket, MsgDeleteBucket, MsgUpdateBucketInfo, MsgMirrorBucket, MsgDiscontinueBucket, MsgToggleSPAsDelegatedAgent, MsgCreateObject, MsgSealObject, MsgSealObjectV2, MsgRejectSealObject, MsgCopyObject, MsgDeleteObject, MsgCancelCreateObject, MsgMirrorObject, MsgDiscontinueObject, MsgUpdateObjectInfo, MsgUpdateObjectContent, MsgCancelUpdateObjectContent, MsgDelegateCreateObject, MsgDelegateUpdateObjectContent, MsgCreateGroup, MsgDeleteGroup, MsgUpdateGroupMember, MsgUpdateGroupExtra, MsgLeaveGroup, MsgMirrorGroup, MsgRenewGroupMember, MsgPutPolicy, MsgDeletePolicy, MsgUpdateParams, MsgMigrateBucket, MsgCompleteMigrateBucket, MsgCancelMigrateBucket, MsgRejectMigrateBucket, MsgSetTag } from "./tx";
 export const AminoConverter = {
   "/greenfield.storage.MsgCreateBucket": {
     aminoType: "/greenfield.storage.MsgCreateBucket",
@@ -27,6 +27,11 @@ export const AminoConverter = {
     toAmino: MsgDiscontinueBucket.toAmino,
     fromAmino: MsgDiscontinueBucket.fromAmino
   },
+  "/greenfield.storage.MsgToggleSPAsDelegatedAgent": {
+    aminoType: "/greenfield.storage.MsgToggleSPAsDelegatedAgent",
+    toAmino: MsgToggleSPAsDelegatedAgent.toAmino,
+    fromAmino: MsgToggleSPAsDelegatedAgent.fromAmino
+  },
   "/greenfield.storage.MsgCreateObject": {
     aminoType: "/greenfield.storage.MsgCreateObject",
     toAmino: MsgCreateObject.toAmino,
@@ -36,6 +41,11 @@ export const AminoConverter = {
     aminoType: "/greenfield.storage.MsgSealObject",
     toAmino: MsgSealObject.toAmino,
     fromAmino: MsgSealObject.fromAmino
+  },
+  "/greenfield.storage.MsgSealObjectV2": {
+    aminoType: "/greenfield.storage.MsgSealObjectV2",
+    toAmino: MsgSealObjectV2.toAmino,
+    fromAmino: MsgSealObjectV2.fromAmino
   },
   "/greenfield.storage.MsgRejectSealObject": {
     aminoType: "/greenfield.storage.MsgRejectSealObject",
@@ -71,6 +81,26 @@ export const AminoConverter = {
     aminoType: "/greenfield.storage.MsgUpdateObjectInfo",
     toAmino: MsgUpdateObjectInfo.toAmino,
     fromAmino: MsgUpdateObjectInfo.fromAmino
+  },
+  "/greenfield.storage.MsgUpdateObjectContent": {
+    aminoType: "/greenfield.storage.MsgUpdateObjectContent",
+    toAmino: MsgUpdateObjectContent.toAmino,
+    fromAmino: MsgUpdateObjectContent.fromAmino
+  },
+  "/greenfield.storage.MsgCancelUpdateObjectContent": {
+    aminoType: "/greenfield.storage.MsgCancelUpdateObjectContent",
+    toAmino: MsgCancelUpdateObjectContent.toAmino,
+    fromAmino: MsgCancelUpdateObjectContent.fromAmino
+  },
+  "/greenfield.storage.MsgDelegateCreateObject": {
+    aminoType: "/greenfield.storage.MsgDelegateCreateObject",
+    toAmino: MsgDelegateCreateObject.toAmino,
+    fromAmino: MsgDelegateCreateObject.fromAmino
+  },
+  "/greenfield.storage.MsgDelegateUpdateObjectContent": {
+    aminoType: "/greenfield.storage.MsgDelegateUpdateObjectContent",
+    toAmino: MsgDelegateUpdateObjectContent.toAmino,
+    fromAmino: MsgDelegateUpdateObjectContent.fromAmino
   },
   "/greenfield.storage.MsgCreateGroup": {
     aminoType: "/greenfield.storage.MsgCreateGroup",

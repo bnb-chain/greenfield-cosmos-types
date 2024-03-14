@@ -1,8 +1,8 @@
 //@ts-nocheck
 /* eslint-disable */
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgCreateGlobalVirtualGroup, MsgDeleteGlobalVirtualGroup, MsgDeposit, MsgWithdraw, MsgSwapOut, MsgSettle, MsgUpdateParams, MsgStorageProviderExit, MsgCompleteStorageProviderExit, MsgCompleteSwapOut, MsgCancelSwapOut } from "./tx";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/greenfield.virtualgroup.MsgCreateGlobalVirtualGroup", MsgCreateGlobalVirtualGroup], ["/greenfield.virtualgroup.MsgDeleteGlobalVirtualGroup", MsgDeleteGlobalVirtualGroup], ["/greenfield.virtualgroup.MsgDeposit", MsgDeposit], ["/greenfield.virtualgroup.MsgWithdraw", MsgWithdraw], ["/greenfield.virtualgroup.MsgSwapOut", MsgSwapOut], ["/greenfield.virtualgroup.MsgSettle", MsgSettle], ["/greenfield.virtualgroup.MsgUpdateParams", MsgUpdateParams], ["/greenfield.virtualgroup.MsgStorageProviderExit", MsgStorageProviderExit], ["/greenfield.virtualgroup.MsgCompleteStorageProviderExit", MsgCompleteStorageProviderExit], ["/greenfield.virtualgroup.MsgCompleteSwapOut", MsgCompleteSwapOut], ["/greenfield.virtualgroup.MsgCancelSwapOut", MsgCancelSwapOut]];
+import { MsgCreateGlobalVirtualGroup, MsgDeleteGlobalVirtualGroup, MsgDeposit, MsgWithdraw, MsgSwapOut, MsgSettle, MsgUpdateParams, MsgStorageProviderExit, MsgCompleteStorageProviderExit, MsgCompleteSwapOut, MsgCancelSwapOut, MsgReserveSwapIn, MsgCancelSwapIn, MsgCompleteSwapIn, MsgStorageProviderForcedExit } from "./tx";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/greenfield.virtualgroup.MsgCreateGlobalVirtualGroup", MsgCreateGlobalVirtualGroup], ["/greenfield.virtualgroup.MsgDeleteGlobalVirtualGroup", MsgDeleteGlobalVirtualGroup], ["/greenfield.virtualgroup.MsgDeposit", MsgDeposit], ["/greenfield.virtualgroup.MsgWithdraw", MsgWithdraw], ["/greenfield.virtualgroup.MsgSwapOut", MsgSwapOut], ["/greenfield.virtualgroup.MsgSettle", MsgSettle], ["/greenfield.virtualgroup.MsgUpdateParams", MsgUpdateParams], ["/greenfield.virtualgroup.MsgStorageProviderExit", MsgStorageProviderExit], ["/greenfield.virtualgroup.MsgCompleteStorageProviderExit", MsgCompleteStorageProviderExit], ["/greenfield.virtualgroup.MsgCompleteSwapOut", MsgCompleteSwapOut], ["/greenfield.virtualgroup.MsgCancelSwapOut", MsgCancelSwapOut], ["/greenfield.virtualgroup.MsgReserveSwapIn", MsgReserveSwapIn], ["/greenfield.virtualgroup.MsgCancelSwapIn", MsgCancelSwapIn], ["/greenfield.virtualgroup.MsgCompleteSwapIn", MsgCompleteSwapIn], ["/greenfield.virtualgroup.MsgStorageProviderForcedExit", MsgStorageProviderForcedExit]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -75,6 +75,30 @@ export const MessageComposer = {
         typeUrl: "/greenfield.virtualgroup.MsgCancelSwapOut",
         value: MsgCancelSwapOut.encode(value).finish()
       };
+    },
+    reserveSwapIn(value: MsgReserveSwapIn) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgReserveSwapIn",
+        value: MsgReserveSwapIn.encode(value).finish()
+      };
+    },
+    cancelSwapIn(value: MsgCancelSwapIn) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgCancelSwapIn",
+        value: MsgCancelSwapIn.encode(value).finish()
+      };
+    },
+    completeSwapIn(value: MsgCompleteSwapIn) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapIn",
+        value: MsgCompleteSwapIn.encode(value).finish()
+      };
+    },
+    storageProviderForcedExit(value: MsgStorageProviderForcedExit) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgStorageProviderForcedExit",
+        value: MsgStorageProviderForcedExit.encode(value).finish()
+      };
     }
   },
   withTypeUrl: {
@@ -141,6 +165,30 @@ export const MessageComposer = {
     cancelSwapOut(value: MsgCancelSwapOut) {
       return {
         typeUrl: "/greenfield.virtualgroup.MsgCancelSwapOut",
+        value
+      };
+    },
+    reserveSwapIn(value: MsgReserveSwapIn) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgReserveSwapIn",
+        value
+      };
+    },
+    cancelSwapIn(value: MsgCancelSwapIn) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgCancelSwapIn",
+        value
+      };
+    },
+    completeSwapIn(value: MsgCompleteSwapIn) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapIn",
+        value
+      };
+    },
+    storageProviderForcedExit(value: MsgStorageProviderForcedExit) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgStorageProviderForcedExit",
         value
       };
     }
@@ -211,6 +259,30 @@ export const MessageComposer = {
         typeUrl: "/greenfield.virtualgroup.MsgCancelSwapOut",
         value: MsgCancelSwapOut.toJSON(value)
       };
+    },
+    reserveSwapIn(value: MsgReserveSwapIn) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgReserveSwapIn",
+        value: MsgReserveSwapIn.toJSON(value)
+      };
+    },
+    cancelSwapIn(value: MsgCancelSwapIn) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgCancelSwapIn",
+        value: MsgCancelSwapIn.toJSON(value)
+      };
+    },
+    completeSwapIn(value: MsgCompleteSwapIn) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapIn",
+        value: MsgCompleteSwapIn.toJSON(value)
+      };
+    },
+    storageProviderForcedExit(value: MsgStorageProviderForcedExit) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgStorageProviderForcedExit",
+        value: MsgStorageProviderForcedExit.toJSON(value)
+      };
     }
   },
   fromJSON: {
@@ -279,6 +351,30 @@ export const MessageComposer = {
         typeUrl: "/greenfield.virtualgroup.MsgCancelSwapOut",
         value: MsgCancelSwapOut.fromJSON(value)
       };
+    },
+    reserveSwapIn(value: any) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgReserveSwapIn",
+        value: MsgReserveSwapIn.fromJSON(value)
+      };
+    },
+    cancelSwapIn(value: any) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgCancelSwapIn",
+        value: MsgCancelSwapIn.fromJSON(value)
+      };
+    },
+    completeSwapIn(value: any) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapIn",
+        value: MsgCompleteSwapIn.fromJSON(value)
+      };
+    },
+    storageProviderForcedExit(value: any) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgStorageProviderForcedExit",
+        value: MsgStorageProviderForcedExit.fromJSON(value)
+      };
     }
   },
   fromPartial: {
@@ -346,6 +442,30 @@ export const MessageComposer = {
       return {
         typeUrl: "/greenfield.virtualgroup.MsgCancelSwapOut",
         value: MsgCancelSwapOut.fromPartial(value)
+      };
+    },
+    reserveSwapIn(value: MsgReserveSwapIn) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgReserveSwapIn",
+        value: MsgReserveSwapIn.fromPartial(value)
+      };
+    },
+    cancelSwapIn(value: MsgCancelSwapIn) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgCancelSwapIn",
+        value: MsgCancelSwapIn.fromPartial(value)
+      };
+    },
+    completeSwapIn(value: MsgCompleteSwapIn) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapIn",
+        value: MsgCompleteSwapIn.fromPartial(value)
+      };
+    },
+    storageProviderForcedExit(value: MsgStorageProviderForcedExit) {
+      return {
+        typeUrl: "/greenfield.virtualgroup.MsgStorageProviderForcedExit",
+        value: MsgStorageProviderForcedExit.fromPartial(value)
       };
     }
   }

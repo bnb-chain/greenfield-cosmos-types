@@ -1,8 +1,9 @@
 //@ts-nocheck
 /* eslint-disable */
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
+import { PickVGFStrategy, pickVGFStrategyFromJSON, pickVGFStrategyToJSON } from "./common";
 import { Params, ParamsAmino, ParamsSDKType } from "./params";
-import { GlobalVirtualGroup, GlobalVirtualGroupAmino, GlobalVirtualGroupSDKType, GlobalVirtualGroupFamily, GlobalVirtualGroupFamilyAmino, GlobalVirtualGroupFamilySDKType } from "./types";
+import { GlobalVirtualGroup, GlobalVirtualGroupAmino, GlobalVirtualGroupSDKType, GlobalVirtualGroupFamily, GlobalVirtualGroupFamilyAmino, GlobalVirtualGroupFamilySDKType, SwapInInfo, SwapInInfoAmino, SwapInInfoSDKType, GVGStatisticsWithinSP, GVGStatisticsWithinSPAmino, GVGStatisticsWithinSPSDKType } from "./types";
 import * as _m0 from "protobufjs/minimal";
 import { DeepPartial, Exact, isSet, Rpc } from "../../helpers";
 export const protobufPackage = "greenfield.virtualgroup";
@@ -214,6 +215,148 @@ export interface AvailableGlobalVirtualGroupFamiliesResponseAminoMsg {
 }
 export interface AvailableGlobalVirtualGroupFamiliesResponseSDKType {
   global_virtual_group_family_ids: number[];
+}
+export interface QuerySwapInInfoRequest {
+  globalVirtualGroupFamilyId: number;
+  globalVirtualGroupId: number;
+}
+export interface QuerySwapInInfoRequestProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QuerySwapInInfoRequest";
+  value: Uint8Array;
+}
+export interface QuerySwapInInfoRequestAmino {
+  global_virtual_group_family_id?: number;
+  global_virtual_group_id?: number;
+}
+export interface QuerySwapInInfoRequestAminoMsg {
+  type: "/greenfield.virtualgroup.QuerySwapInInfoRequest";
+  value: QuerySwapInInfoRequestAmino;
+}
+export interface QuerySwapInInfoRequestSDKType {
+  global_virtual_group_family_id: number;
+  global_virtual_group_id: number;
+}
+export interface QuerySwapInInfoResponse {
+  swapInInfo?: SwapInInfo;
+}
+export interface QuerySwapInInfoResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QuerySwapInInfoResponse";
+  value: Uint8Array;
+}
+export interface QuerySwapInInfoResponseAmino {
+  swap_in_info?: SwapInInfoAmino;
+}
+export interface QuerySwapInInfoResponseAminoMsg {
+  type: "/greenfield.virtualgroup.QuerySwapInInfoResponse";
+  value: QuerySwapInInfoResponseAmino;
+}
+export interface QuerySwapInInfoResponseSDKType {
+  swap_in_info?: SwapInInfoSDKType;
+}
+export interface QuerySPGVGStatisticsRequest {
+  spId: number;
+}
+export interface QuerySPGVGStatisticsRequestProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QuerySPGVGStatisticsRequest";
+  value: Uint8Array;
+}
+export interface QuerySPGVGStatisticsRequestAmino {
+  sp_id?: number;
+}
+export interface QuerySPGVGStatisticsRequestAminoMsg {
+  type: "/greenfield.virtualgroup.QuerySPGVGStatisticsRequest";
+  value: QuerySPGVGStatisticsRequestAmino;
+}
+export interface QuerySPGVGStatisticsRequestSDKType {
+  sp_id: number;
+}
+export interface QuerySPGVGStatisticsResponse {
+  gvgStats?: GVGStatisticsWithinSP;
+}
+export interface QuerySPGVGStatisticsResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QuerySPGVGStatisticsResponse";
+  value: Uint8Array;
+}
+export interface QuerySPGVGStatisticsResponseAmino {
+  gvg_stats?: GVGStatisticsWithinSPAmino;
+}
+export interface QuerySPGVGStatisticsResponseAminoMsg {
+  type: "/greenfield.virtualgroup.QuerySPGVGStatisticsResponse";
+  value: QuerySPGVGStatisticsResponseAmino;
+}
+export interface QuerySPGVGStatisticsResponseSDKType {
+  gvg_stats?: GVGStatisticsWithinSPSDKType;
+}
+export interface QuerySPAvailableGlobalVirtualGroupFamiliesRequest {
+  spId: number;
+}
+export interface QuerySPAvailableGlobalVirtualGroupFamiliesRequestProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QuerySPAvailableGlobalVirtualGroupFamiliesRequest";
+  value: Uint8Array;
+}
+export interface QuerySPAvailableGlobalVirtualGroupFamiliesRequestAmino {
+  sp_id?: number;
+}
+export interface QuerySPAvailableGlobalVirtualGroupFamiliesRequestAminoMsg {
+  type: "/greenfield.virtualgroup.QuerySPAvailableGlobalVirtualGroupFamiliesRequest";
+  value: QuerySPAvailableGlobalVirtualGroupFamiliesRequestAmino;
+}
+export interface QuerySPAvailableGlobalVirtualGroupFamiliesRequestSDKType {
+  sp_id: number;
+}
+export interface QuerySPAvailableGlobalVirtualGroupFamiliesResponse {
+  globalVirtualGroupFamilyIds: number[];
+}
+export interface QuerySPAvailableGlobalVirtualGroupFamiliesResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QuerySPAvailableGlobalVirtualGroupFamiliesResponse";
+  value: Uint8Array;
+}
+export interface QuerySPAvailableGlobalVirtualGroupFamiliesResponseAmino {
+  global_virtual_group_family_ids?: number[];
+}
+export interface QuerySPAvailableGlobalVirtualGroupFamiliesResponseAminoMsg {
+  type: "/greenfield.virtualgroup.QuerySPAvailableGlobalVirtualGroupFamiliesResponse";
+  value: QuerySPAvailableGlobalVirtualGroupFamiliesResponseAmino;
+}
+export interface QuerySPAvailableGlobalVirtualGroupFamiliesResponseSDKType {
+  global_virtual_group_family_ids: number[];
+}
+export interface QuerySpOptimalGlobalVirtualGroupFamilyRequest {
+  spId: number;
+  pickVgfStrategy: PickVGFStrategy;
+}
+export interface QuerySpOptimalGlobalVirtualGroupFamilyRequestProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QuerySpOptimalGlobalVirtualGroupFamilyRequest";
+  value: Uint8Array;
+}
+export interface QuerySpOptimalGlobalVirtualGroupFamilyRequestAmino {
+  sp_id?: number;
+  pick_vgf_strategy?: PickVGFStrategy;
+}
+export interface QuerySpOptimalGlobalVirtualGroupFamilyRequestAminoMsg {
+  type: "/greenfield.virtualgroup.QuerySpOptimalGlobalVirtualGroupFamilyRequest";
+  value: QuerySpOptimalGlobalVirtualGroupFamilyRequestAmino;
+}
+export interface QuerySpOptimalGlobalVirtualGroupFamilyRequestSDKType {
+  sp_id: number;
+  pick_vgf_strategy: PickVGFStrategy;
+}
+export interface QuerySpOptimalGlobalVirtualGroupFamilyResponse {
+  globalVirtualGroupFamilyId: number;
+}
+export interface QuerySpOptimalGlobalVirtualGroupFamilyResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.QuerySpOptimalGlobalVirtualGroupFamilyResponse";
+  value: Uint8Array;
+}
+export interface QuerySpOptimalGlobalVirtualGroupFamilyResponseAmino {
+  global_virtual_group_family_id?: number;
+}
+export interface QuerySpOptimalGlobalVirtualGroupFamilyResponseAminoMsg {
+  type: "/greenfield.virtualgroup.QuerySpOptimalGlobalVirtualGroupFamilyResponse";
+  value: QuerySpOptimalGlobalVirtualGroupFamilyResponseAmino;
+}
+export interface QuerySpOptimalGlobalVirtualGroupFamilyResponseSDKType {
+  global_virtual_group_family_id: number;
 }
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
@@ -1266,6 +1409,721 @@ export const AvailableGlobalVirtualGroupFamiliesResponse = {
     };
   }
 };
+function createBaseQuerySwapInInfoRequest(): QuerySwapInInfoRequest {
+  return {
+    globalVirtualGroupFamilyId: 0,
+    globalVirtualGroupId: 0
+  };
+}
+export const QuerySwapInInfoRequest = {
+  typeUrl: "/greenfield.virtualgroup.QuerySwapInInfoRequest",
+  encode(message: QuerySwapInInfoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(8).uint32(message.globalVirtualGroupFamilyId);
+    }
+    if (message.globalVirtualGroupId !== 0) {
+      writer.uint32(16).uint32(message.globalVirtualGroupId);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySwapInInfoRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySwapInInfoRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.globalVirtualGroupFamilyId = reader.uint32();
+          break;
+        case 2:
+          message.globalVirtualGroupId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySwapInInfoRequest {
+    return {
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
+      globalVirtualGroupId: isSet(object.globalVirtualGroupId) ? Number(object.globalVirtualGroupId) : 0
+    };
+  },
+  toJSON(message: QuerySwapInInfoRequest): unknown {
+    const obj: any = {};
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
+    message.globalVirtualGroupId !== undefined && (obj.globalVirtualGroupId = Math.round(message.globalVirtualGroupId));
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QuerySwapInInfoRequest>, I>>(object: I): QuerySwapInInfoRequest {
+    const message = createBaseQuerySwapInInfoRequest();
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
+    message.globalVirtualGroupId = object.globalVirtualGroupId ?? 0;
+    return message;
+  },
+  fromSDK(object: QuerySwapInInfoRequestSDKType): QuerySwapInInfoRequest {
+    return {
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
+      globalVirtualGroupId: object?.global_virtual_group_id
+    };
+  },
+  toSDK(message: QuerySwapInInfoRequest): QuerySwapInInfoRequestSDKType {
+    const obj: any = {};
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    return obj;
+  },
+  fromAmino(object: QuerySwapInInfoRequestAmino): QuerySwapInInfoRequest {
+    const message = createBaseQuerySwapInInfoRequest();
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    if (object.global_virtual_group_id !== undefined && object.global_virtual_group_id !== null) {
+      message.globalVirtualGroupId = object.global_virtual_group_id;
+    }
+    return message;
+  },
+  toAmino(message: QuerySwapInInfoRequest): QuerySwapInInfoRequestAmino {
+    const obj: any = {};
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    return obj;
+  },
+  fromAminoMsg(object: QuerySwapInInfoRequestAminoMsg): QuerySwapInInfoRequest {
+    return QuerySwapInInfoRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySwapInInfoRequestProtoMsg): QuerySwapInInfoRequest {
+    return QuerySwapInInfoRequest.decode(message.value);
+  },
+  toProto(message: QuerySwapInInfoRequest): Uint8Array {
+    return QuerySwapInInfoRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySwapInInfoRequest): QuerySwapInInfoRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QuerySwapInInfoRequest",
+      value: QuerySwapInInfoRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseQuerySwapInInfoResponse(): QuerySwapInInfoResponse {
+  return {
+    swapInInfo: undefined
+  };
+}
+export const QuerySwapInInfoResponse = {
+  typeUrl: "/greenfield.virtualgroup.QuerySwapInInfoResponse",
+  encode(message: QuerySwapInInfoResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.swapInInfo !== undefined) {
+      SwapInInfo.encode(message.swapInInfo, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySwapInInfoResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySwapInInfoResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.swapInInfo = SwapInInfo.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySwapInInfoResponse {
+    return {
+      swapInInfo: isSet(object.swapInInfo) ? SwapInInfo.fromJSON(object.swapInInfo) : undefined
+    };
+  },
+  toJSON(message: QuerySwapInInfoResponse): unknown {
+    const obj: any = {};
+    message.swapInInfo !== undefined && (obj.swapInInfo = message.swapInInfo ? SwapInInfo.toJSON(message.swapInInfo) : undefined);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QuerySwapInInfoResponse>, I>>(object: I): QuerySwapInInfoResponse {
+    const message = createBaseQuerySwapInInfoResponse();
+    message.swapInInfo = object.swapInInfo !== undefined && object.swapInInfo !== null ? SwapInInfo.fromPartial(object.swapInInfo) : undefined;
+    return message;
+  },
+  fromSDK(object: QuerySwapInInfoResponseSDKType): QuerySwapInInfoResponse {
+    return {
+      swapInInfo: object.swap_in_info ? SwapInInfo.fromSDK(object.swap_in_info) : undefined
+    };
+  },
+  toSDK(message: QuerySwapInInfoResponse): QuerySwapInInfoResponseSDKType {
+    const obj: any = {};
+    message.swapInInfo !== undefined && (obj.swap_in_info = message.swapInInfo ? SwapInInfo.toSDK(message.swapInInfo) : undefined);
+    return obj;
+  },
+  fromAmino(object: QuerySwapInInfoResponseAmino): QuerySwapInInfoResponse {
+    const message = createBaseQuerySwapInInfoResponse();
+    if (object.swap_in_info !== undefined && object.swap_in_info !== null) {
+      message.swapInInfo = SwapInInfo.fromAmino(object.swap_in_info);
+    }
+    return message;
+  },
+  toAmino(message: QuerySwapInInfoResponse): QuerySwapInInfoResponseAmino {
+    const obj: any = {};
+    obj.swap_in_info = message.swapInInfo ? SwapInInfo.toAmino(message.swapInInfo) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QuerySwapInInfoResponseAminoMsg): QuerySwapInInfoResponse {
+    return QuerySwapInInfoResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySwapInInfoResponseProtoMsg): QuerySwapInInfoResponse {
+    return QuerySwapInInfoResponse.decode(message.value);
+  },
+  toProto(message: QuerySwapInInfoResponse): Uint8Array {
+    return QuerySwapInInfoResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySwapInInfoResponse): QuerySwapInInfoResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QuerySwapInInfoResponse",
+      value: QuerySwapInInfoResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseQuerySPGVGStatisticsRequest(): QuerySPGVGStatisticsRequest {
+  return {
+    spId: 0
+  };
+}
+export const QuerySPGVGStatisticsRequest = {
+  typeUrl: "/greenfield.virtualgroup.QuerySPGVGStatisticsRequest",
+  encode(message: QuerySPGVGStatisticsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.spId !== 0) {
+      writer.uint32(8).uint32(message.spId);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySPGVGStatisticsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySPGVGStatisticsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.spId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySPGVGStatisticsRequest {
+    return {
+      spId: isSet(object.spId) ? Number(object.spId) : 0
+    };
+  },
+  toJSON(message: QuerySPGVGStatisticsRequest): unknown {
+    const obj: any = {};
+    message.spId !== undefined && (obj.spId = Math.round(message.spId));
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QuerySPGVGStatisticsRequest>, I>>(object: I): QuerySPGVGStatisticsRequest {
+    const message = createBaseQuerySPGVGStatisticsRequest();
+    message.spId = object.spId ?? 0;
+    return message;
+  },
+  fromSDK(object: QuerySPGVGStatisticsRequestSDKType): QuerySPGVGStatisticsRequest {
+    return {
+      spId: object?.sp_id
+    };
+  },
+  toSDK(message: QuerySPGVGStatisticsRequest): QuerySPGVGStatisticsRequestSDKType {
+    const obj: any = {};
+    obj.sp_id = message.spId;
+    return obj;
+  },
+  fromAmino(object: QuerySPGVGStatisticsRequestAmino): QuerySPGVGStatisticsRequest {
+    const message = createBaseQuerySPGVGStatisticsRequest();
+    if (object.sp_id !== undefined && object.sp_id !== null) {
+      message.spId = object.sp_id;
+    }
+    return message;
+  },
+  toAmino(message: QuerySPGVGStatisticsRequest): QuerySPGVGStatisticsRequestAmino {
+    const obj: any = {};
+    obj.sp_id = message.spId;
+    return obj;
+  },
+  fromAminoMsg(object: QuerySPGVGStatisticsRequestAminoMsg): QuerySPGVGStatisticsRequest {
+    return QuerySPGVGStatisticsRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySPGVGStatisticsRequestProtoMsg): QuerySPGVGStatisticsRequest {
+    return QuerySPGVGStatisticsRequest.decode(message.value);
+  },
+  toProto(message: QuerySPGVGStatisticsRequest): Uint8Array {
+    return QuerySPGVGStatisticsRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySPGVGStatisticsRequest): QuerySPGVGStatisticsRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QuerySPGVGStatisticsRequest",
+      value: QuerySPGVGStatisticsRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseQuerySPGVGStatisticsResponse(): QuerySPGVGStatisticsResponse {
+  return {
+    gvgStats: undefined
+  };
+}
+export const QuerySPGVGStatisticsResponse = {
+  typeUrl: "/greenfield.virtualgroup.QuerySPGVGStatisticsResponse",
+  encode(message: QuerySPGVGStatisticsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.gvgStats !== undefined) {
+      GVGStatisticsWithinSP.encode(message.gvgStats, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySPGVGStatisticsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySPGVGStatisticsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.gvgStats = GVGStatisticsWithinSP.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySPGVGStatisticsResponse {
+    return {
+      gvgStats: isSet(object.gvgStats) ? GVGStatisticsWithinSP.fromJSON(object.gvgStats) : undefined
+    };
+  },
+  toJSON(message: QuerySPGVGStatisticsResponse): unknown {
+    const obj: any = {};
+    message.gvgStats !== undefined && (obj.gvgStats = message.gvgStats ? GVGStatisticsWithinSP.toJSON(message.gvgStats) : undefined);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QuerySPGVGStatisticsResponse>, I>>(object: I): QuerySPGVGStatisticsResponse {
+    const message = createBaseQuerySPGVGStatisticsResponse();
+    message.gvgStats = object.gvgStats !== undefined && object.gvgStats !== null ? GVGStatisticsWithinSP.fromPartial(object.gvgStats) : undefined;
+    return message;
+  },
+  fromSDK(object: QuerySPGVGStatisticsResponseSDKType): QuerySPGVGStatisticsResponse {
+    return {
+      gvgStats: object.gvg_stats ? GVGStatisticsWithinSP.fromSDK(object.gvg_stats) : undefined
+    };
+  },
+  toSDK(message: QuerySPGVGStatisticsResponse): QuerySPGVGStatisticsResponseSDKType {
+    const obj: any = {};
+    message.gvgStats !== undefined && (obj.gvg_stats = message.gvgStats ? GVGStatisticsWithinSP.toSDK(message.gvgStats) : undefined);
+    return obj;
+  },
+  fromAmino(object: QuerySPGVGStatisticsResponseAmino): QuerySPGVGStatisticsResponse {
+    const message = createBaseQuerySPGVGStatisticsResponse();
+    if (object.gvg_stats !== undefined && object.gvg_stats !== null) {
+      message.gvgStats = GVGStatisticsWithinSP.fromAmino(object.gvg_stats);
+    }
+    return message;
+  },
+  toAmino(message: QuerySPGVGStatisticsResponse): QuerySPGVGStatisticsResponseAmino {
+    const obj: any = {};
+    obj.gvg_stats = message.gvgStats ? GVGStatisticsWithinSP.toAmino(message.gvgStats) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QuerySPGVGStatisticsResponseAminoMsg): QuerySPGVGStatisticsResponse {
+    return QuerySPGVGStatisticsResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySPGVGStatisticsResponseProtoMsg): QuerySPGVGStatisticsResponse {
+    return QuerySPGVGStatisticsResponse.decode(message.value);
+  },
+  toProto(message: QuerySPGVGStatisticsResponse): Uint8Array {
+    return QuerySPGVGStatisticsResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySPGVGStatisticsResponse): QuerySPGVGStatisticsResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QuerySPGVGStatisticsResponse",
+      value: QuerySPGVGStatisticsResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseQuerySPAvailableGlobalVirtualGroupFamiliesRequest(): QuerySPAvailableGlobalVirtualGroupFamiliesRequest {
+  return {
+    spId: 0
+  };
+}
+export const QuerySPAvailableGlobalVirtualGroupFamiliesRequest = {
+  typeUrl: "/greenfield.virtualgroup.QuerySPAvailableGlobalVirtualGroupFamiliesRequest",
+  encode(message: QuerySPAvailableGlobalVirtualGroupFamiliesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.spId !== 0) {
+      writer.uint32(8).uint32(message.spId);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySPAvailableGlobalVirtualGroupFamiliesRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySPAvailableGlobalVirtualGroupFamiliesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.spId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySPAvailableGlobalVirtualGroupFamiliesRequest {
+    return {
+      spId: isSet(object.spId) ? Number(object.spId) : 0
+    };
+  },
+  toJSON(message: QuerySPAvailableGlobalVirtualGroupFamiliesRequest): unknown {
+    const obj: any = {};
+    message.spId !== undefined && (obj.spId = Math.round(message.spId));
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QuerySPAvailableGlobalVirtualGroupFamiliesRequest>, I>>(object: I): QuerySPAvailableGlobalVirtualGroupFamiliesRequest {
+    const message = createBaseQuerySPAvailableGlobalVirtualGroupFamiliesRequest();
+    message.spId = object.spId ?? 0;
+    return message;
+  },
+  fromSDK(object: QuerySPAvailableGlobalVirtualGroupFamiliesRequestSDKType): QuerySPAvailableGlobalVirtualGroupFamiliesRequest {
+    return {
+      spId: object?.sp_id
+    };
+  },
+  toSDK(message: QuerySPAvailableGlobalVirtualGroupFamiliesRequest): QuerySPAvailableGlobalVirtualGroupFamiliesRequestSDKType {
+    const obj: any = {};
+    obj.sp_id = message.spId;
+    return obj;
+  },
+  fromAmino(object: QuerySPAvailableGlobalVirtualGroupFamiliesRequestAmino): QuerySPAvailableGlobalVirtualGroupFamiliesRequest {
+    const message = createBaseQuerySPAvailableGlobalVirtualGroupFamiliesRequest();
+    if (object.sp_id !== undefined && object.sp_id !== null) {
+      message.spId = object.sp_id;
+    }
+    return message;
+  },
+  toAmino(message: QuerySPAvailableGlobalVirtualGroupFamiliesRequest): QuerySPAvailableGlobalVirtualGroupFamiliesRequestAmino {
+    const obj: any = {};
+    obj.sp_id = message.spId;
+    return obj;
+  },
+  fromAminoMsg(object: QuerySPAvailableGlobalVirtualGroupFamiliesRequestAminoMsg): QuerySPAvailableGlobalVirtualGroupFamiliesRequest {
+    return QuerySPAvailableGlobalVirtualGroupFamiliesRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySPAvailableGlobalVirtualGroupFamiliesRequestProtoMsg): QuerySPAvailableGlobalVirtualGroupFamiliesRequest {
+    return QuerySPAvailableGlobalVirtualGroupFamiliesRequest.decode(message.value);
+  },
+  toProto(message: QuerySPAvailableGlobalVirtualGroupFamiliesRequest): Uint8Array {
+    return QuerySPAvailableGlobalVirtualGroupFamiliesRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySPAvailableGlobalVirtualGroupFamiliesRequest): QuerySPAvailableGlobalVirtualGroupFamiliesRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QuerySPAvailableGlobalVirtualGroupFamiliesRequest",
+      value: QuerySPAvailableGlobalVirtualGroupFamiliesRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseQuerySPAvailableGlobalVirtualGroupFamiliesResponse(): QuerySPAvailableGlobalVirtualGroupFamiliesResponse {
+  return {
+    globalVirtualGroupFamilyIds: []
+  };
+}
+export const QuerySPAvailableGlobalVirtualGroupFamiliesResponse = {
+  typeUrl: "/greenfield.virtualgroup.QuerySPAvailableGlobalVirtualGroupFamiliesResponse",
+  encode(message: QuerySPAvailableGlobalVirtualGroupFamiliesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    writer.uint32(10).fork();
+    for (const v of message.globalVirtualGroupFamilyIds) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySPAvailableGlobalVirtualGroupFamiliesResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySPAvailableGlobalVirtualGroupFamiliesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.globalVirtualGroupFamilyIds.push(reader.uint32());
+            }
+          } else {
+            message.globalVirtualGroupFamilyIds.push(reader.uint32());
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySPAvailableGlobalVirtualGroupFamiliesResponse {
+    return {
+      globalVirtualGroupFamilyIds: Array.isArray(object?.globalVirtualGroupFamilyIds) ? object.globalVirtualGroupFamilyIds.map((e: any) => Number(e)) : []
+    };
+  },
+  toJSON(message: QuerySPAvailableGlobalVirtualGroupFamiliesResponse): unknown {
+    const obj: any = {};
+    if (message.globalVirtualGroupFamilyIds) {
+      obj.globalVirtualGroupFamilyIds = message.globalVirtualGroupFamilyIds.map(e => Math.round(e));
+    } else {
+      obj.globalVirtualGroupFamilyIds = [];
+    }
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QuerySPAvailableGlobalVirtualGroupFamiliesResponse>, I>>(object: I): QuerySPAvailableGlobalVirtualGroupFamiliesResponse {
+    const message = createBaseQuerySPAvailableGlobalVirtualGroupFamiliesResponse();
+    message.globalVirtualGroupFamilyIds = object.globalVirtualGroupFamilyIds?.map(e => e) || [];
+    return message;
+  },
+  fromSDK(object: QuerySPAvailableGlobalVirtualGroupFamiliesResponseSDKType): QuerySPAvailableGlobalVirtualGroupFamiliesResponse {
+    return {
+      globalVirtualGroupFamilyIds: Array.isArray(object?.global_virtual_group_family_ids) ? object.global_virtual_group_family_ids.map((e: any) => e) : []
+    };
+  },
+  toSDK(message: QuerySPAvailableGlobalVirtualGroupFamiliesResponse): QuerySPAvailableGlobalVirtualGroupFamiliesResponseSDKType {
+    const obj: any = {};
+    if (message.globalVirtualGroupFamilyIds) {
+      obj.global_virtual_group_family_ids = message.globalVirtualGroupFamilyIds.map(e => e);
+    } else {
+      obj.global_virtual_group_family_ids = [];
+    }
+    return obj;
+  },
+  fromAmino(object: QuerySPAvailableGlobalVirtualGroupFamiliesResponseAmino): QuerySPAvailableGlobalVirtualGroupFamiliesResponse {
+    const message = createBaseQuerySPAvailableGlobalVirtualGroupFamiliesResponse();
+    message.globalVirtualGroupFamilyIds = object.global_virtual_group_family_ids?.map(e => e) || [];
+    return message;
+  },
+  toAmino(message: QuerySPAvailableGlobalVirtualGroupFamiliesResponse): QuerySPAvailableGlobalVirtualGroupFamiliesResponseAmino {
+    const obj: any = {};
+    if (message.globalVirtualGroupFamilyIds) {
+      obj.global_virtual_group_family_ids = message.globalVirtualGroupFamilyIds.map(e => e);
+    } else {
+      obj.global_virtual_group_family_ids = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: QuerySPAvailableGlobalVirtualGroupFamiliesResponseAminoMsg): QuerySPAvailableGlobalVirtualGroupFamiliesResponse {
+    return QuerySPAvailableGlobalVirtualGroupFamiliesResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySPAvailableGlobalVirtualGroupFamiliesResponseProtoMsg): QuerySPAvailableGlobalVirtualGroupFamiliesResponse {
+    return QuerySPAvailableGlobalVirtualGroupFamiliesResponse.decode(message.value);
+  },
+  toProto(message: QuerySPAvailableGlobalVirtualGroupFamiliesResponse): Uint8Array {
+    return QuerySPAvailableGlobalVirtualGroupFamiliesResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySPAvailableGlobalVirtualGroupFamiliesResponse): QuerySPAvailableGlobalVirtualGroupFamiliesResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QuerySPAvailableGlobalVirtualGroupFamiliesResponse",
+      value: QuerySPAvailableGlobalVirtualGroupFamiliesResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseQuerySpOptimalGlobalVirtualGroupFamilyRequest(): QuerySpOptimalGlobalVirtualGroupFamilyRequest {
+  return {
+    spId: 0,
+    pickVgfStrategy: 0
+  };
+}
+export const QuerySpOptimalGlobalVirtualGroupFamilyRequest = {
+  typeUrl: "/greenfield.virtualgroup.QuerySpOptimalGlobalVirtualGroupFamilyRequest",
+  encode(message: QuerySpOptimalGlobalVirtualGroupFamilyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.spId !== 0) {
+      writer.uint32(8).uint32(message.spId);
+    }
+    if (message.pickVgfStrategy !== 0) {
+      writer.uint32(16).int32(message.pickVgfStrategy);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpOptimalGlobalVirtualGroupFamilyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySpOptimalGlobalVirtualGroupFamilyRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.spId = reader.uint32();
+          break;
+        case 2:
+          message.pickVgfStrategy = (reader.int32() as any);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySpOptimalGlobalVirtualGroupFamilyRequest {
+    return {
+      spId: isSet(object.spId) ? Number(object.spId) : 0,
+      pickVgfStrategy: isSet(object.pickVgfStrategy) ? pickVGFStrategyFromJSON(object.pickVgfStrategy) : -1
+    };
+  },
+  toJSON(message: QuerySpOptimalGlobalVirtualGroupFamilyRequest): unknown {
+    const obj: any = {};
+    message.spId !== undefined && (obj.spId = Math.round(message.spId));
+    message.pickVgfStrategy !== undefined && (obj.pickVgfStrategy = pickVGFStrategyToJSON(message.pickVgfStrategy));
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QuerySpOptimalGlobalVirtualGroupFamilyRequest>, I>>(object: I): QuerySpOptimalGlobalVirtualGroupFamilyRequest {
+    const message = createBaseQuerySpOptimalGlobalVirtualGroupFamilyRequest();
+    message.spId = object.spId ?? 0;
+    message.pickVgfStrategy = object.pickVgfStrategy ?? 0;
+    return message;
+  },
+  fromSDK(object: QuerySpOptimalGlobalVirtualGroupFamilyRequestSDKType): QuerySpOptimalGlobalVirtualGroupFamilyRequest {
+    return {
+      spId: object?.sp_id,
+      pickVgfStrategy: isSet(object.pick_vgf_strategy) ? pickVGFStrategyFromJSON(object.pick_vgf_strategy) : -1
+    };
+  },
+  toSDK(message: QuerySpOptimalGlobalVirtualGroupFamilyRequest): QuerySpOptimalGlobalVirtualGroupFamilyRequestSDKType {
+    const obj: any = {};
+    obj.sp_id = message.spId;
+    message.pickVgfStrategy !== undefined && (obj.pick_vgf_strategy = pickVGFStrategyToJSON(message.pickVgfStrategy));
+    return obj;
+  },
+  fromAmino(object: QuerySpOptimalGlobalVirtualGroupFamilyRequestAmino): QuerySpOptimalGlobalVirtualGroupFamilyRequest {
+    const message = createBaseQuerySpOptimalGlobalVirtualGroupFamilyRequest();
+    if (object.sp_id !== undefined && object.sp_id !== null) {
+      message.spId = object.sp_id;
+    }
+    if (object.pick_vgf_strategy !== undefined && object.pick_vgf_strategy !== null) {
+      message.pickVgfStrategy = pickVGFStrategyFromJSON(object.pick_vgf_strategy);
+    }
+    return message;
+  },
+  toAmino(message: QuerySpOptimalGlobalVirtualGroupFamilyRequest): QuerySpOptimalGlobalVirtualGroupFamilyRequestAmino {
+    const obj: any = {};
+    obj.sp_id = message.spId;
+    obj.pick_vgf_strategy = pickVGFStrategyToJSON(message.pickVgfStrategy);
+    return obj;
+  },
+  fromAminoMsg(object: QuerySpOptimalGlobalVirtualGroupFamilyRequestAminoMsg): QuerySpOptimalGlobalVirtualGroupFamilyRequest {
+    return QuerySpOptimalGlobalVirtualGroupFamilyRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySpOptimalGlobalVirtualGroupFamilyRequestProtoMsg): QuerySpOptimalGlobalVirtualGroupFamilyRequest {
+    return QuerySpOptimalGlobalVirtualGroupFamilyRequest.decode(message.value);
+  },
+  toProto(message: QuerySpOptimalGlobalVirtualGroupFamilyRequest): Uint8Array {
+    return QuerySpOptimalGlobalVirtualGroupFamilyRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySpOptimalGlobalVirtualGroupFamilyRequest): QuerySpOptimalGlobalVirtualGroupFamilyRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QuerySpOptimalGlobalVirtualGroupFamilyRequest",
+      value: QuerySpOptimalGlobalVirtualGroupFamilyRequest.encode(message).finish()
+    };
+  }
+};
+function createBaseQuerySpOptimalGlobalVirtualGroupFamilyResponse(): QuerySpOptimalGlobalVirtualGroupFamilyResponse {
+  return {
+    globalVirtualGroupFamilyId: 0
+  };
+}
+export const QuerySpOptimalGlobalVirtualGroupFamilyResponse = {
+  typeUrl: "/greenfield.virtualgroup.QuerySpOptimalGlobalVirtualGroupFamilyResponse",
+  encode(message: QuerySpOptimalGlobalVirtualGroupFamilyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(8).uint32(message.globalVirtualGroupFamilyId);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QuerySpOptimalGlobalVirtualGroupFamilyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQuerySpOptimalGlobalVirtualGroupFamilyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.globalVirtualGroupFamilyId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QuerySpOptimalGlobalVirtualGroupFamilyResponse {
+    return {
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0
+    };
+  },
+  toJSON(message: QuerySpOptimalGlobalVirtualGroupFamilyResponse): unknown {
+    const obj: any = {};
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QuerySpOptimalGlobalVirtualGroupFamilyResponse>, I>>(object: I): QuerySpOptimalGlobalVirtualGroupFamilyResponse {
+    const message = createBaseQuerySpOptimalGlobalVirtualGroupFamilyResponse();
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
+    return message;
+  },
+  fromSDK(object: QuerySpOptimalGlobalVirtualGroupFamilyResponseSDKType): QuerySpOptimalGlobalVirtualGroupFamilyResponse {
+    return {
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id
+    };
+  },
+  toSDK(message: QuerySpOptimalGlobalVirtualGroupFamilyResponse): QuerySpOptimalGlobalVirtualGroupFamilyResponseSDKType {
+    const obj: any = {};
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    return obj;
+  },
+  fromAmino(object: QuerySpOptimalGlobalVirtualGroupFamilyResponseAmino): QuerySpOptimalGlobalVirtualGroupFamilyResponse {
+    const message = createBaseQuerySpOptimalGlobalVirtualGroupFamilyResponse();
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    return message;
+  },
+  toAmino(message: QuerySpOptimalGlobalVirtualGroupFamilyResponse): QuerySpOptimalGlobalVirtualGroupFamilyResponseAmino {
+    const obj: any = {};
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    return obj;
+  },
+  fromAminoMsg(object: QuerySpOptimalGlobalVirtualGroupFamilyResponseAminoMsg): QuerySpOptimalGlobalVirtualGroupFamilyResponse {
+    return QuerySpOptimalGlobalVirtualGroupFamilyResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QuerySpOptimalGlobalVirtualGroupFamilyResponseProtoMsg): QuerySpOptimalGlobalVirtualGroupFamilyResponse {
+    return QuerySpOptimalGlobalVirtualGroupFamilyResponse.decode(message.value);
+  },
+  toProto(message: QuerySpOptimalGlobalVirtualGroupFamilyResponse): Uint8Array {
+    return QuerySpOptimalGlobalVirtualGroupFamilyResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QuerySpOptimalGlobalVirtualGroupFamilyResponse): QuerySpOptimalGlobalVirtualGroupFamilyResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.QuerySpOptimalGlobalVirtualGroupFamilyResponse",
+      value: QuerySpOptimalGlobalVirtualGroupFamilyResponse.encode(message).finish()
+    };
+  }
+};
 /** Query defines the gRPC query service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1280,6 +2138,14 @@ export interface Query {
   GlobalVirtualGroupFamilies(request?: QueryGlobalVirtualGroupFamiliesRequest): Promise<QueryGlobalVirtualGroupFamiliesResponse>;
   /** AvailableGlobalVirtualGroupFamilies filters a list of GlobalVirtualGroupFamilies ID which are qualified to create bucket on */
   AvailableGlobalVirtualGroupFamilies(request: AvailableGlobalVirtualGroupFamiliesRequest): Promise<AvailableGlobalVirtualGroupFamiliesResponse>;
+  /** SwapInInfo gets reserved swapIn info for a specific global virtual group family or global virtual group */
+  SwapInInfo(request: QuerySwapInInfoRequest): Promise<QuerySwapInInfoResponse>;
+  /** GVGStatistics gets gvg statistics for a SP */
+  GVGStatistics(request: QuerySPGVGStatisticsRequest): Promise<QuerySPGVGStatisticsResponse>;
+  /** QuerySpAvailableGlobalVirtualGroupFamilies filters a list of GlobalVirtualGroupFamilies IDs under a certain SP that are qualified to create a bucket on */
+  QuerySpAvailableGlobalVirtualGroupFamilies(request: QuerySPAvailableGlobalVirtualGroupFamiliesRequest): Promise<QuerySPAvailableGlobalVirtualGroupFamiliesResponse>;
+  /** QuerySpOptimalGlobalVirtualGroupFamily filters the optimal GlobalVirtualGroupFamily under a certain SP that is qualified to create a bucket on */
+  QuerySpOptimalGlobalVirtualGroupFamily(request: QuerySpOptimalGlobalVirtualGroupFamilyRequest): Promise<QuerySpOptimalGlobalVirtualGroupFamilyResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -1291,6 +2157,10 @@ export class QueryClientImpl implements Query {
     this.GlobalVirtualGroupFamily = this.GlobalVirtualGroupFamily.bind(this);
     this.GlobalVirtualGroupFamilies = this.GlobalVirtualGroupFamilies.bind(this);
     this.AvailableGlobalVirtualGroupFamilies = this.AvailableGlobalVirtualGroupFamilies.bind(this);
+    this.SwapInInfo = this.SwapInInfo.bind(this);
+    this.GVGStatistics = this.GVGStatistics.bind(this);
+    this.QuerySpAvailableGlobalVirtualGroupFamilies = this.QuerySpAvailableGlobalVirtualGroupFamilies.bind(this);
+    this.QuerySpOptimalGlobalVirtualGroupFamily = this.QuerySpOptimalGlobalVirtualGroupFamily.bind(this);
   }
   Params(request: QueryParamsRequest = {}): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -1323,5 +2193,25 @@ export class QueryClientImpl implements Query {
     const data = AvailableGlobalVirtualGroupFamiliesRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Query", "AvailableGlobalVirtualGroupFamilies", data);
     return promise.then(data => AvailableGlobalVirtualGroupFamiliesResponse.decode(new _m0.Reader(data)));
+  }
+  SwapInInfo(request: QuerySwapInInfoRequest): Promise<QuerySwapInInfoResponse> {
+    const data = QuerySwapInInfoRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.virtualgroup.Query", "SwapInInfo", data);
+    return promise.then(data => QuerySwapInInfoResponse.decode(new _m0.Reader(data)));
+  }
+  GVGStatistics(request: QuerySPGVGStatisticsRequest): Promise<QuerySPGVGStatisticsResponse> {
+    const data = QuerySPGVGStatisticsRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.virtualgroup.Query", "GVGStatistics", data);
+    return promise.then(data => QuerySPGVGStatisticsResponse.decode(new _m0.Reader(data)));
+  }
+  QuerySpAvailableGlobalVirtualGroupFamilies(request: QuerySPAvailableGlobalVirtualGroupFamiliesRequest): Promise<QuerySPAvailableGlobalVirtualGroupFamiliesResponse> {
+    const data = QuerySPAvailableGlobalVirtualGroupFamiliesRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.virtualgroup.Query", "QuerySpAvailableGlobalVirtualGroupFamilies", data);
+    return promise.then(data => QuerySPAvailableGlobalVirtualGroupFamiliesResponse.decode(new _m0.Reader(data)));
+  }
+  QuerySpOptimalGlobalVirtualGroupFamily(request: QuerySpOptimalGlobalVirtualGroupFamilyRequest): Promise<QuerySpOptimalGlobalVirtualGroupFamilyResponse> {
+    const data = QuerySpOptimalGlobalVirtualGroupFamilyRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.virtualgroup.Query", "QuerySpOptimalGlobalVirtualGroupFamily", data);
+    return promise.then(data => QuerySpOptimalGlobalVirtualGroupFamilyResponse.decode(new _m0.Reader(data)));
   }
 }

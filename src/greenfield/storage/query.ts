@@ -3,7 +3,7 @@
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../cosmos/base/query/v1beta1/pagination";
 import { ActionType, Effect, actionTypeFromJSON, actionTypeToJSON, effectFromJSON, effectToJSON } from "../permission/common";
 import { Params, ParamsAmino, ParamsSDKType } from "./params";
-import { BucketInfo, BucketInfoAmino, BucketInfoSDKType, ObjectInfo, ObjectInfoAmino, ObjectInfoSDKType, BucketMetaData, BucketMetaDataAmino, BucketMetaDataSDKType, ObjectMetaData, ObjectMetaDataAmino, ObjectMetaDataSDKType, GroupMetaData, GroupMetaDataAmino, GroupMetaDataSDKType, GroupInfo, GroupInfoAmino, GroupInfoSDKType, InternalBucketInfo, InternalBucketInfoAmino, InternalBucketInfoSDKType } from "./types";
+import { BucketInfo, BucketInfoAmino, BucketInfoSDKType, ObjectInfo, ObjectInfoAmino, ObjectInfoSDKType, ShadowObjectInfo, ShadowObjectInfoAmino, ShadowObjectInfoSDKType, BucketMetaData, BucketMetaDataAmino, BucketMetaDataSDKType, ObjectMetaData, ObjectMetaDataAmino, ObjectMetaDataSDKType, GroupMetaData, GroupMetaDataAmino, GroupMetaDataSDKType, GroupInfo, GroupInfoAmino, GroupInfoSDKType, InternalBucketInfo, InternalBucketInfoAmino, InternalBucketInfoSDKType } from "./types";
 import { GlobalVirtualGroup, GlobalVirtualGroupAmino, GlobalVirtualGroupSDKType } from "../virtualgroup/types";
 import { Policy, PolicyAmino, PolicySDKType, GroupMember, GroupMemberAmino, GroupMemberSDKType } from "../permission/types";
 import { Long, DeepPartial, Exact, isSet, isObject, Rpc } from "../../helpers";
@@ -178,6 +178,26 @@ export interface QueryHeadObjectByIdRequestAminoMsg {
 export interface QueryHeadObjectByIdRequestSDKType {
   object_id: string;
 }
+export interface QueryHeadShadowObjectRequest {
+  bucketName: string;
+  objectName: string;
+}
+export interface QueryHeadShadowObjectRequestProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadShadowObjectRequest";
+  value: Uint8Array;
+}
+export interface QueryHeadShadowObjectRequestAmino {
+  bucket_name?: string;
+  object_name?: string;
+}
+export interface QueryHeadShadowObjectRequestAminoMsg {
+  type: "/greenfield.storage.QueryHeadShadowObjectRequest";
+  value: QueryHeadShadowObjectRequestAmino;
+}
+export interface QueryHeadShadowObjectRequestSDKType {
+  bucket_name: string;
+  object_name: string;
+}
 export interface QueryHeadObjectResponse {
   objectInfo?: ObjectInfo;
   globalVirtualGroup?: GlobalVirtualGroup;
@@ -197,6 +217,23 @@ export interface QueryHeadObjectResponseAminoMsg {
 export interface QueryHeadObjectResponseSDKType {
   object_info?: ObjectInfoSDKType;
   global_virtual_group?: GlobalVirtualGroupSDKType;
+}
+export interface QueryHeadShadowObjectResponse {
+  objectInfo?: ShadowObjectInfo;
+}
+export interface QueryHeadShadowObjectResponseProtoMsg {
+  typeUrl: "/greenfield.storage.QueryHeadShadowObjectResponse";
+  value: Uint8Array;
+}
+export interface QueryHeadShadowObjectResponseAmino {
+  object_info?: ShadowObjectInfoAmino;
+}
+export interface QueryHeadShadowObjectResponseAminoMsg {
+  type: "/greenfield.storage.QueryHeadShadowObjectResponse";
+  value: QueryHeadShadowObjectResponseAmino;
+}
+export interface QueryHeadShadowObjectResponseSDKType {
+  object_info?: ShadowObjectInfoSDKType;
 }
 export interface QueryListBucketsRequest {
   pagination?: PageRequest;
@@ -1690,6 +1727,105 @@ export const QueryHeadObjectByIdRequest = {
     };
   }
 };
+function createBaseQueryHeadShadowObjectRequest(): QueryHeadShadowObjectRequest {
+  return {
+    bucketName: "",
+    objectName: ""
+  };
+}
+export const QueryHeadShadowObjectRequest = {
+  typeUrl: "/greenfield.storage.QueryHeadShadowObjectRequest",
+  encode(message: QueryHeadShadowObjectRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.bucketName !== "") {
+      writer.uint32(10).string(message.bucketName);
+    }
+    if (message.objectName !== "") {
+      writer.uint32(18).string(message.objectName);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadShadowObjectRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryHeadShadowObjectRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.bucketName = reader.string();
+          break;
+        case 2:
+          message.objectName = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryHeadShadowObjectRequest {
+    return {
+      bucketName: isSet(object.bucketName) ? String(object.bucketName) : "",
+      objectName: isSet(object.objectName) ? String(object.objectName) : ""
+    };
+  },
+  toJSON(message: QueryHeadShadowObjectRequest): unknown {
+    const obj: any = {};
+    message.bucketName !== undefined && (obj.bucketName = message.bucketName);
+    message.objectName !== undefined && (obj.objectName = message.objectName);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryHeadShadowObjectRequest>, I>>(object: I): QueryHeadShadowObjectRequest {
+    const message = createBaseQueryHeadShadowObjectRequest();
+    message.bucketName = object.bucketName ?? "";
+    message.objectName = object.objectName ?? "";
+    return message;
+  },
+  fromSDK(object: QueryHeadShadowObjectRequestSDKType): QueryHeadShadowObjectRequest {
+    return {
+      bucketName: object?.bucket_name,
+      objectName: object?.object_name
+    };
+  },
+  toSDK(message: QueryHeadShadowObjectRequest): QueryHeadShadowObjectRequestSDKType {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    return obj;
+  },
+  fromAmino(object: QueryHeadShadowObjectRequestAmino): QueryHeadShadowObjectRequest {
+    const message = createBaseQueryHeadShadowObjectRequest();
+    if (object.bucket_name !== undefined && object.bucket_name !== null) {
+      message.bucketName = object.bucket_name;
+    }
+    if (object.object_name !== undefined && object.object_name !== null) {
+      message.objectName = object.object_name;
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadShadowObjectRequest): QueryHeadShadowObjectRequestAmino {
+    const obj: any = {};
+    obj.bucket_name = message.bucketName;
+    obj.object_name = message.objectName;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadShadowObjectRequestAminoMsg): QueryHeadShadowObjectRequest {
+    return QueryHeadShadowObjectRequest.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadShadowObjectRequestProtoMsg): QueryHeadShadowObjectRequest {
+    return QueryHeadShadowObjectRequest.decode(message.value);
+  },
+  toProto(message: QueryHeadShadowObjectRequest): Uint8Array {
+    return QueryHeadShadowObjectRequest.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadShadowObjectRequest): QueryHeadShadowObjectRequestProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadShadowObjectRequest",
+      value: QueryHeadShadowObjectRequest.encode(message).finish()
+    };
+  }
+};
 function createBaseQueryHeadObjectResponse(): QueryHeadObjectResponse {
   return {
     objectInfo: undefined,
@@ -1786,6 +1922,89 @@ export const QueryHeadObjectResponse = {
     return {
       typeUrl: "/greenfield.storage.QueryHeadObjectResponse",
       value: QueryHeadObjectResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseQueryHeadShadowObjectResponse(): QueryHeadShadowObjectResponse {
+  return {
+    objectInfo: undefined
+  };
+}
+export const QueryHeadShadowObjectResponse = {
+  typeUrl: "/greenfield.storage.QueryHeadShadowObjectResponse",
+  encode(message: QueryHeadShadowObjectResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.objectInfo !== undefined) {
+      ShadowObjectInfo.encode(message.objectInfo, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryHeadShadowObjectResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryHeadShadowObjectResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.objectInfo = ShadowObjectInfo.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): QueryHeadShadowObjectResponse {
+    return {
+      objectInfo: isSet(object.objectInfo) ? ShadowObjectInfo.fromJSON(object.objectInfo) : undefined
+    };
+  },
+  toJSON(message: QueryHeadShadowObjectResponse): unknown {
+    const obj: any = {};
+    message.objectInfo !== undefined && (obj.objectInfo = message.objectInfo ? ShadowObjectInfo.toJSON(message.objectInfo) : undefined);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<QueryHeadShadowObjectResponse>, I>>(object: I): QueryHeadShadowObjectResponse {
+    const message = createBaseQueryHeadShadowObjectResponse();
+    message.objectInfo = object.objectInfo !== undefined && object.objectInfo !== null ? ShadowObjectInfo.fromPartial(object.objectInfo) : undefined;
+    return message;
+  },
+  fromSDK(object: QueryHeadShadowObjectResponseSDKType): QueryHeadShadowObjectResponse {
+    return {
+      objectInfo: object.object_info ? ShadowObjectInfo.fromSDK(object.object_info) : undefined
+    };
+  },
+  toSDK(message: QueryHeadShadowObjectResponse): QueryHeadShadowObjectResponseSDKType {
+    const obj: any = {};
+    message.objectInfo !== undefined && (obj.object_info = message.objectInfo ? ShadowObjectInfo.toSDK(message.objectInfo) : undefined);
+    return obj;
+  },
+  fromAmino(object: QueryHeadShadowObjectResponseAmino): QueryHeadShadowObjectResponse {
+    const message = createBaseQueryHeadShadowObjectResponse();
+    if (object.object_info !== undefined && object.object_info !== null) {
+      message.objectInfo = ShadowObjectInfo.fromAmino(object.object_info);
+    }
+    return message;
+  },
+  toAmino(message: QueryHeadShadowObjectResponse): QueryHeadShadowObjectResponseAmino {
+    const obj: any = {};
+    obj.object_info = message.objectInfo ? ShadowObjectInfo.toAmino(message.objectInfo) : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: QueryHeadShadowObjectResponseAminoMsg): QueryHeadShadowObjectResponse {
+    return QueryHeadShadowObjectResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: QueryHeadShadowObjectResponseProtoMsg): QueryHeadShadowObjectResponse {
+    return QueryHeadShadowObjectResponse.decode(message.value);
+  },
+  toProto(message: QueryHeadShadowObjectResponse): Uint8Array {
+    return QueryHeadShadowObjectResponse.encode(message).finish();
+  },
+  toProtoMsg(message: QueryHeadShadowObjectResponse): QueryHeadShadowObjectResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.QueryHeadShadowObjectResponse",
+      value: QueryHeadShadowObjectResponse.encode(message).finish()
     };
   }
 };
@@ -5539,6 +5758,8 @@ export interface Query {
   HeadObject(request: QueryHeadObjectRequest): Promise<QueryHeadObjectResponse>;
   /** Queries an object by id */
   HeadObjectById(request: QueryHeadObjectByIdRequest): Promise<QueryHeadObjectResponse>;
+  /** Queries a shadow object with specify name. */
+  HeadShadowObject(request: QueryHeadShadowObjectRequest): Promise<QueryHeadShadowObjectResponse>;
   /** Queries a object with EIP712 standard metadata info */
   HeadObjectNFT(request: QueryNFTRequest): Promise<QueryObjectNFTResponse>;
   /** Queries a list of bucket items. */
@@ -5589,6 +5810,7 @@ export class QueryClientImpl implements Query {
     this.HeadBucketNFT = this.HeadBucketNFT.bind(this);
     this.HeadObject = this.HeadObject.bind(this);
     this.HeadObjectById = this.HeadObjectById.bind(this);
+    this.HeadShadowObject = this.HeadShadowObject.bind(this);
     this.HeadObjectNFT = this.HeadObjectNFT.bind(this);
     this.ListBuckets = this.ListBuckets.bind(this);
     this.ListObjects = this.ListObjects.bind(this);
@@ -5643,6 +5865,11 @@ export class QueryClientImpl implements Query {
     const data = QueryHeadObjectByIdRequest.encode(request).finish();
     const promise = this.rpc.request("greenfield.storage.Query", "HeadObjectById", data);
     return promise.then(data => QueryHeadObjectResponse.decode(new _m0.Reader(data)));
+  }
+  HeadShadowObject(request: QueryHeadShadowObjectRequest): Promise<QueryHeadShadowObjectResponse> {
+    const data = QueryHeadShadowObjectRequest.encode(request).finish();
+    const promise = this.rpc.request("greenfield.storage.Query", "HeadShadowObject", data);
+    return promise.then(data => QueryHeadShadowObjectResponse.decode(new _m0.Reader(data)));
   }
   HeadObjectNFT(request: QueryNFTRequest): Promise<QueryObjectNFTResponse> {
     const data = QueryNFTRequest.encode(request).finish();
