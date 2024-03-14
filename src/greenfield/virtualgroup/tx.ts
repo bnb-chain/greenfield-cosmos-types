@@ -504,16 +504,20 @@ export interface MsgStorageProviderExitResponseAminoMsg {
 }
 export interface MsgStorageProviderExitResponseSDKType {}
 export interface MsgCompleteStorageProviderExit {
-  /** storage_provider defines the operator account address of the storage provider who want to exit from the greenfield storage network. */
+  /** storage_provider defines the operator account address of the storage provider who will exit */
   storageProvider: string;
+  /** operator defines the operator account address who initials this transaction. */
+  operator: string;
 }
 export interface MsgCompleteStorageProviderExitProtoMsg {
   typeUrl: "/greenfield.virtualgroup.MsgCompleteStorageProviderExit";
   value: Uint8Array;
 }
 export interface MsgCompleteStorageProviderExitAmino {
-  /** storage_provider defines the operator account address of the storage provider who want to exit from the greenfield storage network. */
+  /** storage_provider defines the operator account address of the storage provider who will exit */
   storage_provider?: string;
+  /** operator defines the operator account address who initials this transaction. */
+  operator?: string;
 }
 export interface MsgCompleteStorageProviderExitAminoMsg {
   type: "/greenfield.virtualgroup.MsgCompleteStorageProviderExit";
@@ -521,6 +525,7 @@ export interface MsgCompleteStorageProviderExitAminoMsg {
 }
 export interface MsgCompleteStorageProviderExitSDKType {
   storage_provider: string;
+  operator: string;
 }
 export interface MsgCompleteStorageProviderExitResponse {}
 export interface MsgCompleteStorageProviderExitResponseProtoMsg {
@@ -533,6 +538,211 @@ export interface MsgCompleteStorageProviderExitResponseAminoMsg {
   value: MsgCompleteStorageProviderExitResponseAmino;
 }
 export interface MsgCompleteStorageProviderExitResponseSDKType {}
+export interface MsgReserveSwapIn {
+  /** storage_provider defines the operator account address of the storage provider who want to swap into the virtual group family or global virtual group. */
+  storageProvider: string;
+  /** target_sp_id defines the storage provider id to be replaced by the successor sp. */
+  targetSpId: number;
+  /**
+   * virtual_group_family_id is the identifier of the virtual group family.
+   * if it set to non-zero, it represents that the operator swap in as the primary storage provider
+   * it it set to zero, it represents that the operator swap in as the secondary storage provider.
+   */
+  globalVirtualGroupFamilyId: number;
+  /**
+   * global_virtual_group_id is a global virtual group ID associated with the swap in.
+   * It allows to be empty only when the operator wants to be the successor primary storage provider in a family.
+   */
+  globalVirtualGroupId: number;
+}
+export interface MsgReserveSwapInProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.MsgReserveSwapIn";
+  value: Uint8Array;
+}
+export interface MsgReserveSwapInAmino {
+  /** storage_provider defines the operator account address of the storage provider who want to swap into the virtual group family or global virtual group. */
+  storage_provider?: string;
+  /** target_sp_id defines the storage provider id to be replaced by the successor sp. */
+  target_sp_id?: number;
+  /**
+   * virtual_group_family_id is the identifier of the virtual group family.
+   * if it set to non-zero, it represents that the operator swap in as the primary storage provider
+   * it it set to zero, it represents that the operator swap in as the secondary storage provider.
+   */
+  global_virtual_group_family_id?: number;
+  /**
+   * global_virtual_group_id is a global virtual group ID associated with the swap in.
+   * It allows to be empty only when the operator wants to be the successor primary storage provider in a family.
+   */
+  global_virtual_group_id?: number;
+}
+export interface MsgReserveSwapInAminoMsg {
+  type: "/greenfield.virtualgroup.MsgReserveSwapIn";
+  value: MsgReserveSwapInAmino;
+}
+export interface MsgReserveSwapInSDKType {
+  storage_provider: string;
+  target_sp_id: number;
+  global_virtual_group_family_id: number;
+  global_virtual_group_id: number;
+}
+export interface MsgReserveSwapInResponse {}
+export interface MsgReserveSwapInResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.MsgReserveSwapInResponse";
+  value: Uint8Array;
+}
+export interface MsgReserveSwapInResponseAmino {}
+export interface MsgReserveSwapInResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgReserveSwapInResponse";
+  value: MsgReserveSwapInResponseAmino;
+}
+export interface MsgReserveSwapInResponseSDKType {}
+export interface MsgCompleteSwapIn {
+  /** storage_provider defines the operator account address of the storage provider who wants to swap into the virtual group family or global virtual group. */
+  storageProvider: string;
+  /**
+   * virtual_group_family_id is the identifier of the virtual group family.
+   * if it set to non-zero, it represents that the operator swap in as the primary storage provider
+   * it it set to zero, it represents that the operator swap in as the secondary storage provider.
+   */
+  globalVirtualGroupFamilyId: number;
+  /**
+   * global_virtual_group_id is a global virtual group ID associated with the swap in.
+   * It allows to be empty only when the operator wants to be the successor primary storage provider in a family.
+   */
+  globalVirtualGroupId: number;
+}
+export interface MsgCompleteSwapInProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapIn";
+  value: Uint8Array;
+}
+export interface MsgCompleteSwapInAmino {
+  /** storage_provider defines the operator account address of the storage provider who wants to swap into the virtual group family or global virtual group. */
+  storage_provider?: string;
+  /**
+   * virtual_group_family_id is the identifier of the virtual group family.
+   * if it set to non-zero, it represents that the operator swap in as the primary storage provider
+   * it it set to zero, it represents that the operator swap in as the secondary storage provider.
+   */
+  global_virtual_group_family_id?: number;
+  /**
+   * global_virtual_group_id is a global virtual group ID associated with the swap in.
+   * It allows to be empty only when the operator wants to be the successor primary storage provider in a family.
+   */
+  global_virtual_group_id?: number;
+}
+export interface MsgCompleteSwapInAminoMsg {
+  type: "/greenfield.virtualgroup.MsgCompleteSwapIn";
+  value: MsgCompleteSwapInAmino;
+}
+export interface MsgCompleteSwapInSDKType {
+  storage_provider: string;
+  global_virtual_group_family_id: number;
+  global_virtual_group_id: number;
+}
+export interface MsgCompleteSwapInResponse {}
+export interface MsgCompleteSwapInResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapInResponse";
+  value: Uint8Array;
+}
+export interface MsgCompleteSwapInResponseAmino {}
+export interface MsgCompleteSwapInResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgCompleteSwapInResponse";
+  value: MsgCompleteSwapInResponseAmino;
+}
+export interface MsgCompleteSwapInResponseSDKType {}
+export interface MsgCancelSwapIn {
+  /** storage_provider defines the operator account address of the storage provider who want to swap into the virtual group family or global virtual group. */
+  storageProvider: string;
+  /**
+   * virtual_group_family_id is the identifier of the virtual group family.
+   * if it set to non-zero, it represents that the operator swap in as the primary storage provider
+   * it it set to zero, it represents that the operator swap in as the secondary storage provider.
+   */
+  globalVirtualGroupFamilyId: number;
+  /**
+   * global_virtual_group_id is a global virtual group IDs associated with the swap in.
+   * It allows to be empty only when the operator wants to be the successor primary storage provider in a family.
+   */
+  globalVirtualGroupId: number;
+}
+export interface MsgCancelSwapInProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.MsgCancelSwapIn";
+  value: Uint8Array;
+}
+export interface MsgCancelSwapInAmino {
+  /** storage_provider defines the operator account address of the storage provider who want to swap into the virtual group family or global virtual group. */
+  storage_provider?: string;
+  /**
+   * virtual_group_family_id is the identifier of the virtual group family.
+   * if it set to non-zero, it represents that the operator swap in as the primary storage provider
+   * it it set to zero, it represents that the operator swap in as the secondary storage provider.
+   */
+  global_virtual_group_family_id?: number;
+  /**
+   * global_virtual_group_id is a global virtual group IDs associated with the swap in.
+   * It allows to be empty only when the operator wants to be the successor primary storage provider in a family.
+   */
+  global_virtual_group_id?: number;
+}
+export interface MsgCancelSwapInAminoMsg {
+  type: "/greenfield.virtualgroup.MsgCancelSwapIn";
+  value: MsgCancelSwapInAmino;
+}
+export interface MsgCancelSwapInSDKType {
+  storage_provider: string;
+  global_virtual_group_family_id: number;
+  global_virtual_group_id: number;
+}
+export interface MsgCancelSwapInResponse {}
+export interface MsgCancelSwapInResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.MsgCancelSwapInResponse";
+  value: Uint8Array;
+}
+export interface MsgCancelSwapInResponseAmino {}
+export interface MsgCancelSwapInResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgCancelSwapInResponse";
+  value: MsgCancelSwapInResponseAmino;
+}
+export interface MsgCancelSwapInResponseSDKType {}
+/** this line is used by starport scaffolding # proto/tx/message */
+export interface MsgStorageProviderForcedExit {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority: string;
+  /** storage_provider defines the account address of the storage provider forced to exit */
+  storageProvider: string;
+}
+export interface MsgStorageProviderForcedExitProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.MsgStorageProviderForcedExit";
+  value: Uint8Array;
+}
+/** this line is used by starport scaffolding # proto/tx/message */
+export interface MsgStorageProviderForcedExitAmino {
+  /** authority is the address that controls the module (defaults to x/gov unless overwritten). */
+  authority?: string;
+  /** storage_provider defines the account address of the storage provider forced to exit */
+  storage_provider?: string;
+}
+export interface MsgStorageProviderForcedExitAminoMsg {
+  type: "/greenfield.virtualgroup.MsgStorageProviderForcedExit";
+  value: MsgStorageProviderForcedExitAmino;
+}
+/** this line is used by starport scaffolding # proto/tx/message */
+export interface MsgStorageProviderForcedExitSDKType {
+  authority: string;
+  storage_provider: string;
+}
+export interface MsgStorageProviderForcedExitResponse {}
+export interface MsgStorageProviderForcedExitResponseProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.MsgStorageProviderForcedExitResponse";
+  value: Uint8Array;
+}
+export interface MsgStorageProviderForcedExitResponseAmino {}
+export interface MsgStorageProviderForcedExitResponseAminoMsg {
+  type: "/greenfield.virtualgroup.MsgStorageProviderForcedExitResponse";
+  value: MsgStorageProviderForcedExitResponseAmino;
+}
+export interface MsgStorageProviderForcedExitResponseSDKType {}
 function createBaseMsgUpdateParams(): MsgUpdateParams {
   return {
     authority: "",
@@ -2404,7 +2614,8 @@ export const MsgStorageProviderExitResponse = {
 };
 function createBaseMsgCompleteStorageProviderExit(): MsgCompleteStorageProviderExit {
   return {
-    storageProvider: ""
+    storageProvider: "",
+    operator: ""
   };
 }
 export const MsgCompleteStorageProviderExit = {
@@ -2412,6 +2623,9 @@ export const MsgCompleteStorageProviderExit = {
   encode(message: MsgCompleteStorageProviderExit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.storageProvider !== "") {
       writer.uint32(10).string(message.storageProvider);
+    }
+    if (message.operator !== "") {
+      writer.uint32(18).string(message.operator);
     }
     return writer;
   },
@@ -2425,6 +2639,9 @@ export const MsgCompleteStorageProviderExit = {
         case 1:
           message.storageProvider = reader.string();
           break;
+        case 2:
+          message.operator = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2434,27 +2651,32 @@ export const MsgCompleteStorageProviderExit = {
   },
   fromJSON(object: any): MsgCompleteStorageProviderExit {
     return {
-      storageProvider: isSet(object.storageProvider) ? String(object.storageProvider) : ""
+      storageProvider: isSet(object.storageProvider) ? String(object.storageProvider) : "",
+      operator: isSet(object.operator) ? String(object.operator) : ""
     };
   },
   toJSON(message: MsgCompleteStorageProviderExit): unknown {
     const obj: any = {};
     message.storageProvider !== undefined && (obj.storageProvider = message.storageProvider);
+    message.operator !== undefined && (obj.operator = message.operator);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<MsgCompleteStorageProviderExit>, I>>(object: I): MsgCompleteStorageProviderExit {
     const message = createBaseMsgCompleteStorageProviderExit();
     message.storageProvider = object.storageProvider ?? "";
+    message.operator = object.operator ?? "";
     return message;
   },
   fromSDK(object: MsgCompleteStorageProviderExitSDKType): MsgCompleteStorageProviderExit {
     return {
-      storageProvider: object?.storage_provider
+      storageProvider: object?.storage_provider,
+      operator: object?.operator
     };
   },
   toSDK(message: MsgCompleteStorageProviderExit): MsgCompleteStorageProviderExitSDKType {
     const obj: any = {};
     obj.storage_provider = message.storageProvider;
+    obj.operator = message.operator;
     return obj;
   },
   fromAmino(object: MsgCompleteStorageProviderExitAmino): MsgCompleteStorageProviderExit {
@@ -2462,11 +2684,15 @@ export const MsgCompleteStorageProviderExit = {
     if (object.storage_provider !== undefined && object.storage_provider !== null) {
       message.storageProvider = object.storage_provider;
     }
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
     return message;
   },
   toAmino(message: MsgCompleteStorageProviderExit): MsgCompleteStorageProviderExitAmino {
     const obj: any = {};
     obj.storage_provider = message.storageProvider;
+    obj.operator = message.operator;
     return obj;
   },
   fromAminoMsg(object: MsgCompleteStorageProviderExitAminoMsg): MsgCompleteStorageProviderExit {
@@ -2549,6 +2775,722 @@ export const MsgCompleteStorageProviderExitResponse = {
     };
   }
 };
+function createBaseMsgReserveSwapIn(): MsgReserveSwapIn {
+  return {
+    storageProvider: "",
+    targetSpId: 0,
+    globalVirtualGroupFamilyId: 0,
+    globalVirtualGroupId: 0
+  };
+}
+export const MsgReserveSwapIn = {
+  typeUrl: "/greenfield.virtualgroup.MsgReserveSwapIn",
+  encode(message: MsgReserveSwapIn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.storageProvider !== "") {
+      writer.uint32(10).string(message.storageProvider);
+    }
+    if (message.targetSpId !== 0) {
+      writer.uint32(16).uint32(message.targetSpId);
+    }
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(24).uint32(message.globalVirtualGroupFamilyId);
+    }
+    if (message.globalVirtualGroupId !== 0) {
+      writer.uint32(32).uint32(message.globalVirtualGroupId);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgReserveSwapIn {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgReserveSwapIn();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.storageProvider = reader.string();
+          break;
+        case 2:
+          message.targetSpId = reader.uint32();
+          break;
+        case 3:
+          message.globalVirtualGroupFamilyId = reader.uint32();
+          break;
+        case 4:
+          message.globalVirtualGroupId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgReserveSwapIn {
+    return {
+      storageProvider: isSet(object.storageProvider) ? String(object.storageProvider) : "",
+      targetSpId: isSet(object.targetSpId) ? Number(object.targetSpId) : 0,
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
+      globalVirtualGroupId: isSet(object.globalVirtualGroupId) ? Number(object.globalVirtualGroupId) : 0
+    };
+  },
+  toJSON(message: MsgReserveSwapIn): unknown {
+    const obj: any = {};
+    message.storageProvider !== undefined && (obj.storageProvider = message.storageProvider);
+    message.targetSpId !== undefined && (obj.targetSpId = Math.round(message.targetSpId));
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
+    message.globalVirtualGroupId !== undefined && (obj.globalVirtualGroupId = Math.round(message.globalVirtualGroupId));
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgReserveSwapIn>, I>>(object: I): MsgReserveSwapIn {
+    const message = createBaseMsgReserveSwapIn();
+    message.storageProvider = object.storageProvider ?? "";
+    message.targetSpId = object.targetSpId ?? 0;
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
+    message.globalVirtualGroupId = object.globalVirtualGroupId ?? 0;
+    return message;
+  },
+  fromSDK(object: MsgReserveSwapInSDKType): MsgReserveSwapIn {
+    return {
+      storageProvider: object?.storage_provider,
+      targetSpId: object?.target_sp_id,
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
+      globalVirtualGroupId: object?.global_virtual_group_id
+    };
+  },
+  toSDK(message: MsgReserveSwapIn): MsgReserveSwapInSDKType {
+    const obj: any = {};
+    obj.storage_provider = message.storageProvider;
+    obj.target_sp_id = message.targetSpId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    return obj;
+  },
+  fromAmino(object: MsgReserveSwapInAmino): MsgReserveSwapIn {
+    const message = createBaseMsgReserveSwapIn();
+    if (object.storage_provider !== undefined && object.storage_provider !== null) {
+      message.storageProvider = object.storage_provider;
+    }
+    if (object.target_sp_id !== undefined && object.target_sp_id !== null) {
+      message.targetSpId = object.target_sp_id;
+    }
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    if (object.global_virtual_group_id !== undefined && object.global_virtual_group_id !== null) {
+      message.globalVirtualGroupId = object.global_virtual_group_id;
+    }
+    return message;
+  },
+  toAmino(message: MsgReserveSwapIn): MsgReserveSwapInAmino {
+    const obj: any = {};
+    obj.storage_provider = message.storageProvider;
+    obj.target_sp_id = message.targetSpId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    return obj;
+  },
+  fromAminoMsg(object: MsgReserveSwapInAminoMsg): MsgReserveSwapIn {
+    return MsgReserveSwapIn.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgReserveSwapInProtoMsg): MsgReserveSwapIn {
+    return MsgReserveSwapIn.decode(message.value);
+  },
+  toProto(message: MsgReserveSwapIn): Uint8Array {
+    return MsgReserveSwapIn.encode(message).finish();
+  },
+  toProtoMsg(message: MsgReserveSwapIn): MsgReserveSwapInProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.MsgReserveSwapIn",
+      value: MsgReserveSwapIn.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgReserveSwapInResponse(): MsgReserveSwapInResponse {
+  return {};
+}
+export const MsgReserveSwapInResponse = {
+  typeUrl: "/greenfield.virtualgroup.MsgReserveSwapInResponse",
+  encode(_: MsgReserveSwapInResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgReserveSwapInResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgReserveSwapInResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgReserveSwapInResponse {
+    return {};
+  },
+  toJSON(_: MsgReserveSwapInResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgReserveSwapInResponse>, I>>(_: I): MsgReserveSwapInResponse {
+    const message = createBaseMsgReserveSwapInResponse();
+    return message;
+  },
+  fromSDK(_: MsgReserveSwapInResponseSDKType): MsgReserveSwapInResponse {
+    return {};
+  },
+  toSDK(_: MsgReserveSwapInResponse): MsgReserveSwapInResponseSDKType {
+    const obj: any = {};
+    return obj;
+  },
+  fromAmino(_: MsgReserveSwapInResponseAmino): MsgReserveSwapInResponse {
+    const message = createBaseMsgReserveSwapInResponse();
+    return message;
+  },
+  toAmino(_: MsgReserveSwapInResponse): MsgReserveSwapInResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgReserveSwapInResponseAminoMsg): MsgReserveSwapInResponse {
+    return MsgReserveSwapInResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgReserveSwapInResponseProtoMsg): MsgReserveSwapInResponse {
+    return MsgReserveSwapInResponse.decode(message.value);
+  },
+  toProto(message: MsgReserveSwapInResponse): Uint8Array {
+    return MsgReserveSwapInResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgReserveSwapInResponse): MsgReserveSwapInResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.MsgReserveSwapInResponse",
+      value: MsgReserveSwapInResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgCompleteSwapIn(): MsgCompleteSwapIn {
+  return {
+    storageProvider: "",
+    globalVirtualGroupFamilyId: 0,
+    globalVirtualGroupId: 0
+  };
+}
+export const MsgCompleteSwapIn = {
+  typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapIn",
+  encode(message: MsgCompleteSwapIn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.storageProvider !== "") {
+      writer.uint32(10).string(message.storageProvider);
+    }
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(16).uint32(message.globalVirtualGroupFamilyId);
+    }
+    if (message.globalVirtualGroupId !== 0) {
+      writer.uint32(24).uint32(message.globalVirtualGroupId);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCompleteSwapIn {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCompleteSwapIn();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.storageProvider = reader.string();
+          break;
+        case 2:
+          message.globalVirtualGroupFamilyId = reader.uint32();
+          break;
+        case 3:
+          message.globalVirtualGroupId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgCompleteSwapIn {
+    return {
+      storageProvider: isSet(object.storageProvider) ? String(object.storageProvider) : "",
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
+      globalVirtualGroupId: isSet(object.globalVirtualGroupId) ? Number(object.globalVirtualGroupId) : 0
+    };
+  },
+  toJSON(message: MsgCompleteSwapIn): unknown {
+    const obj: any = {};
+    message.storageProvider !== undefined && (obj.storageProvider = message.storageProvider);
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
+    message.globalVirtualGroupId !== undefined && (obj.globalVirtualGroupId = Math.round(message.globalVirtualGroupId));
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgCompleteSwapIn>, I>>(object: I): MsgCompleteSwapIn {
+    const message = createBaseMsgCompleteSwapIn();
+    message.storageProvider = object.storageProvider ?? "";
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
+    message.globalVirtualGroupId = object.globalVirtualGroupId ?? 0;
+    return message;
+  },
+  fromSDK(object: MsgCompleteSwapInSDKType): MsgCompleteSwapIn {
+    return {
+      storageProvider: object?.storage_provider,
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
+      globalVirtualGroupId: object?.global_virtual_group_id
+    };
+  },
+  toSDK(message: MsgCompleteSwapIn): MsgCompleteSwapInSDKType {
+    const obj: any = {};
+    obj.storage_provider = message.storageProvider;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    return obj;
+  },
+  fromAmino(object: MsgCompleteSwapInAmino): MsgCompleteSwapIn {
+    const message = createBaseMsgCompleteSwapIn();
+    if (object.storage_provider !== undefined && object.storage_provider !== null) {
+      message.storageProvider = object.storage_provider;
+    }
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    if (object.global_virtual_group_id !== undefined && object.global_virtual_group_id !== null) {
+      message.globalVirtualGroupId = object.global_virtual_group_id;
+    }
+    return message;
+  },
+  toAmino(message: MsgCompleteSwapIn): MsgCompleteSwapInAmino {
+    const obj: any = {};
+    obj.storage_provider = message.storageProvider;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    return obj;
+  },
+  fromAminoMsg(object: MsgCompleteSwapInAminoMsg): MsgCompleteSwapIn {
+    return MsgCompleteSwapIn.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCompleteSwapInProtoMsg): MsgCompleteSwapIn {
+    return MsgCompleteSwapIn.decode(message.value);
+  },
+  toProto(message: MsgCompleteSwapIn): Uint8Array {
+    return MsgCompleteSwapIn.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCompleteSwapIn): MsgCompleteSwapInProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapIn",
+      value: MsgCompleteSwapIn.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgCompleteSwapInResponse(): MsgCompleteSwapInResponse {
+  return {};
+}
+export const MsgCompleteSwapInResponse = {
+  typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapInResponse",
+  encode(_: MsgCompleteSwapInResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCompleteSwapInResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCompleteSwapInResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgCompleteSwapInResponse {
+    return {};
+  },
+  toJSON(_: MsgCompleteSwapInResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgCompleteSwapInResponse>, I>>(_: I): MsgCompleteSwapInResponse {
+    const message = createBaseMsgCompleteSwapInResponse();
+    return message;
+  },
+  fromSDK(_: MsgCompleteSwapInResponseSDKType): MsgCompleteSwapInResponse {
+    return {};
+  },
+  toSDK(_: MsgCompleteSwapInResponse): MsgCompleteSwapInResponseSDKType {
+    const obj: any = {};
+    return obj;
+  },
+  fromAmino(_: MsgCompleteSwapInResponseAmino): MsgCompleteSwapInResponse {
+    const message = createBaseMsgCompleteSwapInResponse();
+    return message;
+  },
+  toAmino(_: MsgCompleteSwapInResponse): MsgCompleteSwapInResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgCompleteSwapInResponseAminoMsg): MsgCompleteSwapInResponse {
+    return MsgCompleteSwapInResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCompleteSwapInResponseProtoMsg): MsgCompleteSwapInResponse {
+    return MsgCompleteSwapInResponse.decode(message.value);
+  },
+  toProto(message: MsgCompleteSwapInResponse): Uint8Array {
+    return MsgCompleteSwapInResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCompleteSwapInResponse): MsgCompleteSwapInResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.MsgCompleteSwapInResponse",
+      value: MsgCompleteSwapInResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgCancelSwapIn(): MsgCancelSwapIn {
+  return {
+    storageProvider: "",
+    globalVirtualGroupFamilyId: 0,
+    globalVirtualGroupId: 0
+  };
+}
+export const MsgCancelSwapIn = {
+  typeUrl: "/greenfield.virtualgroup.MsgCancelSwapIn",
+  encode(message: MsgCancelSwapIn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.storageProvider !== "") {
+      writer.uint32(10).string(message.storageProvider);
+    }
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(16).uint32(message.globalVirtualGroupFamilyId);
+    }
+    if (message.globalVirtualGroupId !== 0) {
+      writer.uint32(24).uint32(message.globalVirtualGroupId);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelSwapIn {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCancelSwapIn();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.storageProvider = reader.string();
+          break;
+        case 2:
+          message.globalVirtualGroupFamilyId = reader.uint32();
+          break;
+        case 3:
+          message.globalVirtualGroupId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgCancelSwapIn {
+    return {
+      storageProvider: isSet(object.storageProvider) ? String(object.storageProvider) : "",
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
+      globalVirtualGroupId: isSet(object.globalVirtualGroupId) ? Number(object.globalVirtualGroupId) : 0
+    };
+  },
+  toJSON(message: MsgCancelSwapIn): unknown {
+    const obj: any = {};
+    message.storageProvider !== undefined && (obj.storageProvider = message.storageProvider);
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
+    message.globalVirtualGroupId !== undefined && (obj.globalVirtualGroupId = Math.round(message.globalVirtualGroupId));
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgCancelSwapIn>, I>>(object: I): MsgCancelSwapIn {
+    const message = createBaseMsgCancelSwapIn();
+    message.storageProvider = object.storageProvider ?? "";
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
+    message.globalVirtualGroupId = object.globalVirtualGroupId ?? 0;
+    return message;
+  },
+  fromSDK(object: MsgCancelSwapInSDKType): MsgCancelSwapIn {
+    return {
+      storageProvider: object?.storage_provider,
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
+      globalVirtualGroupId: object?.global_virtual_group_id
+    };
+  },
+  toSDK(message: MsgCancelSwapIn): MsgCancelSwapInSDKType {
+    const obj: any = {};
+    obj.storage_provider = message.storageProvider;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    return obj;
+  },
+  fromAmino(object: MsgCancelSwapInAmino): MsgCancelSwapIn {
+    const message = createBaseMsgCancelSwapIn();
+    if (object.storage_provider !== undefined && object.storage_provider !== null) {
+      message.storageProvider = object.storage_provider;
+    }
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    if (object.global_virtual_group_id !== undefined && object.global_virtual_group_id !== null) {
+      message.globalVirtualGroupId = object.global_virtual_group_id;
+    }
+    return message;
+  },
+  toAmino(message: MsgCancelSwapIn): MsgCancelSwapInAmino {
+    const obj: any = {};
+    obj.storage_provider = message.storageProvider;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    return obj;
+  },
+  fromAminoMsg(object: MsgCancelSwapInAminoMsg): MsgCancelSwapIn {
+    return MsgCancelSwapIn.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCancelSwapInProtoMsg): MsgCancelSwapIn {
+    return MsgCancelSwapIn.decode(message.value);
+  },
+  toProto(message: MsgCancelSwapIn): Uint8Array {
+    return MsgCancelSwapIn.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCancelSwapIn): MsgCancelSwapInProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.MsgCancelSwapIn",
+      value: MsgCancelSwapIn.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgCancelSwapInResponse(): MsgCancelSwapInResponse {
+  return {};
+}
+export const MsgCancelSwapInResponse = {
+  typeUrl: "/greenfield.virtualgroup.MsgCancelSwapInResponse",
+  encode(_: MsgCancelSwapInResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCancelSwapInResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCancelSwapInResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgCancelSwapInResponse {
+    return {};
+  },
+  toJSON(_: MsgCancelSwapInResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgCancelSwapInResponse>, I>>(_: I): MsgCancelSwapInResponse {
+    const message = createBaseMsgCancelSwapInResponse();
+    return message;
+  },
+  fromSDK(_: MsgCancelSwapInResponseSDKType): MsgCancelSwapInResponse {
+    return {};
+  },
+  toSDK(_: MsgCancelSwapInResponse): MsgCancelSwapInResponseSDKType {
+    const obj: any = {};
+    return obj;
+  },
+  fromAmino(_: MsgCancelSwapInResponseAmino): MsgCancelSwapInResponse {
+    const message = createBaseMsgCancelSwapInResponse();
+    return message;
+  },
+  toAmino(_: MsgCancelSwapInResponse): MsgCancelSwapInResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgCancelSwapInResponseAminoMsg): MsgCancelSwapInResponse {
+    return MsgCancelSwapInResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgCancelSwapInResponseProtoMsg): MsgCancelSwapInResponse {
+    return MsgCancelSwapInResponse.decode(message.value);
+  },
+  toProto(message: MsgCancelSwapInResponse): Uint8Array {
+    return MsgCancelSwapInResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCancelSwapInResponse): MsgCancelSwapInResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.MsgCancelSwapInResponse",
+      value: MsgCancelSwapInResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgStorageProviderForcedExit(): MsgStorageProviderForcedExit {
+  return {
+    authority: "",
+    storageProvider: ""
+  };
+}
+export const MsgStorageProviderForcedExit = {
+  typeUrl: "/greenfield.virtualgroup.MsgStorageProviderForcedExit",
+  encode(message: MsgStorageProviderForcedExit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+    if (message.storageProvider !== "") {
+      writer.uint32(18).string(message.storageProvider);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgStorageProviderForcedExit {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgStorageProviderForcedExit();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+        case 2:
+          message.storageProvider = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgStorageProviderForcedExit {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      storageProvider: isSet(object.storageProvider) ? String(object.storageProvider) : ""
+    };
+  },
+  toJSON(message: MsgStorageProviderForcedExit): unknown {
+    const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
+    message.storageProvider !== undefined && (obj.storageProvider = message.storageProvider);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgStorageProviderForcedExit>, I>>(object: I): MsgStorageProviderForcedExit {
+    const message = createBaseMsgStorageProviderForcedExit();
+    message.authority = object.authority ?? "";
+    message.storageProvider = object.storageProvider ?? "";
+    return message;
+  },
+  fromSDK(object: MsgStorageProviderForcedExitSDKType): MsgStorageProviderForcedExit {
+    return {
+      authority: object?.authority,
+      storageProvider: object?.storage_provider
+    };
+  },
+  toSDK(message: MsgStorageProviderForcedExit): MsgStorageProviderForcedExitSDKType {
+    const obj: any = {};
+    obj.authority = message.authority;
+    obj.storage_provider = message.storageProvider;
+    return obj;
+  },
+  fromAmino(object: MsgStorageProviderForcedExitAmino): MsgStorageProviderForcedExit {
+    const message = createBaseMsgStorageProviderForcedExit();
+    if (object.authority !== undefined && object.authority !== null) {
+      message.authority = object.authority;
+    }
+    if (object.storage_provider !== undefined && object.storage_provider !== null) {
+      message.storageProvider = object.storage_provider;
+    }
+    return message;
+  },
+  toAmino(message: MsgStorageProviderForcedExit): MsgStorageProviderForcedExitAmino {
+    const obj: any = {};
+    obj.authority = message.authority;
+    obj.storage_provider = message.storageProvider;
+    return obj;
+  },
+  fromAminoMsg(object: MsgStorageProviderForcedExitAminoMsg): MsgStorageProviderForcedExit {
+    return MsgStorageProviderForcedExit.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgStorageProviderForcedExitProtoMsg): MsgStorageProviderForcedExit {
+    return MsgStorageProviderForcedExit.decode(message.value);
+  },
+  toProto(message: MsgStorageProviderForcedExit): Uint8Array {
+    return MsgStorageProviderForcedExit.encode(message).finish();
+  },
+  toProtoMsg(message: MsgStorageProviderForcedExit): MsgStorageProviderForcedExitProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.MsgStorageProviderForcedExit",
+      value: MsgStorageProviderForcedExit.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgStorageProviderForcedExitResponse(): MsgStorageProviderForcedExitResponse {
+  return {};
+}
+export const MsgStorageProviderForcedExitResponse = {
+  typeUrl: "/greenfield.virtualgroup.MsgStorageProviderForcedExitResponse",
+  encode(_: MsgStorageProviderForcedExitResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgStorageProviderForcedExitResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgStorageProviderForcedExitResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgStorageProviderForcedExitResponse {
+    return {};
+  },
+  toJSON(_: MsgStorageProviderForcedExitResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<MsgStorageProviderForcedExitResponse>, I>>(_: I): MsgStorageProviderForcedExitResponse {
+    const message = createBaseMsgStorageProviderForcedExitResponse();
+    return message;
+  },
+  fromSDK(_: MsgStorageProviderForcedExitResponseSDKType): MsgStorageProviderForcedExitResponse {
+    return {};
+  },
+  toSDK(_: MsgStorageProviderForcedExitResponse): MsgStorageProviderForcedExitResponseSDKType {
+    const obj: any = {};
+    return obj;
+  },
+  fromAmino(_: MsgStorageProviderForcedExitResponseAmino): MsgStorageProviderForcedExitResponse {
+    const message = createBaseMsgStorageProviderForcedExitResponse();
+    return message;
+  },
+  toAmino(_: MsgStorageProviderForcedExitResponse): MsgStorageProviderForcedExitResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgStorageProviderForcedExitResponseAminoMsg): MsgStorageProviderForcedExitResponse {
+    return MsgStorageProviderForcedExitResponse.fromAmino(object.value);
+  },
+  fromProtoMsg(message: MsgStorageProviderForcedExitResponseProtoMsg): MsgStorageProviderForcedExitResponse {
+    return MsgStorageProviderForcedExitResponse.decode(message.value);
+  },
+  toProto(message: MsgStorageProviderForcedExitResponse): Uint8Array {
+    return MsgStorageProviderForcedExitResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgStorageProviderForcedExitResponse): MsgStorageProviderForcedExitResponseProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.MsgStorageProviderForcedExitResponse",
+      value: MsgStorageProviderForcedExitResponse.encode(message).finish()
+    };
+  }
+};
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateGlobalVirtualGroup(request: MsgCreateGlobalVirtualGroup): Promise<MsgCreateGlobalVirtualGroupResponse>;
@@ -2563,6 +3505,14 @@ export interface Msg {
   CompleteStorageProviderExit(request: MsgCompleteStorageProviderExit): Promise<MsgCompleteStorageProviderExitResponse>;
   CompleteSwapOut(request: MsgCompleteSwapOut): Promise<MsgCompleteSwapOutResponse>;
   CancelSwapOut(request: MsgCancelSwapOut): Promise<MsgCancelSwapOutResponse>;
+  ReserveSwapIn(request: MsgReserveSwapIn): Promise<MsgReserveSwapInResponse>;
+  CancelSwapIn(request: MsgCancelSwapIn): Promise<MsgCancelSwapInResponse>;
+  CompleteSwapIn(request: MsgCompleteSwapIn): Promise<MsgCompleteSwapInResponse>;
+  /**
+   * StorageProviderForcedExit defines a governance operation for a SP to be forced to exit
+   * The authority is defined in the keeper.
+   */
+  StorageProviderForcedExit(request: MsgStorageProviderForcedExit): Promise<MsgStorageProviderForcedExitResponse>;
 }
 export class MsgClientImpl implements Msg {
   private readonly rpc: Rpc;
@@ -2579,6 +3529,10 @@ export class MsgClientImpl implements Msg {
     this.CompleteStorageProviderExit = this.CompleteStorageProviderExit.bind(this);
     this.CompleteSwapOut = this.CompleteSwapOut.bind(this);
     this.CancelSwapOut = this.CancelSwapOut.bind(this);
+    this.ReserveSwapIn = this.ReserveSwapIn.bind(this);
+    this.CancelSwapIn = this.CancelSwapIn.bind(this);
+    this.CompleteSwapIn = this.CompleteSwapIn.bind(this);
+    this.StorageProviderForcedExit = this.StorageProviderForcedExit.bind(this);
   }
   CreateGlobalVirtualGroup(request: MsgCreateGlobalVirtualGroup): Promise<MsgCreateGlobalVirtualGroupResponse> {
     const data = MsgCreateGlobalVirtualGroup.encode(request).finish();
@@ -2634,5 +3588,25 @@ export class MsgClientImpl implements Msg {
     const data = MsgCancelSwapOut.encode(request).finish();
     const promise = this.rpc.request("greenfield.virtualgroup.Msg", "CancelSwapOut", data);
     return promise.then(data => MsgCancelSwapOutResponse.decode(new _m0.Reader(data)));
+  }
+  ReserveSwapIn(request: MsgReserveSwapIn): Promise<MsgReserveSwapInResponse> {
+    const data = MsgReserveSwapIn.encode(request).finish();
+    const promise = this.rpc.request("greenfield.virtualgroup.Msg", "ReserveSwapIn", data);
+    return promise.then(data => MsgReserveSwapInResponse.decode(new _m0.Reader(data)));
+  }
+  CancelSwapIn(request: MsgCancelSwapIn): Promise<MsgCancelSwapInResponse> {
+    const data = MsgCancelSwapIn.encode(request).finish();
+    const promise = this.rpc.request("greenfield.virtualgroup.Msg", "CancelSwapIn", data);
+    return promise.then(data => MsgCancelSwapInResponse.decode(new _m0.Reader(data)));
+  }
+  CompleteSwapIn(request: MsgCompleteSwapIn): Promise<MsgCompleteSwapInResponse> {
+    const data = MsgCompleteSwapIn.encode(request).finish();
+    const promise = this.rpc.request("greenfield.virtualgroup.Msg", "CompleteSwapIn", data);
+    return promise.then(data => MsgCompleteSwapInResponse.decode(new _m0.Reader(data)));
+  }
+  StorageProviderForcedExit(request: MsgStorageProviderForcedExit): Promise<MsgStorageProviderForcedExitResponse> {
+    const data = MsgStorageProviderForcedExit.encode(request).finish();
+    const promise = this.rpc.request("greenfield.virtualgroup.Msg", "StorageProviderForcedExit", data);
+    return promise.then(data => MsgStorageProviderForcedExitResponse.decode(new _m0.Reader(data)));
   }
 }

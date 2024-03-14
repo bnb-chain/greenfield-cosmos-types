@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { MsgCreateGlobalVirtualGroup, MsgDeleteGlobalVirtualGroup, MsgDeposit, MsgWithdraw, MsgSwapOut, MsgSettle, MsgUpdateParams, MsgStorageProviderExit, MsgCompleteStorageProviderExit, MsgCompleteSwapOut, MsgCancelSwapOut } from "./tx";
+import { MsgCreateGlobalVirtualGroup, MsgDeleteGlobalVirtualGroup, MsgDeposit, MsgWithdraw, MsgSwapOut, MsgSettle, MsgUpdateParams, MsgStorageProviderExit, MsgCompleteStorageProviderExit, MsgCompleteSwapOut, MsgCancelSwapOut, MsgReserveSwapIn, MsgCancelSwapIn, MsgCompleteSwapIn, MsgStorageProviderForcedExit } from "./tx";
 export const AminoConverter = {
   "/greenfield.virtualgroup.MsgCreateGlobalVirtualGroup": {
     aminoType: "/greenfield.virtualgroup.MsgCreateGlobalVirtualGroup",
@@ -56,5 +56,25 @@ export const AminoConverter = {
     aminoType: "/greenfield.virtualgroup.MsgCancelSwapOut",
     toAmino: MsgCancelSwapOut.toAmino,
     fromAmino: MsgCancelSwapOut.fromAmino
+  },
+  "/greenfield.virtualgroup.MsgReserveSwapIn": {
+    aminoType: "/greenfield.virtualgroup.MsgReserveSwapIn",
+    toAmino: MsgReserveSwapIn.toAmino,
+    fromAmino: MsgReserveSwapIn.fromAmino
+  },
+  "/greenfield.virtualgroup.MsgCancelSwapIn": {
+    aminoType: "/greenfield.virtualgroup.MsgCancelSwapIn",
+    toAmino: MsgCancelSwapIn.toAmino,
+    fromAmino: MsgCancelSwapIn.fromAmino
+  },
+  "/greenfield.virtualgroup.MsgCompleteSwapIn": {
+    aminoType: "/greenfield.virtualgroup.MsgCompleteSwapIn",
+    toAmino: MsgCompleteSwapIn.toAmino,
+    fromAmino: MsgCompleteSwapIn.fromAmino
+  },
+  "/greenfield.virtualgroup.MsgStorageProviderForcedExit": {
+    aminoType: "/greenfield.virtualgroup.MsgStorageProviderForcedExit",
+    toAmino: MsgStorageProviderForcedExit.toAmino,
+    fromAmino: MsgStorageProviderForcedExit.fromAmino
   }
 };

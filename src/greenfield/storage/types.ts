@@ -31,6 +31,11 @@ export interface BucketInfo {
   bucketStatus: BucketStatus;
   /** tags defines a list of tags the bucket has */
   tags?: ResourceTags;
+  /**
+   * sp_as_delegated_agent_disabled indicates that whether bucket owner disable SP as the upload agent.
+   * when a bucket is created, by default, this is false, means SP is allowed to create object for delegator
+   */
+  spAsDelegatedAgentDisabled: boolean;
 }
 export interface BucketInfoProtoMsg {
   typeUrl: "/greenfield.storage.BucketInfo";
@@ -63,6 +68,11 @@ export interface BucketInfoAmino {
   bucket_status?: BucketStatus;
   /** tags defines a list of tags the bucket has */
   tags?: ResourceTagsAmino;
+  /**
+   * sp_as_delegated_agent_disabled indicates that whether bucket owner disable SP as the upload agent.
+   * when a bucket is created, by default, this is false, means SP is allowed to create object for delegator
+   */
+  sp_as_delegated_agent_disabled?: boolean;
 }
 export interface BucketInfoAminoMsg {
   type: "/greenfield.storage.BucketInfo";
@@ -80,6 +90,7 @@ export interface BucketInfoSDKType {
   charged_read_quota: Long;
   bucket_status: BucketStatus;
   tags?: ResourceTagsSDKType;
+  sp_as_delegated_agent_disabled: boolean;
 }
 export interface InternalBucketInfo {
   /** the time of the payment price, used to calculate the charge rate of the bucket */
@@ -148,6 +159,14 @@ export interface ObjectInfo {
   checksums: Uint8Array[];
   /** tags defines a list of tags the object has */
   tags?: ResourceTags;
+  /** is_updating indicates whether a object is being updated. */
+  isUpdating: boolean;
+  /** updated_at define the block timestamp when the object is updated. Will not be visible until object is re-sealed. */
+  updatedAt: Long;
+  /** updated_by defined the account address of updater(if there is). Will not be visible until object is re-sealed. */
+  updatedBy: string;
+  /** version define the version of object */
+  version: Long;
 }
 export interface ObjectInfoProtoMsg {
   typeUrl: "/greenfield.storage.ObjectInfo";
@@ -186,6 +205,14 @@ export interface ObjectInfoAmino {
   checksums?: string[];
   /** tags defines a list of tags the object has */
   tags?: ResourceTagsAmino;
+  /** is_updating indicates whether a object is being updated. */
+  is_updating?: boolean;
+  /** updated_at define the block timestamp when the object is updated. Will not be visible until object is re-sealed. */
+  updated_at?: string;
+  /** updated_by defined the account address of updater(if there is). Will not be visible until object is re-sealed. */
+  updated_by?: string;
+  /** version define the version of object */
+  version?: string;
 }
 export interface ObjectInfoAminoMsg {
   type: "/greenfield.storage.ObjectInfo";
@@ -207,6 +234,10 @@ export interface ObjectInfoSDKType {
   source_type: SourceType;
   checksums: Uint8Array[];
   tags?: ResourceTagsSDKType;
+  is_updating: boolean;
+  updated_at: Long;
+  updated_by: string;
+  version: Long;
 }
 export interface GroupInfo {
   /** owner is the owner of the group. It can not changed once it created. */
@@ -498,6 +529,55 @@ export interface ResourceTags_TagSDKType {
   key: string;
   value: string;
 }
+export interface ShadowObjectInfo {
+  /** operator defines the account address of the operator, either the object owner or the updater with granted permission. */
+  operator: string;
+  /** id defines the object id */
+  id: string;
+  /** content_type define the content type of the payload data */
+  contentType: string;
+  /** payload_size is the total size of the object payload */
+  payloadSize: Long;
+  /** checksums define the root hash of the pieces which stored in a SP. */
+  checksums: Uint8Array[];
+  /** updated_at define the block timestamp when the object is updated */
+  updatedAt: Long;
+  /** version define the version of object */
+  version: Long;
+}
+export interface ShadowObjectInfoProtoMsg {
+  typeUrl: "/greenfield.storage.ShadowObjectInfo";
+  value: Uint8Array;
+}
+export interface ShadowObjectInfoAmino {
+  /** operator defines the account address of the operator, either the object owner or the updater with granted permission. */
+  operator?: string;
+  /** id defines the object id */
+  id?: string;
+  /** content_type define the content type of the payload data */
+  content_type?: string;
+  /** payload_size is the total size of the object payload */
+  payload_size?: string;
+  /** checksums define the root hash of the pieces which stored in a SP. */
+  checksums?: string[];
+  /** updated_at define the block timestamp when the object is updated */
+  updated_at?: string;
+  /** version define the version of object */
+  version?: string;
+}
+export interface ShadowObjectInfoAminoMsg {
+  type: "/greenfield.storage.ShadowObjectInfo";
+  value: ShadowObjectInfoAmino;
+}
+export interface ShadowObjectInfoSDKType {
+  operator: string;
+  id: string;
+  content_type: string;
+  payload_size: Long;
+  checksums: Uint8Array[];
+  updated_at: Long;
+  version: Long;
+}
 function createBaseBucketInfo(): BucketInfo {
   return {
     owner: "",
@@ -510,7 +590,8 @@ function createBaseBucketInfo(): BucketInfo {
     globalVirtualGroupFamilyId: 0,
     chargedReadQuota: Long.UZERO,
     bucketStatus: 0,
-    tags: undefined
+    tags: undefined,
+    spAsDelegatedAgentDisabled: false
   };
 }
 export const BucketInfo = {
@@ -548,6 +629,9 @@ export const BucketInfo = {
     }
     if (message.tags !== undefined) {
       ResourceTags.encode(message.tags, writer.uint32(90).fork()).ldelim();
+    }
+    if (message.spAsDelegatedAgentDisabled === true) {
+      writer.uint32(96).bool(message.spAsDelegatedAgentDisabled);
     }
     return writer;
   },
@@ -591,6 +675,9 @@ export const BucketInfo = {
         case 11:
           message.tags = ResourceTags.decode(reader, reader.uint32());
           break;
+        case 12:
+          message.spAsDelegatedAgentDisabled = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -610,7 +697,8 @@ export const BucketInfo = {
       globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
       chargedReadQuota: isSet(object.chargedReadQuota) ? Long.fromValue(object.chargedReadQuota) : Long.UZERO,
       bucketStatus: isSet(object.bucketStatus) ? bucketStatusFromJSON(object.bucketStatus) : -1,
-      tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined
+      tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined,
+      spAsDelegatedAgentDisabled: isSet(object.spAsDelegatedAgentDisabled) ? Boolean(object.spAsDelegatedAgentDisabled) : false
     };
   },
   toJSON(message: BucketInfo): unknown {
@@ -626,6 +714,7 @@ export const BucketInfo = {
     message.chargedReadQuota !== undefined && (obj.chargedReadQuota = (message.chargedReadQuota || Long.UZERO).toString());
     message.bucketStatus !== undefined && (obj.bucketStatus = bucketStatusToJSON(message.bucketStatus));
     message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toJSON(message.tags) : undefined);
+    message.spAsDelegatedAgentDisabled !== undefined && (obj.spAsDelegatedAgentDisabled = message.spAsDelegatedAgentDisabled);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<BucketInfo>, I>>(object: I): BucketInfo {
@@ -641,6 +730,7 @@ export const BucketInfo = {
     message.chargedReadQuota = object.chargedReadQuota !== undefined && object.chargedReadQuota !== null ? Long.fromValue(object.chargedReadQuota) : Long.UZERO;
     message.bucketStatus = object.bucketStatus ?? 0;
     message.tags = object.tags !== undefined && object.tags !== null ? ResourceTags.fromPartial(object.tags) : undefined;
+    message.spAsDelegatedAgentDisabled = object.spAsDelegatedAgentDisabled ?? false;
     return message;
   },
   fromSDK(object: BucketInfoSDKType): BucketInfo {
@@ -655,7 +745,8 @@ export const BucketInfo = {
       globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
       chargedReadQuota: object?.charged_read_quota,
       bucketStatus: isSet(object.bucket_status) ? bucketStatusFromJSON(object.bucket_status) : -1,
-      tags: object.tags ? ResourceTags.fromSDK(object.tags) : undefined
+      tags: object.tags ? ResourceTags.fromSDK(object.tags) : undefined,
+      spAsDelegatedAgentDisabled: object?.sp_as_delegated_agent_disabled
     };
   },
   toSDK(message: BucketInfo): BucketInfoSDKType {
@@ -671,6 +762,7 @@ export const BucketInfo = {
     obj.charged_read_quota = message.chargedReadQuota;
     message.bucketStatus !== undefined && (obj.bucket_status = bucketStatusToJSON(message.bucketStatus));
     message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
+    obj.sp_as_delegated_agent_disabled = message.spAsDelegatedAgentDisabled;
     return obj;
   },
   fromAmino(object: BucketInfoAmino): BucketInfo {
@@ -708,6 +800,9 @@ export const BucketInfo = {
     if (object.tags !== undefined && object.tags !== null) {
       message.tags = ResourceTags.fromAmino(object.tags);
     }
+    if (object.sp_as_delegated_agent_disabled !== undefined && object.sp_as_delegated_agent_disabled !== null) {
+      message.spAsDelegatedAgentDisabled = object.sp_as_delegated_agent_disabled;
+    }
     return message;
   },
   toAmino(message: BucketInfo): BucketInfoAmino {
@@ -723,6 +818,7 @@ export const BucketInfo = {
     obj.charged_read_quota = message.chargedReadQuota ? message.chargedReadQuota.toString() : undefined;
     obj.bucket_status = bucketStatusToJSON(message.bucketStatus);
     obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
+    obj.sp_as_delegated_agent_disabled = message.spAsDelegatedAgentDisabled;
     return obj;
   },
   fromAminoMsg(object: BucketInfoAminoMsg): BucketInfo {
@@ -898,7 +994,11 @@ function createBaseObjectInfo(): ObjectInfo {
     redundancyType: 0,
     sourceType: 0,
     checksums: [],
-    tags: undefined
+    tags: undefined,
+    isUpdating: false,
+    updatedAt: Long.ZERO,
+    updatedBy: "",
+    version: Long.ZERO
   };
 }
 export const ObjectInfo = {
@@ -948,6 +1048,18 @@ export const ObjectInfo = {
     }
     if (message.tags !== undefined) {
       ResourceTags.encode(message.tags, writer.uint32(122).fork()).ldelim();
+    }
+    if (message.isUpdating === true) {
+      writer.uint32(128).bool(message.isUpdating);
+    }
+    if (!message.updatedAt.isZero()) {
+      writer.uint32(136).int64(message.updatedAt);
+    }
+    if (message.updatedBy !== "") {
+      writer.uint32(146).string(message.updatedBy);
+    }
+    if (!message.version.isZero()) {
+      writer.uint32(152).int64(message.version);
     }
     return writer;
   },
@@ -1003,6 +1115,18 @@ export const ObjectInfo = {
         case 15:
           message.tags = ResourceTags.decode(reader, reader.uint32());
           break;
+        case 16:
+          message.isUpdating = reader.bool();
+          break;
+        case 17:
+          message.updatedAt = (reader.int64() as Long);
+          break;
+        case 18:
+          message.updatedBy = reader.string();
+          break;
+        case 19:
+          message.version = (reader.int64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1026,7 +1150,11 @@ export const ObjectInfo = {
       redundancyType: isSet(object.redundancyType) ? redundancyTypeFromJSON(object.redundancyType) : -1,
       sourceType: isSet(object.sourceType) ? sourceTypeFromJSON(object.sourceType) : -1,
       checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => bytesFromBase64(e)) : [],
-      tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined
+      tags: isSet(object.tags) ? ResourceTags.fromJSON(object.tags) : undefined,
+      isUpdating: isSet(object.isUpdating) ? Boolean(object.isUpdating) : false,
+      updatedAt: isSet(object.updatedAt) ? Long.fromValue(object.updatedAt) : Long.ZERO,
+      updatedBy: isSet(object.updatedBy) ? String(object.updatedBy) : "",
+      version: isSet(object.version) ? Long.fromValue(object.version) : Long.ZERO
     };
   },
   toJSON(message: ObjectInfo): unknown {
@@ -1050,6 +1178,10 @@ export const ObjectInfo = {
       obj.checksums = [];
     }
     message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toJSON(message.tags) : undefined);
+    message.isUpdating !== undefined && (obj.isUpdating = message.isUpdating);
+    message.updatedAt !== undefined && (obj.updatedAt = (message.updatedAt || Long.ZERO).toString());
+    message.updatedBy !== undefined && (obj.updatedBy = message.updatedBy);
+    message.version !== undefined && (obj.version = (message.version || Long.ZERO).toString());
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<ObjectInfo>, I>>(object: I): ObjectInfo {
@@ -1069,6 +1201,10 @@ export const ObjectInfo = {
     message.sourceType = object.sourceType ?? 0;
     message.checksums = object.checksums?.map(e => e) || [];
     message.tags = object.tags !== undefined && object.tags !== null ? ResourceTags.fromPartial(object.tags) : undefined;
+    message.isUpdating = object.isUpdating ?? false;
+    message.updatedAt = object.updatedAt !== undefined && object.updatedAt !== null ? Long.fromValue(object.updatedAt) : Long.ZERO;
+    message.updatedBy = object.updatedBy ?? "";
+    message.version = object.version !== undefined && object.version !== null ? Long.fromValue(object.version) : Long.ZERO;
     return message;
   },
   fromSDK(object: ObjectInfoSDKType): ObjectInfo {
@@ -1087,7 +1223,11 @@ export const ObjectInfo = {
       redundancyType: isSet(object.redundancy_type) ? redundancyTypeFromJSON(object.redundancy_type) : -1,
       sourceType: isSet(object.source_type) ? sourceTypeFromJSON(object.source_type) : -1,
       checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => e) : [],
-      tags: object.tags ? ResourceTags.fromSDK(object.tags) : undefined
+      tags: object.tags ? ResourceTags.fromSDK(object.tags) : undefined,
+      isUpdating: object?.is_updating,
+      updatedAt: object?.updated_at,
+      updatedBy: object?.updated_by,
+      version: object?.version
     };
   },
   toSDK(message: ObjectInfo): ObjectInfoSDKType {
@@ -1111,6 +1251,10 @@ export const ObjectInfo = {
       obj.checksums = [];
     }
     message.tags !== undefined && (obj.tags = message.tags ? ResourceTags.toSDK(message.tags) : undefined);
+    obj.is_updating = message.isUpdating;
+    obj.updated_at = message.updatedAt;
+    obj.updated_by = message.updatedBy;
+    obj.version = message.version;
     return obj;
   },
   fromAmino(object: ObjectInfoAmino): ObjectInfo {
@@ -1158,6 +1302,18 @@ export const ObjectInfo = {
     if (object.tags !== undefined && object.tags !== null) {
       message.tags = ResourceTags.fromAmino(object.tags);
     }
+    if (object.is_updating !== undefined && object.is_updating !== null) {
+      message.isUpdating = object.is_updating;
+    }
+    if (object.updated_at !== undefined && object.updated_at !== null) {
+      message.updatedAt = Long.fromString(object.updated_at);
+    }
+    if (object.updated_by !== undefined && object.updated_by !== null) {
+      message.updatedBy = object.updated_by;
+    }
+    if (object.version !== undefined && object.version !== null) {
+      message.version = Long.fromString(object.version);
+    }
     return message;
   },
   toAmino(message: ObjectInfo): ObjectInfoAmino {
@@ -1181,6 +1337,10 @@ export const ObjectInfo = {
       obj.checksums = [];
     }
     obj.tags = message.tags ? ResourceTags.toAmino(message.tags) : undefined;
+    obj.is_updating = message.isUpdating;
+    obj.updated_at = message.updatedAt ? message.updatedAt.toString() : undefined;
+    obj.updated_by = message.updatedBy;
+    obj.version = message.version ? message.version.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: ObjectInfoAminoMsg): ObjectInfo {
@@ -2460,6 +2620,195 @@ export const ResourceTags_Tag = {
     return {
       typeUrl: "/greenfield.storage.Tag",
       value: ResourceTags_Tag.encode(message).finish()
+    };
+  }
+};
+function createBaseShadowObjectInfo(): ShadowObjectInfo {
+  return {
+    operator: "",
+    id: "",
+    contentType: "",
+    payloadSize: Long.UZERO,
+    checksums: [],
+    updatedAt: Long.ZERO,
+    version: Long.ZERO
+  };
+}
+export const ShadowObjectInfo = {
+  typeUrl: "/greenfield.storage.ShadowObjectInfo",
+  encode(message: ShadowObjectInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.operator !== "") {
+      writer.uint32(10).string(message.operator);
+    }
+    if (message.id !== "") {
+      writer.uint32(18).string(message.id);
+    }
+    if (message.contentType !== "") {
+      writer.uint32(26).string(message.contentType);
+    }
+    if (!message.payloadSize.isZero()) {
+      writer.uint32(32).uint64(message.payloadSize);
+    }
+    for (const v of message.checksums) {
+      writer.uint32(42).bytes(v!);
+    }
+    if (!message.updatedAt.isZero()) {
+      writer.uint32(48).int64(message.updatedAt);
+    }
+    if (!message.version.isZero()) {
+      writer.uint32(56).int64(message.version);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): ShadowObjectInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseShadowObjectInfo();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.operator = reader.string();
+          break;
+        case 2:
+          message.id = reader.string();
+          break;
+        case 3:
+          message.contentType = reader.string();
+          break;
+        case 4:
+          message.payloadSize = (reader.uint64() as Long);
+          break;
+        case 5:
+          message.checksums.push(reader.bytes());
+          break;
+        case 6:
+          message.updatedAt = (reader.int64() as Long);
+          break;
+        case 7:
+          message.version = (reader.int64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): ShadowObjectInfo {
+    return {
+      operator: isSet(object.operator) ? String(object.operator) : "",
+      id: isSet(object.id) ? String(object.id) : "",
+      contentType: isSet(object.contentType) ? String(object.contentType) : "",
+      payloadSize: isSet(object.payloadSize) ? Long.fromValue(object.payloadSize) : Long.UZERO,
+      checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => bytesFromBase64(e)) : [],
+      updatedAt: isSet(object.updatedAt) ? Long.fromValue(object.updatedAt) : Long.ZERO,
+      version: isSet(object.version) ? Long.fromValue(object.version) : Long.ZERO
+    };
+  },
+  toJSON(message: ShadowObjectInfo): unknown {
+    const obj: any = {};
+    message.operator !== undefined && (obj.operator = message.operator);
+    message.id !== undefined && (obj.id = message.id);
+    message.contentType !== undefined && (obj.contentType = message.contentType);
+    message.payloadSize !== undefined && (obj.payloadSize = (message.payloadSize || Long.UZERO).toString());
+    if (message.checksums) {
+      obj.checksums = message.checksums.map(e => base64FromBytes(e !== undefined ? e : new Uint8Array()));
+    } else {
+      obj.checksums = [];
+    }
+    message.updatedAt !== undefined && (obj.updatedAt = (message.updatedAt || Long.ZERO).toString());
+    message.version !== undefined && (obj.version = (message.version || Long.ZERO).toString());
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<ShadowObjectInfo>, I>>(object: I): ShadowObjectInfo {
+    const message = createBaseShadowObjectInfo();
+    message.operator = object.operator ?? "";
+    message.id = object.id ?? "";
+    message.contentType = object.contentType ?? "";
+    message.payloadSize = object.payloadSize !== undefined && object.payloadSize !== null ? Long.fromValue(object.payloadSize) : Long.UZERO;
+    message.checksums = object.checksums?.map(e => e) || [];
+    message.updatedAt = object.updatedAt !== undefined && object.updatedAt !== null ? Long.fromValue(object.updatedAt) : Long.ZERO;
+    message.version = object.version !== undefined && object.version !== null ? Long.fromValue(object.version) : Long.ZERO;
+    return message;
+  },
+  fromSDK(object: ShadowObjectInfoSDKType): ShadowObjectInfo {
+    return {
+      operator: object?.operator,
+      id: object?.id,
+      contentType: object?.content_type,
+      payloadSize: object?.payload_size,
+      checksums: Array.isArray(object?.checksums) ? object.checksums.map((e: any) => e) : [],
+      updatedAt: object?.updated_at,
+      version: object?.version
+    };
+  },
+  toSDK(message: ShadowObjectInfo): ShadowObjectInfoSDKType {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.id = message.id;
+    obj.content_type = message.contentType;
+    obj.payload_size = message.payloadSize;
+    if (message.checksums) {
+      obj.checksums = message.checksums.map(e => e);
+    } else {
+      obj.checksums = [];
+    }
+    obj.updated_at = message.updatedAt;
+    obj.version = message.version;
+    return obj;
+  },
+  fromAmino(object: ShadowObjectInfoAmino): ShadowObjectInfo {
+    const message = createBaseShadowObjectInfo();
+    if (object.operator !== undefined && object.operator !== null) {
+      message.operator = object.operator;
+    }
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.content_type !== undefined && object.content_type !== null) {
+      message.contentType = object.content_type;
+    }
+    if (object.payload_size !== undefined && object.payload_size !== null) {
+      message.payloadSize = Long.fromString(object.payload_size);
+    }
+    message.checksums = object.checksums?.map(e => bytesFromBase64(e)) || [];
+    if (object.updated_at !== undefined && object.updated_at !== null) {
+      message.updatedAt = Long.fromString(object.updated_at);
+    }
+    if (object.version !== undefined && object.version !== null) {
+      message.version = Long.fromString(object.version);
+    }
+    return message;
+  },
+  toAmino(message: ShadowObjectInfo): ShadowObjectInfoAmino {
+    const obj: any = {};
+    obj.operator = message.operator;
+    obj.id = message.id;
+    obj.content_type = message.contentType;
+    obj.payload_size = message.payloadSize ? message.payloadSize.toString() : undefined;
+    if (message.checksums) {
+      obj.checksums = message.checksums.map(e => base64FromBytes(e));
+    } else {
+      obj.checksums = [];
+    }
+    obj.updated_at = message.updatedAt ? message.updatedAt.toString() : undefined;
+    obj.version = message.version ? message.version.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: ShadowObjectInfoAminoMsg): ShadowObjectInfo {
+    return ShadowObjectInfo.fromAmino(object.value);
+  },
+  fromProtoMsg(message: ShadowObjectInfoProtoMsg): ShadowObjectInfo {
+    return ShadowObjectInfo.decode(message.value);
+  },
+  toProto(message: ShadowObjectInfo): Uint8Array {
+    return ShadowObjectInfo.encode(message).finish();
+  },
+  toProtoMsg(message: ShadowObjectInfo): ShadowObjectInfoProtoMsg {
+    return {
+      typeUrl: "/greenfield.storage.ShadowObjectInfo",
+      value: ShadowObjectInfo.encode(message).finish()
     };
   }
 };

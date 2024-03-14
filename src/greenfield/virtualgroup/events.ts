@@ -441,10 +441,14 @@ export interface EventStorageProviderExitSDKType {
 export interface EventCompleteStorageProviderExit {
   /** The id of the storage provider who complete exit */
   storageProviderId: number;
-  /** The operator address which initial the complete exit transaction */
+  /** The operator address which initials the complete exit transaction. */
   operatorAddress: string;
+  /** The storage provider address which completes the exit */
+  storageProviderAddress: string;
   /** total_deposit defines the number of tokens deposited by this storage provider for staking. */
   totalDeposit: string;
+  /** forced_exit whether the exit is a forced exit */
+  forcedExit: boolean;
 }
 export interface EventCompleteStorageProviderExitProtoMsg {
   typeUrl: "/greenfield.virtualgroup.EventCompleteStorageProviderExit";
@@ -453,10 +457,14 @@ export interface EventCompleteStorageProviderExitProtoMsg {
 export interface EventCompleteStorageProviderExitAmino {
   /** The id of the storage provider who complete exit */
   storage_provider_id?: number;
-  /** The operator address which initial the complete exit transaction */
+  /** The operator address which initials the complete exit transaction. */
   operator_address?: string;
+  /** The storage provider address which completes the exit */
+  storage_provider_address?: string;
   /** total_deposit defines the number of tokens deposited by this storage provider for staking. */
   total_deposit?: string;
+  /** forced_exit whether the exit is a forced exit */
+  forced_exit?: boolean;
 }
 export interface EventCompleteStorageProviderExitAminoMsg {
   type: "/greenfield.virtualgroup.EventCompleteStorageProviderExit";
@@ -465,7 +473,203 @@ export interface EventCompleteStorageProviderExitAminoMsg {
 export interface EventCompleteStorageProviderExitSDKType {
   storage_provider_id: number;
   operator_address: string;
+  storage_provider_address: string;
   total_deposit: string;
+  forced_exit: boolean;
+}
+export interface EventReserveSwapIn {
+  /** The id of the storage provider who wants to swap in */
+  storageProviderId: number;
+  /** The id of the gvg family which the storage provider wants to swap in as primary sp */
+  globalVirtualGroupFamilyId: number;
+  /** The id of the gvg which the storage provider wants to swap in as secondary sp */
+  globalVirtualGroupId: number;
+  /** The id of the target sp who will be swapped */
+  targetSpId: number;
+  /** the expiration time of this reserved swapIn */
+  expirationTime: Long;
+}
+export interface EventReserveSwapInProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.EventReserveSwapIn";
+  value: Uint8Array;
+}
+export interface EventReserveSwapInAmino {
+  /** The id of the storage provider who wants to swap in */
+  storage_provider_id?: number;
+  /** The id of the gvg family which the storage provider wants to swap in as primary sp */
+  global_virtual_group_family_id?: number;
+  /** The id of the gvg which the storage provider wants to swap in as secondary sp */
+  global_virtual_group_id?: number;
+  /** The id of the target sp who will be swapped */
+  target_sp_id?: number;
+  /** the expiration time of this reserved swapIn */
+  expiration_time?: string;
+}
+export interface EventReserveSwapInAminoMsg {
+  type: "/greenfield.virtualgroup.EventReserveSwapIn";
+  value: EventReserveSwapInAmino;
+}
+export interface EventReserveSwapInSDKType {
+  storage_provider_id: number;
+  global_virtual_group_family_id: number;
+  global_virtual_group_id: number;
+  target_sp_id: number;
+  expiration_time: Long;
+}
+export interface EventCompleteSwapIn {
+  /** The id of the storage provider who complete swap in. */
+  storageProviderId: number;
+  /** The id of the storage provider who swap in the family or gvgs */
+  targetStorageProviderId: number;
+  /** The id of the gvg family */
+  globalVirtualGroupFamilyId: number;
+  /** The id of the gvg */
+  globalVirtualGroupId: number;
+}
+export interface EventCompleteSwapInProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.EventCompleteSwapIn";
+  value: Uint8Array;
+}
+export interface EventCompleteSwapInAmino {
+  /** The id of the storage provider who complete swap in. */
+  storage_provider_id?: number;
+  /** The id of the storage provider who swap in the family or gvgs */
+  target_storage_provider_id?: number;
+  /** The id of the gvg family */
+  global_virtual_group_family_id?: number;
+  /** The id of the gvg */
+  global_virtual_group_id?: number;
+}
+export interface EventCompleteSwapInAminoMsg {
+  type: "/greenfield.virtualgroup.EventCompleteSwapIn";
+  value: EventCompleteSwapInAmino;
+}
+export interface EventCompleteSwapInSDKType {
+  storage_provider_id: number;
+  target_storage_provider_id: number;
+  global_virtual_group_family_id: number;
+  global_virtual_group_id: number;
+}
+export interface EventCancelSwapIn {
+  /** The id of the storage provider who cancel swap in. */
+  storageProviderId: number;
+  /** The id of the gvg family */
+  globalVirtualGroupFamilyId: number;
+  /** The id of the gvg */
+  globalVirtualGroupId: number;
+  /** The id of the target sp who was swapped from family or gvgs */
+  targetSpId: number;
+}
+export interface EventCancelSwapInProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.EventCancelSwapIn";
+  value: Uint8Array;
+}
+export interface EventCancelSwapInAmino {
+  /** The id of the storage provider who cancel swap in. */
+  storage_provider_id?: number;
+  /** The id of the gvg family */
+  global_virtual_group_family_id?: number;
+  /** The id of the gvg */
+  global_virtual_group_id?: number;
+  /** The id of the target sp who was swapped from family or gvgs */
+  target_sp_id?: number;
+}
+export interface EventCancelSwapInAminoMsg {
+  type: "/greenfield.virtualgroup.EventCancelSwapIn";
+  value: EventCancelSwapInAmino;
+}
+export interface EventCancelSwapInSDKType {
+  storage_provider_id: number;
+  global_virtual_group_family_id: number;
+  global_virtual_group_id: number;
+  target_sp_id: number;
+}
+export interface EventStorageProviderForcedExit {
+  /** The id of the storage provider who wants to exit */
+  storageProviderId: number;
+}
+export interface EventStorageProviderForcedExitProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.EventStorageProviderForcedExit";
+  value: Uint8Array;
+}
+export interface EventStorageProviderForcedExitAmino {
+  /** The id of the storage provider who wants to exit */
+  storage_provider_id?: number;
+}
+export interface EventStorageProviderForcedExitAminoMsg {
+  type: "/greenfield.virtualgroup.EventStorageProviderForcedExit";
+  value: EventStorageProviderForcedExitAmino;
+}
+export interface EventStorageProviderForcedExitSDKType {
+  storage_provider_id: number;
+}
+export interface EventSettleGlobalVirtualGroupFamily {
+  /** The id of global virtual group family, which is auto generated by blockchain */
+  id: number;
+  /** The id of the primary sp who will receive the fund */
+  spId: number;
+  /** The funding address of the sp */
+  spFundingAddress: string;
+  /** The amount the fund to send to sp */
+  amount: string;
+}
+export interface EventSettleGlobalVirtualGroupFamilyProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.EventSettleGlobalVirtualGroupFamily";
+  value: Uint8Array;
+}
+export interface EventSettleGlobalVirtualGroupFamilyAmino {
+  /** The id of global virtual group family, which is auto generated by blockchain */
+  id?: number;
+  /** The id of the primary sp who will receive the fund */
+  sp_id?: number;
+  /** The funding address of the sp */
+  sp_funding_address?: string;
+  /** The amount the fund to send to sp */
+  amount?: string;
+}
+export interface EventSettleGlobalVirtualGroupFamilyAminoMsg {
+  type: "/greenfield.virtualgroup.EventSettleGlobalVirtualGroupFamily";
+  value: EventSettleGlobalVirtualGroupFamilyAmino;
+}
+export interface EventSettleGlobalVirtualGroupFamilySDKType {
+  id: number;
+  sp_id: number;
+  sp_funding_address: string;
+  amount: string;
+}
+export interface EventSettleGlobalVirtualGroup {
+  /** The id of global virtual group, which is auto generated by blockchain */
+  id: number;
+  /** The ids of the secondary sps who will receive the fund */
+  spIds: number[];
+  /** The funding address of the sps */
+  spFundingAddresses: string[];
+  /** The amount the fund to send to each sp */
+  amount: string;
+}
+export interface EventSettleGlobalVirtualGroupProtoMsg {
+  typeUrl: "/greenfield.virtualgroup.EventSettleGlobalVirtualGroup";
+  value: Uint8Array;
+}
+export interface EventSettleGlobalVirtualGroupAmino {
+  /** The id of global virtual group, which is auto generated by blockchain */
+  id?: number;
+  /** The ids of the secondary sps who will receive the fund */
+  sp_ids?: number[];
+  /** The funding address of the sps */
+  sp_funding_addresses?: string[];
+  /** The amount the fund to send to each sp */
+  amount?: string;
+}
+export interface EventSettleGlobalVirtualGroupAminoMsg {
+  type: "/greenfield.virtualgroup.EventSettleGlobalVirtualGroup";
+  value: EventSettleGlobalVirtualGroupAmino;
+}
+export interface EventSettleGlobalVirtualGroupSDKType {
+  id: number;
+  sp_ids: number[];
+  sp_funding_addresses: string[];
+  amount: string;
 }
 function createBaseEventCreateGlobalVirtualGroup(): EventCreateGlobalVirtualGroup {
   return {
@@ -2227,7 +2431,9 @@ function createBaseEventCompleteStorageProviderExit(): EventCompleteStorageProvi
   return {
     storageProviderId: 0,
     operatorAddress: "",
-    totalDeposit: ""
+    storageProviderAddress: "",
+    totalDeposit: "",
+    forcedExit: false
   };
 }
 export const EventCompleteStorageProviderExit = {
@@ -2239,8 +2445,14 @@ export const EventCompleteStorageProviderExit = {
     if (message.operatorAddress !== "") {
       writer.uint32(18).string(message.operatorAddress);
     }
+    if (message.storageProviderAddress !== "") {
+      writer.uint32(26).string(message.storageProviderAddress);
+    }
     if (message.totalDeposit !== "") {
-      writer.uint32(26).string(message.totalDeposit);
+      writer.uint32(34).string(message.totalDeposit);
+    }
+    if (message.forcedExit === true) {
+      writer.uint32(40).bool(message.forcedExit);
     }
     return writer;
   },
@@ -2258,7 +2470,13 @@ export const EventCompleteStorageProviderExit = {
           message.operatorAddress = reader.string();
           break;
         case 3:
+          message.storageProviderAddress = reader.string();
+          break;
+        case 4:
           message.totalDeposit = reader.string();
+          break;
+        case 5:
+          message.forcedExit = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2271,35 +2489,45 @@ export const EventCompleteStorageProviderExit = {
     return {
       storageProviderId: isSet(object.storageProviderId) ? Number(object.storageProviderId) : 0,
       operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
-      totalDeposit: isSet(object.totalDeposit) ? String(object.totalDeposit) : ""
+      storageProviderAddress: isSet(object.storageProviderAddress) ? String(object.storageProviderAddress) : "",
+      totalDeposit: isSet(object.totalDeposit) ? String(object.totalDeposit) : "",
+      forcedExit: isSet(object.forcedExit) ? Boolean(object.forcedExit) : false
     };
   },
   toJSON(message: EventCompleteStorageProviderExit): unknown {
     const obj: any = {};
     message.storageProviderId !== undefined && (obj.storageProviderId = Math.round(message.storageProviderId));
     message.operatorAddress !== undefined && (obj.operatorAddress = message.operatorAddress);
+    message.storageProviderAddress !== undefined && (obj.storageProviderAddress = message.storageProviderAddress);
     message.totalDeposit !== undefined && (obj.totalDeposit = message.totalDeposit);
+    message.forcedExit !== undefined && (obj.forcedExit = message.forcedExit);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<EventCompleteStorageProviderExit>, I>>(object: I): EventCompleteStorageProviderExit {
     const message = createBaseEventCompleteStorageProviderExit();
     message.storageProviderId = object.storageProviderId ?? 0;
     message.operatorAddress = object.operatorAddress ?? "";
+    message.storageProviderAddress = object.storageProviderAddress ?? "";
     message.totalDeposit = object.totalDeposit ?? "";
+    message.forcedExit = object.forcedExit ?? false;
     return message;
   },
   fromSDK(object: EventCompleteStorageProviderExitSDKType): EventCompleteStorageProviderExit {
     return {
       storageProviderId: object?.storage_provider_id,
       operatorAddress: object?.operator_address,
-      totalDeposit: object?.total_deposit
+      storageProviderAddress: object?.storage_provider_address,
+      totalDeposit: object?.total_deposit,
+      forcedExit: object?.forced_exit
     };
   },
   toSDK(message: EventCompleteStorageProviderExit): EventCompleteStorageProviderExitSDKType {
     const obj: any = {};
     obj.storage_provider_id = message.storageProviderId;
     obj.operator_address = message.operatorAddress;
+    obj.storage_provider_address = message.storageProviderAddress;
     obj.total_deposit = message.totalDeposit;
+    obj.forced_exit = message.forcedExit;
     return obj;
   },
   fromAmino(object: EventCompleteStorageProviderExitAmino): EventCompleteStorageProviderExit {
@@ -2310,8 +2538,14 @@ export const EventCompleteStorageProviderExit = {
     if (object.operator_address !== undefined && object.operator_address !== null) {
       message.operatorAddress = object.operator_address;
     }
+    if (object.storage_provider_address !== undefined && object.storage_provider_address !== null) {
+      message.storageProviderAddress = object.storage_provider_address;
+    }
     if (object.total_deposit !== undefined && object.total_deposit !== null) {
       message.totalDeposit = object.total_deposit;
+    }
+    if (object.forced_exit !== undefined && object.forced_exit !== null) {
+      message.forcedExit = object.forced_exit;
     }
     return message;
   },
@@ -2319,7 +2553,9 @@ export const EventCompleteStorageProviderExit = {
     const obj: any = {};
     obj.storage_provider_id = message.storageProviderId;
     obj.operator_address = message.operatorAddress;
+    obj.storage_provider_address = message.storageProviderAddress;
     obj.total_deposit = message.totalDeposit;
+    obj.forced_exit = message.forcedExit;
     return obj;
   },
   fromAminoMsg(object: EventCompleteStorageProviderExitAminoMsg): EventCompleteStorageProviderExit {
@@ -2335,6 +2571,789 @@ export const EventCompleteStorageProviderExit = {
     return {
       typeUrl: "/greenfield.virtualgroup.EventCompleteStorageProviderExit",
       value: EventCompleteStorageProviderExit.encode(message).finish()
+    };
+  }
+};
+function createBaseEventReserveSwapIn(): EventReserveSwapIn {
+  return {
+    storageProviderId: 0,
+    globalVirtualGroupFamilyId: 0,
+    globalVirtualGroupId: 0,
+    targetSpId: 0,
+    expirationTime: Long.UZERO
+  };
+}
+export const EventReserveSwapIn = {
+  typeUrl: "/greenfield.virtualgroup.EventReserveSwapIn",
+  encode(message: EventReserveSwapIn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.storageProviderId !== 0) {
+      writer.uint32(8).uint32(message.storageProviderId);
+    }
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(16).uint32(message.globalVirtualGroupFamilyId);
+    }
+    if (message.globalVirtualGroupId !== 0) {
+      writer.uint32(24).uint32(message.globalVirtualGroupId);
+    }
+    if (message.targetSpId !== 0) {
+      writer.uint32(32).uint32(message.targetSpId);
+    }
+    if (!message.expirationTime.isZero()) {
+      writer.uint32(40).uint64(message.expirationTime);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventReserveSwapIn {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventReserveSwapIn();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.storageProviderId = reader.uint32();
+          break;
+        case 2:
+          message.globalVirtualGroupFamilyId = reader.uint32();
+          break;
+        case 3:
+          message.globalVirtualGroupId = reader.uint32();
+          break;
+        case 4:
+          message.targetSpId = reader.uint32();
+          break;
+        case 5:
+          message.expirationTime = (reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): EventReserveSwapIn {
+    return {
+      storageProviderId: isSet(object.storageProviderId) ? Number(object.storageProviderId) : 0,
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
+      globalVirtualGroupId: isSet(object.globalVirtualGroupId) ? Number(object.globalVirtualGroupId) : 0,
+      targetSpId: isSet(object.targetSpId) ? Number(object.targetSpId) : 0,
+      expirationTime: isSet(object.expirationTime) ? Long.fromValue(object.expirationTime) : Long.UZERO
+    };
+  },
+  toJSON(message: EventReserveSwapIn): unknown {
+    const obj: any = {};
+    message.storageProviderId !== undefined && (obj.storageProviderId = Math.round(message.storageProviderId));
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
+    message.globalVirtualGroupId !== undefined && (obj.globalVirtualGroupId = Math.round(message.globalVirtualGroupId));
+    message.targetSpId !== undefined && (obj.targetSpId = Math.round(message.targetSpId));
+    message.expirationTime !== undefined && (obj.expirationTime = (message.expirationTime || Long.UZERO).toString());
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<EventReserveSwapIn>, I>>(object: I): EventReserveSwapIn {
+    const message = createBaseEventReserveSwapIn();
+    message.storageProviderId = object.storageProviderId ?? 0;
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
+    message.globalVirtualGroupId = object.globalVirtualGroupId ?? 0;
+    message.targetSpId = object.targetSpId ?? 0;
+    message.expirationTime = object.expirationTime !== undefined && object.expirationTime !== null ? Long.fromValue(object.expirationTime) : Long.UZERO;
+    return message;
+  },
+  fromSDK(object: EventReserveSwapInSDKType): EventReserveSwapIn {
+    return {
+      storageProviderId: object?.storage_provider_id,
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
+      globalVirtualGroupId: object?.global_virtual_group_id,
+      targetSpId: object?.target_sp_id,
+      expirationTime: object?.expiration_time
+    };
+  },
+  toSDK(message: EventReserveSwapIn): EventReserveSwapInSDKType {
+    const obj: any = {};
+    obj.storage_provider_id = message.storageProviderId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    obj.target_sp_id = message.targetSpId;
+    obj.expiration_time = message.expirationTime;
+    return obj;
+  },
+  fromAmino(object: EventReserveSwapInAmino): EventReserveSwapIn {
+    const message = createBaseEventReserveSwapIn();
+    if (object.storage_provider_id !== undefined && object.storage_provider_id !== null) {
+      message.storageProviderId = object.storage_provider_id;
+    }
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    if (object.global_virtual_group_id !== undefined && object.global_virtual_group_id !== null) {
+      message.globalVirtualGroupId = object.global_virtual_group_id;
+    }
+    if (object.target_sp_id !== undefined && object.target_sp_id !== null) {
+      message.targetSpId = object.target_sp_id;
+    }
+    if (object.expiration_time !== undefined && object.expiration_time !== null) {
+      message.expirationTime = Long.fromString(object.expiration_time);
+    }
+    return message;
+  },
+  toAmino(message: EventReserveSwapIn): EventReserveSwapInAmino {
+    const obj: any = {};
+    obj.storage_provider_id = message.storageProviderId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    obj.target_sp_id = message.targetSpId;
+    obj.expiration_time = message.expirationTime ? message.expirationTime.toString() : undefined;
+    return obj;
+  },
+  fromAminoMsg(object: EventReserveSwapInAminoMsg): EventReserveSwapIn {
+    return EventReserveSwapIn.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventReserveSwapInProtoMsg): EventReserveSwapIn {
+    return EventReserveSwapIn.decode(message.value);
+  },
+  toProto(message: EventReserveSwapIn): Uint8Array {
+    return EventReserveSwapIn.encode(message).finish();
+  },
+  toProtoMsg(message: EventReserveSwapIn): EventReserveSwapInProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.EventReserveSwapIn",
+      value: EventReserveSwapIn.encode(message).finish()
+    };
+  }
+};
+function createBaseEventCompleteSwapIn(): EventCompleteSwapIn {
+  return {
+    storageProviderId: 0,
+    targetStorageProviderId: 0,
+    globalVirtualGroupFamilyId: 0,
+    globalVirtualGroupId: 0
+  };
+}
+export const EventCompleteSwapIn = {
+  typeUrl: "/greenfield.virtualgroup.EventCompleteSwapIn",
+  encode(message: EventCompleteSwapIn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.storageProviderId !== 0) {
+      writer.uint32(8).uint32(message.storageProviderId);
+    }
+    if (message.targetStorageProviderId !== 0) {
+      writer.uint32(16).uint32(message.targetStorageProviderId);
+    }
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(24).uint32(message.globalVirtualGroupFamilyId);
+    }
+    if (message.globalVirtualGroupId !== 0) {
+      writer.uint32(32).uint32(message.globalVirtualGroupId);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCompleteSwapIn {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventCompleteSwapIn();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.storageProviderId = reader.uint32();
+          break;
+        case 2:
+          message.targetStorageProviderId = reader.uint32();
+          break;
+        case 3:
+          message.globalVirtualGroupFamilyId = reader.uint32();
+          break;
+        case 4:
+          message.globalVirtualGroupId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): EventCompleteSwapIn {
+    return {
+      storageProviderId: isSet(object.storageProviderId) ? Number(object.storageProviderId) : 0,
+      targetStorageProviderId: isSet(object.targetStorageProviderId) ? Number(object.targetStorageProviderId) : 0,
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
+      globalVirtualGroupId: isSet(object.globalVirtualGroupId) ? Number(object.globalVirtualGroupId) : 0
+    };
+  },
+  toJSON(message: EventCompleteSwapIn): unknown {
+    const obj: any = {};
+    message.storageProviderId !== undefined && (obj.storageProviderId = Math.round(message.storageProviderId));
+    message.targetStorageProviderId !== undefined && (obj.targetStorageProviderId = Math.round(message.targetStorageProviderId));
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
+    message.globalVirtualGroupId !== undefined && (obj.globalVirtualGroupId = Math.round(message.globalVirtualGroupId));
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<EventCompleteSwapIn>, I>>(object: I): EventCompleteSwapIn {
+    const message = createBaseEventCompleteSwapIn();
+    message.storageProviderId = object.storageProviderId ?? 0;
+    message.targetStorageProviderId = object.targetStorageProviderId ?? 0;
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
+    message.globalVirtualGroupId = object.globalVirtualGroupId ?? 0;
+    return message;
+  },
+  fromSDK(object: EventCompleteSwapInSDKType): EventCompleteSwapIn {
+    return {
+      storageProviderId: object?.storage_provider_id,
+      targetStorageProviderId: object?.target_storage_provider_id,
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
+      globalVirtualGroupId: object?.global_virtual_group_id
+    };
+  },
+  toSDK(message: EventCompleteSwapIn): EventCompleteSwapInSDKType {
+    const obj: any = {};
+    obj.storage_provider_id = message.storageProviderId;
+    obj.target_storage_provider_id = message.targetStorageProviderId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    return obj;
+  },
+  fromAmino(object: EventCompleteSwapInAmino): EventCompleteSwapIn {
+    const message = createBaseEventCompleteSwapIn();
+    if (object.storage_provider_id !== undefined && object.storage_provider_id !== null) {
+      message.storageProviderId = object.storage_provider_id;
+    }
+    if (object.target_storage_provider_id !== undefined && object.target_storage_provider_id !== null) {
+      message.targetStorageProviderId = object.target_storage_provider_id;
+    }
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    if (object.global_virtual_group_id !== undefined && object.global_virtual_group_id !== null) {
+      message.globalVirtualGroupId = object.global_virtual_group_id;
+    }
+    return message;
+  },
+  toAmino(message: EventCompleteSwapIn): EventCompleteSwapInAmino {
+    const obj: any = {};
+    obj.storage_provider_id = message.storageProviderId;
+    obj.target_storage_provider_id = message.targetStorageProviderId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    return obj;
+  },
+  fromAminoMsg(object: EventCompleteSwapInAminoMsg): EventCompleteSwapIn {
+    return EventCompleteSwapIn.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventCompleteSwapInProtoMsg): EventCompleteSwapIn {
+    return EventCompleteSwapIn.decode(message.value);
+  },
+  toProto(message: EventCompleteSwapIn): Uint8Array {
+    return EventCompleteSwapIn.encode(message).finish();
+  },
+  toProtoMsg(message: EventCompleteSwapIn): EventCompleteSwapInProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.EventCompleteSwapIn",
+      value: EventCompleteSwapIn.encode(message).finish()
+    };
+  }
+};
+function createBaseEventCancelSwapIn(): EventCancelSwapIn {
+  return {
+    storageProviderId: 0,
+    globalVirtualGroupFamilyId: 0,
+    globalVirtualGroupId: 0,
+    targetSpId: 0
+  };
+}
+export const EventCancelSwapIn = {
+  typeUrl: "/greenfield.virtualgroup.EventCancelSwapIn",
+  encode(message: EventCancelSwapIn, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.storageProviderId !== 0) {
+      writer.uint32(8).uint32(message.storageProviderId);
+    }
+    if (message.globalVirtualGroupFamilyId !== 0) {
+      writer.uint32(16).uint32(message.globalVirtualGroupFamilyId);
+    }
+    if (message.globalVirtualGroupId !== 0) {
+      writer.uint32(24).uint32(message.globalVirtualGroupId);
+    }
+    if (message.targetSpId !== 0) {
+      writer.uint32(32).uint32(message.targetSpId);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventCancelSwapIn {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventCancelSwapIn();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.storageProviderId = reader.uint32();
+          break;
+        case 2:
+          message.globalVirtualGroupFamilyId = reader.uint32();
+          break;
+        case 3:
+          message.globalVirtualGroupId = reader.uint32();
+          break;
+        case 4:
+          message.targetSpId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): EventCancelSwapIn {
+    return {
+      storageProviderId: isSet(object.storageProviderId) ? Number(object.storageProviderId) : 0,
+      globalVirtualGroupFamilyId: isSet(object.globalVirtualGroupFamilyId) ? Number(object.globalVirtualGroupFamilyId) : 0,
+      globalVirtualGroupId: isSet(object.globalVirtualGroupId) ? Number(object.globalVirtualGroupId) : 0,
+      targetSpId: isSet(object.targetSpId) ? Number(object.targetSpId) : 0
+    };
+  },
+  toJSON(message: EventCancelSwapIn): unknown {
+    const obj: any = {};
+    message.storageProviderId !== undefined && (obj.storageProviderId = Math.round(message.storageProviderId));
+    message.globalVirtualGroupFamilyId !== undefined && (obj.globalVirtualGroupFamilyId = Math.round(message.globalVirtualGroupFamilyId));
+    message.globalVirtualGroupId !== undefined && (obj.globalVirtualGroupId = Math.round(message.globalVirtualGroupId));
+    message.targetSpId !== undefined && (obj.targetSpId = Math.round(message.targetSpId));
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<EventCancelSwapIn>, I>>(object: I): EventCancelSwapIn {
+    const message = createBaseEventCancelSwapIn();
+    message.storageProviderId = object.storageProviderId ?? 0;
+    message.globalVirtualGroupFamilyId = object.globalVirtualGroupFamilyId ?? 0;
+    message.globalVirtualGroupId = object.globalVirtualGroupId ?? 0;
+    message.targetSpId = object.targetSpId ?? 0;
+    return message;
+  },
+  fromSDK(object: EventCancelSwapInSDKType): EventCancelSwapIn {
+    return {
+      storageProviderId: object?.storage_provider_id,
+      globalVirtualGroupFamilyId: object?.global_virtual_group_family_id,
+      globalVirtualGroupId: object?.global_virtual_group_id,
+      targetSpId: object?.target_sp_id
+    };
+  },
+  toSDK(message: EventCancelSwapIn): EventCancelSwapInSDKType {
+    const obj: any = {};
+    obj.storage_provider_id = message.storageProviderId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    obj.target_sp_id = message.targetSpId;
+    return obj;
+  },
+  fromAmino(object: EventCancelSwapInAmino): EventCancelSwapIn {
+    const message = createBaseEventCancelSwapIn();
+    if (object.storage_provider_id !== undefined && object.storage_provider_id !== null) {
+      message.storageProviderId = object.storage_provider_id;
+    }
+    if (object.global_virtual_group_family_id !== undefined && object.global_virtual_group_family_id !== null) {
+      message.globalVirtualGroupFamilyId = object.global_virtual_group_family_id;
+    }
+    if (object.global_virtual_group_id !== undefined && object.global_virtual_group_id !== null) {
+      message.globalVirtualGroupId = object.global_virtual_group_id;
+    }
+    if (object.target_sp_id !== undefined && object.target_sp_id !== null) {
+      message.targetSpId = object.target_sp_id;
+    }
+    return message;
+  },
+  toAmino(message: EventCancelSwapIn): EventCancelSwapInAmino {
+    const obj: any = {};
+    obj.storage_provider_id = message.storageProviderId;
+    obj.global_virtual_group_family_id = message.globalVirtualGroupFamilyId;
+    obj.global_virtual_group_id = message.globalVirtualGroupId;
+    obj.target_sp_id = message.targetSpId;
+    return obj;
+  },
+  fromAminoMsg(object: EventCancelSwapInAminoMsg): EventCancelSwapIn {
+    return EventCancelSwapIn.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventCancelSwapInProtoMsg): EventCancelSwapIn {
+    return EventCancelSwapIn.decode(message.value);
+  },
+  toProto(message: EventCancelSwapIn): Uint8Array {
+    return EventCancelSwapIn.encode(message).finish();
+  },
+  toProtoMsg(message: EventCancelSwapIn): EventCancelSwapInProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.EventCancelSwapIn",
+      value: EventCancelSwapIn.encode(message).finish()
+    };
+  }
+};
+function createBaseEventStorageProviderForcedExit(): EventStorageProviderForcedExit {
+  return {
+    storageProviderId: 0
+  };
+}
+export const EventStorageProviderForcedExit = {
+  typeUrl: "/greenfield.virtualgroup.EventStorageProviderForcedExit",
+  encode(message: EventStorageProviderForcedExit, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.storageProviderId !== 0) {
+      writer.uint32(8).uint32(message.storageProviderId);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventStorageProviderForcedExit {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventStorageProviderForcedExit();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.storageProviderId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): EventStorageProviderForcedExit {
+    return {
+      storageProviderId: isSet(object.storageProviderId) ? Number(object.storageProviderId) : 0
+    };
+  },
+  toJSON(message: EventStorageProviderForcedExit): unknown {
+    const obj: any = {};
+    message.storageProviderId !== undefined && (obj.storageProviderId = Math.round(message.storageProviderId));
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<EventStorageProviderForcedExit>, I>>(object: I): EventStorageProviderForcedExit {
+    const message = createBaseEventStorageProviderForcedExit();
+    message.storageProviderId = object.storageProviderId ?? 0;
+    return message;
+  },
+  fromSDK(object: EventStorageProviderForcedExitSDKType): EventStorageProviderForcedExit {
+    return {
+      storageProviderId: object?.storage_provider_id
+    };
+  },
+  toSDK(message: EventStorageProviderForcedExit): EventStorageProviderForcedExitSDKType {
+    const obj: any = {};
+    obj.storage_provider_id = message.storageProviderId;
+    return obj;
+  },
+  fromAmino(object: EventStorageProviderForcedExitAmino): EventStorageProviderForcedExit {
+    const message = createBaseEventStorageProviderForcedExit();
+    if (object.storage_provider_id !== undefined && object.storage_provider_id !== null) {
+      message.storageProviderId = object.storage_provider_id;
+    }
+    return message;
+  },
+  toAmino(message: EventStorageProviderForcedExit): EventStorageProviderForcedExitAmino {
+    const obj: any = {};
+    obj.storage_provider_id = message.storageProviderId;
+    return obj;
+  },
+  fromAminoMsg(object: EventStorageProviderForcedExitAminoMsg): EventStorageProviderForcedExit {
+    return EventStorageProviderForcedExit.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventStorageProviderForcedExitProtoMsg): EventStorageProviderForcedExit {
+    return EventStorageProviderForcedExit.decode(message.value);
+  },
+  toProto(message: EventStorageProviderForcedExit): Uint8Array {
+    return EventStorageProviderForcedExit.encode(message).finish();
+  },
+  toProtoMsg(message: EventStorageProviderForcedExit): EventStorageProviderForcedExitProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.EventStorageProviderForcedExit",
+      value: EventStorageProviderForcedExit.encode(message).finish()
+    };
+  }
+};
+function createBaseEventSettleGlobalVirtualGroupFamily(): EventSettleGlobalVirtualGroupFamily {
+  return {
+    id: 0,
+    spId: 0,
+    spFundingAddress: "",
+    amount: ""
+  };
+}
+export const EventSettleGlobalVirtualGroupFamily = {
+  typeUrl: "/greenfield.virtualgroup.EventSettleGlobalVirtualGroupFamily",
+  encode(message: EventSettleGlobalVirtualGroupFamily, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint32(message.id);
+    }
+    if (message.spId !== 0) {
+      writer.uint32(16).uint32(message.spId);
+    }
+    if (message.spFundingAddress !== "") {
+      writer.uint32(26).string(message.spFundingAddress);
+    }
+    if (message.amount !== "") {
+      writer.uint32(34).string(message.amount);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventSettleGlobalVirtualGroupFamily {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventSettleGlobalVirtualGroupFamily();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint32();
+          break;
+        case 2:
+          message.spId = reader.uint32();
+          break;
+        case 3:
+          message.spFundingAddress = reader.string();
+          break;
+        case 4:
+          message.amount = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): EventSettleGlobalVirtualGroupFamily {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      spId: isSet(object.spId) ? Number(object.spId) : 0,
+      spFundingAddress: isSet(object.spFundingAddress) ? String(object.spFundingAddress) : "",
+      amount: isSet(object.amount) ? String(object.amount) : ""
+    };
+  },
+  toJSON(message: EventSettleGlobalVirtualGroupFamily): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    message.spId !== undefined && (obj.spId = Math.round(message.spId));
+    message.spFundingAddress !== undefined && (obj.spFundingAddress = message.spFundingAddress);
+    message.amount !== undefined && (obj.amount = message.amount);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<EventSettleGlobalVirtualGroupFamily>, I>>(object: I): EventSettleGlobalVirtualGroupFamily {
+    const message = createBaseEventSettleGlobalVirtualGroupFamily();
+    message.id = object.id ?? 0;
+    message.spId = object.spId ?? 0;
+    message.spFundingAddress = object.spFundingAddress ?? "";
+    message.amount = object.amount ?? "";
+    return message;
+  },
+  fromSDK(object: EventSettleGlobalVirtualGroupFamilySDKType): EventSettleGlobalVirtualGroupFamily {
+    return {
+      id: object?.id,
+      spId: object?.sp_id,
+      spFundingAddress: object?.sp_funding_address,
+      amount: object?.amount
+    };
+  },
+  toSDK(message: EventSettleGlobalVirtualGroupFamily): EventSettleGlobalVirtualGroupFamilySDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.sp_id = message.spId;
+    obj.sp_funding_address = message.spFundingAddress;
+    obj.amount = message.amount;
+    return obj;
+  },
+  fromAmino(object: EventSettleGlobalVirtualGroupFamilyAmino): EventSettleGlobalVirtualGroupFamily {
+    const message = createBaseEventSettleGlobalVirtualGroupFamily();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    if (object.sp_id !== undefined && object.sp_id !== null) {
+      message.spId = object.sp_id;
+    }
+    if (object.sp_funding_address !== undefined && object.sp_funding_address !== null) {
+      message.spFundingAddress = object.sp_funding_address;
+    }
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
+    }
+    return message;
+  },
+  toAmino(message: EventSettleGlobalVirtualGroupFamily): EventSettleGlobalVirtualGroupFamilyAmino {
+    const obj: any = {};
+    obj.id = message.id;
+    obj.sp_id = message.spId;
+    obj.sp_funding_address = message.spFundingAddress;
+    obj.amount = message.amount;
+    return obj;
+  },
+  fromAminoMsg(object: EventSettleGlobalVirtualGroupFamilyAminoMsg): EventSettleGlobalVirtualGroupFamily {
+    return EventSettleGlobalVirtualGroupFamily.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventSettleGlobalVirtualGroupFamilyProtoMsg): EventSettleGlobalVirtualGroupFamily {
+    return EventSettleGlobalVirtualGroupFamily.decode(message.value);
+  },
+  toProto(message: EventSettleGlobalVirtualGroupFamily): Uint8Array {
+    return EventSettleGlobalVirtualGroupFamily.encode(message).finish();
+  },
+  toProtoMsg(message: EventSettleGlobalVirtualGroupFamily): EventSettleGlobalVirtualGroupFamilyProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.EventSettleGlobalVirtualGroupFamily",
+      value: EventSettleGlobalVirtualGroupFamily.encode(message).finish()
+    };
+  }
+};
+function createBaseEventSettleGlobalVirtualGroup(): EventSettleGlobalVirtualGroup {
+  return {
+    id: 0,
+    spIds: [],
+    spFundingAddresses: [],
+    amount: ""
+  };
+}
+export const EventSettleGlobalVirtualGroup = {
+  typeUrl: "/greenfield.virtualgroup.EventSettleGlobalVirtualGroup",
+  encode(message: EventSettleGlobalVirtualGroup, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint32(message.id);
+    }
+    writer.uint32(18).fork();
+    for (const v of message.spIds) {
+      writer.uint32(v);
+    }
+    writer.ldelim();
+    for (const v of message.spFundingAddresses) {
+      writer.uint32(26).string(v!);
+    }
+    if (message.amount !== "") {
+      writer.uint32(34).string(message.amount);
+    }
+    return writer;
+  },
+  decode(input: _m0.Reader | Uint8Array, length?: number): EventSettleGlobalVirtualGroup {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEventSettleGlobalVirtualGroup();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint32();
+          break;
+        case 2:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.spIds.push(reader.uint32());
+            }
+          } else {
+            message.spIds.push(reader.uint32());
+          }
+          break;
+        case 3:
+          message.spFundingAddresses.push(reader.string());
+          break;
+        case 4:
+          message.amount = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): EventSettleGlobalVirtualGroup {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      spIds: Array.isArray(object?.spIds) ? object.spIds.map((e: any) => Number(e)) : [],
+      spFundingAddresses: Array.isArray(object?.spFundingAddresses) ? object.spFundingAddresses.map((e: any) => String(e)) : [],
+      amount: isSet(object.amount) ? String(object.amount) : ""
+    };
+  },
+  toJSON(message: EventSettleGlobalVirtualGroup): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    if (message.spIds) {
+      obj.spIds = message.spIds.map(e => Math.round(e));
+    } else {
+      obj.spIds = [];
+    }
+    if (message.spFundingAddresses) {
+      obj.spFundingAddresses = message.spFundingAddresses.map(e => e);
+    } else {
+      obj.spFundingAddresses = [];
+    }
+    message.amount !== undefined && (obj.amount = message.amount);
+    return obj;
+  },
+  fromPartial<I extends Exact<DeepPartial<EventSettleGlobalVirtualGroup>, I>>(object: I): EventSettleGlobalVirtualGroup {
+    const message = createBaseEventSettleGlobalVirtualGroup();
+    message.id = object.id ?? 0;
+    message.spIds = object.spIds?.map(e => e) || [];
+    message.spFundingAddresses = object.spFundingAddresses?.map(e => e) || [];
+    message.amount = object.amount ?? "";
+    return message;
+  },
+  fromSDK(object: EventSettleGlobalVirtualGroupSDKType): EventSettleGlobalVirtualGroup {
+    return {
+      id: object?.id,
+      spIds: Array.isArray(object?.sp_ids) ? object.sp_ids.map((e: any) => e) : [],
+      spFundingAddresses: Array.isArray(object?.sp_funding_addresses) ? object.sp_funding_addresses.map((e: any) => e) : [],
+      amount: object?.amount
+    };
+  },
+  toSDK(message: EventSettleGlobalVirtualGroup): EventSettleGlobalVirtualGroupSDKType {
+    const obj: any = {};
+    obj.id = message.id;
+    if (message.spIds) {
+      obj.sp_ids = message.spIds.map(e => e);
+    } else {
+      obj.sp_ids = [];
+    }
+    if (message.spFundingAddresses) {
+      obj.sp_funding_addresses = message.spFundingAddresses.map(e => e);
+    } else {
+      obj.sp_funding_addresses = [];
+    }
+    obj.amount = message.amount;
+    return obj;
+  },
+  fromAmino(object: EventSettleGlobalVirtualGroupAmino): EventSettleGlobalVirtualGroup {
+    const message = createBaseEventSettleGlobalVirtualGroup();
+    if (object.id !== undefined && object.id !== null) {
+      message.id = object.id;
+    }
+    message.spIds = object.sp_ids?.map(e => e) || [];
+    message.spFundingAddresses = object.sp_funding_addresses?.map(e => e) || [];
+    if (object.amount !== undefined && object.amount !== null) {
+      message.amount = object.amount;
+    }
+    return message;
+  },
+  toAmino(message: EventSettleGlobalVirtualGroup): EventSettleGlobalVirtualGroupAmino {
+    const obj: any = {};
+    obj.id = message.id;
+    if (message.spIds) {
+      obj.sp_ids = message.spIds.map(e => e);
+    } else {
+      obj.sp_ids = [];
+    }
+    if (message.spFundingAddresses) {
+      obj.sp_funding_addresses = message.spFundingAddresses.map(e => e);
+    } else {
+      obj.sp_funding_addresses = [];
+    }
+    obj.amount = message.amount;
+    return obj;
+  },
+  fromAminoMsg(object: EventSettleGlobalVirtualGroupAminoMsg): EventSettleGlobalVirtualGroup {
+    return EventSettleGlobalVirtualGroup.fromAmino(object.value);
+  },
+  fromProtoMsg(message: EventSettleGlobalVirtualGroupProtoMsg): EventSettleGlobalVirtualGroup {
+    return EventSettleGlobalVirtualGroup.decode(message.value);
+  },
+  toProto(message: EventSettleGlobalVirtualGroup): Uint8Array {
+    return EventSettleGlobalVirtualGroup.encode(message).finish();
+  },
+  toProtoMsg(message: EventSettleGlobalVirtualGroup): EventSettleGlobalVirtualGroupProtoMsg {
+    return {
+      typeUrl: "/greenfield.virtualgroup.EventSettleGlobalVirtualGroup",
+      value: EventSettleGlobalVirtualGroup.encode(message).finish()
     };
   }
 };

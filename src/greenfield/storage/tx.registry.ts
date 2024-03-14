@@ -1,8 +1,8 @@
 //@ts-nocheck
 /* eslint-disable */
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgCreateBucket, MsgDeleteBucket, MsgUpdateBucketInfo, MsgMirrorBucket, MsgDiscontinueBucket, MsgCreateObject, MsgSealObject, MsgRejectSealObject, MsgCopyObject, MsgDeleteObject, MsgCancelCreateObject, MsgMirrorObject, MsgDiscontinueObject, MsgUpdateObjectInfo, MsgCreateGroup, MsgDeleteGroup, MsgUpdateGroupMember, MsgUpdateGroupExtra, MsgLeaveGroup, MsgMirrorGroup, MsgRenewGroupMember, MsgPutPolicy, MsgDeletePolicy, MsgUpdateParams, MsgMigrateBucket, MsgCompleteMigrateBucket, MsgCancelMigrateBucket, MsgRejectMigrateBucket, MsgSetTag } from "./tx";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/greenfield.storage.MsgCreateBucket", MsgCreateBucket], ["/greenfield.storage.MsgDeleteBucket", MsgDeleteBucket], ["/greenfield.storage.MsgUpdateBucketInfo", MsgUpdateBucketInfo], ["/greenfield.storage.MsgMirrorBucket", MsgMirrorBucket], ["/greenfield.storage.MsgDiscontinueBucket", MsgDiscontinueBucket], ["/greenfield.storage.MsgCreateObject", MsgCreateObject], ["/greenfield.storage.MsgSealObject", MsgSealObject], ["/greenfield.storage.MsgRejectSealObject", MsgRejectSealObject], ["/greenfield.storage.MsgCopyObject", MsgCopyObject], ["/greenfield.storage.MsgDeleteObject", MsgDeleteObject], ["/greenfield.storage.MsgCancelCreateObject", MsgCancelCreateObject], ["/greenfield.storage.MsgMirrorObject", MsgMirrorObject], ["/greenfield.storage.MsgDiscontinueObject", MsgDiscontinueObject], ["/greenfield.storage.MsgUpdateObjectInfo", MsgUpdateObjectInfo], ["/greenfield.storage.MsgCreateGroup", MsgCreateGroup], ["/greenfield.storage.MsgDeleteGroup", MsgDeleteGroup], ["/greenfield.storage.MsgUpdateGroupMember", MsgUpdateGroupMember], ["/greenfield.storage.MsgUpdateGroupExtra", MsgUpdateGroupExtra], ["/greenfield.storage.MsgLeaveGroup", MsgLeaveGroup], ["/greenfield.storage.MsgMirrorGroup", MsgMirrorGroup], ["/greenfield.storage.MsgRenewGroupMember", MsgRenewGroupMember], ["/greenfield.storage.MsgPutPolicy", MsgPutPolicy], ["/greenfield.storage.MsgDeletePolicy", MsgDeletePolicy], ["/greenfield.storage.MsgUpdateParams", MsgUpdateParams], ["/greenfield.storage.MsgMigrateBucket", MsgMigrateBucket], ["/greenfield.storage.MsgCompleteMigrateBucket", MsgCompleteMigrateBucket], ["/greenfield.storage.MsgCancelMigrateBucket", MsgCancelMigrateBucket], ["/greenfield.storage.MsgRejectMigrateBucket", MsgRejectMigrateBucket], ["/greenfield.storage.MsgSetTag", MsgSetTag]];
+import { MsgCreateBucket, MsgDeleteBucket, MsgUpdateBucketInfo, MsgMirrorBucket, MsgDiscontinueBucket, MsgToggleSPAsDelegatedAgent, MsgCreateObject, MsgSealObject, MsgSealObjectV2, MsgRejectSealObject, MsgCopyObject, MsgDeleteObject, MsgCancelCreateObject, MsgMirrorObject, MsgDiscontinueObject, MsgUpdateObjectInfo, MsgUpdateObjectContent, MsgCancelUpdateObjectContent, MsgDelegateCreateObject, MsgDelegateUpdateObjectContent, MsgCreateGroup, MsgDeleteGroup, MsgUpdateGroupMember, MsgUpdateGroupExtra, MsgLeaveGroup, MsgMirrorGroup, MsgRenewGroupMember, MsgPutPolicy, MsgDeletePolicy, MsgUpdateParams, MsgMigrateBucket, MsgCompleteMigrateBucket, MsgCancelMigrateBucket, MsgRejectMigrateBucket, MsgSetTag } from "./tx";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/greenfield.storage.MsgCreateBucket", MsgCreateBucket], ["/greenfield.storage.MsgDeleteBucket", MsgDeleteBucket], ["/greenfield.storage.MsgUpdateBucketInfo", MsgUpdateBucketInfo], ["/greenfield.storage.MsgMirrorBucket", MsgMirrorBucket], ["/greenfield.storage.MsgDiscontinueBucket", MsgDiscontinueBucket], ["/greenfield.storage.MsgToggleSPAsDelegatedAgent", MsgToggleSPAsDelegatedAgent], ["/greenfield.storage.MsgCreateObject", MsgCreateObject], ["/greenfield.storage.MsgSealObject", MsgSealObject], ["/greenfield.storage.MsgSealObjectV2", MsgSealObjectV2], ["/greenfield.storage.MsgRejectSealObject", MsgRejectSealObject], ["/greenfield.storage.MsgCopyObject", MsgCopyObject], ["/greenfield.storage.MsgDeleteObject", MsgDeleteObject], ["/greenfield.storage.MsgCancelCreateObject", MsgCancelCreateObject], ["/greenfield.storage.MsgMirrorObject", MsgMirrorObject], ["/greenfield.storage.MsgDiscontinueObject", MsgDiscontinueObject], ["/greenfield.storage.MsgUpdateObjectInfo", MsgUpdateObjectInfo], ["/greenfield.storage.MsgUpdateObjectContent", MsgUpdateObjectContent], ["/greenfield.storage.MsgCancelUpdateObjectContent", MsgCancelUpdateObjectContent], ["/greenfield.storage.MsgDelegateCreateObject", MsgDelegateCreateObject], ["/greenfield.storage.MsgDelegateUpdateObjectContent", MsgDelegateUpdateObjectContent], ["/greenfield.storage.MsgCreateGroup", MsgCreateGroup], ["/greenfield.storage.MsgDeleteGroup", MsgDeleteGroup], ["/greenfield.storage.MsgUpdateGroupMember", MsgUpdateGroupMember], ["/greenfield.storage.MsgUpdateGroupExtra", MsgUpdateGroupExtra], ["/greenfield.storage.MsgLeaveGroup", MsgLeaveGroup], ["/greenfield.storage.MsgMirrorGroup", MsgMirrorGroup], ["/greenfield.storage.MsgRenewGroupMember", MsgRenewGroupMember], ["/greenfield.storage.MsgPutPolicy", MsgPutPolicy], ["/greenfield.storage.MsgDeletePolicy", MsgDeletePolicy], ["/greenfield.storage.MsgUpdateParams", MsgUpdateParams], ["/greenfield.storage.MsgMigrateBucket", MsgMigrateBucket], ["/greenfield.storage.MsgCompleteMigrateBucket", MsgCompleteMigrateBucket], ["/greenfield.storage.MsgCancelMigrateBucket", MsgCancelMigrateBucket], ["/greenfield.storage.MsgRejectMigrateBucket", MsgRejectMigrateBucket], ["/greenfield.storage.MsgSetTag", MsgSetTag]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -40,6 +40,12 @@ export const MessageComposer = {
         value: MsgDiscontinueBucket.encode(value).finish()
       };
     },
+    toggleSPAsDelegatedAgent(value: MsgToggleSPAsDelegatedAgent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgToggleSPAsDelegatedAgent",
+        value: MsgToggleSPAsDelegatedAgent.encode(value).finish()
+      };
+    },
     createObject(value: MsgCreateObject) {
       return {
         typeUrl: "/greenfield.storage.MsgCreateObject",
@@ -50,6 +56,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/greenfield.storage.MsgSealObject",
         value: MsgSealObject.encode(value).finish()
+      };
+    },
+    sealObjectV2(value: MsgSealObjectV2) {
+      return {
+        typeUrl: "/greenfield.storage.MsgSealObjectV2",
+        value: MsgSealObjectV2.encode(value).finish()
       };
     },
     rejectSealObject(value: MsgRejectSealObject) {
@@ -92,6 +104,30 @@ export const MessageComposer = {
       return {
         typeUrl: "/greenfield.storage.MsgUpdateObjectInfo",
         value: MsgUpdateObjectInfo.encode(value).finish()
+      };
+    },
+    updateObjectContent(value: MsgUpdateObjectContent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgUpdateObjectContent",
+        value: MsgUpdateObjectContent.encode(value).finish()
+      };
+    },
+    cancelUpdateObjectContent(value: MsgCancelUpdateObjectContent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgCancelUpdateObjectContent",
+        value: MsgCancelUpdateObjectContent.encode(value).finish()
+      };
+    },
+    delegateCreateObject(value: MsgDelegateCreateObject) {
+      return {
+        typeUrl: "/greenfield.storage.MsgDelegateCreateObject",
+        value: MsgDelegateCreateObject.encode(value).finish()
+      };
+    },
+    delegateUpdateObjectContent(value: MsgDelegateUpdateObjectContent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgDelegateUpdateObjectContent",
+        value: MsgDelegateUpdateObjectContent.encode(value).finish()
       };
     },
     createGroup(value: MsgCreateGroup) {
@@ -216,6 +252,12 @@ export const MessageComposer = {
         value
       };
     },
+    toggleSPAsDelegatedAgent(value: MsgToggleSPAsDelegatedAgent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgToggleSPAsDelegatedAgent",
+        value
+      };
+    },
     createObject(value: MsgCreateObject) {
       return {
         typeUrl: "/greenfield.storage.MsgCreateObject",
@@ -225,6 +267,12 @@ export const MessageComposer = {
     sealObject(value: MsgSealObject) {
       return {
         typeUrl: "/greenfield.storage.MsgSealObject",
+        value
+      };
+    },
+    sealObjectV2(value: MsgSealObjectV2) {
+      return {
+        typeUrl: "/greenfield.storage.MsgSealObjectV2",
         value
       };
     },
@@ -267,6 +315,30 @@ export const MessageComposer = {
     updateObjectInfo(value: MsgUpdateObjectInfo) {
       return {
         typeUrl: "/greenfield.storage.MsgUpdateObjectInfo",
+        value
+      };
+    },
+    updateObjectContent(value: MsgUpdateObjectContent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgUpdateObjectContent",
+        value
+      };
+    },
+    cancelUpdateObjectContent(value: MsgCancelUpdateObjectContent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgCancelUpdateObjectContent",
+        value
+      };
+    },
+    delegateCreateObject(value: MsgDelegateCreateObject) {
+      return {
+        typeUrl: "/greenfield.storage.MsgDelegateCreateObject",
+        value
+      };
+    },
+    delegateUpdateObjectContent(value: MsgDelegateUpdateObjectContent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgDelegateUpdateObjectContent",
         value
       };
     },
@@ -392,6 +464,12 @@ export const MessageComposer = {
         value: MsgDiscontinueBucket.toJSON(value)
       };
     },
+    toggleSPAsDelegatedAgent(value: MsgToggleSPAsDelegatedAgent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgToggleSPAsDelegatedAgent",
+        value: MsgToggleSPAsDelegatedAgent.toJSON(value)
+      };
+    },
     createObject(value: MsgCreateObject) {
       return {
         typeUrl: "/greenfield.storage.MsgCreateObject",
@@ -402,6 +480,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/greenfield.storage.MsgSealObject",
         value: MsgSealObject.toJSON(value)
+      };
+    },
+    sealObjectV2(value: MsgSealObjectV2) {
+      return {
+        typeUrl: "/greenfield.storage.MsgSealObjectV2",
+        value: MsgSealObjectV2.toJSON(value)
       };
     },
     rejectSealObject(value: MsgRejectSealObject) {
@@ -444,6 +528,30 @@ export const MessageComposer = {
       return {
         typeUrl: "/greenfield.storage.MsgUpdateObjectInfo",
         value: MsgUpdateObjectInfo.toJSON(value)
+      };
+    },
+    updateObjectContent(value: MsgUpdateObjectContent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgUpdateObjectContent",
+        value: MsgUpdateObjectContent.toJSON(value)
+      };
+    },
+    cancelUpdateObjectContent(value: MsgCancelUpdateObjectContent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgCancelUpdateObjectContent",
+        value: MsgCancelUpdateObjectContent.toJSON(value)
+      };
+    },
+    delegateCreateObject(value: MsgDelegateCreateObject) {
+      return {
+        typeUrl: "/greenfield.storage.MsgDelegateCreateObject",
+        value: MsgDelegateCreateObject.toJSON(value)
+      };
+    },
+    delegateUpdateObjectContent(value: MsgDelegateUpdateObjectContent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgDelegateUpdateObjectContent",
+        value: MsgDelegateUpdateObjectContent.toJSON(value)
       };
     },
     createGroup(value: MsgCreateGroup) {
@@ -568,6 +676,12 @@ export const MessageComposer = {
         value: MsgDiscontinueBucket.fromJSON(value)
       };
     },
+    toggleSPAsDelegatedAgent(value: any) {
+      return {
+        typeUrl: "/greenfield.storage.MsgToggleSPAsDelegatedAgent",
+        value: MsgToggleSPAsDelegatedAgent.fromJSON(value)
+      };
+    },
     createObject(value: any) {
       return {
         typeUrl: "/greenfield.storage.MsgCreateObject",
@@ -578,6 +692,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/greenfield.storage.MsgSealObject",
         value: MsgSealObject.fromJSON(value)
+      };
+    },
+    sealObjectV2(value: any) {
+      return {
+        typeUrl: "/greenfield.storage.MsgSealObjectV2",
+        value: MsgSealObjectV2.fromJSON(value)
       };
     },
     rejectSealObject(value: any) {
@@ -620,6 +740,30 @@ export const MessageComposer = {
       return {
         typeUrl: "/greenfield.storage.MsgUpdateObjectInfo",
         value: MsgUpdateObjectInfo.fromJSON(value)
+      };
+    },
+    updateObjectContent(value: any) {
+      return {
+        typeUrl: "/greenfield.storage.MsgUpdateObjectContent",
+        value: MsgUpdateObjectContent.fromJSON(value)
+      };
+    },
+    cancelUpdateObjectContent(value: any) {
+      return {
+        typeUrl: "/greenfield.storage.MsgCancelUpdateObjectContent",
+        value: MsgCancelUpdateObjectContent.fromJSON(value)
+      };
+    },
+    delegateCreateObject(value: any) {
+      return {
+        typeUrl: "/greenfield.storage.MsgDelegateCreateObject",
+        value: MsgDelegateCreateObject.fromJSON(value)
+      };
+    },
+    delegateUpdateObjectContent(value: any) {
+      return {
+        typeUrl: "/greenfield.storage.MsgDelegateUpdateObjectContent",
+        value: MsgDelegateUpdateObjectContent.fromJSON(value)
       };
     },
     createGroup(value: any) {
@@ -744,6 +888,12 @@ export const MessageComposer = {
         value: MsgDiscontinueBucket.fromPartial(value)
       };
     },
+    toggleSPAsDelegatedAgent(value: MsgToggleSPAsDelegatedAgent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgToggleSPAsDelegatedAgent",
+        value: MsgToggleSPAsDelegatedAgent.fromPartial(value)
+      };
+    },
     createObject(value: MsgCreateObject) {
       return {
         typeUrl: "/greenfield.storage.MsgCreateObject",
@@ -754,6 +904,12 @@ export const MessageComposer = {
       return {
         typeUrl: "/greenfield.storage.MsgSealObject",
         value: MsgSealObject.fromPartial(value)
+      };
+    },
+    sealObjectV2(value: MsgSealObjectV2) {
+      return {
+        typeUrl: "/greenfield.storage.MsgSealObjectV2",
+        value: MsgSealObjectV2.fromPartial(value)
       };
     },
     rejectSealObject(value: MsgRejectSealObject) {
@@ -796,6 +952,30 @@ export const MessageComposer = {
       return {
         typeUrl: "/greenfield.storage.MsgUpdateObjectInfo",
         value: MsgUpdateObjectInfo.fromPartial(value)
+      };
+    },
+    updateObjectContent(value: MsgUpdateObjectContent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgUpdateObjectContent",
+        value: MsgUpdateObjectContent.fromPartial(value)
+      };
+    },
+    cancelUpdateObjectContent(value: MsgCancelUpdateObjectContent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgCancelUpdateObjectContent",
+        value: MsgCancelUpdateObjectContent.fromPartial(value)
+      };
+    },
+    delegateCreateObject(value: MsgDelegateCreateObject) {
+      return {
+        typeUrl: "/greenfield.storage.MsgDelegateCreateObject",
+        value: MsgDelegateCreateObject.fromPartial(value)
+      };
+    },
+    delegateUpdateObjectContent(value: MsgDelegateUpdateObjectContent) {
+      return {
+        typeUrl: "/greenfield.storage.MsgDelegateUpdateObjectContent",
+        value: MsgDelegateUpdateObjectContent.fromPartial(value)
       };
     },
     createGroup(value: MsgCreateGroup) {

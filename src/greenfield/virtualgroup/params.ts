@@ -15,6 +15,10 @@ export interface Params {
   maxGlobalVirtualGroupNumPerFamily: number;
   /** if the store size reach the exceed, the family is not allowed to sever more buckets */
   maxStoreSizePerFamily: Long;
+  /** the validity period that a successor SP can reserve to complete the swap for Global virtual group/family */
+  swapInValidityPeriod: string;
+  /** the the number of sp allowed to exit concurrently. */
+  spConcurrentExitNum: string;
 }
 export interface ParamsProtoMsg {
   typeUrl: "/greenfield.virtualgroup.Params";
@@ -32,6 +36,10 @@ export interface ParamsAmino {
   max_global_virtual_group_num_per_family?: number;
   /** if the store size reach the exceed, the family is not allowed to sever more buckets */
   max_store_size_per_family?: string;
+  /** the validity period that a successor SP can reserve to complete the swap for Global virtual group/family */
+  swap_in_validity_period?: string;
+  /** the the number of sp allowed to exit concurrently. */
+  sp_concurrent_exit_num?: string;
 }
 export interface ParamsAminoMsg {
   type: "/greenfield.virtualgroup.Params";
@@ -44,6 +52,8 @@ export interface ParamsSDKType {
   max_local_virtual_group_num_per_bucket: number;
   max_global_virtual_group_num_per_family: number;
   max_store_size_per_family: Long;
+  swap_in_validity_period: string;
+  sp_concurrent_exit_num: string;
 }
 function createBaseParams(): Params {
   return {
@@ -51,7 +61,9 @@ function createBaseParams(): Params {
     gvgStakingPerBytes: "",
     maxLocalVirtualGroupNumPerBucket: 0,
     maxGlobalVirtualGroupNumPerFamily: 0,
-    maxStoreSizePerFamily: Long.UZERO
+    maxStoreSizePerFamily: Long.UZERO,
+    swapInValidityPeriod: "",
+    spConcurrentExitNum: ""
   };
 }
 export const Params = {
@@ -71,6 +83,12 @@ export const Params = {
     }
     if (!message.maxStoreSizePerFamily.isZero()) {
       writer.uint32(40).uint64(message.maxStoreSizePerFamily);
+    }
+    if (message.swapInValidityPeriod !== "") {
+      writer.uint32(50).string(message.swapInValidityPeriod);
+    }
+    if (message.spConcurrentExitNum !== "") {
+      writer.uint32(58).string(message.spConcurrentExitNum);
     }
     return writer;
   },
@@ -96,6 +114,12 @@ export const Params = {
         case 5:
           message.maxStoreSizePerFamily = (reader.uint64() as Long);
           break;
+        case 6:
+          message.swapInValidityPeriod = reader.string();
+          break;
+        case 7:
+          message.spConcurrentExitNum = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -109,7 +133,9 @@ export const Params = {
       gvgStakingPerBytes: isSet(object.gvgStakingPerBytes) ? String(object.gvgStakingPerBytes) : "",
       maxLocalVirtualGroupNumPerBucket: isSet(object.maxLocalVirtualGroupNumPerBucket) ? Number(object.maxLocalVirtualGroupNumPerBucket) : 0,
       maxGlobalVirtualGroupNumPerFamily: isSet(object.maxGlobalVirtualGroupNumPerFamily) ? Number(object.maxGlobalVirtualGroupNumPerFamily) : 0,
-      maxStoreSizePerFamily: isSet(object.maxStoreSizePerFamily) ? Long.fromValue(object.maxStoreSizePerFamily) : Long.UZERO
+      maxStoreSizePerFamily: isSet(object.maxStoreSizePerFamily) ? Long.fromValue(object.maxStoreSizePerFamily) : Long.UZERO,
+      swapInValidityPeriod: isSet(object.swapInValidityPeriod) ? String(object.swapInValidityPeriod) : "",
+      spConcurrentExitNum: isSet(object.spConcurrentExitNum) ? String(object.spConcurrentExitNum) : ""
     };
   },
   toJSON(message: Params): unknown {
@@ -119,6 +145,8 @@ export const Params = {
     message.maxLocalVirtualGroupNumPerBucket !== undefined && (obj.maxLocalVirtualGroupNumPerBucket = Math.round(message.maxLocalVirtualGroupNumPerBucket));
     message.maxGlobalVirtualGroupNumPerFamily !== undefined && (obj.maxGlobalVirtualGroupNumPerFamily = Math.round(message.maxGlobalVirtualGroupNumPerFamily));
     message.maxStoreSizePerFamily !== undefined && (obj.maxStoreSizePerFamily = (message.maxStoreSizePerFamily || Long.UZERO).toString());
+    message.swapInValidityPeriod !== undefined && (obj.swapInValidityPeriod = message.swapInValidityPeriod);
+    message.spConcurrentExitNum !== undefined && (obj.spConcurrentExitNum = message.spConcurrentExitNum);
     return obj;
   },
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
@@ -128,6 +156,8 @@ export const Params = {
     message.maxLocalVirtualGroupNumPerBucket = object.maxLocalVirtualGroupNumPerBucket ?? 0;
     message.maxGlobalVirtualGroupNumPerFamily = object.maxGlobalVirtualGroupNumPerFamily ?? 0;
     message.maxStoreSizePerFamily = object.maxStoreSizePerFamily !== undefined && object.maxStoreSizePerFamily !== null ? Long.fromValue(object.maxStoreSizePerFamily) : Long.UZERO;
+    message.swapInValidityPeriod = object.swapInValidityPeriod ?? "";
+    message.spConcurrentExitNum = object.spConcurrentExitNum ?? "";
     return message;
   },
   fromSDK(object: ParamsSDKType): Params {
@@ -136,7 +166,9 @@ export const Params = {
       gvgStakingPerBytes: object?.gvg_staking_per_bytes,
       maxLocalVirtualGroupNumPerBucket: object?.max_local_virtual_group_num_per_bucket,
       maxGlobalVirtualGroupNumPerFamily: object?.max_global_virtual_group_num_per_family,
-      maxStoreSizePerFamily: object?.max_store_size_per_family
+      maxStoreSizePerFamily: object?.max_store_size_per_family,
+      swapInValidityPeriod: object?.swap_in_validity_period,
+      spConcurrentExitNum: object?.sp_concurrent_exit_num
     };
   },
   toSDK(message: Params): ParamsSDKType {
@@ -146,6 +178,8 @@ export const Params = {
     obj.max_local_virtual_group_num_per_bucket = message.maxLocalVirtualGroupNumPerBucket;
     obj.max_global_virtual_group_num_per_family = message.maxGlobalVirtualGroupNumPerFamily;
     obj.max_store_size_per_family = message.maxStoreSizePerFamily;
+    obj.swap_in_validity_period = message.swapInValidityPeriod;
+    obj.sp_concurrent_exit_num = message.spConcurrentExitNum;
     return obj;
   },
   fromAmino(object: ParamsAmino): Params {
@@ -165,6 +199,12 @@ export const Params = {
     if (object.max_store_size_per_family !== undefined && object.max_store_size_per_family !== null) {
       message.maxStoreSizePerFamily = Long.fromString(object.max_store_size_per_family);
     }
+    if (object.swap_in_validity_period !== undefined && object.swap_in_validity_period !== null) {
+      message.swapInValidityPeriod = object.swap_in_validity_period;
+    }
+    if (object.sp_concurrent_exit_num !== undefined && object.sp_concurrent_exit_num !== null) {
+      message.spConcurrentExitNum = object.sp_concurrent_exit_num;
+    }
     return message;
   },
   toAmino(message: Params): ParamsAmino {
@@ -174,6 +214,8 @@ export const Params = {
     obj.max_local_virtual_group_num_per_bucket = message.maxLocalVirtualGroupNumPerBucket;
     obj.max_global_virtual_group_num_per_family = message.maxGlobalVirtualGroupNumPerFamily;
     obj.max_store_size_per_family = message.maxStoreSizePerFamily ? message.maxStoreSizePerFamily.toString() : undefined;
+    obj.swap_in_validity_period = message.swapInValidityPeriod;
+    obj.sp_concurrent_exit_num = message.spConcurrentExitNum;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
